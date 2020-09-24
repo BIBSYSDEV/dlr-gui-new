@@ -1,5 +1,4 @@
 import { createMuiTheme } from '@material-ui/core';
-import i18n from '../translations/i18n';
 import { merriweatherRegular, barlowRegular } from './fonts';
 
 // Extend Palette type to allow custom colors

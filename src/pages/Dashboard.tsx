@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 const StyledDashboard = styled.div`
@@ -12,8 +11,6 @@ const StyledDashboard = styled.div`
 `;
 
 const Dashboard: FC = () => {
-  const { t } = useTranslation();
-
   return (
     <StyledDashboard>
       <h1>DLR</h1>
