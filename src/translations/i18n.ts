@@ -2,8 +2,8 @@ import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
 import { LanguageCodes } from '../types/language.types';
-import translationsEn from './en/translations.json';
-import translationsNb from './nb/translations.json';
+import translationsEn from './translations_EN.json';
+import translationsNb from './translations_NO.json';
 
 export const fallbackLanguage = LanguageCodes.NORWEGIAN_BOKMAL;
 

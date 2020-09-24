@@ -17,7 +17,6 @@ const Dashboard: FC = () => {
   return (
     <StyledDashboard>
       <h1>DLR</h1>
-      <p>Language check: {t('test-string')}</p>
       <Link to="/resource/43892349059034">Lenke til ressurs-side</Link>
     </StyledDashboard>
   );

@@ -9,7 +9,7 @@ const StyledLoginComponent = styled.div`
 `;
 
 const Login: FC = () => {
-  const { t } = useTranslation('authorization');
+  const { t } = useTranslation();
 
   return (
     <StyledLoginComponent>

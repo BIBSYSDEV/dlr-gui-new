@@ -27,12 +27,12 @@ const StyledPrivacyPolicyContainer = styled.div`
 `;
 
 const Footer: FC = () => {
-  const { t } = useTranslation('infopages');
+  const { t } = useTranslation();
 
   return (
     <StyledFooter>
       <StyledLogoContainer>
-        <NormalText>{t('common:delivered_by')}</NormalText>
+        <NormalText>{t('delivered_by')}</NormalText>
         <img src={logo} alt="UNIT logo" />
       </StyledLogoContainer>
       <StyledPrivacyPolicyContainer>
