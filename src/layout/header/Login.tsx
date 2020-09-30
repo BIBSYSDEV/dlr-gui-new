@@ -2,7 +2,8 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
-import { toast } from 'react-toastify';
+import { setUser } from '../../state/userSlice';
+import { useDispatch } from 'react-redux';
 
 const StyledLoginComponent = styled.div`
   grid-area: auth;
@@ -11,9 +12,10 @@ const StyledLoginComponent = styled.div`
 
 const Login: FC = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   function handleLogin() {
-    toast.error('Not implemented');
+    dispatch(setUser({ id: '123', name: 'test@unit.no' }));
   }
 
   return (

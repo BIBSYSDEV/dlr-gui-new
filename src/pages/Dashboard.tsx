@@ -12,6 +12,7 @@ const StyledDashboard = styled.div`
   row-gap: 1rem;
   justify-items: center;
 `;
+
 const SearchFieldWrapper = styled.div`
   display: flex;
   gap: 1rem;
