@@ -17,13 +17,10 @@ type ApiResponse<T> = CompletedApiResponse<T> | null;
 export const apiRequest = async <T>(axiosRequestConfig: AxiosRequestConfig): Promise<ApiResponse<T>> => {
   try {
     const response = await Axios(axiosRequestConfig);
-
-    if (response.status === StatusCode.OK) {
-      return { error: false, data: response.data };
-    } else if (response.status >= 400) {
+    if (response.status >= 400) {
       return { error: true };
     } else {
-      return { error: false };
+      return { error: false, data: response.data };
     }
   } catch (error) {
     return Axios.isCancel(error) ? null : { error: true };
@@ -54,7 +51,7 @@ export const getAnonymousWebToken = async () => {
 
 export const searchResources = async (query: string, token: string) => {
   return await apiRequest({
-    url: `${constants.guiBackendResourcesSearchPath}/resources/search?query=${query}`,
+    url: encodeURI(`${constants.guiBackendResourcesSearchPath}/resources/search?query=${query}`),
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
