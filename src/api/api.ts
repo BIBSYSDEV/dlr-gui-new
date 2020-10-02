@@ -1,5 +1,5 @@
 import Axios, { AxiosRequestConfig } from 'axios';
-import constants, { StatusCode } from '../utils/constants';
+import constants from '../utils/constants';
 import { setAxiosDefaults } from '../utils/axios-config';
 
 // Set axios defaults only once through the app's lifetime
