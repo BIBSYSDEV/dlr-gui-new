@@ -1,10 +1,10 @@
 pipeline {
     agent any
-    triggers {
-        gitlab(triggerOnPush: true, triggerOnMergeRequest: true, branchFilterType: 'All')
+    tools {
+        nodejs "nodejs10110"
     }
     environment {
-        LAST_COMMIT_MESSAGE = sh (returnStdout: true, script: 'git log -1')
+        LAST_COMMIT_MESSAGE = sh(returnStdout: true, script: 'git log -1')
     }
 
     stages {
