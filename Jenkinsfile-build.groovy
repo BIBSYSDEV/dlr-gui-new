@@ -5,23 +5,22 @@ pipeline {
     }
     environment {
         LAST_COMMIT_MESSAGE = sh(returnStdout: true, script: 'git log -1')
+        VERSION = "${env.BRANCH_NAME}".replaceAll('/', '_').toLowerCase()
     }
-
     stages {
         stage('NPM Install') {
             steps {
                 sh "node -v"
                 sh "npm -v"
+                sh 'echo ${VERSION}'
                 sh 'npm install'
             }
         }
-
         stage('Compile') {
             steps {
-                sh 'npm build'
+                sh 'npm run build'
             }
         }
-
     }
     post {
         success {
