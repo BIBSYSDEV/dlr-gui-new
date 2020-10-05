@@ -8,6 +8,7 @@ pipeline {
       LAST_COMMIT_MESSAGE = sh (returnStdout: true, script: 'git log -1')
       AWS_BUILD_HOST="ec2-54-194-199-152.eu-west-1.compute.amazonaws.com"
       SERVICE_NAME = "dlr-gui"
+      PCB = "PCB1"
   }
 
   parameters {
