@@ -15,7 +15,7 @@ const Login: FC = () => {
   const dispatch = useDispatch();
 
   function handleLogin() {
-    dispatch(setUser({ id: '123', name: 'test@unit.no' }));
+    dispatch(setUser({ id: '123', name: 'test2@unit.no' }));
   }
 
   return (
