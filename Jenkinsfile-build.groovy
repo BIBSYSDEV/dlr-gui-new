@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        nodejs "nodejs10110"
+        nodejs "node-12.13.1"
     }
     environment {
         LAST_COMMIT_MESSAGE = sh(returnStdout: true, script: 'git log -1')
