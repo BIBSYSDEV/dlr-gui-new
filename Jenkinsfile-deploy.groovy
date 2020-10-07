@@ -34,9 +34,9 @@ pipeline {
             steps {
                 sh 'npm run build'
                 sshagent(['ec2-user-aws-eu-west']) {
-                    sh 'ssh -t ec2-user@${AWS_BUILD_HOST} "mkdir -p ~/${SERVICE_NAME}/"'
+                    sh 'ssh  -o StrictHostKeyChecking=no -t ec2-user@${AWS_BUILD_HOST} "mkdir -p ~/${SERVICE_NAME}/"'
                     sh 'scp -p -r ./build ec2-user@${AWS_BUILD_HOST}:/home/ec2-user/${SERVICE_NAME}/'
-                    sh 'ssh -t ec2-user@${AWS_BUILD_HOST} "PATH=~/.local/bin:$PATH && cd ~/${SERVICE_NAME}/ && aws s3 cp build s3://dlrdevnew.unit.no --recursive"'
+                    sh 'ssh  -o StrictHostKeyChecking=no -t ec2-user@${AWS_BUILD_HOST} "PATH=~/.local/bin:$PATH && cd ~/${SERVICE_NAME}/ && aws s3 cp build s3://dlrdevnew.unit.no --recursive"'
                 }
             }
         }
