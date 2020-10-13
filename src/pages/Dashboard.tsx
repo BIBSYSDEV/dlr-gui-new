@@ -1,6 +1,6 @@
-import React, { ChangeEvent, FC, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 import styled from 'styled-components';
-import { getAnonymousWebToken, searchResources } from '../api/api';
+import { searchResources } from '../api/api';
 import { toast } from 'react-toastify';
 import { Button, List, ListItem, ListItemIcon, ListItemText, TextField, Typography } from '@material-ui/core';
 import ImageIcon from '@material-ui/icons/Image';
@@ -20,27 +20,12 @@ const SearchFieldWrapper = styled.div`
 `;
 
 const Dashboard: FC = () => {
-  const [token, setToken] = useState<string>('');
   const [resultList, setResultList] = useState<any>([]);
   const [resources, setResources] = useState<any>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
-  useEffect(() => {
-    getAnonymousWebToken().then((response) => {
-      if (response) {
-        if (response.error) {
-          toast.error('API ERROR');
-        } else {
-          window.localStorage.setItem('token', response.data as string);
-          console.log('token set in local storage');
-          setToken(response.data as string);
-        }
-      }
-    });
-  }, []);
-
   const triggerSearch = () => {
-    searchResources(searchTerm, token).then((response) => {
+    searchResources(searchTerm).then((response) => {
       if (response) {
         if (response.error) {
           toast.error('API ERROR');

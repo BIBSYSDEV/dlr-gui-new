@@ -29,7 +29,7 @@ export const apiRequest = async <T>(axiosRequestConfig: AxiosRequestConfig): Pro
 
 export const authenticatedApiRequest = async <T>(axiosRequestConfig: AxiosRequestConfig): Promise<ApiResponse<T>> => {
   try {
-    const idToken = ''; //await getIdToken();
+    let idToken = localStorage.token;
     axiosRequestConfig.headers = {
       ...axiosRequestConfig.headers,
       Authorization: `Bearer ${idToken}`,
@@ -49,13 +49,31 @@ export const getAnonymousWebToken = async () => {
   });
 };
 
-export const searchResources = async (query: string, token: string) => {
-  return await apiRequest({
+export const searchResources = async (query: string) => {
+  return await authenticatedApiRequest({
     url: encodeURI(`${constants.guiBackendResourcesSearchPath}/resources/search?query=${query}`),
     method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  });
+};
+
+export const getUserData = async () => {
+  return await authenticatedApiRequest({
+    url: encodeURI(`${constants.guiBackendUsersPath}/users/authorized`),
+    method: 'GET',
+  });
+};
+
+export const getTokenExpiry = async (token: string) => {
+  return await authenticatedApiRequest({
+    url: encodeURI(`${constants.guiBackendAuthPath}/tokens/jwts/${token}/claims`),
+    method: 'GET',
+  });
+};
+
+export const logout = async () => {
+  return await authenticatedApiRequest({
+    url: encodeURI(`${constants.guiBackendLoginPath}/logout`),
+    method: 'GET',
   });
 };
 

@@ -6,6 +6,7 @@ import { IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
+import Logout from './Logout';
 
 const StyledPageHeader = styled.div`
   display: flex;
@@ -21,7 +22,6 @@ const StyledPageHeader = styled.div`
 `;
 
 const StyledBurgerMenu = styled.div`
-  grid-area: menu;
   justify-self: left;
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     display: none;
@@ -39,7 +39,13 @@ const Header: FC = () => {
         </IconButton>
       </StyledBurgerMenu>
       <Logo />
-      {user.id !== '' ? <div>{user.name} </div> : <Login />}
+      {user.id !== '' ? (
+        <div>
+          Logged in as {user.name} <Logout />
+        </div>
+      ) : (
+        <Login />
+      )}
     </StyledPageHeader>
   );
 };

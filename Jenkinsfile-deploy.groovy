@@ -6,8 +6,12 @@ pipeline {
 
     environment {
         LAST_COMMIT_MESSAGE = sh(returnStdout: true, script: 'git log -1')
+        LAST_COMMIT = sh(returnStdout: true, script: 'git rev-parse --verify HEAD')
+        LAST_COMMIT2 = "${LAST_COMMIT}".replaceAll("\n",'')
         AWS_BUILD_HOST = "ec2-54-194-199-152.eu-west-1.compute.amazonaws.com"
         SERVICE_NAME = "dlr-gui-new"
+        VERSION = "${env.BRANCH_NAME}".replaceAll('/', '_').toLowerCase()
+
     }
 
     parameters {
@@ -24,6 +28,7 @@ pipeline {
                 sh "node -v"
                 sh "npm -v"
                 sh 'npm install'
+                println("Running build #${env.BUILD_ID} of job ${env.JOB_NAME}, git branch: ${env.BRANCH_NAME}, release version: ${VERSION} - last commit ${LAST_COMMIT}")
             }
         }
 
@@ -33,6 +38,7 @@ pipeline {
             }
             steps {
                 sh 'npm run build'
+                sh 'sed -i -- "s/%VERSION%/${LAST_COMMIT2}/g" build/index.html'
                 sshagent(['ec2-user-aws-eu-west']) {
                     sh 'ssh  -o StrictHostKeyChecking=no -t ec2-user@${AWS_BUILD_HOST} "mkdir -p ~/${SERVICE_NAME}/"'
                     sh 'scp -p -r ./build ec2-user@${AWS_BUILD_HOST}:/home/ec2-user/${SERVICE_NAME}/'
@@ -41,34 +47,6 @@ pipeline {
             }
         }
 
-    }
-    post {
-        success {
-            script {
-                def previousResult = currentBuild.previousBuild?.result
-                if (previousResult && previousResult != currentBuild.currentResult) {
-                    emailext(
-                            subject: "${currentBuild.fullDisplayName} - Back to normal",
-                            body: "Open: ${env.BUILD_URL}",
-                            attachlog: true,
-                            compresslog: true,
-                            recipientProviders: [[$class: 'CulpritsRecipientProvider']]
-                    )
-                }
-            }
-        }
-        failure {
-            script {
-                def message = "${currentBuild.fullDisplayName} - Failure after ${currentBuild.durationString.replaceFirst(" and counting", "")}"
-                emailext(
-                        subject: "FAILURE: ${currentBuild.fullDisplayName}",
-                        body: "${message}\n\nLast comit message:\n${LAST_COMMIT_MESSAGE}\nOpen: ${env.BUILD_URL}",
-                        attachlog: true,
-                        compresslog: true,
-                        recipientProviders: [[$class: 'CulpritsRecipientProvider']]
-                )
-            }
-        }
     }
 
 }
