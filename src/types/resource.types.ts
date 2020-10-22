@@ -3,20 +3,20 @@
 export interface Resource {
   identifier: string;
   features: ResourceFeatures;
-  subjects: string[];
-  courses: Course[];
-  tags: string[];
-  types: ResourceType[];
-  projects: Project[];
-  publisher: Publisher[];
-  funders: Funder[];
-  geographicalCoverages: any[];
-  observationalUnits: any[];
-  processMethods: any[];
-  creators: Creator[];
-  contributors: Contributor[];
-  accessRead: string[];
-  accessWrite: string[];
+  subjects?: string[];
+  courses?: Course[];
+  tags?: string[];
+  types?: ResourceType[];
+  projects?: Project[];
+  publisher?: Publisher[];
+  funders?: Funder[];
+  geographicalCoverages?: any[];
+  observationalUnits?: any[];
+  processMethods?: any[];
+  creators?: Creator[];
+  contributors?: Contributor[];
+  accessRead?: string[];
+  accessWrite?: string[];
 }
 
 enum ResourceType {
@@ -48,6 +48,7 @@ interface ResourceFeatures {
   dlr_title?: string;
   dlr_title_alternative?: string;
   dlr_type?: string;
+  dlr_thumbnail_url?: string;
 }
 
 interface Course {

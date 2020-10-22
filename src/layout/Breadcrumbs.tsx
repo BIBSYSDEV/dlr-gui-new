@@ -1,10 +1,9 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Link as MuiLink, Breadcrumbs as MuiBreadcrumbs } from '@material-ui/core';
+import { Breadcrumbs as MuiBreadcrumbs, Link as MuiLink } from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 const StyledBreadcrumbs = styled.div`
@@ -17,8 +16,8 @@ const StyledBreadcrumbs = styled.div`
 `;
 
 const Breadcrumbs: FC = () => {
-  const { pathname, state } = useLocation();
-  const { t } = useTranslation('breadcrumbs');
+  const { pathname } = useLocation();
+  const { t } = useTranslation();
   const pathNames = pathname.split('/').filter((x) => x);
 
   return (
@@ -27,12 +26,13 @@ const Breadcrumbs: FC = () => {
         <StyledBreadcrumbs>
           <MuiBreadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
             <MuiLink component={Link} to="/">
-              {t('home')}
+              {t('breadcrumbs.home')}
             </MuiLink>
             {pathNames.map((pathName: string, index: number) => {
-              const isId = pathName.match('[\\d+]');
-              const castedState = state as any;
-              const translatedValue = isId && castedState?.title ? castedState.title : t(pathName);
+              const isId = pathName.match(
+                '[A-Za-z0-9]{8}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{12}'
+              );
+              const translatedValue = isId ? isId : t(`breadcrumbs.${pathName}`);
               const lastBreadcrumb = index === pathNames.length - 1;
               const to = `/${pathNames.slice(0, index + 1).join('/')}`;
               return lastBreadcrumb ? (

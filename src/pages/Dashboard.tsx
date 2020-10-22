@@ -74,7 +74,7 @@ const Dashboard: FC = () => {
             <ListItem
               button
               component="a"
-              href={`/resources/${resource.identifier}`}
+              href={`/resource/${resource.identifier}`}
               key={index}
               alignItems="flex-start">
               <ListItemIcon>

@@ -4,6 +4,7 @@ import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { User } from '../types/user.types';
 import { AuthTokenClaims } from '../types/auth.types';
 import { SearchResult } from '../types/search.types';
+import { Resource } from '../types/resource.types';
 
 setAxiosDefaults();
 
@@ -47,6 +48,42 @@ export const getTokenExpiry = (token: string): Promise<AxiosResponse<AuthTokenCl
 export const logout = () => {
   return authenticatedApiRequest({
     url: encodeURI(`${constants.guiBackendLoginPath}/logout`),
+    method: 'GET',
+  });
+};
+
+export const postResource = (type: string, content: string) => {
+  //TODO: helst kunne poste som JSON
+  const data = `type=${type}&app=learning&content=${content}`;
+  return authenticatedApiRequest({
+    url: encodeURI(`${constants.guiBackendResourcesPath}/resources`),
+    method: 'POST',
+    headers: {},
+    data: data,
+  });
+};
+
+export const postResourceFeature = async (resourceIdentifier: string, feature: string, value: string) => {
+  const encodedValue = encodeURIComponent(value);
+  const data = `value=${encodedValue}&feature=${feature}`;
+  await authenticatedApiRequest({
+    url: encodeURI(`${constants.guiBackendResourcesPath}/resources/${resourceIdentifier}/features`),
+    method: 'POST',
+    headers: {},
+    data: data,
+  });
+};
+
+export const getResource = (identifier: string): Promise<AxiosResponse<Resource>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${constants.guiBackendResourcesPath}/resources/${identifier}`),
+    method: 'GET',
+  });
+};
+
+export const getResourceDefaults = (identifier: string): Promise<AxiosResponse<Resource>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${constants.guiBackendDefaultsPath}/resources/${identifier}`),
     method: 'GET',
   });
 };

@@ -16,7 +16,7 @@ pipeline {
 
     parameters {
         booleanParam(name: 'NPM_Install', defaultValue: true, description: 'npm install')
-        booleanParam(name: 'DLR_dev', defaultValue: false, description: 'AWS Compile and upload')
+        booleanParam(name: 'DLR_dev', defaultValue: true, description: 'AWS Compile and upload')
     }
 
     stages {

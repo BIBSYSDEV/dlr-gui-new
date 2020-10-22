@@ -84,11 +84,8 @@ export default createMuiTheme({
   overrides: {
     MuiAccordion: {
       root: {
-        background: Colors.Panel,
+        border: '3px solid red',
       },
-    },
-    MuiAccordionDetails: {
-      root: { background: Colors.Panel },
     },
     MuiButton: {
       root: {

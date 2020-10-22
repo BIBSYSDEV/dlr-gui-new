@@ -11,19 +11,19 @@ import { Provider } from 'react-redux';
 import { store } from './state/store';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <I18nextProvider i18n={i18n}>
-        <StylesProvider injectFirst>
-          <ThemeProvider theme={mainTheme}>
-            <MUIThemeProvider theme={mainTheme}>
-              <CssBaseline />
-              <App />
-            </MUIThemeProvider>
-          </ThemeProvider>
-        </StylesProvider>
-      </I18nextProvider>
-    </Provider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <Provider store={store}>
+    <I18nextProvider i18n={i18n}>
+      <StylesProvider injectFirst>
+        <ThemeProvider theme={mainTheme}>
+          <MUIThemeProvider theme={mainTheme}>
+            <CssBaseline />
+            <App />
+          </MUIThemeProvider>
+        </ThemeProvider>
+      </StylesProvider>
+    </I18nextProvider>
+  </Provider>,
+  //</React.StrictMode>,
   document.getElementById('root')
 );
