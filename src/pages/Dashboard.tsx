@@ -34,11 +34,11 @@ const Dashboard: FC = () => {
           setSearchResult(response.data);
           setResources(response.data.resourcesAsJson.map((resourceAsString: string) => JSON.parse(resourceAsString)));
         } else {
-          toast.error('API ERROR');
+          toast.error('ERROR');
         }
       })
-      .catch(() => {
-        toast.error('API ERROR');
+      .catch((error) => {
+        toast.error('ERROR' + error.message);
       });
   };
 

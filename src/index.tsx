@@ -9,6 +9,13 @@ import { StylesProvider, ThemeProvider as MUIThemeProvider } from '@material-ui/
 import mainTheme from './themes/mainTheme';
 import { Provider } from 'react-redux';
 import { store } from './state/store';
+import { interceptRequestsOnMock } from './api/mock-interceptor';
+
+import { USE_MOCK_DATA } from './utils/constants';
+
+if (USE_MOCK_DATA) {
+  interceptRequestsOnMock();
+}
 
 ReactDOM.render(
   // <React.StrictMode>
