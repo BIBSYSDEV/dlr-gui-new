@@ -1,16 +1,17 @@
-import React, { ChangeEvent, FC, useState } from 'react';
+import React, { ChangeEvent, FC, FormEvent, useState } from 'react';
 import styled from 'styled-components';
-import { searchResources } from '../api/api';
 import { toast } from 'react-toastify';
 import { Button, List, ListItem, ListItemIcon, ListItemText, TextField, Typography } from '@material-ui/core';
 import ImageIcon from '@material-ui/icons/Image';
+import { searchResources } from '../api/api';
+import { useTranslation } from 'react-i18next';
+import { SearchResult } from '../types/search.types';
+import { Resource } from '../types/resource.types';
 
 const StyledDashboard = styled.div`
-  display: grid;
-  grid-template-areas: 'search-bar' 'other-content';
-  grid-template-rows: auto auto;
-  row-gap: 1rem;
+  display: flex;
   justify-items: center;
+  flex-direction: column;
 `;
 
 const SearchFieldWrapper = styled.div`
@@ -20,24 +21,25 @@ const SearchFieldWrapper = styled.div`
 `;
 
 const Dashboard: FC = () => {
-  const [resultList, setResultList] = useState<any>([]);
-  const [resources, setResources] = useState<any>([]);
+  const [searchResult, setSearchResult] = useState<SearchResult>();
+  const [resources, setResources] = useState<Resource[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const { t } = useTranslation();
 
-  const triggerSearch = () => {
-    searchResources(searchTerm).then((response) => {
-      if (response) {
-        if (response.error) {
-          toast.error('API ERROR');
+  const triggerSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    searchResources(searchTerm)
+      .then((response) => {
+        if (response.data) {
+          setSearchResult(response.data);
+          setResources(response.data.resourcesAsJson.map((resourceAsString: string) => JSON.parse(resourceAsString)));
         } else {
-          let _resources: any[] = [];
-          setResultList(response);
-          // @ts-ignore
-          response.data.resourcesAsJson.map((resource: any) => _resources.push(JSON.parse(resource)));
-          setResources(_resources);
+          toast.error('API ERROR');
         }
-      }
-    });
+      })
+      .catch(() => {
+        toast.error('API ERROR');
+      });
   };
 
   const updateSearchTermValue = (event: ChangeEvent<HTMLInputElement>) => {
@@ -49,22 +51,26 @@ const Dashboard: FC = () => {
       <h1>Search for resources</h1>
 
       <SearchFieldWrapper>
-        <TextField id="standard-basic" onChange={updateSearchTermValue} value={searchTerm} />
-        <Button
-          disabled={!searchTerm && searchTerm.length < 4}
-          color="primary"
-          variant="contained"
-          onClick={triggerSearch}>
-          Search
-        </Button>
+        <form onSubmit={triggerSearch}>
+          <TextField id="standard-basic" onChange={updateSearchTermValue} value={searchTerm} />
+          <Button disabled={!searchTerm && searchTerm.length < 4} color="primary" variant="contained" type="submit">
+            {t('search')}
+          </Button>
+        </form>
       </SearchFieldWrapper>
 
-      <div>{resultList && resultList.data && <span>Treff: {resultList.data.numFound}</span>}</div>
+      <div>
+        {searchResult && (
+          <span>
+            {t('hits')}: {searchResult.numFound}
+          </span>
+        )}
+      </div>
 
       <List>
         {resources &&
           resources.length > 0 &&
-          resources.map((resource: any, index: number) => (
+          resources.map((resource: Resource, index: number) => (
             <ListItem
               button
               component="a"
@@ -81,7 +87,11 @@ const Dashboard: FC = () => {
                     <Typography style={{ display: 'block' }} component="span" variant="body2" color="textPrimary">
                       {resource.features.dlr_submitter_email}
                     </Typography>
-                    {resource.features.dlr_identifier_handle}
+                    {resource.features.dlr_identifier_handle && (
+                      <span>
+                        {t('handle')}: {resource.features.dlr_identifier_handle}
+                      </span>
+                    )}
                   </React.Fragment>
                 }
               />

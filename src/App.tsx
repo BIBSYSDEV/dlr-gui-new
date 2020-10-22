@@ -9,9 +9,9 @@ import ResourcePage from './pages/ResourcePage';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import LoginRedirectPage from './pages/LoginRedirectPage';
-import { getAnonymousWebToken, getUserData } from './api/api';
 import { useDispatch } from 'react-redux';
 import { setUser } from './state/userSlice';
+import { getAnonymousWebToken, getUserData } from './api/api';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -40,22 +40,26 @@ const App: FC = () => {
 
   useEffect(() => {
     if (!localStorage.token || isTokenExpired()) {
-      getAnonymousWebToken().then((response) => {
-        if (response) {
-          if (response.error) {
-            toast.error('API ERROR');
-          } else {
-            localStorage.token = response.data as string;
+      getAnonymousWebToken()
+        .then((response) => {
+          if (response.data) {
+            localStorage.token = response.data;
             localStorage.anonymousToken = true;
+          } else {
+            toast.error('API ERROR');
           }
-        }
-      });
+        })
+        .catch(() => {
+          toast.error('API ERROR');
+        });
     } else if (localStorage.anonymousToken !== 'true') {
-      getUserData().then((response) => {
-        if (response && !response.error) {
+      getUserData()
+        .then((response) => {
           dispatch(setUser(response.data));
-        }
-      });
+        })
+        .catch((error) => {
+          toast.error(error.message);
+        });
     }
   }, [dispatch]);
 
