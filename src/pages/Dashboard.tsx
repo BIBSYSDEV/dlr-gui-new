@@ -61,7 +61,7 @@ const Dashboard: FC = () => {
 
   return (
     <StyledDashboard>
-      <h1>Search for resources</h1>
+      <h1>Search for resources - TEST</h1>
 
       <SearchFieldWrapper>
         <TextField id="standard-basic" onChange={updateSearchTermValue} value={searchTerm} />
