@@ -1,8 +1,30 @@
 {
-  "login": "Logg inn",
+  "breadcrumbs": {
+    "home": "Home",
+    "privacy-policy": "Privacy policy",
+    "registration": "Registration",
+    "resource": "Resource"
+  },
+  "common": {
+    "save": "Lagre",
+    "submit": "OK"
+  },
   "delivered_by": "Delivered by",
+  "error": {
+    "404_page": "Got lost?"
+  },
+  "login": "Logg inn",
   "privacy_policy": {
-    "description": "description",
+    "description": "Description",
     "heading": "Privacy policy"
+  },
+  "resource": {
+    "description": "Description",
+    "edit_resource": "Edit resource",
+    "link_to_resource": "Link to resource",
+    "new_registration": "New registration",
+    "start_with_link_to_resource": "Start registration with a link",
+    "submit_link": "Start registration",
+    "title": "Title"
   }
 }

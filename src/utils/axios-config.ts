@@ -6,6 +6,6 @@ export const setAxiosDefaults = () => {
   Axios.defaults.headers.common = {
     Accept: 'application/json',
   };
-  Axios.defaults.headers.post['Content-Type'] = 'application/json';
-  Axios.defaults.headers.put['Content-Type'] = 'application/json';
+  Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+  Axios.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 };

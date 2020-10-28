@@ -1,0 +1,92 @@
+{
+  "identifier": "f6746876-ae8b-4179-95af-b7a150c7de40",
+  "features": {
+    "dlr_access": "open",
+    "dlr_app": "learning",
+    "dlr_content": "Forslag-til-laringsutbyttebeskrivelser-kunnskapsbasert-praksis-desember-2017.pdf",
+    "dlr_content_type": "file",
+    "dlr_description": "Forslag til laringsutbyttebeskrivelser kunnskapsbasert praksis desember 2017",
+    "dlr_identifier": "f6746876-ae8b-4179-95af-b7a150c7de40",
+    "dlr_identifier_handle": "https://hdl.handle.net/11250/2676502",
+    "dlr_resource": "true",
+    "dlr_resource_learning": "true",
+    "dlr_rights_license_name": "CC BY-NC-ND 4.0",
+    "dlr_status_published": "true",
+    "dlr_storage_id": "hvl",
+    "dlr_subject_nsi_id": "800",
+    "dlr_subject_nsi_name": "Helsefag",
+    "dlr_submitter_email": "nro@hvl.no",
+    "dlr_time_created": "2020-09-05T17:05:58.164Z",
+    "dlr_time_published": "2020-09-05T17:17:33.389Z",
+    "dlr_title": "Forslag til læringsutbyttebeskrivelser kunnskapsbasert praksis desember 2017",
+    "dlr_title_alternative": "Undervisning i kunnskapsbasert praksis - læringsutbyttebeskrivelser og ressurser",
+    "dlr_type": "Text"
+  },
+  "subjects": [
+    "Helsefag",
+    "Medisinske Fag"
+  ],
+  "courses": [],
+  "tags": [
+    "Kunnskapsbasert praksis",
+    "Læringsutbyttebeskrivelser",
+    "Studenter"
+  ],
+  "types": [
+    "learning"
+  ],
+  "projects": [],
+  "funders": [],
+  "geographicalCoverages": [],
+  "observationalUnits": [],
+  "processMethods": [],
+  "creators": [
+    {
+      "features": {
+        "dlr_creator_identifier": "ba040c48-3e7a-48ce-a2b0-85d52269cf3f",
+        "dlr_creator_name": "Nina Rydland Olsen",
+        "dlr_creator_order": "1",
+        "dlr_creator_time_created": "2020-09-05T17:06:03.282Z"
+      }
+    },
+    {
+      "features": {
+        "dlr_creator_identifier": "cff60185-dc8a-4118-81bb-bb3e0e43c62c",
+        "dlr_creator_name": "Anne Kristin Snibsøer",
+        "dlr_creator_order": "2",
+        "dlr_creator_time_created": "2020-09-05T17:40:06.777Z"
+      }
+    },
+    {
+      "features": {
+        "dlr_creator_identifier": "f9b0259b-e972-4d1c-9e5a-6a141aa7b8d5",
+        "dlr_creator_name": "Susanne Grødem Johnson",
+        "dlr_creator_order": "3",
+        "dlr_creator_time_created": "2020-09-05T17:40:28.389Z"
+      }
+    },
+    {
+      "features": {
+        "dlr_creator_identifier": "90a96b2d-a115-4050-969c-7f5247a617e8",
+        "dlr_creator_name": "Kristine Berg Titlestad",
+        "dlr_creator_order": "4",
+        "dlr_creator_time_created": "2020-09-05T17:15:31.267Z"
+      }
+    }
+  ],
+  "contributors": [
+    {
+      "features": {
+        "dlr_contributor_identifier": "548f132d-58cf-4bed-afe6-81dd506b7602",
+        "dlr_contributor_name": "hvl",
+        "dlr_contributor_time_created": "2020-09-05T17:06:03.369Z",
+        "dlr_contributor_type": "HostingInstitution"
+      }
+    }
+  ],
+  "accessRead": [],
+  "accessWrite": [
+    "nro@hvl.no"
+  ]
+}
+

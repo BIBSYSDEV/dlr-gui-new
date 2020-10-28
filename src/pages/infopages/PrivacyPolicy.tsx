@@ -12,7 +12,7 @@ const StyledHeading = styled(Heading)`
 `;
 
 const PrivacyPolicy: FC = () => {
-  const { t } = useTranslation('infopages');
+  const { t } = useTranslation();
 
   return (
     <StyledInformationWrapper data-testid="privacy-policy" aria-label={t('privacy_policy.heading')}>

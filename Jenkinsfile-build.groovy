@@ -21,34 +21,5 @@ pipeline {
             }
         }
     }
-    post {
-        success {
-            script {
-                def previousResult = currentBuild.previousBuild?.result
-                if (previousResult && previousResult != currentBuild.currentResult) {
-                    emailext(
-                            subject: "${currentBuild.fullDisplayName} - Back to normal",
-                            body: "Open: ${env.BUILD_URL}",
-                            attachlog: true,
-                            compresslog: true,
-                            recipientProviders: [[$class: 'CulpritsRecipientProvider']]
-                    )
-                }
-            }
-        }
-        failure {
-            script {
-                def message = "${currentBuild.fullDisplayName} - Failure after ${currentBuild.durationString.replaceFirst(" and counting", "")}"
-                emailext(
-                        subject: "FAILURE: ${currentBuild.fullDisplayName}",
-                        body: "${message}\n\nLast comit message:\n${LAST_COMMIT_MESSAGE}\nOpen: ${env.BUILD_URL}",
-                        attachlog: true,
-                        compresslog: true,
-                        recipientProviders: [[$class: 'CulpritsRecipientProvider']]
-                )
-
-            }
-        }
-    }
 
 }

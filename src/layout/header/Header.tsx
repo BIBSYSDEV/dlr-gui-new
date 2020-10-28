@@ -2,10 +2,14 @@ import React, { FC } from 'react';
 import Login from './Login';
 import Logo from './Logo';
 import styled from 'styled-components';
-import { IconButton } from '@material-ui/core';
+import { Button, IconButton, Typography } from '@material-ui/core';
+import { Link as RouterLink } from 'react-router-dom';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
+import Logout from './Logout';
+import { useTranslation } from 'react-i18next';
+import AddIcon from '@material-ui/icons/Add';
 
 const StyledPageHeader = styled.div`
   display: flex;
@@ -21,7 +25,6 @@ const StyledPageHeader = styled.div`
 `;
 
 const StyledBurgerMenu = styled.div`
-  grid-area: menu;
   justify-self: left;
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     display: none;
@@ -30,6 +33,7 @@ const StyledBurgerMenu = styled.div`
 
 const Header: FC = () => {
   const user = useSelector((state: RootState) => state.user);
+  const { t } = useTranslation();
 
   return (
     <StyledPageHeader>
@@ -39,7 +43,23 @@ const Header: FC = () => {
         </IconButton>
       </StyledBurgerMenu>
       <Logo />
-      {user.id !== '' ? <div>{user.name} </div> : <Login />}
+      {user.id && (
+        <Button
+          color="primary"
+          component={RouterLink}
+          data-testid="new-publication"
+          to="/registration"
+          startIcon={<AddIcon />}>
+          <Typography variant="button">{t('resource.new_registration')}</Typography>
+        </Button>
+      )}
+      {user.id ? (
+        <div>
+          Logged in as {user.name} <Logout />
+        </div>
+      ) : (
+        <Login />
+      )}
     </StyledPageHeader>
   );
 };

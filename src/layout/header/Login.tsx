@@ -1,29 +1,24 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
 import { Button } from '@material-ui/core';
-import { setUser } from '../../state/userSlice';
-import { useDispatch } from 'react-redux';
-
-const StyledLoginComponent = styled.div`
-  grid-area: auth;
-  justify-self: right;
-`;
+import constants, { API_URL } from '../../utils/constants';
 
 const Login: FC = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
   function handleLogin() {
-    dispatch(setUser({ id: '123', name: 'test2@unit.no' }));
+    let currentUrl = encodeURIComponent(
+      `${window.location.protocol}//${window.location.hostname}${
+        window.location.port ? ':' + window.location.port : ''
+      }`
+    );
+    window.location.href = `${API_URL}${constants.guiBackendLoginPath}/feideLogin?target=${currentUrl}/loginRedirect`;
   }
 
   return (
-    <StyledLoginComponent>
-      <Button color="primary" variant="contained" data-testid="menu-login-button" onClick={handleLogin}>
-        {t('login')}
-      </Button>
-    </StyledLoginComponent>
+    <Button color="primary" variant="contained" data-testid="menu-login-button" onClick={handleLogin}>
+      {t('login')}
+    </Button>
   );
 };
 

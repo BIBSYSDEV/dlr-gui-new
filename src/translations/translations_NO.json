@@ -1,8 +1,30 @@
 {
-  "login": "Log in",
+  "breadcrumbs": {
+    "home": "Hjem",
+    "privacy-policy": "Personvernerklæring",
+    "registration": "Registrering",
+    "resource": "Ressurs"
+  },
+  "common": {
+    "save": "Lagre",
+    "submit": "OK"
+  },
   "delivered_by": "Delivered by",
+  "error": {
+    "404_page": "Gått deg vill?"
+  },
+  "login": "Log in",
   "privacy_policy": {
-    "description": "beskrivelse",
+    "description": "Beskrivelse",
     "heading": "Personvernerklæring"
+  },
+  "resource": {
+    "description": "Beskrivelse",
+    "edit_resource": "Rediger ressurs",
+    "link_to_resource": "Lenke til ressurs",
+    "new_registration": "Ny registering",
+    "start_with_link_to_resource": "Start registrering med en lenke",
+    "submit_link": "Start registrering",
+    "title": "Tittel"
   }
 }
