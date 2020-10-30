@@ -17,7 +17,7 @@ const Login: FC = () => {
 
   return (
     <Button color="primary" variant="contained" data-testid="menu-login-button" onClick={handleLogin}>
-      {t('login')}
+      {t('common.login')}
     </Button>
   );
 };

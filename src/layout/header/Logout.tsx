@@ -18,7 +18,7 @@ const Logout: FC = () => {
 
   return (
     <Button color="primary" variant="contained" data-testid="menu-login-button" onClick={handleLogout}>
-      {t('logout')}
+      {t('common.logout')}
     </Button>
   );
 };

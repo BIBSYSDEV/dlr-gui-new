@@ -1,14 +1,17 @@
 import React, { FC, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { getTokenExpiry } from '../api/api';
+import { getTokenExpiry, getUserData } from '../api/api';
 import { toast } from 'react-toastify';
+import { setUser } from '../state/userSlice';
+import { useDispatch } from 'react-redux';
 
 const LoginRedirectPage: FC = () => {
   let query = new URLSearchParams(useLocation().search);
+  const dispatch = useDispatch();
   const history = useHistory();
 
   useEffect(() => {
-    let token = query.get('token');
+    let token: string = query.get('token') + '';
     if (token) {
       localStorage.setItem('token', token);
       localStorage.setItem('anonymousToken', 'false');
@@ -16,14 +19,17 @@ const LoginRedirectPage: FC = () => {
         .then((response) => {
           if (response.data.exp) {
             localStorage.tokenExpiry = response.data.exp;
+            getUserData().then((response) => {
+              dispatch(setUser(response.data));
+            });
+            history.push('/');
           }
-          history.push('/');
         })
-        .catch(() => {
-          toast.error('API ERROR');
+        .catch((error) => {
+          toast.error('ERROR: ' + error.message);
         });
     }
-  }, [history, query]);
+  }, [history, query, dispatch]);
 
   return <div />;
 };

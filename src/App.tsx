@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Footer from './layout/Footer';
 import Header from './layout/header/Header';
@@ -11,6 +11,7 @@ import { setUser } from './state/userSlice';
 import { getAnonymousWebToken, getUserData } from './api/api';
 import AppRoutes from './AppRoutes';
 import { RootState } from './state/rootReducer';
+import { CircularProgress } from '@material-ui/core';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -30,62 +31,86 @@ const StyledContent = styled.div`
   word-break: break-all;
 `;
 
-const isTokenValid = () => {
+const StyledProgressWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
+`;
+
+const isTokenExpired = () => {
   if (localStorage.tokenExpiry) {
-    return parseInt(localStorage.tokenExpiry, 10) > ((Date.now() / 1000) | 0) + 3600;
+    return parseInt(localStorage.tokenExpiry, 10) < ((Date.now() / 1000) | 0) + 3600;
   } else {
-    return false;
+    return true;
   }
+};
+
+const isTokenAnonymous = () => {
+  if (localStorage.anonymousToken) {
+    return localStorage.anonymousToken === true;
+  } else return false;
 };
 
 const App: FC = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
+  const [isLoadingUser, setIsLoadingUser] = useState<boolean>(false); //TODO: put in redux-store (loginredirect-page should use this as well)
 
   useEffect(() => {
-    // console.log(user);
-    // console.log('HAS_EXPIRY_DATE?', localStorage.tokenExpiry);
-    // console.log('IS_EXPIRED?', parseInt(localStorage.tokenExpiry, 10) < ((Date.now() / 1000) | 0) + 3600);
-    // console.log('IS_TOKEN_VALID?', isTokenValid());
-    if (user.id === '') {
-      if (!localStorage.token || !isTokenValid()) {
+    if (localStorage.token && !isTokenAnonymous() && !isTokenExpired() && !user.id) {
+      setIsLoadingUser(true);
+      getUserData()
+        .then((response) => {
+          dispatch(setUser(response.data));
+        })
+        .catch((error) => {
+          toast.error(error.message);
+        })
+        .finally(() => setIsLoadingUser(false));
+    }
+  }, [dispatch, user.id]);
+
+  useEffect(() => {
+    //TODO: better ways to achieve this ?
+    if (!window.location.href.includes('/loginRedirect?token')) {
+      if (!localStorage.token || isTokenExpired()) {
         getAnonymousWebToken()
           .then((response) => {
             if (response.data) {
-              //console.log('setting new anonymous token');
               localStorage.token = response.data;
               localStorage.anonymousToken = true;
             } else {
-              toast.error('API ERROR');
+              toast.error('API error');
             }
-          })
-          .catch(() => {
-            toast.error('API ERROR');
-          });
-      } else if (localStorage.anonymousToken !== 'true') {
-        //console.log('is logged in');
-        getUserData()
-          .then((response) => {
-            dispatch(setUser(response.data));
           })
           .catch((error) => {
             toast.error(error.message);
           });
       }
     }
-  }, [dispatch, user]);
+  }, []);
 
   return (
     <BrowserRouter>
-      <StyledApp>
-        <ToastContainer autoClose={3000} hideProgressBar />
-        <Header />
-        <Breadcrumbs />
-        <StyledContent>
-          <AppRoutes />
-        </StyledContent>
-        <Footer />
-      </StyledApp>
+      {!isLoadingUser ? (
+        <StyledApp>
+          <ToastContainer autoClose={3000} hideProgressBar />
+          <Header />
+          <Breadcrumbs />
+          <StyledContent>
+            <AppRoutes />
+          </StyledContent>
+          <Footer />
+        </StyledApp>
+      ) : (
+        <StyledProgressWrapper>
+          <CircularProgress />
+        </StyledProgressWrapper>
+      )}
     </BrowserRouter>
   );
 };
