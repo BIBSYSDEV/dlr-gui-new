@@ -1,5 +1,3 @@
-import { Resource } from './resource.types';
-
 export interface SearchResult {
   offset: number;
   numFound: number;

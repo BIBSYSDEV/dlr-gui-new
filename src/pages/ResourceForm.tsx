@@ -2,21 +2,23 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../components/PageHeader';
-import { CircularProgress, TextField } from '@material-ui/core';
+import { Button, CircularProgress, TextField } from '@material-ui/core';
 import { getResource, getResourceDefaults, postResourceFeature } from '../api/api';
-import { Resource } from '../types/resource.types';
+import { emptyResource, Resource } from '../types/resource.types';
 import deepmerge from 'deepmerge';
+import { ErrorMessage, Field, FieldProps, Form, Formik, FormikState } from 'formik';
+import * as Yup from 'yup';
 
 const StyledResource = styled.div`
   width: 100%;
 `;
 
-const StyledForm = styled.form`
+const StyledForm = styled(Form)`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  width: 20rem;
+  width: 30rem;
   margin: auto;
+  gap: 1rem;
   align-items: center;
   justify-items: center;
 `;
@@ -27,9 +29,13 @@ interface ResourceFormProps {
 
 const ResourceForm: FC<ResourceFormProps> = ({ identifier }) => {
   const { t } = useTranslation();
-  const [resource, setResource] = useState<Resource>();
+  const [resource, setResource] = useState<Resource>(emptyResource);
   const [isLoadingResource, setIsLoadingResource] = useState<boolean>(false);
   const [allChangesSaved, setAllChangesSaved] = useState<boolean>(false);
+
+  interface ResourceFormValues {
+    resource: Resource;
+  }
 
   const saveCalculatedFields = (_resource: Resource) => {
     if (_resource.features.dlr_title) {
@@ -58,13 +64,27 @@ const ResourceForm: FC<ResourceFormProps> = ({ identifier }) => {
     }
   }, [identifier]);
 
-  // const saveField = async (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-  //   if (resource) {
-  //     console.log(event.target.value);
-  //     await postResourceFeature(resource.identifier, event.target.name, event.target.value);
-  //     setAllChangesSaved(true);
-  //   }
-  // };
+  const resourceValidationSchema = Yup.object().shape({
+    resource: Yup.object().shape({
+      features: Yup.object().shape({
+        dlr_title: Yup.string().required(t('feedback.required_field')),
+      }),
+    }),
+  });
+
+  const saveField = async (
+    event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
+    resetForm: any,
+    currentValues: ResourceFormValues
+  ) => {
+    setAllChangesSaved(false);
+    if (resource) {
+      const name = '' + event.target.name.split('.').pop();
+      await postResourceFeature(resource.identifier, name, event.target.value);
+      setAllChangesSaved(true);
+      resetForm({ values: currentValues });
+    }
+  };
 
   return (
     <>
@@ -74,36 +94,62 @@ const ResourceForm: FC<ResourceFormProps> = ({ identifier }) => {
       ) : (
         <StyledResource>
           {resource && (
-            <StyledForm>
-              {resource?.features.dlr_thumbnail_url && (
-                <img alt="thumbnail" style={{ maxWidth: '300px' }} src={resource?.features.dlr_thumbnail_url} />
+            <Formik
+              initialValues={{
+                resource: resource,
+              }}
+              validateOnChange
+              validationSchema={resourceValidationSchema}
+              onSubmit={(values) => {
+                alert(JSON.stringify(values, null, 2));
+              }}>
+              {({ dirty, values, handleBlur, resetForm, touched, initialTouched }) => (
+                <StyledForm>
+                  {resource.features.dlr_thumbnail_url && (
+                    <img alt="thumbnail" style={{ maxWidth: '300px' }} src={resource.features.dlr_thumbnail_url} />
+                  )}
+                  <Field name="resource.features.dlr_title">
+                    {({ field, meta: { touched, error } }: FieldProps) => (
+                      <TextField
+                        {...field}
+                        variant="filled"
+                        fullWidth
+                        label={t('resource.title')}
+                        error={touched && !!error}
+                        helperText={<ErrorMessage name={field.name} />}
+                        onBlur={(event) => {
+                          handleBlur(event);
+                          !error && saveField(event, resetForm, values);
+                        }}
+                      />
+                    )}
+                  </Field>
+                  <Field name="resource.features.dlr_description">
+                    {({ field, meta: { error } }: FieldProps) => (
+                      <TextField
+                        {...field}
+                        variant="filled"
+                        fullWidth
+                        multiline
+                        rows="4"
+                        label={t('resource.description')}
+                        onBlur={(event) => {
+                          handleBlur(event);
+                          !error && saveField(event, resetForm, values);
+                        }}
+                      />
+                    )}
+                  </Field>
+                  <Button variant="contained" color="primary" type="submit">
+                    Show resource object
+                  </Button>
+                  <div>
+                    {!allChangesSaved && <CircularProgress size="1rem" />}
+                    {allChangesSaved && !dirty && <span>{t('common.all_changes_saved')}</span>}
+                  </div>
+                </StyledForm>
               )}
-              <TextField
-                // onBlur={saveField} //TODO: use formik
-                fullWidth
-                disabled
-                label={t('resource.title')}
-                variant="filled"
-                value={resource?.features.dlr_title}
-              />
-              <TextField
-                fullWidth
-                disabled
-                label={t('resource.description')}
-                variant="filled"
-                // onBlur={saveField} //TODO: use formik
-                value={resource?.features.dlr_description}
-              />
-              <TextField
-                variant="filled"
-                fullWidth
-                disabled
-                // onBlur={saveField} //TODO: use formik
-                label={t('resource.submitter')}
-                value={resource?.features.dlr_submitter_email}
-              />
-              <div>{allChangesSaved && <span>Form saved</span>}</div>
-            </StyledForm>
+            </Formik>
           )}
         </StyledResource>
       )}

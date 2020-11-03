@@ -6,6 +6,7 @@
     "resource": "Resource"
   },
   "common": {
+    "all_changes_saved": "All changes saved",
     "login": "Login",
     "logout": "Logout",
     "save": "Save"
@@ -13,6 +14,9 @@
   "delivered_by": "Delivered by",
   "error": {
     "404_page": "Got lost? (404-page)"
+  },
+  "feedback": {
+    "required_field": "Required field"
   },
   "privacy_policy": {
     "description": "Description",
@@ -25,6 +29,7 @@
     "new_registration": "New registration",
     "start_with_link_to_resource": "Start registration with a link",
     "submit_link": "Start registration",
+    "submitter_email": "Submitter email",
     "title": "Title"
   }
 }

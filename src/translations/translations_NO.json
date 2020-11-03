@@ -6,6 +6,7 @@
     "resource": "Ressurs"
   },
   "common": {
+    "all_changes_saved": "Alle endringer er lagret",
     "login": "Logg inn",
     "logout": "Logg ut",
     "save": "Lagre"
@@ -13,6 +14,9 @@
   "delivered_by": "Levert av",
   "error": {
     "404_page": "Gått deg vill? (404-page)"
+  },
+  "feedback": {
+    "required_field": "Påkrevd felt"
   },
   "privacy_policy": {
     "description": "Beskrivelse",
@@ -25,6 +29,7 @@
     "new_registration": "Ny registering",
     "start_with_link_to_resource": "Start registrering med en lenke",
     "submit_link": "Start registrering",
+    "submitter_email": "Registrators epost",
     "title": "Tittel"
   }
 }

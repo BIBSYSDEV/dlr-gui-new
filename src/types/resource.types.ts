@@ -19,6 +19,11 @@ export interface Resource {
   accessWrite?: string[];
 }
 
+export const emptyResource: Resource = {
+  identifier: '',
+  features: {},
+};
+
 enum ResourceType {
   RESEARCH = 'research',
   LEARNING = 'learning',
