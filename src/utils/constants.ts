@@ -9,7 +9,7 @@ export enum StatusCode {
   CONFLICT = 409,
 }
 
-export default {
+export const API_PATHS = {
   guiBackendLoginPath: '/dlr-gui-backend-login/v1',
   guiBackendUserAuthorizationsPath: '/dlr-gui-backend-user-authorizations/v1',
   guiBackendUsersPath: '/dlr-gui-backend-users/v1',
