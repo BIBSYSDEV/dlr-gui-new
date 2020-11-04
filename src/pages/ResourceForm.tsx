@@ -2,12 +2,13 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../components/PageHeader';
-import { Button, CircularProgress, TextField } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
 import { getResource, getResourceDefaults, postResourceFeature } from '../api/api';
 import { emptyResource, Resource } from '../types/resource.types';
 import deepmerge from 'deepmerge';
-import { ErrorMessage, Field, FieldProps, Form, Formik, FormikState } from 'formik';
+import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import * as Yup from 'yup';
+import DescriptionFields from './DescriptionFields';
 
 const StyledResource = styled.div`
   width: 100%;
@@ -103,49 +104,16 @@ const ResourceForm: FC<ResourceFormProps> = ({ identifier }) => {
               onSubmit={(values) => {
                 alert(JSON.stringify(values, null, 2));
               }}>
-              {({ dirty, values, handleBlur, resetForm, touched, initialTouched }) => (
+              {(formikProps: FormikProps<FormikValues>) => (
                 <StyledForm>
-                  {resource.features.dlr_thumbnail_url && (
-                    <img alt="thumbnail" style={{ maxWidth: '300px' }} src={resource.features.dlr_thumbnail_url} />
-                  )}
-                  <Field name="resource.features.dlr_title">
-                    {({ field, meta: { touched, error } }: FieldProps) => (
-                      <TextField
-                        {...field}
-                        variant="filled"
-                        fullWidth
-                        label={t('resource.title')}
-                        error={touched && !!error}
-                        helperText={<ErrorMessage name={field.name} />}
-                        onBlur={(event) => {
-                          handleBlur(event);
-                          !error && saveField(event, resetForm, values);
-                        }}
-                      />
-                    )}
-                  </Field>
-                  <Field name="resource.features.dlr_description">
-                    {({ field, meta: { error } }: FieldProps) => (
-                      <TextField
-                        {...field}
-                        variant="filled"
-                        fullWidth
-                        multiline
-                        rows="4"
-                        label={t('resource.description')}
-                        onBlur={(event) => {
-                          handleBlur(event);
-                          !error && saveField(event, resetForm, values);
-                        }}
-                      />
-                    )}
-                  </Field>
+                  <DescriptionFields resource={resource} formikProps={formikProps} saveField={saveField} />
+
                   <Button variant="contained" color="primary" type="submit">
                     Show resource object
                   </Button>
                   <div>
                     {!allChangesSaved && <CircularProgress size="1rem" />}
-                    {allChangesSaved && !dirty && <span>{t('common.all_changes_saved')}</span>}
+                    {allChangesSaved && !formikProps.dirty && <span>{t('common.all_changes_saved')}</span>}
                   </div>
                 </StyledForm>
               )}
