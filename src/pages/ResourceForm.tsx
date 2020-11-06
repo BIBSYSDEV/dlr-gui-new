@@ -49,16 +49,18 @@ export enum ResourceFormSteps {
   Preview = 4,
 }
 
-const getSteps = () => {
-  return ['Description', 'Contributors', 'Files', 'Access and licence', 'Preview'];
-};
-
 const ResourceForm: FC<ResourceFormProps> = ({ identifier }) => {
   const { t } = useTranslation();
   const [resource, setResource] = useState<Resource>(emptyResource);
   const [isLoadingResource, setIsLoadingResource] = useState<boolean>(false);
   const [allChangesSaved, setAllChangesSaved] = useState<boolean>(false);
-  const steps = getSteps();
+  const steps = [
+    t('resource.form_steps.description'),
+    t('resource.form_steps.contributors'),
+    t('resource.form_steps.files'),
+    t('resource.form_steps.access_and_licence'),
+    t('resource.form_steps.preview'),
+  ];
   const [activeStep, setActiveStep] = useState<ResourceFormSteps>(ResourceFormSteps.Description);
 
   interface ResourceFormValues {
@@ -186,10 +188,10 @@ const ResourceForm: FC<ResourceFormProps> = ({ identifier }) => {
                     </div>
                     <div>
                       <Button disabled={activeStep === 0} onClick={handleBack}>
-                        Back
+                        {t('common.back')}
                       </Button>
                       <Button variant="contained" color="primary" onClick={handleNext}>
-                        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                        {activeStep === steps.length - 1 ? t('common.finish') : t('common.next')}
                       </Button>
                     </div>
                   </StyledButtonWrapper>
