@@ -6,12 +6,12 @@ import { setUser } from '../state/userSlice';
 import { useDispatch } from 'react-redux';
 
 const LoginRedirectPage: FC = () => {
-  let query = new URLSearchParams(useLocation().search);
+  const query = new URLSearchParams(useLocation().search);
   const dispatch = useDispatch();
   const history = useHistory();
 
   useEffect(() => {
-    let token: string = query.get('token') + '';
+    const token: string = query.get('token') + '';
     if (token) {
       localStorage.setItem('token', token);
       localStorage.setItem('anonymousToken', 'false');
