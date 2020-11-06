@@ -9,7 +9,7 @@ import { Resource } from '../types/resource.types';
 setAxiosDefaults();
 
 export const authenticatedApiRequest = (axiosRequestConfig: AxiosRequestConfig) => {
-  let idToken = localStorage.token;
+  const idToken = localStorage.token;
   axiosRequestConfig.headers = {
     ...axiosRequestConfig.headers,
     Authorization: `Bearer ${idToken}`,

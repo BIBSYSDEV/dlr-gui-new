@@ -7,7 +7,7 @@ const Login: FC = () => {
   const { t } = useTranslation();
 
   function handleLogin() {
-    let currentUrl = encodeURIComponent(
+    const currentUrl = encodeURIComponent(
       `${window.location.protocol}//${window.location.hostname}${
         window.location.port ? ':' + window.location.port : ''
       }`
