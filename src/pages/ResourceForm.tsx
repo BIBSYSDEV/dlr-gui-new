@@ -140,7 +140,9 @@ const ResourceForm: FC<ResourceFormProps> = ({ identifier }) => {
               }}
               validateOnChange
               validationSchema={resourceValidationSchema}
-              onSubmit={() => {}}>
+              onSubmit={() => {
+                /*dont use. But cannot have empty onsubmit*/
+              }}>
               {(formikProps: FormikProps<FormikValues>) => (
                 <StyledForm>
                   <Stepper style={{ width: '100%' }} activeStep={activeStep} nonLinear alternativeLabel>
