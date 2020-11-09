@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@material-ui/core';
-import constants, { API_URL } from '../../utils/constants';
+import { API_URL, API_PATHS } from '../../utils/constants';
 
 const Login: FC = () => {
   const { t } = useTranslation();
@@ -12,7 +12,7 @@ const Login: FC = () => {
         window.location.port ? ':' + window.location.port : ''
       }`
     );
-    window.location.href = `${API_URL}${constants.guiBackendLoginPath}/feideLogin?target=${currentUrl}/loginRedirect`;
+    window.location.href = `${API_URL}${API_PATHS.guiBackendLoginPath}/feideLogin?target=${currentUrl}/loginRedirect`;
   }
 
   return (
