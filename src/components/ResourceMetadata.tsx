@@ -11,7 +11,7 @@ interface MetadataProps {
   metadata: Metadata;
 }
 
-const ResourceMetadata: FC<MetadataProps> = (props) => {
+const ResourceMetadata: FC<any> = (props: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
     if (props != null) {
@@ -37,13 +37,13 @@ const ResourceMetadata: FC<MetadataProps> = (props) => {
   const classes = useStyles();
 
   const getTags = () => {
-    if (props.metadata.tags == null) {
+    if (props.tags == null) {
       return <p>Ingen tags</p>;
     } else {
       return (
         <>
           <h5>Tags:</h5>
-          {props.metadata.tags.map((tag, i) => {
+          {props.tags.map((tag: string, i: number) => {
             return (
               <span>
                 <Chip key={i} color="primary" label={tag}></Chip>{' '}
@@ -56,13 +56,13 @@ const ResourceMetadata: FC<MetadataProps> = (props) => {
   };
 
   const getKategori = () => {
-    if (props.metadata.kategori == null) {
+    if (props.kategori == null) {
       return <p>Ingen kategorier</p>;
     } else {
       return (
         <>
           <h5>Kategorier:</h5>
-          {props.metadata.kategori.map((kategori, i) => {
+          {props.kategori.map((kategori: string, i: number) => {
             return (
               <span>
                 <Chip color="primary" key={i} label={kategori}></Chip>{' '}
@@ -79,7 +79,7 @@ const ResourceMetadata: FC<MetadataProps> = (props) => {
       {isLoading ? (
         <Card className={classes.root}>
           <Typography className={classes.pos} color="textSecondary">
-            <h5>Type: {props.metadata.type}</h5>
+            <h5>Type: {props.type}</h5>
           </Typography>
           <Typography className={classes.listings} component={'p'} color="textSecondary">
             {getKategori()}

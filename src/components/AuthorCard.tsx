@@ -11,7 +11,7 @@ interface AuthCardProps {
   author: Author;
 }
 
-const AuthorCard: FC<AuthCardProps> = (props) => {
+const AuthorCard: FC<any> = (props: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
     if (props != null) {
@@ -39,14 +39,14 @@ const AuthorCard: FC<AuthCardProps> = (props) => {
     <>
       {isLoading ? (
         <Card className={classes.root}>
-          <Typography className={classes.title} gutterBottom>
-            <h2>Av: {props.author.name}</h2>
+          <Typography className={classes.title} component={'div'} gutterBottom>
+            <h2> Av: {props.name} </h2>
           </Typography>
-          <Typography className={classes.pos} color="textSecondary">
-            <h5>Publisert: {props.author.date}</h5>
+          <Typography className={classes.pos} component={'div'} color="textSecondary">
+            <h5> Publisert: {props.date} </h5>
           </Typography>
-          <Typography className={classes.pos} color="textSecondary">
-            <h5>Eier: {props.author.mail}</h5>
+          <Typography className={classes.pos} component={'div'} color="textSecondary">
+            <h5>Eier: {props.mail} </h5>
           </Typography>
         </Card>
       ) : (

@@ -8,11 +8,15 @@ import {
   getResourceContributors,
   getResourceCreators,
   getResourceLicenses,
+  getResourceTags,
 } from '../api/api';
 import { CircularProgress, Typography } from '@material-ui/core';
 import { emptyLicense, License } from '../types/license.types';
 import constants from '../utils/constants';
 import { Content, emptyContents } from '../types/content.types';
+import PreviewComponent from '../components/PreviewComponent';
+import AuthorCard from '../components/AuthorCard';
+import ResourceMetadata from '../components/ResourceMetadata';
 
 const StyledPageContent = styled.div`
   display: grid;
@@ -23,6 +27,11 @@ interface resourcePageParamTypes {
   identifier: string;
 }
 
+interface Preview {
+  type: string;
+  theSource: string;
+}
+
 const ResourcePage: FC<RouteProps> = (props) => {
   const { identifier } = useParams<resourcePageParamTypes>();
   const [resource, setResource] = useState<Resource>(emptyResource);
@@ -30,8 +39,8 @@ const ResourcePage: FC<RouteProps> = (props) => {
   const [isLoadingResource, setIsLoadingResource] = useState<boolean>(false);
   const [creator, setCreator] = useState<Creator[]>([emptyCreator]);
   const [licenses, setLicenses] = useState<License[]>([emptyLicense]);
-  const [idToken] = useState<string>(localStorage.token);
-  const [contents, setContents] = useState<Content[]>(emptyContents);
+  const [preview, setPreview] = useState<Preview>({ type: '', theSource: '' });
+  const [tags, setTags] = useState<string[]>([]);
 
   useEffect(() => {
     const collectResourceData = async (identifier: string) => {
@@ -48,7 +57,19 @@ const ResourcePage: FC<RouteProps> = (props) => {
         setLicenses(response.data);
       });
       await getResourceContents(identifier).then((response) => {
-        setContents(response.data);
+        let type = '';
+        if (response.data[0].features) {
+          if (response.data[0].features.dlr_content_content_type) {
+            type = response.data[0].features.dlr_content_content_type;
+          }
+        }
+        setPreview({
+          type,
+          theSource: `https://api-dev.dlr.aws.unit.no/${constants.guiBackendResourcesContentPathVersion2}/contents/${response.data[0].identifier}/delivery?jwt=${localStorage.token}`,
+        });
+      });
+      await getResourceTags(identifier).then((response) => {
+        setTags(response.data);
       });
     };
 
@@ -58,22 +79,21 @@ const ResourcePage: FC<RouteProps> = (props) => {
       setIsLoadingResource(false);
     }
   }, [identifier]);
-
-  console.log(contents);
   return (
     <StyledPageContent>
       {isLoadingResource ? (
         <CircularProgress />
       ) : (
-        <article>
+        <div>
           <h1>{resource.features.dlr_title}</h1>
-          <iframe
-            title={identifier}
-            src={`https://api-dev.dlr.aws.unit.no/${constants.guiBackendResourcesContentPathVersion2}/contents/${contents[0].identifier}/delivery?jwt=${idToken}`}
-            allowFullScreen></iframe>
-          <Typography> {resource.features.dlr_time_created}</Typography>
-          <Typography> {resource.features.dlr_time_published}</Typography>
-        </article>
+          <PreviewComponent preview={preview} />
+          <AuthorCard
+            date={resource.features.dlr_time_published}
+            mail={resource.features.dlr_submitter_email}
+            name={creator[0].features.dlr_creator_name}
+          />
+          <ResourceMetadata type={preview.type} kategori={[resource.features.dlr_subject_nsi_id]} tags={tags} />
+        </div>
       )}
     </StyledPageContent>
   );
