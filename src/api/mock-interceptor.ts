@@ -99,7 +99,7 @@ export const interceptRequestsOnMock = () => {
     .reply(200, mockResourceContributors);
 
   // GET ANONYMOUS WEB TOKEN
-  let mockToken = 'mockToken';
+  const mockToken = 'mockToken';
   mock.onGet(new RegExp(`${constants.guiBackendLoginPath}/anonymous.*`)).reply(200, mockToken);
 
   mock.onAny().reply(function (config) {
