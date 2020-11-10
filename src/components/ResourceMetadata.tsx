@@ -45,8 +45,8 @@ const ResourceMetadata: FC<any> = (props: any) => {
           <h5>Tags:</h5>
           {props.tags.map((tag: string, i: number) => {
             return (
-              <span>
-                <Chip key={i} color="primary" label={tag}></Chip>{' '}
+              <span key={i}>
+                <Chip color="primary" label={tag}></Chip>{' '}
               </span>
             );
           })}
@@ -64,8 +64,8 @@ const ResourceMetadata: FC<any> = (props: any) => {
           <h5>Kategorier:</h5>
           {props.kategori.map((kategori: string, i: number) => {
             return (
-              <span>
-                <Chip color="primary" key={i} label={kategori}></Chip>{' '}
+              <span key={i}>
+                <Chip color="primary" label={kategori}></Chip>{' '}
               </span>
             );
           })}
@@ -78,13 +78,13 @@ const ResourceMetadata: FC<any> = (props: any) => {
     <>
       {isLoading ? (
         <Card className={classes.root}>
-          <Typography className={classes.pos} color="textSecondary">
+          <Typography className={classes.pos} component={'div'} color="textSecondary">
             <h5>Type: {props.type}</h5>
           </Typography>
-          <Typography className={classes.listings} component={'p'} color="textSecondary">
+          <Typography className={classes.listings} component={'div'} color="textSecondary">
             {getKategori()}
           </Typography>
-          <Typography className={classes.listings} component={'p'} color="textSecondary">
+          <Typography className={classes.listings} component={'div'} color="textSecondary">
             {getTags()}
           </Typography>
         </Card>
