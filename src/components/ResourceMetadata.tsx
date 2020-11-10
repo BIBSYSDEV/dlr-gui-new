@@ -37,8 +37,8 @@ const ResourceMetadata: FC<any> = (props: any) => {
   const classes = useStyles();
 
   const getTags = () => {
-    if (props.tags == null) {
-      return <p>Ingen tags</p>;
+    if (props.tags.length == 0) {
+      return <h5>Ingen tags</h5>;
     } else {
       return (
         <>
@@ -56,8 +56,8 @@ const ResourceMetadata: FC<any> = (props: any) => {
   };
 
   const getKategori = () => {
-    if (props.kategori == null) {
-      return <p>Ingen kategorier</p>;
+    if (props.kategori.length == 0 || props.kategori[0] == null) {
+      return <h5>Ingen kategorier</h5>;
     } else {
       return (
         <>
