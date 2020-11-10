@@ -1,5 +1,21 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Card, makeStyles, Typography, CircularProgress, Chip } from '@material-ui/core';
+import { Card, CircularProgress, Chip } from '@material-ui/core';
+import styled from 'styled-components';
+
+const FormWrapper = styled.div`
+  margin-left: 1rem;
+`;
+
+const TitleWrapper = styled.div`
+  fontsize: 14rem;
+`;
+
+const InfoWrappers = styled.div`
+display: inline-block,
+flaot: left,
+margin-bottom: 1rem,
+margin-left: 1rem,
+`;
 
 /*
 Enkel komponent for å vise frem informasjon om ressursen
@@ -13,27 +29,9 @@ const ResourceMetadata: FC<any> = (props: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
     if (props != null) {
-      //Hvis komponenten er tilsendt props sett loading til false
       setIsLoading(false);
     }
   }, []);
-
-  const useStyles = makeStyles({
-    root: {
-      minWidth: 270,
-    },
-    listings: {
-      display: 'inline - block',
-      flaot: 'left',
-      marginBottom: 5,
-      marginLeft: 5,
-    },
-    pos: {
-      marginLeft: 5,
-    },
-  });
-
-  const classes = useStyles();
 
   /*
   Henter Tags fra props
@@ -88,16 +86,14 @@ const ResourceMetadata: FC<any> = (props: any) => {
   return (
     <>
       {!isLoading ? (
-        <Card className={classes.root}>
-          <Typography className={classes.pos} component={'div'} color="textSecondary">
-            <h5>Type: {props.type}</h5>
-          </Typography>
-          <Typography className={classes.listings} component={'div'} color="textSecondary">
-            {getKategori()}
-          </Typography>
-          <Typography className={classes.listings} component={'div'} color="textSecondary">
-            {getTags()}
-          </Typography>
+        <Card>
+          <FormWrapper>
+            <TitleWrapper>
+              <h5>Type: {props.type}</h5>
+            </TitleWrapper>
+            <InfoWrappers>{getKategori()}</InfoWrappers>
+            <InfoWrappers>{getTags()}</InfoWrappers>
+          </FormWrapper>
         </Card>
       ) : (
         <CircularProgress />

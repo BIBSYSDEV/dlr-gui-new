@@ -1,7 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
-import { makeStyles, CircularProgress } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 
-//Interfaces for å motta props
+const imageType = 'image';
+const videoType = 'video';
+
 interface Preview {
   type: string;
   theSource: string;
@@ -24,22 +26,6 @@ const PreviewComponent: FC<PreviewComponentProps> = (props) => {
     }
   }, []);
 
-  const useStyles = makeStyles({
-    root: {
-      minWidth: 270,
-    },
-    title: {
-      fontSize: 14,
-      marginLeft: 5,
-    },
-    pos: {
-      marginBottom: 5,
-      marginLeft: 5,
-    },
-  });
-
-  const classes = useStyles();
-
   /*
   Metode som bestemmer visningstype basert på 
   hvilken form for data som mottas.
@@ -47,22 +33,22 @@ const PreviewComponent: FC<PreviewComponentProps> = (props) => {
   Brukeren får beskjed om det ressursen ikke er en av disse typene
   */
   const getPreviewModeBaseOnType = () => {
-    if (props.preview.type == 'image') {
+    if (props.preview.type == imageType) {
       return (
         <>
           <picture>
-            <img src={props.preview.theSource} width="400" height="300" />
+            <img src={props.preview.theSource} width="400px" height="300px" />
           </picture>
         </>
       );
-    } else if (props.preview.type == 'video') {
+    } else if (props.preview.type == videoType) {
       return (
         <>
-          <video width="400" height="300" src={props.preview.theSource} controls></video>
+          <video width="400px" height="300px" src={props.preview.theSource} controls></video>
         </>
       );
     } else {
-      return <h3>Fohåndssvisning støttes ikke for dette filformatet.</h3>;
+      return <h3>Fohåndsvisning støttes ikke for dette filformatet.</h3>;
     }
   };
 
