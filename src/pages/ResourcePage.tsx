@@ -56,19 +56,19 @@ const ResourcePage: FC<RouteProps> = (props) => {
 
   useEffect(() => {
     const collectResourceData = async (identifier: string) => {
-      await getResource(identifier).then((response) => {
+      getResource(identifier).then((response) => {
         setResource(response.data);
       });
-      await getResourceContributors(identifier).then((response) => {
+      getResourceContributors(identifier).then((response) => {
         setContributors(response.data);
       });
-      await getResourceCreators(identifier).then((response) => {
+      getResourceCreators(identifier).then((response) => {
         setCreator(response.data);
       });
-      await getResourceLicenses(identifier).then((response) => {
+      getResourceLicenses(identifier).then((response) => {
         setLicenses(response.data);
       });
-      await getResourceContents(identifier).then((response) => {
+      getResourceContents(identifier).then((response) => {
         const type = response?.data[0]?.features?.dlr_content_content_type
           ? response?.data[0]?.features?.dlr_content_content_type
           : '';
@@ -77,7 +77,7 @@ const ResourcePage: FC<RouteProps> = (props) => {
           theSource: `${API_URL}${API_PATHS.guiBackendResourcesContentPathVersion2}/contents/${response.data[0].identifier}/delivery?jwt=${localStorage.token}`,
         });
       });
-      await getResourceTags(identifier).then((response) => {
+      getResourceTags(identifier).then((response) => {
         setTags(response.data);
       });
     };
