@@ -92,35 +92,35 @@ export const getResourceDefaults = (identifier: string): Promise<AxiosResponse<R
 
 export const getResourceTags = (identifier: string): Promise<AxiosResponse<string[]>> => {
   return authenticatedApiRequest({
-    url: encodeURI(`${constants.guiBackendResourcesPath}/resources/${identifier}/tags/types/tag`),
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/tags/types/tag`),
     method: 'GET',
   });
 };
 
 export const getResourceContributors = (identifier: string): Promise<AxiosResponse<Contributor[]>> => {
   return authenticatedApiRequest({
-    url: encodeURI(`${constants.guiBackendResourcesPath}/resources/${identifier}/contributors`),
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/contributors`),
     method: 'GET',
   });
 };
 
 export const getResourceCreators = (identifier: string): Promise<AxiosResponse<Creator[]>> => {
   return authenticatedApiRequest({
-    url: encodeURI(`${constants.guiBackendResourcesPath}/resources/${identifier}/creators`),
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/creators`),
     method: 'GET',
   });
 };
 
 export const getResourceLicenses = (identifier: string): Promise<AxiosResponse<License[]>> => {
   return authenticatedApiRequest({
-    url: encodeURI(`${constants.guiBackendResourcesPath}/resources/${identifier}/licenses`),
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/licenses`),
     method: 'GET',
   });
 };
 
 export const getResourceContents = (identifier: string): Promise<AxiosResponse<Content[]>> => {
   return authenticatedApiRequest({
-    url: encodeURI(`${constants.guiBackendResourcesPath}/resources/${identifier}/contents`),
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/contents`),
     method: 'GET',
   });
 };
