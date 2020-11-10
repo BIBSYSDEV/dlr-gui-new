@@ -35,4 +35,5 @@ export const API_PATHS = {
   guiBackendDefaultsPath: '/dlr-gui-backend-resources-defaults/v1',
   guiBackendMediasitePath: '/dlr-gui-backend-mediasite/v1',
   depotApiPath: '/dlr-depot-api/v1',
+  guiBackendResourcesContentPathVersion2: '/dlr-gui-backend-resources-content/v2',
 };

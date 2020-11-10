@@ -4,7 +4,9 @@ import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { User } from '../types/user.types';
 import { AuthTokenClaims } from '../types/auth.types';
 import { SearchResult } from '../types/search.types';
-import { Resource } from '../types/resource.types';
+import { Resource, Contributor, Creator } from '../types/resource.types';
+import { License } from '../types/license.types';
+import { Content } from '../types/content.types';
 
 setAxiosDefaults();
 
@@ -84,6 +86,41 @@ export const getResource = (identifier: string): Promise<AxiosResponse<Resource>
 export const getResourceDefaults = (identifier: string): Promise<AxiosResponse<Resource>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendDefaultsPath}/resources/${identifier}`),
+    method: 'GET',
+  });
+};
+
+export const getResourceTags = (identifier: string): Promise<AxiosResponse<string[]>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/tags/types/tag`),
+    method: 'GET',
+  });
+};
+
+export const getResourceContributors = (identifier: string): Promise<AxiosResponse<Contributor[]>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/contributors`),
+    method: 'GET',
+  });
+};
+
+export const getResourceCreators = (identifier: string): Promise<AxiosResponse<Creator[]>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/creators`),
+    method: 'GET',
+  });
+};
+
+export const getResourceLicenses = (identifier: string): Promise<AxiosResponse<License[]>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/licenses`),
+    method: 'GET',
+  });
+};
+
+export const getResourceContents = (identifier: string): Promise<AxiosResponse<Content[]>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/contents`),
     method: 'GET',
   });
 };
