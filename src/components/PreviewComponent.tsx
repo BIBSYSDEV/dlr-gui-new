@@ -24,7 +24,7 @@ const PreviewComponent: FC<PreviewComponentProps> = (props) => {
     if (props != null) {
       setIsLoading(false);
     }
-  }, []);
+  }, [props]);
 
   /*
   Metode som bestemmer visningstype basert på 
@@ -33,15 +33,15 @@ const PreviewComponent: FC<PreviewComponentProps> = (props) => {
   Brukeren får beskjed om det ressursen ikke er en av disse typene
   */
   const getPreviewModeBaseOnType = () => {
-    if (props.preview.type == imageType) {
+    if (props.preview.type === imageType) {
       return (
         <>
           <picture>
-            <img src={props.preview.theSource} width="400px" height="300px" />
+            <img src={props.preview.theSource} width="400px" height="300px" alt="Preview of resource" />
           </picture>
         </>
       );
-    } else if (props.preview.type == videoType) {
+    } else if (props.preview.type === videoType) {
       return (
         <>
           <video width="400px" height="300px" src={props.preview.theSource} controls></video>

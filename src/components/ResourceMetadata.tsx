@@ -32,7 +32,7 @@ const ResourceMetadata: FC<any> = (props: any) => {
     if (props != null) {
       setIsLoading(false);
     }
-  }, []);
+  }, [props]);
 
   /*
   Henter Tags fra props
@@ -40,7 +40,7 @@ const ResourceMetadata: FC<any> = (props: any) => {
   Hvis ressursen har tags printes hver tag i sin egen 'Chip'
   */
   const getTags = () => {
-    if (props.tags.length == 0) {
+    if (props.tags.length === 0) {
       return <h5>Ingen tags</h5>;
     } else {
       return (
@@ -66,7 +66,7 @@ const ResourceMetadata: FC<any> = (props: any) => {
   ressursen uten kategorier allikevell har ett tomt object liggende på possisjon 0
   */
   const getKategori = () => {
-    if (props.kategori.length == 0 || props.kategori[0] == null) {
+    if (props.kategori.length === 0 || props.kategori[0] == null) {
       return <h5>Ingen kategorier</h5>;
     } else {
       return (

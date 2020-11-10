@@ -1,19 +1,10 @@
 import React, { FC, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { RouteProps, useParams } from 'react-router-dom';
-import { Contributor, Creator, emptyContributor, emptyCreator, emptyResource, Resource } from '../types/resource.types';
-import {
-  getResource,
-  getResourceContents,
-  getResourceContributors,
-  getResourceCreators,
-  getResourceLicenses,
-  getResourceTags,
-} from '../api/api';
-import { CircularProgress, Typography } from '@material-ui/core';
-import { emptyLicense, License } from '../types/license.types';
+import { Creator, emptyCreator, emptyResource, Resource } from '../types/resource.types';
+import { getResource, getResourceContents, getResourceCreators, getResourceTags } from '../api/api';
+import { CircularProgress } from '@material-ui/core';
 import { API_PATHS, API_URL } from '../utils/constants';
-import { Content, emptyContents } from '../types/content.types';
 import PreviewComponent from '../components/PreviewComponent';
 import AuthorCard from '../components/AuthorCard';
 import ResourceMetadata from '../components/ResourceMetadata';
@@ -47,10 +38,8 @@ interface Preview {
 const ResourcePage: FC<RouteProps> = (props) => {
   const { identifier } = useParams<resourcePageParamTypes>();
   const [resource, setResource] = useState<Resource>(emptyResource);
-  const [contributors, setContributors] = useState<Contributor[]>([emptyContributor]);
   const [isLoadingResource, setIsLoadingResource] = useState<boolean>(false);
   const [creator, setCreator] = useState<Creator[]>([emptyCreator]);
-  const [licenses, setLicenses] = useState<License[]>([emptyLicense]);
   const [preview, setPreview] = useState<Preview>({ type: '', theSource: '' });
   const [tags, setTags] = useState<string[]>([]);
 
@@ -59,14 +48,8 @@ const ResourcePage: FC<RouteProps> = (props) => {
       getResource(identifier).then((response) => {
         setResource(response.data);
       });
-      getResourceContributors(identifier).then((response) => {
-        setContributors(response.data);
-      });
       getResourceCreators(identifier).then((response) => {
         setCreator(response.data);
-      });
-      getResourceLicenses(identifier).then((response) => {
-        setLicenses(response.data);
       });
       getResourceContents(identifier).then((response) => {
         const type = response?.data[0]?.features?.dlr_content_content_type

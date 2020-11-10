@@ -26,7 +26,7 @@ const AuthorCard: FC<any> = (props: any) => {
     if (props != null) {
       setIsLoading(false);
     }
-  }, []);
+  }, [props]);
 
   return (
     <>
