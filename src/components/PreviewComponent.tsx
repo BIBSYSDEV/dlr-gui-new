@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { makeStyles, CircularProgress } from '@material-ui/core';
 
+//Interfaces for å motta props
 interface Preview {
   type: string;
   theSource: string;
@@ -10,11 +11,16 @@ interface PreviewComponentProps {
   preview: Preview;
 }
 
+/*
+Enkel komponent for å vise frem media innhold
+Den mottar kilden til innholdet og typen innholdet er av.
+Per nå støttes "video" og "image" som typer
+*/
 const PreviewComponent: FC<PreviewComponentProps> = (props) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
     if (props != null) {
-      setIsLoading(true);
+      setIsLoading(false);
     }
   }, []);
 
@@ -34,6 +40,12 @@ const PreviewComponent: FC<PreviewComponentProps> = (props) => {
 
   const classes = useStyles();
 
+  /*
+  Metode som bestemmer visningstype basert på 
+  hvilken form for data som mottas.
+  Per nå støttes bare video eller bilde fremvisning.
+  Brukeren får beskjed om det ressursen ikke er en av disse typene
+  */
   const getPreviewModeBaseOnType = () => {
     if (props.preview.type == 'image') {
       return (
@@ -54,7 +66,7 @@ const PreviewComponent: FC<PreviewComponentProps> = (props) => {
     }
   };
 
-  return <>{isLoading ? <div>{getPreviewModeBaseOnType()}</div> : <CircularProgress />}</>;
+  return <>{!isLoading ? <div>{getPreviewModeBaseOnType()}</div> : <CircularProgress />}</>;
 };
 
 export default PreviewComponent;

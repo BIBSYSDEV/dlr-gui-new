@@ -1,21 +1,16 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Card, makeStyles, Typography, CircularProgress } from '@material-ui/core';
 
-interface Author {
-  name: string;
-  date: string;
-  mail?: string;
-}
-
-interface AuthCardProps {
-  author: Author;
-}
-
+/*
+Enkel komponent for fremstilling av informasjon 
+rundt publiseringen av ressursen.
+Komponenten mottar: en creator, en publiserings dato og en eier.
+*/
 const AuthorCard: FC<any> = (props: any) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
     if (props != null) {
-      setIsLoading(true);
+      setIsLoading(false);
     }
   }, []);
 
@@ -37,7 +32,7 @@ const AuthorCard: FC<any> = (props: any) => {
 
   return (
     <>
-      {isLoading ? (
+      {!isLoading ? (
         <Card className={classes.root}>
           <Typography className={classes.title} component={'div'} gutterBottom>
             <h2> Av: {props.name} </h2>
