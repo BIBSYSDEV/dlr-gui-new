@@ -32,6 +32,18 @@ interface Preview {
   theSource: string;
 }
 
+//TODO: legg til lisenser
+//TODO: språk-støtte, nå er ting harkodet til norsk
+//TODO: Created dato må vises i tillegg til eksisterende publiseringsdato
+//TODO: Liste ut contributors (medforfattere)
+//TODO: Ressurs beskrivelse
+//TODO: Kategori (subject) må mappes til subject.json istedet for å bare vise emnekode
+//TODO: Siteringslenke med knapp for å kopiere til clipboard
+//TODO: Delingslenke med knapp for å kopiere til clipboard
+//TODO: Delingsmulighet innebyggingsskode (se figma)
+//TODO: Oversikt over innhold
+//TODO: komponent som viser lignende ressurser
+
 const ResourcePage: FC<RouteProps> = (props) => {
   const { identifier } = useParams<resourcePageParamTypes>();
   const [resource, setResource] = useState<Resource>(emptyResource);
@@ -65,7 +77,7 @@ const ResourcePage: FC<RouteProps> = (props) => {
         }
         setPreview({
           type,
-          theSource: `https://api-dev.dlr.aws.unit.no/${constants.guiBackendResourcesContentPathVersion2}/contents/${response.data[0].identifier}/delivery?jwt=${localStorage.token}`,
+          theSource: `${process.env.REACT_APP_API_URL}/${constants.guiBackendResourcesContentPathVersion2}/contents/${response.data[0].identifier}/delivery?jwt=${localStorage.token}`,
         });
       });
       await getResourceTags(identifier).then((response) => {
