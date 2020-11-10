@@ -1,14 +1,17 @@
 {
   "breadcrumbs": {
-    "home": "Hjem",
     "privacy-policy": "Personvernerklæring",
     "registration": "Registrering",
     "resource": "Ressurs"
   },
   "common": {
     "all_changes_saved": "Alle endringer er lagret",
+    "back": "Tilbake",
+    "finish": "Avslutt",
+    "home": "Hjem",
     "login": "Logg inn",
     "logout": "Logg ut",
+    "next": "Next",
     "save": "Lagre"
   },
   "delivered_by": "Levert av",
@@ -25,6 +28,13 @@
   "resource": {
     "description": "Beskrivelse",
     "edit_resource": "Rediger ressurs",
+    "form_steps": {
+      "description": "Beskrivelse",
+      "contributors": "Bidragsytere",
+      "files": "Filer",
+      "access_and_licence": "Tilgang og lisens",
+      "preview": "Forhåndsvisning"
+    },
     "link_to_resource": "Lenke til ressurs",
     "new_registration": "Ny registering",
     "start_with_link_to_resource": "Start registrering med en lenke",

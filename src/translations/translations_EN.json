@@ -7,8 +7,12 @@
   },
   "common": {
     "all_changes_saved": "All changes saved",
+    "back": "Back",
+    "finish": "Finish",
+    "home": "Home",
     "login": "Login",
     "logout": "Logout",
+    "next": "Next",
     "save": "Save"
   },
   "delivered_by": "Delivered by",
@@ -25,6 +29,13 @@
   "resource": {
     "description": "Description",
     "edit_resource": "Edit resource",
+    "form_steps": {
+      "description": "Description",
+      "contributors": "Contributors",
+      "files": "Files",
+      "access_and_licence": "Access and licence",
+      "preview": "Preview"
+    },
     "link_to_resource": "Link to resource",
     "new_registration": "New registration",
     "start_with_link_to_resource": "Start registration with a link",

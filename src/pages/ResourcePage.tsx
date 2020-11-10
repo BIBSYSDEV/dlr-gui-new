@@ -12,7 +12,7 @@ import {
 } from '../api/api';
 import { CircularProgress, Typography } from '@material-ui/core';
 import { emptyLicense, License } from '../types/license.types';
-import constants from '../utils/constants';
+import { API_PATHS } from '../utils/constants';
 import { Content, emptyContents } from '../types/content.types';
 import PreviewComponent from '../components/PreviewComponent';
 import AuthorCard from '../components/AuthorCard';
@@ -77,7 +77,7 @@ const ResourcePage: FC<RouteProps> = (props) => {
         }
         setPreview({
           type,
-          theSource: `${process.env.REACT_APP_API_URL}/${constants.guiBackendResourcesContentPathVersion2}/contents/${response.data[0].identifier}/delivery?jwt=${localStorage.token}`,
+          theSource: `${process.env.REACT_APP_API_URL}/${API_PATHS.guiBackendResourcesContentPathVersion2}/contents/${response.data[0].identifier}/delivery?jwt=${localStorage.token}`,
         });
       });
       await getResourceTags(identifier).then((response) => {

@@ -2,29 +2,51 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../components/PageHeader';
-import { Button, CircularProgress, TextField } from '@material-ui/core';
+import { Button, CircularProgress, Step, StepButton, Stepper, Typography } from '@material-ui/core';
 import { getResource, getResourceDefaults, postResourceFeature } from '../api/api';
 import { emptyResource, Resource } from '../types/resource.types';
 import deepmerge from 'deepmerge';
-import { ErrorMessage, Field, FieldProps, Form, Formik, FormikState } from 'formik';
+import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import * as Yup from 'yup';
-
-const StyledResource = styled.div`
-  width: 100%;
-`;
+import DescriptionFields from './DescriptionFields';
 
 const StyledForm = styled(Form)`
   display: flex;
   flex-direction: column;
-  width: 30rem;
-  margin: auto;
-  gap: 1rem;
+  width: 100%;
   align-items: center;
   justify-items: center;
+  margin-left: 4rem;
+  margin-right: 4rem;
+`;
+
+const StyledPanel = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-items: center;
+  min-height: 10rem;
+  padding: 2rem 2rem 1rem;
+`;
+
+const StyledButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 2rem 2rem 1rem;
 `;
 
 interface ResourceFormProps {
   identifier?: string;
+}
+
+export enum ResourceFormSteps {
+  Description = 0,
+  Contributors = 1,
+  Files = 2,
+  AccessAndLicense = 3,
+  Preview = 4,
 }
 
 const ResourceForm: FC<ResourceFormProps> = ({ identifier }) => {
@@ -32,10 +54,26 @@ const ResourceForm: FC<ResourceFormProps> = ({ identifier }) => {
   const [resource, setResource] = useState<Resource>(emptyResource);
   const [isLoadingResource, setIsLoadingResource] = useState<boolean>(false);
   const [allChangesSaved, setAllChangesSaved] = useState<boolean>(false);
+  const steps = [
+    t('resource.form_steps.description'),
+    t('resource.form_steps.contributors'),
+    t('resource.form_steps.files'),
+    t('resource.form_steps.access_and_licence'),
+    t('resource.form_steps.preview'),
+  ];
+  const [activeStep, setActiveStep] = useState<ResourceFormSteps>(ResourceFormSteps.Description);
 
   interface ResourceFormValues {
     resource: Resource;
   }
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
 
   const saveCalculatedFields = (_resource: Resource) => {
     if (_resource.features.dlr_title) {
@@ -85,14 +123,16 @@ const ResourceForm: FC<ResourceFormProps> = ({ identifier }) => {
       resetForm({ values: currentValues });
     }
   };
-
+  const handleStep = (step: number) => () => {
+    setActiveStep(step);
+  };
   return (
     <>
       <PageHeader>{t('resource.edit_resource')}</PageHeader>
       {isLoadingResource ? (
         <CircularProgress />
       ) : (
-        <StyledResource>
+        <>
           {resource && (
             <Formik
               initialValues={{
@@ -100,58 +140,68 @@ const ResourceForm: FC<ResourceFormProps> = ({ identifier }) => {
               }}
               validateOnChange
               validationSchema={resourceValidationSchema}
-              onSubmit={(values) => {
-                alert(JSON.stringify(values, null, 2));
+              onSubmit={() => {
+                /*dont use. But cannot have empty onsubmit*/
               }}>
-              {({ dirty, values, handleBlur, resetForm, touched, initialTouched }) => (
+              {(formikProps: FormikProps<FormikValues>) => (
                 <StyledForm>
-                  {resource.features.dlr_thumbnail_url && (
-                    <img alt="thumbnail" style={{ maxWidth: '300px' }} src={resource.features.dlr_thumbnail_url} />
+                  <Stepper style={{ width: '100%' }} activeStep={activeStep} nonLinear alternativeLabel>
+                    {steps.map((label, index) => {
+                      const stepProps: { completed?: boolean } = {};
+                      stepProps.completed = false;
+                      return (
+                        <Step key={label} {...stepProps}>
+                          <StepButton onClick={handleStep(index)}>{label}</StepButton>
+                        </Step>
+                      );
+                    })}
+                  </Stepper>
+
+                  {activeStep === ResourceFormSteps.Description && (
+                    <StyledPanel>
+                      <DescriptionFields resource={resource} formikProps={formikProps} saveField={saveField} />
+                    </StyledPanel>
                   )}
-                  <Field name="resource.features.dlr_title">
-                    {({ field, meta: { touched, error } }: FieldProps) => (
-                      <TextField
-                        {...field}
-                        variant="filled"
-                        fullWidth
-                        label={t('resource.title')}
-                        error={touched && !!error}
-                        helperText={<ErrorMessage name={field.name} />}
-                        onBlur={(event) => {
-                          handleBlur(event);
-                          !error && saveField(event, resetForm, values);
-                        }}
-                      />
-                    )}
-                  </Field>
-                  <Field name="resource.features.dlr_description">
-                    {({ field, meta: { error } }: FieldProps) => (
-                      <TextField
-                        {...field}
-                        variant="filled"
-                        fullWidth
-                        multiline
-                        rows="4"
-                        label={t('resource.description')}
-                        onBlur={(event) => {
-                          handleBlur(event);
-                          !error && saveField(event, resetForm, values);
-                        }}
-                      />
-                    )}
-                  </Field>
-                  <Button variant="contained" color="primary" type="submit">
-                    Show resource object
-                  </Button>
-                  <div>
-                    {!allChangesSaved && <CircularProgress size="1rem" />}
-                    {allChangesSaved && !dirty && <span>{t('common.all_changes_saved')}</span>}
-                  </div>
+                  {activeStep === ResourceFormSteps.Contributors && (
+                    <StyledPanel>
+                      <Typography>Contributors-fields implemented</Typography>
+                    </StyledPanel>
+                  )}
+                  {activeStep === ResourceFormSteps.AccessAndLicense && (
+                    <StyledPanel>
+                      <Typography>Access and license-fields not implemented</Typography>
+                    </StyledPanel>
+                  )}
+                  {activeStep === ResourceFormSteps.Files && (
+                    <StyledPanel>
+                      <Typography>Files-fields not implemented</Typography>
+                    </StyledPanel>
+                  )}
+                  {activeStep === ResourceFormSteps.Preview && (
+                    <StyledPanel>
+                      <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(formikProps.values, null, 2)}</pre>
+                    </StyledPanel>
+                  )}
+
+                  <StyledButtonWrapper>
+                    <div>
+                      {!allChangesSaved && <CircularProgress size="1rem" />}
+                      {allChangesSaved && !formikProps.dirty && <span>{t('common.all_changes_saved')}</span>}
+                    </div>
+                    <div>
+                      <Button disabled={activeStep === 0} onClick={handleBack}>
+                        {t('common.back')}
+                      </Button>
+                      <Button variant="contained" color="primary" onClick={handleNext}>
+                        {activeStep === steps.length - 1 ? t('common.finish') : t('common.next')}
+                      </Button>
+                    </div>
+                  </StyledButtonWrapper>
                 </StyledForm>
               )}
             </Formik>
           )}
-        </StyledResource>
+        </>
       )}
     </>
   );
