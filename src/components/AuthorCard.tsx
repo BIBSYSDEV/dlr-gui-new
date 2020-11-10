@@ -1,5 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Card, makeStyles, Typography, CircularProgress } from '@material-ui/core';
+import { Card, CircularProgress } from '@material-ui/core';
+import styled from 'styled-components';
+
+const FormWrapper = styled.div`
+  margin-left: 1rem;
+`;
+
+const TitleWrapper = styled.div`
+  fontsize: 14rem;
+`;
+
+const InfoWrappers = styled.div`
+  color: grey;
+`;
 
 /*
 Enkel komponent for fremstilling av informasjon 
@@ -14,35 +27,21 @@ const AuthorCard: FC<any> = (props: any) => {
     }
   }, []);
 
-  const useStyles = makeStyles({
-    root: {
-      minWidth: 270,
-    },
-    title: {
-      fontSize: 14,
-      marginLeft: 5,
-    },
-    pos: {
-      marginBottom: 5,
-      marginLeft: 5,
-    },
-  });
-
-  const classes = useStyles();
-
   return (
     <>
       {!isLoading ? (
-        <Card className={classes.root}>
-          <Typography className={classes.title} component={'div'} gutterBottom>
-            <h2> Av: {props.name} </h2>
-          </Typography>
-          <Typography className={classes.pos} component={'div'} color="textSecondary">
-            <h5> Publisert: {props.date} </h5>
-          </Typography>
-          <Typography className={classes.pos} component={'div'} color="textSecondary">
-            <h5>Eier: {props.mail} </h5>
-          </Typography>
+        <Card>
+          <FormWrapper>
+            <TitleWrapper>
+              <h2> Av: {props.name} </h2>
+            </TitleWrapper>
+            <InfoWrappers>
+              <h5> Publisert: {props.date} </h5>
+            </InfoWrappers>
+            <InfoWrappers>
+              <h5>Eier: {props.mail} </h5>
+            </InfoWrappers>
+          </FormWrapper>
         </Card>
       ) : (
         <CircularProgress />
