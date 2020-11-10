@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { PageHeader } from '../components/PageHeader';
 import ResourceForm from './ResourceForm';
 import LinkResource from './LinkResource';
+import UploadRegistration from './UploadRegistration';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -29,6 +30,8 @@ const EditResourcePage: FC = () => {
       <PageHeader>{t('resource.new_registration')}</PageHeader>
       <StyledEditPublication>
         <LinkResource expanded={expanded === 'link-panel'} onChange={handleChange('link-panel')} />
+        <div>Eller</div>
+        <UploadRegistration expanded={expanded === 'load-panel'} onChange={handleChange('load-panel')} />
       </StyledEditPublication>
     </>
   ) : (
