@@ -12,7 +12,7 @@ import {
 } from '../api/api';
 import { CircularProgress, Typography } from '@material-ui/core';
 import { emptyLicense, License } from '../types/license.types';
-import { API_PATHS } from '../utils/constants';
+import { API_PATHS, API_URL } from '../utils/constants';
 import { Content, emptyContents } from '../types/content.types';
 import PreviewComponent from '../components/PreviewComponent';
 import AuthorCard from '../components/AuthorCard';
@@ -69,15 +69,12 @@ const ResourcePage: FC<RouteProps> = (props) => {
         setLicenses(response.data);
       });
       await getResourceContents(identifier).then((response) => {
-        let type = '';
-        if (response.data[0].features) {
-          if (response.data[0].features.dlr_content_content_type) {
-            type = response.data[0].features.dlr_content_content_type;
-          }
-        }
+        const type = response?.data[0]?.features?.dlr_content_content_type
+          ? response?.data[0]?.features?.dlr_content_content_type
+          : '';
         setPreview({
           type,
-          theSource: `${process.env.REACT_APP_API_URL}/${API_PATHS.guiBackendResourcesContentPathVersion2}/contents/${response.data[0].identifier}/delivery?jwt=${localStorage.token}`,
+          theSource: `${API_URL}${API_PATHS.guiBackendResourcesContentPathVersion2}/contents/${response.data[0].identifier}/delivery?jwt=${localStorage.token}`,
         });
       });
       await getResourceTags(identifier).then((response) => {
@@ -87,8 +84,9 @@ const ResourcePage: FC<RouteProps> = (props) => {
 
     if (identifier) {
       setIsLoadingResource(true);
-      collectResourceData(identifier);
-      setIsLoadingResource(false);
+      collectResourceData(identifier).finally(() => {
+        setIsLoadingResource(false);
+      });
     }
   }, [identifier]);
   return (
@@ -96,7 +94,7 @@ const ResourcePage: FC<RouteProps> = (props) => {
       {isLoadingResource ? (
         <CircularProgress />
       ) : (
-        <div>
+        <React.Fragment>
           <h1>{resource.features.dlr_title}</h1>
           <PreviewComponent preview={preview} />
           <AuthorCard
@@ -105,7 +103,7 @@ const ResourcePage: FC<RouteProps> = (props) => {
             name={creator[0].features.dlr_creator_name}
           />
           <ResourceMetadata type={preview.type} kategori={[resource.features.dlr_subject_nsi_id]} tags={tags} />
-        </div>
+        </React.Fragment>
       )}
     </StyledPageContent>
   );
