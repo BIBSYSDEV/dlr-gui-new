@@ -83,11 +83,16 @@ interface PublisherFeatures {
   dlr_publisher_time_created?: string;
 }
 
-interface Creator {
+export interface Creator {
   identifier: string;
   features: CreatorFeatures;
   Authority?: Authority;
 }
+
+export const emptyCreator = {
+  identifier: '',
+  features: {},
+};
 
 interface CreatorFeatures {
   dlr_creator_identifier?: string;
@@ -96,11 +101,16 @@ interface CreatorFeatures {
   dlr_creator_time_created?: string;
 }
 
-interface Contributor {
+export interface Contributor {
   id: string;
   features: ContributorFeatures;
   Authority?: Authority;
 }
+
+export const emptyContributor: Contributor = {
+  id: '',
+  features: {},
+};
 
 interface ContributorFeatures {
   dlr_contributor_identifier?: string;
