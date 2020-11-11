@@ -29,6 +29,11 @@ enum ResourceType {
   LEARNING = 'learning',
 }
 
+export enum ResourceCreationType {
+  FILE = 'file',
+  LINK = 'link',
+}
+
 interface ResourceFeatures {
   dlr_access?: string;
   dlr_app?: string;

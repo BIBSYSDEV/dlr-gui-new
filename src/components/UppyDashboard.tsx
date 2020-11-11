@@ -19,7 +19,7 @@ const uploaderMaxWidthPx = 10000;
 const uploaderMaxHeightPx = 200;
 
 const UppyDashboard: React.FC<UppyDashboardProps> = ({ uppy }) => {
-  const { t } = useTranslation('registration');
+  const { t } = useTranslation();
   const multipleFilesAllowed = (uppy as any).opts.restrictions.maxNumberOfFiles !== 1;
 
   return uppy ? (
@@ -35,19 +35,19 @@ const UppyDashboard: React.FC<UppyDashboardProps> = ({ uppy }) => {
         locale={{
           strings: {
             dropPaste: multipleFilesAllowed
-              ? `${t('files_and_license.drag_files')} %{browse}`
-              : `${t('files_and_license.drag_file')} %{browse}`,
-            browse: t('files_and_license.browse'),
+              ? `${t('resource.files_and_license.drag_files')} %{browse}`
+              : `${t('resource.files_and_license.drag_file')} %{browse}`,
+            browse: t('resource.files_and_license.browse'),
             dropHint: multipleFilesAllowed
-              ? t('files_and_license.drop_here')
-              : t('files_and_license.drop_single_file_here'),
+              ? t('resource.files_and_license.drop_here')
+              : t('resource.files_and_license.drop_single_file_here'),
             uploadXFiles: {
-              0: t('files_and_license.upload_one_file'),
-              1: t('files_and_license.upload_x_files'),
+              0: t('resource.files_and_license.upload_one_file'),
+              1: t('resource.files_and_license.upload_x_files'),
             },
             uploadXNewFiles: {
-              0: t('files_and_license.upload_one_more_file'),
-              1: t('files_and_license.upload_x_more_files'),
+              0: t('resource.files_and_license.upload_one_more_file'),
+              1: t('resource.files_and_license.upload_x_more_files'),
             },
           },
         }}

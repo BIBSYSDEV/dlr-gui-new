@@ -54,7 +54,7 @@ export const logout = () => {
   });
 };
 
-export const postResource = (type: string, content: string) => {
+export const createResource = (type: string, content: string) => {
   //TODO: helst kunne poste som JSON
   const data = `type=${type}&app=learning&content=${content}`;
   return authenticatedApiRequest({

@@ -13,14 +13,14 @@ interface UploadRegistrationProps {
 }
 
 const UploadRegistration: FC<UploadRegistrationProps> = ({ expanded, onChange }) => {
-  const { t } = useTranslation('registration');
+  const { t } = useTranslation();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const uppy = useUppy();
 
   return (
     <PublicationAccordion
       dataTestId="new-registration-file"
-      headerLabel={t('registration:registration.start_with_uploading_file')}
+      headerLabel={t('resource.start_with_uploading_file')}
       icon={<CloudDownloadIcon />}
       expanded={expanded}
       onChange={onChange}

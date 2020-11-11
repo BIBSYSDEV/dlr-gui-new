@@ -7,7 +7,8 @@ import LinkIcon from '@material-ui/icons/Link';
 import LinkResourceForm, { LinkResourceFormValues } from './LinkResourceForm';
 import PublicationAccordion from './PublicationAccordion';
 import { urlValidationSchema } from '../utils/validation/urlValidation';
-import { postResource } from '../api/api';
+import { createResource } from '../api/api';
+import { ResourceCreationType } from '../types/resource.types';
 
 const StyledBody = styled.div`
   width: 100%;
@@ -28,7 +29,7 @@ const LinkResource: FC<LinkPublicationPanelProps> = ({ expanded, onChange }) => 
     //const decodedUrl = decodeURIComponent(url);
     //todo: ekte url-validering (denne sjekker ikke http://
 
-    postResource('link', url).then((response) => {
+  createResource(ResourceCreationType.LINK, url).then((response) => {
       if (response.data.identifier) {
         history.push(`/registration/${response.data.identifier}`);
       }

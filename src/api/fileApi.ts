@@ -4,13 +4,20 @@ import { UppyFile } from '@uppy/core';
 import i18n from '../translations/i18n';
 import { StatusCode } from '../utils/constants';
 
+import { API_PATHS } from '../utils/constants';
+import { createResource } from './api';
+import { setAxiosDefaults } from '../utils/axios-config';
+import { ResourceCreationType } from '../types/resource.types';
+
+setAxiosDefaults();
+
 export enum FileApiPaths {
-  ABORT = '/upload/abort',
-  COMPLETE = '/upload/complete',
-  CREATE = '/upload/create',
+  ABORT = '/contents/upload/multipart/uppy/abort',
+  COMPLETE = '/contents/upload/multipart/uppy/complete',
+  CREATE = '/contents/upload/multipart/uppy/create',
   DOWNLOAD = '/download',
-  LIST_PARTS = '/upload/listparts',
-  PREPARE = '/upload/prepare',
+  LIST_PARTS = '/contents/upload/multipart/uppy/listparts',
+  PREPARE = '/contents/upload/multipart/uppy/prepare',
 }
 
 export const downloadFile = async (registrationId: string, fileId: string) => {
@@ -32,7 +39,7 @@ export const abortMultipartUpload = async (uploadId: string, key: string) => {
   const payload = {
     uploadId,
     key,
-  };
+  }; //TODO: convert to params
 
   const idToken = localStorage.token;
   const response = await Axios.post(FileApiPaths.ABORT, payload, {
@@ -48,7 +55,7 @@ export const completeMultipartUpload = async (uploadId: string, key: string, par
     uploadId,
     key,
     parts,
-  };
+  };//TODO: convert to params
 
   const idToken = localStorage.token;
   const response = await Axios.post(FileApiPaths.COMPLETE, payload, {
@@ -59,27 +66,26 @@ export const completeMultipartUpload = async (uploadId: string, key: string, par
   return response.data;
 };
 export const createMultipartUpload = async (file: UppyFile) => {
-  const payload = {
-    filename: file.name,
-    size: file.data.size,
-    lastmodified: (file.data as File).lastModified,
-    mimetype: file.data.type,
-  };
+  const createResourceResponse = await createResource(ResourceCreationType.FILE, file.name);
 
+  const data = `filename=${file.name}&size=${file.data.size}&lastmodified=${
+    (file.data as File).lastModified
+  }&mimetype=${file.data.type}&identifier=${createResourceResponse.data.identifier}`;
   const idToken = localStorage.token;
-  const response = await Axios.post(FileApiPaths.CREATE, payload, {
+
+  const createMultipartUploadResponse = await Axios.post(API_PATHS.guiBackendResourcesContentPathVersion2 + FileApiPaths.CREATE, data, {
     headers: {
       Authorization: `Bearer ${idToken}`,
     },
   });
-  return response.data;
+  return createMultipartUploadResponse.data;
 };
 
 export const listParts = async (uploadId: string, key: string) => {
   const payload = {
     uploadId,
     key,
-  };
+  };//TODO: convert to params
 
   const idToken = localStorage.token;
   const response = await Axios.post(FileApiPaths.LIST_PARTS, payload, {
@@ -96,7 +102,7 @@ export const prepareUploadPart = async (uploadId: string, key: string, body: Blo
     key,
     body: JSON.stringify(body),
     number,
-  };
+  };//TODO: convert to params
 
   const idToken = localStorage.token;
   const response = await Axios.post(FileApiPaths.PREPARE, payload, {

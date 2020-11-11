@@ -38,8 +38,15 @@
     "link_to_resource": "Lenke til ressurs",
     "new_registration": "Ny registering",
     "start_with_link_to_resource": "Start registrering med en lenke",
+    "start_with_uploading_file": "Last opp fil hvis ressursen skal publiseres på Internett for første gang",
     "submit_link": "Start registrering",
     "submitter_email": "Registrators epost",
-    "title": "Tittel"
+    "title": "Tittel",
+    "files_and_license": {
+      "browse": "browse",
+      "drag_file": "Drag file here or",
+      "drag_files": "Drag files here or",
+      "drop_here": "Drop your files here"
+    }
   }
 }
