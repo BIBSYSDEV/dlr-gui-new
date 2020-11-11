@@ -29,7 +29,7 @@ const LinkResource: FC<LinkPublicationPanelProps> = ({ expanded, onChange }) => 
     //const decodedUrl = decodeURIComponent(url);
     //todo: ekte url-validering (denne sjekker ikke http://
 
-  createResource(ResourceCreationType.LINK, url).then((response) => {
+    createResource(ResourceCreationType.LINK, url).then((response) => {
       if (response.data.identifier) {
         history.push(`/registration/${response.data.identifier}`);
       }
