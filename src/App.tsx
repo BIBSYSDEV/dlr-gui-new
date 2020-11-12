@@ -8,7 +8,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from './state/userSlice';
-import { getAnonymousWebToken, getUserData } from './api/api';
+import { getAnonymousWebToken, getUserData } from './api/userApi';
 import AppRoutes from './AppRoutes';
 import { RootState } from './state/rootReducer';
 import { CircularProgress } from '@material-ui/core';

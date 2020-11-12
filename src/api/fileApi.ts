@@ -5,9 +5,10 @@ import i18n from '../translations/i18n';
 import { StatusCode } from '../utils/constants';
 
 import { API_PATHS } from '../utils/constants';
-import { createResource } from './api';
+import { createResource } from './resourceApi';
 import { setAxiosDefaults } from '../utils/axios-config';
 import { ResourceCreationType } from '../types/resource.types';
+import { authenticatedApiRequest } from './api';
 
 setAxiosDefaults();
 
@@ -71,17 +72,12 @@ export const createMultipartUpload = async (file: UppyFile) => {
   const data = `filename=${file.name}&size=${file.data.size}&lastmodified=${
     (file.data as File).lastModified
   }&mimetype=${file.data.type}&identifier=${createResourceResponse.data.identifier}`;
-  const idToken = localStorage.token;
 
-  const createMultipartUploadResponse = await Axios.post(
-    API_PATHS.guiBackendResourcesContentPathVersion2 + FileApiPaths.CREATE,
-    data,
-    {
-      headers: {
-        Authorization: `Bearer ${idToken}`,
-      },
-    }
-  );
+  const createMultipartUploadResponse = await authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesContentPathVersion2}${FileApiPaths.CREATE}`),
+    method: 'POST',
+    data: data,
+  });
   return createMultipartUploadResponse.data;
 };
 

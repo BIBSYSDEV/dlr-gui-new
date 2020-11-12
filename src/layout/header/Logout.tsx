@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@material-ui/core';
 import { API_PATHS, API_URL } from '../../utils/constants';
-import { logout } from '../../api/api';
+import { logout } from '../../api/userApi';
 
 const Logout: FC = () => {
   const { t } = useTranslation();

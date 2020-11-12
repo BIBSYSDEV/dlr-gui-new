@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { RouteProps, useParams } from 'react-router-dom';
 import { Creator, emptyCreator, emptyResource, Resource } from '../types/resource.types';
-import { getResource, getResourceContents, getResourceCreators, getResourceTags } from '../api/api';
+import { getResource, getResourceContents, getResourceCreators, getResourceTags } from '../api/resourceApi';
 import { CircularProgress } from '@material-ui/core';
 import { API_PATHS, API_URL } from '../utils/constants';
 import PreviewComponent from '../components/PreviewComponent';

@@ -7,7 +7,7 @@ import LinkIcon from '@material-ui/icons/Link';
 import LinkResourceForm, { LinkResourceFormValues } from './LinkResourceForm';
 import PublicationAccordion from './PublicationAccordion';
 import { urlValidationSchema } from '../utils/validation/urlValidation';
-import { createResource } from '../api/api';
+import { createResource } from '../api/resourceApi';
 import { ResourceCreationType } from '../types/resource.types';
 
 const StyledBody = styled.div`

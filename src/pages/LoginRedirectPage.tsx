@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { getTokenExpiry, getUserData } from '../api/api';
+import { getTokenExpiry, getUserData } from '../api/userApi';
 import { toast } from 'react-toastify';
 import { setUser } from '../state/userSlice';
 import { useDispatch } from 'react-redux';
