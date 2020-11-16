@@ -11,8 +11,7 @@ setAxiosDefaults();
 export enum FileApiPaths {
   ABORT = '/upload/multipart/uppy/abort',
   COMPLETE = '/upload/multipart/uppy/complete',
-  CREATE_NEW = '/upload/multipart/uppy/create',
-  CREATE = '/{contentIdentifier}/upload/multipart/uppy/create ',
+  CREATE = '/upload/multipart/uppy/create',
   LIST_PARTS = '/upload/multipart/uppy/listparts',
   PREPARE = '/upload/multipart/uppy/prepare',
 }
@@ -28,7 +27,7 @@ export const abortMultipartUpload = async (uploadId: string, key: string) => {
 };
 
 export const completeMultipartUpload = async (uploadId: string, key: string, parts: AwsS3Part[]) => {
-  const data = `uploadId=${uploadId}&key=${key}&parts=${parts}`;
+  const data = `uploadId=${uploadId}&key=${key}&parts=${JSON.stringify(parts)}`;
   const response = await authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesContentPath}${FileApiPaths.COMPLETE}`),
     method: 'POST',
@@ -57,9 +56,11 @@ export const createResourceAndMultipartUpload = async (file: UppyFile) => {
   const createResourceResponse = await createResource(ResourceCreationType.FILE, file.name);
   const data = `filename=${file.name}&size=${file.data.size}&lastmodified=${
     (file.data as File).lastModified
-  }&mimetype=${file.data.type}&identifier=${createResourceResponse.data.identifier}`;
+  }&mimetype=${file.data.type}`;
   const createMultipartUploadResponse = await authenticatedApiRequest({
-    url: encodeURI(`${API_PATHS.guiBackendResourcesContentPath}${FileApiPaths.CREATE}`),
+    url: encodeURI(
+      `${API_PATHS.guiBackendResourcesContentPath}/${createResourceResponse.data.identifier}${FileApiPaths.CREATE}`
+    ),
     method: 'POST',
     data: data,
   });
@@ -77,7 +78,7 @@ export const listParts = async (uploadId: string, key: string) => {
 };
 
 export const prepareUploadPart = async (uploadId: string, key: string, body: Blob, number: number) => {
-  const data = `uploadId=${uploadId}&key=${key}&body=${JSON.stringify(body)}&number=${number}`;
+  const data = encodeURI(`uploadId=${uploadId}&key=${key}&body=${JSON.stringify(body)}&number=${number}`);
   const response = await authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesContentPath}${FileApiPaths.PREPARE}`),
     method: 'POST',
