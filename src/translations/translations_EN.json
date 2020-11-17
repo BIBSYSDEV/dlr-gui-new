@@ -7,6 +7,7 @@
     "login": "Login",
     "logout": "Logout",
     "next": "Next",
+    "or": "Or",
     "save": "Save"
   },
   "delivered_by": "Delivered by",
@@ -33,8 +34,21 @@
     "link_to_resource": "Link to resource",
     "new_registration": "New registration",
     "start_with_link_to_resource": "Start registration with a link",
+    "start_with_uploading_file": "Upload file if the resource is to be published on the Internet for the first time",
     "submit_link": "Start registration",
     "submitter_email": "Submitter email",
-    "title": "Title"
+    "title": "Title",
+    "files_and_license": {
+      "browse": "browse",
+      "drag_file": "Drag file here or",
+      "drag_files": "Drag files here or",
+      "drop_here": "Drop your files here",
+      "drop_single_file_here": "Drop your file here",
+      "upload_files": "Upload Files",
+      "upload_one_file": "Upload %{smart_count} file",
+      "upload_one_more_file": "Upload %{smart_count} more file",
+      "upload_x_files": "Upload %{smart_count} files",
+      "upload_x_more_files": "Upload %{smart_count} files"
+    }
   }
 }

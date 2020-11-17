@@ -1,12 +1,11 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { RouteProps, useParams } from 'react-router-dom';
-import { Creator, emptyCreator, emptyResource, Resource } from '../types/resource.types';
-import { getResource, getResourceContents, getResourceCreators, getResourceTags } from '../api/api';
-import { CircularProgress } from '@material-ui/core';
+import { Creator, emptyCreator, Resource } from '../types/resource.types';
+import { getResource, getResourceContents, getResourceCreators, getResourceTags } from '../api/resourceApi';
+import { CircularProgress, Typography } from '@material-ui/core';
 import { API_PATHS, API_URL } from '../utils/constants';
 import PreviewComponent from '../components/PreviewComponent';
-import AuthorCard from '../components/AuthorCard';
 import ResourceMetadata from '../components/ResourceMetadata';
 
 const StyledPageContent = styled.div`
@@ -37,7 +36,7 @@ interface Preview {
 
 const ResourcePage: FC<RouteProps> = (props) => {
   const { identifier } = useParams<resourcePageParamTypes>();
-  const [resource, setResource] = useState<Resource>(emptyResource);
+  const [resource, setResource] = useState<Resource>();
   const [isLoadingResource, setIsLoadingResource] = useState<boolean>(false);
   const [creator, setCreator] = useState<Creator[]>([emptyCreator]);
   const [preview, setPreview] = useState<Preview>({ type: '', theSource: '' });
@@ -57,7 +56,7 @@ const ResourcePage: FC<RouteProps> = (props) => {
           : '';
         setPreview({
           type,
-          theSource: `${API_URL}${API_PATHS.guiBackendResourcesContentPathVersion2}/contents/${response.data[0].identifier}/delivery?jwt=${localStorage.token}`,
+          theSource: `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/contents/${response?.data[0]?.identifier}/delivery?jwt=${localStorage.token}`,
         });
       });
       getResourceTags(identifier).then((response) => {
@@ -69,6 +68,7 @@ const ResourcePage: FC<RouteProps> = (props) => {
       setIsLoadingResource(true);
       collectResourceData(identifier).finally(() => {
         setIsLoadingResource(false);
+        //todo: presenter siden gradvis ?
       });
     }
   }, [identifier]);
@@ -77,16 +77,27 @@ const ResourcePage: FC<RouteProps> = (props) => {
       {isLoadingResource ? (
         <CircularProgress />
       ) : (
-        <React.Fragment>
-          <h1>{resource.features.dlr_title}</h1>
-          <PreviewComponent preview={preview} />
-          <AuthorCard
-            date={resource.features.dlr_time_published}
-            mail={resource.features.dlr_submitter_email}
-            name={creator[0].features.dlr_creator_name}
-          />
-          <ResourceMetadata type={preview.type} kategori={[resource.features.dlr_subject_nsi_id]} tags={tags} />
-        </React.Fragment>
+        <>
+          {resource && (
+            <>
+              <Typography variant="h1">{resource?.features?.dlr_title}</Typography>
+              {preview && <PreviewComponent preview={preview} />}
+              {creator[0]?.features?.dlr_creator_name && (
+                <Typography variant="h2">Av {creator[0].features.dlr_creator_name}</Typography>
+              )}
+              {resource.features.dlr_time_published && (
+                <Typography variant="body2">Publisert {resource.features.dlr_time_published} </Typography>
+              )}
+              {resource.features.dlr_submitter_email && (
+                <Typography variant="body2">Eier: {resource.features.dlr_submitter_email} </Typography>
+              )}
+              {/*//TODO: egne komponenter for ResourceMetadata*/}
+              {tags && resource.features.dlr_subject_nsi_id && (
+                <ResourceMetadata type={preview.type} kategori={[resource.features.dlr_subject_nsi_id]} tags={tags} />
+              )}
+            </>
+          )}
+        </>
       )}
     </StyledPageContent>
   );

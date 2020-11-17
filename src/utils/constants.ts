@@ -16,7 +16,7 @@ export const API_PATHS = {
   guiBackendUserSettingsPath: '/dlr-gui-backend-user-settings/v1',
   guiBackendInstitutionUserAutorizationsPath: '/dlr-gui-backend-institution-user-authorizations/v1',
   guiBackendResourcesStoragePath: '/dlr-gui-backend-resources-storage/v1',
-  guiBackendResourcesContentPath: '/dlr-gui-backend-resources-content/v1',
+  guiBackendResourcesContentPath: '/dlr-gui-backend-resources-content/v2/contents',
   guiBackendResearchProjectsPath: '/dlr-gui-backend-research-projects/v1',
   guiBackendDmpsPath: '/dlr-gui-backend-dmps/v1',
   guiBackendResourcesSearchPath: '/dlr-gui-backend-resources-search/v1',
@@ -35,5 +35,4 @@ export const API_PATHS = {
   guiBackendDefaultsPath: '/dlr-gui-backend-resources-defaults/v1',
   guiBackendMediasitePath: '/dlr-gui-backend-mediasite/v1',
   depotApiPath: '/dlr-depot-api/v1',
-  guiBackendResourcesContentPathVersion2: '/dlr-gui-backend-resources-content/v2',
 };

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../components/PageHeader';
 import { Button, CircularProgress, Step, StepButton, Stepper, Typography } from '@material-ui/core';
-import { getResource, getResourceDefaults, postResourceFeature } from '../api/api';
+import { getResource, getResourceDefaults, postResourceFeature } from '../api/resourceApi';
 import { emptyResource, Resource } from '../types/resource.types';
 import deepmerge from 'deepmerge';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';

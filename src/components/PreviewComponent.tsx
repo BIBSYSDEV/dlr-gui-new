@@ -13,11 +13,6 @@ interface PreviewComponentProps {
   preview: Preview;
 }
 
-/*
-Enkel komponent for å vise frem media innhold
-Den mottar kilden til innholdet og typen innholdet er av.
-Per nå støttes "video" og "image" som typer
-*/
 const PreviewComponent: FC<PreviewComponentProps> = (props) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
@@ -26,25 +21,18 @@ const PreviewComponent: FC<PreviewComponentProps> = (props) => {
     }
   }, [props]);
 
-  /*
-  Metode som bestemmer visningstype basert på 
-  hvilken form for data som mottas.
-  Per nå støttes bare video eller bilde fremvisning.
-  Brukeren får beskjed om det ressursen ikke er en av disse typene
-  */
   const getPreviewModeBaseOnType = () => {
+    //todo: inline i JSX
     if (props.preview.type === imageType) {
       return (
         <>
-          <picture>
-            <img src={props.preview.theSource} width="400px" height="300px" alt="Preview of resource" />
-          </picture>
+          <img src={props.preview.theSource} width="400px" height="300px" alt="Preview of resource" />
         </>
       );
     } else if (props.preview.type === videoType) {
       return (
         <>
-          <video width="400px" height="300px" src={props.preview.theSource} controls></video>
+          <video width="400px" height="300px" src={props.preview.theSource} controls />
         </>
       );
     } else {
@@ -52,7 +40,9 @@ const PreviewComponent: FC<PreviewComponentProps> = (props) => {
     }
   };
 
-  return <>{!isLoading ? <div>{getPreviewModeBaseOnType()}</div> : <CircularProgress />}</>;
+  return (
+    <>{!isLoading ? <div style={{ minHeight: '300px' }}>{getPreviewModeBaseOnType()}</div> : <CircularProgress />}</>
+  );
 };
 
 export default PreviewComponent;

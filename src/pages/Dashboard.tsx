@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { toast } from 'react-toastify';
 import { Button, List, ListItem, ListItemIcon, ListItemText, TextField, Typography } from '@material-ui/core';
 import ImageIcon from '@material-ui/icons/Image';
-import { searchResources } from '../api/api';
+import { searchResources } from '../api/resourceApi';
 import { useTranslation } from 'react-i18next';
 import { SearchResult } from '../types/search.types';
 import { Resource } from '../types/resource.types';
