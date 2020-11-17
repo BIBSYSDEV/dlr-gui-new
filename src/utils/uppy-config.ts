@@ -5,7 +5,6 @@ import {
   completeMultipartUpload,
   createMultipartUpload,
   createResourceAndMultipartUpload,
-  createResourceAndMultipartUploadResponseType,
   listParts,
   prepareUploadPart,
 } from '../api/fileApi';
@@ -36,7 +35,7 @@ export const createUppy = (resourceIdentifier: string, shouldAllowMultipleFiles:
     createMultipartUpload: async (file: UppyFile) => {
       if (resourceIdentifier) return await createMultipartUpload(file);
       else {
-        const response: createResourceAndMultipartUploadResponseType = await createResourceAndMultipartUpload(file);
+        const response = await createResourceAndMultipartUpload(file);
         resourceIdentifier = response.resourceIdentifier;
         return response.data;
       }

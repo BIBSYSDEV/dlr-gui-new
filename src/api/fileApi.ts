@@ -44,11 +44,6 @@ export const createMultipartUpload = async (file: UppyFile) => {
   return createMultipartUploadResponse.data;
 };
 
-export interface createResourceAndMultipartUploadResponseType {
-  resourceIdentifier: string;
-  data: any;
-}
-
 export const createResourceAndMultipartUpload = async (file: UppyFile) => {
   const createResourceResponse = await createResource(ResourceCreationType.FILE, file.name);
   const contentId = createResourceResponse.data.contents[0].identifier;
