@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Footer from './layout/Footer';
 import Header from './layout/header/Header';
 import { BrowserRouter } from 'react-router-dom';
-import Breadcrumbs from './layout/Breadcrumbs';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -100,7 +99,6 @@ const App: FC = () => {
         <StyledApp>
           <ToastContainer autoClose={3000} hideProgressBar />
           <Header />
-          <Breadcrumbs />
           <StyledContent>
             <AppRoutes />
           </StyledContent>
