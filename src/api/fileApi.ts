@@ -54,13 +54,12 @@ export interface createResourceAndMultipartUploadResponseType {
 
 export const createResourceAndMultipartUpload = async (file: UppyFile) => {
   const createResourceResponse = await createResource(ResourceCreationType.FILE, file.name);
+  const contentId = createResourceResponse.data.contents[0].identifier;
   const data = `filename=${file.name}&size=${file.data.size}&lastmodified=${
     (file.data as File).lastModified
   }&mimetype=${file.data.type}`;
   const createMultipartUploadResponse = await authenticatedApiRequest({
-    url: encodeURI(
-      `${API_PATHS.guiBackendResourcesContentPath}/${createResourceResponse.data.identifier}${FileApiPaths.CREATE}`
-    ),
+    url: encodeURI(`${API_PATHS.guiBackendResourcesContentPath}/${contentId}${FileApiPaths.CREATE}`),
     method: 'POST',
     data: data,
   });

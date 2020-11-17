@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 
@@ -6,6 +6,12 @@ import { File } from '../types/file.types';
 import useUppy from '../utils/useUppy';
 import FileUploader from '../components/FileUploader';
 import PublicationAccordion from './PublicationAccordion';
+import { Button } from '@material-ui/core';
+import { LinkResourceFormValues } from './LinkResourceForm';
+import { urlValidationSchema } from '../utils/validation/urlValidation';
+import { createResource } from '../api/resourceApi';
+import { ResourceCreationType } from '../types/resource.types';
+import { useHistory } from 'react-router-dom';
 
 interface UploadRegistrationProps {
   expanded: boolean;
@@ -15,7 +21,7 @@ interface UploadRegistrationProps {
 const UploadRegistration: FC<UploadRegistrationProps> = ({ expanded, onChange }) => {
   const { t } = useTranslation();
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  const uppy = useUppy();
+  const uppy = useUppy('', false);
 
   return (
     <PublicationAccordion
@@ -28,11 +34,13 @@ const UploadRegistration: FC<UploadRegistrationProps> = ({ expanded, onChange })
       {uppy ? (
         <>
           <FileUploader uppy={uppy} addFile={(newFile: File) => setUploadedFiles((files) => [newFile, ...files])} />
-          {uploadedFiles.map((file) => (
-            <div key={file.identifier}>
-              <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(file, null, 2)}</pre>
-            </div>
-          ))}
+          {uploadedFiles.map((file) => {
+            return (
+              <div key={file.identifier}>
+                <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(file, null, 2)}</pre>
+              </div>
+            );
+          })}
         </>
       ) : null}
     </PublicationAccordion>
