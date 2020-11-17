@@ -11,7 +11,8 @@
     "home": "Hjem",
     "login": "Logg inn",
     "logout": "Logg ut",
-    "next": "Next",
+    "next": "Neste",
+    "or": "Eller",
     "save": "Lagre"
   },
   "delivered_by": "Levert av",
@@ -43,10 +44,15 @@
     "submitter_email": "Registrators epost",
     "title": "Tittel",
     "files_and_license": {
-      "browse": "browse",
-      "drag_file": "Drag file here or",
-      "drag_files": "Drag files here or",
-      "drop_here": "Drop your files here"
+      "browse": "velg",
+      "drag_file": "Dra fil hit eller",
+      "drag_files": "Dra filer hit eller",
+      "drop_here": "Slipp filene dine her",
+      "upload_files": "Last opp filer",
+      "upload_one_file": "Last opp %{smart_count} fil",
+      "upload_one_more_file": "Last opp %{smart_count} fil til",
+      "upload_x_files": "Last opp %{smart_count} filer",
+      "upload_x_more_files": "Last opp %{smart_count} filer til"
     }
   }
 }

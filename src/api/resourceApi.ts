@@ -14,7 +14,6 @@ export const searchResources = (query: string): Promise<AxiosResponse<SearchResu
 };
 
 export const createResource = (type: string, content: string) => {
-  //TODO: helst kunne poste som JSON
   const data = `type=${type}&app=learning&content=${content}`;
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources`),

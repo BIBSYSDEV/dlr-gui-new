@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 
@@ -6,12 +6,6 @@ import { File } from '../types/file.types';
 import useUppy from '../utils/useUppy';
 import FileUploader from '../components/FileUploader';
 import PublicationAccordion from './PublicationAccordion';
-import { Button } from '@material-ui/core';
-import { LinkResourceFormValues } from './LinkResourceForm';
-import { urlValidationSchema } from '../utils/validation/urlValidation';
-import { createResource } from '../api/resourceApi';
-import { ResourceCreationType } from '../types/resource.types';
-import { useHistory } from 'react-router-dom';
 
 interface UploadRegistrationProps {
   expanded: boolean;

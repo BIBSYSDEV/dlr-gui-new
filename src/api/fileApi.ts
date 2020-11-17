@@ -2,11 +2,8 @@ import { AwsS3Part } from '@uppy/aws-s3-multipart';
 import { UppyFile } from '@uppy/core';
 import { API_PATHS } from '../utils/constants';
 import { createResource } from './resourceApi';
-import { setAxiosDefaults } from '../utils/axios-config';
 import { ResourceCreationType } from '../types/resource.types';
 import { authenticatedApiRequest } from './api';
-
-setAxiosDefaults();
 
 export enum FileApiPaths {
   ABORT = '/upload/multipart/uppy/abort',

@@ -13,6 +13,7 @@
     "login": "Login",
     "logout": "Logout",
     "next": "Next",
+    "or": "Or",
     "save": "Save"
   },
   "delivered_by": "Delivered by",
@@ -47,7 +48,13 @@
       "browse": "browse",
       "drag_file": "Drag file here or",
       "drag_files": "Drag files here or",
-      "drop_here": "Drop your files here"
+      "drop_here": "Drop your files here",
+      "drop_single_file_here": "Drop your file here",
+      "upload_files": "Upload Files",
+      "upload_one_file": "Upload %{smart_count} file",
+      "upload_one_more_file": "Upload %{smart_count} more file",
+      "upload_x_files": "Upload %{smart_count} files",
+      "upload_x_more_files": "Upload %{smart_count} files"
     }
   }
 }
