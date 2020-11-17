@@ -80,7 +80,7 @@ const ResourcePage: FC<RouteProps> = (props) => {
         <>
           {resource && (
             <>
-              <h1>{resource?.features?.dlr_title}</h1>
+              <Typography variant="h1">{resource?.features?.dlr_title}</Typography>
               {preview && <PreviewComponent preview={preview} />}
               {creator[0]?.features?.dlr_creator_name && (
                 <Typography variant="h2">Av {creator[0].features.dlr_creator_name}</Typography>
