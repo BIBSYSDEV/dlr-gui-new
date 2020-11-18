@@ -8,8 +8,10 @@
     "logout": "Logout",
     "next": "Next",
     "or": "Or",
+    "search": "Search",
     "save": "Save"
   },
+  "search_for_resources": "Search for resources",
   "delivered_by": "Delivered by",
   "error": {
     "404_page": "Got lost? (404-page)"
@@ -33,8 +35,8 @@
     },
     "link_to_resource": "Link to resource",
     "new_registration": "New registration",
-    "start_with_link_to_resource": "Start registration with a link",
-    "start_with_uploading_file": "Upload file if the resource is to be published on the Internet for the first time",
+    "start_with_link_to_resource": "Start with a link to the original version",
+    "start_with_uploading_file": "Start by uploading a main file",
     "submit_link": "Start registration",
     "submitter_email": "Submitter email",
     "title": "Title",

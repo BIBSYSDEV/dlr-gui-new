@@ -48,13 +48,13 @@ const Dashboard: FC = () => {
 
   return (
     <StyledDashboard>
-      <h1>Search for resources</h1>
+      <h1>{t('search_for_resources')}</h1>
 
       <SearchFieldWrapper>
         <form onSubmit={triggerSearch}>
           <TextField id="standard-basic" onChange={updateSearchTermValue} value={searchTerm} />
           <Button disabled={!searchTerm && searchTerm.length < 4} color="primary" variant="contained" type="submit">
-            {t('search')}
+            {t('common.search')}
           </Button>
         </form>
       </SearchFieldWrapper>

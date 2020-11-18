@@ -11,6 +11,8 @@ import { getAnonymousWebToken, getUserData } from './api/userApi';
 import AppRoutes from './AppRoutes';
 import { RootState } from './state/rootReducer';
 import { CircularProgress } from '@material-ui/core';
+import { USE_MOCK_DATA } from './utils/constants';
+import { mockUser } from './api/mock-interceptor';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -22,7 +24,7 @@ const StyledContent = styled.div`
   display: flex;
   flex-direction: column;
   align-self: center;
-  width: 100%;
+  width: 85vw;
   max-width: ${({ theme }) => theme.breakpoints.values.lg + 'px'};
   align-items: center;
   flex-grow: 1;
@@ -61,15 +63,21 @@ const App: FC = () => {
 
   useEffect(() => {
     if (localStorage.token && !isTokenAnonymous() && !isTokenExpired() && !user.id) {
+      console.log('SJEKKER USER');
       setIsLoadingUser(true);
       getUserData()
         .then((response) => {
+          console.log('response', response);
           dispatch(setUser(response.data));
         })
         .catch((error) => {
           toast.error(error.message);
         })
         .finally(() => setIsLoadingUser(false));
+    }
+    if (USE_MOCK_DATA) {
+      dispatch(setUser(mockUser));
+      setIsLoadingUser(false);
     }
   }, [dispatch, user.id]);
 

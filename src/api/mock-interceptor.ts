@@ -8,7 +8,7 @@ import { License } from '../types/license.types';
 import { Content } from '../types/content.types';
 import { FileApiPaths } from './fileApi';
 
-const mockUser: User = {
+export const mockUser: User = {
   id: '123',
   issuer: 'me',
   institution: '',
@@ -103,7 +103,7 @@ export const interceptRequestsOnMock = () => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve([200, mockCreateUpload]);
-      }, 2000);
+      }, 5000);
     });
   });
   mock
@@ -128,6 +128,7 @@ export const interceptRequestsOnMock = () => {
   // GET ANONYMOUS WEB TOKEN
   const mockToken = 'mockToken';
   mock.onGet(new RegExp(`${API_PATHS.guiBackendLoginPath}/anonymous.*`)).reply(200, mockToken);
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendAuthPath}/tokens/jwts/`)).reply(200, { exp: 999999999 });
 
   mock.onAny().reply(function (config) {
     throw new Error('Could not find mock for ' + config.url);

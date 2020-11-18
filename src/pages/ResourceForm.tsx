@@ -2,9 +2,9 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../components/PageHeader';
-import { Button, CircularProgress, Step, StepButton, Stepper, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Divider, Step, StepButton, Stepper, Typography } from '@material-ui/core';
 import { getResource, getResourceDefaults, postResourceFeature } from '../api/resourceApi';
-import { emptyResource, Resource } from '../types/resource.types';
+import { emptyResource, Resource, ResourceCreationType } from '../types/resource.types';
 import deepmerge from 'deepmerge';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import * as Yup from 'yup';
@@ -18,16 +18,16 @@ const StyledForm = styled(Form)`
   width: 100%;
   align-items: center;
   justify-items: center;
-  margin-left: 4rem;
-  margin-right: 4rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
 `;
 
 const StyledPanel = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  align-items: center;
-  justify-items: center;
+  //align-items: center;
+  //justify-items: center;
   min-height: 10rem;
   padding: 2rem 2rem 1rem;
 `;
@@ -50,9 +50,10 @@ export enum ResourceFormSteps {
 interface ResourceFormProps {
   identifier?: string;
   uppy: Uppy;
+  resourceType: ResourceCreationType;
 }
 
-const ResourceForm: FC<ResourceFormProps> = ({ uppy, identifier }) => {
+const ResourceForm: FC<ResourceFormProps> = ({ uppy, identifier, resourceType }) => {
   const { t } = useTranslation();
   const [resource, setResource] = useState<Resource>(emptyResource);
   const [isLoadingResource, setIsLoadingResource] = useState<boolean>(false);
@@ -65,7 +66,11 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, identifier }) => {
     t('resource.form_steps.access_and_licence'),
     t('resource.form_steps.preview'),
   ];
-  const [activeStep, setActiveStep] = useState<ResourceFormSteps>(ResourceFormSteps.Files);
+
+  const [activeStep, setActiveStep] = useState<ResourceFormSteps>(ResourceFormSteps.Description);
+  useEffect(() => {
+    resourceType === ResourceCreationType.FILE && setActiveStep(ResourceFormSteps.Files);
+  }, [resourceType]);
 
   interface ResourceFormValues {
     resource: Resource;
@@ -186,7 +191,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, identifier }) => {
                       <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(formikProps.values, null, 2)}</pre>
                     </StyledPanel>
                   )}
-
+                  <Divider style={{ marginTop: '1rem', width: '100%' }} />
                   <StyledButtonWrapper>
                     <div>
                       {!allChangesSaved && <CircularProgress size="1rem" />}
