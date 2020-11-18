@@ -6,6 +6,7 @@ import { User } from '../types/user.types';
 import { Contributor, Resource } from '../types/resource.types';
 import { License } from '../types/license.types';
 import { Content } from '../types/content.types';
+import { FileApiPaths } from './fileApi';
 
 const mockUser: User = {
   id: '123',
@@ -16,6 +17,12 @@ const mockUser: User = {
 };
 
 const mockResource: Resource = {
+  contents: [
+    {
+      features: {},
+      identifier: '456',
+    },
+  ],
   features: {
     dlr_title: 'MockTitle',
   },
@@ -77,6 +84,10 @@ const mockContent: Content[] = [
   },
 ];
 
+const mockCreateUpload = { uploadId: 'asd', key: 'sfd' };
+const mockPrepareUpload = { url: `${API_PATHS.guiBackendResourcesContentPath}/xxx` };
+const mockCompleteUpload = {};
+
 const mockTags: string[] = ['mock tag'];
 
 // AXIOS INTERCEPTOR
@@ -87,6 +98,22 @@ export const interceptRequestsOnMock = () => {
 
   // USER
   mock.onGet(new RegExp(`${API_PATHS.guiBackendUsersPath}/users/authorized`)).reply(200, mockUser);
+
+  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesContentPath}.*${FileApiPaths.CREATE}`)).reply((config) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve([200, mockCreateUpload]);
+      }, 2000);
+    });
+  });
+  mock
+    .onPost(new RegExp(`${API_PATHS.guiBackendResourcesContentPath}${FileApiPaths.PREPARE}`))
+    .reply(200, mockPrepareUpload);
+  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesContentPath}${FileApiPaths.LIST_PARTS}`)).reply(200);
+  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesContentPath}${FileApiPaths.ABORT}`)).reply(200);
+  mock
+    .onPost(new RegExp(`${API_PATHS.guiBackendResourcesContentPath}${FileApiPaths.COMPLETE}`))
+    .reply(200, mockCompleteUpload);
 
   // RESOURCE
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*`)).reply(200, mockResource);
