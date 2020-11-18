@@ -1,21 +1,19 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 
-import { File } from '../types/file.types';
-import useUppy from '../utils/useUppy';
-import FileUploader from '../components/FileUploader';
+import { Uppy } from '../types/file.types';
 import PublicationAccordion from './PublicationAccordion';
+import UppyDashboard from '../components/UppyDashboard';
 
 interface UploadRegistrationProps {
   expanded: boolean;
   onChange: (event: React.ChangeEvent<unknown>, isExpanded: boolean) => void;
+  uppy: Uppy;
 }
 
-const UploadRegistration: FC<UploadRegistrationProps> = ({ expanded, onChange }) => {
+const UploadRegistration: FC<UploadRegistrationProps> = ({ uppy, expanded, onChange }) => {
   const { t } = useTranslation();
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  const uppy = useUppy('', false);
 
   return (
     <PublicationAccordion
@@ -27,14 +25,7 @@ const UploadRegistration: FC<UploadRegistrationProps> = ({ expanded, onChange })
       ariaControls="registration-method-file">
       {uppy ? (
         <>
-          <FileUploader uppy={uppy} addFile={(newFile: File) => setUploadedFiles((files) => [newFile, ...files])} />
-          {uploadedFiles.map((file) => {
-            return (
-              <div key={file.identifier}>
-                <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(file, null, 2)}</pre>
-              </div>
-            );
-          })}
+          <UppyDashboard uppy={uppy} />
         </>
       ) : null}
     </PublicationAccordion>

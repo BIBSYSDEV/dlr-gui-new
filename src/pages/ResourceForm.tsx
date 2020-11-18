@@ -9,6 +9,8 @@ import deepmerge from 'deepmerge';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import * as Yup from 'yup';
 import DescriptionFields from './DescriptionFields';
+import { Uppy } from '../types/file.types';
+import FileFields from './FileFields';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -37,10 +39,6 @@ const StyledButtonWrapper = styled.div`
   padding: 2rem 2rem 1rem;
 `;
 
-interface ResourceFormProps {
-  identifier?: string;
-}
-
 export enum ResourceFormSteps {
   Description = 0,
   Contributors = 1,
@@ -49,11 +47,17 @@ export enum ResourceFormSteps {
   Preview = 4,
 }
 
-const ResourceForm: FC<ResourceFormProps> = ({ identifier }) => {
+interface ResourceFormProps {
+  identifier?: string;
+  uppy: Uppy;
+}
+
+const ResourceForm: FC<ResourceFormProps> = ({ uppy, identifier }) => {
   const { t } = useTranslation();
   const [resource, setResource] = useState<Resource>(emptyResource);
   const [isLoadingResource, setIsLoadingResource] = useState<boolean>(false);
-  const [allChangesSaved, setAllChangesSaved] = useState<boolean>(false);
+  const [allChangesSaved, setAllChangesSaved] = useState<boolean>(true);
+
   const steps = [
     t('resource.form_steps.description'),
     t('resource.form_steps.contributors'),
@@ -61,7 +65,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ identifier }) => {
     t('resource.form_steps.access_and_licence'),
     t('resource.form_steps.preview'),
   ];
-  const [activeStep, setActiveStep] = useState<ResourceFormSteps>(ResourceFormSteps.Description);
+  const [activeStep, setActiveStep] = useState<ResourceFormSteps>(ResourceFormSteps.Files);
 
   interface ResourceFormValues {
     resource: Resource;
@@ -174,7 +178,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ identifier }) => {
                   )}
                   {activeStep === ResourceFormSteps.Files && (
                     <StyledPanel>
-                      <Typography>Files-fields not implemented</Typography>
+                      <FileFields uppy={uppy} />
                     </StyledPanel>
                   )}
                   {activeStep === ResourceFormSteps.Preview && (
