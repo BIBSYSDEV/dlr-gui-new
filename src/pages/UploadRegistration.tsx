@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
+import PublishIcon from '@material-ui/icons/Publish';
 
 import { Uppy } from '../types/file.types';
 import PublicationAccordion from './PublicationAccordion';
@@ -19,7 +19,7 @@ const UploadRegistration: FC<UploadRegistrationProps> = ({ uppy, expanded, onCha
     <PublicationAccordion
       dataTestId="new-registration-file"
       headerLabel={t('resource.start_with_uploading_file')}
-      icon={<CloudDownloadIcon />}
+      icon={<PublishIcon />}
       expanded={expanded}
       onChange={onChange}
       ariaControls="registration-method-file">
