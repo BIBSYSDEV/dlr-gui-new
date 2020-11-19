@@ -7,8 +7,8 @@ import ResourceForm from './ResourceForm';
 import LinkResource from './LinkResource';
 import UploadRegistration from './UploadRegistration';
 import { Typography } from '@material-ui/core';
-import useUppy from '../utils/useUppy';
 import { ResourceCreationType } from '../types/resource.types';
+import useUppy from '../utils/useUppy';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -22,8 +22,6 @@ const StyledEditPublication = styled.div`
 interface EditResourcePageParamTypes {
   identifier: string;
 }
-
-class ResourceType {}
 
 const EditResourcePage: FC = () => {
   let { identifier } = useParams<EditResourcePageParamTypes>();
