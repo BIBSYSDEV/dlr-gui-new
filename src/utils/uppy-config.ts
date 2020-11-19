@@ -9,7 +9,9 @@ import {
   prepareUploadPart,
 } from '../api/fileApi';
 import { Uppy as UppyType } from '../types/file.types';
-
+import { setResource } from '../state/resourceSlice';
+import { Resource } from '../types/resource.types';
+import { store } from '../state/store';
 interface UppyArgs {
   uploadId: string;
   key: string;
@@ -36,7 +38,12 @@ export const createUppy = (resourceIdentifier: string, shouldAllowMultipleFiles:
       if (resourceIdentifier) return await createMultipartUpload(file);
       else {
         const response = await createResourceAndMultipartUpload(file);
-        resourceIdentifier = response.resourceIdentifier;
+        const resource: Resource = {
+          identifier: response.resourceIdentifier,
+          features: {},
+        };
+        store.dispatch(setResource(resource));
+        console.log('CREATED');
         return response.data;
       }
     },

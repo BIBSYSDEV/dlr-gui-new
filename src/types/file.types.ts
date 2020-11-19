@@ -16,5 +16,4 @@ export const emptyFile: File = {
 
 export interface Uppy extends UppyType<StrictTypes> {
   hasUploadSuccessEventListener?: boolean;
-  resourceIdentifier?: string;
 }

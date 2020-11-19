@@ -9,7 +9,7 @@ import { Content } from '../types/content.types';
 import { FileApiPaths } from './fileApi';
 
 export const mockUser: User = {
-  id: '123',
+  id: 'user123',
   issuer: 'me',
   institution: '',
   email: 'test@test.com',
@@ -26,14 +26,14 @@ const mockResource: Resource = {
   features: {
     dlr_title: 'MockTitle',
   },
-  identifier: '123',
+  identifier: 'resource-123',
 };
 
 const mockCalculatedResource: Resource = {
   features: {
     dlr_title: 'MockTitle',
   },
-  identifier: '123',
+  identifier: 'resource-345',
 };
 
 const mockResourceContributors: Contributor[] = [
@@ -103,7 +103,7 @@ export const interceptRequestsOnMock = () => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve([200, mockCreateUpload]);
-      }, 5000);
+      }, 2500);
     });
   });
   mock
