@@ -24,12 +24,8 @@ const AppRoutes: FC = () => {
         <Route exact path="/privacy-policy" component={PrivacyPolicy} />
         <Route exact path="/loginRedirect" component={LoginRedirectPage} />
         {/* CreatorRoutes */}
-        {user.id && (
-          <>
-            <Route exact path="/registration" component={EditResourcePage} />
-            <Route exact path="/registration/:identifier" component={EditResourcePage} />
-          </>
-        )}
+        <Route exact path="/registration" component={() => <EditResourcePage id={user.id} />} />
+        <Route exact path="/registration/:identifier" component={() => <EditResourcePage id={user.id} />} />
         <Route path="*" component={NotFound} />
       </Switch>
     </Suspense>
