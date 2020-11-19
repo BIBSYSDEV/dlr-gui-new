@@ -68,7 +68,7 @@ const FileFields: FC<FileFieldsProps> = ({ uppy }) => {
             fullWidth
             label={t('resource.main_file.name')}
             onBlur={(event) => {
-              console.log('TODO: Save filename');
+              //TODO: trigger save
             }}
           />
           <StatusBarWrapper>
