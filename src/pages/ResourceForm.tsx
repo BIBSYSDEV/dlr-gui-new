@@ -26,8 +26,6 @@ const StyledPanel = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  //align-items: center;
-  //justify-items: center;
   min-height: 10rem;
   padding: 2rem 2rem 1rem;
 `;
