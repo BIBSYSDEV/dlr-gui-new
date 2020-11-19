@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Card, CircularProgress, Chip } from '@material-ui/core';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
 const FormWrapper = styled.div`
   margin-left: 1rem;
@@ -28,6 +29,7 @@ Tags(liste med tags)
 */
 const ResourceMetadata: FC<any> = (props: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { t } = useTranslation();
   useEffect(() => {
     if (props != null) {
       setIsLoading(false);
@@ -41,11 +43,15 @@ const ResourceMetadata: FC<any> = (props: any) => {
   */
   const getTags = () => {
     if (props.tags.length === 0) {
-      return <h5>Ingen tags</h5>;
+      return (
+        <h5>
+          {t('common.none')} {t('resource.metadata.tags').toLowerCase()}
+        </h5>
+      );
     } else {
       return (
         <>
-          <h5>Tags:</h5>
+          <h5>{t('resource.metadata.tags')}:</h5>
           {props.tags.map((tag: string, i: number) => {
             return (
               <span key={i}>
@@ -67,11 +73,15 @@ const ResourceMetadata: FC<any> = (props: any) => {
   */
   const getKategori = () => {
     if (props.kategori.length === 0 || props.kategori[0] == null) {
-      return <h5>Ingen kategorier</h5>;
+      return (
+        <h5>
+          {t('common.none')} {t('resource.metadata.categories').toLowerCase()}
+        </h5>
+      );
     } else {
       return (
         <>
-          <h5>Kategorier:</h5>
+          <h5>{t('resource.metadata.categories')}:</h5>
           {props.kategori.map((kategori: string, i: number) => {
             return (
               <span key={i}>
@@ -90,7 +100,9 @@ const ResourceMetadata: FC<any> = (props: any) => {
         <Card>
           <FormWrapper>
             <TitleWrapper>
-              <h5>Type: {props.type}</h5>
+              <h5>
+                {t('resource.metadata.type')}: {props.type}
+              </h5>
             </TitleWrapper>
             <InfoWrappers>{getKategori()}</InfoWrappers>
             <InfoWrappers>{getTags()}</InfoWrappers>
