@@ -7,6 +7,7 @@ import LoginRedirectPage from './pages/LoginRedirectPage';
 import { RootState } from './state/rootReducer';
 import { Suspense } from 'react';
 import DelayedFallback from './components/DelayedFallback';
+import { v4 as uuidv4 } from 'uuid';
 
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const EditResourcePage = lazy(() => import('./pages/EditResourcePage'));
@@ -26,8 +27,13 @@ const AppRoutes: FC = () => {
         {/* CreatorRoutes */}
         {user.id && (
           <>
-            <Route exact path="/registration" component={EditResourcePage} />
-            <Route exact path="/registration/:identifier" component={EditResourcePage} />
+            <Route exact path="/registration" render={(props) => <EditResourcePage {...props} key={uuidv4()} />} />
+            {/*hack: forcing page refresh*/}
+            <Route
+              exact
+              path="/registration/:identifier"
+              render={(props) => <EditResourcePage {...props} key={uuidv4()} />}
+            />
           </>
         )}
         <Route path="*" component={NotFound} />
