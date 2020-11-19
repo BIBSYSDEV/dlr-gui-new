@@ -24,7 +24,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ resource, formikProps, 
             {...field}
             variant="filled"
             fullWidth
-            label={t('resource.title')}
+            label={t('resource.metadata.title')}
             error={touched && !!error}
             helperText={<ErrorMessage name={field.name} />}
             onBlur={(event) => {
@@ -42,7 +42,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ resource, formikProps, 
             fullWidth
             multiline
             rows="4"
-            label={t('resource.description')}
+            label={t('resource.metadata.description')}
             onBlur={(event) => {
               formikProps.handleBlur(event);
               !error && saveField(event, formikProps.resetForm, formikProps.values);

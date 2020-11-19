@@ -55,7 +55,7 @@ const Header: FC = () => {
       )}
       {user.id ? (
         <div>
-          Logged in as {user.name} <Logout />
+          {t('user.logged_in_as')} {user.name} <Logout />
         </div>
       ) : (
         <Login />
