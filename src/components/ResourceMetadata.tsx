@@ -45,13 +45,13 @@ const ResourceMetadata: FC<any> = (props: any) => {
     if (props.tags.length === 0) {
       return (
         <h5>
-          {t('common.none')} {t('resource.tags').toLowerCase()}
+          {t('common.none')} {t('resource.metadata.tags').toLowerCase()}
         </h5>
       );
     } else {
       return (
         <>
-          <h5>{t('resource.tags')}:</h5>
+          <h5>{t('resource.metadata.tags')}:</h5>
           {props.tags.map((tag: string, i: number) => {
             return (
               <span key={i}>
@@ -75,13 +75,13 @@ const ResourceMetadata: FC<any> = (props: any) => {
     if (props.kategori.length === 0 || props.kategori[0] == null) {
       return (
         <h5>
-          {t('common.none')} {t('resource.categories').toLowerCase()}
+          {t('common.none')} {t('resource.metadata.categories').toLowerCase()}
         </h5>
       );
     } else {
       return (
         <>
-          <h5>{t('resource.categories')}:</h5>
+          <h5>{t('resource.metadata.categories')}:</h5>
           {props.kategori.map((kategori: string, i: number) => {
             return (
               <span key={i}>
@@ -101,7 +101,7 @@ const ResourceMetadata: FC<any> = (props: any) => {
           <FormWrapper>
             <TitleWrapper>
               <h5>
-                {t('resource.type')}: {props.type}
+                {t('resource.metadata.type')}: {props.type}
               </h5>
             </TitleWrapper>
             <InfoWrappers>{getKategori()}</InfoWrappers>

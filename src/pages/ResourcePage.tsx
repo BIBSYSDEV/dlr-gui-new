@@ -23,17 +23,6 @@ interface Preview {
   theSource: string;
 }
 
-//TODO: legg til lisenser
-//TODO: Created dato må vises i tillegg til eksisterende publiseringsdato
-//TODO: Liste ut contributors (medforfattere)
-//TODO: Ressurs beskrivelse
-//TODO: Kategori (subject) må mappes til subject.json istedet for å bare vise emnekode
-//TODO: Siteringslenke med knapp for å kopiere til clipboard
-//TODO: Delingslenke med knapp for å kopiere til clipboard
-//TODO: Delingsmulighet innebyggingsskode (se figma)
-//TODO: Oversikt over innhold
-//TODO: komponent som viser lignende ressurser
-
 const ResourcePage: FC<RouteProps> = (props) => {
   const { t } = useTranslation();
   const { identifier } = useParams<resourcePageParamTypes>();
@@ -85,20 +74,19 @@ const ResourcePage: FC<RouteProps> = (props) => {
               {preview && <PreviewComponent preview={preview} />}
               {creator[0]?.features?.dlr_creator_name && (
                 <Typography variant="h2">
-                  {t('resource.creator')}: {creator[0].features.dlr_creator_name}
+                  {t('resource.metadata.creator')}: {creator[0].features.dlr_creator_name}
                 </Typography>
               )}
               {resource.features.dlr_time_published && (
                 <Typography variant="body2">
-                  {t('resource.published')}: {resource.features.dlr_time_published}{' '}
+                  {t('resource.metadata.published')}: {resource.features.dlr_time_published}{' '}
                 </Typography>
               )}
               {resource.features.dlr_submitter_email && (
                 <Typography variant="body2">
-                  {t('resource.owner')}: {resource.features.dlr_submitter_email}{' '}
+                  {t('resource.metadata.owner')}: {resource.features.dlr_submitter_email}{' '}
                 </Typography>
               )}
-              {/*//TODO: egne komponenter for ResourceMetadata*/}
               {tags && resource.features.dlr_subject_nsi_id && (
                 <ResourceMetadata type={preview.type} kategori={[resource.features.dlr_subject_nsi_id]} tags={tags} />
               )}
