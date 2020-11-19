@@ -63,11 +63,9 @@ const App: FC = () => {
 
   useEffect(() => {
     if (localStorage.token && !isTokenAnonymous() && !isTokenExpired() && !user.id) {
-      console.log('SJEKKER USER');
       setIsLoadingUser(true);
       getUserData()
         .then((response) => {
-          console.log('response', response);
           dispatch(setUser(response.data));
         })
         .catch((error) => {
