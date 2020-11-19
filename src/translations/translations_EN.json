@@ -8,7 +8,11 @@
     "logout": "Logout",
     "next": "Next",
     "or": "Or",
-    "save": "Save"
+    "save": "Save",
+    "none": "No"
+  },
+  "user": {
+    "logged_in_as": "Logged in as"
   },
   "delivered_by": "Delivered by",
   "error": {
@@ -24,6 +28,12 @@
   "resource": {
     "description": "Description",
     "edit_resource": "Edit resource",
+    "categories": "Categories",
+    "tags": "Tags",
+    "type": "Resource type",
+    "creator": "Creator",
+    "published": "Published",
+    "Owner": "Owner",
     "form_steps": {
       "description": "Description",
       "contributors": "Contributors",
@@ -33,7 +43,9 @@
     },
     "link_to_resource": "Link to resource",
     "new_registration": "New registration",
+    "search_for_resources": "Search for resources",
     "start_with_link_to_resource": "Start registration with a link",
+    "preview_not_supported_filetype": "Preview is not supported for this file type",
     "start_with_uploading_file": "Upload file if the resource is to be published on the Internet for the first time",
     "submit_link": "Start registration",
     "submitter_email": "Submitter email",

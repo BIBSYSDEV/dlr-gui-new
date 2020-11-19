@@ -7,6 +7,7 @@ import { CircularProgress, Typography } from '@material-ui/core';
 import { API_PATHS, API_URL } from '../utils/constants';
 import PreviewComponent from '../components/PreviewComponent';
 import ResourceMetadata from '../components/ResourceMetadata';
+import { useTranslation } from 'react-i18next';
 
 const StyledPageContent = styled.div`
   display: grid;
@@ -23,7 +24,6 @@ interface Preview {
 }
 
 //TODO: legg til lisenser
-//TODO: språk-støtte, nå er ting harkodet til norsk
 //TODO: Created dato må vises i tillegg til eksisterende publiseringsdato
 //TODO: Liste ut contributors (medforfattere)
 //TODO: Ressurs beskrivelse
@@ -35,6 +35,7 @@ interface Preview {
 //TODO: komponent som viser lignende ressurser
 
 const ResourcePage: FC<RouteProps> = (props) => {
+  const { t } = useTranslation();
   const { identifier } = useParams<resourcePageParamTypes>();
   const [resource, setResource] = useState<Resource>();
   const [isLoadingResource, setIsLoadingResource] = useState<boolean>(false);
@@ -83,13 +84,19 @@ const ResourcePage: FC<RouteProps> = (props) => {
               <Typography variant="h1">{resource?.features?.dlr_title}</Typography>
               {preview && <PreviewComponent preview={preview} />}
               {creator[0]?.features?.dlr_creator_name && (
-                <Typography variant="h2">Av {creator[0].features.dlr_creator_name}</Typography>
+                <Typography variant="h2">
+                  {t('resource.creator')}: {creator[0].features.dlr_creator_name}
+                </Typography>
               )}
               {resource.features.dlr_time_published && (
-                <Typography variant="body2">Publisert {resource.features.dlr_time_published} </Typography>
+                <Typography variant="body2">
+                  {t('resource.published')}: {resource.features.dlr_time_published}{' '}
+                </Typography>
               )}
               {resource.features.dlr_submitter_email && (
-                <Typography variant="body2">Eier: {resource.features.dlr_submitter_email} </Typography>
+                <Typography variant="body2">
+                  {t('resource.owner')}: {resource.features.dlr_submitter_email}{' '}
+                </Typography>
               )}
               {/*//TODO: egne komponenter for ResourceMetadata*/}
               {tags && resource.features.dlr_subject_nsi_id && (

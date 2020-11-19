@@ -8,7 +8,11 @@
     "logout": "Logg ut",
     "next": "Neste",
     "or": "Eller",
-    "save": "Lagre"
+    "save": "Lagre",
+    "none": "Ingen"
+  },
+  "user": {
+    "logged_in_as": "Logget på som"
   },
   "delivered_by": "Levert av",
   "error": {
@@ -24,6 +28,12 @@
   "resource": {
     "description": "Beskrivelse",
     "edit_resource": "Rediger ressurs",
+    "categories": "Kategorier",
+    "tags": "Merker",
+    "type": "Ressurstype",
+    "creator": "Av",
+    "published": "Publisert",
+    "owner": "Eier",
     "form_steps": {
       "description": "Beskrivelse",
       "contributors": "Bidragsytere",
@@ -33,7 +43,9 @@
     },
     "link_to_resource": "Lenke til ressurs",
     "new_registration": "Ny registering",
+    "search_for_resources": "Søk etter ressurser",
     "start_with_link_to_resource": "Start registrering med en lenke",
+    "preview_not_supported_filetype": "Fohåndsvisning støttes ikke for dette filformatet",
     "start_with_uploading_file": "Last opp fil hvis ressursen skal publiseres på Internett for første gang",
     "submit_link": "Start registrering",
     "submitter_email": "Registrators epost",
