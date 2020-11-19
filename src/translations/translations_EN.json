@@ -12,6 +12,7 @@
   },
   "delivered_by": "Delivered by",
   "error": {
+    "403_page": "You must be logged in for using this feature",
     "404_page": "Got lost? (404-page)"
   },
   "feedback": {

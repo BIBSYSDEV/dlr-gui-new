@@ -7,6 +7,7 @@ import LoginRedirectPage from './pages/LoginRedirectPage';
 import { RootState } from './state/rootReducer';
 import { Suspense } from 'react';
 import DelayedFallback from './components/DelayedFallback';
+import Forbidden from './pages/Forbidden';
 
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const EditResourcePage = lazy(() => import('./pages/EditResourcePage'));
@@ -24,8 +25,13 @@ const AppRoutes: FC = () => {
         <Route exact path="/privacy-policy" component={PrivacyPolicy} />
         <Route exact path="/loginRedirect" component={LoginRedirectPage} />
         {/* CreatorRoutes */}
-        <Route exact path="/registration" component={() => <EditResourcePage id={user.id} />} />
-        <Route exact path="/registration/:identifier" component={() => <EditResourcePage id={user.id} />} />
+        <Route exact path="/registration" render={(props) => <EditResourcePage id={user.id} {...props} />} />
+        <Route
+          exact
+          path="/registration/:identifier"
+          render={(props) => <EditResourcePage id={user.id} {...props} />}
+        />
+        <Route exact path="/forbidden" component={Forbidden} />
         <Route path="*" component={NotFound} />
       </Switch>
     </Suspense>
