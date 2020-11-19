@@ -48,7 +48,7 @@ const Dashboard: FC = () => {
 
   return (
     <StyledDashboard>
-      <h1>{t('search_for_resources')}</h1>
+      <h1>{t('resource.search_for_resources')}</h1>
 
       <SearchFieldWrapper>
         <form onSubmit={triggerSearch}>
