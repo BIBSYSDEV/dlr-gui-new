@@ -2,12 +2,20 @@ import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { RouteProps, useParams } from 'react-router-dom';
 import { Creator, emptyCreator, Resource } from '../types/resource.types';
-import { getResource, getResourceContents, getResourceCreators, getResourceTags } from '../api/resourceApi';
+import {
+  getResource,
+  getResourceContents,
+  getResourceCreators,
+  getResourceTags,
+  getResourceLicenses,
+} from '../api/resourceApi';
 import { CircularProgress, Typography } from '@material-ui/core';
 import { API_PATHS, API_URL } from '../utils/constants';
 import PreviewComponent from '../components/PreviewComponent';
 import ResourceMetadata from '../components/ResourceMetadata';
 import { useTranslation } from 'react-i18next';
+import LicenseCard from '../components/License';
+import { License } from '../types/license.types';
 
 const StyledPageContent = styled.div`
   display: grid;
@@ -31,6 +39,7 @@ const ResourcePage: FC<RouteProps> = (props) => {
   const [creator, setCreator] = useState<Creator[]>([emptyCreator]);
   const [preview, setPreview] = useState<Preview>({ type: '', theSource: '' });
   const [tags, setTags] = useState<string[]>([]);
+  const [licenses, setLicenses] = useState<License[]>([]);
 
   useEffect(() => {
     const collectResourceData = async (identifier: string) => {
@@ -51,6 +60,9 @@ const ResourcePage: FC<RouteProps> = (props) => {
       });
       getResourceTags(identifier).then((response) => {
         setTags(response.data);
+      });
+      getResourceLicenses(identifier).then((response) => {
+        setLicenses(response.data);
       });
     };
 
@@ -90,6 +102,9 @@ const ResourcePage: FC<RouteProps> = (props) => {
               {tags && resource.features.dlr_subject_nsi_id && (
                 <ResourceMetadata type={preview.type} kategori={[resource.features.dlr_subject_nsi_id]} tags={tags} />
               )}
+              {licenses.map((license) => {
+                return <LicenseCard key={license.identifier} license={license} />;
+              })}
             </>
           )}
         </>
