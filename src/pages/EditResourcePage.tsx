@@ -10,8 +10,6 @@ import { Typography } from '@material-ui/core';
 import { ResourceCreationType } from '../types/resource.types';
 import useUppy from '../utils/useUppy';
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
-import { RootState } from '../state/rootReducer';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -28,18 +26,16 @@ interface EditResourcePageParamTypes {
 
 const EditResourcePage: FC = () => {
   const { resourceIdentifierFromParam } = useParams<EditResourcePageParamTypes>();
-
-  const resource = useSelector((state: RootState) => state.resource);
-
   const [resourceIdentifier, setResourceIdentifier] = useState<string>(resourceIdentifierFromParam);
   const [expanded, setExpanded] = useState<string | false>(false);
   const { t } = useTranslation();
-  const mainFileHandler = useUppy('', false);
-  const [showForm, setShowForm] = useState<boolean>(!!resourceIdentifier);
-  const [resourceType, setResourceType] = useState<ResourceCreationType>(ResourceCreationType.FILE);
 
-  const handleChange = (panel: string) => (_: React.ChangeEvent<any>, isExpanded: boolean) => {
-    setExpanded(isExpanded ? panel : false);
+  const onCreateFile = (resourceIdentifierCreatedOnMainFileSelection: string) => {
+    if (resourceIdentifierCreatedOnMainFileSelection) {
+      setResourceIdentifier(resourceIdentifierCreatedOnMainFileSelection);
+      setResourceType(ResourceCreationType.FILE);
+      setShowForm(true);
+    }
   };
 
   const onSubmitLink = (resourceIdentifier: string) => {
@@ -48,15 +44,19 @@ const EditResourcePage: FC = () => {
     setShowForm(true);
   };
 
-  useEffect(() => {
-    setResourceIdentifier(resource.identifier);
-  }, [resource]);
+  const mainFileHandler = useUppy('', false, onCreateFile);
+  const [showForm, setShowForm] = useState<boolean>(!!resourceIdentifier);
+  const [resourceType, setResourceType] = useState<ResourceCreationType>(ResourceCreationType.FILE);
 
+  const handleChange = (panel: string) => (_: React.ChangeEvent<any>, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
+  //triggers on uppy-events
   useEffect(() => {
     if (mainFileHandler) {
       mainFileHandler.on('upload', (file, response) => {
         setResourceType(ResourceCreationType.FILE);
-        setShowForm(true);
       });
       mainFileHandler.on('upload-error', () => {
         toast.error('File upload error');
