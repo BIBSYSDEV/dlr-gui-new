@@ -10,6 +10,7 @@ import { Typography } from '@material-ui/core';
 import { ResourceCreationType } from '../types/resource.types';
 import useUppy from '../utils/useUppy';
 import { toast } from 'react-toastify';
+import { UppyFile } from '@uppy/core';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -25,10 +26,13 @@ interface EditResourcePageParamTypes {
 }
 
 const EditResourcePage: FC = () => {
+  const { t } = useTranslation();
   const { resourceIdentifierFromParam } = useParams<EditResourcePageParamTypes>();
+
   const [resourceIdentifier, setResourceIdentifier] = useState<string>(resourceIdentifierFromParam);
   const [expanded, setExpanded] = useState<string | false>(false);
-  const { t } = useTranslation();
+  const [showForm, setShowForm] = useState<boolean>(!!resourceIdentifier);
+  const [resourceType, setResourceType] = useState<ResourceCreationType>(ResourceCreationType.FILE);
 
   const onCreateFile = (resourceIdentifierCreatedOnMainFileSelection: string) => {
     if (resourceIdentifierCreatedOnMainFileSelection) {
@@ -45,8 +49,6 @@ const EditResourcePage: FC = () => {
   };
 
   const mainFileHandler = useUppy('', false, onCreateFile);
-  const [showForm, setShowForm] = useState<boolean>(!!resourceIdentifier);
-  const [resourceType, setResourceType] = useState<ResourceCreationType>(ResourceCreationType.FILE);
 
   const handleChange = (panel: string) => (_: React.ChangeEvent<any>, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : false);

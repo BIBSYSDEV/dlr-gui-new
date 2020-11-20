@@ -66,6 +66,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, identifier, resourceType })
   ];
 
   const [activeStep, setActiveStep] = useState<ResourceFormSteps>(ResourceFormSteps.Description);
+
   useEffect(() => {
     resourceType === ResourceCreationType.FILE && setActiveStep(ResourceFormSteps.Files);
   }, [resourceType]);
@@ -118,6 +119,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, identifier, resourceType })
   });
 
   const saveField = async (
+    //todo: legge i hook? - vi har mange forskjellige backends her
     event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
     resetForm: any,
     currentValues: ResourceFormValues

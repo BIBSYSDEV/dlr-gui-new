@@ -4,13 +4,9 @@ import StatusBarComponent from '@uppy/react/src/StatusBar';
 import '@uppy/core/dist/style.css';
 import '@uppy/status-bar/dist/style.css';
 import styled from 'styled-components';
-import { TextField, Typography } from '@material-ui/core';
+import { Paper, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import placeholderImage from '../resources/images/placeholder.png';
-
-interface FileFieldsProps {
-  uppy: Uppy;
-}
 
 const StatusBarWrapper = styled.div`
   width: 100%;
@@ -32,6 +28,10 @@ const MainFileImageWrapper = styled.div`
 const MainFileMetadata = styled.div`
   flex-grow: 1;
 `;
+
+interface FileFieldsProps {
+  uppy: Uppy;
+}
 
 const FileFields: FC<FileFieldsProps> = ({ uppy }) => {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
@@ -62,28 +62,14 @@ const FileFields: FC<FileFieldsProps> = ({ uppy }) => {
           <img alt="resource" src={placeholderImage} />
         </MainFileImageWrapper>
         <MainFileMetadata>
-          <TextField
-            style={{ marginBottom: '1rem' }}
-            variant="filled"
-            fullWidth
-            label={t('resource.main_file.name')}
-            onBlur={(event) => {
-              //TODO: trigger save
-            }}
-          />
-          <StatusBarWrapper>
-            <StatusBarComponent uppy={uppy} hideAfterFinish={false} />
-          </StatusBarWrapper>
+          <div style={{ marginTop: '1rem', height: '2rem', marginBottom: '1rem' }}>{uploadedFiles[0]?.name}</div>
+          <Paper>
+            <StatusBarWrapper>
+              <StatusBarComponent uppy={uppy} hideAfterFinish={false} />
+            </StatusBarWrapper>
+          </Paper>
         </MainFileMetadata>
       </MainFileWrapper>
-
-      {uploadedFiles.map((file) => {
-        return (
-          <div key={file.identifier}>
-            <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(file, null, 2)}</pre>
-          </div>
-        );
-      })}
     </>
   );
 };
