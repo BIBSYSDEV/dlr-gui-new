@@ -18,7 +18,10 @@
   "feedback": {
     "required_field": "Required field"
   },
-
+  "license": {
+    "license_information": "License information",
+    "published_with": "Published with"
+  },
   "privacy_policy": {
     "description": "Description",
     "heading": "Privacy policy"

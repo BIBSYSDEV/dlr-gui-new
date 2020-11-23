@@ -18,6 +18,10 @@
   "feedback": {
     "required_field": "Påkrevd felt"
   },
+  "license": {
+    "license_information": "Lisensinformation",
+    "published_with": "Publisert med"
+  },
   "privacy_policy": {
     "description": "Beskrivelse",
     "heading": "Personvernerklæring"
