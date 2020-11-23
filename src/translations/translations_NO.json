@@ -7,6 +7,7 @@
     "login": "Logg inn",
     "logout": "Logg ut",
     "next": "Neste",
+    "none": "Ingen",
     "or": "Eller",
     "search": "Søk",
     "save": "Lagre"
@@ -24,22 +25,7 @@
     "heading": "Personvernerklæring"
   },
   "resource": {
-    "description": "Beskrivelse",
     "edit_resource": "Rediger ressurs",
-    "form_steps": {
-      "description": "Beskrivelse",
-      "contributors": "Bidragsytere",
-      "files": "Filer",
-      "access_and_licence": "Tilgang og lisens",
-      "preview": "Forhåndsvisning"
-    },
-    "link_to_resource": "Lenke til ressurs",
-    "new_registration": "Ny registering",
-    "start_with_link_to_resource": "Start med lenke til original version",
-    "start_with_uploading_file": "Start med å laste opp hovedfil",
-    "submit_link": "Start registrering",
-    "submitter_email": "Registrators epost",
-    "title": "Tittel",
     "files_and_license": {
       "browse": "velg",
       "drag_file": "Dra fil hit eller",
@@ -50,6 +36,34 @@
       "upload_one_more_file": "Last opp %{smart_count} fil til",
       "upload_x_files": "Last opp %{smart_count} filer",
       "upload_x_more_files": "Last opp %{smart_count} filer til"
-    }
+    },
+    "form_steps": {
+      "description": "Beskrivelse",
+      "contributors": "Bidragsytere",
+      "files": "Filer",
+      "access_and_licence": "Tilgang og lisens",
+      "preview": "Forhåndsvisning"
+    },
+    "link_to_resource": "Lenke til ressurs",
+    "metadata": {
+      "creator": "Av",
+      "categories": "Kategorier",
+      "description": "Beskrivelse",
+      "owner": "Eier",
+      "published": "Publisert",
+      "tags": "Merker",
+      "title": "Tittel",
+      "type": "Ressurstype",
+      "submitter_email": "Registrators epost"
+    },
+    "new_registration": "Ny registering",
+    "preview_not_supported_filetype": "Fohåndsvisning støttes ikke for dette filformatet",
+    "search_for_resources": "Søk etter ressurser",
+    "start_with_link_to_resource": "Start registrering med en lenke",
+    "start_with_uploading_file": "Last opp fil hvis ressursen skal publiseres på Internett for første gang",
+    "submit_link": "Start registrering"
+  },
+  "user": {
+    "logged_in_as": "Logget på som"
   }
 }

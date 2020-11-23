@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { CircularProgress } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 const imageType = 'image';
 const videoType = 'video';
@@ -14,6 +15,7 @@ interface PreviewComponentProps {
 }
 
 const PreviewComponent: FC<PreviewComponentProps> = (props) => {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   useEffect(() => {
     if (props != null) {
@@ -36,7 +38,7 @@ const PreviewComponent: FC<PreviewComponentProps> = (props) => {
         </>
       );
     } else {
-      return <h3>Fohåndsvisning støttes ikke for dette filformatet.</h3>;
+      return <h3>{t('resource.preview_not_supported_filetype')}</h3>;
     }
   };
 
