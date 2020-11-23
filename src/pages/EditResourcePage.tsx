@@ -7,6 +7,7 @@ import ResourceForm from './ResourceForm';
 import LinkResource from './LinkResource';
 import UploadRegistration from './UploadRegistration';
 import { Typography } from '@material-ui/core';
+import PrivateRoute from '../utils/routes/PrivateRoute';
 import { ResourceCreationType } from '../types/resource.types';
 import useUppy from '../utils/useUppy';
 import { toast } from 'react-toastify';
@@ -91,4 +92,4 @@ const EditResourcePage: FC = () => {
   );
 };
 
-export default EditResourcePage;
+export default PrivateRoute(EditResourcePage);

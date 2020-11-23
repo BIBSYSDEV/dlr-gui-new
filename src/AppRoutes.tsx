@@ -8,6 +8,7 @@ import { RootState } from './state/rootReducer';
 import { Suspense } from 'react';
 import DelayedFallback from './components/DelayedFallback';
 import { v4 as uuidv4 } from 'uuid';
+import Forbidden from './pages/Forbidden';
 
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const EditResourcePage = lazy(() => import('./pages/EditResourcePage'));
@@ -25,17 +26,14 @@ const AppRoutes: FC = () => {
         <Route exact path="/privacy-policy" component={PrivacyPolicy} />
         <Route exact path="/loginRedirect" component={LoginRedirectPage} />
         {/* CreatorRoutes */}
-        {user.id && (
-          <>
-            <Route exact path="/registration" render={(props) => <EditResourcePage {...props} key={uuidv4()} />} />
-            {/*hack: forcing page refresh*/}
-            <Route
-              exact
-              path="/registration/:identifier"
-              render={(props) => <EditResourcePage {...props} key={uuidv4()} />}
-            />
-          </>
-        )}
+        <Route exact path="/registration" render={(props) => <EditResourcePage id={user.id} {...props} key={uuidv4()} />} />
+        {/*hack: uuidv4-key is forcing page refresh*/}
+        <Route
+          exact
+          path="/registration/:identifier"
+          render={(props) => <EditResourcePage id={user.id} {...props} key={uuidv4()}/>}
+        />
+        <Route exact path="/forbidden" component={Forbidden} />
         <Route path="*" component={NotFound} />
       </Switch>
     </Suspense>

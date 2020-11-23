@@ -14,10 +14,15 @@
   },
   "delivered_by": "Levert av",
   "error": {
+    "403_page": "Du må være pålogget for å benytte denne funksjonaliteten",
     "404_page": "Gått deg vill? (404-page)"
   },
   "feedback": {
     "required_field": "Påkrevd felt"
+  },
+  "license": {
+    "license_information": "Lisensinformation",
+    "published_with": "Publisert med"
   },
   "privacy_policy": {
     "description": "Beskrivelse",
