@@ -45,7 +45,4 @@ const EditResourcePage: FC = () => {
   );
 };
 
-//Privateroute redirects users who are not logged in.
-// PrivateRoute can be removed, but then prevention of other logged in users
-// needs to be taken care of somewhere else.
 export default PrivateRoute(EditResourcePage);
