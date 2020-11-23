@@ -7,6 +7,7 @@ import ResourceForm from './ResourceForm';
 import LinkResource from './LinkResource';
 import UploadRegistration from './UploadRegistration';
 import { Typography } from '@material-ui/core';
+import PrivateRoute from '../utils/routes/PrivateRoute';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -44,4 +45,4 @@ const EditResourcePage: FC = () => {
   );
 };
 
-export default EditResourcePage;
+export default PrivateRoute(EditResourcePage);

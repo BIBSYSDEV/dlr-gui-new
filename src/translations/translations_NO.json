@@ -13,6 +13,7 @@
   },
   "delivered_by": "Levert av",
   "error": {
+    "403_page": "Du må være pålogget for å benytte denne funksjonaliteten",
     "404_page": "Gått deg vill? (404-page)"
   },
   "feedback": {
