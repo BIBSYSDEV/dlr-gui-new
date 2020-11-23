@@ -46,7 +46,7 @@ const ResourcePage: FC<RouteProps> = (props) => {
           : '';
         setPreview({
           type,
-          theSource: `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/contents/${response?.data[0]?.identifier}/delivery?jwt=${localStorage.token}`,
+          theSource: `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${response?.data[0]?.identifier}/delivery?jwt=${localStorage.token}`,
         });
       });
       getResourceTags(identifier).then((response) => {
