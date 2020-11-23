@@ -29,9 +29,9 @@ const EditResourcePage: FC = () => {
   const { t } = useTranslation();
   const { resourceIdentifierFromParam } = useParams<EditResourcePageParamTypes>();
 
-  const [resourceIdentifier, setResourceIdentifier] = useState<string>(resourceIdentifierFromParam);
-  const [expanded, setExpanded] = useState<string | false>(false);
-  const [showForm, setShowForm] = useState<boolean>(!!resourceIdentifier);
+  const [resourceIdentifier, setResourceIdentifier] = useState(resourceIdentifierFromParam);
+  const [expanded, setExpanded] = useState('');
+  const [showForm, setShowForm] = useState(!!resourceIdentifier);
   const [resourceType, setResourceType] = useState<ResourceCreationType>(ResourceCreationType.FILE);
 
   const onCreateFile = (resourceIdentifierCreatedOnMainFileSelection: string) => {
@@ -51,7 +51,7 @@ const EditResourcePage: FC = () => {
   const mainFileHandler = useUppy('', false, onCreateFile);
 
   const handleChange = (panel: string) => (_: React.ChangeEvent<any>, isExpanded: boolean) => {
-    setExpanded(isExpanded ? panel : false);
+    setExpanded(isExpanded ? panel : '');
   };
 
   //triggers on uppy-events
