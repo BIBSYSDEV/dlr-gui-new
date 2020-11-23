@@ -54,8 +54,8 @@ interface ResourceFormProps {
 const ResourceForm: FC<ResourceFormProps> = ({ uppy, identifier, resourceType }) => {
   const { t } = useTranslation();
   const [resource, setResource] = useState<Resource>(emptyResource);
-  const [isLoadingResource, setIsLoadingResource] = useState<boolean>(false);
-  const [allChangesSaved, setAllChangesSaved] = useState<boolean>(true);
+  const [isLoadingResource, setIsLoadingResource] = useState(false);
+  const [allChangesSaved, setAllChangesSaved] = useState(true);
 
   const steps = [
     t('resource.form_steps.description'),

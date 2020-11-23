@@ -87,9 +87,7 @@ const EditResourcePage: FC = () => {
       </StyledEditPublication>
     </>
   ) : (
-    <>
-      <ResourceForm identifier={resourceIdentifier} uppy={mainFileHandler} resourceType={resourceType} />
-    </>
+    <ResourceForm identifier={resourceIdentifier} uppy={mainFileHandler} resourceType={resourceType} />
   );
 };
 
