@@ -60,9 +60,12 @@ const EditResourcePage: FC = () => {
       mainFileHandler.on('upload', (file, response) => {
         setResourceType(ResourceCreationType.FILE);
       });
-      mainFileHandler.on('upload-error', () => {
-        toast.error('File upload error');
-      });
+      if (!mainFileHandler.hasUploadFailedEventListener) {
+        mainFileHandler.on('upload-error', () => {
+          toast.error('File upload error');
+        });
+        mainFileHandler.hasUploadFailedEventListener = true;
+      }
     }
   }, [mainFileHandler]);
 
