@@ -26,12 +26,16 @@ const AppRoutes: FC = () => {
         <Route exact path="/privacy-policy" component={PrivacyPolicy} />
         <Route exact path="/loginRedirect" component={LoginRedirectPage} />
         {/* CreatorRoutes */}
-        <Route exact path="/registration" render={(props) => <EditResourcePage id={user.id} {...props} key={uuidv4()} />} />
+        <Route
+          exact
+          path="/registration"
+          render={(props) => <EditResourcePage id={user.id} {...props} key={uuidv4()} />}
+        />
         {/*hack: uuidv4-key is forcing page refresh*/}
         <Route
           exact
           path="/registration/:identifier"
-          render={(props) => <EditResourcePage id={user.id} {...props} key={uuidv4()}/>}
+          render={(props) => <EditResourcePage id={user.id} {...props} key={uuidv4()} />}
         />
         <Route exact path="/forbidden" component={Forbidden} />
         <Route path="*" component={NotFound} />
