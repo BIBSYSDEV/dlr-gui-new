@@ -84,7 +84,7 @@ export default createMuiTheme({
   overrides: {
     MuiAccordion: {
       root: {
-        border: '3px solid black',
+        border: '3px solid #427F8C',
       },
     },
     MuiButton: {
