@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
 const FormWrapper = styled.div`
-  margin-left: 1rem;
+  margin: 1rem;
   min-width: 20rem;
 `;
 
@@ -14,7 +14,7 @@ const TitleWrapper = styled.div`
 
 const InfoWrappers = styled.div`
 display: inline-block,
-flaot: left,
+float: left,
 margin-bottom: 1rem,
 margin-left: 1rem,
 `;

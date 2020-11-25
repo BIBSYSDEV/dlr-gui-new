@@ -13,6 +13,7 @@ import { CircularProgress, Typography } from '@material-ui/core';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Card from '@material-ui/core/Card';
 import { API_PATHS, API_URL } from '../utils/constants';
 import PreviewComponent from '../components/PreviewComponent';
 import ResourceMetadata from '../components/ResourceMetadata';
@@ -49,7 +50,7 @@ const ResourcePage: FC<RouteProps> = (props) => {
   const [isLoadingLicenses, setIsLoadingLicenses] = useState<boolean>(false);
 
   useEffect(() => {
-    const collectResourceData = async (identifier: string) => {
+    const fetchData = async (identifier: string) => {
       getResource(identifier)
         .then((response) => {
           setResource(response.data);
@@ -92,14 +93,13 @@ const ResourcePage: FC<RouteProps> = (props) => {
           setIsLoadingLicenses(false);
         });
     };
-
     if (identifier) {
       setIsLoadingResource(true);
       setIsLoadingLicenses(true);
       setIsLoadingCreator(true);
       setIsLoadingPreview(true);
       setIsLoadingTags(true);
-      collectResourceData(identifier);
+      fetchData(identifier);
     }
   }, [identifier]);
   return (
@@ -111,36 +111,46 @@ const ResourcePage: FC<RouteProps> = (props) => {
         </>
       )}
       {!isLoadingPreview && <>{preview && <PreviewComponent preview={preview} />}</>}
-      {!isLoadingCreator && (
-        <List>
-          {creators.map((creator) => {
-            return (
-              <ListItem>
-                <ListItemText>
-                  {t('resource.metadata.creator')}: {creator.features.dlr_creator_name}
-                </ListItemText>
-              </ListItem>
-            );
-          })}
-        </List>
-      )}
-      {!isLoadingResource && (
-        <>
-          {resource?.features.dlr_time_published && (
-            <Typography variant="body2">
-              {t('resource.metadata.published')}: {resource.features.dlr_time_published}{' '}
-            </Typography>
-          )}
-          {resource?.features.dlr_submitter_email && (
-            <Typography variant="body2">
-              {t('resource.metadata.owner')}: {resource.features.dlr_submitter_email}{' '}
-            </Typography>
-          )}
-        </>
-      )}
-      {!isLoadingTags && tags && resource?.features.dlr_subject_nsi_id && (
-        <ResourceMetadata type={preview.type} kategori={[resource.features.dlr_subject_nsi_id]} tags={tags} />
-      )}
+      <Card>
+        {!isLoadingCreator && (
+          <List>
+            {creators.map((creator) => {
+              return (
+                <ListItem key={creator.identifier}>
+                  <ListItemText>
+                    {t('resource.metadata.creator')}: {creator.features.dlr_creator_name}
+                  </ListItemText>
+                </ListItem>
+              );
+            })}
+          </List>
+        )}
+        {!isLoadingResource && (
+          <>
+            {resource?.features.dlr_time_published && (
+              <Typography variant="body2">
+                {t('resource.metadata.published')}: {resource.features.dlr_time_published}
+              </Typography>
+            )}
+            {resource?.features.dlr_time_created && (
+              <Typography variant="body2">
+                {t('resource.metadata.created')}: {resource.features.dlr_time_created}
+              </Typography>
+            )}
+            {resource?.features.dlr_submitter_email && (
+              <Typography variant="body2">
+                {t('resource.metadata.owner')}: {resource.features.dlr_submitter_email}
+              </Typography>
+            )}
+            {resource?.features.dlr_description && (
+              <Typography variant="body2">{resource.features.dlr_description}</Typography>
+            )}
+          </>
+        )}
+        {!isLoadingTags && tags && resource?.features.dlr_subject_nsi_id && (
+          <ResourceMetadata type={preview.type} kategori={[resource.features.dlr_subject_nsi_id]} tags={tags} />
+        )}
+      </Card>
       {!isLoadingLicenses &&
         licenses.map((license) => {
           return <LicenseCard key={license.identifier} license={license} />;
