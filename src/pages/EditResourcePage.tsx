@@ -11,7 +11,6 @@ import PrivateRoute from '../utils/routes/PrivateRoute';
 import { ResourceCreationType } from '../types/resource.types';
 import useUppy from '../utils/useUppy';
 import { toast } from 'react-toastify';
-import { UppyFile } from '@uppy/core';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
