@@ -2,8 +2,9 @@ import { AwsS3Part } from '@uppy/aws-s3-multipart';
 import { UppyFile } from '@uppy/core';
 import { API_PATHS } from '../utils/constants';
 import { createResource } from './resourceApi';
-import { ResourceCreationType } from '../types/resource.types';
+import { Resource, ResourceCreationType } from '../types/resource.types';
 import { authenticatedApiRequest } from './api';
+import { Content } from '../types/content.types';
 
 export enum FileApiPaths {
   ABORT = '/upload/multipart/uppy/abort',
@@ -44,10 +45,30 @@ export const createMultipartUpload = async (file: UppyFile) => {
   return createMultipartUploadResponse.data;
 };
 
-export const createResourceAndMultipartUpload = async (file: UppyFile, onCreateFile: (resourceId: string) => void) => {
+export const createResourceAndMultipartUpload = async (
+  file: UppyFile,
+  onCreateFile: (newResource: Resource) => void
+) => {
   const createResourceResponse = await createResource(ResourceCreationType.FILE, file.name);
   const contentId = createResourceResponse.data.contents[0].identifier;
-  onCreateFile(createResourceResponse.data.identifier);
+  const newFile: Content = {
+    identifier: contentId,
+    features: {
+      dlr_content_identifier: file.name,
+      dlr_content_size: '' + file.size,
+      dlr_content_mime_type: '' + file.type,
+      dlr_content_master: 'true', //todo. er master for hovedfil ?
+    },
+  };
+  const newResource: Resource = {
+    identifier: createResourceResponse.data.identifier,
+    features: {
+      dlr_title: file.name,
+    },
+    contents: [newFile],
+  };
+  onCreateFile(newResource);
+
   const data = `filename=${file.name}&size=${file.data.size}&lastmodified=${
     (file.data as File).lastModified
   }&mimetype=${file.data.type}`;

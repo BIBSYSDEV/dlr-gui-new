@@ -1,5 +1,7 @@
 //TODO: https://git.unit.no/dlr/dlr-resource-service/-/blob/master/src/main/java/no/bibsys/dlr/microservices/resources/Types.java
 
+import { Content } from './content.types';
+
 export interface Resource {
   identifier: string;
   features: ResourceFeatures;
@@ -63,11 +65,6 @@ interface ResourceFeatures {
 }
 
 interface Course {
-  identifier: string;
-  features: any;
-}
-
-interface Content {
   identifier: string;
   features: any;
 }
