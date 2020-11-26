@@ -116,7 +116,7 @@ export const interceptRequestsOnMock = () => {
   // USER
   mock.onGet(new RegExp(`${API_PATHS.guiBackendUsersPath}/users/authorized`)).reply(200, mockUser);
 
-  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesContentPath}.*${FileApiPaths.CREATE}`)).reply((config) => {
+  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesContentPath}.*${FileApiPaths.CREATE}`)).reply(() => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve([200, mockCreateUpload]);
@@ -133,14 +133,17 @@ export const interceptRequestsOnMock = () => {
     .reply(200, mockCompleteUpload);
 
   // RESOURCE
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/licenses`)).reply(200, mockLicenses);
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents`)).reply(200, mockContent);
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators`)).reply(200, mockCreators);
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*`)).reply(200, mockResource);
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/features`)).reply(200);
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources`)).reply(200, mockResource);
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*`)).reply(200, mockCalculatedResource);
   mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*/tags/types/tags`)).reply(200, mockTags);
   mock
     .onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*/contributors`))
     .reply(200, mockResourceContributors);
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*`)).reply(200, mockCalculatedResource);
 
   // GET ANONYMOUS WEB TOKEN
   const mockToken = 'mockToken';
@@ -150,10 +153,4 @@ export const interceptRequestsOnMock = () => {
   mock.onAny().reply(function (config) {
     throw new Error('Could not find mock for ' + config.url);
   });
-  // GET LICENSE
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*/licenses`)).reply(200, mockLicenses);
-  //GET CONTENTS
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*/contents`)).reply(200, mockContent);
-  //GET CREATORS
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators`)).reply(200, mockCreators);
 };
