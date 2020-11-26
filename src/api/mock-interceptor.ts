@@ -3,7 +3,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { mockSearchResults } from '../utils/testfiles/search_results';
 import { API_PATHS } from '../utils/constants';
 import { User } from '../types/user.types';
-import { Contributor, Resource } from '../types/resource.types';
+import { Contributor, Creator, Resource } from '../types/resource.types';
 import { License } from '../types/license.types';
 import { Content } from '../types/content.types';
 import { FileApiPaths } from './fileApi';
@@ -74,6 +74,23 @@ const mockLicenses: License[] = [
   },
 ];
 
+const mockCreators: Creator[] = [
+  {
+    identifier: 'creator-1',
+    features: {
+      dlr_creator_name: 'Creator Creatorson',
+      dlr_creator_order: 1,
+    },
+  },
+  {
+    identifier: 'creator-2',
+    features: {
+      dlr_creator_name: 'Creator2 Creatorson2',
+      dlr_creator_order: 2,
+    },
+  },
+];
+
 const mockContent: Content[] = [
   {
     identifier: '1231242',
@@ -137,4 +154,6 @@ export const interceptRequestsOnMock = () => {
   mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*/licenses`)).reply(200, mockLicenses);
   //GET CONTENTS
   mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*/contents`)).reply(200, mockContent);
+  //GET CREATORS
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators`)).reply(200, mockCreators);
 };

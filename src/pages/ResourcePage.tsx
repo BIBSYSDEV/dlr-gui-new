@@ -39,80 +39,58 @@ const ResourcePage: FC<RouteProps> = (props) => {
   const { t } = useTranslation();
   const { identifier } = useParams<resourcePageParamTypes>();
   const [resource, setResource] = useState<Resource>();
-  const [isLoadingResource, setIsLoadingResource] = useState<boolean>(false);
+  const [isLoadingResource, setIsLoadingResource] = useState(false);
   const [creators, setCreators] = useState<Creator[]>([]);
-  const [isLoadingCreator, setIsLoadingCreator] = useState<boolean>(false);
   const [preview, setPreview] = useState<Preview>({ type: '', theSource: '' });
-  const [isLoadingPreview, setIsLoadingPreview] = useState<boolean>(false);
   const [tags, setTags] = useState<string[]>([]);
-  const [isLoadingTags, setIsLoadingTags] = useState<boolean>(false);
   const [licenses, setLicenses] = useState<License[]>([]);
-  const [isLoadingLicenses, setIsLoadingLicenses] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async (identifier: string) => {
-      getResource(identifier)
-        .then((response) => {
-          setResource(response.data);
-        })
-        .finally(() => {
-          setIsLoadingResource(false);
+      const promises: Promise<any>[] = [];
+      promises[0] = getResource(identifier).then((response) => {
+        setResource(response.data);
+      });
+      promises[1] = getResourceCreators(identifier).then((response) => {
+        setCreators(response.data);
+      });
+      promises[2] = getResourceContents(identifier).then((response) => {
+        const type = response?.data[0]?.features?.dlr_content_content_type
+          ? response?.data[0]?.features?.dlr_content_content_type
+          : '';
+        setPreview({
+          type,
+          theSource: `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${response?.data[0]?.identifier}/delivery?jwt=${localStorage.token}`,
         });
-      getResourceCreators(identifier)
-        .then((response) => {
-          setCreators(response.data);
-        })
-        .finally(() => {
-          setIsLoadingCreator(false);
-        });
-      getResourceContents(identifier)
-        .then((response) => {
-          const type = response?.data[0]?.features?.dlr_content_content_type
-            ? response?.data[0]?.features?.dlr_content_content_type
-            : '';
-          setPreview({
-            type,
-            theSource: `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${response?.data[0]?.identifier}/delivery?jwt=${localStorage.token}`,
-          });
-        })
-        .finally(() => {
-          setIsLoadingPreview(false);
-        });
-      getResourceTags(identifier)
-        .then((response) => {
-          setTags(response.data);
-        })
-        .finally(() => {
-          setIsLoadingTags(false);
-        });
-      getResourceLicenses(identifier)
-        .then((response) => {
-          setLicenses(response.data);
-        })
-        .finally(() => {
-          setIsLoadingLicenses(false);
-        });
+      });
+      promises[3] = getResourceTags(identifier).then((response) => {
+        setTags(response.data);
+      });
+      promises[4] = getResourceLicenses(identifier).then((response) => {
+        setLicenses(response.data);
+      });
+      Promise.all(promises).finally(() => {
+        setIsLoadingResource(false);
+      });
     };
     if (identifier) {
       setIsLoadingResource(true);
-      setIsLoadingLicenses(true);
-      setIsLoadingCreator(true);
-      setIsLoadingPreview(true);
-      setIsLoadingTags(true);
       fetchData(identifier);
     }
   }, [identifier]);
+
+  console.log(creators);
   return (
     <StyledPageContent>
-      {(isLoadingResource || isLoadingTags || isLoadingCreator || isLoadingPreview) && <CircularProgress />}
+      {isLoadingResource && <CircularProgress />}
       {!isLoadingResource && (
         <>
           <Typography variant="h1">{resource?.features?.dlr_title}</Typography>
         </>
       )}
-      {!isLoadingPreview && <>{preview && <PreviewComponent preview={preview} />}</>}
+      {preview.theSource !== '' && <>{preview && <PreviewComponent preview={preview} />}</>}
       <Card>
-        {!isLoadingCreator && (
+        {creators.length !== 0 && (
           <List>
             {creators.map((creator) => {
               return (
@@ -147,11 +125,11 @@ const ResourcePage: FC<RouteProps> = (props) => {
             )}
           </>
         )}
-        {!isLoadingTags && tags && resource?.features.dlr_subject_nsi_id && (
+        {tags.length !== 0 && tags && resource?.features.dlr_subject_nsi_id && (
           <ResourceMetadata type={preview.type} kategori={[resource.features.dlr_subject_nsi_id]} tags={tags} />
         )}
       </Card>
-      {!isLoadingLicenses &&
+      {licenses.length !== 0 &&
         licenses.map((license) => {
           return <LicenseCard key={license.identifier} license={license} />;
         })}
