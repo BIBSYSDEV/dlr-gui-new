@@ -79,7 +79,6 @@ const ResourcePage: FC<RouteProps> = (props) => {
     }
   }, [identifier]);
 
-  console.log(creators);
   return (
     <StyledPageContent>
       {isLoadingResource && <CircularProgress />}
