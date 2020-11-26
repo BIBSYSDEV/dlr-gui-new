@@ -24,7 +24,11 @@ interface UppyCompleteArgs extends UppyArgs {
   parts: AwsS3Part[];
 }
 
-export const createUppy = (resourceIdentifier: string, shouldAllowMultipleFiles: boolean): UppyType =>
+export const createUppy = (
+  resourceIdentifier: string,
+  shouldAllowMultipleFiles: boolean,
+  onCreateFile: (resourceId: string) => void
+): UppyType =>
   Uppy<Uppy.StrictTypes>({
     autoProceed: true,
     restrictions: { maxNumberOfFiles: shouldAllowMultipleFiles ? null : 1 },
@@ -35,9 +39,7 @@ export const createUppy = (resourceIdentifier: string, shouldAllowMultipleFiles:
     createMultipartUpload: async (file: UppyFile) => {
       if (resourceIdentifier) return await createMultipartUpload(file);
       else {
-        const response = await createResourceAndMultipartUpload(file);
-        resourceIdentifier = response.resourceIdentifier;
-        return response.data;
+        return await createResourceAndMultipartUpload(file, onCreateFile);
       }
     },
     listParts: async (_: UppyFile, { uploadId, key }: UppyArgs) => await listParts(uploadId, key),

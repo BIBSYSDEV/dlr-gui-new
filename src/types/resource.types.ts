@@ -17,6 +17,7 @@ export interface Resource {
   contributors?: Contributor[];
   accessRead?: string[];
   accessWrite?: string[];
+  contents?: Content[];
 }
 
 export const emptyResource: Resource = {
@@ -65,6 +66,12 @@ interface Course {
   identifier: string;
   features: any;
 }
+
+interface Content {
+  identifier: string;
+  features: any;
+}
+
 interface Project {
   identifier: string;
   features: any;

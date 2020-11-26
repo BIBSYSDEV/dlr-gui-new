@@ -44,9 +44,10 @@ export const createMultipartUpload = async (file: UppyFile) => {
   return createMultipartUploadResponse.data;
 };
 
-export const createResourceAndMultipartUpload = async (file: UppyFile) => {
+export const createResourceAndMultipartUpload = async (file: UppyFile, onCreateFile: (resourceId: string) => void) => {
   const createResourceResponse = await createResource(ResourceCreationType.FILE, file.name);
   const contentId = createResourceResponse.data.contents[0].identifier;
+  onCreateFile(createResourceResponse.data.identifier);
   const data = `filename=${file.name}&size=${file.data.size}&lastmodified=${
     (file.data as File).lastModified
   }&mimetype=${file.data.type}`;
@@ -55,7 +56,7 @@ export const createResourceAndMultipartUpload = async (file: UppyFile) => {
     method: 'POST',
     data: data,
   });
-  return { resourceIdentifier: createResourceResponse.data.identifier, data: createMultipartUploadResponse.data };
+  return createMultipartUploadResponse.data;
 };
 
 export const listParts = async (uploadId: string, key: string) => {
