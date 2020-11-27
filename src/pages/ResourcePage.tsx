@@ -69,7 +69,7 @@ const ResourcePage: FC<RouteProps> = (props) => {
       promises[4] = getResourceLicenses(identifier).then((response) => {
         setLicenses(response.data);
       });
-      Promise.all(promises).finally(() => {
+      await Promise.all(promises).finally(() => {
         setIsLoadingResource(false);
       });
     };
