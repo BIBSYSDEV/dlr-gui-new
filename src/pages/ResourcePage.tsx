@@ -125,7 +125,7 @@ const ResourcePage: FC<RouteProps> = (props) => {
           </>
         )}
         {tags.length !== 0 && tags && resource?.features.dlr_subject_nsi_id && (
-          <ResourceMetadata type={preview.type} kategori={[resource.features.dlr_subject_nsi_id]} tags={tags} />
+          <ResourceMetadata type={preview.type} category={resource.features.dlr_subject_nsi_id} tags={tags} />
         )}
       </Card>
       {licenses.length !== 0 &&

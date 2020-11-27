@@ -19,14 +19,6 @@ margin-bottom: 1rem,
 margin-left: 1rem,
 `;
 
-/*
-Enkel komponent for å vise frem informasjon om ressursen
-metoden tar imot: en type, en liste med kategorier, og en liste med tags.
-Forløpig viser den frem: 
-Type(video, image, osv), 
-Kategorier(disse vises som et tall),
-Tags(liste med tags)
-*/
 const ResourceMetadata: FC<any> = (props: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { t } = useTranslation();
@@ -36,11 +28,6 @@ const ResourceMetadata: FC<any> = (props: any) => {
     }
   }, [props]);
 
-  /*
-  Henter Tags fra props
-  Hvis ressursen ikke har tags printes "Ingen tags"
-  Hvis ressursen har tags printes hver tag i sin egen 'Chip'
-  */
   const getTags = () => {
     if (props.tags.length === 0) {
       return (
@@ -64,15 +51,8 @@ const ResourceMetadata: FC<any> = (props: any) => {
     }
   };
 
-  /*
-  Henter Kategorier fra props
-  Hvis ressursen ikke har kategorier printes "Ingen kategorier"
-  Hvis ressursen har kategorier printes hver kategori i sin egen 'Chip'
-  Den første if-settningen har en ekstra sjekk da det virker som om 
-  ressursen uten kategorier allikevell har ett tomt object liggende på possisjon 0
-  */
-  const getKategori = () => {
-    if (props.kategori.length === 0 || props.kategori[0] == null) {
+  const getCategory = () => {
+    if (props.category.lenght === 0) {
       return (
         <h5>
           {t('common.none')} {t('resource.metadata.categories').toLowerCase()}
@@ -82,13 +62,9 @@ const ResourceMetadata: FC<any> = (props: any) => {
       return (
         <>
           <h5>{t('resource.metadata.categories')}:</h5>
-          {props.kategori.map((kategori: string, i: number) => {
-            return (
-              <span key={i}>
-                <Chip color="primary" label={kategori}></Chip>{' '}
-              </span>
-            );
-          })}
+          <span>
+            <Chip color="primary" label={props.category} />
+          </span>
         </>
       );
     }
@@ -104,7 +80,7 @@ const ResourceMetadata: FC<any> = (props: any) => {
                 {t('resource.metadata.type')}: {props.type}
               </h5>
             </TitleWrapper>
-            <InfoWrappers>{getKategori()}</InfoWrappers>
+            <InfoWrappers>{getCategory()}</InfoWrappers>
             <InfoWrappers>{getTags()}</InfoWrappers>
           </FormWrapper>
         </Card>
