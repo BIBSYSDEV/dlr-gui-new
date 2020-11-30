@@ -50,6 +50,7 @@
     },
     "link_to_resource": "Lenke til ressurs",
     "metadata": {
+      "created": "Opprettet",
       "creator": "Av",
       "categories": "Kategorier",
       "description": "Beskrivelse",

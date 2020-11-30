@@ -51,6 +51,7 @@
     },
     "link_to_resource": "Link to resource",
     "metadata": {
+      "created": "Created",
       "creator": "Creator",
       "categories": "Categories",
       "description": "Description",
