@@ -61,7 +61,7 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, formikProps, setAllChangesSaved
 
   return (
     <>
-      <Typography variant="h5">{t('resource.main_file')}</Typography>
+      <Typography variant="h5">{t('resource.metadata.main_file')}</Typography>
       <MainFileWrapper>
         <MainFileImageWrapper>
           <img alt="resource" src={placeholderImage} />
@@ -74,7 +74,7 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, formikProps, setAllChangesSaved
                   {...field}
                   variant="filled"
                   fullWidth
-                  label={t('resource.contents.filename')}
+                  label={t('resource.metadata.filename')}
                   error={touched && !!error}
                   helperText={<ErrorMessage name={field.name} />}
                   onBlur={(event) => {
