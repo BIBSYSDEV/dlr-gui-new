@@ -39,6 +39,11 @@ const EditResourcePage: FC = () => {
 
   const onCreateFile = (newResource: Resource) => {
     setResource(newResource);
+    getResourceDefaults(resource.identifier).then((responseWithCalculatedDefaults) => {
+      saveCalculatedFields(responseWithCalculatedDefaults.data);
+      setResource(deepmerge(newResource, responseWithCalculatedDefaults.data));
+      setIsLoadingResource(false);
+    });
     setResourceType(ResourceCreationType.FILE);
     setShowForm(true);
   };
@@ -101,7 +106,6 @@ const EditResourcePage: FC = () => {
   return !showForm ? (
     <>
       {isLoadingResource && <CircularProgress />}
-
       <PageHeader>{t('resource.new_registration')}</PageHeader>
       <StyledEditPublication>
         <UploadRegistration
@@ -116,13 +120,9 @@ const EditResourcePage: FC = () => {
           onSubmit={onSubmitLink}
         />
       </StyledEditPublication>
-      <pre style={{ maxWidth: '90%' }}>PER2: {JSON.stringify(resource, null, 2)}</pre>
     </>
   ) : (
-    <>
-      <ResourceForm resource={resource} uppy={mainFileHandler} resourceType={resourceType} />
-      <pre style={{ maxWidth: '90%' }}>PER2: {JSON.stringify(resource, null, 2)}</pre>
-    </>
+    <ResourceForm resource={resource} uppy={mainFileHandler} resourceType={resourceType} />
   );
 };
 

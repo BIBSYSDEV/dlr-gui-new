@@ -54,10 +54,10 @@ export const createResourceAndMultipartUpload = async (
   const newFile: Content = {
     identifier: contentId,
     features: {
-      dlr_content_identifier: file.name,
+      dlr_content_title: file.name,
       dlr_content_size: '' + file.size,
       dlr_content_mime_type: '' + file.type,
-      dlr_content_master: 'true', //todo. er master for hovedfil ?
+      dlr_content_master: 'true',
     },
   };
   const newResource: Resource = {

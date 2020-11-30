@@ -43,6 +43,9 @@ export enum ResourceFormSteps {
   AccessAndLicense = 3,
   Preview = 4,
 }
+export interface ResourceFormValues {
+  resource: Resource;
+}
 
 interface ResourceFormProps {
   resource?: Resource;
@@ -68,10 +71,6 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
     resourceType === ResourceCreationType.FILE && setActiveStep(ResourceFormSteps.Files);
   }, [resourceType]);
 
-  interface ResourceFormValues {
-    resource: Resource;
-  }
-
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -88,7 +87,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
     }),
   });
 
-  const saveField = async (
+  const saveResourceField = async (
     //todo: legge i hook? - vi har mange forskjellige backends her
     event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
     resetForm: any,
@@ -102,9 +101,11 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
       resetForm({ values: currentValues });
     }
   };
+
   const handleStep = (step: number) => () => {
     setActiveStep(step);
   };
+
   return (
     <>
       <PageHeader>{t('resource.edit_resource')}</PageHeader>
@@ -135,7 +136,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
 
                 {activeStep === ResourceFormSteps.Description && (
                   <StyledPanel>
-                    <DescriptionFields resource={resource} formikProps={formikProps} saveField={saveField} />
+                    <DescriptionFields resource={resource} formikProps={formikProps} saveField={saveResourceField} />
                   </StyledPanel>
                 )}
                 {activeStep === ResourceFormSteps.Contributors && (
@@ -150,7 +151,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                 )}
                 {activeStep === ResourceFormSteps.Files && (
                   <StyledPanel>
-                    <FileFields uppy={uppy} />
+                    <FileFields uppy={uppy} formikProps={formikProps} setAllChangesSaved={setAllChangesSaved} />
                   </StyledPanel>
                 )}
                 {activeStep === ResourceFormSteps.Preview && (
