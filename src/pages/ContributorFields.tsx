@@ -6,13 +6,20 @@ import { ErrorMessage, Field, FieldProps, FormikProps, FormikValues } from 'form
 import Button from '@material-ui/core/Button';
 
 interface ContributorFieldsProps {
+  resource: Resource;
   contributors: Contributor[];
   formikProps: FormikProps<FormikValues>;
   addContributor: any;
   saveField: any;
 }
 
-const ContributorFields: FC<ContributorFieldsProps> = ({ addContributor, contributors, formikProps, saveField }) => {
+const ContributorFields: FC<ContributorFieldsProps> = ({
+  addContributor,
+  contributors,
+  resource,
+  formikProps,
+  saveField,
+}) => {
   const { t } = useTranslation();
 
   return (
