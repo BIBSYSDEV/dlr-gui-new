@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { RouteProps, useParams } from 'react-router-dom';
-import { Creator, emptyCreator, Resource } from '../types/resource.types';
+import { Creator, Resource } from '../types/resource.types';
 import {
   getResource,
   getResourceContents,
@@ -10,6 +10,10 @@ import {
   getResourceLicenses,
 } from '../api/resourceApi';
 import { CircularProgress, Typography } from '@material-ui/core';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Card from '@material-ui/core/Card';
 import { API_PATHS, API_URL } from '../utils/constants';
 import PreviewComponent from '../components/PreviewComponent';
 import ResourceMetadata from '../components/ResourceMetadata';
@@ -35,21 +39,22 @@ const ResourcePage: FC<RouteProps> = (props) => {
   const { t } = useTranslation();
   const { identifier } = useParams<resourcePageParamTypes>();
   const [resource, setResource] = useState<Resource>();
-  const [isLoadingResource, setIsLoadingResource] = useState<boolean>(false);
-  const [creator, setCreator] = useState<Creator[]>([emptyCreator]);
+  const [isLoadingResource, setIsLoadingResource] = useState(false);
+  const [creators, setCreators] = useState<Creator[]>([]);
   const [preview, setPreview] = useState<Preview>({ type: '', theSource: '' });
   const [tags, setTags] = useState<string[]>([]);
   const [licenses, setLicenses] = useState<License[]>([]);
 
   useEffect(() => {
-    const collectResourceData = async (identifier: string) => {
-      getResource(identifier).then((response) => {
+    const fetchData = async (identifier: string) => {
+      const promises: Promise<any>[] = [];
+      promises[0] = getResource(identifier).then((response) => {
         setResource(response.data);
       });
-      getResourceCreators(identifier).then((response) => {
-        setCreator(response.data);
+      promises[1] = getResourceCreators(identifier).then((response) => {
+        setCreators(response.data);
       });
-      getResourceContents(identifier).then((response) => {
+      promises[2] = getResourceContents(identifier).then((response) => {
         const type = response?.data[0]?.features?.dlr_content_content_type
           ? response?.data[0]?.features?.dlr_content_content_type
           : '';
@@ -58,57 +63,75 @@ const ResourcePage: FC<RouteProps> = (props) => {
           theSource: `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${response?.data[0]?.identifier}/delivery?jwt=${localStorage.token}`,
         });
       });
-      getResourceTags(identifier).then((response) => {
+      promises[3] = getResourceTags(identifier).then((response) => {
         setTags(response.data);
       });
-      getResourceLicenses(identifier).then((response) => {
+      promises[4] = getResourceLicenses(identifier).then((response) => {
         setLicenses(response.data);
       });
+      await Promise.all(promises).finally(() => {
+        setIsLoadingResource(false);
+      });
     };
-
     if (identifier) {
       setIsLoadingResource(true);
-      collectResourceData(identifier).finally(() => {
-        setIsLoadingResource(false);
-        //todo: presenter siden gradvis ?
-      });
+      fetchData(identifier);
     }
   }, [identifier]);
+
   return (
     <StyledPageContent>
-      {isLoadingResource ? (
-        <CircularProgress />
-      ) : (
+      {isLoadingResource && <CircularProgress />}
+      {!isLoadingResource && (
         <>
-          {resource && (
-            <>
-              <Typography variant="h1">{resource?.features?.dlr_title}</Typography>
-              {preview && <PreviewComponent preview={preview} />}
-              {creator[0]?.features?.dlr_creator_name && (
-                <Typography variant="h2">
-                  {t('resource.metadata.creator')}: {creator[0].features.dlr_creator_name}
-                </Typography>
-              )}
-              {resource.features.dlr_time_published && (
-                <Typography variant="body2">
-                  {t('resource.metadata.published')}: {resource.features.dlr_time_published}{' '}
-                </Typography>
-              )}
-              {resource.features.dlr_submitter_email && (
-                <Typography variant="body2">
-                  {t('resource.metadata.owner')}: {resource.features.dlr_submitter_email}{' '}
-                </Typography>
-              )}
-              {tags && resource.features.dlr_subject_nsi_id && (
-                <ResourceMetadata type={preview.type} kategori={[resource.features.dlr_subject_nsi_id]} tags={tags} />
-              )}
-              {licenses.map((license) => {
-                return <LicenseCard key={license.identifier} license={license} />;
-              })}
-            </>
-          )}
+          <Typography variant="h1">{resource?.features?.dlr_title}</Typography>
         </>
       )}
+      {preview.theSource !== '' && <>{preview && <PreviewComponent preview={preview} />}</>}
+      <Card>
+        {creators.length !== 0 && (
+          <List>
+            {creators.map((creator) => {
+              return (
+                <ListItem key={creator.identifier}>
+                  <ListItemText>
+                    {t('resource.metadata.creator')}: {creator.features.dlr_creator_name}
+                  </ListItemText>
+                </ListItem>
+              );
+            })}
+          </List>
+        )}
+        {!isLoadingResource && (
+          <>
+            {resource?.features.dlr_time_published && (
+              <Typography variant="body2">
+                {t('resource.metadata.published')}: {resource.features.dlr_time_published}
+              </Typography>
+            )}
+            {resource?.features.dlr_time_created && (
+              <Typography variant="body2">
+                {t('resource.metadata.created')}: {resource.features.dlr_time_created}
+              </Typography>
+            )}
+            {resource?.features.dlr_submitter_email && (
+              <Typography variant="body2">
+                {t('resource.metadata.owner')}: {resource.features.dlr_submitter_email}
+              </Typography>
+            )}
+            {resource?.features.dlr_description && (
+              <Typography variant="body2">{resource.features.dlr_description}</Typography>
+            )}
+          </>
+        )}
+        {tags.length !== 0 && tags && resource?.features.dlr_subject_nsi_id && (
+          <ResourceMetadata type={preview.type} category={resource.features.dlr_subject_nsi_id} tags={tags} />
+        )}
+      </Card>
+      {licenses.length !== 0 &&
+        licenses.map((license) => {
+          return <LicenseCard key={license.identifier} license={license} />;
+        })}
     </StyledPageContent>
   );
 };
