@@ -3,14 +3,22 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../components/PageHeader';
 import { Button, CircularProgress, Divider, Step, StepButton, Stepper, Typography } from '@material-ui/core';
-import { getResource, getResourceDefaults, postResourceFeature } from '../api/resourceApi';
-import { emptyResource, Resource, ResourceCreationType } from '../types/resource.types';
+import {
+  createContributor,
+  getResource,
+  getResourceContributors,
+  getResourceDefaults,
+  postResourceFeature,
+  putContributorFeature,
+} from '../api/resourceApi';
+import { Contributor, emptyResource, Resource, ResourceCreationType } from '../types/resource.types';
 import deepmerge from 'deepmerge';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import * as Yup from 'yup';
 import DescriptionFields from './DescriptionFields';
 import { Uppy } from '../types/file.types';
 import FileFields from './FileFields';
+import ContributorFields from './ContributorFields';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -54,6 +62,7 @@ interface ResourceFormProps {
 const ResourceForm: FC<ResourceFormProps> = ({ uppy, identifier, resourceType }) => {
   const { t } = useTranslation();
   const [resource, setResource] = useState<Resource>(emptyResource);
+  const [contributors, setContributors] = useState<Contributor[]>([]);
   const [isLoadingResource, setIsLoadingResource] = useState(false);
   const [allChangesSaved, setAllChangesSaved] = useState(true);
 
@@ -97,16 +106,32 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, identifier, resourceType })
     setAllChangesSaved(true);
   };
 
+  const addContributor = () => {
+    createContributor(resource.identifier).then((contributorResponse) => {
+      const newContributors = [...contributors, contributorResponse.data];
+      setContributors(newContributors);
+    });
+  };
+
   useEffect(() => {
     if (identifier) {
       setIsLoadingResource(true);
-      getResource(identifier).then((resourceResponse) => {
-        getResourceDefaults(identifier).then((responseWithCalculatedDefaults) => {
-          saveCalculatedFields(responseWithCalculatedDefaults.data);
-          setResource(deepmerge(resourceResponse.data, responseWithCalculatedDefaults.data));
+      getResource(identifier)
+        .then((resourceResponse) => {
+          getResourceDefaults(identifier)
+            .then((responseWithCalculatedDefaults) => {
+              saveCalculatedFields(responseWithCalculatedDefaults.data);
+              setResource(deepmerge(resourceResponse.data, responseWithCalculatedDefaults.data));
+            })
+            .then(() => {
+              getResourceContributors(identifier).then((contributorsResponse) => {
+                setContributors(contributorsResponse.data);
+              });
+            });
+        })
+        .finally(() => {
           setIsLoadingResource(false);
         });
-      });
     }
   }, [identifier]);
 
@@ -127,11 +152,25 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, identifier, resourceType })
     setAllChangesSaved(false);
     if (resource) {
       const name = '' + event.target.name.split('.').pop();
-      await postResourceFeature(resource.identifier, name, event.target.value);
+      console.log(resource.identifier);
+      if (name === 'dlr_contributor_name' || name === 'dlr_contributor_type') {
+        const indexArray = event.target.name.match(/\d+/);
+        let index = -1;
+        if (indexArray) {
+          index = parseInt(indexArray[0]);
+        }
+        const { features } = contributors[index];
+        if (features.dlr_contributor_identifier && index !== -1) {
+          putContributorFeature(resource.identifier, features.dlr_contributor_identifier, name, event.target.value);
+        }
+      } else {
+        await postResourceFeature(resource.identifier, name, event.target.value);
+      }
       setAllChangesSaved(true);
       resetForm({ values: currentValues });
     }
   };
+
   const handleStep = (step: number) => () => {
     setActiveStep(step);
   };
@@ -172,9 +211,16 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, identifier, resourceType })
                     </StyledPanel>
                   )}
                   {activeStep === ResourceFormSteps.Contributors && (
-                    <StyledPanel>
+                    <>
                       <Typography>Contributors-fields implemented</Typography>
-                    </StyledPanel>
+                      <ContributorFields
+                        resource={resource}
+                        formikProps={formikProps}
+                        contributors={contributors}
+                        saveField={saveField}
+                        addContributor={addContributor}
+                      />
+                    </>
                   )}
                   {activeStep === ResourceFormSteps.AccessAndLicense && (
                     <StyledPanel>
