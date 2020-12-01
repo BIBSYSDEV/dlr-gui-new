@@ -54,6 +54,8 @@
       "creator": "Av",
       "categories": "Kategorier",
       "description": "Beskrivelse",
+      "filename": "Filnavn",
+      "main_file": "Hovedfil",
       "owner": "Eier",
       "published": "Publisert",
       "tags": "Merker",

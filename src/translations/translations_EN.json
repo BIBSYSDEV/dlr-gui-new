@@ -55,6 +55,8 @@
       "creator": "Creator",
       "categories": "Categories",
       "description": "Description",
+      "filename": "File name",
+      "main_file": "Main file",
       "owner": "Owner",
       "published": "Published",
       "tags": "Tags",

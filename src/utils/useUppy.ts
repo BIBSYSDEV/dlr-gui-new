@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Uppy } from '../types/file.types';
 import { createUppy } from './uppy-config';
+import { Resource } from '../types/resource.types';
 
 const useUppy = (
   resourceIdentifier = '',
   shouldAllowMultipleFiles = true,
-  onCreateFile: (resourceId: string) => void
+  onCreateFile: (newResource: Resource) => void
 ): Uppy => {
   const [uppy] = useState(createUppy(resourceIdentifier, shouldAllowMultipleFiles, onCreateFile));
 
