@@ -9,6 +9,7 @@ import {
   prepareUploadPart,
 } from '../api/fileApi';
 import { Uppy as UppyType } from '../types/file.types';
+import { Resource } from '../types/resource.types';
 
 interface UppyArgs {
   uploadId: string;
@@ -27,7 +28,7 @@ interface UppyCompleteArgs extends UppyArgs {
 export const createUppy = (
   resourceIdentifier: string,
   shouldAllowMultipleFiles: boolean,
-  onCreateFile: (resourceId: string) => void
+  onCreateFile: (newResource: Resource) => void
 ): UppyType =>
   Uppy<Uppy.StrictTypes>({
     autoProceed: true,

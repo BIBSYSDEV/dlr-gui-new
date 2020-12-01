@@ -6,11 +6,13 @@ import { PageHeader } from '../components/PageHeader';
 import ResourceForm from './ResourceForm';
 import LinkResource from './LinkResource';
 import UploadRegistration from './UploadRegistration';
-import { Typography } from '@material-ui/core';
+import { CircularProgress, Typography } from '@material-ui/core';
 import PrivateRoute from '../utils/routes/PrivateRoute';
-import { ResourceCreationType } from '../types/resource.types';
+import { emptyResource, Resource, ResourceCreationType } from '../types/resource.types';
 import useUppy from '../utils/useUppy';
 import { toast } from 'react-toastify';
+import { getResource, getResourceDefaults, postResourceFeature } from '../api/resourceApi';
+import deepmerge from 'deepmerge';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -28,18 +30,22 @@ interface EditResourcePageParamTypes {
 const EditResourcePage: FC = () => {
   const { t } = useTranslation();
   const { resourceIdentifierFromParam } = useParams<EditResourcePageParamTypes>();
-
+  const [resource, setResource] = useState(emptyResource);
   const [resourceIdentifier, setResourceIdentifier] = useState(resourceIdentifierFromParam);
   const [expanded, setExpanded] = useState('');
   const [showForm, setShowForm] = useState(!!resourceIdentifier);
   const [resourceType, setResourceType] = useState<ResourceCreationType>(ResourceCreationType.FILE);
+  const [isLoadingResource, setIsLoadingResource] = useState(false);
 
-  const onCreateFile = (resourceIdentifierCreatedOnMainFileSelection: string) => {
-    if (resourceIdentifierCreatedOnMainFileSelection) {
-      setResourceIdentifier(resourceIdentifierCreatedOnMainFileSelection);
-      setResourceType(ResourceCreationType.FILE);
-      setShowForm(true);
-    }
+  const onCreateFile = (newResource: Resource) => {
+    setResource(newResource);
+    getResourceDefaults(resource.identifier).then((responseWithCalculatedDefaults) => {
+      saveCalculatedFields(responseWithCalculatedDefaults.data);
+      setResource(deepmerge(newResource, responseWithCalculatedDefaults.data));
+      setIsLoadingResource(false);
+    });
+    setResourceType(ResourceCreationType.FILE);
+    setShowForm(true);
   };
 
   const onSubmitLink = (resourceIdentifier: string) => {
@@ -69,6 +75,34 @@ const EditResourcePage: FC = () => {
     }
   }, [mainFileHandler]);
 
+  const saveCalculatedFields = (_resource: Resource) => {
+    if (_resource.features.dlr_title) {
+      postResourceFeature(_resource.identifier, 'dlr_title', _resource.features.dlr_title);
+    }
+    if (_resource.features.dlr_description) {
+      postResourceFeature(_resource.identifier, 'dlr_description', _resource.features.dlr_description);
+    }
+    if (_resource.features.dlr_type) {
+      postResourceFeature(_resource.identifier, 'dlr_type', _resource.features.dlr_type);
+    }
+    //TODO: tags, creators
+
+    //todo: show form on completed
+  };
+
+  useEffect(() => {
+    if (resourceIdentifier) {
+      setIsLoadingResource(true);
+      getResource(resourceIdentifier).then((resourceResponse) => {
+        getResourceDefaults(resourceIdentifier).then((responseWithCalculatedDefaults) => {
+          saveCalculatedFields(responseWithCalculatedDefaults.data);
+          setResource(deepmerge(resourceResponse.data, responseWithCalculatedDefaults.data));
+          setIsLoadingResource(false);
+        });
+      });
+    }
+  }, [resourceIdentifier]);
+
   return !showForm ? (
     <>
       <PageHeader>{t('resource.new_registration')}</PageHeader>
@@ -86,8 +120,10 @@ const EditResourcePage: FC = () => {
         />
       </StyledEditPublication>
     </>
+  ) : isLoadingResource ? (
+    <CircularProgress />
   ) : (
-    <ResourceForm identifier={resourceIdentifier} uppy={mainFileHandler} resourceType={resourceType} />
+    <ResourceForm resource={resource} uppy={mainFileHandler} resourceType={resourceType} />
   );
 };
 
