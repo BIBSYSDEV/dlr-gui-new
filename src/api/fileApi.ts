@@ -4,7 +4,6 @@ import { API_PATHS } from '../utils/constants';
 import { createResource } from './resourceApi';
 import { Resource, ResourceCreationType } from '../types/resource.types';
 import { authenticatedApiRequest } from './api';
-import { Content } from '../types/content.types';
 
 export enum FileApiPaths {
   ABORT = '/upload/multipart/uppy/abort',
@@ -51,7 +50,7 @@ export const createResourceAndMultipartUpload = async (
 ) => {
   const createResourceResponse = await createResource(ResourceCreationType.FILE, file.name);
   const newResource: Resource = createResourceResponse.data;
-  newResource.features.dlr_title = newResource.features.dlr_content ;
+  newResource.features.dlr_title = newResource.features.dlr_content;
   onCreateFile(newResource);
 
   const contentId = createResourceResponse.data.contents[0].identifier;
