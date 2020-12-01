@@ -124,10 +124,8 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
               <StyledForm>
                 <Stepper style={{ width: '100%' }} activeStep={activeStep} nonLinear alternativeLabel>
                   {steps.map((label, index) => {
-                    const stepProps: { completed?: boolean } = {};
-                    stepProps.completed = false;
                     return (
-                      <Step key={label} {...stepProps}>
+                      <Step key={label} completed={false}>
                         <StepButton onClick={handleStep(index)}>{label}</StepButton>
                       </Step>
                     );
