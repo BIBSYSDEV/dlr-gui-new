@@ -90,7 +90,6 @@ const EditResourcePage: FC = () => {
   };
 
   useEffect(() => {
-    console.log('resourceIdentifierFromParam', resourceIdentifierFromParam);
     resourceIdentifierFromParam &&
       getResource(resourceIdentifierFromParam).then((resourceResponse) => {
         setFormikInitResource(resourceResponse.data);
