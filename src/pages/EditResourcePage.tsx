@@ -30,7 +30,7 @@ interface EditResourcePageParamTypes {
 const EditResourcePage: FC = () => {
   const { t } = useTranslation();
   const { resourceIdentifierFromParam } = useParams<EditResourcePageParamTypes>();
-  const [resource, setResource] = useState<Resource>(emptyResource);
+  const [resource, setResource] = useState(emptyResource);
   const [resourceIdentifier, setResourceIdentifier] = useState(resourceIdentifierFromParam);
   const [expanded, setExpanded] = useState('');
   const [showForm, setShowForm] = useState(!!resourceIdentifier);
@@ -105,7 +105,6 @@ const EditResourcePage: FC = () => {
 
   return !showForm ? (
     <>
-      {isLoadingResource && <CircularProgress />}
       <PageHeader>{t('resource.new_registration')}</PageHeader>
       <StyledEditPublication>
         <UploadRegistration
@@ -121,6 +120,8 @@ const EditResourcePage: FC = () => {
         />
       </StyledEditPublication>
     </>
+  ) : isLoadingResource ? (
+    <CircularProgress />
   ) : (
     <ResourceForm resource={resource} uppy={mainFileHandler} resourceType={resourceType} />
   );
