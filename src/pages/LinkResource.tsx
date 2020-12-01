@@ -33,16 +33,16 @@ const LinkResource: FC<LinkPublicationPanelProps> = ({ expanded, onChange, onSub
 
     createResource(ResourceCreationType.LINK, url).then((response) => {
       if (response.data.identifier) {
-        createContributor(response.data.identifier).then((contributorRespone) => {
+        createContributor(response.data.identifier).then((contributorResponse) => {
           putContributorFeature(
             response.data.identifier,
-            contributorRespone.data.identifier,
+            contributorResponse.data.features.dlr_contributor_identifier,
             'dlr_contributor_type',
             'institution'
           );
           putContributorFeature(
             response.data.identifier,
-            contributorRespone.data.identifier,
+            contributorResponse.data.features.dlr_contributor_identifier,
             'dlr_contributor_name',
             user.institution
           );

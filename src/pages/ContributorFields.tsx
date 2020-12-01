@@ -1,33 +1,42 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField } from '@material-ui/core';
 import { Contributor, Resource } from '../types/resource.types';
 import { ErrorMessage, Field, FieldProps, FormikProps, FormikValues } from 'formik';
 import Button from '@material-ui/core/Button';
+import { createContributor } from '../api/resourceApi';
 
 interface ContributorFieldsProps {
   resource: Resource;
-  contributors: Contributor[];
   formikProps: FormikProps<FormikValues>;
-  addContributor: any;
   saveField: any;
+  setResource: any;
 }
 
-const ContributorFields: FC<ContributorFieldsProps> = ({
-  addContributor,
-  contributors,
-  resource,
-  formikProps,
-  saveField,
-}) => {
+const ContributorFields: FC<ContributorFieldsProps> = ({ setResource, resource, formikProps, saveField }) => {
   const { t } = useTranslation();
+  const [reloadState, setReloadState] = useState(false);
+
+  const addContributor = () => {
+    createContributor(resource.identifier).then((contributorResponse) => {
+      const newContributors: Contributor[] = [contributorResponse.data];
+      if (resource.contributors) {
+        newContributors.push(...resource.contributors);
+      }
+      const resourceTemp = resource;
+      resourceTemp.contributors = newContributors;
+      setResource(resourceTemp);
+      // Hacky way to force ContributorFields to update:
+      setReloadState(!reloadState);
+    });
+  };
 
   return (
     <>
-      {contributors.map((contributor, index) => {
+      {resource.contributors?.map((contributor, index) => {
         return (
           <div key={contributor.features.dlr_contributor_identifier}>
-            <Field name={`contributors[${index}].features.dlr_contributor_name`}>
+            <Field name={`resource.contributors[${index}].features.dlr_contributor_name`}>
               {({ field, meta: { touched, error } }: FieldProps) => (
                 <TextField
                   {...field}
@@ -43,7 +52,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({
                 />
               )}
             </Field>
-            <Field name={`contributors[${index}].features.dlr_contributor_type`}>
+            <Field name={`resource.contributors[${index}].features.dlr_contributor_type`}>
               {({ field, meta: { touched, error } }: FieldProps) => (
                 <TextField
                   {...field}
@@ -62,7 +71,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({
           </div>
         );
       })}
-      {contributors.map((contributor) => {
+      {resource.contributors?.map((contributor) => {
         return (
           <div key={contributor.features.dlr_contributor_identifier}>
             <h3> Contributor</h3>

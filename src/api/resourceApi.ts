@@ -60,7 +60,7 @@ export const getResourceContributors = (identifier: string): Promise<AxiosRespon
   });
 };
 
-export const createContributor = (resourceIdentifier: string) => {
+export const createContributor = (resourceIdentifier: string): Promise<AxiosResponse<Contributor>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contributors`),
     method: 'POST',

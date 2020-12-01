@@ -4,14 +4,13 @@ import styled from 'styled-components';
 import { PageHeader } from '../components/PageHeader';
 import { Button, CircularProgress, Divider, Step, StepButton, Stepper, Typography } from '@material-ui/core';
 import {
-  createContributor,
   getResource,
   getResourceContributors,
   getResourceDefaults,
   postResourceFeature,
   putContributorFeature,
 } from '../api/resourceApi';
-import { Contributor, emptyResource, Resource, ResourceCreationType } from '../types/resource.types';
+import { emptyContributor, emptyResource, Resource, ResourceCreationType } from '../types/resource.types';
 import deepmerge from 'deepmerge';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import * as Yup from 'yup';
@@ -62,7 +61,6 @@ interface ResourceFormProps {
 const ResourceForm: FC<ResourceFormProps> = ({ uppy, identifier, resourceType }) => {
   const { t } = useTranslation();
   const [resource, setResource] = useState<Resource>(emptyResource);
-  const [contributors, setContributors] = useState<Contributor[]>([]);
   const [isLoadingResource, setIsLoadingResource] = useState(false);
   const [allChangesSaved, setAllChangesSaved] = useState(true);
 
@@ -106,28 +104,19 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, identifier, resourceType })
     setAllChangesSaved(true);
   };
 
-  const addContributor = () => {
-    createContributor(resource.identifier).then((contributorResponse) => {
-      const newContributors = [...contributors, contributorResponse.data];
-      setContributors(newContributors);
-    });
-  };
-
   useEffect(() => {
     if (identifier) {
       setIsLoadingResource(true);
       getResource(identifier)
         .then((resourceResponse) => {
-          getResourceDefaults(identifier)
-            .then((responseWithCalculatedDefaults) => {
-              saveCalculatedFields(responseWithCalculatedDefaults.data);
-              setResource(deepmerge(resourceResponse.data, responseWithCalculatedDefaults.data));
-            })
-            .then(() => {
-              getResourceContributors(identifier).then((contributorsResponse) => {
-                setContributors(contributorsResponse.data);
-              });
+          getResourceDefaults(identifier).then((responseWithCalculatedDefaults) => {
+            saveCalculatedFields(responseWithCalculatedDefaults.data);
+            getResourceContributors(identifier).then((contributorsResponse) => {
+              const tempResource = deepmerge(resourceResponse.data, responseWithCalculatedDefaults.data);
+              tempResource.contributors = contributorsResponse.data;
+              setResource((prevState) => deepmerge(prevState, tempResource));
             });
+          });
         })
         .finally(() => {
           setIsLoadingResource(false);
@@ -135,10 +124,17 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, identifier, resourceType })
     }
   }, [identifier]);
 
+  console.log(resource);
+
   const resourceValidationSchema = Yup.object().shape({
     resource: Yup.object().shape({
+      identifier: Yup.string(),
       features: Yup.object().shape({
         dlr_title: Yup.string().required(t('feedback.required_field')),
+      }),
+      contributors: Yup.object().shape({
+        dlr_contributor_name: Yup.string().required(t('feedback.required_field')),
+        dlr_contributor_type: Yup.string().required(t('feedback.required_field')),
       }),
     }),
   });
@@ -152,14 +148,13 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, identifier, resourceType })
     setAllChangesSaved(false);
     if (resource) {
       const name = '' + event.target.name.split('.').pop();
-      console.log(resource.identifier);
       if (name === 'dlr_contributor_name' || name === 'dlr_contributor_type') {
         const indexArray = event.target.name.match(/\d+/);
         let index = -1;
         if (indexArray) {
           index = parseInt(indexArray[0]);
         }
-        const { features } = contributors[index];
+        const { features } = resource.contributors ? resource.contributors[index] : emptyContributor;
         if (features.dlr_contributor_identifier && index !== -1) {
           putContributorFeature(resource.identifier, features.dlr_contributor_identifier, name, event.target.value);
         }
@@ -216,9 +211,8 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, identifier, resourceType })
                       <ContributorFields
                         resource={resource}
                         formikProps={formikProps}
-                        contributors={contributors}
                         saveField={saveField}
-                        addContributor={addContributor}
+                        setResource={setResource}
                       />
                     </>
                   )}
