@@ -87,3 +87,7 @@ export const getMyResources = (): Promise<AxiosResponse<Resource[]>> => {
     method: 'GET',
   });
 };
+
+export const getResourceThumbnailUrl = (identifier: string) => {
+  return encodeURI(`${API_PATHS.guiBackendResourcesContentPath}/contents/${identifier}/thumbnails/default`);
+};
