@@ -5,7 +5,6 @@ import { emptyContributor, Resource } from '../types/resource.types';
 import { ErrorMessage, Field, FieldArray, FieldProps, FormikProps, FormikValues } from 'formik';
 import Button from '@material-ui/core/Button';
 import { createContributor, putContributorFeature } from '../api/resourceApi';
-import Card from '../components/Card';
 import Paper from '@material-ui/core/Paper';
 import styled from 'styled-components';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -22,7 +21,7 @@ const StyledField = styled(Field)`
   margin-right: 2rem;
   padding: 1rem;
 `;
-const StyledCard = styled(Card)`
+const StyledDiv = styled.div`
   display: inline-block;
   margin-top: 1rem;
   margin-bottom: 0.3rem;
@@ -101,7 +100,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, 
           <>
             {resource.contributors?.map((contributor, index) => {
               return (
-                <StyledCard key={contributor.features.dlr_contributor_identifier}>
+                <StyledDiv key={contributor.features.dlr_contributor_identifier}>
                   <StyledField name={`resource.contributors[${index}].features.dlr_contributor_type`}>
                     {({ field, meta: { touched, error } }: FieldProps) => (
                       <StyledTextField
@@ -142,7 +141,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, 
                     }}>
                     {t('common.remove')}
                   </StyledButton>
-                </StyledCard>
+                </StyledDiv>
               );
             })}
             <Button

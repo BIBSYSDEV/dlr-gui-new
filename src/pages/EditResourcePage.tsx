@@ -55,47 +55,41 @@ const EditResourcePage: FC = () => {
 
   const onCreateFile = (newResource: Resource) => {
     setIsLoadingResource(true);
-    getResourceDefaults(newResource.identifier).then((responseWithCalculatedDefaults) => {
-      saveCalculatedFields(responseWithCalculatedDefaults.data);
-      getResourceContributors(newResource.identifier).then((contributorsResponse) => {
-        const tempResource = deepmerge(newResource, responseWithCalculatedDefaults.data);
-        tempResource.contributors = contributorsResponse.data;
-        setFormikInitResource(tempResource);
-        setResourceType(ResourceCreationType.FILE);
-        setShowForm(true);
-        setIsLoadingResource(false);
-      });
-    });
+    getResourceInit(newResource, ResourceCreationType.FILE);
   };
 
   const onSubmitLink = (url: string) => {
     setIsLoadingResource(true);
     createResource(ResourceCreationType.LINK, url).then((createResourceResponse) => {
-      createContributor(createResourceResponse.data.identifier).then((contributorResponse) => {
-        putContributorFeature(
-          createResourceResponse.data.identifier,
-          contributorResponse.data.features.dlr_contributor_identifier,
-          contributoFeatureNames.type,
-          contributoFeatureNames.institution
-        );
-        putContributorFeature(
-          createResourceResponse.data.identifier,
-          contributorResponse.data.features.dlr_contributor_identifier,
-          contributoFeatureNames.name,
-          user.institution
-        );
-        getResourceDefaults(createResourceResponse.data.identifier).then((responseWithCalculatedDefaults) => {
-          saveCalculatedFields(responseWithCalculatedDefaults.data);
-          const tempResouce = deepmerge(createResourceResponse.data, responseWithCalculatedDefaults.data);
-          const tempContributor = contributorResponse.data;
-          tempContributor.features.dlr_contributor_name = user.institution;
-          tempContributor.features.dlr_contributor_type = contributoFeatureNames.institution;
-          tempResouce.contributors = [tempContributor];
-          setFormikInitResource(tempResouce);
-          setResourceType(ResourceCreationType.LINK);
-          setShowForm(true);
-          setIsLoadingResource(false);
-        });
+      getResourceInit(createResourceResponse.data, ResourceCreationType.LINK);
+    });
+  };
+
+  const getResourceInit = (startingResource: Resource, resourceCreationType: ResourceCreationType) => {
+    createContributor(startingResource.identifier).then((contributorResponse) => {
+      putContributorFeature(
+        startingResource.identifier,
+        contributorResponse.data.features.dlr_contributor_identifier,
+        contributoFeatureNames.type,
+        contributoFeatureNames.institution
+      );
+      putContributorFeature(
+        startingResource.identifier,
+        contributorResponse.data.features.dlr_contributor_identifier,
+        contributoFeatureNames.name,
+        user.institution
+      );
+      getResourceDefaults(startingResource.identifier).then((responseWithCalculatedDefaults) => {
+        saveCalculatedFields(responseWithCalculatedDefaults.data);
+        const tempResouce = deepmerge(startingResource, responseWithCalculatedDefaults.data);
+        const tempContributor = contributorResponse.data;
+        tempContributor.features.dlr_contributor_name = user.institution;
+        tempContributor.features.dlr_contributor_type = contributoFeatureNames.institution;
+        tempResouce.contributors = [tempContributor];
+        setFormikInitResource(tempResouce);
+        setResourceType(resourceCreationType);
+        setShowForm(true);
+        setIsLoadingResource(false);
       });
     });
   };
