@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../components/PageHeader';
 import { Button, CircularProgress, Divider, Step, StepButton, Stepper, Typography } from '@material-ui/core';
-import { postResourceFeature, putContributorFeature } from '../api/resourceApi';
-import { Resource, ResourceCreationType, emptyContributor } from '../types/resource.types';
+import { postResourceFeature } from '../api/resourceApi';
+import { Resource, ResourceCreationType } from '../types/resource.types';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import * as Yup from 'yup';
 import DescriptionFields from './DescriptionFields';
@@ -98,26 +98,8 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
     setAllChangesSaved(false);
     if (resource) {
       const name = '' + event.target.name.split('.').pop();
-      if (name === 'dlr_contributor_name' || name === 'dlr_contributor_type') {
-        if (event.target.value.length > 0) {
-          const indexArray = event.target.name.match(/\d+/);
-          let index = -1;
-          if (indexArray) {
-            index = parseInt(indexArray[0]);
-          }
-          const { features } = resource.contributors ? resource.contributors[index] : emptyContributor;
-          if (features.dlr_contributor_identifier && index !== -1) {
-            await putContributorFeature(
-              resource.identifier,
-              features.dlr_contributor_identifier,
-              name,
-              event.target.value
-            );
-          }
-        }
-      } else {
-        await postResourceFeature(resource.identifier, name, event.target.value);
-      }
+      await postResourceFeature(resource.identifier, name, event.target.value);
+
       setAllChangesSaved(true);
       resetForm({ values: currentValues });
     }
@@ -125,6 +107,10 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
 
   const handleStep = (step: number) => () => {
     setActiveStep(step);
+  };
+
+  const contributorFieldSaved = (status: boolean) => {
+    setAllChangesSaved(status);
   };
 
   return (
@@ -160,8 +146,11 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                 )}
                 {activeStep === ResourceFormSteps.Contributors && (
                   <StyledPanel>
-                    <Typography>Contributors-fields implemented</Typography>
-                    <ContributorFields resource={resource} formikProps={formikProps} saveField={saveResourceField} />
+                    <ContributorFields
+                      resource={resource}
+                      formikProps={formikProps}
+                      setAllChangesSaved={contributorFieldSaved}
+                    />
                   </StyledPanel>
                 )}
                 {activeStep === ResourceFormSteps.AccessAndLicense && (

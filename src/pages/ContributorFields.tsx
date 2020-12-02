@@ -1,10 +1,10 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField, Typography } from '@material-ui/core';
-import { Resource } from '../types/resource.types';
+import { emptyContributor, Resource } from '../types/resource.types';
 import { ErrorMessage, Field, FieldArray, FieldProps, FormikProps, FormikValues } from 'formik';
 import Button from '@material-ui/core/Button';
-import { createContributor } from '../api/resourceApi';
+import { createContributor, putContributorFeature } from '../api/resourceApi';
 import Card from '../components/Card';
 import Paper from '@material-ui/core/Paper';
 import styled from 'styled-components';
@@ -42,10 +42,10 @@ const StyledButton = styled(Button)`
 interface ContributorFieldsProps {
   resource: Resource;
   formikProps: FormikProps<FormikValues>;
-  saveField: any;
+  setAllChangesSaved: any;
 }
 
-const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, saveField }) => {
+const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, setAllChangesSaved }) => {
   const { t } = useTranslation();
   const [reloadState, setReloadState] = useState(false);
 
@@ -57,6 +57,35 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, 
       // Hacky way to force ContributorFields to update:
       setReloadState(!reloadState);
     });
+  };
+
+  const saveField = async (
+    event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
+    resetForm: any,
+    currentValues: FormikValues
+  ) => {
+    setAllChangesSaved(false);
+    if (resource) {
+      const name = '' + event.target.name.split('.').pop();
+      if (event.target.value.length > 0) {
+        const indexArray = event.target.name.match(/\d+/);
+        let index = -1;
+        if (indexArray) {
+          index = parseInt(indexArray[0]);
+        }
+        const { features } = resource.contributors ? resource.contributors[index] : emptyContributor;
+        if (features.dlr_contributor_identifier && index !== -1) {
+          await putContributorFeature(
+            resource.identifier,
+            features.dlr_contributor_identifier,
+            name,
+            event.target.value
+          );
+        }
+      }
+      setAllChangesSaved(true);
+      resetForm({ values: currentValues });
+    }
   };
 
   const deleteContributor = (identifier: string) => {
