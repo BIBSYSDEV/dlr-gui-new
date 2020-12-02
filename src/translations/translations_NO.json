@@ -61,6 +61,9 @@
       "type": "Ressurstype",
       "submitter_email": "Registrators epost"
     },
+    "my_resources": "Mine ressurser",
+    "published_resources": "Publiserte ressurser",
+    "unpublished_resources": "Upubliserte ressurser",
     "new_registration": "Ny registering",
     "preview_not_supported_filetype": "Fohåndsvisning støttes ikke for dette filformatet",
     "search_for_resources": "Søk etter ressurser",

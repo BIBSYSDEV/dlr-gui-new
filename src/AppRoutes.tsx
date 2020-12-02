@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import PrivacyPolicy from './pages/infopages/PrivacyPolicy';
 import { useSelector } from 'react-redux';
 import ResourcePage from './pages/ResourcePage';
+import MyResources from './pages/MyResources';
 import LoginRedirectPage from './pages/LoginRedirectPage';
 import { RootState } from './state/rootReducer';
 import { Suspense } from 'react';
@@ -23,6 +24,7 @@ const AppRoutes: FC = () => {
         <Route exact path="/" component={Dashboard} />
         <Route exact path="/resource" component={ResourcePage} />
         <Route exact path="/resource/:identifier" component={ResourcePage} />
+        <Route exact path="/resources/user/current" component={MyResources} />
         <Route exact path="/privacy-policy" component={PrivacyPolicy} />
         <Route exact path="/loginRedirect" component={LoginRedirectPage} />
         {/* CreatorRoutes */}
