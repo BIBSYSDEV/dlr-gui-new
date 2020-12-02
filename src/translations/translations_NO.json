@@ -22,7 +22,8 @@
     "404_page": "Gått deg vill? (404-page)"
   },
   "feedback": {
-    "required_field": "Påkrevd felt"
+    "required_field": "Påkrevd felt",
+    "valid_url": "Input må være gyldig URL"
   },
   "license": {
     "license_information": "Lisensinformation",
