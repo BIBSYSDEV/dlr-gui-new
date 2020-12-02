@@ -32,7 +32,7 @@ const LinkResourceForm: FC<LinkResourceFormProps> = ({ handleSubmit }) => {
   const { t } = useTranslation();
 
   const validationSchema = Yup.object().shape({
-    url: Yup.string().url(),
+    url: Yup.string().url(t('feedback.valid_url')).required(t('feedback.required_field')),
   });
 
   return (
