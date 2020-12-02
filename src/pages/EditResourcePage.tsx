@@ -87,7 +87,10 @@ const EditResourcePage: FC = () => {
         getResourceDefaults(createResourceResponse.data.identifier).then((responseWithCalculatedDefaults) => {
           saveCalculatedFields(responseWithCalculatedDefaults.data);
           const tempResouce = deepmerge(createResourceResponse.data, responseWithCalculatedDefaults.data);
-          tempResouce.contributors = [contributorResponse.data];
+          const tempContributor = contributorResponse.data;
+          tempContributor.features.dlr_contributor_name = user.institution;
+          tempContributor.features.dlr_contributor_type = contributoFeatureNames.institution;
+          tempResouce.contributors = [tempContributor];
           setFormikInitResource(tempResouce);
           setResourceType(ResourceCreationType.LINK);
           setShowForm(true);
@@ -135,8 +138,12 @@ const EditResourcePage: FC = () => {
     if (resourceIdentifierFromParam) {
       setIsLoadingResource(true);
       getResource(resourceIdentifierFromParam).then((resourceResponse) => {
-        setFormikInitResource(resourceResponse.data);
-        setIsLoadingResource(false);
+        getResourceContributors(resourceIdentifierFromParam).then((contributorRespone) => {
+          const tempResource = resourceResponse.data;
+          tempResource.contributors = contributorRespone.data;
+          setFormikInitResource(tempResource);
+          setIsLoadingResource(false);
+        });
       });
     }
   }, [resourceIdentifierFromParam]);
