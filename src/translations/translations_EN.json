@@ -18,7 +18,8 @@
     "404_page": "Got lost? (404-page)"
   },
   "feedback": {
-    "required_field": "Required field"
+    "required_field": "Required field",
+    "valid_url": "Input must be a valid URL"
   },
   "license": {
     "license_information": "License information",

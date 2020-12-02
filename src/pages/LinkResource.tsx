@@ -6,8 +6,6 @@ import LinkIcon from '@material-ui/icons/Link';
 import LinkResourceForm, { LinkResourceFormValues } from './LinkResourceForm';
 import PublicationAccordion from './PublicationAccordion';
 import { urlValidationSchema } from '../utils/validation/urlValidation';
-import { createResource } from '../api/resourceApi';
-import { ResourceCreationType } from '../types/resource.types';
 
 const StyledBody = styled.div`
   width: 100%;
@@ -27,12 +25,7 @@ const LinkResource: FC<LinkPublicationPanelProps> = ({ expanded, onChange, onSub
     const url = ensureTrimmedValues?.url as string;
     //const decodedUrl = decodeURIComponent(url);
     //todo: ekte url-validering (denne sjekker ikke http://
-
-    createResource(ResourceCreationType.LINK, url).then((response) => {
-      if (response.data.identifier) {
-        onSubmit(response.data.identifier);
-      }
-    });
+    onSubmit(url);
   };
 
   return (
