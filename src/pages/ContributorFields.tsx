@@ -104,17 +104,15 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, 
                     )}
                   </StyledField>
 
-                  {index > 0 && (
-                    <StyledButton
-                      color="secondary"
-                      startIcon={<DeleteIcon fontSize="large" />}
-                      size="large"
-                      onClick={() => {
-                        deleteContributor(contributor.features.dlr_contributor_identifier);
-                      }}>
-                      {t('common.remove')}
-                    </StyledButton>
-                  )}
+                  <StyledButton
+                    color="secondary"
+                    startIcon={<DeleteIcon fontSize="large" />}
+                    size="large"
+                    onClick={() => {
+                      deleteContributor(contributor.features.dlr_contributor_identifier);
+                    }}>
+                    {t('common.remove')}
+                  </StyledButton>
                 </StyledCard>
               );
             })}
