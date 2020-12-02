@@ -2,15 +2,19 @@
   "common": {
     "all_changes_saved": "All changes saved",
     "back": "Back",
+    "delete": "Delete",
     "finish": "Finish",
     "home": "Home",
     "login": "Login",
     "logout": "Logout",
+    "name": "Name",
     "next": "Next",
     "none": "No",
     "or": "Or",
+    "remove": "Remove",
     "search": "Search",
-    "save": "Save"
+    "save": "Save",
+    "type": "Type"
   },
   "delivered_by": "Delivered by",
   "error": {
@@ -29,6 +33,7 @@
     "heading": "Privacy policy"
   },
   "resource": {
+    "add_contributor": "Add contributor",
     "edit_resource": "Edit resource",
     "files_and_license": {
       "browse": "browse",
@@ -51,6 +56,8 @@
     },
     "link_to_resource": "Link to resource",
     "metadata": {
+      "contributor": "Contributor",
+      "contributors": "Contributors",
       "created": "Created",
       "creator": "Creator",
       "categories": "Categories",

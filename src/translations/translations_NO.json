@@ -2,15 +2,19 @@
   "common": {
     "all_changes_saved": "Alle endringer er lagret",
     "back": "Tilbake",
+    "delete": "Slett",
     "finish": "Avslutt",
     "home": "Hjem",
     "login": "Logg inn",
     "logout": "Logg ut",
+    "name": "Navn",
     "next": "Neste",
     "none": "Ingen",
     "or": "Eller",
+    "remove": "Fjern",
     "search": "Søk",
-    "save": "Lagre"
+    "save": "Lagre",
+    "Type": "Type"
   },
   "delivered_by": "Levert av",
   "error": {
@@ -29,6 +33,7 @@
     "heading": "Personvernerklæring"
   },
   "resource": {
+    "add_contributor": "Legg til bidragsyter",
     "edit_resource": "Rediger ressurs",
     "files_and_license": {
       "browse": "velg",
@@ -50,6 +55,8 @@
     },
     "link_to_resource": "Lenke til ressurs",
     "metadata": {
+      "contributor": "Bigragsyter",
+      "contributors": "Bidragsytere",
       "created": "Opprettet",
       "creator": "Av",
       "categories": "Kategorier",
