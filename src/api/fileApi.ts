@@ -51,9 +51,12 @@ export const createResourceAndMultipartUpload = async (
   const createResourceResponse = await createResource(ResourceCreationType.FILE, file.name);
   const newResource: Resource = createResourceResponse.data;
   newResource.features.dlr_title = newResource.features.dlr_content;
+  const contentId = createResourceResponse.data.contents[0].identifier;
+  if (newResource?.contents?.[0]) {
+    newResource.contents[0].features.dlr_content_title = newResource.contents[0].features.dlr_content;
+  }
   onCreateFile(newResource);
 
-  const contentId = createResourceResponse.data.contents[0].identifier;
   const data = `filename=${file.name}&size=${file.data.size}&lastmodified=${
     (file.data as File).lastModified
   }&mimetype=${file.data.type}`;

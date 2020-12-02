@@ -1,6 +1,6 @@
 export interface Content {
   identifier: string;
-  features?: ContentFeature;
+  features: ContentFeature;
 }
 
 interface ContentFeature {
