@@ -32,25 +32,30 @@ const EditResourcePage: FC = () => {
   const { resourceIdentifierFromParam } = useParams<EditResourcePageParamTypes>();
   const [formikInitResource, setFormikInitResource] = useState<Resource>();
   const [expanded, setExpanded] = useState('');
+  const [isLoadingResource, setIsLoadingResource] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [resourceType, setResourceType] = useState<ResourceCreationType>(ResourceCreationType.FILE);
 
   const onCreateFile = (newResource: Resource) => {
+    setIsLoadingResource(true);
     getResourceDefaults(newResource.identifier).then((responseWithCalculatedDefaults) => {
       saveCalculatedFields(responseWithCalculatedDefaults.data);
       setFormikInitResource(deepmerge(newResource, responseWithCalculatedDefaults.data));
       setResourceType(ResourceCreationType.FILE);
       setShowForm(true);
+      setIsLoadingResource(false);
     });
   };
 
   const onSubmitLink = (url: string) => {
+    setIsLoadingResource(true);
     createResource(ResourceCreationType.LINK, url).then((createResourceResponse) => {
       getResourceDefaults(createResourceResponse.data.identifier).then((responseWithCalculatedDefaults) => {
         saveCalculatedFields(responseWithCalculatedDefaults.data);
         setFormikInitResource(deepmerge(createResourceResponse.data, responseWithCalculatedDefaults.data));
         setResourceType(ResourceCreationType.LINK);
         setShowForm(true);
+        setIsLoadingResource(false);
       });
     });
   };
@@ -90,10 +95,13 @@ const EditResourcePage: FC = () => {
   };
 
   useEffect(() => {
-    resourceIdentifierFromParam &&
+    if (resourceIdentifierFromParam) {
+      setIsLoadingResource(true);
       getResource(resourceIdentifierFromParam).then((resourceResponse) => {
         setFormikInitResource(resourceResponse.data);
+        setIsLoadingResource(false);
       });
+    }
   }, [resourceIdentifierFromParam]);
 
   return !showForm ? (
@@ -113,11 +121,11 @@ const EditResourcePage: FC = () => {
         />
       </StyledEditPublication>
     </>
-  ) : !formikInitResource ? (
+  ) : isLoadingResource ? (
     <CircularProgress />
-  ) : (
+  ) : formikInitResource ? (
     <ResourceForm resource={formikInitResource} uppy={mainFileHandler} resourceType={resourceType} />
-  );
+  ) : null;
 };
 
 export default PrivateRoute(EditResourcePage);
