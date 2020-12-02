@@ -62,6 +62,7 @@
       "type": "Resource type",
       "submitter_email": "Submitter email"
     },
+    "my_resources": "My resources",
     "new_registration": "New registration",
     "preview_not_supported_filetype": "Preview is not supported for this file type",
     "search_for_resources": "Search for resources",

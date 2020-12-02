@@ -81,7 +81,7 @@ export const getResourceContents = (identifier: string): Promise<AxiosResponse<C
   });
 };
 
-export const getMyResources = (identifier: string): Promise<AxiosResponse<Resource>> => {
+export const getMyResources = (): Promise<AxiosResponse<Resource[]>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/owners/users/current`),
     method: 'GET',
