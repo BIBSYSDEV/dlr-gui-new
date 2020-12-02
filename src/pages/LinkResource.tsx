@@ -6,10 +6,6 @@ import LinkIcon from '@material-ui/icons/Link';
 import LinkResourceForm, { LinkResourceFormValues } from './LinkResourceForm';
 import PublicationAccordion from './PublicationAccordion';
 import { urlValidationSchema } from '../utils/validation/urlValidation';
-import { createContributor, createResource, putContributorFeature } from '../api/resourceApi';
-import { ResourceCreationType } from '../types/resource.types';
-import { useSelector } from 'react-redux';
-import { RootState } from '../state/rootReducer';
 
 const StyledBody = styled.div`
   width: 100%;
@@ -23,33 +19,13 @@ interface LinkPublicationPanelProps {
 
 const LinkResource: FC<LinkPublicationPanelProps> = ({ expanded, onChange, onSubmit }) => {
   const { t } = useTranslation();
-  const user = useSelector((state: RootState) => state.user);
 
   const handleSubmit = (values: LinkResourceFormValues) => {
     const ensureTrimmedValues = urlValidationSchema.cast(values);
     const url = ensureTrimmedValues?.url as string;
     //const decodedUrl = decodeURIComponent(url);
     //todo: ekte url-validering (denne sjekker ikke http://
-
-    createResource(ResourceCreationType.LINK, url).then((response) => {
-      if (response.data.identifier) {
-        createContributor(response.data.identifier).then((contributorResponse) => {
-          putContributorFeature(
-            response.data.identifier,
-            contributorResponse.data.features.dlr_contributor_identifier,
-            'dlr_contributor_type',
-            'institution'
-          );
-          putContributorFeature(
-            response.data.identifier,
-            contributorResponse.data.features.dlr_contributor_identifier,
-            'dlr_contributor_name',
-            user.institution
-          );
-        });
-        onSubmit(response.data.identifier);
-      }
-    });
+    onSubmit(url);
   };
 
   return (
