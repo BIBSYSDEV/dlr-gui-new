@@ -82,7 +82,6 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
 
   const resourceValidationSchema = Yup.object().shape({
     resource: Yup.object().shape({
-      identifier: Yup.string(),
       features: Yup.object().shape({
         dlr_title: Yup.string().required(t('feedback.required_field')),
       }),
