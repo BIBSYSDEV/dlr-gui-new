@@ -47,7 +47,7 @@ const StyledButton = styled(Button)`
 `;
 
 interface ContributorFieldsProps {
-  setAllChangesSaved: any;
+  setAllChangesSaved: (value: boolean) => void;
 }
 interface ResourceWrapper {
   resource: Resource;
@@ -103,7 +103,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
               return (
                 <StyledDiv key={contributor.identifier}>
                   <StyledField name={`resource.contributors[${index}].features.dlr_contributor_type`}>
-                    {({ field, meta: { touched, error } }: FieldProps) => (
+                    {({ field, meta: { touched, error } }: FieldProps<string>) => (
                       <StyledTextField
                         {...field}
                         variant="filled"
@@ -118,7 +118,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                     )}
                   </StyledField>
                   <StyledField name={`resource.contributors[${index}].features.dlr_contributor_name`}>
-                    {({ field, meta: { touched, error } }: FieldProps) => (
+                    {({ field, meta: { touched, error } }: FieldProps<string>) => (
                       <StyledTextField
                         {...field}
                         variant="filled"
