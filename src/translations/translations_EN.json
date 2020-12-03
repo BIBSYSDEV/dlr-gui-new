@@ -18,7 +18,8 @@
     "404_page": "Got lost? (404-page)"
   },
   "feedback": {
-    "required_field": "Required field"
+    "required_field": "Required field",
+    "valid_url": "Input must be a valid URL"
   },
   "license": {
     "license_information": "License information",
@@ -55,6 +56,8 @@
       "creator": "Creator",
       "categories": "Categories",
       "description": "Description",
+      "filename": "File name",
+      "main_file": "Main file",
       "owner": "Owner",
       "published": "Published",
       "tags": "Tags",

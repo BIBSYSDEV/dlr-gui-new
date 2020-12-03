@@ -1,8 +1,9 @@
-import { Field, Formik, Form, FieldProps, ErrorMessage } from 'formik';
+import { ErrorMessage, Field, FieldProps, Form, Formik } from 'formik';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Button, TextField } from '@material-ui/core';
+import * as Yup from 'yup';
 
 const StyledInputBox = styled.div`
   display: flex;
@@ -30,8 +31,12 @@ interface LinkResourceFormProps {
 const LinkResourceForm: FC<LinkResourceFormProps> = ({ handleSubmit }) => {
   const { t } = useTranslation();
 
+  const validationSchema = Yup.object().shape({
+    url: Yup.string().url(t('feedback.valid_url')).required(t('feedback.required_field')),
+  });
+
   return (
-    <Formik onSubmit={handleSubmit} initialValues={emptyLinkResourceFormValues}>
+    <Formik onSubmit={handleSubmit} initialValues={emptyLinkResourceFormValues} validationSchema={validationSchema}>
       {({ isValid, dirty }) => (
         <Form>
           <StyledInputBox>

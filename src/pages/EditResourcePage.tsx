@@ -6,11 +6,13 @@ import { PageHeader } from '../components/PageHeader';
 import ResourceForm from './ResourceForm';
 import LinkResource from './LinkResource';
 import UploadRegistration from './UploadRegistration';
-import { Typography } from '@material-ui/core';
+import { CircularProgress, Typography } from '@material-ui/core';
 import PrivateRoute from '../utils/routes/PrivateRoute';
-import { ResourceCreationType } from '../types/resource.types';
+import { Resource, ResourceCreationType } from '../types/resource.types';
 import useUppy from '../utils/useUppy';
 import { toast } from 'react-toastify';
+import { createResource, getResource, getResourceDefaults, postResourceFeature } from '../api/resourceApi';
+import deepmerge from 'deepmerge';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -28,24 +30,34 @@ interface EditResourcePageParamTypes {
 const EditResourcePage: FC = () => {
   const { t } = useTranslation();
   const { resourceIdentifierFromParam } = useParams<EditResourcePageParamTypes>();
-
-  const [resourceIdentifier, setResourceIdentifier] = useState(resourceIdentifierFromParam);
+  const [formikInitResource, setFormikInitResource] = useState<Resource>();
   const [expanded, setExpanded] = useState('');
-  const [showForm, setShowForm] = useState(!!resourceIdentifier);
+  const [isLoadingResource, setIsLoadingResource] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const [resourceType, setResourceType] = useState<ResourceCreationType>(ResourceCreationType.FILE);
 
-  const onCreateFile = (resourceIdentifierCreatedOnMainFileSelection: string) => {
-    if (resourceIdentifierCreatedOnMainFileSelection) {
-      setResourceIdentifier(resourceIdentifierCreatedOnMainFileSelection);
+  const onCreateFile = (newResource: Resource) => {
+    setIsLoadingResource(true);
+    getResourceDefaults(newResource.identifier).then((responseWithCalculatedDefaults) => {
+      saveCalculatedFields(responseWithCalculatedDefaults.data);
+      setFormikInitResource(deepmerge(newResource, responseWithCalculatedDefaults.data));
       setResourceType(ResourceCreationType.FILE);
       setShowForm(true);
-    }
+      setIsLoadingResource(false);
+    });
   };
 
-  const onSubmitLink = (resourceIdentifier: string) => {
-    setResourceType(ResourceCreationType.LINK);
-    setResourceIdentifier(resourceIdentifier);
-    setShowForm(true);
+  const onSubmitLink = (url: string) => {
+    setIsLoadingResource(true);
+    createResource(ResourceCreationType.LINK, url).then((createResourceResponse) => {
+      getResourceDefaults(createResourceResponse.data.identifier).then((responseWithCalculatedDefaults) => {
+        saveCalculatedFields(responseWithCalculatedDefaults.data);
+        setFormikInitResource(deepmerge(createResourceResponse.data, responseWithCalculatedDefaults.data));
+        setResourceType(ResourceCreationType.LINK);
+        setShowForm(true);
+        setIsLoadingResource(false);
+      });
+    });
   };
 
   const mainFileHandler = useUppy('', false, onCreateFile);
@@ -69,6 +81,29 @@ const EditResourcePage: FC = () => {
     }
   }, [mainFileHandler]);
 
+  const saveCalculatedFields = async (_resource: Resource) => {
+    if (_resource.features.dlr_title) {
+      await postResourceFeature(_resource.identifier, 'dlr_title', _resource.features.dlr_title);
+    }
+    if (_resource.features.dlr_description) {
+      await postResourceFeature(_resource.identifier, 'dlr_description', _resource.features.dlr_description);
+    }
+    if (_resource.features.dlr_type) {
+      await postResourceFeature(_resource.identifier, 'dlr_type', _resource.features.dlr_type);
+    }
+    //TODO: tags, creators
+  };
+
+  useEffect(() => {
+    if (resourceIdentifierFromParam) {
+      setIsLoadingResource(true);
+      getResource(resourceIdentifierFromParam).then((resourceResponse) => {
+        setFormikInitResource(resourceResponse.data);
+        setIsLoadingResource(false);
+      });
+    }
+  }, [resourceIdentifierFromParam]);
+
   return !showForm ? (
     <>
       <PageHeader>{t('resource.new_registration')}</PageHeader>
@@ -86,9 +121,11 @@ const EditResourcePage: FC = () => {
         />
       </StyledEditPublication>
     </>
-  ) : (
-    <ResourceForm identifier={resourceIdentifier} uppy={mainFileHandler} resourceType={resourceType} />
-  );
+  ) : isLoadingResource ? (
+    <CircularProgress />
+  ) : formikInitResource ? (
+    <ResourceForm resource={formikInitResource} uppy={mainFileHandler} resourceType={resourceType} />
+  ) : null;
 };
 
 export default PrivateRoute(EditResourcePage);

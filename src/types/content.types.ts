@@ -17,6 +17,7 @@ interface ContentFeature {
   dlr_content_time_created?: string;
   dlr_content_type?: string;
   dlr_thumbnail_default?: string;
+  dlr_content_title?: string;
 }
 
 export const emptyContents: Content[] = [
