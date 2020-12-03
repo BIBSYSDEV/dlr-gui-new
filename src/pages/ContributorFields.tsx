@@ -66,15 +66,12 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, 
     event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
     resetForm: any,
     currentValues: FormikValues,
-    index: number
+    contributorIdentifier: string
   ) => {
     setAllChangesSaved(false);
     const name = '' + event.target.name.split('.').pop();
     if (event.target.value.length > 0) {
-      const contributorIdentifier = formikProps.values.resource?.contributors[index]?.identifier;
-      if (contributorIdentifier) {
-        await putContributorFeature(resource.identifier, contributorIdentifier, name, event.target.value);
-      }
+      await putContributorFeature(resource.identifier, contributorIdentifier, name, event.target.value);
     }
     setAllChangesSaved(true);
     resetForm({ values: currentValues });
@@ -104,7 +101,13 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, 
                         helperText={<ErrorMessage name={field.name} />}
                         onBlur={(event) => {
                           formikProps.handleBlur(event);
-                          !error && saveContributorField(event, formikProps.resetForm, formikProps.values, index);
+                          !error &&
+                            saveContributorField(
+                              event,
+                              formikProps.resetForm,
+                              formikProps.values,
+                              contributor.identifier
+                            );
                         }}
                       />
                     )}
@@ -119,7 +122,13 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, 
                         helperText={<ErrorMessage name={field.name} />}
                         onBlur={(event) => {
                           formikProps.handleBlur(event);
-                          !error && saveContributorField(event, formikProps.resetForm, formikProps.values, index);
+                          !error &&
+                            saveContributorField(
+                              event,
+                              formikProps.resetForm,
+                              formikProps.values,
+                              contributor.identifier
+                            );
                         }}
                       />
                     )}
