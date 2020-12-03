@@ -108,10 +108,6 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
     setActiveStep(step);
   };
 
-  const contributorFieldSaved = (status: boolean) => {
-    setAllChangesSaved(status);
-  };
-
   return (
     <>
       <PageHeader>{t('resource.edit_resource')}</PageHeader>
@@ -148,7 +144,9 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                     <ContributorFields
                       resource={resource}
                       formikProps={formikProps}
-                      setAllChangesSaved={contributorFieldSaved}
+                      setAllChangesSaved={(status: boolean) => {
+                        setAllChangesSaved(status);
+                      }}
                     />
                   </StyledPanel>
                 )}

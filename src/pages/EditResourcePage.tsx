@@ -37,11 +37,11 @@ interface EditResourcePageParamTypes {
   resourceIdentifierFromParam: string;
 }
 
-const contributoFeatureNames = {
-  type: 'dlr_contributor_type',
-  name: 'dlr_contributor_name',
-  institution: 'institution',
-};
+enum contributorFeatureNames {
+  Type = 'dlr_contributor_type',
+  Name = 'dlr_contributor_name',
+  Institution = 'institution',
+}
 
 const EditResourcePage: FC = () => {
   const { t } = useTranslation();
@@ -70,23 +70,31 @@ const EditResourcePage: FC = () => {
       putContributorFeature(
         startingResource.identifier,
         contributorResponse.data.features.dlr_contributor_identifier,
-        contributoFeatureNames.type,
-        contributoFeatureNames.institution
+        contributorFeatureNames.Type,
+        contributorFeatureNames.Institution
       );
       putContributorFeature(
         startingResource.identifier,
         contributorResponse.data.features.dlr_contributor_identifier,
-        contributoFeatureNames.name,
+        contributorFeatureNames.Name,
         user.institution
       );
+
       getResourceDefaults(startingResource.identifier).then((responseWithCalculatedDefaults) => {
         saveCalculatedFields(responseWithCalculatedDefaults.data);
-        const tempResouce = deepmerge(startingResource, responseWithCalculatedDefaults.data);
-        const tempContributor = contributorResponse.data;
-        tempContributor.features.dlr_contributor_name = user.institution;
-        tempContributor.features.dlr_contributor_type = contributoFeatureNames.institution;
-        tempResouce.contributors = [tempContributor];
-        setFormikInitResource(tempResouce);
+        setFormikInitResource({
+          ...deepmerge(startingResource, responseWithCalculatedDefaults.data),
+          contributors: [
+            {
+              identifier: contributorResponse.data.identifier,
+              features: {
+                dlr_contributor_identifier: contributorResponse.data.identifier,
+                dlr_contributor_name: user.institution,
+                dlr_contributor_type: contributorFeatureNames.Institution,
+              },
+            },
+          ],
+        });
         setResourceType(resourceCreationType);
         setShowForm(true);
         setIsLoadingResource(false);
