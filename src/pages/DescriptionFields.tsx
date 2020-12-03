@@ -5,19 +5,15 @@ import { Resource } from '../types/resource.types';
 import { ErrorMessage, Field, FieldProps, FormikProps, FormikValues } from 'formik';
 
 interface DescriptionFieldsProps {
-  resource: Resource;
   formikProps: FormikProps<FormikValues>;
   saveField: any;
 }
 
-const DescriptionFields: FC<DescriptionFieldsProps> = ({ resource, formikProps, saveField }) => {
+const DescriptionFields: FC<DescriptionFieldsProps> = ({ formikProps, saveField }) => {
   const { t } = useTranslation();
 
   return (
     <>
-      {resource.features.dlr_thumbnail_url && (
-        <img alt="thumbnail" style={{ maxWidth: '300px' }} src={resource.features.dlr_thumbnail_url} />
-      )}
       <Field name="resource.features.dlr_title">
         {({ field, meta: { touched, error } }: FieldProps) => (
           <TextField
