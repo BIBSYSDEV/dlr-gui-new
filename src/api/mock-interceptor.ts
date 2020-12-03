@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { mockSearchResults } from '../utils/testfiles/search_results';
+import { licenses as allLicenses } from '../utils/testfiles/licenses';
 import { API_PATHS } from '../utils/constants';
 import { User } from '../types/user.types';
 import { Contributor, Creator, Resource } from '../types/resource.types';
@@ -132,6 +133,9 @@ export const interceptRequestsOnMock = () => {
     .onPost(new RegExp(`${API_PATHS.guiBackendResourcesContentPath}${FileApiPaths.COMPLETE}`))
     .reply(200, mockCompleteUpload);
 
+  // LICENSES
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendLicensesPath}/licenses/users/authorized`)).reply(200, allLicenses);
+
   // RESOURCE
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/licenses`)).reply(200, mockLicenses);
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents`)).reply(200, mockContent);
@@ -143,7 +147,9 @@ export const interceptRequestsOnMock = () => {
   mock
     .onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*/contributors`))
     .reply(200, mockResourceContributors);
+  mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contributors/.*/features`)).reply(200);
   mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*`)).reply(200, mockCalculatedResource);
+  mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents/.*/titles`)).reply(200);
 
   // GET ANONYMOUS WEB TOKEN
   const mockToken = 'mockToken';
