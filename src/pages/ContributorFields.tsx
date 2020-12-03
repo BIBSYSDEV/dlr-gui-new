@@ -72,7 +72,7 @@ interface ServerError {
 const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, handleBlur, resetForm } = useFormikContext<ResourceWrapper>();
-  const [deleteErrorMessage, setDeleteErrorMessage] = useState(202);
+  const [deleteStatus, setDeleteStatus] = useState(202);
   const [errorIndex, setErrorIndex] = useState(-1);
 
   const addContributor = (arrayHelpers: FieldArrayRenderProps) => {
@@ -131,10 +131,12 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
       setAllChangesSaved(false);
       await deleteContributor(values.resource.identifier, contributorIdentifier);
       arrayHelpers.remove(contributorIndex);
+      setDeleteStatus(202);
+      setErrorIndex(-1);
     } catch (deleteContributorError: any) {
       if (deleteContributorError && deleteContributorError.response) {
         const axiosError = deleteContributorError as AxiosError<ServerError>;
-        setDeleteErrorMessage(axiosError.response ? axiosError.response.status : 401);
+        setDeleteStatus(axiosError.response ? axiosError.response.status : 401);
         setErrorIndex(contributorIndex);
       }
     } finally {
@@ -191,7 +193,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                     }}>
                     {t('common.remove')}
                   </StyledButton>
-                  {deleteErrorMessage !== 202 && errorIndex === index && CustomErrorMessage(deleteErrorMessage)}
+                  {deleteStatus !== 202 && errorIndex === index && CustomErrorMessage(deleteStatus)}
                 </StyledDiv>
               );
             })}
