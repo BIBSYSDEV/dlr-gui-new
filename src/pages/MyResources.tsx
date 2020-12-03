@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { RouteProps, useParams } from 'react-router-dom';
-import { getMyResources, getResourceThumbnailUrl } from '../api/resourceApi';
+import { RouteProps } from 'react-router-dom';
+import { getMyResources } from '../api/resourceApi';
 import { CircularProgress, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { Resource } from '../types/resource.types';
