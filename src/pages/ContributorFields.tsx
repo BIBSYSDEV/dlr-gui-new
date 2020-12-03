@@ -2,7 +2,15 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField, Typography } from '@material-ui/core';
 import { Contributor, Resource } from '../types/resource.types';
-import { ErrorMessage, Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps, FormikValues } from 'formik';
+import {
+  ErrorMessage,
+  Field,
+  FieldArray,
+  FieldArrayRenderProps,
+  FieldProps,
+  FormikValues,
+  useFormikContext,
+} from 'formik';
 import Button from '@material-ui/core/Button';
 import { createContributor, putContributorFeature } from '../api/resourceApi';
 import Paper from '@material-ui/core/Paper';
@@ -39,17 +47,19 @@ const StyledButton = styled(Button)`
 `;
 
 interface ContributorFieldsProps {
-  resource: Resource;
-  formikProps: FormikProps<FormikValues>;
   setAllChangesSaved: any;
 }
+interface ResourceWrapper {
+  resource: Resource;
+}
 
-const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, setAllChangesSaved }) => {
+const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
+  const { values, handleBlur, resetForm } = useFormikContext<ResourceWrapper>();
 
   const addContributor = (arrayHelpers: FieldArrayRenderProps) => {
     setAllChangesSaved(false);
-    createContributor(resource.identifier).then((contributorResponse) => {
+    createContributor(values.resource.identifier).then((contributorResponse) => {
       arrayHelpers.push({
         identifier: contributorResponse.data.identifier,
         features: {
@@ -71,7 +81,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, 
     setAllChangesSaved(false);
     const name = '' + event.target.name.split('.').pop();
     if (event.target.value.length > 0) {
-      await putContributorFeature(resource.identifier, contributorIdentifier, name, event.target.value);
+      await putContributorFeature(values.resource.identifier, contributorIdentifier, name, event.target.value);
     }
     setAllChangesSaved(true);
     resetForm({ values: currentValues });
@@ -84,11 +94,12 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, 
   return (
     <StyledPaper>
       <Typography variant="h1">{t('resource.metadata.contributors')}</Typography>
+      <Typography> {JSON.stringify(values)}</Typography>
       <FieldArray
         name={`resource.contributors`}
         render={(arrayHelpers) => (
           <>
-            {formikProps.values.resource.contributors?.map((contributor: Contributor, index: number) => {
+            {values.resource.contributors?.map((contributor: Contributor, index: number) => {
               return (
                 <StyledDiv key={contributor.identifier}>
                   <StyledField name={`resource.contributors[${index}].features.dlr_contributor_type`}>
@@ -100,14 +111,8 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, 
                         error={touched && !!error}
                         helperText={<ErrorMessage name={field.name} />}
                         onBlur={(event) => {
-                          formikProps.handleBlur(event);
-                          !error &&
-                            saveContributorField(
-                              event,
-                              formikProps.resetForm,
-                              formikProps.values,
-                              contributor.identifier
-                            );
+                          handleBlur(event);
+                          !error && saveContributorField(event, resetForm, values, contributor.identifier);
                         }}
                       />
                     )}
@@ -121,14 +126,8 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, 
                         error={touched && !!error}
                         helperText={<ErrorMessage name={field.name} />}
                         onBlur={(event) => {
-                          formikProps.handleBlur(event);
-                          !error &&
-                            saveContributorField(
-                              event,
-                              formikProps.resetForm,
-                              formikProps.values,
-                              contributor.identifier
-                            );
+                          handleBlur(event);
+                          !error && saveContributorField(event, resetForm, values, contributor.identifier);
                         }}
                       />
                     )}
