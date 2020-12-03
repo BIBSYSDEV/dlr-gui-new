@@ -11,8 +11,18 @@ import PrivateRoute from '../utils/routes/PrivateRoute';
 import { Resource, ResourceCreationType } from '../types/resource.types';
 import useUppy from '../utils/useUppy';
 import { toast } from 'react-toastify';
-import { createResource, getResource, getResourceDefaults, postResourceFeature } from '../api/resourceApi';
+import {
+  createContributor,
+  createResource,
+  getResource,
+  getResourceContributors,
+  getResourceDefaults,
+  postResourceFeature,
+  putContributorFeature,
+} from '../api/resourceApi';
 import deepmerge from 'deepmerge';
+import { useSelector } from 'react-redux';
+import { RootState } from '../state/rootReducer';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -27,6 +37,12 @@ interface EditResourcePageParamTypes {
   resourceIdentifierFromParam: string;
 }
 
+enum contributorFeatureNames {
+  Type = 'dlr_contributor_type',
+  Name = 'dlr_contributor_name',
+  Institution = 'institution',
+}
+
 const EditResourcePage: FC = () => {
   const { t } = useTranslation();
   const { resourceIdentifierFromParam } = useParams<EditResourcePageParamTypes>();
@@ -35,25 +51,51 @@ const EditResourcePage: FC = () => {
   const [isLoadingResource, setIsLoadingResource] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [resourceType, setResourceType] = useState<ResourceCreationType>(ResourceCreationType.FILE);
+  const user = useSelector((state: RootState) => state.user);
 
   const onCreateFile = (newResource: Resource) => {
     setIsLoadingResource(true);
-    getResourceDefaults(newResource.identifier).then((responseWithCalculatedDefaults) => {
-      saveCalculatedFields(responseWithCalculatedDefaults.data);
-      setFormikInitResource(deepmerge(newResource, responseWithCalculatedDefaults.data));
-      setResourceType(ResourceCreationType.FILE);
-      setShowForm(true);
-      setIsLoadingResource(false);
-    });
+    getResourceInit(newResource, ResourceCreationType.FILE);
   };
 
   const onSubmitLink = (url: string) => {
     setIsLoadingResource(true);
     createResource(ResourceCreationType.LINK, url).then((createResourceResponse) => {
-      getResourceDefaults(createResourceResponse.data.identifier).then((responseWithCalculatedDefaults) => {
+      getResourceInit(createResourceResponse.data, ResourceCreationType.LINK);
+    });
+  };
+
+  const getResourceInit = (startingResource: Resource, resourceCreationType: ResourceCreationType) => {
+    createContributor(startingResource.identifier).then((contributorResponse) => {
+      putContributorFeature(
+        startingResource.identifier,
+        contributorResponse.data.features.dlr_contributor_identifier,
+        contributorFeatureNames.Type,
+        contributorFeatureNames.Institution
+      );
+      putContributorFeature(
+        startingResource.identifier,
+        contributorResponse.data.features.dlr_contributor_identifier,
+        contributorFeatureNames.Name,
+        user.institution
+      );
+
+      getResourceDefaults(startingResource.identifier).then((responseWithCalculatedDefaults) => {
         saveCalculatedFields(responseWithCalculatedDefaults.data);
-        setFormikInitResource(deepmerge(createResourceResponse.data, responseWithCalculatedDefaults.data));
-        setResourceType(ResourceCreationType.LINK);
+        setFormikInitResource({
+          ...deepmerge(startingResource, responseWithCalculatedDefaults.data),
+          contributors: [
+            {
+              identifier: contributorResponse.data.identifier,
+              features: {
+                dlr_contributor_identifier: contributorResponse.data.identifier,
+                dlr_contributor_name: user.institution,
+                dlr_contributor_type: contributorFeatureNames.Institution,
+              },
+            },
+          ],
+        });
+        setResourceType(resourceCreationType);
         setShowForm(true);
         setIsLoadingResource(false);
       });
@@ -98,8 +140,12 @@ const EditResourcePage: FC = () => {
     if (resourceIdentifierFromParam) {
       setIsLoadingResource(true);
       getResource(resourceIdentifierFromParam).then((resourceResponse) => {
-        setFormikInitResource(resourceResponse.data);
-        setIsLoadingResource(false);
+        getResourceContributors(resourceIdentifierFromParam).then((contributorRespone) => {
+          const tempResource = resourceResponse.data;
+          tempResource.contributors = contributorRespone.data;
+          setFormikInitResource(tempResource);
+          setIsLoadingResource(false);
+        });
       });
     }
   }, [resourceIdentifierFromParam]);

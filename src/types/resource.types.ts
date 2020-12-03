@@ -111,18 +111,20 @@ interface CreatorFeatures {
 }
 
 export interface Contributor {
-  id: string;
+  identifier: string;
   features: ContributorFeatures;
   Authority?: Authority;
 }
 
 export const emptyContributor: Contributor = {
-  id: '',
-  features: {},
+  identifier: '',
+  features: {
+    dlr_contributor_identifier: 'contributor id 123',
+  },
 };
 
 interface ContributorFeatures {
-  dlr_contributor_identifier?: string;
+  dlr_contributor_identifier: string;
   dlr_contributor_name?: string;
   dlr_contributor_time_created?: string;
   dlr_contributor_type?: string;
