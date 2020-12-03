@@ -21,16 +21,8 @@ const MyResources: FC<RouteProps> = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       await getMyResources().then((response) => {
-        setMyUnpublishedResources(
-          response.data.filter((resource) => {
-            return !resource.features.dlr_status_published;
-          })
-        );
-        setMyPublishedResources(
-          response.data.filter((resource) => {
-            return resource.features.dlr_status_published;
-          })
-        );
+        setMyUnpublishedResources(response.data.filter((resource) => !resource.features.dlr_status_published));
+        setMyPublishedResources(response.data.filter((resource) => resource.features.dlr_status_published));
       });
       setIsLoadingMyResources(false);
     };
