@@ -1,7 +1,7 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField, Typography } from '@material-ui/core';
-import { emptyContributor, Resource } from '../types/resource.types';
+import { Contributor, Resource } from '../types/resource.types';
 import { ErrorMessage, Field, FieldArray, FieldProps, FormikProps, FormikValues } from 'formik';
 import Button from '@material-ui/core/Button';
 import { createContributor, putContributorFeature } from '../api/resourceApi';
@@ -46,15 +46,17 @@ interface ContributorFieldsProps {
 
 const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, setAllChangesSaved }) => {
   const { t } = useTranslation();
-  const [reloadState, setReloadState] = useState(false);
 
-  const addContributor = () => {
+  const addContributor = (arrayHelpers: any) => {
     createContributor(resource.identifier).then((contributorResponse) => {
-      resource.contributors
-        ? resource.contributors.push(contributorResponse.data)
-        : (resource.contributors = [contributorResponse.data]);
-      // Hacky way to force ContributorFields to update:
-      setReloadState(!reloadState);
+      arrayHelpers.push({
+        identifier: contributorResponse.data.identifier,
+        features: {
+          dlr_contributor_name: '',
+          dlr_contributor_type: '',
+          dlr_contributor_identifier: contributorResponse.data.identifier,
+        },
+      });
     });
   };
 
@@ -64,27 +66,20 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, 
     currentValues: FormikValues
   ) => {
     setAllChangesSaved(false);
-    if (resource) {
-      const name = '' + event.target.name.split('.').pop();
-      if (event.target.value.length > 0) {
-        const indexArray = event.target.name.match(/\d+/);
-        let index = -1;
-        if (indexArray) {
-          index = parseInt(indexArray[0]);
-        }
-        const { features } = resource.contributors ? resource.contributors[index] : emptyContributor;
-        if (features.dlr_contributor_identifier && index !== -1) {
-          await putContributorFeature(
-            resource.identifier,
-            features.dlr_contributor_identifier,
-            name,
-            event.target.value
-          );
-        }
+    const name = '' + event.target.name.split('.').pop();
+    if (event.target.value.length > 0) {
+      const indexArray = event.target.name.match(/\d+/);
+      let index = -1;
+      if (indexArray) {
+        index = parseInt(indexArray[0]);
       }
-      setAllChangesSaved(true);
-      resetForm({ values: currentValues });
+      const contributorIdentifier = formikProps.values.resource?.contributors[index]?.identifier;
+      if (contributorIdentifier && index !== -1) {
+        await putContributorFeature(resource.identifier, contributorIdentifier, name, event.target.value);
+      }
     }
+    setAllChangesSaved(true);
+    resetForm({ values: currentValues });
   };
 
   const deleteContributor = (identifier: string) => {
@@ -98,9 +93,9 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, 
         name={`resource.contributors`}
         render={(arrayHelpers) => (
           <>
-            {resource.contributors?.map((contributor, index) => {
+            {formikProps.values.resource.contributors?.map((contributor: Contributor, index: number) => {
               return (
-                <StyledDiv key={contributor.features.dlr_contributor_identifier}>
+                <StyledDiv key={contributor.identifier}>
                   <StyledField name={`resource.contributors[${index}].features.dlr_contributor_type`}>
                     {({ field, meta: { touched, error } }: FieldProps) => (
                       <StyledTextField
@@ -131,7 +126,6 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, 
                       />
                     )}
                   </StyledField>
-
                   <StyledButton
                     color="secondary"
                     startIcon={<DeleteIcon fontSize="large" />}
@@ -150,8 +144,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, 
               color="primary"
               startIcon={<AddIcon />}
               onClick={() => {
-                addContributor();
-                arrayHelpers.push({ features: { dlr_contributor_name: '', dlr_contributor_type: '' } });
+                addContributor(arrayHelpers);
               }}>
               {t('resource.add_contributor')}
             </Button>
