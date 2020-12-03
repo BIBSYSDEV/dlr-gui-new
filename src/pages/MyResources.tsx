@@ -64,11 +64,11 @@ const MyResources: FC<RouteProps> = (props) => {
               <ListItemText
                 primary={`${resource.features.dlr_title} (${resource.features.dlr_content_type})`}
                 secondary={
-                  <React.Fragment>
+                  <>
                     <Typography style={{ display: 'block' }} component="span" variant="body2" color="textPrimary">
                       {resource.features.dlr_time_created}
                     </Typography>
-                  </React.Fragment>
+                  </>
                 }
               />
             </ListItem>
@@ -94,11 +94,11 @@ const MyResources: FC<RouteProps> = (props) => {
               <ListItemText
                 primary={`${resource.features.dlr_title} (${resource.features.dlr_content_type})`}
                 secondary={
-                  <React.Fragment>
+                  <>
                     <Typography style={{ display: 'block' }} component="span" variant="body2" color="textPrimary">
                       {resource.features.dlr_time_created}
                     </Typography>
-                  </React.Fragment>
+                  </>
                 }
               />
             </ListItem>
