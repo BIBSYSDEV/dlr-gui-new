@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField, Typography } from '@material-ui/core';
 import { Contributor, Resource } from '../types/resource.types';
-import { ErrorMessage, Field, FieldArray, FieldProps, FormikProps, FormikValues } from 'formik';
+import { ErrorMessage, Field, FieldArray, FieldArrayRenderProps, FieldProps, FormikProps, FormikValues } from 'formik';
 import Button from '@material-ui/core/Button';
 import { createContributor, putContributorFeature } from '../api/resourceApi';
 import Paper from '@material-ui/core/Paper';
@@ -47,7 +47,8 @@ interface ContributorFieldsProps {
 const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, setAllChangesSaved }) => {
   const { t } = useTranslation();
 
-  const addContributor = (arrayHelpers: any) => {
+  const addContributor = (arrayHelpers: FieldArrayRenderProps) => {
+    setAllChangesSaved(false);
     createContributor(resource.identifier).then((contributorResponse) => {
       arrayHelpers.push({
         identifier: contributorResponse.data.identifier,
@@ -57,24 +58,21 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, 
           dlr_contributor_identifier: contributorResponse.data.identifier,
         },
       });
+      setAllChangesSaved(true);
     });
   };
 
-  const saveField = async (
+  const saveContributorField = async (
     event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
     resetForm: any,
-    currentValues: FormikValues
+    currentValues: FormikValues,
+    index: number
   ) => {
     setAllChangesSaved(false);
     const name = '' + event.target.name.split('.').pop();
     if (event.target.value.length > 0) {
-      const indexArray = event.target.name.match(/\d+/);
-      let index = -1;
-      if (indexArray) {
-        index = parseInt(indexArray[0]);
-      }
       const contributorIdentifier = formikProps.values.resource?.contributors[index]?.identifier;
-      if (contributorIdentifier && index !== -1) {
+      if (contributorIdentifier) {
         await putContributorFeature(resource.identifier, contributorIdentifier, name, event.target.value);
       }
     }
@@ -106,7 +104,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, 
                         helperText={<ErrorMessage name={field.name} />}
                         onBlur={(event) => {
                           formikProps.handleBlur(event);
-                          !error && saveField(event, formikProps.resetForm, formikProps.values);
+                          !error && saveContributorField(event, formikProps.resetForm, formikProps.values, index);
                         }}
                       />
                     )}
@@ -121,7 +119,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ resource, formikProps, 
                         helperText={<ErrorMessage name={field.name} />}
                         onBlur={(event) => {
                           formikProps.handleBlur(event);
-                          !error && saveField(event, formikProps.resetForm, formikProps.values);
+                          !error && saveContributorField(event, formikProps.resetForm, formikProps.values, index);
                         }}
                       />
                     )}
