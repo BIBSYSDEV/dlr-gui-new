@@ -94,6 +94,12 @@ const EditResourcePage: FC = () => {
               },
             },
           ],
+          licenses: [
+            {
+              identifier: '',
+              features: {},
+            },
+          ],
         });
         setResourceType(resourceCreationType);
         setShowForm(true);

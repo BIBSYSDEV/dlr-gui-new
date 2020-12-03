@@ -1,6 +1,7 @@
 //TODO: https://git.unit.no/dlr/dlr-resource-service/-/blob/master/src/main/java/no/bibsys/dlr/microservices/resources/Types.java
 
 import { Content } from './content.types';
+import { License } from './license.types';
 
 export interface Resource {
   identifier: string;
@@ -20,6 +21,7 @@ export interface Resource {
   accessRead?: string[];
   accessWrite?: string[];
   contents?: Content[];
+  licenses?: License[];
 }
 
 export const emptyResource: Resource = {

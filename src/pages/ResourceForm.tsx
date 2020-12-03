@@ -11,6 +11,7 @@ import DescriptionFields from './DescriptionFields';
 import { Uppy } from '../types/file.types';
 import FileFields from './FileFields';
 import ContributorFields from './ContributorFields';
+import LicenseAndAccessFields from './LicenseAndAccessFields';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -136,7 +137,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
 
                 {activeStep === ResourceFormSteps.Description && (
                   <StyledPanel>
-                    <DescriptionFields resource={resource} formikProps={formikProps} saveField={saveResourceField} />
+                    <DescriptionFields formikProps={formikProps} saveField={saveResourceField} />
                   </StyledPanel>
                 )}
                 {activeStep === ResourceFormSteps.Contributors && (
@@ -150,7 +151,11 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                 )}
                 {activeStep === ResourceFormSteps.AccessAndLicense && (
                   <StyledPanel>
-                    <Typography>Access and license-fields not implemented</Typography>
+                    <LicenseAndAccessFields
+                      setAllChangesSaved={(status: boolean) => {
+                        setAllChangesSaved(status);
+                      }}
+                    />
                   </StyledPanel>
                 )}
                 {activeStep === ResourceFormSteps.Files && (

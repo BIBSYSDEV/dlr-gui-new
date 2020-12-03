@@ -106,6 +106,13 @@ export const getResourceContents = (identifier: string): Promise<AxiosResponse<C
   });
 };
 
+export const getLicenses = (): Promise<AxiosResponse<License[]>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendLicensesPath}/licenses/users/authorized`),
+    method: 'GET',
+  });
+};
+
 export const updateContentTitle = async (resourceIdentifier: string, contentIdentifier: string, value: string) => {
   const encodedValue = encodeURIComponent(value);
   const data = `title=${encodedValue}`;
