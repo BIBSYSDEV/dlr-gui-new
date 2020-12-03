@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField, Typography } from '@material-ui/core';
 import { Contributor, Resource } from '../types/resource.types';
@@ -12,11 +12,12 @@ import {
   useFormikContext,
 } from 'formik';
 import Button from '@material-ui/core/Button';
-import { createContributor, putContributorFeature } from '../api/resourceApi';
+import { createContributor, deleteContributor, putContributorFeature } from '../api/resourceApi';
 import Paper from '@material-ui/core/Paper';
 import styled from 'styled-components';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
+import { AxiosError } from 'axios';
 
 const StyledPaper = styled(Paper)`
   width: 100%;
@@ -46,6 +47,13 @@ const StyledButton = styled(Button)`
   vertical-align: bottom;
 `;
 
+const StyledErrorDiv = styled.div`
+  padding: 0.5rem;
+  background-color: #ffe8e8;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+`;
+
 interface ContributorFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
 }
@@ -53,9 +61,19 @@ interface ResourceWrapper {
   resource: Resource;
 }
 
+interface ServerError {
+  response: {
+    status: number;
+    data: any;
+    message: string;
+  };
+}
+
 const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, handleBlur, resetForm } = useFormikContext<ResourceWrapper>();
+  const [deleteErrorMessage, setDeleteErrorMessage] = useState(202);
+  const [errorIndex, setErrorIndex] = useState(-1);
 
   const addContributor = (arrayHelpers: FieldArrayRenderProps) => {
     setAllChangesSaved(false);
@@ -70,6 +88,23 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
       });
       setAllChangesSaved(true);
     });
+  };
+
+  const CustomErrorMessage = (status: number) => {
+    let message = '';
+    switch (status) {
+      case 401:
+        message = t('error.401_page');
+        break;
+      default:
+        t('error.500_page');
+        break;
+    }
+    return (
+      <StyledErrorDiv>
+        <Typography>{message}</Typography>
+      </StyledErrorDiv>
+    );
   };
 
   const saveContributorField = async (
@@ -87,14 +122,29 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
     resetForm({ values: currentValues });
   };
 
-  const deleteContributor = (identifier: string) => {
-    //TODO: implement deletion
+  const removeContributor = async (
+    contributorIdentifier: string,
+    arrayHelpers: FieldArrayRenderProps,
+    contributorIndex: number
+  ) => {
+    try {
+      setAllChangesSaved(false);
+      await deleteContributor(values.resource.identifier, contributorIdentifier);
+      arrayHelpers.remove(contributorIndex);
+    } catch (deleteContributorError: any) {
+      if (deleteContributorError && deleteContributorError.response) {
+        const axiosError = deleteContributorError as AxiosError<ServerError>;
+        setDeleteErrorMessage(axiosError.response ? axiosError.response.status : 401);
+        setErrorIndex(contributorIndex);
+      }
+    } finally {
+      setAllChangesSaved(true);
+    }
   };
 
   return (
     <StyledPaper>
       <Typography variant="h1">{t('resource.metadata.contributors')}</Typography>
-      <Typography> {JSON.stringify(values)}</Typography>
       <FieldArray
         name={`resource.contributors`}
         render={(arrayHelpers) => (
@@ -137,10 +187,11 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                     startIcon={<DeleteIcon fontSize="large" />}
                     size="large"
                     onClick={() => {
-                      deleteContributor(contributor.features.dlr_contributor_identifier);
+                      removeContributor(contributor.features.dlr_contributor_identifier, arrayHelpers, index);
                     }}>
                     {t('common.remove')}
                   </StyledButton>
+                  {deleteErrorMessage !== 202 && errorIndex === index && CustomErrorMessage(deleteErrorMessage)}
                 </StyledDiv>
               );
             })}
