@@ -29,6 +29,10 @@ enum Colors {
   Danger = '#ff5555',
   DangerLight = '#ffbbbb',
   Indicator = '#FFB546',
+  HeaderBackground = '#63226B',
+  PageGradientColor1 = '#F2E5BD',
+  PageGradientColor2 = '#44F2C1',
+  PageGradientColor3 = '#427F8C',
 }
 
 export default createMuiTheme({
