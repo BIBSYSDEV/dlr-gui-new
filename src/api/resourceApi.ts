@@ -60,6 +60,31 @@ export const getResourceContributors = (identifier: string): Promise<AxiosRespon
   });
 };
 
+export const createContributor = (resourceIdentifier: string): Promise<AxiosResponse<Contributor>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contributors`),
+    method: 'POST',
+  });
+};
+
+export const putContributorFeature = (
+  resourceIdentifier: string,
+  contributorIdentifier: string,
+  feature: string,
+  value: string
+) => {
+  const encodedValue = encodeURIComponent(value);
+  const encodedFeature = encodeURIComponent(feature);
+  const data = `value=${encodedValue}`;
+  return authenticatedApiRequest({
+    url: encodeURI(
+      `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contributors/${contributorIdentifier}/features/${encodedFeature}`
+    ),
+    method: 'PUT',
+    data: data,
+  });
+};
+
 export const getResourceCreators = (identifier: string): Promise<AxiosResponse<Creator[]>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/creators`),

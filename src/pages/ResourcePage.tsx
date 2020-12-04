@@ -1,13 +1,14 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { RouteProps, useParams } from 'react-router-dom';
-import { Creator, Resource } from '../types/resource.types';
+import { Contributor, Creator, Resource } from '../types/resource.types';
 import {
   getResource,
   getResourceContents,
   getResourceCreators,
   getResourceTags,
   getResourceLicenses,
+  getResourceContributors,
 } from '../api/resourceApi';
 import { CircularProgress, Typography } from '@material-ui/core';
 import List from '@material-ui/core/List';
@@ -44,6 +45,7 @@ const ResourcePage: FC<RouteProps> = (props) => {
   const [preview, setPreview] = useState<Preview>({ type: '', theSource: '' });
   const [tags, setTags] = useState<string[]>([]);
   const [licenses, setLicenses] = useState<License[]>([]);
+  const [contributors, setContributors] = useState<Contributor[]>([]);
 
   useEffect(() => {
     const fetchData = async (identifier: string) => {
@@ -68,6 +70,9 @@ const ResourcePage: FC<RouteProps> = (props) => {
       });
       promises[4] = getResourceLicenses(identifier).then((response) => {
         setLicenses(response.data);
+      });
+      promises[5] = getResourceContributors(identifier).then((response) => {
+        setContributors(response.data);
       });
       await Promise.all(promises).finally(() => {
         setIsLoadingResource(false);
@@ -124,6 +129,14 @@ const ResourcePage: FC<RouteProps> = (props) => {
             )}
           </>
         )}
+        {contributors.map((contributor) => {
+          return (
+            <div key={contributor.features.dlr_contributor_identifier}>
+              <Typography>{contributor.features.dlr_contributor_name}</Typography>
+              <Typography>{contributor.features.dlr_contributor_type}</Typography>
+            </div>
+          );
+        })}
         {tags.length !== 0 && tags && resource?.features.dlr_subject_nsi_id && (
           <ResourceMetadata type={preview.type} category={resource.features.dlr_subject_nsi_id} tags={tags} />
         )}

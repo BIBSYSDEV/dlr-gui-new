@@ -10,6 +10,7 @@ import * as Yup from 'yup';
 import DescriptionFields from './DescriptionFields';
 import { Uppy } from '../types/file.types';
 import FileFields from './FileFields';
+import ContributorFields from './ContributorFields';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -97,6 +98,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
     if (resource) {
       const name = '' + event.target.name.split('.').pop();
       await postResourceFeature(resource.identifier, name, event.target.value);
+
       setAllChangesSaved(true);
       resetForm({ values: currentValues });
     }
@@ -139,7 +141,11 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                 )}
                 {activeStep === ResourceFormSteps.Contributors && (
                   <StyledPanel>
-                    <Typography>Contributors-fields implemented</Typography>
+                    <ContributorFields
+                      setAllChangesSaved={(status: boolean) => {
+                        setAllChangesSaved(status);
+                      }}
+                    />
                   </StyledPanel>
                 )}
                 {activeStep === ResourceFormSteps.AccessAndLicense && (

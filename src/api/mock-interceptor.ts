@@ -62,7 +62,7 @@ const mockMyResources: Resource[] = [
 
 const mockResourceContributors: Contributor[] = [
   {
-    id: '07047aa4-ad55-4fb3-9747-f8d64ee69e12',
+    identifier: '07047aa4-ad55-4fb3-9747-f8d64ee69e12',
     features: {
       dlr_contributor_identifier: '07047aa4-ad55-4fb3-9747-f8d64ee69e12',
       dlr_contributor_name: 'unit',
