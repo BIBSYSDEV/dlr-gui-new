@@ -19,27 +19,16 @@ import AddIcon from '@material-ui/icons/Add';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
 
-const StyledField = styled(Field)`
-  display: inline-block;
-  margin-left: 2rem;
-  margin-right: 2rem;
-  padding: 1rem;
-`;
-const StyledDiv = styled.div`
-  display: inline-block;
-  margin-top: 1rem;
-  margin-bottom: 0.3rem;
+const StyledFieldsWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
 `;
 
 const StyledTextField = styled(TextField)`
-  width: 22rem;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-`;
-
-const StyledButton = styled(Button)`
-  position: relative;
-  vertical-align: bottom;
+  margin-right: 1rem;
+  flex-grow: 1;
+  min-width: 10rem;
 `;
 
 interface ContributorFieldsProps {
@@ -96,8 +85,8 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
             <>
               {values.resource.contributors?.map((contributor: Contributor, index: number) => {
                 return (
-                  <StyledDiv key={contributor.identifier}>
-                    <StyledField name={`resource.contributors[${index}].features.dlr_contributor_type`}>
+                  <StyledFieldsWrapper key={contributor.identifier}>
+                    <Field name={`resource.contributors[${index}].features.dlr_contributor_type`}>
                       {({ field, meta: { touched, error } }: FieldProps<string>) => (
                         <StyledTextField
                           {...field}
@@ -111,8 +100,8 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                           }}
                         />
                       )}
-                    </StyledField>
-                    <StyledField name={`resource.contributors[${index}].features.dlr_contributor_name`}>
+                    </Field>
+                    <Field name={`resource.contributors[${index}].features.dlr_contributor_name`}>
                       {({ field, meta: { touched, error } }: FieldProps<string>) => (
                         <StyledTextField
                           {...field}
@@ -126,8 +115,8 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                           }}
                         />
                       )}
-                    </StyledField>
-                    <StyledButton
+                    </Field>
+                    <Button
                       color="secondary"
                       startIcon={<DeleteIcon fontSize="large" />}
                       size="large"
@@ -135,8 +124,8 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                         deleteContributor(contributor.features.dlr_contributor_identifier);
                       }}>
                       {t('common.remove')}
-                    </StyledButton>
-                  </StyledDiv>
+                    </Button>
+                  </StyledFieldsWrapper>
                 );
               })}
               <Button

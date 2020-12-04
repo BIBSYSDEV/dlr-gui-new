@@ -44,5 +44,5 @@ export const StyledSchemaPartColored = styled(StyledSchemaPart)`
 
 export const StyledContentWrapper = styled.div`
   width: 100%;
-  max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'};
+  max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'};
 `;

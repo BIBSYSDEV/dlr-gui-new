@@ -21,7 +21,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ formikProps, saveField 
             {({ field, meta: { touched, error } }: FieldProps) => (
               <TextField
                 {...field}
-                variant="outlined"
+                variant="filled"
                 fullWidth
                 label={t('resource.metadata.title')}
                 error={touched && !!error}
@@ -41,7 +41,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ formikProps, saveField 
             {({ field, meta: { error } }: FieldProps) => (
               <TextField
                 {...field}
-                variant="outlined"
+                variant="filled"
                 fullWidth
                 multiline
                 rows="4"
