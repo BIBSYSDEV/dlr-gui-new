@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextField } from '@material-ui/core';
+import { TextField, Typography } from '@material-ui/core';
 import { Contributor, Resource } from '../types/resource.types';
 import {
   ErrorMessage,
@@ -79,6 +79,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
   return (
     <StyledSchemaPartColored color={Colors.ContributorsPageGradientColor1}>
       <StyledContentWrapper>
+        <Typography variant="h4">{t('resource.metadata.contributors')}</Typography>
         <FieldArray
           name={`resource.contributors`}
           render={(arrayHelpers) => (
