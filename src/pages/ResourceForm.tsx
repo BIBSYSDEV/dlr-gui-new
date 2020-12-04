@@ -157,11 +157,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
               )}
               {activeStep === ResourceFormSteps.AccessAndLicense && (
                 <StyledPanel>
-                  <LicenseAndAccessFields
-                    setAllChangesSaved={(status: boolean) => {
-                      setAllChangesSaved(status);
-                    }}
-                  />
+                  <LicenseAndAccessFields/>
                 </StyledPanel>
               )}
               {activeStep === ResourceFormSteps.Files && (
