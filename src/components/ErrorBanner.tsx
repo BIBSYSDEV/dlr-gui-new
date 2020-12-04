@@ -6,7 +6,7 @@ import { Typography } from '@material-ui/core';
 
 const StyledErrorDiv = styled.div`
   padding: 0.5rem;
-  background-color: #ffe8e8;
+  background-color: ${({ theme }) => theme.palette.danger.light};
   margin-left: 0.5rem;
   margin-right: 0.5rem;
 `;
