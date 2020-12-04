@@ -18,6 +18,7 @@ import styled from 'styled-components';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import { AxiosError } from 'axios';
+import ErrorBanner from '../components/ErrorBanner';
 
 const StyledPaper = styled(Paper)`
   width: 100%;
@@ -45,13 +46,6 @@ const StyledTextField = styled(TextField)`
 const StyledButton = styled(Button)`
   position: relative;
   vertical-align: bottom;
-`;
-
-const StyledErrorDiv = styled.div`
-  padding: 0.5rem;
-  background-color: #ffe8e8;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
 `;
 
 interface ContributorFieldsProps {
@@ -88,23 +82,6 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
       });
       setAllChangesSaved(true);
     });
-  };
-
-  const CustomErrorMessage = (status: number) => {
-    let message = '';
-    switch (status) {
-      case 401:
-        message = t('error.401_page');
-        break;
-      default:
-        t('error.500_page');
-        break;
-    }
-    return (
-      <StyledErrorDiv>
-        <Typography>{message}</Typography>
-      </StyledErrorDiv>
-    );
   };
 
   const saveContributorField = async (
@@ -193,7 +170,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                     }}>
                     {t('common.remove')}
                   </StyledButton>
-                  {deleteStatus !== 202 && errorIndex === index && CustomErrorMessage(deleteStatus)}
+                  {deleteStatus !== 202 && errorIndex === index && <ErrorBanner statusCode={deleteStatus} />}
                 </StyledDiv>
               );
             })}

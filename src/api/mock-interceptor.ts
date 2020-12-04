@@ -48,6 +48,14 @@ const mockResourceContributors: Contributor[] = [
   },
 ];
 
+const mockResourceEmptyContributor: Contributor = {
+  identifier: '07047aa4-ad55-4fb3-9747-f8d64ee69e12',
+  features: {
+    dlr_contributor_identifier: '07047aa4-ad55-4fb3-9747-f8d64ee69e12',
+    dlr_contributor_time_created: '2020-11-05T12:47:18.635Z',
+  },
+};
+
 const mockLicenses: License[] = [
   {
     identifier: '5d498312-7b5d-40af-a346-3e39df43ca77',
@@ -141,8 +149,13 @@ export const interceptRequestsOnMock = () => {
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources`)).reply(200, mockResource);
   mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*/tags/types/tags`)).reply(200, mockTags);
   mock
-    .onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*/contributors`))
+    .onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contributors`))
     .reply(200, mockResourceContributors);
+  mock
+    .onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contributors`))
+    .reply(202, mockResourceEmptyContributor);
+  mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contributors/.*`)).reply(202, {});
+  mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contributors/.*`)).reply(202, {});
   mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*`)).reply(200, mockCalculatedResource);
 
   // GET ANONYMOUS WEB TOKEN
@@ -151,6 +164,6 @@ export const interceptRequestsOnMock = () => {
   mock.onGet(new RegExp(`${API_PATHS.guiBackendAuthPath}/tokens/jwts/`)).reply(200, { exp: 999999999 });
 
   mock.onAny().reply(function (config) {
-    throw new Error('Could not find mock for ' + config.url);
+    throw new Error('Could not find mock for ' + config.url + ', with method: ' + config.method);
   });
 };
