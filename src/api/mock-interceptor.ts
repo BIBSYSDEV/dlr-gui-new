@@ -1,7 +1,6 @@
 import Axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { mockSearchResults } from '../utils/testfiles/search_results';
-import { licenses as allLicenses } from '../utils/testfiles/licenses';
 import { API_PATHS } from '../utils/constants';
 import { User } from '../types/user.types';
 import { Contributor, Creator, Resource } from '../types/resource.types';
@@ -132,9 +131,6 @@ export const interceptRequestsOnMock = () => {
   mock
     .onPost(new RegExp(`${API_PATHS.guiBackendResourcesContentPath}${FileApiPaths.COMPLETE}`))
     .reply(200, mockCompleteUpload);
-
-  // LICENSES
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendLicensesPath}/licenses/users/authorized`)).reply(200, allLicenses);
 
   // RESOURCE
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/licenses`)).reply(200, mockLicenses);

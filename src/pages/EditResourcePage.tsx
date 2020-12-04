@@ -96,13 +96,7 @@ const EditResourcePage: FC = () => {
                 dlr_contributor_type: contributorFeatureNames.Institution,
               },
             },
-          ],
-          licenses: [
-            {
-              identifier: '',
-              features: {},
-            },
-          ],
+          ]
         });
         setResourceType(resourceCreationType);
         setShowForm(true);

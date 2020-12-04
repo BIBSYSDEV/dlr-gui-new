@@ -157,7 +157,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
               )}
               {activeStep === ResourceFormSteps.AccessAndLicense && (
                 <StyledPanel>
-                  <LicenseAndAccessFields/>
+                  <LicenseAndAccessFields />
                 </StyledPanel>
               )}
               {activeStep === ResourceFormSteps.Files && (
