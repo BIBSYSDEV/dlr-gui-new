@@ -80,12 +80,12 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
           dlr_contributor_identifier: contributorResponse.data.identifier,
         },
       });
-      setDeleteStatus(202);
+      setDeleteStatus(StatusCode.ACCEPTED);
       setErrorIndex(ErrorIndex.NO_ERRORS);
     } catch (addContributorError) {
       if (addContributorError && addContributorError.response) {
         const axiosError = addContributorError as AxiosError<ServerError>;
-        setDeleteStatus(axiosError.response ? axiosError.response.status : 401);
+        setDeleteStatus(axiosError.response ? axiosError.response.status : StatusCode.UNAUTHORIZED);
         setErrorIndex(ErrorIndex.ADD_CONTRIBUTOR_ERROR);
       }
     } finally {
@@ -106,13 +106,13 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
       if (event.target.value.length > 0) {
         await putContributorFeature(values.resource.identifier, contributorIdentifier, name, event.target.value);
       }
-      setDeleteStatus(202);
+      setDeleteStatus(StatusCode.ACCEPTED);
       setErrorIndex(ErrorIndex.NO_ERRORS);
       resetForm({ values: currentValues });
     } catch (saveContributorError: any) {
       if (saveContributorError && saveContributorError.response) {
         const axiosError = saveContributorError as AxiosError<ServerError>;
-        setDeleteStatus(axiosError.response ? axiosError.response.status : 401);
+        setDeleteStatus(axiosError.response ? axiosError.response.status : StatusCode.UNAUTHORIZED);
         setErrorIndex(contributorIndex);
       }
     } finally {
@@ -129,12 +129,12 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
       setAllChangesSaved(false);
       await deleteContributor(values.resource.identifier, contributorIdentifier);
       arrayHelpers.remove(contributorIndex);
-      setDeleteStatus(202);
+      setDeleteStatus(StatusCode.ACCEPTED);
       setErrorIndex(ErrorIndex.NO_ERRORS);
     } catch (deleteContributorError: any) {
       if (deleteContributorError && deleteContributorError.response) {
         const axiosError = deleteContributorError as AxiosError<ServerError>;
-        setDeleteStatus(axiosError.response ? axiosError.response.status : 401);
+        setDeleteStatus(axiosError.response ? axiosError.response.status : StatusCode.UNAUTHORIZED);
         setErrorIndex(contributorIndex);
       }
     } finally {
@@ -191,7 +191,9 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                     }}>
                     {t('common.remove')}
                   </StyledButton>
-                  {deleteStatus !== 202 && errorIndex === index && <ErrorBanner statusCode={deleteStatus} />}
+                  {deleteStatus !== StatusCode.ACCEPTED && errorIndex === index && (
+                    <ErrorBanner statusCode={deleteStatus} />
+                  )}
                 </StyledDiv>
               );
             })}
@@ -205,7 +207,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
               }}>
               {t('resource.add_contributor')}
             </Button>
-            {deleteStatus !== 202 && errorIndex === ErrorIndex.ADD_CONTRIBUTOR_ERROR && (
+            {deleteStatus !== StatusCode.ACCEPTED && errorIndex === ErrorIndex.ADD_CONTRIBUTOR_ERROR && (
               <ErrorBanner statusCode={deleteStatus} />
             )}
           </>
