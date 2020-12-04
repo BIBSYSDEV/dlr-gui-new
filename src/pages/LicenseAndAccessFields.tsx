@@ -17,7 +17,7 @@ interface ResourceWrapper {
 const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const [licenses, setLicenses] = useState<License[]>();
-  const { values, handleChange, resetForm } = useFormikContext<ResourceWrapper>();
+  const { handleChange } = useFormikContext<ResourceWrapper>();
 
   useEffect(() => {
     getLicenses().then((response) => {
@@ -26,7 +26,8 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
   }, []);
 
   const saveField = (event: any) => {
-    console.log(event);
+    console.log('MOCK-saving license with id:', event.target.value);
+
     //todo: lagre lisens
     //https://api-dev.dlr.aws.unit.no/dlr-gui-backend-resources/v1/resources/0a6344b1-8ded-4aa7-b757-8bfdf799365a/licenses
     //data: identifierLicense=5d498312-7b5d-40af-a346-3e39df43ca77
@@ -35,12 +36,12 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
   return (
     <>
       <Field name="resource.licenses[0].identifier">
-        {({ field, meta: { touched, error } }: FieldProps) => (
+        {({ field, meta: { error } }: FieldProps) => (
           <>
             <InputLabel id="demo-controlled-open-select-label">{t('resource.metadata.license')}</InputLabel>
             <Select
               {...field}
-              variant="outlined"
+              variant="filled"
               labelId="demo-controlled-open-select-label"
               onChange={(event) => {
                 handleChange(event);

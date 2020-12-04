@@ -64,6 +64,7 @@
       "categories": "Categories",
       "description": "Description",
       "filename": "File name",
+      "license": "License",
       "main_file": "Main file",
       "owner": "Owner",
       "published": "Published",
