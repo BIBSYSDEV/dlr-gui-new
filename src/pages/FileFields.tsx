@@ -9,6 +9,8 @@ import { useTranslation } from 'react-i18next';
 import placeholderImage from '../resources/images/placeholder.png';
 import { ErrorMessage, Field, FieldProps, FormikProps, FormikValues } from 'formik';
 import { updateContentTitle } from '../api/resourceApi';
+import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
+import { Colors } from '../themes/mainTheme';
 
 const StatusBarWrapper = styled.div`
   width: 100%;
@@ -60,39 +62,41 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, formikProps, setAllChangesSaved
   };
 
   return (
-    <>
-      <Typography variant="h5">{t('resource.metadata.main_file')}</Typography>
-      <MainFileWrapper>
-        <MainFileImageWrapper>
-          <img alt="resource" src={placeholderImage} />
-        </MainFileImageWrapper>
-        <MainFileMetadata>
-          <StyledFieldWrapper>
-            <Field name="resource.contents[0].features.dlr_content_title">
-              {({ field, meta: { touched, error } }: FieldProps) => (
-                <TextField
-                  {...field}
-                  variant="filled"
-                  fullWidth
-                  label={t('resource.metadata.filename')}
-                  error={touched && !!error}
-                  helperText={<ErrorMessage name={field.name} />}
-                  onBlur={(event) => {
-                    formikProps.handleBlur(event);
-                    !error && saveMainContentsFileName(event, formikProps.resetForm, formikProps.values);
-                  }}
-                />
-              )}
-            </Field>
-          </StyledFieldWrapper>
-          <Paper>
-            <StatusBarWrapper>
-              <StatusBarComponent uppy={uppy} hideAfterFinish={false} />
-            </StatusBarWrapper>
-          </Paper>
-        </MainFileMetadata>
-      </MainFileWrapper>
-    </>
+    <StyledSchemaPartColored color={Colors.ContentsPageGradientColor1}>
+      <StyledContentWrapper>
+        <Typography variant="h5">{t('resource.metadata.main_file')}</Typography>
+        <MainFileWrapper>
+          <MainFileImageWrapper>
+            <img alt="resource" src={placeholderImage} />
+          </MainFileImageWrapper>
+          <MainFileMetadata>
+            <StyledFieldWrapper>
+              <Field name="resource.contents[0].features.dlr_content_title">
+                {({ field, meta: { touched, error } }: FieldProps) => (
+                  <TextField
+                    {...field}
+                    variant="outlined"
+                    fullWidth
+                    label={t('resource.metadata.filename')}
+                    error={touched && !!error}
+                    helperText={<ErrorMessage name={field.name} />}
+                    onBlur={(event) => {
+                      formikProps.handleBlur(event);
+                      !error && saveMainContentsFileName(event, formikProps.resetForm, formikProps.values);
+                    }}
+                  />
+                )}
+              </Field>
+            </StyledFieldWrapper>
+            <Paper>
+              <StatusBarWrapper>
+                <StatusBarComponent uppy={uppy} hideAfterFinish={false} />
+              </StatusBarWrapper>
+            </Paper>
+          </MainFileMetadata>
+        </MainFileWrapper>
+      </StyledContentWrapper>
+    </StyledSchemaPartColored>
   );
 };
 

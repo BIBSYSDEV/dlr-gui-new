@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../components/PageHeader';
-import { Button, CircularProgress, Divider, Step, StepButton, Stepper, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Divider, Step, StepButton, Stepper } from '@material-ui/core';
 import { postResourceFeature } from '../api/resourceApi';
 import { Resource, ResourceCreationType } from '../types/resource.types';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
@@ -23,18 +23,24 @@ const StyledForm = styled(Form)`
   margin-right: 1rem;
 `;
 
+const StyledContentWrapper = styled.div`
+  max-width: ${({ theme }) => theme.breakpoints.values.lg + 'px'};
+`;
+
 const StyledPanel = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   min-height: 10rem;
-  padding: 2rem 2rem 1rem;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
 `;
 
 const StyledButtonWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
   width: 100%;
+  justify-content: space-between;
+  max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'};
   padding: 2rem 2rem 1rem;
 `;
 
@@ -111,7 +117,9 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
 
   return (
     <>
-      <PageHeader>{t('resource.edit_resource')}</PageHeader>
+      <StyledContentWrapper>
+        <PageHeader>{t('resource.edit_resource')}</PageHeader>
+      </StyledContentWrapper>
       <>
         {resource && (
           <Formik

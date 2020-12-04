@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import NormalText from '../NormalText';
+import { Colors } from '../../themes/mainTheme';
 
 export const StyledInformationWrapper = styled.div`
   width: 60%;
@@ -29,4 +30,20 @@ export const StyledCenterAlignedContentWrapper = styled.div`
 
 export const StyledNormalTextPreWrapped = styled(NormalText)`
   white-space: pre-wrap;
+`;
+
+const StyledSchemaPart = styled.div`
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const StyledSchemaPartColored = styled(StyledSchemaPart)`
+  background-color: ${(props) => props.color};
+`;
+
+export const StyledContentWrapper = styled.div`
+  width: 100%;
+  max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'};
 `;

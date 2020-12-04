@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextField, Typography } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import { Contributor, Resource } from '../types/resource.types';
 import {
   ErrorMessage,
@@ -13,15 +13,11 @@ import {
 } from 'formik';
 import Button from '@material-ui/core/Button';
 import { createContributor, putContributorFeature } from '../api/resourceApi';
-import Paper from '@material-ui/core/Paper';
 import styled from 'styled-components';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
-
-const StyledPaper = styled(Paper)`
-  width: 100%;
-  padding: 3rem;
-`;
+import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
+import { Colors } from '../themes/mainTheme';
 
 const StyledField = styled(Field)`
   display: inline-block;
@@ -92,72 +88,72 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
   };
 
   return (
-    <StyledPaper>
-      <Typography variant="h1">{t('resource.metadata.contributors')}</Typography>
-      <Typography> {JSON.stringify(values)}</Typography>
-      <FieldArray
-        name={`resource.contributors`}
-        render={(arrayHelpers) => (
-          <>
-            {values.resource.contributors?.map((contributor: Contributor, index: number) => {
-              return (
-                <StyledDiv key={contributor.identifier}>
-                  <StyledField name={`resource.contributors[${index}].features.dlr_contributor_type`}>
-                    {({ field, meta: { touched, error } }: FieldProps<string>) => (
-                      <StyledTextField
-                        {...field}
-                        variant="filled"
-                        label={t('type')}
-                        error={touched && !!error}
-                        helperText={<ErrorMessage name={field.name} />}
-                        onBlur={(event) => {
-                          handleBlur(event);
-                          !error && saveContributorField(event, resetForm, values, contributor.identifier);
-                        }}
-                      />
-                    )}
-                  </StyledField>
-                  <StyledField name={`resource.contributors[${index}].features.dlr_contributor_name`}>
-                    {({ field, meta: { touched, error } }: FieldProps<string>) => (
-                      <StyledTextField
-                        {...field}
-                        variant="filled"
-                        label={t('name')}
-                        error={touched && !!error}
-                        helperText={<ErrorMessage name={field.name} />}
-                        onBlur={(event) => {
-                          handleBlur(event);
-                          !error && saveContributorField(event, resetForm, values, contributor.identifier);
-                        }}
-                      />
-                    )}
-                  </StyledField>
-                  <StyledButton
-                    color="secondary"
-                    startIcon={<DeleteIcon fontSize="large" />}
-                    size="large"
-                    onClick={() => {
-                      deleteContributor(contributor.features.dlr_contributor_identifier);
-                    }}>
-                    {t('common.remove')}
-                  </StyledButton>
-                </StyledDiv>
-              );
-            })}
-            <Button
-              type="button"
-              variant="outlined"
-              color="primary"
-              startIcon={<AddIcon />}
-              onClick={() => {
-                addContributor(arrayHelpers);
-              }}>
-              {t('resource.add_contributor')}
-            </Button>
-          </>
-        )}
-      />
-    </StyledPaper>
+    <StyledSchemaPartColored color={Colors.ContributorsPageGradientColor1}>
+      <StyledContentWrapper>
+        <FieldArray
+          name={`resource.contributors`}
+          render={(arrayHelpers) => (
+            <>
+              {values.resource.contributors?.map((contributor: Contributor, index: number) => {
+                return (
+                  <StyledDiv key={contributor.identifier}>
+                    <StyledField name={`resource.contributors[${index}].features.dlr_contributor_type`}>
+                      {({ field, meta: { touched, error } }: FieldProps<string>) => (
+                        <StyledTextField
+                          {...field}
+                          variant="filled"
+                          label={t('type')}
+                          error={touched && !!error}
+                          helperText={<ErrorMessage name={field.name} />}
+                          onBlur={(event) => {
+                            handleBlur(event);
+                            !error && saveContributorField(event, resetForm, values, contributor.identifier);
+                          }}
+                        />
+                      )}
+                    </StyledField>
+                    <StyledField name={`resource.contributors[${index}].features.dlr_contributor_name`}>
+                      {({ field, meta: { touched, error } }: FieldProps<string>) => (
+                        <StyledTextField
+                          {...field}
+                          variant="filled"
+                          label={t('name')}
+                          error={touched && !!error}
+                          helperText={<ErrorMessage name={field.name} />}
+                          onBlur={(event) => {
+                            handleBlur(event);
+                            !error && saveContributorField(event, resetForm, values, contributor.identifier);
+                          }}
+                        />
+                      )}
+                    </StyledField>
+                    <StyledButton
+                      color="secondary"
+                      startIcon={<DeleteIcon fontSize="large" />}
+                      size="large"
+                      onClick={() => {
+                        deleteContributor(contributor.features.dlr_contributor_identifier);
+                      }}>
+                      {t('common.remove')}
+                    </StyledButton>
+                  </StyledDiv>
+                );
+              })}
+              <Button
+                type="button"
+                variant="outlined"
+                color="primary"
+                startIcon={<AddIcon />}
+                onClick={() => {
+                  addContributor(arrayHelpers);
+                }}>
+                {t('resource.add_contributor')}
+              </Button>
+            </>
+          )}
+        />
+      </StyledContentWrapper>
+    </StyledSchemaPartColored>
   );
 };
 

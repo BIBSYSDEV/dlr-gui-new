@@ -1,5 +1,5 @@
 import { createMuiTheme } from '@material-ui/core';
-import { merriweatherRegular, barlowRegular } from './fonts';
+import { barlowRegular, merriweatherRegular } from './fonts';
 
 // Extend Palette type to allow custom colors
 declare module '@material-ui/core/styles/createPalette' {
@@ -15,7 +15,7 @@ declare module '@material-ui/core/styles/createPalette' {
   }
 }
 
-enum Colors {
+export enum Colors {
   Primary = '#284B63',
   Secondary = '#ff5555',
   Background = '#fff',
@@ -29,10 +29,17 @@ enum Colors {
   Danger = '#ff5555',
   DangerLight = '#ffbbbb',
   Indicator = '#FFB546',
-  HeaderBackground = '#63226B',
-  PageGradientColor1 = '#F2E5BD',
-  PageGradientColor2 = '#44F2C1',
-  PageGradientColor3 = '#427F8C',
+  HeaderBackground = 'rgba(99,34,107, 0.15)',
+  HeaderText = 'rgba(0,0,0, 1)',
+  DescriptionPageGradientColor1 = 'rgba(66,127,140,0.10)',
+  DescriptionPageGradientColor2 = 'rgba(66,127,140,0.35)',
+  ContributorsPageGradientColor1 = 'rgba(242,229,189,0.25)',
+  ContributorsPageGradientColor2 = 'rgba(242,229,189,0.50)',
+  ContentsPageGradientColor1 = 'rgba(42,191,164,0.10)',
+  ContentsPageGradientColor2 = 'rgba(42,191,164,0.25)',
+  LicenseAccessPageGradientColor1 = 'rgba(68,242,193,0.10)',
+  LicenseAccessPageGradientColor2 = 'rgba(68,242,193,0.25)',
+  LicenseAccessPageGradientColor3 = 'rgba(68,242,193,0.50)',
 }
 
 export default createMuiTheme({
