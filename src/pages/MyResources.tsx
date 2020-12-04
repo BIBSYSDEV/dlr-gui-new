@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
 import { RouteProps } from 'react-router-dom';
 import { getMyResources } from '../api/resourceApi';
 import { CircularProgress, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
@@ -26,7 +27,11 @@ const MyResources: FC<RouteProps> = (props) => {
       setIsLoadingMyResources(false);
     };
     if (isLoadingMyResources) {
-      fetchData();
+      try {
+        fetchData();
+      } catch (error) {
+        toast.error('ERROR: ' + error.message);
+      }
     }
   }, [isLoadingMyResources]);
 
