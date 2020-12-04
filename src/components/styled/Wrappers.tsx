@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import NormalText from '../NormalText';
-import { Colors } from '../../themes/mainTheme';
 
 export const StyledInformationWrapper = styled.div`
   width: 60%;

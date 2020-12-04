@@ -13,6 +13,7 @@ import FileFields from './FileFields';
 import ContributorFields from './ContributorFields';
 import LicenseAndAccessFields from './LicenseAndAccessFields';
 import { StyledContentWrapper } from '../components/styled/Wrappers';
+import PreviewPanel from './PreviewPanel';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -167,7 +168,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
               )}
               {activeStep === ResourceFormSteps.Preview && (
                 <StyledPanel>
-                  <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(formikProps.values, null, 2)}</pre>
+                  <PreviewPanel formikProps={formikProps} />
                 </StyledPanel>
               )}
               <Divider style={{ marginTop: '1rem', width: '100%' }} />
