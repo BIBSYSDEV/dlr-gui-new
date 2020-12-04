@@ -12,6 +12,7 @@ import { Uppy } from '../types/file.types';
 import FileFields from './FileFields';
 import ContributorFields from './ContributorFields';
 import LicenseAndAccessFields from './LicenseAndAccessFields';
+import { StyledContentWrapper } from '../components/styled/Wrappers';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -21,10 +22,6 @@ const StyledForm = styled(Form)`
   justify-items: center;
   margin-left: 1rem;
   margin-right: 1rem;
-`;
-
-const StyledContentWrapper = styled.div`
-  max-width: ${({ theme }) => theme.breakpoints.values.lg + 'px'};
 `;
 
 const StyledPanel = styled.div`
@@ -120,19 +117,19 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
       <StyledContentWrapper>
         <PageHeader>{t('resource.edit_resource')}</PageHeader>
       </StyledContentWrapper>
-      <>
-        {resource && (
-          <Formik
-            initialValues={{
-              resource: resource,
-            }}
-            validateOnChange
-            validationSchema={resourceValidationSchema}
-            onSubmit={() => {
-              /*dont use. But cannot have empty onsubmit*/
-            }}>
-            {(formikProps: FormikProps<FormikValues>) => (
-              <StyledForm>
+      {resource && (
+        <Formik
+          initialValues={{
+            resource: resource,
+          }}
+          validateOnChange
+          validationSchema={resourceValidationSchema}
+          onSubmit={() => {
+            /*dont use. But cannot have empty onsubmit*/
+          }}>
+          {(formikProps: FormikProps<FormikValues>) => (
+            <StyledForm>
+              <StyledContentWrapper>
                 <Stepper style={{ width: '100%' }} activeStep={activeStep} nonLinear alternativeLabel>
                   {steps.map((label, index) => {
                     return (
@@ -142,41 +139,43 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                     );
                   })}
                 </Stepper>
+              </StyledContentWrapper>
 
-                {activeStep === ResourceFormSteps.Description && (
-                  <StyledPanel>
-                    <DescriptionFields formikProps={formikProps} saveField={saveResourceField} />
-                  </StyledPanel>
-                )}
-                {activeStep === ResourceFormSteps.Contributors && (
-                  <StyledPanel>
-                    <ContributorFields
-                      setAllChangesSaved={(status: boolean) => {
-                        setAllChangesSaved(status);
-                      }}
-                    />
-                  </StyledPanel>
-                )}
-                {activeStep === ResourceFormSteps.AccessAndLicense && (
-                  <StyledPanel>
-                    <LicenseAndAccessFields
-                      setAllChangesSaved={(status: boolean) => {
-                        setAllChangesSaved(status);
-                      }}
-                    />
-                  </StyledPanel>
-                )}
-                {activeStep === ResourceFormSteps.Files && (
-                  <StyledPanel>
-                    <FileFields uppy={uppy} formikProps={formikProps} setAllChangesSaved={setAllChangesSaved} />
-                  </StyledPanel>
-                )}
-                {activeStep === ResourceFormSteps.Preview && (
-                  <StyledPanel>
-                    <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(formikProps.values, null, 2)}</pre>
-                  </StyledPanel>
-                )}
-                <Divider style={{ marginTop: '1rem', width: '100%' }} />
+              {activeStep === ResourceFormSteps.Description && (
+                <StyledPanel>
+                  <DescriptionFields formikProps={formikProps} saveField={saveResourceField} />
+                </StyledPanel>
+              )}
+              {activeStep === ResourceFormSteps.Contributors && (
+                <StyledPanel>
+                  <ContributorFields
+                    setAllChangesSaved={(status: boolean) => {
+                      setAllChangesSaved(status);
+                    }}
+                  />
+                </StyledPanel>
+              )}
+              {activeStep === ResourceFormSteps.AccessAndLicense && (
+                <StyledPanel>
+                  <LicenseAndAccessFields
+                    setAllChangesSaved={(status: boolean) => {
+                      setAllChangesSaved(status);
+                    }}
+                  />
+                </StyledPanel>
+              )}
+              {activeStep === ResourceFormSteps.Files && (
+                <StyledPanel>
+                  <FileFields uppy={uppy} formikProps={formikProps} setAllChangesSaved={setAllChangesSaved} />
+                </StyledPanel>
+              )}
+              {activeStep === ResourceFormSteps.Preview && (
+                <StyledPanel>
+                  <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(formikProps.values, null, 2)}</pre>
+                </StyledPanel>
+              )}
+              <Divider style={{ marginTop: '1rem', width: '100%' }} />
+              <StyledContentWrapper>
                 <StyledButtonWrapper>
                   <div>
                     {!allChangesSaved && <CircularProgress size="1rem" />}
@@ -191,11 +190,11 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                     </Button>
                   </div>
                 </StyledButtonWrapper>
-              </StyledForm>
-            )}
-          </Formik>
-        )}
-      </>
+              </StyledContentWrapper>
+            </StyledForm>
+          )}
+        </Formik>
+      )}
     </>
   );
 };
