@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import { FormikProps, FormikValues } from 'formik';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 
@@ -8,8 +7,6 @@ interface DescriptionFieldsProps {
 }
 
 const PreviewPanel: FC<DescriptionFieldsProps> = ({ formikProps }) => {
-  const { t } = useTranslation();
-
   return (
     <StyledSchemaPartColored color={'#FFFFFF'}>
       <StyledContentWrapper>
