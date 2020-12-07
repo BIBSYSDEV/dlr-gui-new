@@ -28,7 +28,7 @@ const ErrorBanner: FC<ErrorBannerProps> = ({ statusCode }) => {
         setMessage(t('error.500_page'));
         break;
     }
-  }, [statusCode]);
+  }, [statusCode, t]);
 
   return (
     <StyledErrorDiv>

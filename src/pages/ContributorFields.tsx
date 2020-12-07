@@ -13,41 +13,26 @@ import {
 } from 'formik';
 import Button from '@material-ui/core/Button';
 import { createContributor, deleteContributor, putContributorFeature } from '../api/resourceApi';
-import Paper from '@material-ui/core/Paper';
 import styled from 'styled-components';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
+import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
+import { Colors } from '../themes/mainTheme';
 import { AxiosError } from 'axios';
 import ErrorBanner from '../components/ErrorBanner';
 import { ServerError } from '../types/server.types';
 import { StatusCode } from '../utils/constants';
 
-const StyledPaper = styled(Paper)`
-  width: 100%;
-  padding: 3rem;
-`;
-
-const StyledField = styled(Field)`
-  display: inline-block;
-  margin-left: 2rem;
-  margin-right: 2rem;
-  padding: 1rem;
-`;
-const StyledDiv = styled.div`
-  display: inline-block;
-  margin-top: 1rem;
-  margin-bottom: 0.3rem;
+const StyledFieldsWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
 `;
 
 const StyledTextField = styled(TextField)`
-  width: 22rem;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-`;
-
-const StyledButton = styled(Button)`
-  position: relative;
-  vertical-align: bottom;
+  margin-right: 1rem;
+  flex-grow: 1;
+  min-width: 10rem;
 `;
 
 interface ContributorFieldsProps {
@@ -143,77 +128,79 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
   };
 
   return (
-    <StyledPaper>
-      <Typography variant="h1">{t('resource.metadata.contributors')}</Typography>
-      <FieldArray
-        name={`resource.contributors`}
-        render={(arrayHelpers) => (
-          <>
-            {values.resource.contributors?.map((contributor: Contributor, index: number) => {
-              return (
-                <StyledDiv key={contributor.identifier}>
-                  <StyledField name={`resource.contributors[${index}].features.dlr_contributor_type`}>
-                    {({ field, meta: { touched, error } }: FieldProps<string>) => (
-                      <StyledTextField
-                        {...field}
-                        variant="filled"
-                        label={t('type')}
-                        error={touched && !!error}
-                        helperText={<ErrorMessage name={field.name} />}
-                        onBlur={(event) => {
-                          handleBlur(event);
-                          !error && saveContributorField(event, resetForm, values, contributor.identifier, index);
-                        }}
-                      />
+    <StyledSchemaPartColored color={Colors.ContributorsPageGradientColor1}>
+      <StyledContentWrapper>
+        <Typography variant="h4">{t('resource.metadata.contributors')}</Typography>
+        <FieldArray
+          name={`resource.contributors`}
+          render={(arrayHelpers) => (
+            <>
+              {values.resource.contributors?.map((contributor: Contributor, index: number) => {
+                return (
+                  <StyledFieldsWrapper key={contributor.identifier}>
+                    <Field name={`resource.contributors[${index}].features.dlr_contributor_type`}>
+                      {({ field, meta: { touched, error } }: FieldProps<string>) => (
+                        <StyledTextField
+                          {...field}
+                          variant="filled"
+                          label={t('type')}
+                          error={touched && !!error}
+                          helperText={<ErrorMessage name={field.name} />}
+                          onBlur={(event) => {
+                            handleBlur(event);
+                            !error && saveContributorField(event, resetForm, values, contributor.identifier, index);
+                          }}
+                        />
+                      )}
+                    </Field>
+                    <Field name={`resource.contributors[${index}].features.dlr_contributor_name`}>
+                      {({ field, meta: { touched, error } }: FieldProps<string>) => (
+                        <StyledTextField
+                          {...field}
+                          variant="filled"
+                          label={t('name')}
+                          error={touched && !!error}
+                          helperText={<ErrorMessage name={field.name} />}
+                          onBlur={(event) => {
+                            handleBlur(event);
+                            !error && saveContributorField(event, resetForm, values, contributor.identifier, index);
+                          }}
+                        />
+                      )}
+                    </Field>
+                    <Button
+                      color="secondary"
+                      startIcon={<DeleteIcon fontSize="large" />}
+                      size="large"
+                      onClick={() => {
+                        removeContributor(contributor.features.dlr_contributor_identifier, arrayHelpers, index);
+                      }}>
+                      {t('common.remove')}
+                    </Button>
+                    {deleteStatus !== StatusCode.ACCEPTED && errorIndex === index && (
+                      <ErrorBanner statusCode={deleteStatus} />
                     )}
-                  </StyledField>
-                  <StyledField name={`resource.contributors[${index}].features.dlr_contributor_name`}>
-                    {({ field, meta: { touched, error } }: FieldProps<string>) => (
-                      <StyledTextField
-                        {...field}
-                        variant="filled"
-                        label={t('name')}
-                        error={touched && !!error}
-                        helperText={<ErrorMessage name={field.name} />}
-                        onBlur={(event) => {
-                          handleBlur(event);
-                          !error && saveContributorField(event, resetForm, values, contributor.identifier, index);
-                        }}
-                      />
-                    )}
-                  </StyledField>
-                  <StyledButton
-                    color="secondary"
-                    startIcon={<DeleteIcon fontSize="large" />}
-                    size="large"
-                    onClick={() => {
-                      removeContributor(contributor.features.dlr_contributor_identifier, arrayHelpers, index);
-                    }}>
-                    {t('common.remove')}
-                  </StyledButton>
-                  {deleteStatus !== StatusCode.ACCEPTED && errorIndex === index && (
-                    <ErrorBanner statusCode={deleteStatus} />
-                  )}
-                </StyledDiv>
-              );
-            })}
-            <Button
-              type="button"
-              variant="outlined"
-              color="primary"
-              startIcon={<AddIcon />}
-              onClick={() => {
-                addContributor(arrayHelpers);
-              }}>
-              {t('resource.add_contributor')}
-            </Button>
-            {deleteStatus !== StatusCode.ACCEPTED && errorIndex === ErrorIndex.ADD_CONTRIBUTOR_ERROR && (
-              <ErrorBanner statusCode={deleteStatus} />
-            )}
-          </>
-        )}
-      />
-    </StyledPaper>
+                  </StyledFieldsWrapper>
+                );
+              })}
+              <Button
+                type="button"
+                variant="outlined"
+                color="primary"
+                startIcon={<AddIcon />}
+                onClick={() => {
+                  addContributor(arrayHelpers);
+                }}>
+                {t('resource.add_contributor')}
+              </Button>
+              {deleteStatus !== StatusCode.ACCEPTED && errorIndex === ErrorIndex.ADD_CONTRIBUTOR_ERROR && (
+                <ErrorBanner statusCode={deleteStatus} />
+              )}
+            </>
+          )}
+        />
+      </StyledContentWrapper>
+    </StyledSchemaPartColored>
   );
 };
 
