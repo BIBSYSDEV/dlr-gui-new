@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { InputLabel, MenuItem, Select } from '@material-ui/core';
+import { MenuItem, TextField } from '@material-ui/core';
 import { Resource } from '../types/resource.types';
 import { Field, FieldProps, FormikValues, useFormikContext } from 'formik';
 import { getLicenses } from '../api/resourceApi';
@@ -41,17 +41,19 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor1}>
       <StyledContentWrapper>
-        <Field name="resource.licenses[0].identifier">
-          {({ field, meta: { error } }: FieldProps) => (
+        <Field name="resource.licenses[0]">
+          {({ form, field, meta: { error } }: FieldProps) => (
             <>
-              <InputLabel id="demo-controlled-open-select-label">{t('resource.metadata.license')}</InputLabel>
-              <Select
-                {...field}
-                variant="filled"
-                labelId="demo-controlled-open-select-label"
+              <TextField
+                select
+                label={t('resource.metadata.license')}
+                variant="outlined"
+                //   error={touched && !!error}
+                //   helperText={<ErrorMessage name={field.name} />}
+                fullWidth
                 onChange={(event) => {
-                  handleChange(event);
-                  !error && saveField(event, values);
+                  const result = licenses?.find((license) => license.identifier === event.target.value);
+                  form.setFieldValue('resource.licenses[0]', result);
                 }}>
                 {licenses &&
                   licenses.map((license) => (
@@ -59,27 +61,13 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
                       {license.features?.dlr_license_code}
                     </MenuItem>
                   ))}
-              </Select>
+              </TextField>
             </>
           )}
         </Field>
-
-        <pre style={{ maxWidth: '90%' }}>{JSON.stringify(licenses, null, 2)}</pre>
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );
 };
-
-// <TextField
-//   variant="filled"
-//   fullWidth
-//   label={t('resource.metadata.licence')}
-//   error={touched && !!error}
-//   helperText={<ErrorMessage name={field.name} />}
-//   // onBlur={(event) => {
-//   //   formikProps.handleBlur(event);
-//   //   !error && saveField(event, formikProps.resetForm, formikProps.values);
-//   // }}
-// />
 
 export default LicenseAndAccessFields;
