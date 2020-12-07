@@ -12,7 +12,6 @@ import {
   useFormikContext,
 } from 'formik';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
 import styled from 'styled-components';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
@@ -21,33 +20,20 @@ import { AxiosError } from 'axios';
 import { ServerError } from '../types/server.types';
 import { StatusCode } from '../utils/constants';
 import ErrorBanner from '../components/ErrorBanner';
+import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
+import { Colors } from '../themes/mainTheme';
 
-const StyledPaper = styled(Paper)`
-  width: 100%;
-  padding: 3rem;
-`;
-
-const StyledDiv = styled.div`
-  display: block;
-  margin-top: 1rem;
-  margin-bottom: 0.3rem;
-`;
-const StyledField = styled(Field)`
-  display: inline-block;
-  margin-left: 2rem;
-  margin-right: 2rem;
-  padding: 1rem;
+const StyledFieldsWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
 `;
 
 const StyledTextField = styled(TextField)`
-  width: 44rem;
+  width: 52rem;
+  max-width: 80%
   margin-left: 0.5rem;
   margin-right: 0.5rem;
-`;
-
-const StyledButton = styled(Button)`
-  position: relative;
-  vertical-align: bottom;
 `;
 
 interface CreatorFieldsProps {
@@ -138,9 +124,9 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
   };
 
   return (
-    <>
-      <StyledPaper>
-        <Typography variant="h1">{t('resource.metadata.creator')}</Typography>
+    <StyledSchemaPartColored color={Colors.ContributorsPageGradientColor1}>
+      <StyledContentWrapper>
+        <Typography variant="h4">{t('resource.metadata.creator')}</Typography>
         <FieldArray
           name={'resource.creators'}
           render={(arrayHelpers) => (
@@ -155,8 +141,8 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                 })
                 .map((creator, index) => {
                   return (
-                    <StyledDiv key={creator.identifier}>
-                      <StyledField name={`resource.creators[${index}].features.dlr_creator_name`}>
+                    <StyledFieldsWrapper key={creator.identifier}>
+                      <Field name={`resource.creators[${index}].features.dlr_creator_name`}>
                         {({ field, meta: { touched, error } }: FieldProps) => (
                           <StyledTextField
                             {...field}
@@ -170,8 +156,8 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                             }}
                           />
                         )}
-                      </StyledField>
-                      <StyledButton
+                      </Field>
+                      <Button
                         color="secondary"
                         startIcon={<DeleteIcon fontSize="large" />}
                         size="large"
@@ -179,12 +165,12 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                           removeCreator(creator.identifier, arrayHelpers, index);
                         }}>
                         {t('common.remove').toUpperCase()}
-                      </StyledButton>
+                      </Button>
                       {errorIndex === index && <ErrorBanner statusCode={saveStatusCode} />}
-                    </StyledDiv>
+                    </StyledFieldsWrapper>
                   );
                 })}
-              <StyledButton
+              <Button
                 type="button"
                 variant="outlined"
                 color="primary"
@@ -193,13 +179,13 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                   addCreator(arrayHelpers);
                 }}>
                 {t('resource.add_creator').toUpperCase()}
-              </StyledButton>
+              </Button>
               {errorIndex === ErrorIndex.ADD_CREATOR_ERROR && <ErrorBanner statusCode={saveStatusCode} />}
             </>
           )}
         />
-      </StyledPaper>
-    </>
+      </StyledContentWrapper>
+    </StyledSchemaPartColored>
   );
 };
 
