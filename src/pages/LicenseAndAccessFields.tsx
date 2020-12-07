@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InputLabel, MenuItem, Select } from '@material-ui/core';
 import { Resource } from '../types/resource.types';
-import { Field, FieldProps, useFormikContext } from 'formik';
+import { Field, FieldProps, FormikValues, useFormikContext } from 'formik';
 import { getLicenses } from '../api/resourceApi';
 import { License } from '../types/license.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
@@ -18,6 +18,8 @@ interface ResourceWrapper {
 
 const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
+  const { values } = useFormikContext<ResourceWrapper>();
+
   const [licenses, setLicenses] = useState<License[]>();
   const { handleChange } = useFormikContext<ResourceWrapper>();
 
@@ -27,9 +29,10 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
     });
   }, []);
 
-  const saveField = (event: any) => {
+  const saveField = (event: any, values: FormikValues) => {
     console.log('MOCK-saving license with id:', event.target.value);
-
+    const result = licenses?.find((license) => license.identifier === event.target.value);
+    values.licenses[0] = result;
     //todo: lagre lisens
     //https://api-dev.dlr.aws.unit.no/dlr-gui-backend-resources/v1/resources/0a6344b1-8ded-4aa7-b757-8bfdf799365a/licenses
     //data: identifierLicense=5d498312-7b5d-40af-a346-3e39df43ca77
@@ -38,30 +41,30 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor1}>
       <StyledContentWrapper>
-      <Field name="resource.licenses[0].identifier">
-        {({ field, meta: { error } }: FieldProps) => (
-          <>
-            <InputLabel id="demo-controlled-open-select-label">{t('resource.metadata.license')}</InputLabel>
-            <Select
-              {...field}
-              variant="filled"
-              labelId="demo-controlled-open-select-label"
-              onChange={(event) => {
-                handleChange(event);
-                !error && saveField(event);
-              }}>
-              {licenses &&
-                licenses.map((license) => (
-                  <MenuItem key={license.identifier} value={license.identifier}>
-                    {license.features?.dlr_license_code}
-                  </MenuItem>
-                ))}
-            </Select>
-          </>
-        )}
-      </Field>
+        <Field name="resource.licenses[0].identifier">
+          {({ field, meta: { error } }: FieldProps) => (
+            <>
+              <InputLabel id="demo-controlled-open-select-label">{t('resource.metadata.license')}</InputLabel>
+              <Select
+                {...field}
+                variant="filled"
+                labelId="demo-controlled-open-select-label"
+                onChange={(event) => {
+                  handleChange(event);
+                  !error && saveField(event, values);
+                }}>
+                {licenses &&
+                  licenses.map((license) => (
+                    <MenuItem key={license.identifier} value={license.identifier}>
+                      {license.features?.dlr_license_code}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </>
+          )}
+        </Field>
 
-      {/*<pre style={{ maxWidth: '90%' }}>{JSON.stringify(licenses, null, 2)}</pre>*/}
+        <pre style={{ maxWidth: '90%' }}>{JSON.stringify(licenses, null, 2)}</pre>
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );

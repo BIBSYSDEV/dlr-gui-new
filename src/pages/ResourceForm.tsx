@@ -14,7 +14,6 @@ import ContributorFields from './ContributorFields';
 import LicenseAndAccessFields from './LicenseAndAccessFields';
 import { StyledContentWrapper } from '../components/styled/Wrappers';
 import PreviewPanel from './PreviewPanel';
-import LicenseAndAccessFields from './LicenseAndAccessFields';
 
 const StyledForm = styled(Form)`
   display: flex;
