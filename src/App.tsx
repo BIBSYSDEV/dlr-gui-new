@@ -18,18 +18,17 @@ const StyledApp = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  color: ${({ theme }) => theme.palette.primary.main};
 `;
 
 const StyledContent = styled.div`
   display: flex;
   flex-direction: column;
   align-self: center;
-  width: 85vw;
-  max-width: ${({ theme }) => theme.breakpoints.values.lg + 'px'};
   align-items: center;
   flex-grow: 1;
-  color: ${({ theme }) => theme.palette.primary.main};
   word-break: break-all;
+  width: 100%;
 `;
 
 const StyledProgressWrapper = styled.div`

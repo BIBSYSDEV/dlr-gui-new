@@ -26,7 +26,6 @@ import { RootState } from '../state/rootReducer';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
-  max-width: 55rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -42,6 +41,10 @@ enum contributorFeatureNames {
   Name = 'dlr_contributor_name',
   Institution = 'institution',
 }
+
+const StyledContentWrapper = styled.div`
+  max-width: ${({ theme }) => theme.breakpoints.values.lg + 'px'};
+`;
 
 const EditResourcePage: FC = () => {
   const { t } = useTranslation();
@@ -151,7 +154,7 @@ const EditResourcePage: FC = () => {
   }, [resourceIdentifierFromParam]);
 
   return !showForm ? (
-    <>
+    <StyledContentWrapper>
       <PageHeader>{t('resource.new_registration')}</PageHeader>
       <StyledEditPublication>
         <UploadRegistration
@@ -166,7 +169,7 @@ const EditResourcePage: FC = () => {
           onSubmit={onSubmitLink}
         />
       </StyledEditPublication>
-    </>
+    </StyledContentWrapper>
   ) : isLoadingResource ? (
     <CircularProgress />
   ) : formikInitResource ? (
