@@ -156,6 +156,11 @@ export const interceptRequestsOnMock = () => {
     .onPost(new RegExp(`${API_PATHS.guiBackendResourcesContentPath}${FileApiPaths.COMPLETE}`))
     .reply(200, mockCompleteUpload);
 
+  // MY RESOURCES
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/owners/users/current`))
+    .reply(200, mockMyResources);
+
   // RESOURCE
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/licenses`)).reply(200, mockLicenses);
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents`)).reply(200, mockContent);
@@ -168,11 +173,6 @@ export const interceptRequestsOnMock = () => {
     .onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*/contributors`))
     .reply(200, mockResourceContributors);
   mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*`)).reply(200, mockCalculatedResource);
-
-  // MY RESOURCES
-  mock
-    .onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/owners/users/current`))
-    .reply(200, mockMyResources);
 
   // GET ANONYMOUS WEB TOKEN
   const mockToken = 'mockToken';
