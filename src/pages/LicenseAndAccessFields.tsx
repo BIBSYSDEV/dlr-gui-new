@@ -5,6 +5,8 @@ import { Resource } from '../types/resource.types';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { getLicenses } from '../api/resourceApi';
 import { License } from '../types/license.types';
+import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
+import { Colors } from '../themes/mainTheme';
 
 interface LicenseAndAccessFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -34,7 +36,8 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
   };
 
   return (
-    <>
+    <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor1}>
+      <StyledContentWrapper>
       <Field name="resource.licenses[0].identifier">
         {({ field, meta: { error } }: FieldProps) => (
           <>
@@ -59,7 +62,8 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
       </Field>
 
       {/*<pre style={{ maxWidth: '90%' }}>{JSON.stringify(licenses, null, 2)}</pre>*/}
-    </>
+      </StyledContentWrapper>
+    </StyledSchemaPartColored>
   );
 };
 

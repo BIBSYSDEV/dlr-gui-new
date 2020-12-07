@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../components/PageHeader';
-import { Button, CircularProgress, Divider, Step, StepButton, Stepper, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Divider, Step, StepButton, Stepper } from '@material-ui/core';
 import { postResourceFeature } from '../api/resourceApi';
 import { Resource, ResourceCreationType } from '../types/resource.types';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
@@ -11,6 +11,9 @@ import DescriptionFields from './DescriptionFields';
 import { Uppy } from '../types/file.types';
 import FileFields from './FileFields';
 import ContributorFields from './ContributorFields';
+import LicenseAndAccessFields from './LicenseAndAccessFields';
+import { StyledContentWrapper } from '../components/styled/Wrappers';
+import PreviewPanel from './PreviewPanel';
 import LicenseAndAccessFields from './LicenseAndAccessFields';
 
 const StyledForm = styled(Form)`
@@ -28,13 +31,15 @@ const StyledPanel = styled.div`
   flex-direction: column;
   width: 100%;
   min-height: 10rem;
-  padding: 2rem 2rem 1rem;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
 `;
 
 const StyledButtonWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
   width: 100%;
+  justify-content: space-between;
+  max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'};
   padding: 2rem 2rem 1rem;
 `;
 
@@ -111,20 +116,22 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
 
   return (
     <>
-      <PageHeader>{t('resource.edit_resource')}</PageHeader>
-      <>
-        {resource && (
-          <Formik
-            initialValues={{
-              resource: resource,
-            }}
-            validateOnChange
-            validationSchema={resourceValidationSchema}
-            onSubmit={() => {
-              /*dont use. But cannot have empty onsubmit*/
-            }}>
-            {(formikProps: FormikProps<FormikValues>) => (
-              <StyledForm>
+      <StyledContentWrapper>
+        <PageHeader>{t('resource.edit_resource')}</PageHeader>
+      </StyledContentWrapper>
+      {resource && (
+        <Formik
+          initialValues={{
+            resource: resource,
+          }}
+          validateOnChange
+          validationSchema={resourceValidationSchema}
+          onSubmit={() => {
+            /*dont use. But cannot have empty onsubmit*/
+          }}>
+          {(formikProps: FormikProps<FormikValues>) => (
+            <StyledForm>
+              <StyledContentWrapper>
                 <Stepper style={{ width: '100%' }} activeStep={activeStep} nonLinear alternativeLabel>
                   {steps.map((label, index) => {
                     return (
@@ -134,41 +141,43 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                     );
                   })}
                 </Stepper>
+              </StyledContentWrapper>
 
-                {activeStep === ResourceFormSteps.Description && (
-                  <StyledPanel>
-                    <DescriptionFields formikProps={formikProps} saveField={saveResourceField} />
-                  </StyledPanel>
-                )}
-                {activeStep === ResourceFormSteps.Contributors && (
-                  <StyledPanel>
-                    <ContributorFields
-                      setAllChangesSaved={(status: boolean) => {
-                        setAllChangesSaved(status);
-                      }}
-                    />
-                  </StyledPanel>
-                )}
-                {activeStep === ResourceFormSteps.AccessAndLicense && (
-                  <StyledPanel>
-                    <LicenseAndAccessFields
-                      setAllChangesSaved={(status: boolean) => {
-                        setAllChangesSaved(status);
-                      }}
-                    />
-                  </StyledPanel>
-                )}
-                {activeStep === ResourceFormSteps.Files && (
-                  <StyledPanel>
-                    <FileFields uppy={uppy} formikProps={formikProps} setAllChangesSaved={setAllChangesSaved} />
-                  </StyledPanel>
-                )}
-                {activeStep === ResourceFormSteps.Preview && (
-                  <StyledPanel>
-                    <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(formikProps.values, null, 2)}</pre>
-                  </StyledPanel>
-                )}
-                <Divider style={{ marginTop: '1rem', width: '100%' }} />
+              {activeStep === ResourceFormSteps.Description && (
+                <StyledPanel>
+                  <DescriptionFields formikProps={formikProps} saveField={saveResourceField} />
+                </StyledPanel>
+              )}
+              {activeStep === ResourceFormSteps.Contributors && (
+                <StyledPanel>
+                  <ContributorFields
+                    setAllChangesSaved={(status: boolean) => {
+                      setAllChangesSaved(status);
+                    }}
+                  />
+                </StyledPanel>
+              )}
+              {activeStep === ResourceFormSteps.AccessAndLicense && (
+                <StyledPanel>
+                  <LicenseAndAccessFields
+                    setAllChangesSaved={(status: boolean) => {
+                      setAllChangesSaved(status);
+                    }}
+                  />
+                </StyledPanel>
+              )}
+              {activeStep === ResourceFormSteps.Files && (
+                <StyledPanel>
+                  <FileFields uppy={uppy} formikProps={formikProps} setAllChangesSaved={setAllChangesSaved} />
+                </StyledPanel>
+              )}
+              {activeStep === ResourceFormSteps.Preview && (
+                <StyledPanel>
+                  <PreviewPanel formikProps={formikProps} />
+                </StyledPanel>
+              )}
+              <Divider style={{ marginTop: '1rem', width: '100%' }} />
+              <StyledContentWrapper>
                 <StyledButtonWrapper>
                   <div>
                     {!allChangesSaved && <CircularProgress size="1rem" />}
@@ -183,11 +192,11 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                     </Button>
                   </div>
                 </StyledButtonWrapper>
-              </StyledForm>
-            )}
-          </Formik>
-        )}
-      </>
+              </StyledContentWrapper>
+            </StyledForm>
+          )}
+        </Formik>
+      )}
     </>
   );
 };

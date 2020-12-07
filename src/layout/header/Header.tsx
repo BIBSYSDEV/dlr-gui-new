@@ -10,6 +10,7 @@ import { RootState } from '../../state/rootReducer';
 import Logout from './Logout';
 import { useTranslation } from 'react-i18next';
 import AddIcon from '@material-ui/icons/Add';
+import { Colors } from '../../themes/mainTheme';
 
 const StyledPageHeader = styled.div`
   display: flex;
@@ -17,7 +18,7 @@ const StyledPageHeader = styled.div`
   align-items: center;
   padding-left: 1rem;
   padding-right: 1rem;
-  border-bottom: 2px solid ${({ theme }) => theme.palette.separator.main};
+  background-color: ${Colors.HeaderBackground};
   min-height: 4rem;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     padding: 0;

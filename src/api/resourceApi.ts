@@ -67,6 +67,16 @@ export const createContributor = (resourceIdentifier: string): Promise<AxiosResp
   });
 };
 
+export const deleteContributor = (
+  resourceIdentifier: string,
+  contributorIdentifier: string
+): Promise<AxiosResponse<any>> => {
+  return authenticatedApiRequest({
+    url: `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contributors/${contributorIdentifier}`,
+    method: 'DELETE',
+  });
+};
+
 export const putContributorFeature = (
   resourceIdentifier: string,
   contributorIdentifier: string,
