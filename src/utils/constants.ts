@@ -6,6 +6,7 @@ export enum StatusCode {
   CREATED = 201,
   ACCEPTED = 202,
   NO_CONTENT = 204,
+  UNAUTHORIZED = 401,
   CONFLICT = 409,
 }
 

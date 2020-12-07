@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField, Typography } from '@material-ui/core';
 import { Contributor, Resource } from '../types/resource.types';
@@ -12,11 +12,15 @@ import {
   useFormikContext,
 } from 'formik';
 import Button from '@material-ui/core/Button';
-import { createContributor, putContributorFeature } from '../api/resourceApi';
+import { createContributor, deleteContributor, putContributorFeature } from '../api/resourceApi';
 import Paper from '@material-ui/core/Paper';
 import styled from 'styled-components';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
+import { AxiosError } from 'axios';
+import ErrorBanner from '../components/ErrorBanner';
+import { ServerError } from '../types/server.types';
+import { StatusCode } from '../utils/constants';
 
 const StyledPaper = styled(Paper)`
   width: 100%;
@@ -53,13 +57,21 @@ interface ResourceWrapper {
   resource: Resource;
 }
 
+enum ErrorIndex {
+  ADD_CONTRIBUTOR_ERROR = -2,
+  NO_ERRORS = -1,
+}
+
 const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, handleBlur, resetForm } = useFormikContext<ResourceWrapper>();
+  const [deleteStatus, setDeleteStatus] = useState(StatusCode.ACCEPTED);
+  const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
 
-  const addContributor = (arrayHelpers: FieldArrayRenderProps) => {
+  const addContributor = async (arrayHelpers: FieldArrayRenderProps) => {
     setAllChangesSaved(false);
-    createContributor(values.resource.identifier).then((contributorResponse) => {
+    try {
+      const contributorResponse = await createContributor(values.resource.identifier);
       arrayHelpers.push({
         identifier: contributorResponse.data.identifier,
         features: {
@@ -68,33 +80,71 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
           dlr_contributor_identifier: contributorResponse.data.identifier,
         },
       });
+      setDeleteStatus(StatusCode.ACCEPTED);
+      setErrorIndex(ErrorIndex.NO_ERRORS);
+    } catch (addContributorError) {
+      if (addContributorError && addContributorError.response) {
+        const axiosError = addContributorError as AxiosError<ServerError>;
+        setDeleteStatus(axiosError.response ? axiosError.response.status : StatusCode.UNAUTHORIZED);
+        setErrorIndex(ErrorIndex.ADD_CONTRIBUTOR_ERROR);
+      }
+    } finally {
       setAllChangesSaved(true);
-    });
+    }
   };
 
   const saveContributorField = async (
     event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
     resetForm: any,
     currentValues: FormikValues,
-    contributorIdentifier: string
+    contributorIdentifier: string,
+    contributorIndex: number
   ) => {
-    setAllChangesSaved(false);
-    const name = '' + event.target.name.split('.').pop();
-    if (event.target.value.length > 0) {
-      await putContributorFeature(values.resource.identifier, contributorIdentifier, name, event.target.value);
+    try {
+      setAllChangesSaved(false);
+      const name = '' + event.target.name.split('.').pop();
+      if (event.target.value.length > 0) {
+        await putContributorFeature(values.resource.identifier, contributorIdentifier, name, event.target.value);
+      }
+      setDeleteStatus(StatusCode.ACCEPTED);
+      setErrorIndex(ErrorIndex.NO_ERRORS);
+      resetForm({ values: currentValues });
+    } catch (saveContributorError: any) {
+      if (saveContributorError && saveContributorError.response) {
+        const axiosError = saveContributorError as AxiosError<ServerError>;
+        setDeleteStatus(axiosError.response ? axiosError.response.status : StatusCode.UNAUTHORIZED);
+        setErrorIndex(contributorIndex);
+      }
+    } finally {
+      setAllChangesSaved(true);
     }
-    setAllChangesSaved(true);
-    resetForm({ values: currentValues });
   };
 
-  const deleteContributor = (identifier: string) => {
-    //TODO: implement deletion
+  const removeContributor = async (
+    contributorIdentifier: string,
+    arrayHelpers: FieldArrayRenderProps,
+    contributorIndex: number
+  ) => {
+    try {
+      setAllChangesSaved(false);
+      await deleteContributor(values.resource.identifier, contributorIdentifier);
+      arrayHelpers.remove(contributorIndex);
+      setDeleteStatus(StatusCode.ACCEPTED);
+      setErrorIndex(ErrorIndex.NO_ERRORS);
+    } catch (deleteContributorError: any) {
+      if (deleteContributorError && deleteContributorError.response) {
+        const axiosError = deleteContributorError as AxiosError<ServerError>;
+        setDeleteStatus(axiosError.response ? axiosError.response.status : StatusCode.UNAUTHORIZED);
+        setErrorIndex(contributorIndex);
+      }
+    } finally {
+      setAllChangesSaved(true);
+    }
   };
 
   return (
     <StyledPaper>
       <Typography variant="h1">{t('resource.metadata.contributors')}</Typography>
-      <Typography> {JSON.stringify(values)}</Typography>
       <FieldArray
         name={`resource.contributors`}
         render={(arrayHelpers) => (
@@ -112,7 +162,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                         helperText={<ErrorMessage name={field.name} />}
                         onBlur={(event) => {
                           handleBlur(event);
-                          !error && saveContributorField(event, resetForm, values, contributor.identifier);
+                          !error && saveContributorField(event, resetForm, values, contributor.identifier, index);
                         }}
                       />
                     )}
@@ -127,7 +177,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                         helperText={<ErrorMessage name={field.name} />}
                         onBlur={(event) => {
                           handleBlur(event);
-                          !error && saveContributorField(event, resetForm, values, contributor.identifier);
+                          !error && saveContributorField(event, resetForm, values, contributor.identifier, index);
                         }}
                       />
                     )}
@@ -137,10 +187,13 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                     startIcon={<DeleteIcon fontSize="large" />}
                     size="large"
                     onClick={() => {
-                      deleteContributor(contributor.features.dlr_contributor_identifier);
+                      removeContributor(contributor.features.dlr_contributor_identifier, arrayHelpers, index);
                     }}>
                     {t('common.remove')}
                   </StyledButton>
+                  {deleteStatus !== StatusCode.ACCEPTED && errorIndex === index && (
+                    <ErrorBanner statusCode={deleteStatus} />
+                  )}
                 </StyledDiv>
               );
             })}
@@ -154,6 +207,9 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
               }}>
               {t('resource.add_contributor')}
             </Button>
+            {deleteStatus !== StatusCode.ACCEPTED && errorIndex === ErrorIndex.ADD_CONTRIBUTOR_ERROR && (
+              <ErrorBanner statusCode={deleteStatus} />
+            )}
           </>
         )}
       />
