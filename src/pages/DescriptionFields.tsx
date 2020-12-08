@@ -4,6 +4,7 @@ import { TextField } from '@material-ui/core';
 import { ErrorMessage, Field, FieldProps, FormikProps, FormikValues } from 'formik';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
+import TagsField from './TagsField';
 
 interface DescriptionFieldsProps {
   formikProps: FormikProps<FormikValues>;
@@ -55,6 +56,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ formikProps, saveField 
           </Field>
         </StyledContentWrapper>
       </StyledSchemaPartColored>
+      <TagsField />
     </>
   );
 };

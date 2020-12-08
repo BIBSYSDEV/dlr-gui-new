@@ -66,7 +66,7 @@ const ResourcePage: FC<RouteProps> = (props) => {
         });
       });
       promises[3] = getResourceTags(identifier).then((response) => {
-        setTags(response.data);
+        setTags([...response.data]);
       });
       promises[4] = getResourceLicenses(identifier).then((response) => {
         setLicenses(response.data);
@@ -137,9 +137,10 @@ const ResourcePage: FC<RouteProps> = (props) => {
             </div>
           );
         })}
-        {tags.length !== 0 && tags && resource?.features.dlr_subject_nsi_id && (
+        {resource?.features.dlr_subject_nsi_id && (
           <ResourceMetadata type={preview.type} category={resource.features.dlr_subject_nsi_id} tags={tags} />
         )}
+        {!resource?.features.dlr_subject_nsi_id && <ResourceMetadata type={preview.type} category={''} tags={tags} />}
       </Card>
       {licenses.length !== 0 &&
         licenses.map((license) => {

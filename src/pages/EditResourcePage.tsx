@@ -97,6 +97,7 @@ const EditResourcePage: FC = () => {
               },
             },
           ],
+          tags: [],
         });
         setResourceType(resourceCreationType);
         setShowForm(true);
