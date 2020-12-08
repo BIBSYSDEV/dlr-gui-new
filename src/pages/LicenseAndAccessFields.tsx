@@ -1,9 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CircularProgress, MenuItem, TextField } from '@material-ui/core';
 import { Resource } from '../types/resource.types';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
-import { getLicenses, setResourceLicense } from '../api/resourceApi';
+import { setResourceLicense } from '../api/resourceApi';
 import { License } from '../types/license.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
@@ -25,7 +25,6 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
   const [isSavingLicenses, setIsSavingLicenses] = useState(false);
   const [savingLicenseErrorStatus, setSavingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
 
-
   const saveField = async (event: any) => {
     const selectedLicense = licenses?.find((license) => license.identifier === event.target.value);
     setIsSavingLicenses(true);
@@ -40,7 +39,7 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
       } finally {
         setIsSavingLicenses(false);
         setAllChangesSaved(true);
-        //        resetForm({ values: values });
+        resetForm({ values: values });
       }
     }
   };

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../components/PageHeader';
 import { Button, CircularProgress, Divider, Step, StepButton, Stepper } from '@material-ui/core';
-import { postResourceFeature } from '../api/resourceApi';
+import { getLicenses, postResourceFeature } from '../api/resourceApi';
 import { Resource, ResourceCreationType } from '../types/resource.types';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import * as Yup from 'yup';
@@ -14,6 +14,9 @@ import ContributorFields from './ContributorFields';
 import LicenseAndAccessFields from './LicenseAndAccessFields';
 import { StyledContentWrapper } from '../components/styled/Wrappers';
 import PreviewPanel from './PreviewPanel';
+import { StatusCode } from '../utils/constants';
+import { License } from '../types/license.types';
+import ErrorBanner from '../components/ErrorBanner';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -62,6 +65,9 @@ interface ResourceFormProps {
 const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) => {
   const { t } = useTranslation();
   const [allChangesSaved, setAllChangesSaved] = useState(true);
+  const [isLoadingLicenses, setIsLoadingLicenses] = useState(false);
+  const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
+  const [licenses, setLicenses] = useState<License[]>();
 
   const steps = [
     t('resource.form_steps.description'),
@@ -92,6 +98,23 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
       }),
     }),
   });
+
+  useEffect(() => {
+    async function getAllLicences() {
+      setIsLoadingLicenses(true);
+      setLoadingLicensesErrorStatus(StatusCode.ACCEPTED);
+      try {
+        const response = await getLicenses(); //todo: Async method
+        setLicenses(response.data);
+      } catch (err) {
+        err?.response && setLoadingLicensesErrorStatus(err.response.status);
+      } finally {
+        setIsLoadingLicenses(false);
+      }
+    }
+
+    getAllLicences();
+  }, []);
 
   const saveResourceField = async (
     //todo: legge i hook? - vi har mange forskjellige backends her
@@ -158,11 +181,18 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
               )}
               {activeStep === ResourceFormSteps.AccessAndLicense && (
                 <StyledPanel>
-                  <LicenseAndAccessFields
-                    setAllChangesSaved={(status: boolean) => {
-                      setAllChangesSaved(status);
-                    }}
-                  />
+                  {isLoadingLicenses && <CircularProgress />}
+                  {loadingLicensesErrorStatus !== StatusCode.ACCEPTED && (
+                    <ErrorBanner statusCode={loadingLicensesErrorStatus} />
+                  )}
+                  {licenses && (
+                    <LicenseAndAccessFields
+                      setAllChangesSaved={(status: boolean) => {
+                        setAllChangesSaved(status);
+                      }}
+                      licenses={licenses}
+                    />
+                  )}
                 </StyledPanel>
               )}
               {activeStep === ResourceFormSteps.Files && (
