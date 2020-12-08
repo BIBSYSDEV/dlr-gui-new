@@ -54,6 +54,11 @@ const Header: FC = () => {
           <Typography variant="button">{t('resource.new_registration')}</Typography>
         </Button>
       )}
+      {user.id && (
+        <Button color="primary" component={RouterLink} data-testid="my-resources" to="/resources/user/current">
+          <Typography variant="button">{t('resource.my_resources')}</Typography>
+        </Button>
+      )}
       {user.id ? (
         <div>
           {t('user.logged_in_as')} {user.name} <Logout />
