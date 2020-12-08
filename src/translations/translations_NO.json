@@ -73,12 +73,15 @@
       "type": "Ressurstype",
       "submitter_email": "Registrators epost"
     },
+    "my_resources": "Mine ressurser",
     "new_registration": "Ny registering",
     "preview_not_supported_filetype": "Fohåndsvisning støttes ikke for dette filformatet",
+    "published_resources": "Publiserte ressurser",
     "search_for_resources": "Søk etter ressurser",
     "start_with_link_to_resource": "Start registrering med en lenke",
     "start_with_uploading_file": "Last opp fil hvis ressursen skal publiseres på Internett for første gang",
-    "submit_link": "Start registrering"
+    "submit_link": "Start registrering",
+    "unpublished_resources": "Upubliserte ressurser"
   },
   "user": {
     "logged_in_as": "Logget på som"
