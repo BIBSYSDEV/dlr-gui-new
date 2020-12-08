@@ -12,45 +12,24 @@ import { StatusCode } from '../utils/constants';
 
 interface LicenseAndAccessFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
+  licenses: License[];
 }
 
 interface ResourceWrapper {
   resource: Resource;
 }
 
-const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved }) => {
+const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, licenses }) => {
   const { t } = useTranslation();
-  const { values, setFieldValue } = useFormikContext<ResourceWrapper>();
-  const [isLoadingLicenses, setIsLoadingLicenses] = useState(false);
+  const { values, setFieldValue, resetForm } = useFormikContext<ResourceWrapper>();
   const [isSavingLicenses, setIsSavingLicenses] = useState(false);
-  const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
   const [savingLicenseErrorStatus, setSavingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
 
-  const [licenses, setLicenses] = useState<License[]>();
-
-  useEffect(() => {
-    async function getAllLicences() {
-      setIsLoadingLicenses(true);
-      setLoadingLicensesErrorStatus(StatusCode.ACCEPTED);
-
-      try {
-        const response = await getLicenses(); //todo: Async method
-        const defaultLicense = response.data[0];
-        setFieldValue('resource.licenses[0]', defaultLicense);
-        setLicenses(response.data);
-      } catch (err) {
-        err?.response && setLoadingLicensesErrorStatus(err.response.status);
-      } finally {
-        setIsLoadingLicenses(false);
-      }
-    }
-
-    getAllLicences();
-  }, [setFieldValue]);
 
   const saveField = async (event: any) => {
     const selectedLicense = licenses?.find((license) => license.identifier === event.target.value);
     setIsSavingLicenses(true);
+    setAllChangesSaved(false);
     setSavingLicensesErrorStatus(StatusCode.ACCEPTED);
     if (selectedLicense) {
       setFieldValue('resource.licenses[0]', selectedLicense);
@@ -60,6 +39,8 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
         err?.response && setSavingLicensesErrorStatus(err.response.status);
       } finally {
         setIsSavingLicenses(false);
+        setAllChangesSaved(true);
+        //        resetForm({ values: values });
       }
     }
   };
@@ -67,8 +48,6 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor1}>
       <StyledContentWrapper>
-        {isLoadingLicenses && <CircularProgress />}
-        {loadingLicensesErrorStatus !== StatusCode.ACCEPTED && <ErrorBanner statusCode={loadingLicensesErrorStatus} />}
         {licenses && (
           <Field name="resource.licenses[0]">
             {({ field, meta: { error, touched } }: FieldProps) => (
