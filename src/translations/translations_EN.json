@@ -75,12 +75,15 @@
       "type": "Resource type",
       "submitter_email": "Submitter email"
     },
+    "my_resources": "My resources",
     "new_registration": "New registration",
     "preview_not_supported_filetype": "Preview is not supported for this file type",
+    "published_resources": "Published resources",
     "search_for_resources": "Search for resources",
     "start_with_link_to_resource": "Start registration with a link",
     "start_with_uploading_file": "Upload file if the resource is to be published on the Internet for the first time",
-    "submit_link": "Start registration"
+    "submit_link": "Start registration",
+    "unpublished_resources": "Unpublished resources"
   },
   "user": {
     "logged_in_as": "Logged in as"

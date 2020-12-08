@@ -37,6 +37,30 @@ const mockCalculatedResource: Resource = {
   identifier: 'resource-345',
 };
 
+const mockMyResources: Resource[] = [
+  {
+    features: {
+      dlr_title: 'MockTitle (Published)',
+      dlr_status_published: true,
+    },
+    identifier: '123',
+  },
+  {
+    features: {
+      dlr_title: 'MockTitle (Unpublished)',
+      dlr_status_published: false,
+    },
+    identifier: '456',
+  },
+  {
+    features: {
+      dlr_title: 'AnotherMockTitle (Published)',
+      dlr_status_published: true,
+    },
+    identifier: '789',
+  },
+];
+
 const mockResourceContributors: Contributor[] = [
   {
     identifier: '07047aa4-ad55-4fb3-9747-f8d64ee69e12',
@@ -143,6 +167,11 @@ export const interceptRequestsOnMock = () => {
 
   // LICENSES
   mock.onGet(new RegExp(`${API_PATHS.guiBackendLicensesPath}/licenses/users/authorized`)).reply(200, allLicenses);
+
+  // MY RESOURCES
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/owners/users/current`))
+    .reply(200, mockMyResources);
 
   // RESOURCE
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/licenses`)).reply(200, mockLicenses);
