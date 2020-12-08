@@ -94,7 +94,6 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
         resetForm({ values: currentValues });
       }
     } catch (error) {
-      console.log(error);
       const axiosError = error as AxiosError<ServerError>;
       setSaveStatusCode(axiosError.response ? axiosError.response.status : StatusCode.UNAUTHORIZED);
       setErrorIndex(creatorIndex);
@@ -123,6 +122,16 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
     }
   };
 
+  const sortCreatorArray = () => {
+    return values.resource.creators?.sort((element1, element2) => {
+      if (element1.features.dlr_creator_order && element2.features.dlr_creator_order) {
+        return element2.features.dlr_creator_order - element1.features.dlr_creator_order;
+      } else {
+        return 0;
+      }
+    });
+  };
+
   return (
     <StyledSchemaPartColored color={Colors.ContributorsPageGradientColor1}>
       <StyledContentWrapper>
@@ -131,45 +140,37 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
           name={'resource.creators'}
           render={(arrayHelpers) => (
             <>
-              {values.resource.creators
-                ?.sort((element1, element2) => {
-                  if (element1.features.dlr_creator_order && element2.features.dlr_creator_order) {
-                    return element2.features.dlr_creator_order - element1.features.dlr_creator_order;
-                  } else {
-                    return 0;
-                  }
-                })
-                .map((creator, index) => {
-                  return (
-                    <StyledFieldsWrapper key={creator.identifier}>
-                      <Field name={`resource.creators[${index}].features.dlr_creator_name`}>
-                        {({ field, meta: { touched, error } }: FieldProps) => (
-                          <StyledTextField
-                            {...field}
-                            variant="filled"
-                            label={t('common.name')}
-                            error={touched && !!error}
-                            helperText={<ErrorMessage name={field.name} />}
-                            onBlur={(event) => {
-                              handleBlur(event);
-                              !error && saveCreatorField(event, values, resetForm, creator.identifier, index);
-                            }}
-                          />
-                        )}
-                      </Field>
-                      <Button
-                        color="secondary"
-                        startIcon={<DeleteIcon fontSize="large" />}
-                        size="large"
-                        onClick={() => {
-                          removeCreator(creator.identifier, arrayHelpers, index);
-                        }}>
-                        {t('common.remove').toUpperCase()}
-                      </Button>
-                      {errorIndex === index && <ErrorBanner statusCode={saveStatusCode} />}
-                    </StyledFieldsWrapper>
-                  );
-                })}
+              {sortCreatorArray()?.map((creator, index) => {
+                return (
+                  <StyledFieldsWrapper key={creator.identifier}>
+                    <Field name={`resource.creators[${index}].features.dlr_creator_name`}>
+                      {({ field, meta: { touched, error } }: FieldProps) => (
+                        <StyledTextField
+                          {...field}
+                          variant="filled"
+                          label={t('common.name')}
+                          error={touched && !!error}
+                          helperText={<ErrorMessage name={field.name} />}
+                          onBlur={(event) => {
+                            handleBlur(event);
+                            !error && saveCreatorField(event, values, resetForm, creator.identifier, index);
+                          }}
+                        />
+                      )}
+                    </Field>
+                    <Button
+                      color="secondary"
+                      startIcon={<DeleteIcon fontSize="large" />}
+                      size="large"
+                      onClick={() => {
+                        removeCreator(creator.identifier, arrayHelpers, index);
+                      }}>
+                      {t('common.remove').toUpperCase()}
+                    </Button>
+                    {errorIndex === index && <ErrorBanner statusCode={saveStatusCode} />}
+                  </StyledFieldsWrapper>
+                );
+              })}
               <Button
                 type="button"
                 variant="outlined"

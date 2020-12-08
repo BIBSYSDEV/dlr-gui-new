@@ -73,6 +73,12 @@ const EditResourcePage: FC = () => {
     });
   };
 
+  const doneInitResource = (resourceCreationType: ResourceCreationType) => {
+    setResourceType(resourceCreationType);
+    setShowForm(true);
+    setIsLoadingResource(false);
+  };
+
   const getResourceInit = (startingResource: Resource, resourceCreationType: ResourceCreationType) => {
     createContributor(startingResource.identifier).then((contributorResponse) => {
       putContributorFeature(
@@ -91,11 +97,10 @@ const EditResourcePage: FC = () => {
       getResourceDefaults(startingResource.identifier).then((responseWithCalculatedDefaults) => {
         saveCalculatedFields(responseWithCalculatedDefaults.data);
         if (
-          responseWithCalculatedDefaults.data.creators &&
-          !responseWithCalculatedDefaults.data.creators[0].identifier &&
-          responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
+          !responseWithCalculatedDefaults.data.creators?.[0].identifier &&
+          responseWithCalculatedDefaults.data.creators?.[0].features.dlr_creator_name
         ) {
-          const name = responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
+          const mainCreatorName = responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
             ? responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
             : '';
           postResourceCreator(startingResource.identifier).then((postCreatorResponse) => {
@@ -103,14 +108,17 @@ const EditResourcePage: FC = () => {
               startingResource.identifier,
               postCreatorResponse.data.identifier,
               creatorFeatureAttributes.name,
-              name
-            ).then((putResourceCreatorResponse) => {
+              mainCreatorName
+            ).then(() => {
               setFormikInitResource({
                 ...deepmerge(startingResource, responseWithCalculatedDefaults.data),
                 creators: [
                   {
                     identifier: postCreatorResponse.data.identifier,
-                    features: { dlr_creator_identifier: postCreatorResponse.data.identifier, dlr_creator_name: name },
+                    features: {
+                      dlr_creator_identifier: postCreatorResponse.data.identifier,
+                      dlr_creator_name: mainCreatorName,
+                    },
                   },
                 ],
                 contributors: [
@@ -124,9 +132,7 @@ const EditResourcePage: FC = () => {
                   },
                 ],
               });
-              setResourceType(resourceCreationType);
-              setShowForm(true);
-              setIsLoadingResource(false);
+              doneInitResource(resourceCreationType);
             });
           });
         } else {
@@ -143,9 +149,7 @@ const EditResourcePage: FC = () => {
               },
             ],
           });
-          setResourceType(resourceCreationType);
-          setShowForm(true);
-          setIsLoadingResource(false);
+          doneInitResource(resourceCreationType);
         }
       });
     });

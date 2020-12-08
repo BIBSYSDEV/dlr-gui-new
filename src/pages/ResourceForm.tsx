@@ -102,7 +102,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
         Yup.object().shape({
           features: Yup.object().shape({
             dlr_contributor_name: Yup.string().required(t('feedback.required_field')),
-            dlr_contributor_type: Yup.string().notRequired(),
+            dlr_contributor_type: Yup.string().required(t('feedback.required_field')),
           }),
         })
       ),
