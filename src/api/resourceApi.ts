@@ -123,6 +123,16 @@ export const getLicenses = (): Promise<AxiosResponse<License[]>> => {
   });
 };
 
+export const setResourceLicense = async (resourceIdentifier: string, licenseIdentifier: string) => {
+  const encodedValue = encodeURIComponent(licenseIdentifier);
+  const data = `identifierLicense=${encodedValue}`;
+  await authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/licenses`),
+    method: 'POST',
+    data: data,
+  });
+};
+
 export const updateContentTitle = async (resourceIdentifier: string, contentIdentifier: string, value: string) => {
   const encodedValue = encodeURIComponent(value);
   const data = `title=${encodedValue}`;
