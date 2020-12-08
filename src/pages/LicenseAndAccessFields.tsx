@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MenuItem, TextField } from '@material-ui/core';
 import { Resource } from '../types/resource.types';
-import { Field, FieldProps, FormikValues, useFormikContext } from 'formik';
+import { ErrorMessage, Field, FieldProps, FormikValues, useFormikContext } from 'formik';
 import { getLicenses } from '../api/resourceApi';
 import { License } from '../types/license.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
@@ -18,10 +18,9 @@ interface ResourceWrapper {
 
 const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
-  const { values } = useFormikContext<ResourceWrapper>();
+  //const { values } = useFormikContext<ResourceWrapper>();
 
   const [licenses, setLicenses] = useState<License[]>();
-  const { handleChange } = useFormikContext<ResourceWrapper>();
 
   useEffect(() => {
     getLicenses().then((response) => {
@@ -42,14 +41,15 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor1}>
       <StyledContentWrapper>
         <Field name="resource.licenses[0]">
-          {({ form, field, meta: { error } }: FieldProps) => (
+          {({ form, field, meta: { error, touched } }: FieldProps) => (
             <>
               <TextField
                 select
                 label={t('resource.metadata.license')}
                 variant="outlined"
-                //   error={touched && !!error}
-                //   helperText={<ErrorMessage name={field.name} />}
+                value={field.value.identifier}
+                error={touched && !!error}
+                helperText={<ErrorMessage name={field.name} />}
                 fullWidth
                 onChange={(event) => {
                   const result = licenses?.find((license) => license.identifier === event.target.value);
