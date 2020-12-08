@@ -79,8 +79,6 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
 
   const saveCreatorField = async (
     event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
-    currentValues: FormikValues,
-    resetForm: any,
     creatorIdentifier: string,
     creatorIndex: number
   ) => {
@@ -91,7 +89,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
         await putResourceCreatorFeature(values.resource.identifier, creatorIdentifier, name, event.target.value);
         setErrorIndex(ErrorIndex.NO_ERRORS);
         setSaveStatusCode(StatusCode.ACCEPTED);
-        resetForm({ values: currentValues });
+        resetForm({ values });
       }
     } catch (error) {
       const axiosError = error as AxiosError<ServerError>;
@@ -153,7 +151,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                           helperText={<ErrorMessage name={field.name} />}
                           onBlur={(event) => {
                             handleBlur(event);
-                            !error && saveCreatorField(event, values, resetForm, creator.identifier, index);
+                            !error && saveCreatorField(event, creator.identifier, index);
                           }}
                         />
                       )}
