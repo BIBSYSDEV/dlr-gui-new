@@ -6,7 +6,7 @@ import { searchResources } from '../api/resourceApi';
 import { useTranslation } from 'react-i18next';
 import { SearchResult } from '../types/search.types';
 import { Resource } from '../types/resource.types';
-import ErrorBannerTEMP from '../components/ErrorBannerTEMP';
+import ErrorBanner from '../components/ErrorBanner';
 
 const StyledDashboard = styled.div`
   display: flex;
@@ -32,6 +32,7 @@ const Dashboard: FC = () => {
     try {
       const response = await searchResources(searchTerm);
       if (response.data) {
+        setSearchError(false);
         setSearchResult(response.data);
         setResources(response.data.resourcesAsJson.map((resourceAsString: string) => JSON.parse(resourceAsString)));
       } else {
@@ -58,7 +59,7 @@ const Dashboard: FC = () => {
           </Button>
         </form>
       </SearchFieldWrapper>
-      {searchError && <ErrorBannerTEMP />}
+      {searchError && <ErrorBanner />}
 
       <div>
         {searchResult && (

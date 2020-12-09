@@ -23,6 +23,7 @@ import {
 import deepmerge from 'deepmerge';
 import { useSelector } from 'react-redux';
 import { RootState } from '../state/rootReducer';
+import ErrorBanner from '../components/ErrorBanner';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -54,6 +55,9 @@ const EditResourcePage: FC = () => {
   const [isLoadingResource, setIsLoadingResource] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [resourceType, setResourceType] = useState<ResourceCreationType>(ResourceCreationType.FILE);
+
+  const [resourceInitError, setResourceInitError] = useState(false);
+
   const user = useSelector((state: RootState) => state.user);
 
   const onCreateFile = (newResource: Resource) => {
@@ -68,41 +72,43 @@ const EditResourcePage: FC = () => {
     });
   };
 
-  const getResourceInit = (startingResource: Resource, resourceCreationType: ResourceCreationType) => {
-    createContributor(startingResource.identifier).then((contributorResponse) => {
-      putContributorFeature(
+  const getResourceInit = async (startingResource: Resource, resourceCreationType: ResourceCreationType) => {
+    try {
+      setShowForm(true);
+      const contributorResponse = await createContributor(startingResource.identifier);
+      await putContributorFeature(
         startingResource.identifier,
         contributorResponse.data.features.dlr_contributor_identifier,
         contributorFeatureNames.Type,
         contributorFeatureNames.Institution
       );
-      putContributorFeature(
+      await putContributorFeature(
         startingResource.identifier,
         contributorResponse.data.features.dlr_contributor_identifier,
         contributorFeatureNames.Name,
         user.institution
       );
-
-      getResourceDefaults(startingResource.identifier).then((responseWithCalculatedDefaults) => {
-        saveCalculatedFields(responseWithCalculatedDefaults.data);
-        setFormikInitResource({
-          ...deepmerge(startingResource, responseWithCalculatedDefaults.data),
-          contributors: [
-            {
-              identifier: contributorResponse.data.identifier,
-              features: {
-                dlr_contributor_identifier: contributorResponse.data.identifier,
-                dlr_contributor_name: user.institution,
-                dlr_contributor_type: contributorFeatureNames.Institution,
-              },
+      const responseWithCalculatedDefaults = await getResourceDefaults(startingResource.identifier);
+      await saveCalculatedFields(responseWithCalculatedDefaults.data);
+      setFormikInitResource({
+        ...deepmerge(startingResource, responseWithCalculatedDefaults.data),
+        contributors: [
+          {
+            identifier: contributorResponse.data.identifier,
+            features: {
+              dlr_contributor_identifier: contributorResponse.data.identifier,
+              dlr_contributor_name: user.institution,
+              dlr_contributor_type: contributorFeatureNames.Institution,
             },
-          ],
-        });
-        setResourceType(resourceCreationType);
-        setShowForm(true);
-        setIsLoadingResource(false);
+          },
+        ],
       });
-    });
+      setResourceType(resourceCreationType);
+      setResourceInitError(false);
+    } catch (error) {
+      setResourceInitError(true);
+    }
+    setIsLoadingResource(false);
   };
 
   const mainFileHandler = useUppy('', false, onCreateFile);
@@ -172,6 +178,8 @@ const EditResourcePage: FC = () => {
     </StyledContentWrapper>
   ) : isLoadingResource ? (
     <CircularProgress />
+  ) : resourceInitError ? (
+    <ErrorBanner />
   ) : formikInitResource ? (
     <ResourceForm resource={formikInitResource} uppy={mainFileHandler} resourceType={resourceType} />
   ) : null;

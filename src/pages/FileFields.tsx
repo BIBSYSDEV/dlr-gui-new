@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import React, { Dispatch, FC, SetStateAction, useState } from 'react';
 import { Uppy } from '../types/file.types';
 import StatusBarComponent from '@uppy/react/src/StatusBar';
 import '@uppy/core/dist/style.css';
@@ -7,10 +7,12 @@ import styled from 'styled-components';
 import { Paper, TextField, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import placeholderImage from '../resources/images/placeholder.png';
-import { ErrorMessage, Field, FieldProps, FormikProps, FormikValues } from 'formik';
+import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
 import { updateContentTitle } from '../api/resourceApi';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
+import ErrorBanner from '../components/ErrorBanner';
+import { ResourceWrapper } from '../types/resource.types';
 
 const StatusBarWrapper = styled.div`
   width: 100%;
@@ -39,25 +41,27 @@ const MainFileMetadata = styled.div`
 
 interface FileFieldsProps {
   uppy: Uppy;
-  formikProps: FormikProps<FormikValues>;
   setAllChangesSaved: Dispatch<SetStateAction<boolean>>;
 }
 
-const FileFields: FC<FileFieldsProps> = ({ uppy, formikProps, setAllChangesSaved }) => {
+const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
   const { t } = useTranslation();
+  const { values, handleBlur, resetForm } = useFormikContext<ResourceWrapper>();
+  const [saveTitleError, setSaveTitleError] = useState(false);
 
-  const saveMainContentsFileName = async (
-    event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
-    resetForm: any,
-    currentValues: any
-  ) => {
+  const saveMainContentsFileName = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setAllChangesSaved(false);
-    const contentId = currentValues?.resource?.contents?.[0]?.identifier;
-    const resourceId = currentValues?.resource?.identifier;
+    setSaveTitleError(false);
+    const contentId = values?.resource?.contents?.[0]?.identifier;
+    const resourceId = values?.resource?.identifier;
     if (resourceId && contentId) {
-      await updateContentTitle(resourceId, contentId, event.target.value);
-      setAllChangesSaved(true);
-      resetForm({ values: currentValues });
+      try {
+        await updateContentTitle(resourceId, contentId, event.target.value);
+        setAllChangesSaved(true);
+        resetForm({ values: values });
+      } catch (err) {
+        setSaveTitleError(true);
+      }
     }
   };
 
@@ -81,13 +85,14 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, formikProps, setAllChangesSaved
                     error={touched && !!error}
                     helperText={<ErrorMessage name={field.name} />}
                     onBlur={(event) => {
-                      formikProps.handleBlur(event);
-                      !error && saveMainContentsFileName(event, formikProps.resetForm, formikProps.values);
+                      handleBlur(event);
+                      !error && saveMainContentsFileName(event);
                     }}
                   />
                 )}
               </Field>
             </StyledFieldWrapper>
+            {saveTitleError && <ErrorBanner />}
             <Paper>
               <StatusBarWrapper>
                 <StatusBarComponent uppy={uppy} hideAfterFinish={false} />
