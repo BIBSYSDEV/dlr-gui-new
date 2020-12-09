@@ -21,7 +21,7 @@ interface ResourceWrapper {
 
 const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, licenses }) => {
   const { t } = useTranslation();
-  const { values, setFieldValue} = useFormikContext<ResourceWrapper>();
+  const { values, setFieldValue } = useFormikContext<ResourceWrapper>();
   const [isSavingLicenses, setIsSavingLicenses] = useState(false);
   const [savingLicenseErrorStatus, setSavingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
 
