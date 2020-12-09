@@ -21,7 +21,8 @@
     "401_page": "You are not authorized for this",
     "403_page": "You must be logged in for using this feature",
     "404_page": "Got lost? (404-page)",
-    "500_page": "Whoops, something went wrong. Try again later"
+    "500_page": "Whoops, something went wrong. Try again later",
+    "generic": "Whoops, something went wrong. Try again later"
   },
   "feedback": {
     "required_field": "Required field",

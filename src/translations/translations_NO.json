@@ -21,7 +21,8 @@
     "401_page": "Du er ikke autorisert for dette",
     "403_page": "Du må være pålogget for å benytte denne funksjonaliteten",
     "404_page": "Gått deg vill? (404-page)",
-    "500_page": "Ups, noe gikk galt. Prøv igjen senere"
+    "500_page": "Ups, noe gikk galt. Prøv igjen senere",
+    "generic": "Whoops, something went wrong. Try again later"
   },
   "feedback": {
     "required_field": "Påkrevd felt",
