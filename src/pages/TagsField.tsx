@@ -16,29 +16,34 @@ interface ResourceWrapper {
   resource: Resource;
 }
 
-const TagsField: FC = () => {
+interface TagsFieldProps {
+  setAllChangesSaved: (status: boolean) => void;
+}
+
+const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, setFieldValue } = useFormikContext<ResourceWrapper>();
   const [saveTagStatus, setSaveTagsStatus] = useState(StatusCode.ACCEPTED);
 
-  const saveTagsChanging = async (name: string, value: string | string[]) => {
+  const saveTagsChanging = async (name: string, value: string[]) => {
+    setAllChangesSaved(false);
     try {
-      if (typeof value === 'object') {
-        const stringArrayValue = value as string[];
-        const newTags = stringArrayValue.filter((tag) => !values.resource.tags?.includes(tag));
-        newTags.forEach((tag) => {
-          postTag(values.resource.identifier, tag);
-          setSaveTagsStatus(StatusCode.ACCEPTED);
-        });
-        const removeTags = values.resource.tags?.filter((tag) => !stringArrayValue.includes(tag));
-        removeTags?.forEach((tag) => {
-          deleteTag(values.resource.identifier, tag);
-          setSaveTagsStatus(StatusCode.ACCEPTED);
-        });
-      }
+      const stringArrayValue = value as string[];
+      const newTags = stringArrayValue.filter((tag) => !values.resource.tags?.includes(tag));
+      newTags.forEach((tag) => {
+        postTag(values.resource.identifier, tag);
+        setSaveTagsStatus(StatusCode.ACCEPTED);
+      });
+      const removeTags = values.resource.tags?.filter((tag) => !stringArrayValue.includes(tag));
+      removeTags?.forEach((tag) => {
+        deleteTag(values.resource.identifier, tag);
+        setSaveTagsStatus(StatusCode.ACCEPTED);
+      });
     } catch (saveTagsError) {
       const axiosError = saveTagsError as AxiosError<ServerError>;
       setSaveTagsStatus(axiosError.response ? axiosError.response.status : StatusCode.UNAUTHORIZED);
+    } finally {
+      setAllChangesSaved(true);
     }
   };
 
@@ -52,7 +57,7 @@ const TagsField: FC = () => {
               freeSolo
               multiple
               options={[]}
-              onChange={(_: ChangeEvent<unknown>, value: string[] | string) => {
+              onChange={(_: ChangeEvent<unknown>, value: string[]) => {
                 saveTagsChanging(field.name, value);
                 setFieldValue(field.name, value);
               }}

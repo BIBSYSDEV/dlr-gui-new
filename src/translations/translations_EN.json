@@ -37,8 +37,8 @@
   },
   "resource": {
     "add_contributor": "Add contributor",
-    "edit_resource": "Edit resource",
     "add_tags": "Add 4-6 keywords. Press enter or tab for adding more keywords.",
+    "edit_resource": "Edit resource",
     "files_and_license": {
       "browse": "browse",
       "drag_file": "Drag file here or",

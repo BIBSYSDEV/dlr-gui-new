@@ -37,8 +37,8 @@
   },
   "resource": {
     "add_contributor": "Legg til bidragsyter",
-    "edit_resource": "Rediger ressurs",
     "add_tags": "Legg inn 4-6 nøkkelord. Trykk enter eller tab for å legge inn flere",
+    "edit_resource": "Rediger ressurs",
     "files_and_license": {
       "browse": "velg",
       "drag_file": "Dra fil hit eller",

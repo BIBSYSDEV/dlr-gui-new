@@ -144,7 +144,11 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
 
               {activeStep === ResourceFormSteps.Description && (
                 <StyledPanel>
-                  <DescriptionFields formikProps={formikProps} saveField={saveResourceField} />
+                  <DescriptionFields
+                    formikProps={formikProps}
+                    saveField={saveResourceField}
+                    setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
+                  />
                 </StyledPanel>
               )}
               {activeStep === ResourceFormSteps.Contributors && (

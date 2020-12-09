@@ -61,7 +61,8 @@ export const deleteTag = (resourceIdentifier: string, tag: string): Promise<Axio
 };
 
 export const postTag = (resourceIdentifier: string, tag: string): Promise<AxiosResponse<any>> => {
-  const data = `tag=${tag}&type=tag`;
+  const encodedValue = encodeURIComponent(tag);
+  const data = `tag=${encodedValue}&type=tag`;
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/tags`),
     method: 'POST',

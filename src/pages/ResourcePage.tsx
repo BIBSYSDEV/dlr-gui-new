@@ -137,10 +137,12 @@ const ResourcePage: FC<RouteProps> = (props) => {
             </div>
           );
         })}
-        {resource?.features.dlr_subject_nsi_id && (
-          <ResourceMetadata type={preview.type} category={resource.features.dlr_subject_nsi_id} tags={tags} />
-        )}
-        {!resource?.features.dlr_subject_nsi_id && <ResourceMetadata type={preview.type} category={''} tags={tags} />}
+
+        <ResourceMetadata
+          type={preview.type}
+          category={resource?.features.dlr_subject_nsi_id ? resource.features.dlr_subject_nsi_id : ''}
+          tags={tags}
+        />
       </Card>
       {licenses.length !== 0 &&
         licenses.map((license) => {

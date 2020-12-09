@@ -9,9 +9,10 @@ import TagsField from './TagsField';
 interface DescriptionFieldsProps {
   formikProps: FormikProps<FormikValues>;
   saveField: any;
+  setAllChangesSaved: (status: boolean) => void;
 }
 
-const DescriptionFields: FC<DescriptionFieldsProps> = ({ formikProps, saveField }) => {
+const DescriptionFields: FC<DescriptionFieldsProps> = ({ formikProps, saveField, setAllChangesSaved }) => {
   const { t } = useTranslation();
 
   return (
@@ -56,7 +57,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ formikProps, saveField 
           </Field>
         </StyledContentWrapper>
       </StyledSchemaPartColored>
-      <TagsField />
+      <TagsField setAllChangesSaved={setAllChangesSaved} />
     </>
   );
 };
