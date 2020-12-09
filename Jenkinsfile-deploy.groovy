@@ -37,7 +37,7 @@ pipeline {
                 expression { return params.DLR_dev }
             }
             steps {
-                sh 'npm run build'
+                sh 'npm run build:development'
                 sh 'sed -i -- "s/%VERSION%/${LAST_COMMIT2}/g" build/index.html'
                 sshagent(['ec2-user-aws-eu-west']) {
                     sh 'ssh  -o StrictHostKeyChecking=no -t ec2-user@${AWS_BUILD_HOST} "mkdir -p ~/${SERVICE_NAME}/"'
