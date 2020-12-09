@@ -85,7 +85,7 @@ const EditResourcePage: FC = () => {
 
       getResourceDefaults(startingResource.identifier).then((responseWithCalculatedDefaults) => {
         saveCalculatedFields(responseWithCalculatedDefaults.data);
-        setFormikInitResource({
+        const initResouce = {
           ...deepmerge(startingResource, responseWithCalculatedDefaults.data),
           contributors: [
             {
@@ -97,7 +97,9 @@ const EditResourcePage: FC = () => {
               },
             },
           ],
-        });
+        };
+        initResouce.features.dlr_type = '';
+        setFormikInitResource(initResouce);
         setResourceType(resourceCreationType);
         setShowForm(true);
         setIsLoadingResource(false);
@@ -132,9 +134,6 @@ const EditResourcePage: FC = () => {
     }
     if (_resource.features.dlr_description) {
       await postResourceFeature(_resource.identifier, 'dlr_description', _resource.features.dlr_description);
-    }
-    if (_resource.features.dlr_type) {
-      await postResourceFeature(_resource.identifier, 'dlr_type', _resource.features.dlr_type);
     }
     //TODO: tags, creators
   };

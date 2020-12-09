@@ -14,6 +14,7 @@ import ContributorFields from './ContributorFields';
 import LicenseAndAccessFields from './LicenseAndAccessFields';
 import { StyledContentWrapper } from '../components/styled/Wrappers';
 import PreviewPanel from './PreviewPanel';
+import ResourceTypeField from './ResourceTypeField';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -89,6 +90,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
     resource: Yup.object().shape({
       features: Yup.object().shape({
         dlr_title: Yup.string().required(t('feedback.required_field')),
+        dlr_type: Yup.string().required(t('feedback.required_field')).min(1, t('feedback.required_field')),
       }),
     }),
   });
@@ -145,6 +147,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
               {activeStep === ResourceFormSteps.Description && (
                 <StyledPanel>
                   <DescriptionFields formikProps={formikProps} saveField={saveResourceField} />
+                  <ResourceTypeField setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)} />
                 </StyledPanel>
               )}
               {activeStep === ResourceFormSteps.Contributors && (

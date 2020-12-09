@@ -15,7 +15,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ formikProps, saveField 
 
   return (
     <>
-      <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor1}>
+      <StyledSchemaPartColored color={Colors.Background}>
         <StyledContentWrapper>
           <Field name="resource.features.dlr_title">
             {({ field, meta: { touched, error } }: FieldProps) => (
@@ -35,7 +35,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ formikProps, saveField 
           </Field>
         </StyledContentWrapper>
       </StyledSchemaPartColored>
-      <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor2}>
+      <StyledSchemaPartColored color={Colors.Background}>
         <StyledContentWrapper>
           <Field name="resource.features.dlr_description">
             {({ field, meta: { error } }: FieldProps) => (
