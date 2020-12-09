@@ -98,7 +98,10 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
       }),
       licences: Yup.array().of(
         Yup.object().shape({
-          identifier: Yup.string().required(t('feedback.required_field')).min(1, t('feedback.required_field')),
+          identifier: Yup.string().required(t('feedback.required_field')).min(1, t('ikke tom id')),
+          features: Yup.object().shape({
+            dlr_non_existent_field: Yup.string().required(t('Bør feile!')),
+          }),
         })
       ),
     }),
@@ -152,6 +155,8 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
             resource: resource,
           }}
           validateOnChange
+          validateOnBlur
+          validateOnMount
           validationSchema={resourceValidationSchema}
           onSubmit={() => {
             /*dont use. But cannot have empty onsubmit*/

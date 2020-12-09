@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CircularProgress, MenuItem, TextField, Typography } from '@material-ui/core';
+import { CircularProgress, FormHelperText, MenuItem, TextField, Typography } from '@material-ui/core';
 import { Resource } from '../types/resource.types';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
 import { setResourceLicense } from '../api/resourceApi';
@@ -21,7 +21,7 @@ interface ResourceWrapper {
 
 const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, licenses }) => {
   const { t } = useTranslation();
-  const { values, setFieldValue } = useFormikContext<ResourceWrapper>();
+  const { values, setFieldValue, errors, touched, dirty, setFieldTouched } = useFormikContext<ResourceWrapper>();
   const [isSavingLicenses, setIsSavingLicenses] = useState(false);
   const [savingLicenseErrorStatus, setSavingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
 
@@ -53,12 +53,16 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
               <>
                 <TextField
                   select
+                  required
                   label={t('resource.metadata.license')}
                   variant="outlined"
                   value={field.value.identifier}
                   error={touched && !!error}
                   helperText={<ErrorMessage name={field.name} />}
                   fullWidth
+                  onBlur={(event) => {
+                    setFieldTouched('resource.licenses[0]', true, true);
+                  }}
                   onChange={(event) => {
                     saveField(event);
                   }}>
@@ -68,6 +72,8 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
                     </MenuItem>
                   ))}
                 </TextField>
+                Field-error:
+                <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(error, null, 2)}</pre>
                 {isSavingLicenses && <CircularProgress />}
                 {savingLicenseErrorStatus !== StatusCode.ACCEPTED && (
                   <ErrorBanner statusCode={savingLicenseErrorStatus} />
@@ -76,6 +82,12 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
             )}
           </Field>
         )}
+        Form-error:
+        <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(errors, null, 2)}</pre>
+        Touched:
+        <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(touched, null, 2)}</pre>
+        Dirty:
+        <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(dirty, null, 2)}</pre>
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );
