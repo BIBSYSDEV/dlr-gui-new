@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CircularProgress, MenuItem, TextField } from '@material-ui/core';
+import { CircularProgress, MenuItem, TextField, Typography } from '@material-ui/core';
 import { Resource } from '../types/resource.types';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
 import { setResourceLicense } from '../api/resourceApi';
@@ -46,6 +46,7 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor1}>
       <StyledContentWrapper>
+        <Typography variant="h4">{t('resource.metadata.license')}</Typography>
         {licenses && (
           <Field name="resource.licenses[0]">
             {({ field, meta: { error, touched } }: FieldProps) => (
