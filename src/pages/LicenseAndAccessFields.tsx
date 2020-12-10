@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CircularProgress, FormHelperText, MenuItem, TextField, Typography } from '@material-ui/core';
 import { Resource } from '../types/resource.types';
-import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
+import { Field, FieldProps, useFormikContext } from 'formik';
 import { setResourceLicense } from '../api/resourceApi';
 import { License } from '../types/license.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
@@ -21,7 +21,7 @@ interface ResourceWrapper {
 
 const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, licenses }) => {
   const { t } = useTranslation();
-  const { values, setFieldValue, errors, touched, dirty, setFieldTouched } = useFormikContext<ResourceWrapper>();
+  const { values, setFieldValue, setFieldTouched } = useFormikContext<ResourceWrapper>();
   const [isSavingLicenses, setIsSavingLicenses] = useState(false);
   const [savingLicenseErrorStatus, setSavingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
 
