@@ -104,8 +104,8 @@ const EditResourcePage: FC = () => {
       const responseWithCalculatedDefaults = await getResourceDefaults(startingResource.identifier);
       await saveCalculatedFields(responseWithCalculatedDefaults.data);
       if (
-        !responseWithCalculatedDefaults.data.creators?.[0].identifier &&
-        responseWithCalculatedDefaults.data.creators?.[0].features.dlr_creator_name
+        !responseWithCalculatedDefaults.data.creators?.[0]?.identifier &&
+        responseWithCalculatedDefaults.data.creators?.[0]?.features.dlr_creator_name
       ) {
         const mainCreatorName = responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
           ? responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
