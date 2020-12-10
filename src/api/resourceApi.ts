@@ -102,6 +102,39 @@ export const getResourceCreators = (identifier: string): Promise<AxiosResponse<C
   });
 };
 
+export const postResourceCreator = (resourceIdentifier: string): Promise<AxiosResponse<Creator>> => {
+  return authenticatedApiRequest({
+    url: `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/creators`,
+    method: 'POST',
+  });
+};
+
+export const deleteResourceCreator = (
+  resourceIdentifier: string,
+  creatorIdentifier: string
+): Promise<AxiosResponse<any>> => {
+  return authenticatedApiRequest({
+    url: `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/creators/${creatorIdentifier}`,
+    method: 'DELETE',
+  });
+};
+
+export const putResourceCreatorFeature = (
+  resourceIdentifier: string,
+  creatorIdentifier: string,
+  feature: string,
+  value: string
+): Promise<AxiosResponse<any>> => {
+  const encodedValue = encodeURIComponent(value);
+  const encodedFeature = encodeURIComponent(feature);
+  const data = `value=${encodedValue}`;
+  return authenticatedApiRequest({
+    url: `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/creators/${creatorIdentifier}/features/${encodedFeature}`,
+    method: 'PUT',
+    data,
+  });
+};
+
 export const getResourceLicenses = (identifier: string): Promise<AxiosResponse<License[]>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/licenses`),
@@ -113,6 +146,23 @@ export const getResourceContents = (identifier: string): Promise<AxiosResponse<C
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/contents`),
     method: 'GET',
+  });
+};
+
+export const getLicenses = (): Promise<AxiosResponse<License[]>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendLicensesPath}/licenses/users/authorized`),
+    method: 'GET',
+  });
+};
+
+export const setResourceLicense = async (resourceIdentifier: string, licenseIdentifier: string) => {
+  const encodedValue = encodeURIComponent(licenseIdentifier);
+  const data = `identifierLicense=${encodedValue}`;
+  await authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/licenses`),
+    method: 'POST',
+    data: data,
   });
 };
 

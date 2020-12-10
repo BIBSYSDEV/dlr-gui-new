@@ -38,6 +38,7 @@
   },
   "resource": {
     "add_contributor": "Legg til bidragsyter",
+    "add_creator": "Legg til opphaver",
     "edit_resource": "Rediger ressurs",
     "files_and_license": {
       "browse": "velg",
@@ -62,10 +63,11 @@
       "contributor": "Bigragsyter",
       "contributors": "Bidragsytere",
       "created": "Opprettet",
-      "creator": "Av",
+      "creator": "Opphaver",
       "categories": "Kategorier",
       "description": "Beskrivelse",
       "filename": "Filnavn",
+      "license": "Lisens",
       "main_file": "Hovedfil",
       "owner": "Eier",
       "published": "Publisert",

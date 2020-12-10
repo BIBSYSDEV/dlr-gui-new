@@ -17,12 +17,15 @@ import {
   getResource,
   getResourceContributors,
   getResourceDefaults,
+  postResourceCreator,
   postResourceFeature,
   putContributorFeature,
+  putResourceCreatorFeature,
 } from '../api/resourceApi';
 import deepmerge from 'deepmerge';
 import { useSelector } from 'react-redux';
 import { RootState } from '../state/rootReducer';
+import { emptyLicense } from '../types/license.types';
 import ErrorBanner from '../components/ErrorBanner';
 
 const StyledEditPublication = styled.div`
@@ -43,6 +46,9 @@ enum contributorFeatureNames {
   Institution = 'institution',
 }
 
+enum creatorFeatureAttributes {
+  name = 'dlr_creator_name',
+}
 const StyledContentWrapper = styled.div`
   max-width: ${({ theme }) => theme.breakpoints.values.lg + 'px'};
 `;
@@ -72,11 +78,15 @@ const EditResourcePage: FC = () => {
     });
   };
 
-  const getResourceInit = async (startingResource: Resource, resourceCreationType: ResourceCreationType) => {
-    try {
-      setShowForm(true);
-      const contributorResponse = await createContributor(startingResource.identifier);
-      await putContributorFeature(
+  const doneInitResource = (resourceCreationType: ResourceCreationType) => {
+    setResourceType(resourceCreationType);
+    setShowForm(true);
+    setIsLoadingResource(false);
+  };
+
+  const getResourceInit = (startingResource: Resource, resourceCreationType: ResourceCreationType) => {
+    createContributor(startingResource.identifier).then((contributorResponse) => {
+      putContributorFeature(
         startingResource.identifier,
         contributorResponse.data.features.dlr_contributor_identifier,
         contributorFeatureNames.Type,
@@ -88,27 +98,67 @@ const EditResourcePage: FC = () => {
         contributorFeatureNames.Name,
         user.institution
       );
-      const responseWithCalculatedDefaults = await getResourceDefaults(startingResource.identifier);
-      await saveCalculatedFields(responseWithCalculatedDefaults.data);
-      setFormikInitResource({
-        ...deepmerge(startingResource, responseWithCalculatedDefaults.data),
-        contributors: [
-          {
-            identifier: contributorResponse.data.identifier,
-            features: {
-              dlr_contributor_identifier: contributorResponse.data.identifier,
-              dlr_contributor_name: user.institution,
-              dlr_contributor_type: contributorFeatureNames.Institution,
-            },
-          },
-        ],
+
+      getResourceDefaults(startingResource.identifier).then((responseWithCalculatedDefaults) => {
+        saveCalculatedFields(responseWithCalculatedDefaults.data);
+        if (
+          !responseWithCalculatedDefaults.data.creators?.[0].identifier &&
+          responseWithCalculatedDefaults.data.creators?.[0].features.dlr_creator_name
+        ) {
+          const mainCreatorName = responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
+            ? responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
+            : '';
+          postResourceCreator(startingResource.identifier).then((postCreatorResponse) => {
+            putResourceCreatorFeature(
+              startingResource.identifier,
+              postCreatorResponse.data.identifier,
+              creatorFeatureAttributes.name,
+              mainCreatorName
+            ).then(() => {
+              setFormikInitResource({
+                ...deepmerge(startingResource, responseWithCalculatedDefaults.data),
+                creators: [
+                  {
+                    identifier: postCreatorResponse.data.identifier,
+                    features: {
+                      dlr_creator_identifier: postCreatorResponse.data.identifier,
+                      dlr_creator_name: mainCreatorName,
+                    },
+                  },
+                ],
+                contributors: [
+                  {
+                    identifier: contributorResponse.data.identifier,
+                    features: {
+                      dlr_contributor_identifier: contributorResponse.data.identifier,
+                      dlr_contributor_name: user.institution,
+                      dlr_contributor_type: contributorFeatureNames.Institution,
+                    },
+                  },
+                ],
+                licenses: [emptyLicense],
+              });
+              doneInitResource(resourceCreationType);
+            });
+          });
+        } else {
+          setFormikInitResource({
+            ...deepmerge(startingResource, responseWithCalculatedDefaults.data),
+            contributors: [
+              {
+                identifier: contributorResponse.data.identifier,
+                features: {
+                  dlr_contributor_identifier: contributorResponse.data.identifier,
+                  dlr_contributor_name: user.institution,
+                  dlr_contributor_type: contributorFeatureNames.Institution,
+                },
+              },
+            ],
+          });
+          doneInitResource(resourceCreationType);
+        }
       });
-      setResourceType(resourceCreationType);
-      setResourceInitError(false);
-    } catch (error) {
-      setResourceInitError(true);
-    }
-    setIsLoadingResource(false);
+    });
   };
 
   const mainFileHandler = useUppy('', false, onCreateFile);
