@@ -153,10 +153,10 @@ const EditResourcePage: FC = () => {
               },
             },
           ],
+          licenses: [emptyLicense],
         });
       }
     } catch (error) {
-      console.log(error);
       setResourceInitError(true);
     }
     doneInitResource(resourceCreationType);
