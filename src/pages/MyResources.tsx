@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { RouteProps } from 'react-router-dom';
 import { getMyResources } from '../api/resourceApi';
 import { CircularProgress, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
@@ -9,11 +8,12 @@ import ImageIcon from '@material-ui/core/SvgIcon/SvgIcon';
 import ErrorBanner from '../components/ErrorBanner';
 
 const StyledPageContent = styled.div`
-  display: grid;
-  justify-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
-const MyResources: FC<RouteProps> = (props) => {
+const MyResources: FC = () => {
   const { t } = useTranslation();
   const [isLoadingMyResources, setIsLoadingMyResources] = useState(false);
   const [resourcesUnpublished, setMyUnpublishedResources] = useState<Resource[]>([]);
