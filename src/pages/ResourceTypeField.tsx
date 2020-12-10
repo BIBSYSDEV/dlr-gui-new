@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { InputLabel, ListItemIcon, MenuItem, Select, Typography } from '@material-ui/core';
+import { ListItemIcon, MenuItem, TextField, Typography } from '@material-ui/core';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
 import { Field, FieldProps, useFormikContext } from 'formik';
@@ -13,11 +13,8 @@ import VideocamIcon from '@material-ui/icons/Videocam';
 import SlideshowIcon from '@material-ui/icons/Slideshow';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 import PhotoOutlinedIcon from '@material-ui/icons/PhotoOutlined';
-
-const StyledSelect = styled(Select)`
-  max-width: 100%;
-  min-width: 25rem;
-`;
+import ErrorBanner from '../components/ErrorBanner';
+import { StatusCode } from '../utils/constants';
 
 const StyledMenuItem = styled(MenuItem)`
   padding: 1rem;
@@ -33,17 +30,22 @@ interface ResourceWrapper {
 }
 
 const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) => {
-  const { values } = useFormikContext<ResourceWrapper>();
+  const [savingResourceType, setSavingResourceType] = useState(StatusCode.ACCEPTED);
+  const { values, setFieldTouched, setFieldValue, handleChange, resetForm } = useFormikContext<ResourceWrapper>();
   const { t } = useTranslation();
 
-  const saveField = async () => {
-    console.log('starting saving', values.resource.features);
-    if (values.resource.features.dlr_type) {
+  const saveField = async (event: any) => {
+    if (event.target.value.length > 0) {
       setAllChangesSaved(false);
       try {
-        await postResourceFeature(values.resource.identifier, 'dlr_type', values.resource.features.dlr_type);
+        await postResourceFeature(values.resource.identifier, 'dlr_type', event.target.value);
+        setFieldValue('resource.features.dlr_type', event.target.value);
+        setSavingResourceType(StatusCode.ACCEPTED);
+        values.resource.features.dlr_type = event.target.value;
+        resetForm({ values });
       } catch (error) {
         //TODO: handle error with ErrorBanner
+        setSavingResourceType(StatusCode.UNAUTHORIZED);
       } finally {
         setAllChangesSaved(true);
       }
@@ -53,14 +55,23 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
     <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor1}>
       <StyledContentWrapper>
         <Field name="resource.features.dlr_type">
-          {({ field, meta: { error } }: FieldProps) => (
+          {({ field, meta: { error, touched } }: FieldProps) => (
             <>
-              <InputLabel>{t('resource.type.resource_type')}</InputLabel>
-              <StyledSelect
+              <TextField
                 {...field}
-                variant="filled"
-                onClose={() => {
-                  !error && saveField();
+                variant="outlined"
+                select
+                required
+                error={touched && !!error}
+                fullWidth
+                value={field.value}
+                label={t('resource.type.resource_type')}
+                onBlur={(event) => {
+                  setFieldTouched('resource.features.dlr_type', true, true);
+                }}
+                onChange={(event) => {
+                  handleChange(event);
+                  saveField(event);
                 }}>
                 <StyledMenuItem value={ResourceFeatureTypes.audio}>
                   <ListItemIcon>
@@ -98,8 +109,9 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                   </ListItemIcon>
                   <Typography variant="inherit">{t('resource.type.simulation')}</Typography>
                 </StyledMenuItem>
-              </StyledSelect>
-              <FormHelperText error>{error}</FormHelperText>
+              </TextField>
+              {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
+              {savingResourceType !== StatusCode.ACCEPTED && <ErrorBanner statusCode={savingResourceType} />}
             </>
           )}
         </Field>
