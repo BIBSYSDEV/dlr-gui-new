@@ -96,12 +96,9 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
       features: Yup.object().shape({
         dlr_title: Yup.string().required(t('feedback.required_field')),
       }),
-      licences: Yup.array().of(
+      licenses: Yup.array().of(
         Yup.object().shape({
-          identifier: Yup.string().required(t('feedback.required_field')).min(1, t('ikke tom id')),
-          features: Yup.object().shape({
-            dlr_non_existent_field: Yup.string().required(t('Bør feile!')),
-          }),
+          identifier: Yup.string().required(t('feedback.required_field')).min(1),
         })
       ),
     }),

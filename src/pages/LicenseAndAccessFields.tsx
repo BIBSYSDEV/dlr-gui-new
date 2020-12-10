@@ -58,7 +58,6 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
                   variant="outlined"
                   value={field.value.identifier}
                   error={touched && !!error}
-                  helperText={<ErrorMessage name={field.name} />}
                   fullWidth
                   onBlur={(event) => {
                     setFieldTouched('resource.licenses[0]', true, true);
@@ -72,8 +71,7 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
                     </MenuItem>
                   ))}
                 </TextField>
-                Field-error:
-                <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(error, null, 2)}</pre>
+                {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
                 {isSavingLicenses && <CircularProgress />}
                 {savingLicenseErrorStatus !== StatusCode.ACCEPTED && (
                   <ErrorBanner statusCode={savingLicenseErrorStatus} />
@@ -82,12 +80,6 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
             )}
           </Field>
         )}
-        Form-error:
-        <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(errors, null, 2)}</pre>
-        Touched:
-        <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(touched, null, 2)}</pre>
-        Dirty:
-        <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(dirty, null, 2)}</pre>
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );
