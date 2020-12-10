@@ -2,15 +2,7 @@ import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField, Typography } from '@material-ui/core';
 import { Resource } from '../types/resource.types';
-import {
-  ErrorMessage,
-  Field,
-  FieldArray,
-  FieldArrayRenderProps,
-  FieldProps,
-  FormikValues,
-  useFormikContext,
-} from 'formik';
+import { ErrorMessage, Field, FieldArray, FieldArrayRenderProps, FieldProps, useFormikContext } from 'formik';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import DeleteIcon from '@material-ui/icons/Delete';

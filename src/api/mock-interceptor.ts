@@ -141,6 +141,7 @@ const mockContent: Content[] = [
     },
   },
 ];
+const mockToken = 'mockToken';
 
 const mockCreateUpload = { uploadId: 'asd', key: 'sfd' };
 const mockPrepareUpload = { url: `${API_PATHS.guiBackendResourcesContentPath}/xxx` };
@@ -154,9 +155,7 @@ export const interceptRequestsOnMock = () => {
   // SEARCH
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesSearchPath}/resources/search.*`)).reply(200, mockSearchResults);
 
-  // USER
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendUsersPath}/users/authorized`)).reply(200, mockUser);
-
+  //FILE UPLOAD | CONTENTS
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesContentPath}.*${FileApiPaths.CREATE}`)).reply(() => {
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -176,36 +175,38 @@ export const interceptRequestsOnMock = () => {
   // LICENSES
   mock.onGet(new RegExp(`${API_PATHS.guiBackendLicensesPath}/licenses/users/authorized`)).reply(200, allLicenses);
 
-  // MY RESOURCES
+  //MY RESOURCES
   mock
     .onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/owners/users/current`))
     .reply(200, mockMyResources);
 
-  // RESOURCE
+  //RESOURCE LICENSES
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/licenses`)).reply(200, mockLicenses);
+  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/licenses.*`)).reply(202);
+
+  //RESOURCE CONTENTS
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents`)).reply(200, mockContent);
+  mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents/.*/titles`)).reply(200);
+
+  //RESOURCE CREATORS
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators`)).reply(200, mockCreators);
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators`)).reply(202, mockEmptyCreator);
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*`)).reply(202, {});
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*`)).reply(202, {});
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*`)).reply(200, mockResource);
-  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/features`)).reply(200);
-  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources`)).reply(200, mockResource);
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*/tags/types/tags`)).reply(200, mockTags);
+
+  //RESOURCE CONTRIBUTORS
   mock
     .onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contributors`))
     .reply(200, mockResourceContributors);
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*`)).reply(200, mockResource);
-
-  mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents/.*/titles`)).reply(200);
-  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/licenses.*`)).reply(202);
-
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contributors/.*`)).reply(202, {});
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contributors/.*/features`)).reply(200);
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contributors/.*`)).reply(202, {});
   mock
     .onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contributors`))
     .reply(202, mockResourceEmptyContributor);
+
+  // RESOURCE
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*`)).reply(200, mockResource);
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/features`)).reply(200);
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources`)).reply(200, mockResource);
 
@@ -213,8 +214,10 @@ export const interceptRequestsOnMock = () => {
   mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*/tags/types/tags`)).reply(200, mockTags);
   mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*`)).reply(200, mockCalculatedResource);
 
-  // GET ANONYMOUS WEB TOKEN
-  const mockToken = 'mockToken';
+  // USER
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendUsersPath}/users/authorized`)).reply(200, mockUser);
+
+  //TOKEN
   mock.onGet(new RegExp(`${API_PATHS.guiBackendLoginPath}/anonymous.*`)).reply(200, mockToken);
   mock.onGet(new RegExp(`${API_PATHS.guiBackendAuthPath}/tokens/jwts/`)).reply(200, { exp: 999999999 });
 

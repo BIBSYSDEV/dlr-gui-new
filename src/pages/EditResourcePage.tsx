@@ -132,7 +132,7 @@ const EditResourcePage: FC = () => {
                     },
                   },
                 ],
-                
+                licenses: [emptyLicense],
               });
               doneInitResource(resourceCreationType);
             });
