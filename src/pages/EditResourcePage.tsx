@@ -84,9 +84,11 @@ const EditResourcePage: FC = () => {
     setIsLoadingResource(false);
   };
 
-  const getResourceInit = (startingResource: Resource, resourceCreationType: ResourceCreationType) => {
-    createContributor(startingResource.identifier).then((contributorResponse) => {
-      putContributorFeature(
+  const getResourceInit = async (startingResource: Resource, resourceCreationType: ResourceCreationType) => {
+    try {
+      setShowForm(true);
+      const contributorResponse = await createContributor(startingResource.identifier);
+      await putContributorFeature(
         startingResource.identifier,
         contributorResponse.data.features.dlr_contributor_identifier,
         contributorFeatureNames.Type,
@@ -99,66 +101,65 @@ const EditResourcePage: FC = () => {
         user.institution
       );
 
-      getResourceDefaults(startingResource.identifier).then((responseWithCalculatedDefaults) => {
-        saveCalculatedFields(responseWithCalculatedDefaults.data);
-        if (
-          !responseWithCalculatedDefaults.data.creators?.[0].identifier &&
-          responseWithCalculatedDefaults.data.creators?.[0].features.dlr_creator_name
-        ) {
-          const mainCreatorName = responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
-            ? responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
-            : '';
-          postResourceCreator(startingResource.identifier).then((postCreatorResponse) => {
-            putResourceCreatorFeature(
-              startingResource.identifier,
-              postCreatorResponse.data.identifier,
-              creatorFeatureAttributes.name,
-              mainCreatorName
-            ).then(() => {
-              setFormikInitResource({
-                ...deepmerge(startingResource, responseWithCalculatedDefaults.data),
-                creators: [
-                  {
-                    identifier: postCreatorResponse.data.identifier,
-                    features: {
-                      dlr_creator_identifier: postCreatorResponse.data.identifier,
-                      dlr_creator_name: mainCreatorName,
-                    },
-                  },
-                ],
-                contributors: [
-                  {
-                    identifier: contributorResponse.data.identifier,
-                    features: {
-                      dlr_contributor_identifier: contributorResponse.data.identifier,
-                      dlr_contributor_name: user.institution,
-                      dlr_contributor_type: contributorFeatureNames.Institution,
-                    },
-                  },
-                ],
-                licenses: [emptyLicense],
-              });
-              doneInitResource(resourceCreationType);
-            });
-          });
-        } else {
-          setFormikInitResource({
-            ...deepmerge(startingResource, responseWithCalculatedDefaults.data),
-            contributors: [
-              {
-                identifier: contributorResponse.data.identifier,
-                features: {
-                  dlr_contributor_identifier: contributorResponse.data.identifier,
-                  dlr_contributor_name: user.institution,
-                  dlr_contributor_type: contributorFeatureNames.Institution,
-                },
+      const responseWithCalculatedDefaults = await getResourceDefaults(startingResource.identifier);
+      await saveCalculatedFields(responseWithCalculatedDefaults.data);
+      if (
+        !responseWithCalculatedDefaults.data.creators?.[0].identifier &&
+        responseWithCalculatedDefaults.data.creators?.[0].features.dlr_creator_name
+      ) {
+        const mainCreatorName = responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
+          ? responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
+          : '';
+        const postCreatorResponse = await postResourceCreator(startingResource.identifier);
+        await putResourceCreatorFeature(
+          startingResource.identifier,
+          postCreatorResponse.data.identifier,
+          creatorFeatureAttributes.name,
+          mainCreatorName
+        );
+        setFormikInitResource({
+          ...deepmerge(startingResource, responseWithCalculatedDefaults.data),
+          creators: [
+            {
+              identifier: postCreatorResponse.data.identifier,
+              features: {
+                dlr_creator_identifier: postCreatorResponse.data.identifier,
+                dlr_creator_name: mainCreatorName,
               },
-            ],
-          });
-          doneInitResource(resourceCreationType);
-        }
-      });
-    });
+            },
+          ],
+          contributors: [
+            {
+              identifier: contributorResponse.data.identifier,
+              features: {
+                dlr_contributor_identifier: contributorResponse.data.identifier,
+                dlr_contributor_name: user.institution,
+                dlr_contributor_type: contributorFeatureNames.Institution,
+              },
+            },
+          ],
+          licenses: [emptyLicense],
+        });
+      } else {
+        setFormikInitResource({
+          ...deepmerge(startingResource, responseWithCalculatedDefaults.data),
+          contributors: [
+            {
+              identifier: contributorResponse.data.identifier,
+              features: {
+                dlr_contributor_identifier: contributorResponse.data.identifier,
+                dlr_contributor_name: user.institution,
+                dlr_contributor_type: contributorFeatureNames.Institution,
+              },
+            },
+          ],
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      setResourceInitError(true);
+    }
+    doneInitResource(resourceCreationType);
   };
 
   const mainFileHandler = useUppy('', false, onCreateFile);

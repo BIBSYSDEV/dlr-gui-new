@@ -52,10 +52,8 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
         },
       });
       setAddContributorError(false);
-    } catch (addContributorError) {
-      if (addContributorError && addContributorError.response) {
-        setAddContributorError(true);
-      }
+    } catch (error) {
+      setAddContributorError(true);
     } finally {
       setAllChangesSaved(true);
     }

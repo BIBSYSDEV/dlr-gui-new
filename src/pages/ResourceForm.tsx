@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../components/PageHeader';
 import { Button, CircularProgress, Divider, Step, StepButton, Stepper } from '@material-ui/core';
-import { getLicenses, postResourceFeature } from '../api/resourceApi';
+import { getLicenses } from '../api/resourceApi';
 import { Resource, ResourceCreationType } from '../types/resource.types';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import * as Yup from 'yup';
@@ -194,9 +194,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
               {activeStep === ResourceFormSteps.AccessAndLicense && (
                 <StyledPanel>
                   {isLoadingLicenses && <CircularProgress />}
-                  {loadingLicensesErrorStatus !== StatusCode.ACCEPTED && (
-                    <ErrorBanner statusCode={loadingLicensesErrorStatus} />
-                  )}
+                  {loadingLicensesErrorStatus !== StatusCode.ACCEPTED && <ErrorBanner />}
                   {licenses && (
                     <LicenseAndAccessFields
                       setAllChangesSaved={(status: boolean) => {
