@@ -1,11 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { InputLabel, ListItemIcon, MenuItem, Select, Typography } from '@material-ui/core';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { Resource } from '../types/resource.types';
+import { Resource, ResourceFeatureTypes } from '../types/resource.types';
 import { postResourceFeature } from '../api/resourceApi';
 import styled from 'styled-components';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
@@ -34,8 +34,10 @@ interface ResourceWrapper {
 
 const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) => {
   const { values } = useFormikContext<ResourceWrapper>();
+  const { t } = useTranslation();
 
   const saveField = async () => {
+    console.log('starting saving', values.resource.features);
     if (values.resource.features.dlr_type) {
       setAllChangesSaved(false);
       try {
@@ -53,48 +55,48 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
         <Field name="resource.features.dlr_type">
           {({ field, meta: { error } }: FieldProps) => (
             <>
-              <InputLabel>Ressurs type</InputLabel>
+              <InputLabel>{t('resource.type.resource_type')}</InputLabel>
               <StyledSelect
                 {...field}
                 variant="filled"
                 onClose={() => {
                   !error && saveField();
                 }}>
-                <StyledMenuItem value="lydfil">
+                <StyledMenuItem value={ResourceFeatureTypes.audio}>
                   <ListItemIcon>
                     <VolumeUpIcon />
                   </ListItemIcon>
-                  <Typography variant="inherit">Lydfil</Typography>
+                  <Typography variant="inherit">{t('resource.type.audio')}</Typography>
                 </StyledMenuItem>
-                <StyledMenuItem value="Video">
+                <StyledMenuItem value={ResourceFeatureTypes.video}>
                   <ListItemIcon>
                     <VideocamIcon />
                   </ListItemIcon>
-                  <Typography variant="inherit">Video</Typography>
+                  <Typography variant="inherit">{t('resource.type.video')}</Typography>
                 </StyledMenuItem>
-                <StyledMenuItem value="presentasjon">
+                <StyledMenuItem value={ResourceFeatureTypes.presentation}>
                   <ListItemIcon>
                     <SlideshowIcon />
                   </ListItemIcon>
-                  <Typography variant="inherit">presentasjon</Typography>
+                  <Typography variant="inherit">{t('resource.type.presentation')}</Typography>
                 </StyledMenuItem>
-                <StyledMenuItem value="Dokument">
+                <StyledMenuItem value={ResourceFeatureTypes.document}>
                   <ListItemIcon>
                     <DescriptionOutlinedIcon />
                   </ListItemIcon>
-                  <Typography variant="inherit">Dokument</Typography>
+                  <Typography variant="inherit">{t('resource.type.document')}</Typography>
                 </StyledMenuItem>
-                <StyledMenuItem value="Bilde">
+                <StyledMenuItem value={ResourceFeatureTypes.image.toLowerCase()}>
                   <ListItemIcon>
                     <PhotoOutlinedIcon />
                   </ListItemIcon>
-                  <Typography variant="inherit">Bilde</Typography>
+                  <Typography variant="inherit">{t('resource.type.image')}</Typography>
                 </StyledMenuItem>
-                <StyledMenuItem value="Simulering">
+                <StyledMenuItem value={ResourceFeatureTypes.simulation}>
                   <ListItemIcon>
                     <SlideshowIcon />
                   </ListItemIcon>
-                  <Typography variant="inherit">Simulering</Typography>
+                  <Typography variant="inherit">{t('resource.type.simulation')}</Typography>
                 </StyledMenuItem>
               </StyledSelect>
               <FormHelperText error>{error}</FormHelperText>

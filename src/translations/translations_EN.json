@@ -83,6 +83,15 @@
     "start_with_link_to_resource": "Start registration with a link",
     "start_with_uploading_file": "Upload file if the resource is to be published on the Internet for the first time",
     "submit_link": "Start registration",
+    "type": {
+      "resource_type": "Resource type",
+      "audio": "Audio",
+      "document": "Document",
+      "image": "Image",
+      "presentation": "Presentation",
+      "simulation": "Simulation",
+      "video": "Video"
+    },
     "unpublished_resources": "Unpublished resources"
   },
   "user": {

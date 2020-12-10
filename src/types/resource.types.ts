@@ -144,3 +144,12 @@ interface AuthorityFeatures {
   dlr_authority_name?: string;
   dlr_authority_time_created?: string;
 }
+
+export enum ResourceFeatureTypes {
+  audio = 'Audio',
+  document = 'Document',
+  image = 'Image',
+  presentation = 'Presentation',
+  simulation = 'Simulation',
+  video = 'Video',
+}
