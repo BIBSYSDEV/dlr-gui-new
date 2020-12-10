@@ -25,6 +25,7 @@ import {
 import deepmerge from 'deepmerge';
 import { useSelector } from 'react-redux';
 import { RootState } from '../state/rootReducer';
+import { emptyLicense } from '../types/license.types';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -131,6 +132,7 @@ const EditResourcePage: FC = () => {
                     },
                   },
                 ],
+                licenses: [emptyLicense],
               });
               doneInitResource(resourceCreationType);
             });
