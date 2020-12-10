@@ -37,6 +37,7 @@
   },
   "resource": {
     "add_contributor": "Add contributor",
+    "add_creator": "Add creator",
     "edit_resource": "Edit resource",
     "files_and_license": {
       "browse": "browse",
