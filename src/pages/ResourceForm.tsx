@@ -11,6 +11,7 @@ import DescriptionFields from './DescriptionFields';
 import { Uppy } from '../types/file.types';
 import FileFields from './FileFields';
 import ContributorFields from './ContributorFields';
+import CreatorField from './CreatorField';
 import LicenseAndAccessFields from './LicenseAndAccessFields';
 import { StyledContentWrapper } from '../components/styled/Wrappers';
 import PreviewPanel from './PreviewPanel';
@@ -92,6 +93,21 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
         dlr_title: Yup.string().required(t('feedback.required_field')),
         dlr_type: Yup.string().required(t('feedback.required_field')).min(1, t('feedback.required_field')),
       }),
+      creators: Yup.array().of(
+        Yup.object().shape({
+          features: Yup.object().shape({
+            dlr_creator_name: Yup.string().required(t('feedback.required_field')),
+          }),
+        })
+      ),
+      contributors: Yup.array().of(
+        Yup.object().shape({
+          features: Yup.object().shape({
+            dlr_contributor_name: Yup.string().required(t('feedback.required_field')),
+            dlr_contributor_type: Yup.string().required(t('feedback.required_field')),
+          }),
+        })
+      ),
     }),
   });
 
@@ -152,6 +168,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
               )}
               {activeStep === ResourceFormSteps.Contributors && (
                 <StyledPanel>
+                  <CreatorField setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)} />
                   <ContributorFields
                     setAllChangesSaved={(status: boolean) => {
                       setAllChangesSaved(status);

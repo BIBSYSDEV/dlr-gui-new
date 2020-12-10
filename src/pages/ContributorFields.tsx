@@ -128,7 +128,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
   };
 
   return (
-    <StyledSchemaPartColored color={Colors.ContributorsPageGradientColor1}>
+    <StyledSchemaPartColored color={Colors.ContributorsPageGradientColor2}>
       <StyledContentWrapper>
         <Typography variant="h4">{t('resource.metadata.contributors')}</Typography>
         <FieldArray
@@ -175,7 +175,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                       onClick={() => {
                         removeContributor(contributor.features.dlr_contributor_identifier, arrayHelpers, index);
                       }}>
-                      {t('common.remove')}
+                      {t('common.remove').toUpperCase()}
                     </Button>
                     {deleteStatus !== StatusCode.ACCEPTED && errorIndex === index && (
                       <ErrorBanner statusCode={deleteStatus} />
@@ -191,7 +191,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                 onClick={() => {
                   addContributor(arrayHelpers);
                 }}>
-                {t('resource.add_contributor')}
+                {t('resource.add_contributor').toUpperCase()}
               </Button>
               {deleteStatus !== StatusCode.ACCEPTED && errorIndex === ErrorIndex.ADD_CONTRIBUTOR_ERROR && (
                 <ErrorBanner statusCode={deleteStatus} />
