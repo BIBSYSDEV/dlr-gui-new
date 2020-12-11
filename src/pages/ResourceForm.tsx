@@ -15,7 +15,6 @@ import CreatorField from './CreatorField';
 import LicenseAndAccessFields from './LicenseAndAccessFields';
 import { StyledContentWrapper } from '../components/styled/Wrappers';
 import PreviewPanel from './PreviewPanel';
-import ResourceTypeField from './ResourceTypeField';
 import { StatusCode } from '../utils/constants';
 import { License } from '../types/license.types';
 import ErrorBanner from '../components/ErrorBanner';
@@ -181,7 +180,6 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                       setAllChangesSaved(status);
                     }}
                   />
-                  <ResourceTypeField setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)} />
                 </StyledPanel>
               )}
               {activeStep === ResourceFormSteps.Contributors && (

@@ -8,7 +8,7 @@ import LinkResource from './LinkResource';
 import UploadRegistration from './UploadRegistration';
 import { CircularProgress, Typography } from '@material-ui/core';
 import PrivateRoute from '../utils/routes/PrivateRoute';
-import { Resource, ResourceCreationType } from '../types/resource.types';
+import { Resource, ResourceCreationType, ResourceFeatureTypes } from '../types/resource.types';
 import useUppy from '../utils/useUppy';
 import { toast } from 'react-toastify';
 import {
@@ -40,6 +40,11 @@ interface EditResourcePageParamTypes {
   resourceIdentifierFromParam: string;
 }
 
+enum ResourceFeatureNames {
+  type = 'dlr_type',
+  title = 'dlr_title',
+  description = 'dlr_description',
+}
 enum contributorFeatureNames {
   Type = 'dlr_contributor_type',
   Name = 'dlr_contributor_name',
@@ -84,22 +89,17 @@ const EditResourcePage: FC = () => {
     }
   };
 
-  const doneInitResource = (resourceCreationType: ResourceCreationType) => {
-    setResourceType(resourceCreationType);
-    setIsLoadingResource(false);
-  };
-
   const getResourceInit = async (startingResource: Resource, resourceCreationType: ResourceCreationType) => {
     try {
       setShowForm(true);
       const contributorResponse = await createContributor(startingResource.identifier);
-      await putContributorFeature(
+      putContributorFeature(
         startingResource.identifier,
         contributorResponse.data.features.dlr_contributor_identifier,
         contributorFeatureNames.Type,
         contributorFeatureNames.Institution
       );
-      await putContributorFeature(
+      putContributorFeature(
         startingResource.identifier,
         contributorResponse.data.features.dlr_contributor_identifier,
         contributorFeatureNames.Name,
@@ -108,6 +108,44 @@ const EditResourcePage: FC = () => {
 
       const responseWithCalculatedDefaults = await getResourceDefaults(startingResource.identifier);
       await saveCalculatedFields(responseWithCalculatedDefaults.data);
+      const tempResource: Resource = {
+        ...deepmerge(startingResource, responseWithCalculatedDefaults.data),
+        contributors: [
+          {
+            identifier: contributorResponse.data.identifier,
+            features: {
+              dlr_contributor_identifier: contributorResponse.data.identifier,
+              dlr_contributor_name: user.institution,
+              dlr_contributor_type: contributorFeatureNames.Institution,
+            },
+          },
+        ],
+        licenses: [emptyLicense],
+        tags: [],
+      };
+      if (
+        resourceCreationType === ResourceCreationType.FILE &&
+        tempResource.features?.dlr_content &&
+        tempResource.features?.dlr_type
+      ) {
+        switch (tempResource.features.dlr_type) {
+          case ResourceFeatureTypes.audio:
+          case ResourceFeatureTypes.document:
+          case ResourceFeatureTypes.image:
+          case ResourceFeatureTypes.presentation:
+          case ResourceFeatureTypes.simulation:
+          case ResourceFeatureTypes.video:
+            break;
+          default:
+            tempResource.features.dlr_type = ResourceFeatureTypes.document;
+            postResourceFeature(startingResource.identifier, ResourceFeatureNames.type, ResourceFeatureTypes.document);
+            break;
+        }
+      } else {
+        tempResource.features.dlr_type = ResourceFeatureTypes.document;
+        postResourceFeature(startingResource.identifier, ResourceFeatureNames.type, ResourceFeatureTypes.document);
+      }
+
       if (
         !responseWithCalculatedDefaults.data.creators?.[0]?.identifier &&
         responseWithCalculatedDefaults.data.creators?.[0]?.features.dlr_creator_name
@@ -116,57 +154,30 @@ const EditResourcePage: FC = () => {
           ? responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
           : '';
         const postCreatorResponse = await postResourceCreator(startingResource.identifier);
-        await putResourceCreatorFeature(
+        putResourceCreatorFeature(
           startingResource.identifier,
           postCreatorResponse.data.identifier,
           creatorFeatureAttributes.name,
           mainCreatorName
         );
-        setFormikInitResource({
-          ...deepmerge(startingResource, responseWithCalculatedDefaults.data),
-          creators: [
-            {
-              identifier: postCreatorResponse.data.identifier,
-              features: {
-                dlr_creator_identifier: postCreatorResponse.data.identifier,
-                dlr_creator_name: mainCreatorName,
-              },
+        tempResource.creators = [
+          {
+            identifier: postCreatorResponse.data.identifier,
+            features: {
+              dlr_creator_identifier: postCreatorResponse.data.identifier,
+              dlr_creator_name: mainCreatorName,
             },
-          ],
-          contributors: [
-            {
-              identifier: contributorResponse.data.identifier,
-              features: {
-                dlr_contributor_identifier: contributorResponse.data.identifier,
-                dlr_contributor_name: user.institution,
-                dlr_contributor_type: contributorFeatureNames.Institution,
-              },
-            },
-          ],
-          licenses: [emptyLicense],
-          tags: [],
-        });
-      } else {
-        setFormikInitResource({
-          ...deepmerge(startingResource, responseWithCalculatedDefaults.data),
-          contributors: [
-            {
-              identifier: contributorResponse.data.identifier,
-              features: {
-                dlr_contributor_identifier: contributorResponse.data.identifier,
-                dlr_contributor_name: user.institution,
-                dlr_contributor_type: contributorFeatureNames.Institution,
-              },
-            },
-          ],
-          licenses: [emptyLicense],
-          tags: [],
-        });
+          },
+        ];
       }
+      setFormikInitResource(tempResource);
+      setResourceInitError(false);
     } catch (error) {
       setResourceInitError(true);
+    } finally {
+      setResourceType(resourceCreationType);
+      setIsLoadingResource(false);
     }
-    doneInitResource(resourceCreationType);
   };
 
   const mainFileHandler = useUppy('', false, onCreateFile);
@@ -192,10 +203,14 @@ const EditResourcePage: FC = () => {
 
   const saveCalculatedFields = async (_resource: Resource) => {
     if (_resource.features.dlr_title) {
-      await postResourceFeature(_resource.identifier, 'dlr_title', _resource.features.dlr_title);
+      await postResourceFeature(_resource.identifier, ResourceFeatureNames.title, _resource.features.dlr_title);
     }
     if (_resource.features.dlr_description) {
-      await postResourceFeature(_resource.identifier, 'dlr_description', _resource.features.dlr_description);
+      await postResourceFeature(
+        _resource.identifier,
+        ResourceFeatureNames.description,
+        _resource.features.dlr_description
+      );
     }
     //TODO: tags, creators
   };

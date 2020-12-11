@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CircularProgress, FormHelperText, MenuItem, TextField, Typography } from '@material-ui/core';
+import { FormHelperText, MenuItem, TextField, Typography } from '@material-ui/core';
 import { Resource } from '../types/resource.types';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { setResourceLicense } from '../api/resourceApi';
@@ -20,24 +20,25 @@ interface ResourceWrapper {
 
 const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, licenses }) => {
   const { t } = useTranslation();
-  const { values, setFieldValue, setFieldTouched } = useFormikContext<ResourceWrapper>();
-  const [isSavingLicenses, setIsSavingLicenses] = useState(false);
+  const { values, setFieldValue, setFieldTouched, resetForm } = useFormikContext<ResourceWrapper>();
   const [savingLicenseError, setSavingLicensesError] = useState(false);
 
   const saveField = async (event: any) => {
     const selectedLicense = licenses?.find((license) => license.identifier === event.target.value);
-    setIsSavingLicenses(true);
     setAllChangesSaved(false);
     if (selectedLicense) {
       try {
         await setResourceLicense(values.resource.identifier, selectedLicense.identifier);
         setSavingLicensesError(false);
         setFieldValue('resource.licenses[0]', selectedLicense);
+        if (values.resource.licenses?.length === 1) {
+          values.resource.licenses[0] = selectedLicense;
+          resetForm({ values });
+        }
       } catch (err) {
         err?.response && setSavingLicensesError(err.response.status);
         setSavingLicensesError(true);
       } finally {
-        setIsSavingLicenses(false);
         setAllChangesSaved(true);
       }
     }
@@ -72,7 +73,6 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
                   ))}
                 </TextField>
                 {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
-                {isSavingLicenses && <CircularProgress />}
                 {savingLicenseError && <ErrorBanner />}
               </>
             )}

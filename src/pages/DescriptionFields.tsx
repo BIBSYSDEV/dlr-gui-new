@@ -8,6 +8,7 @@ import TagsField from './TagsField';
 import { postResourceFeature } from '../api/resourceApi';
 import { ResourceWrapper } from '../types/resource.types';
 import ErrorBanner from '../components/ErrorBanner';
+import ResourceTypeField from './ResourceTypeField';
 
 interface DescriptionFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -80,6 +81,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
         </StyledContentWrapper>
         {saveErrorFields.includes(descriptionFieldNames.DESCRIPTION) && <ErrorBanner />}
       </StyledSchemaPartColored>
+      <ResourceTypeField setAllChangesSaved={setAllChangesSaved} />
       <TagsField setAllChangesSaved={setAllChangesSaved} />
     </>
   );

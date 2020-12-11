@@ -14,7 +14,6 @@ import SlideshowIcon from '@material-ui/icons/Slideshow';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 import PhotoOutlinedIcon from '@material-ui/icons/PhotoOutlined';
 import ErrorBanner from '../components/ErrorBanner';
-import { StatusCode } from '../utils/constants';
 
 const StyledMenuItem = styled(MenuItem)`
   padding: 1rem;
@@ -30,7 +29,7 @@ interface ResourceWrapper {
 }
 
 const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) => {
-  const [savingResourceType, setSavingResourceType] = useState(StatusCode.ACCEPTED);
+  const [savingResourceTypeError, setSavingResourceTypeError] = useState(false);
   const { values, setFieldTouched, setFieldValue, handleChange, resetForm } = useFormikContext<ResourceWrapper>();
   const { t } = useTranslation();
 
@@ -40,12 +39,11 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
       try {
         await postResourceFeature(values.resource.identifier, 'dlr_type', event.target.value);
         setFieldValue('resource.features.dlr_type', event.target.value);
-        setSavingResourceType(StatusCode.ACCEPTED);
+        setSavingResourceTypeError(false);
         values.resource.features.dlr_type = event.target.value;
         resetForm({ values });
       } catch (error) {
-        //TODO: handle error with ErrorBanner
-        setSavingResourceType(StatusCode.UNAUTHORIZED);
+        setSavingResourceTypeError(true);
       } finally {
         setAllChangesSaved(true);
       }
@@ -97,7 +95,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                   </ListItemIcon>
                   <Typography variant="inherit">{t('resource.type.document')}</Typography>
                 </StyledMenuItem>
-                <StyledMenuItem value={ResourceFeatureTypes.image.toLowerCase()}>
+                <StyledMenuItem value={ResourceFeatureTypes.image}>
                   <ListItemIcon>
                     <PhotoOutlinedIcon />
                   </ListItemIcon>
@@ -111,7 +109,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                 </StyledMenuItem>
               </TextField>
               {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
-              {savingResourceType !== StatusCode.ACCEPTED && <ErrorBanner statusCode={savingResourceType} />}
+              {savingResourceTypeError && <ErrorBanner />}
             </>
           )}
         </Field>
