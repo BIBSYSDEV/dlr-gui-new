@@ -22,23 +22,28 @@ interface TagsFieldProps {
 
 const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
-  const { values, setFieldValue } = useFormikContext<ResourceWrapper>();
+  const { values, setFieldValue, resetForm } = useFormikContext<ResourceWrapper>();
   const [saveTagStatus, setSaveTagsStatus] = useState(StatusCode.ACCEPTED);
 
   const saveTagsChanging = async (name: string, value: string[]) => {
     setAllChangesSaved(false);
+
     try {
-      const stringArrayValue = value as string[];
-      const newTags = stringArrayValue.filter((tag) => !values.resource.tags?.includes(tag));
+      const promiseArray: Promise<any>[] = [];
+      const newTags = value.filter((tag) => !values.resource.tags?.includes(tag));
       newTags.forEach((tag) => {
-        postTag(values.resource.identifier, tag);
-        setSaveTagsStatus(StatusCode.ACCEPTED);
+        promiseArray.push(postTag(values.resource.identifier, tag));
       });
-      const removeTags = values.resource.tags?.filter((tag) => !stringArrayValue.includes(tag));
+      const removeTags = values.resource.tags?.filter((tag) => !value.includes(tag));
       removeTags?.forEach((tag) => {
-        deleteTag(values.resource.identifier, tag);
-        setSaveTagsStatus(StatusCode.ACCEPTED);
+        promiseArray.push(deleteTag(values.resource.identifier, tag));
       });
+      //Must wait for all the promises to finish or we will get race conditions for updating setAllChangesSaved.
+      await Promise.all(promiseArray);
+      setSaveTagsStatus(StatusCode.ACCEPTED);
+      setFieldValue('resource.tags', value);
+      values.resource.tags = value;
+      resetForm({ values });
     } catch (saveTagsError) {
       const axiosError = saveTagsError as AxiosError<ServerError>;
       setSaveTagsStatus(axiosError.response ? axiosError.response.status : StatusCode.UNAUTHORIZED);
@@ -59,7 +64,6 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
               options={[]}
               onChange={(_: ChangeEvent<unknown>, value: string[]) => {
                 saveTagsChanging(field.name, value);
-                setFieldValue(field.name, value);
               }}
               renderInput={(params) => (
                 <TextField
@@ -75,7 +79,6 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                       .map((value: string) => value.trim())
                       .filter((tag) => tag !== '');
                     saveTagsChanging(field.name, [...field.value, ...tags]);
-                    setFieldValue(field.name, [...field.value, ...tags]);
                   }}
                 />
               )}
