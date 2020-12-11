@@ -1,17 +1,40 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField } from '@material-ui/core';
-import { ErrorMessage, Field, FieldProps, FormikProps, FormikValues } from 'formik';
+import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
+import TagsField from './TagsField';
+import { postResourceFeature } from '../api/resourceApi';
+import { ResourceWrapper } from '../types/resource.types';
+import ErrorBanner from '../components/ErrorBanner';
 
 interface DescriptionFieldsProps {
-  formikProps: FormikProps<FormikValues>;
-  saveField: any;
+  setAllChangesSaved: (value: boolean) => void;
 }
 
-const DescriptionFields: FC<DescriptionFieldsProps> = ({ formikProps, saveField }) => {
+enum descriptionFieldNames {
+  TITLE = 'dlr_title',
+  DESCRIPTION = 'dlr_description',
+}
+
+const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
+  const { values, handleBlur, resetForm } = useFormikContext<ResourceWrapper>();
+  const [saveErrorFields, setSaveErrorFields] = useState<string[]>([]);
+
+  const saveField = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
+    setAllChangesSaved(false);
+    try {
+      await postResourceFeature(values.resource.identifier, name, event.target.value);
+      setAllChangesSaved(true);
+      setSaveErrorFields([]);
+      resetForm({ values: values });
+      //todo: remove from array
+    } catch (err) {
+      setSaveErrorFields([...saveErrorFields, name]);
+    }
+  };
 
   return (
     <>
@@ -27,13 +50,14 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ formikProps, saveField 
                 error={touched && !!error}
                 helperText={<ErrorMessage name={field.name} />}
                 onBlur={(event) => {
-                  formikProps.handleBlur(event);
-                  !error && saveField(event, formikProps.resetForm, formikProps.values);
+                  handleBlur(event);
+                  !error && saveField(event, descriptionFieldNames.TITLE);
                 }}
               />
             )}
           </Field>
         </StyledContentWrapper>
+        {saveErrorFields.includes(descriptionFieldNames.TITLE) && <ErrorBanner />}
       </StyledSchemaPartColored>
       <StyledSchemaPartColored color={Colors.Background}>
         <StyledContentWrapper>
@@ -47,14 +71,16 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ formikProps, saveField 
                 rows="4"
                 label={t('resource.metadata.description')}
                 onBlur={(event) => {
-                  formikProps.handleBlur(event);
-                  !error && saveField(event, formikProps.resetForm, formikProps.values);
+                  handleBlur(event);
+                  !error && saveField(event, descriptionFieldNames.DESCRIPTION);
                 }}
               />
             )}
           </Field>
         </StyledContentWrapper>
+        {saveErrorFields.includes(descriptionFieldNames.DESCRIPTION) && <ErrorBanner />}
       </StyledSchemaPartColored>
+      <TagsField setAllChangesSaved={setAllChangesSaved} />
     </>
   );
 };

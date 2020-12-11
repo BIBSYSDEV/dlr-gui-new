@@ -8,7 +8,6 @@ import { License } from '../types/license.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
 import ErrorBanner from '../components/ErrorBanner';
-import { StatusCode } from '../utils/constants';
 
 interface LicenseAndAccessFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -23,19 +22,20 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
   const { t } = useTranslation();
   const { values, setFieldValue, setFieldTouched } = useFormikContext<ResourceWrapper>();
   const [isSavingLicenses, setIsSavingLicenses] = useState(false);
-  const [savingLicenseErrorStatus, setSavingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
+  const [savingLicenseError, setSavingLicensesError] = useState(false);
 
   const saveField = async (event: any) => {
     const selectedLicense = licenses?.find((license) => license.identifier === event.target.value);
     setIsSavingLicenses(true);
     setAllChangesSaved(false);
-    setSavingLicensesErrorStatus(StatusCode.ACCEPTED);
     if (selectedLicense) {
       try {
         await setResourceLicense(values.resource.identifier, selectedLicense.identifier);
+        setSavingLicensesError(false);
         setFieldValue('resource.licenses[0]', selectedLicense);
       } catch (err) {
-        err?.response && setSavingLicensesErrorStatus(err.response.status);
+        err?.response && setSavingLicensesError(err.response.status);
+        setSavingLicensesError(true);
       } finally {
         setIsSavingLicenses(false);
         setAllChangesSaved(true);
@@ -73,9 +73,7 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
                 </TextField>
                 {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
                 {isSavingLicenses && <CircularProgress />}
-                {savingLicenseErrorStatus !== StatusCode.ACCEPTED && (
-                  <ErrorBanner statusCode={savingLicenseErrorStatus} />
-                )}
+                {savingLicenseError && <ErrorBanner />}
               </>
             )}
           </Field>

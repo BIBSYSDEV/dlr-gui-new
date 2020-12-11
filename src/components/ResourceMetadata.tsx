@@ -42,7 +42,7 @@ const ResourceMetadata: FC<any> = (props: any) => {
           {props.tags.map((tag: string, i: number) => {
             return (
               <span key={i}>
-                <Chip color="primary" label={tag}></Chip>{' '}
+                <Chip color="primary" label={tag} />
               </span>
             );
           })}
@@ -52,7 +52,7 @@ const ResourceMetadata: FC<any> = (props: any) => {
   };
 
   const getCategory = () => {
-    if (props.category.lenght === 0) {
+    if (props.category.length === 0) {
       return (
         <h5>
           {t('common.none')} {t('resource.metadata.categories').toLowerCase()}

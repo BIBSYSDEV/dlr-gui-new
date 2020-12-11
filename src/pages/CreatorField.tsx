@@ -8,9 +8,6 @@ import styled from 'styled-components';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import { deleteResourceCreator, postResourceCreator, putResourceCreatorFeature } from '../api/resourceApi';
-import { AxiosError } from 'axios';
-import { ServerError } from '../types/server.types';
-import { StatusCode } from '../utils/constants';
 import ErrorBanner from '../components/ErrorBanner';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
@@ -36,7 +33,6 @@ interface ResourceWrapper {
   resource: Resource;
 }
 enum ErrorIndex {
-  ADD_CREATOR_ERROR = -2,
   NO_ERRORS = -1,
 }
 
@@ -44,7 +40,8 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, handleBlur, resetForm } = useFormikContext<ResourceWrapper>();
   const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
-  const [saveStatusCode, setSaveStatusCode] = useState(StatusCode.ACCEPTED);
+  const [updateCreatorError, setUpdateCreatorError] = useState(false);
+  const [addCreatorError, setAddCreatorError] = useState(false);
 
   const addCreator = async (arrayHelpers: FieldArrayRenderProps) => {
     setAllChangesSaved(false);
@@ -57,13 +54,8 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
           dlr_creator_identifier: postCreatorResponse.data.identifier,
         },
       });
-      setErrorIndex(ErrorIndex.NO_ERRORS);
     } catch (error) {
-      if (error.response) {
-        const axiosError = error as AxiosError<ServerError>;
-        setErrorIndex(ErrorIndex.ADD_CREATOR_ERROR);
-        setSaveStatusCode(axiosError.response ? axiosError.response.status : StatusCode.UNAUTHORIZED);
-      }
+      setAddCreatorError(true);
     } finally {
       setAllChangesSaved(true);
     }
@@ -80,12 +72,11 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
       if (event.target.value.length > 0) {
         await putResourceCreatorFeature(values.resource.identifier, creatorIdentifier, name, event.target.value);
         setErrorIndex(ErrorIndex.NO_ERRORS);
-        setSaveStatusCode(StatusCode.ACCEPTED);
+        setUpdateCreatorError(false);
         resetForm({ values });
       }
     } catch (error) {
-      const axiosError = error as AxiosError<ServerError>;
-      setSaveStatusCode(axiosError.response ? axiosError.response.status : StatusCode.UNAUTHORIZED);
+      setUpdateCreatorError(true);
       setErrorIndex(creatorIndex);
     } finally {
       setAllChangesSaved(true);
@@ -101,11 +92,10 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
     try {
       await deleteResourceCreator(values.resource.identifier, creatorIdentifier);
       arrayHelpers.remove(creatorIndex);
-      setSaveStatusCode(StatusCode.ACCEPTED);
+      setUpdateCreatorError(false);
       setErrorIndex(ErrorIndex.NO_ERRORS);
     } catch (error) {
-      const axiosError = error as AxiosError<ServerError>;
-      setSaveStatusCode(axiosError.response ? axiosError.response.status : StatusCode.UNAUTHORIZED);
+      setUpdateCreatorError(true);
       setErrorIndex(creatorIndex);
     } finally {
       setAllChangesSaved(true);
@@ -157,7 +147,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                       }}>
                       {t('common.remove').toUpperCase()}
                     </Button>
-                    {errorIndex === index && <ErrorBanner statusCode={saveStatusCode} />}
+                    {updateCreatorError && errorIndex === index && <ErrorBanner />}
                   </StyledFieldsWrapper>
                 );
               })}
@@ -171,7 +161,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                 }}>
                 {t('resource.add_creator').toUpperCase()}
               </Button>
-              {errorIndex === ErrorIndex.ADD_CREATOR_ERROR && <ErrorBanner statusCode={saveStatusCode} />}
+              {addCreatorError && <ErrorBanner />}
             </>
           )}
         />

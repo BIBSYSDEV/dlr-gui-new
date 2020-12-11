@@ -21,7 +21,8 @@
     "401_page": "You are not authorized for this",
     "403_page": "You must be logged in for using this feature",
     "404_page": "Got lost? (404-page)",
-    "500_page": "Whoops, something went wrong. Try again later"
+    "500_page": "Whoops, something went wrong. Try again later",
+    "generic": "Whoops, something went wrong. Try again later"
   },
   "feedback": {
     "required_field": "Required field",
@@ -38,6 +39,7 @@
   "resource": {
     "add_contributor": "Add contributor",
     "add_creator": "Add creator",
+    "add_tags": "Add 4-6 keywords. Press enter or tab for adding more keywords.",
     "edit_resource": "Edit resource",
     "files_and_license": {
       "browse": "browse",
@@ -71,7 +73,7 @@
       "main_file": "Main file",
       "owner": "Owner",
       "published": "Published",
-      "tags": "Tags",
+      "tags": "Keywords",
       "title": "Title",
       "type": "Resource type",
       "submitter_email": "Submitter email"

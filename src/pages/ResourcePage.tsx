@@ -5,10 +5,10 @@ import { Contributor, Creator, Resource } from '../types/resource.types';
 import {
   getResource,
   getResourceContents,
-  getResourceCreators,
-  getResourceTags,
-  getResourceLicenses,
   getResourceContributors,
+  getResourceCreators,
+  getResourceLicenses,
+  getResourceTags,
 } from '../api/resourceApi';
 import { CircularProgress, Typography } from '@material-ui/core';
 import List from '@material-ui/core/List';
@@ -21,6 +21,7 @@ import ResourceMetadata from '../components/ResourceMetadata';
 import { useTranslation } from 'react-i18next';
 import LicenseCard from '../components/License';
 import { License } from '../types/license.types';
+import ErrorBanner from '../components/ErrorBanner';
 
 const StyledPageContent = styled.div`
   display: grid;
@@ -46,40 +47,34 @@ const ResourcePage: FC<RouteProps> = (props) => {
   const [tags, setTags] = useState<string[]>([]);
   const [licenses, setLicenses] = useState<License[]>([]);
   const [contributors, setContributors] = useState<Contributor[]>([]);
+  const [resourceLoadingError, setResourceLoadingError] = useState(false);
 
   useEffect(() => {
     const fetchData = async (identifier: string) => {
-      const promises: Promise<any>[] = [];
-      promises[0] = getResource(identifier).then((response) => {
-        setResource(response.data);
-      });
-      promises[1] = getResourceCreators(identifier).then((response) => {
-        setCreators(response.data);
-      });
-      promises[2] = getResourceContents(identifier).then((response) => {
-        const type = response?.data[0]?.features?.dlr_content_content_type
-          ? response?.data[0]?.features?.dlr_content_content_type
+      try {
+        setIsLoadingResource(true);
+        setResource((await getResource(identifier)).data);
+        setCreators((await getResourceCreators(identifier)).data);
+        setTags((await getResourceTags(identifier)).data);
+        setLicenses((await getResourceLicenses(identifier)).data);
+        setContributors((await getResourceContributors(identifier)).data);
+        const resourceContent = await getResourceContents(identifier);
+        const type = resourceContent?.data[0]?.features?.dlr_content_content_type
+          ? resourceContent?.data[0]?.features?.dlr_content_content_type
           : '';
         setPreview({
           type,
-          theSource: `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${response?.data[0]?.identifier}/delivery?jwt=${localStorage.token}`,
+          theSource: `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${resourceContent?.data[0]?.identifier}/delivery?jwt=${localStorage.token}`,
         });
-      });
-      promises[3] = getResourceTags(identifier).then((response) => {
-        setTags(response.data);
-      });
-      promises[4] = getResourceLicenses(identifier).then((response) => {
-        setLicenses(response.data);
-      });
-      promises[5] = getResourceContributors(identifier).then((response) => {
-        setContributors(response.data);
-      });
-      await Promise.all(promises).finally(() => {
+        setResourceLoadingError(false);
+      } catch (error) {
+        setResourceLoadingError(true);
+      } finally {
         setIsLoadingResource(false);
-      });
+      }
     };
+
     if (identifier) {
-      setIsLoadingResource(true);
       fetchData(identifier);
     }
   }, [identifier]);
@@ -87,10 +82,9 @@ const ResourcePage: FC<RouteProps> = (props) => {
   return (
     <StyledPageContent>
       {isLoadingResource && <CircularProgress />}
-      {!isLoadingResource && (
-        <>
-          <Typography variant="h1">{resource?.features?.dlr_title}</Typography>
-        </>
+      {resourceLoadingError && <ErrorBanner />}
+      {!isLoadingResource && !resourceLoadingError && (
+        <Typography variant="h1">{resource?.features?.dlr_title}</Typography>
       )}
       {preview.theSource !== '' && <>{preview && <PreviewComponent preview={preview} />}</>}
       <Card>
@@ -137,10 +131,12 @@ const ResourcePage: FC<RouteProps> = (props) => {
             </div>
           );
         })}
-        {tags.length !== 0 && tags && resource?.features.dlr_subject_nsi_id && (
-          <ResourceMetadata type={preview.type} category={resource.features.dlr_subject_nsi_id} tags={tags} />
-        )}
-        <p>{JSON.stringify(resource)}</p>
+
+        <ResourceMetadata
+          type={preview.type}
+          category={resource?.features.dlr_subject_nsi_id ? resource.features.dlr_subject_nsi_id : ''}
+          tags={tags}
+        />
       </Card>
       {licenses.length !== 0 &&
         licenses.map((license) => {

@@ -153,3 +153,7 @@ export enum ResourceFeatureTypes {
   simulation = 'Simulation',
   video = 'Video',
 }
+
+export interface ResourceWrapper {
+  resource: Resource;
+}
