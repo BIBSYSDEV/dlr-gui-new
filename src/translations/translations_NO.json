@@ -39,6 +39,7 @@
   "resource": {
     "add_contributor": "Legg til bidragsyter",
     "add_creator": "Legg til opphaver",
+    "add_tags": "Legg inn 4-6 nøkkelord. Trykk enter eller tab for å legge inn flere",
     "edit_resource": "Rediger ressurs",
     "files_and_license": {
       "browse": "velg",
@@ -71,7 +72,7 @@
       "main_file": "Hovedfil",
       "owner": "Eier",
       "published": "Publisert",
-      "tags": "Merker",
+      "tags": "Nøkkelord",
       "title": "Tittel",
       "type": "Ressurstype",
       "submitter_email": "Registrators epost"

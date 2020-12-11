@@ -4,6 +4,7 @@ import { TextField } from '@material-ui/core';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
+import TagsField from './TagsField';
 import { postResourceFeature } from '../api/resourceApi';
 import { ResourceWrapper } from '../types/resource.types';
 import ErrorBanner from '../components/ErrorBanner';
@@ -79,6 +80,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
         </StyledContentWrapper>
         {saveErrorFields.includes(descriptionFieldNames.DESCRIPTION) && <ErrorBanner />}
       </StyledSchemaPartColored>
+      <TagsField setAllChangesSaved={setAllChangesSaved} />
     </>
   );
 };

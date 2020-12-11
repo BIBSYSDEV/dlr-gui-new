@@ -52,6 +52,23 @@ export const getResourceTags = (identifier: string): Promise<AxiosResponse<strin
   });
 };
 
+export const deleteTag = (resourceIdentifier: string, tag: string): Promise<AxiosResponse<any>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/tags/${tag}/types/tag`),
+    method: 'DELETE',
+  });
+};
+
+export const postTag = (resourceIdentifier: string, tag: string): Promise<AxiosResponse<any>> => {
+  const encodedValue = encodeURIComponent(tag);
+  const data = `tag=${encodedValue}&type=tag`;
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/tags`),
+    method: 'POST',
+    data,
+  });
+};
+
 export const getResourceContributors = (identifier: string): Promise<AxiosResponse<Contributor[]>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/contributors`),

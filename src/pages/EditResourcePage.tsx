@@ -144,6 +144,7 @@ const EditResourcePage: FC = () => {
             },
           ],
           licenses: [emptyLicense],
+          tags: [],
         });
       } else {
         setFormikInitResource({
@@ -159,6 +160,7 @@ const EditResourcePage: FC = () => {
             },
           ],
           licenses: [emptyLicense],
+          tags: [],
         });
       }
     } catch (error) {

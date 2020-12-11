@@ -39,6 +39,7 @@
   "resource": {
     "add_contributor": "Add contributor",
     "add_creator": "Add creator",
+    "add_tags": "Add 4-6 keywords. Press enter or tab for adding more keywords.",
     "edit_resource": "Edit resource",
     "files_and_license": {
       "browse": "browse",
@@ -72,7 +73,7 @@
       "main_file": "Main file",
       "owner": "Owner",
       "published": "Published",
-      "tags": "Tags",
+      "tags": "Keywords",
       "title": "Title",
       "type": "Resource type",
       "submitter_email": "Submitter email"
