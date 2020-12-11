@@ -14,7 +14,7 @@ export enum FileApiPaths {
 }
 
 export const abortMultipartUpload = async (uploadId: string, key: string) => {
-  const data = `uploadId=${uploadId}&key=${key}`;
+  const data = encodeURI(`uploadId=${uploadId}&key=${key}`);
   const response = await authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesContentPath}${FileApiPaths.ABORT}`),
     method: 'POST',
@@ -24,7 +24,7 @@ export const abortMultipartUpload = async (uploadId: string, key: string) => {
 };
 
 export const completeMultipartUpload = async (uploadId: string, key: string, parts: AwsS3Part[]) => {
-  const data = `uploadId=${uploadId}&key=${key}&parts=${JSON.stringify(parts)}`;
+  const data = encodeURI(`uploadId=${uploadId}&key=${key}&parts=${JSON.stringify(parts)}`);
   const response = await authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesContentPath}${FileApiPaths.COMPLETE}`),
     method: 'POST',
@@ -33,9 +33,11 @@ export const completeMultipartUpload = async (uploadId: string, key: string, par
   return response.data;
 };
 export const createMultipartUpload = async (file: UppyFile) => {
-  const data = `filename=${file.name}&size=${file.data.size}&lastmodified=${
-    (file.data as File).lastModified
-  }&mimetype=${file.data.type}`;
+  const data = encodeURI(
+    `filename=${file.name}&size=${file.data.size}&lastmodified=${(file.data as File).lastModified}&mimetype=${
+      file.data.type
+    }`
+  );
   const createMultipartUploadResponse = await authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesContentPath}${FileApiPaths.CREATE}`),
     method: 'POST',
@@ -57,9 +59,9 @@ export const createResourceAndMultipartUpload = async (
   }
   onCreateFile(newResource);
 
-  const data = `filename=${file.name}&size=${file.data.size}&lastmodified=${
+  const data = encodeURI(`filename=${file.name}&size=${file.data.size}&lastmodified=${
     (file.data as File).lastModified
-  }&mimetype=${file.data.type}`;
+  }&mimetype=${file.data.type}`);
   const createMultipartUploadResponse = await authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesContentPath}/${contentId}${FileApiPaths.CREATE}`),
     method: 'POST',
@@ -69,7 +71,7 @@ export const createResourceAndMultipartUpload = async (
 };
 
 export const listParts = async (uploadId: string, key: string) => {
-  const data = `uploadId=${uploadId}&key=${key}`;
+  const data = encodeURI(`uploadId=${uploadId}&key=${key}`);
   const response = await authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesContentPath}${FileApiPaths.LIST_PARTS}`),
     method: 'POST',
