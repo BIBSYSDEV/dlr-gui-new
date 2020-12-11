@@ -67,20 +67,25 @@ const EditResourcePage: FC = () => {
   const user = useSelector((state: RootState) => state.user);
 
   const onCreateFile = (newResource: Resource) => {
+    setShowForm(true);
     setIsLoadingResource(true);
     getResourceInit(newResource, ResourceCreationType.FILE);
   };
 
-  const onSubmitLink = (url: string) => {
-    setIsLoadingResource(true);
-    createResource(ResourceCreationType.LINK, url).then((createResourceResponse) => {
+  const onSubmitLink = async (url: string) => {
+    setShowForm(true);
+    try {
+      setIsLoadingResource(true);
+      const createResourceResponse = await createResource(ResourceCreationType.LINK, url);
       getResourceInit(createResourceResponse.data, ResourceCreationType.LINK);
-    });
+    } catch (error) {
+      setResourceInitError(true);
+      setIsLoadingResource(false);
+    }
   };
 
   const doneInitResource = (resourceCreationType: ResourceCreationType) => {
     setResourceType(resourceCreationType);
-    setShowForm(true);
     setIsLoadingResource(false);
   };
 
