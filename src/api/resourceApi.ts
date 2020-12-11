@@ -14,7 +14,7 @@ export const searchResources = (query: string): Promise<AxiosResponse<SearchResu
 };
 
 export const createResource = (type: string, content: string) => {
-  const data = `type=${type}&app=learning&content=${content}`;
+  const data = encodeURI(`type=${type}&app=learning&content=${content}`);
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources`),
     method: 'POST',
@@ -23,8 +23,7 @@ export const createResource = (type: string, content: string) => {
 };
 
 export const postResourceFeature = async (resourceIdentifier: string, feature: string, value: string) => {
-  const encodedValue = encodeURIComponent(value);
-  const data = `value=${encodedValue}&feature=${feature}`;
+  const data = encodeURI(`value=${value}&feature=${feature}`);
   await authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/features`),
     method: 'POST',
@@ -89,7 +88,9 @@ export const deleteContributor = (
   contributorIdentifier: string
 ): Promise<AxiosResponse<any>> => {
   return authenticatedApiRequest({
-    url: `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contributors/${contributorIdentifier}`,
+    url: encodeURI(
+      `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contributors/${contributorIdentifier}`
+    ),
     method: 'DELETE',
   });
 };
@@ -100,12 +101,10 @@ export const putContributorFeature = (
   feature: string,
   value: string
 ) => {
-  const encodedValue = encodeURIComponent(value);
-  const encodedFeature = encodeURIComponent(feature);
-  const data = `value=${encodedValue}`;
+  const data = encodeURI(`value=${value}`);
   return authenticatedApiRequest({
     url: encodeURI(
-      `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contributors/${contributorIdentifier}/features/${encodedFeature}`
+      `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contributors/${contributorIdentifier}/features/${feature}`
     ),
     method: 'PUT',
     data: data,
@@ -131,7 +130,9 @@ export const deleteResourceCreator = (
   creatorIdentifier: string
 ): Promise<AxiosResponse<any>> => {
   return authenticatedApiRequest({
-    url: `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/creators/${creatorIdentifier}`,
+    url: encodeURI(
+      `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/creators/${creatorIdentifier}`
+    ),
     method: 'DELETE',
   });
 };
@@ -142,11 +143,11 @@ export const putResourceCreatorFeature = (
   feature: string,
   value: string
 ): Promise<AxiosResponse<any>> => {
-  const encodedValue = encodeURIComponent(value);
-  const encodedFeature = encodeURIComponent(feature);
-  const data = `value=${encodedValue}`;
+  const data = encodeURI(`value=${value}`);
   return authenticatedApiRequest({
-    url: `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/creators/${creatorIdentifier}/features/${encodedFeature}`,
+    url: encodeURI(
+      `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/creators/${creatorIdentifier}/features/${feature}`
+    ),
     method: 'PUT',
     data,
   });
@@ -174,8 +175,7 @@ export const getLicenses = (): Promise<AxiosResponse<License[]>> => {
 };
 
 export const setResourceLicense = async (resourceIdentifier: string, licenseIdentifier: string) => {
-  const encodedValue = encodeURIComponent(licenseIdentifier);
-  const data = `identifierLicense=${encodedValue}`;
+  const data = encodeURI(`identifierLicense=${licenseIdentifier}`);
   await authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/licenses`),
     method: 'POST',
@@ -184,8 +184,7 @@ export const setResourceLicense = async (resourceIdentifier: string, licenseIden
 };
 
 export const updateContentTitle = async (resourceIdentifier: string, contentIdentifier: string, value: string) => {
-  const encodedValue = encodeURIComponent(value);
-  const data = `title=${encodedValue}`;
+  const data = encodeURI(`title=${value}`);
   await authenticatedApiRequest({
     url: encodeURI(
       `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contents/${contentIdentifier}/titles`

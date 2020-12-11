@@ -81,7 +81,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
             />
           )}
         </Field>
-        {saveError && <ErrorBanner statusCode={401} />}
+        {saveError && <ErrorBanner />}
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );

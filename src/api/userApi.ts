@@ -6,7 +6,7 @@ import { authenticatedApiRequest } from './api';
 
 export const getAnonymousWebToken = (): Promise<AxiosResponse<string>> => {
   return Axios({
-    url: `${API_PATHS.guiBackendLoginPath}/anonymous`,
+    url: encodeURI(`${API_PATHS.guiBackendLoginPath}/anonymous`),
     method: 'GET',
   });
 };
