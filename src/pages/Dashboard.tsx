@@ -1,12 +1,12 @@
 import React, { ChangeEvent, FC, FormEvent, useState } from 'react';
 import styled from 'styled-components';
-import { toast } from 'react-toastify';
 import { Button, List, ListItem, ListItemIcon, ListItemText, TextField, Typography } from '@material-ui/core';
 import ImageIcon from '@material-ui/icons/Image';
 import { searchResources } from '../api/resourceApi';
 import { useTranslation } from 'react-i18next';
 import { SearchResult } from '../types/search.types';
 import { Resource } from '../types/resource.types';
+import ErrorBanner from '../components/ErrorBanner';
 
 const StyledDashboard = styled.div`
   display: flex;
@@ -25,21 +25,22 @@ const Dashboard: FC = () => {
   const [resources, setResources] = useState<Resource[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const { t } = useTranslation();
+  const [searchError, setSearchError] = useState(false);
 
-  const triggerSearch = (event: FormEvent<HTMLFormElement>) => {
+  const triggerSearch = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    searchResources(searchTerm)
-      .then((response) => {
-        if (response.data) {
-          setSearchResult(response.data);
-          setResources(response.data.resourcesAsJson.map((resourceAsString: string) => JSON.parse(resourceAsString)));
-        } else {
-          toast.error('ERROR');
-        }
-      })
-      .catch((error) => {
-        toast.error('ERROR' + error.message);
-      });
+    try {
+      const response = await searchResources(searchTerm);
+      if (response.data) {
+        setSearchError(false);
+        setSearchResult(response.data);
+        setResources(response.data.resourcesAsJson.map((resourceAsString: string) => JSON.parse(resourceAsString)));
+      } else {
+        setSearchError(true);
+      }
+    } catch (error) {
+      setSearchError(true);
+    }
   };
 
   const updateSearchTermValue = (event: ChangeEvent<HTMLInputElement>) => {
@@ -58,6 +59,7 @@ const Dashboard: FC = () => {
           </Button>
         </form>
       </SearchFieldWrapper>
+      {searchError && <ErrorBanner />}
 
       <div>
         {searchResult && (

@@ -1,45 +1,47 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { toast } from 'react-toastify';
-import { RouteProps } from 'react-router-dom';
 import { getMyResources } from '../api/resourceApi';
 import { CircularProgress, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { Resource } from '../types/resource.types';
 import ImageIcon from '@material-ui/core/SvgIcon/SvgIcon';
+import ErrorBanner from '../components/ErrorBanner';
 
 const StyledPageContent = styled.div`
-  display: grid;
-  justify-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
-const MyResources: FC<RouteProps> = (props) => {
+const MyResources: FC = () => {
   const { t } = useTranslation();
-  const [isLoadingMyResources, setIsLoadingMyResources] = useState(true);
+  const [isLoadingMyResources, setIsLoadingMyResources] = useState(false);
   const [resourcesUnpublished, setMyUnpublishedResources] = useState<Resource[]>([]);
   const [resourcesPublished, setMyPublishedResources] = useState<Resource[]>([]);
+  const [loadingError, setLoadingError] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getMyResources();
-      setMyUnpublishedResources(response.data.filter((resource) => !resource.features.dlr_status_published));
-      setMyPublishedResources(response.data.filter((resource) => resource.features.dlr_status_published));
-      setIsLoadingMyResources(false);
-    };
-    if (isLoadingMyResources) {
       try {
-        fetchData();
+        setIsLoadingMyResources(true);
+        const response = await getMyResources();
+        setMyUnpublishedResources(response.data.filter((resource) => !resource.features.dlr_status_published));
+        setMyPublishedResources(response.data.filter((resource) => resource.features.dlr_status_published));
+        setLoadingError(false);
+        setIsLoadingMyResources(false);
       } catch (error) {
-        toast.error('ERROR: ' + error.message);
+        setLoadingError(true);
+      } finally {
+        setIsLoadingMyResources(false);
       }
-    }
-  }, [isLoadingMyResources]);
+    };
+    fetchData();
+  }, []);
 
   return (
     <StyledPageContent>
-      <>
-        <Typography variant="h2">{t('resource.unpublished_resources')}</Typography>
-      </>
+      {loadingError && <ErrorBanner />}
+      <Typography variant="h2">{t('resource.unpublished_resources')}</Typography>
       <List>
         {isLoadingMyResources && <CircularProgress />}
         {!isLoadingMyResources &&
@@ -65,9 +67,7 @@ const MyResources: FC<RouteProps> = (props) => {
             </ListItem>
           ))}
       </List>
-      <>
-        <Typography variant="h2">{t('resource.published_resources')}</Typography>
-      </>
+      <Typography variant="h2">{t('resource.published_resources')}</Typography>
       <List>
         {isLoadingMyResources && <CircularProgress />}
         {!isLoadingMyResources &&

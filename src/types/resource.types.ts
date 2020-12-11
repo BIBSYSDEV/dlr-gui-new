@@ -144,3 +144,7 @@ interface AuthorityFeatures {
   dlr_authority_name?: string;
   dlr_authority_time_created?: string;
 }
+
+export interface ResourceWrapper {
+  resource: Resource;
+}
