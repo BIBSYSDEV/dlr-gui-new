@@ -25,6 +25,7 @@ import {
 import deepmerge from 'deepmerge';
 import { useSelector } from 'react-redux';
 import { RootState } from '../state/rootReducer';
+import { emptyLicense } from '../types/license.types';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -97,8 +98,8 @@ const EditResourcePage: FC = () => {
       getResourceDefaults(startingResource.identifier).then((responseWithCalculatedDefaults) => {
         saveCalculatedFields(responseWithCalculatedDefaults.data);
         if (
-          !responseWithCalculatedDefaults.data.creators?.[0].identifier &&
-          responseWithCalculatedDefaults.data.creators?.[0].features.dlr_creator_name
+          !responseWithCalculatedDefaults.data.creators?.[0]?.identifier &&
+          responseWithCalculatedDefaults.data.creators?.[0]?.features.dlr_creator_name
         ) {
           const mainCreatorName = responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
             ? responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
@@ -131,6 +132,8 @@ const EditResourcePage: FC = () => {
                     },
                   },
                 ],
+                licenses: [emptyLicense],
+                tags: [],
               });
               doneInitResource(resourceCreationType);
             });
@@ -148,6 +151,7 @@ const EditResourcePage: FC = () => {
                 },
               },
             ],
+            licenses: [emptyLicense],
             tags: [],
           });
           doneInitResource(resourceCreationType);

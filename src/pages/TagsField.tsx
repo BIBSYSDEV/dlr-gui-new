@@ -7,9 +7,6 @@ import { StyledContentWrapper, StyledSchemaPartColored } from '../components/sty
 import { Colors } from '../themes/mainTheme';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { deleteTag, postTag } from '../api/resourceApi';
-import { AxiosError } from 'axios';
-import { ServerError } from '../types/server.types';
-import { StatusCode } from '../utils/constants';
 import ErrorBanner from '../components/ErrorBanner';
 
 interface ResourceWrapper {
@@ -23,7 +20,7 @@ interface TagsFieldProps {
 const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, setFieldValue, resetForm } = useFormikContext<ResourceWrapper>();
-  const [saveTagStatus, setSaveTagsStatus] = useState(StatusCode.ACCEPTED);
+  const [saveError, setSaveError] = useState(false);
 
   const saveTagsChanging = async (name: string, value: string[]) => {
     setAllChangesSaved(false);
@@ -40,13 +37,12 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
       });
       //Must wait for all the promises to finish or we will get race conditions for updating setAllChangesSaved.
       await Promise.all(promiseArray);
-      setSaveTagsStatus(StatusCode.ACCEPTED);
+      setSaveError(false);
       setFieldValue('resource.tags', value);
       values.resource.tags = value;
       resetForm({ values });
     } catch (saveTagsError) {
-      const axiosError = saveTagsError as AxiosError<ServerError>;
-      setSaveTagsStatus(axiosError.response ? axiosError.response.status : StatusCode.UNAUTHORIZED);
+      setSaveError(true);
     } finally {
       setAllChangesSaved(true);
     }
@@ -85,7 +81,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
             />
           )}
         </Field>
-        {saveTagStatus !== StatusCode.ACCEPTED && <ErrorBanner statusCode={saveTagStatus} />}
+        {saveError && <ErrorBanner statusCode={401} />}
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );

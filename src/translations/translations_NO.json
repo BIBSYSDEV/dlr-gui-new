@@ -67,6 +67,7 @@
       "categories": "Kategorier",
       "description": "Beskrivelse",
       "filename": "Filnavn",
+      "license": "Lisens",
       "main_file": "Hovedfil",
       "owner": "Eier",
       "published": "Publisert",
