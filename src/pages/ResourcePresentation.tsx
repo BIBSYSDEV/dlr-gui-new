@@ -96,9 +96,6 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource, preview
         {/*  category={resource?.features.dlr_subject_nsi_id ? resource.features.dlr_subject_nsi_id : ''}*/}
         {/*  tags={resource.tags}*/}
         {/*/>*/}
-
-
-
       </StyledPresentationWrapper>
     )
   );
