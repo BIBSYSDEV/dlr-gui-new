@@ -25,14 +25,22 @@ const mockResource: Resource = {
     },
   ],
   features: {
-    dlr_title: 'MockTitle',
+    dlr_title: 'This is a mocked title',
+    dlr_time_published: '123',
+    dlr_time_created: '123',
+    dlr_submitter_email: 'Test Testesen',
+    dlr_description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vulputate nunc quis lacus pellentesque congue. ' +
+      'Duis id vulputate ex. Praesent elit erat, viverra ac eleifend a, porttitor accumsan nulla. Suspendisse vitae ' +
+      'maximus ligula. Sed auctor elit non sapien sagittis molestie. Pellentesque habitant morbi tristique senectus ' +
+      'et netus et malesuada fames.',
   },
   identifier: 'resource-123',
 };
 
 const mockCalculatedResource: Resource = {
   features: {
-    dlr_title: 'MockTitle',
+    dlr_title: 'This is a mocked generated title',
   },
   identifier: 'resource-345',
 };

@@ -1,5 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
-import { CircularProgress } from '@material-ui/core';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Preview } from '../pages/ResourcePage';
 
@@ -32,7 +31,7 @@ const PreviewComponent: FC<PreviewComponentProps> = ({ preview }) => {
     }
   };
 
-  return <div style={{ minHeight: '300px' }}>{getPreviewModeBaseOnType()}</div>;
+  return <div style={{ minHeight: '300px', border: '1px solid red' }}>{getPreviewModeBaseOnType()}</div>;
 };
 
 export default PreviewComponent;
