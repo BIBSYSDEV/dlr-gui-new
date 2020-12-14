@@ -18,6 +18,9 @@ import ResourcePresentation from './ResourcePresentation';
 const StyledPageContent = styled.div`
   display: flex;
   justify-items: center;
+  margin-top: 2rem;
+  align-items: center;
+  margin-top: 2rem;
 `;
 
 interface resourcePageParamTypes {

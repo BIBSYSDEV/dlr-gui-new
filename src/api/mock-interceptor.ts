@@ -26,8 +26,8 @@ const mockResource: Resource = {
   ],
   features: {
     dlr_title: 'This is a mocked title',
-    dlr_time_published: '123',
-    dlr_time_created: '123',
+    dlr_time_published: '2020-11-06T12:47:18.635Z',
+    dlr_time_created: '2020-11-01T12:47:18.635Z',
     dlr_submitter_email: 'Test Testesen',
     dlr_description:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vulputate nunc quis lacus pellentesque congue. ' +
@@ -74,7 +74,7 @@ const mockResourceContributors: Contributor[] = [
     identifier: '07047aa4-ad55-4fb3-9747-f8d64ee69e12',
     features: {
       dlr_contributor_identifier: '07047aa4-ad55-4fb3-9747-f8d64ee69e12',
-      dlr_contributor_name: 'unit',
+      dlr_contributor_name: 'UNIT',
       dlr_contributor_time_created: '2020-11-05T12:47:18.635Z',
       dlr_contributor_type: 'HostingInstitution',
     },

@@ -26,3 +26,8 @@ export const emptyContents: Content[] = [
     features: {},
   },
 ];
+
+export enum resourceType {
+  IMAGE = 'image',
+  VIDEO = 'video',
+}
