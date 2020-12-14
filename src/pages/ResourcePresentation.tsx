@@ -6,6 +6,7 @@ import { Preview } from './ResourcePage';
 import styled from 'styled-components';
 import { StyledContentWrapper } from '../components/styled/Wrappers';
 import ContentPreview from '../components/ContentPreview';
+import LicenseCard from '../components/License';
 
 interface ResourcePresentationProps {
   resource: Resource;
@@ -45,7 +46,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource, preview
           <Typography variant="h4">
             {resource.creators &&
               resource.creators.length !== 0 &&
-              resource.creators.map((creator) => creator.features.dlr_creator_name).join(',')}
+              resource.creators.map((creator) => creator.features.dlr_creator_name).join(', ')}
           </Typography>
         </StyledFeatureWrapper>
 
@@ -53,7 +54,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource, preview
           <Typography variant="h4">
             {resource.contributors &&
               resource.contributors.length !== 0 &&
-              resource.contributors.map((contributor) => contributor.features.dlr_contributor_name).join(',')}
+              resource.contributors.map((contributor) => contributor.features.dlr_contributor_name).join(', ')}
           </Typography>
         </StyledFeatureWrapper>
 
@@ -82,16 +83,22 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource, preview
           </StyledFeatureWrapper>
         )}
 
+        <StyledFeatureWrapper>
+          {resource.licenses &&
+            resource.licenses.length !== 0 &&
+            resource.licenses.map((license) => {
+              return <LicenseCard key={license.identifier} license={license} />;
+            })}
+        </StyledFeatureWrapper>
+
         {/*<ResourceMetadata*/}
         {/*  type={preview.type}*/}
         {/*  category={resource?.features.dlr_subject_nsi_id ? resource.features.dlr_subject_nsi_id : ''}*/}
         {/*  tags={resource.tags}*/}
         {/*/>*/}
-        {/*{resource.licenses && resource.licenses.length !== 0 &&*/}
-        {/*resource.licenses.map((license) => {*/}
-        {/*  return <LicenseCard key={license.identifier} license={license} />;*/}
-        {/*});*/}
-        {/*}*/}
+
+
+
       </StyledPresentationWrapper>
     )
   );
