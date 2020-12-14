@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { RouteProps, useParams } from 'react-router-dom';
-import { Contributor, Creator, Resource } from '../types/resource.types';
+import { Resource } from '../types/resource.types';
 import {
   getResource,
   getResourceContents,
@@ -10,21 +10,13 @@ import {
   getResourceLicenses,
   getResourceTags,
 } from '../api/resourceApi';
-import { CircularProgress, Typography } from '@material-ui/core';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Card from '@material-ui/core/Card';
+import { CircularProgress } from '@material-ui/core';
 import { API_PATHS, API_URL } from '../utils/constants';
-import PreviewComponent from '../components/PreviewComponent';
-import ResourceMetadata from '../components/ResourceMetadata';
-import { useTranslation } from 'react-i18next';
-import LicenseCard from '../components/License';
-import { License } from '../types/license.types';
 import ErrorBanner from '../components/ErrorBanner';
+import ResourcePresentation from './ResourcePresentation';
 
 const StyledPageContent = styled.div`
-  display: grid;
+  display: flex;
   justify-items: center;
 `;
 
@@ -32,39 +24,40 @@ interface resourcePageParamTypes {
   identifier: string;
 }
 
-interface Preview {
+export interface Preview {
   type: string;
-  theSource: string;
+  url: string;
 }
 
+const emptyPreview: Preview = {
+  type: '',
+  url: '',
+};
+
 const ResourcePage: FC<RouteProps> = (props) => {
-  const { t } = useTranslation();
   const { identifier } = useParams<resourcePageParamTypes>();
   const [resource, setResource] = useState<Resource>();
   const [isLoadingResource, setIsLoadingResource] = useState(false);
-  const [creators, setCreators] = useState<Creator[]>([]);
-  const [preview, setPreview] = useState<Preview>({ type: '', theSource: '' });
-  const [tags, setTags] = useState<string[]>([]);
-  const [licenses, setLicenses] = useState<License[]>([]);
-  const [contributors, setContributors] = useState<Contributor[]>([]);
+  const [preview, setPreview] = useState(emptyPreview);
   const [resourceLoadingError, setResourceLoadingError] = useState(false);
 
   useEffect(() => {
     const fetchData = async (identifier: string) => {
       try {
         setIsLoadingResource(true);
-        setResource((await getResource(identifier)).data);
-        setCreators((await getResourceCreators(identifier)).data);
-        setTags((await getResourceTags(identifier)).data);
-        setLicenses((await getResourceLicenses(identifier)).data);
-        setContributors((await getResourceContributors(identifier)).data);
+        const tempResource = (await getResource(identifier)).data;
+        tempResource.contributors = (await getResourceContributors(identifier)).data;
+        tempResource.creators = (await getResourceCreators(identifier)).data;
+        tempResource.tags = (await getResourceTags(identifier)).data;
+        tempResource.licenses = (await getResourceLicenses(identifier)).data;
+        setResource(tempResource);
         const resourceContent = await getResourceContents(identifier);
         const type = resourceContent?.data[0]?.features?.dlr_content_content_type
           ? resourceContent?.data[0]?.features?.dlr_content_content_type
           : '';
         setPreview({
           type,
-          theSource: `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${resourceContent?.data[0]?.identifier}/delivery?jwt=${localStorage.token}`,
+          url: `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${resourceContent?.data[0]?.identifier}/delivery?jwt=${localStorage.token}`,
         });
         setResourceLoadingError(false);
       } catch (error) {
@@ -83,65 +76,7 @@ const ResourcePage: FC<RouteProps> = (props) => {
     <StyledPageContent>
       {isLoadingResource && <CircularProgress />}
       {resourceLoadingError && <ErrorBanner />}
-      {!isLoadingResource && !resourceLoadingError && (
-        <Typography variant="h1">{resource?.features?.dlr_title}</Typography>
-      )}
-      {preview.theSource !== '' && <>{preview && <PreviewComponent preview={preview} />}</>}
-      <Card>
-        {creators.length !== 0 && (
-          <List>
-            {creators.map((creator) => {
-              return (
-                <ListItem key={creator.identifier}>
-                  <ListItemText>
-                    {t('resource.metadata.creator')}: {creator.features.dlr_creator_name}
-                  </ListItemText>
-                </ListItem>
-              );
-            })}
-          </List>
-        )}
-        {!isLoadingResource && (
-          <>
-            {resource?.features.dlr_time_published && (
-              <Typography variant="body2">
-                {t('resource.metadata.published')}: {resource.features.dlr_time_published}
-              </Typography>
-            )}
-            {resource?.features.dlr_time_created && (
-              <Typography variant="body2">
-                {t('resource.metadata.created')}: {resource.features.dlr_time_created}
-              </Typography>
-            )}
-            {resource?.features.dlr_submitter_email && (
-              <Typography variant="body2">
-                {t('resource.metadata.owner')}: {resource.features.dlr_submitter_email}
-              </Typography>
-            )}
-            {resource?.features.dlr_description && (
-              <Typography variant="body2">{resource.features.dlr_description}</Typography>
-            )}
-          </>
-        )}
-        {contributors.map((contributor) => {
-          return (
-            <div key={contributor.features.dlr_contributor_identifier}>
-              <Typography>{contributor.features.dlr_contributor_name}</Typography>
-              <Typography>{contributor.features.dlr_contributor_type}</Typography>
-            </div>
-          );
-        })}
-
-        <ResourceMetadata
-          type={preview.type}
-          category={resource?.features.dlr_subject_nsi_id ? resource.features.dlr_subject_nsi_id : ''}
-          tags={tags}
-        />
-      </Card>
-      {licenses.length !== 0 &&
-        licenses.map((license) => {
-          return <LicenseCard key={license.identifier} license={license} />;
-        })}
+      {resource && <ResourcePresentation resource={resource} preview={preview} />}
     </StyledPageContent>
   );
 };

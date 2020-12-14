@@ -1,40 +1,30 @@
 import React, { FC, useEffect, useState } from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
+import { Preview } from '../pages/ResourcePage';
 
 const imageType = 'image';
 const videoType = 'video';
-
-interface Preview {
-  type: string;
-  theSource: string;
-}
 
 interface PreviewComponentProps {
   preview: Preview;
 }
 
-const PreviewComponent: FC<PreviewComponentProps> = (props) => {
+const PreviewComponent: FC<PreviewComponentProps> = ({ preview }) => {
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  useEffect(() => {
-    if (props != null) {
-      setIsLoading(false);
-    }
-  }, [props]);
 
   const getPreviewModeBaseOnType = () => {
     //todo: inline i JSX
-    if (props.preview.type === imageType) {
+    if (preview.type === imageType) {
       return (
         <>
-          <img src={props.preview.theSource} width="400px" height="300px" alt="Preview of resource" />
+          <img src={preview.url} width="400px" height="300px" alt="Preview of resource" />
         </>
       );
-    } else if (props.preview.type === videoType) {
+    } else if (preview.type === videoType) {
       return (
         <>
-          <video width="400px" height="300px" src={props.preview.theSource} controls />
+          <video width="400px" height="300px" src={preview.url} controls />
         </>
       );
     } else {
@@ -42,9 +32,7 @@ const PreviewComponent: FC<PreviewComponentProps> = (props) => {
     }
   };
 
-  return (
-    <>{!isLoading ? <div style={{ minHeight: '300px' }}>{getPreviewModeBaseOnType()}</div> : <CircularProgress />}</>
-  );
+  return <div style={{ minHeight: '300px' }}>{getPreviewModeBaseOnType()}</div>;
 };
 
 export default PreviewComponent;
