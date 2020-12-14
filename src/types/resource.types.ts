@@ -157,3 +157,18 @@ export enum ResourceFeatureTypes {
 export interface ResourceWrapper {
   resource: Resource;
 }
+
+export enum ResourceFeatureNames {
+  type = 'dlr_type',
+  title = 'dlr_title',
+  description = 'dlr_description',
+}
+export enum ContributorFeatureNames {
+  Type = 'dlr_contributor_type',
+  Name = 'dlr_contributor_name',
+  Institution = 'institution',
+}
+
+export enum CreatorFeatureAttributes {
+  name = 'dlr_creator_name',
+}

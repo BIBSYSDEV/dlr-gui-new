@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField } from '@material-ui/core';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
-import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
+import { StyledContentWrapper, StyledSchemaPart, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
 import TagsField from './TagsField';
 import { postResourceFeature } from '../api/resourceApi';
@@ -60,7 +60,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
         </StyledContentWrapper>
         {saveErrorFields.includes(descriptionFieldNames.TITLE) && <ErrorBanner />}
       </StyledSchemaPartColored>
-      <StyledSchemaPartColored color={Colors.Background}>
+      <StyledSchemaPart>
         <StyledContentWrapper>
           <Field name="resource.features.dlr_description">
             {({ field, meta: { error } }: FieldProps) => (
@@ -80,7 +80,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
           </Field>
         </StyledContentWrapper>
         {saveErrorFields.includes(descriptionFieldNames.DESCRIPTION) && <ErrorBanner />}
-      </StyledSchemaPartColored>
+      </StyledSchemaPart>
       <ResourceTypeField setAllChangesSaved={setAllChangesSaved} />
       <TagsField setAllChangesSaved={setAllChangesSaved} />
     </>

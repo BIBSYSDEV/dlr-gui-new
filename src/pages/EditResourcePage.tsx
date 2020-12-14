@@ -8,7 +8,14 @@ import LinkResource from './LinkResource';
 import UploadRegistration from './UploadRegistration';
 import { CircularProgress, Typography } from '@material-ui/core';
 import PrivateRoute from '../utils/routes/PrivateRoute';
-import { Resource, ResourceCreationType, ResourceFeatureTypes } from '../types/resource.types';
+import {
+  ContributorFeatureNames,
+  CreatorFeatureAttributes,
+  Resource,
+  ResourceCreationType,
+  ResourceFeatureNames,
+  ResourceFeatureTypes,
+} from '../types/resource.types';
 import useUppy from '../utils/useUppy';
 import { toast } from 'react-toastify';
 import {
@@ -40,20 +47,6 @@ interface EditResourcePageParamTypes {
   resourceIdentifierFromParam: string;
 }
 
-enum ResourceFeatureNames {
-  type = 'dlr_type',
-  title = 'dlr_title',
-  description = 'dlr_description',
-}
-enum contributorFeatureNames {
-  Type = 'dlr_contributor_type',
-  Name = 'dlr_contributor_name',
-  Institution = 'institution',
-}
-
-enum creatorFeatureAttributes {
-  name = 'dlr_creator_name',
-}
 const StyledContentWrapper = styled.div`
   max-width: ${({ theme }) => theme.breakpoints.values.lg + 'px'};
 `;
@@ -82,27 +75,77 @@ const EditResourcePage: FC = () => {
     try {
       setIsLoadingResource(true);
       const createResourceResponse = await createResource(ResourceCreationType.LINK, url);
-      getResourceInit(createResourceResponse.data, ResourceCreationType.LINK);
+      await getResourceInit(createResourceResponse.data, ResourceCreationType.LINK);
     } catch (error) {
       setResourceInitError(true);
       setIsLoadingResource(false);
     }
   };
 
+  const resourceHasKnownType = (resource: Resource): boolean => {
+    if (!resource.features.dlr_type) {
+      return false;
+    } else {
+      switch (resource.features.dlr_type) {
+        case ResourceFeatureTypes.audio:
+        case ResourceFeatureTypes.document:
+        case ResourceFeatureTypes.image:
+        case ResourceFeatureTypes.presentation:
+        case ResourceFeatureTypes.simulation:
+        case ResourceFeatureTypes.video:
+          return true;
+        default:
+          return false;
+      }
+    }
+  };
+
+  const setResourceTypeAsDocument = async (tempResouce: Resource, resourceIdentifier: string) => {
+    try {
+      await postResourceFeature(resourceIdentifier, ResourceFeatureNames.type, ResourceFeatureTypes.document);
+      tempResouce.features.dlr_type = ResourceFeatureTypes.document;
+    } catch (error) {
+      setResourceInitError(true);
+    }
+  };
+
+  const setAddCreatorIdentifier = async (
+    tempResource: Resource,
+    resourceIdentifier: string,
+    mainCreatorName: string
+  ) => {
+    const postCreatorResponse = await postResourceCreator(resourceIdentifier);
+    await putResourceCreatorFeature(
+      resourceIdentifier,
+      postCreatorResponse.data.identifier,
+      CreatorFeatureAttributes.name,
+      mainCreatorName
+    );
+    tempResource.creators = [
+      {
+        identifier: postCreatorResponse.data.identifier,
+        features: {
+          dlr_creator_identifier: postCreatorResponse.data.identifier,
+          dlr_creator_name: mainCreatorName,
+        },
+      },
+    ];
+  };
+
   const getResourceInit = async (startingResource: Resource, resourceCreationType: ResourceCreationType) => {
     try {
       setShowForm(true);
       const contributorResponse = await createContributor(startingResource.identifier);
-      putContributorFeature(
+      await putContributorFeature(
         startingResource.identifier,
         contributorResponse.data.features.dlr_contributor_identifier,
-        contributorFeatureNames.Type,
-        contributorFeatureNames.Institution
+        ContributorFeatureNames.Type,
+        ContributorFeatureNames.Institution
       );
-      putContributorFeature(
+      await putContributorFeature(
         startingResource.identifier,
         contributorResponse.data.features.dlr_contributor_identifier,
-        contributorFeatureNames.Name,
+        ContributorFeatureNames.Name,
         user.institution
       );
 
@@ -116,36 +159,16 @@ const EditResourcePage: FC = () => {
             features: {
               dlr_contributor_identifier: contributorResponse.data.identifier,
               dlr_contributor_name: user.institution,
-              dlr_contributor_type: contributorFeatureNames.Institution,
+              dlr_contributor_type: ContributorFeatureNames.Institution,
             },
           },
         ],
         licenses: [emptyLicense],
         tags: [],
       };
-      if (
-        resourceCreationType === ResourceCreationType.FILE &&
-        tempResource.features?.dlr_content &&
-        tempResource.features?.dlr_type
-      ) {
-        switch (tempResource.features.dlr_type) {
-          case ResourceFeatureTypes.audio:
-          case ResourceFeatureTypes.document:
-          case ResourceFeatureTypes.image:
-          case ResourceFeatureTypes.presentation:
-          case ResourceFeatureTypes.simulation:
-          case ResourceFeatureTypes.video:
-            break;
-          default:
-            tempResource.features.dlr_type = ResourceFeatureTypes.document;
-            postResourceFeature(startingResource.identifier, ResourceFeatureNames.type, ResourceFeatureTypes.document);
-            break;
-        }
-      } else {
-        tempResource.features.dlr_type = ResourceFeatureTypes.document;
-        postResourceFeature(startingResource.identifier, ResourceFeatureNames.type, ResourceFeatureTypes.document);
+      if (!resourceHasKnownType(tempResource)) {
+        await setResourceTypeAsDocument(tempResource, startingResource.identifier);
       }
-
       if (
         !responseWithCalculatedDefaults.data.creators?.[0]?.identifier &&
         responseWithCalculatedDefaults.data.creators?.[0]?.features.dlr_creator_name
@@ -153,22 +176,7 @@ const EditResourcePage: FC = () => {
         const mainCreatorName = responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
           ? responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
           : '';
-        const postCreatorResponse = await postResourceCreator(startingResource.identifier);
-        putResourceCreatorFeature(
-          startingResource.identifier,
-          postCreatorResponse.data.identifier,
-          creatorFeatureAttributes.name,
-          mainCreatorName
-        );
-        tempResource.creators = [
-          {
-            identifier: postCreatorResponse.data.identifier,
-            features: {
-              dlr_creator_identifier: postCreatorResponse.data.identifier,
-              dlr_creator_name: mainCreatorName,
-            },
-          },
-        ];
+        await setAddCreatorIdentifier(tempResource, startingResource.identifier, mainCreatorName);
       }
       setFormikInitResource(tempResource);
       setResourceInitError(false);

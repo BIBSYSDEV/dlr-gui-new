@@ -33,7 +33,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
   const { values, setFieldTouched, setFieldValue, handleChange, resetForm } = useFormikContext<ResourceWrapper>();
   const { t } = useTranslation();
 
-  const saveField = async (event: any) => {
+  const saveResourceType = async (event: any) => {
     if (event.target.value.length > 0) {
       setAllChangesSaved(false);
       try {
@@ -69,7 +69,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                 }}
                 onChange={(event) => {
                   handleChange(event);
-                  saveField(event);
+                  saveResourceType(event);
                 }}>
                 <StyledMenuItem value={ResourceFeatureTypes.audio}>
                   <ListItemIcon>
