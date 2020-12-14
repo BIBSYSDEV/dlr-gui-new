@@ -2,8 +2,7 @@ import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField } from '@material-ui/core';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
-import { StyledContentWrapper, StyledSchemaPart, StyledSchemaPartColored } from '../components/styled/Wrappers';
-import { Colors } from '../themes/mainTheme';
+import { StyledContentWrapper, StyledSchemaPart } from '../components/styled/Wrappers';
 import TagsField from './TagsField';
 import { postResourceFeature } from '../api/resourceApi';
 import { ResourceWrapper } from '../types/resource.types';
@@ -39,7 +38,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
 
   return (
     <>
-      <StyledSchemaPartColored color={Colors.Background}>
+      <StyledSchemaPart>
         <StyledContentWrapper>
           <Field name="resource.features.dlr_title">
             {({ field, meta: { touched, error } }: FieldProps) => (
@@ -59,7 +58,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
           </Field>
         </StyledContentWrapper>
         {saveErrorFields.includes(descriptionFieldNames.TITLE) && <ErrorBanner />}
-      </StyledSchemaPartColored>
+      </StyledSchemaPart>
       <StyledSchemaPart>
         <StyledContentWrapper>
           <Field name="resource.features.dlr_description">
