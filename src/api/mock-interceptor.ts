@@ -224,7 +224,6 @@ export const interceptRequestsOnMock = () => {
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources`)).reply(200, emptyResource);
 
   //DEFAULTS
-  //mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*/tags/types/tags`)).reply(200, mockTags);
   mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*`)).reply(200, mockCalculatedResource);
 
   // USER
