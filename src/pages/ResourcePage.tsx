@@ -11,7 +11,6 @@ import {
   getResourceTags,
 } from '../api/resourceApi';
 import { CircularProgress } from '@material-ui/core';
-import { API_PATHS, API_URL } from '../utils/constants';
 import ErrorBanner from '../components/ErrorBanner';
 import ResourcePresentation from './ResourcePresentation';
 
@@ -27,21 +26,10 @@ interface resourcePageParamTypes {
   identifier: string;
 }
 
-export interface Preview {
-  type: string;
-  url: string;
-}
-
-const emptyPreview: Preview = {
-  type: '',
-  url: '',
-};
-
 const ResourcePage: FC<RouteProps> = (props) => {
   const { identifier } = useParams<resourcePageParamTypes>();
   const [resource, setResource] = useState<Resource>();
   const [isLoadingResource, setIsLoadingResource] = useState(false);
-  const [preview, setPreview] = useState(emptyPreview);
   const [resourceLoadingError, setResourceLoadingError] = useState(false);
 
   useEffect(() => {
@@ -54,14 +42,7 @@ const ResourcePage: FC<RouteProps> = (props) => {
         tempResource.tags = (await getResourceTags(identifier)).data;
         tempResource.licenses = (await getResourceLicenses(identifier)).data;
         setResource(tempResource);
-        const resourceContent = await getResourceContents(identifier);
-        const type = resourceContent?.data[0]?.features?.dlr_content_content_type
-          ? resourceContent?.data[0]?.features?.dlr_content_content_type
-          : '';
-        setPreview({
-          type,
-          url: `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${resourceContent?.data[0]?.identifier}/delivery?jwt=${localStorage.token}`,
-        });
+        tempResource.contents = (await getResourceContents(identifier)).data;
         setResourceLoadingError(false);
       } catch (error) {
         setResourceLoadingError(true);
@@ -79,7 +60,7 @@ const ResourcePage: FC<RouteProps> = (props) => {
     <StyledPageContent>
       {isLoadingResource && <CircularProgress />}
       {resourceLoadingError && <ErrorBanner />}
-      {resource && <ResourcePresentation resource={resource} preview={preview} />}
+      {resource && <ResourcePresentation resource={resource} />}
     </StyledPageContent>
   );
 };

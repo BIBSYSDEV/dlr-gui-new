@@ -1,17 +1,13 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Resource } from '../types/resource.types';
 import { Chip, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import { Preview } from './ResourcePage';
 import styled from 'styled-components';
 import { StyledContentWrapper } from '../components/styled/Wrappers';
 import ContentPreview from '../components/ContentPreview';
 import LicenseCard from '../components/License';
-
-interface ResourcePresentationProps {
-  resource: Resource;
-  preview: Preview;
-}
+import { API_PATHS, API_URL } from '../utils/constants';
+import { emptyPreview } from '../types/content.types';
 
 const PreviewComponentWrapper = styled.div`
   margin: 1rem 0;
@@ -35,17 +31,37 @@ const StyledChip = styled(Chip)`
   margin-top: 0.5rem;
 `;
 
-const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource, preview }) => {
+interface ResourcePresentationProps {
+  resource: Resource;
+}
+
+const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
   const { t } = useTranslation();
+  const [preview, setPreview] = useState(emptyPreview);
+
+  useEffect(() => {
+    if (resource.contents) {
+      const masterContent = resource.contents.find((content) => content.features.dlr_content_default === 'true');
+      if (masterContent) {
+        const type = masterContent.features.dlr_content_content_type ?? '';
+        setPreview({
+          type,
+          url: `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${masterContent.identifier}/delivery?jwt=${localStorage.token}`,
+        });
+      }
+    }
+  }, [resource.contents]);
 
   return (
     resource && (
       <StyledPresentationWrapper>
         <Typography variant="h1">{resource.features?.dlr_title}</Typography>
 
-        <PreviewComponentWrapper>
-          <ContentPreview preview={preview} />
-        </PreviewComponentWrapper>
+        {preview && (
+          <PreviewComponentWrapper>
+            <ContentPreview preview={preview} />
+          </PreviewComponentWrapper>
+        )}
 
         {resource.creators && resource.creators.length !== 0 && (
           <StyledFeatureWrapper>
