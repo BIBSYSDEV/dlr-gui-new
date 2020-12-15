@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { StyledContentWrapper } from '../components/styled/Wrappers';
 import ContentPreview from '../components/ContentPreview';
-import LicenseCard from '../components/License';
+import LicenseCard from '../components/LicenseCard';
 import { API_PATHS, API_URL } from '../utils/constants';
 import { emptyPreview } from '../types/content.types';
 

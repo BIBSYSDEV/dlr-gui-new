@@ -16,7 +16,7 @@ const StyledCard = styled(Card)`
   padding-top: 1rem;
 `;
 
-export const LicenseCard: FC<LicenseProps> = (props) => {
+const LicenseCard: FC<LicenseProps> = (props) => {
   const { t } = useTranslation();
   const language = i18next.language;
   return (
