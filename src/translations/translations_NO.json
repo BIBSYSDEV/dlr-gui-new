@@ -85,6 +85,15 @@
     "start_with_link_to_resource": "Start registrering med en lenke",
     "start_with_uploading_file": "Last opp fil hvis ressursen skal publiseres på Internett for første gang",
     "submit_link": "Start registrering",
+    "type": {
+      "resource_type": "Ressurstype",
+      "audio": "Lyd",
+      "document": "Dokument",
+      "image": "Bilde",
+      "presentation": "Presentasjon",
+      "simulation": "Simulasjon",
+      "video": "Video"
+    },
     "unpublished_resources": "Upubliserte ressurser"
   },
   "user": {

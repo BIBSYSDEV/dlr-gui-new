@@ -96,6 +96,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
     resource: Yup.object().shape({
       features: Yup.object().shape({
         dlr_title: Yup.string().required(t('feedback.required_field')),
+        dlr_type: Yup.string().required(t('feedback.required_field')).min(1, t('feedback.required_field')),
       }),
       creators: Yup.array().of(
         Yup.object().shape({

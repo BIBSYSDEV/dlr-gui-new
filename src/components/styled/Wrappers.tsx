@@ -31,7 +31,7 @@ export const StyledNormalTextPreWrapped = styled(NormalText)`
   white-space: pre-wrap;
 `;
 
-const StyledSchemaPart = styled.div`
+export const StyledSchemaPart = styled.div`
   padding: 2rem 1rem;
   display: flex;
   flex-direction: column;
