@@ -26,3 +26,18 @@ export const emptyContents: Content[] = [
     features: {},
   },
 ];
+
+export enum resourceType {
+  IMAGE = 'image',
+  VIDEO = 'video',
+}
+
+export interface Preview {
+  type: string;
+  url: string;
+}
+
+export const emptyPreview: Preview = {
+  type: '',
+  url: '',
+};

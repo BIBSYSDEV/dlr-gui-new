@@ -25,14 +25,22 @@ const mockResource: Resource = {
     },
   ],
   features: {
-    dlr_title: 'MockTitle',
+    dlr_title: 'This is a mocked title',
+    dlr_time_published: '2020-11-06T12:47:18.635Z',
+    dlr_time_created: '2020-11-01T12:47:18.635Z',
+    dlr_submitter_email: 'Test Testesen',
+    dlr_description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vulputate nunc quis lacus pellentesque congue. ' +
+      'Duis id vulputate ex. Praesent elit erat, viverra ac eleifend a, porttitor accumsan nulla. Suspendisse vitae ' +
+      'maximus ligula. Sed auctor elit non sapien sagittis molestie. Pellentesque habitant morbi tristique senectus ' +
+      'et netus et malesuada fames.',
   },
   identifier: 'resource-123',
 };
 
 const mockCalculatedResource: Resource = {
   features: {
-    dlr_title: 'MockTitle',
+    dlr_title: 'This is a mocked generated title',
   },
   identifier: 'resource-345',
 };
@@ -66,7 +74,7 @@ const mockResourceContributors: Contributor[] = [
     identifier: '07047aa4-ad55-4fb3-9747-f8d64ee69e12',
     features: {
       dlr_contributor_identifier: '07047aa4-ad55-4fb3-9747-f8d64ee69e12',
-      dlr_contributor_name: 'unit',
+      dlr_contributor_name: 'UNIT',
       dlr_contributor_time_created: '2020-11-05T12:47:18.635Z',
       dlr_contributor_type: 'HostingInstitution',
     },
@@ -147,7 +155,7 @@ const mockCreateUpload = { uploadId: 'asd', key: 'sfd' };
 const mockPrepareUpload = { url: `${API_PATHS.guiBackendResourcesContentPath}/xxx` };
 const mockCompleteUpload = {};
 
-const mockTags: string[] = ['mock tag'];
+const mockTags: string[] = ['mock tag1', 'mock tag2'];
 
 // AXIOS INTERCEPTOR
 export const interceptRequestsOnMock = () => {
@@ -195,8 +203,8 @@ export const interceptRequestsOnMock = () => {
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*`)).reply(202, {});
 
   //RESOURCE TAGS
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/tags/types/tag`)).reply(200, mockTags);
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/tags/.*/types/tag`)).reply(202);
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*/tags/types/tags`)).reply(200, mockTags);
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/tags/.*/types/tag`)).reply(202);
 
   //RESOURCE CONTRIBUTORS
@@ -216,7 +224,6 @@ export const interceptRequestsOnMock = () => {
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources`)).reply(200, emptyResource);
 
   //DEFAULTS
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*/tags/types/tags`)).reply(200, mockTags);
   mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*`)).reply(200, mockCalculatedResource);
 
   // USER
