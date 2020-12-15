@@ -155,7 +155,7 @@ const mockCreateUpload = { uploadId: 'asd', key: 'sfd' };
 const mockPrepareUpload = { url: `${API_PATHS.guiBackendResourcesContentPath}/xxx` };
 const mockCompleteUpload = {};
 
-const mockTags: string[] = ['mock tag'];
+const mockTags: string[] = ['mock tag1', 'mock tag2'];
 
 // AXIOS INTERCEPTOR
 export const interceptRequestsOnMock = () => {
@@ -203,8 +203,8 @@ export const interceptRequestsOnMock = () => {
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*`)).reply(202, {});
 
   //RESOURCE TAGS
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/tags/types/tag`)).reply(200, mockTags);
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/tags/.*/types/tag`)).reply(202);
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*/tags/types/tags`)).reply(200, mockTags);
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/tags/.*/types/tag`)).reply(202);
 
   //RESOURCE CONTRIBUTORS
@@ -224,7 +224,7 @@ export const interceptRequestsOnMock = () => {
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources`)).reply(200, emptyResource);
 
   //DEFAULTS
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*/tags/types/tags`)).reply(200, mockTags);
+  //mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*/tags/types/tags`)).reply(200, mockTags);
   mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*`)).reply(200, mockCalculatedResource);
 
   // USER
