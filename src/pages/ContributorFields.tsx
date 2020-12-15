@@ -11,8 +11,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
 import ErrorBanner from '../components/ErrorBanner';
-import i18next from 'i18next';
-import { contributorTypeList, contributorTypes } from '../types/contributor.types';
+import contributorTypeList from '../resources/assets/contributorTypeList.json';
 
 const StyledFieldsWrapper = styled.div`
   display: flex;
@@ -34,13 +33,31 @@ enum ErrorIndex {
   NO_ERRORS = -1,
 }
 
+interface contributorTypesTranslated {
+  key: string;
+  description: string;
+}
+
+const generateContributorTypesTranslated = (t: any) => {
+  const contributorTypesTranslatedTemp: contributorTypesTranslated[] = [];
+  contributorTypeList.forEach((contributorType) => {
+    contributorTypesTranslatedTemp.push({
+      key: contributorType,
+      description: t(`resource.contributor_type.${contributorType}`),
+    });
+  });
+  return contributorTypesTranslatedTemp.sort((contributorType1, contributorType2) =>
+    contributorType1.description.localeCompare(contributorType2.description)
+  );
+};
+
 const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, handleBlur, resetForm, handleChange, setFieldTouched } = useFormikContext<ResourceWrapper>();
   const [addContributorError, setAddContributorError] = useState(false);
   const [updateContributorError, setUpdateContributorError] = useState(false);
   const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
-  const language = i18next.language;
+  const [contributorTypesTranslated] = useState<contributorTypesTranslated[]>(generateContributorTypesTranslated(t));
 
   const addContributor = async (arrayHelpers: FieldArrayRenderProps) => {
     setAllChangesSaved(false);
@@ -88,18 +105,6 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
     } finally {
       setAllChangesSaved(true);
     }
-  };
-
-  const sortContributorTypesByLanguage = () => {
-    return contributorTypeList.sort(
-      (contributorTypeItem1: contributorTypes, contributorTypeItem2: contributorTypes) => {
-        if (language.includes('NO')) {
-          return contributorTypeItem1.norwegianDescription.localeCompare(contributorTypeItem2.norwegianDescription);
-        } else {
-          return contributorTypeItem1.englishDescription.localeCompare(contributorTypeItem2.englishDescription);
-        }
-      }
-    );
   };
 
   const removeContributor = async (
@@ -155,14 +160,10 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                             handleChange(event);
                             saveContributorField(event, contributor.identifier, index);
                           }}>
-                          {sortContributorTypesByLanguage().map((contributorType) => {
+                          {contributorTypesTranslated.map((contributorType, index) => {
                             return (
-                              <MenuItem key={contributorType.shortHand} value={contributorType.shortHand}>
-                                <Typography variant="inherit">
-                                  {language.includes('NO')
-                                    ? contributorType.norwegianDescription
-                                    : contributorType.englishDescription}
-                                </Typography>
+                              <MenuItem key={index} value={contributorType.key}>
+                                <Typography variant="inherit">{contributorType.description}</Typography>
                               </MenuItem>
                             );
                           })}
