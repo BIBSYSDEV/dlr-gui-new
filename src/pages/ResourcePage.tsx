@@ -19,7 +19,6 @@ const StyledPageContent = styled.div`
   justify-items: center;
   margin-top: 2rem;
   align-items: center;
-  margin-top: 2rem;
 `;
 
 interface resourcePageParamTypes {

@@ -26,6 +26,10 @@ const StyledFeatureWrapper = styled.div`
   padding: 0.5rem 0;
 `;
 
+const StyledCaption = styled(Typography)`
+  display: block;
+`;
+
 const StyledChip = styled(Chip)`
   margin-right: 0.5rem;
   margin-top: 0.5rem;
@@ -55,7 +59,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
   return (
     resource && (
       <StyledPresentationWrapper>
-        <Typography variant="h1">{resource.features?.dlr_title}</Typography>
+        <Typography variant="h4">{resource.features?.dlr_title}</Typography>
 
         {preview && (
           <PreviewComponentWrapper>
@@ -65,7 +69,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
 
         {resource.creators && resource.creators.length !== 0 && (
           <StyledFeatureWrapper>
-            <Typography variant="h4">
+            <Typography variant="h6">
               {resource.creators.map((creator) => creator.features.dlr_creator_name).join(', ')}
             </Typography>
           </StyledFeatureWrapper>
@@ -73,7 +77,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
 
         {resource.contributors && resource.contributors.length !== 0 && (
           <StyledFeatureWrapper>
-            <Typography variant="h4">
+            <Typography variant="subtitle1">
               {resource.contributors.map((contributor) => contributor.features.dlr_contributor_name).join(', ')}
             </Typography>
           </StyledFeatureWrapper>
@@ -81,35 +85,35 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
 
         {resource.features.dlr_time_published && (
           <StyledFeatureWrapper>
-            <Typography variant="body2">{t('resource.metadata.published')}</Typography>
-            <Typography variant="h6">{resource.features.dlr_time_published}</Typography>
+            <StyledCaption variant="caption">{t('resource.metadata.published')}</StyledCaption>
+            <Typography variant="body1">{resource.features.dlr_time_published}</Typography>
           </StyledFeatureWrapper>
         )}
 
         {resource.features.dlr_time_created && (
           <StyledFeatureWrapper>
-            <Typography variant="body2">{t('resource.metadata.created')}</Typography>
-            <Typography variant="h6">{resource.features.dlr_time_created}</Typography>
+            <StyledCaption variant="caption">{t('resource.metadata.created')}</StyledCaption>
+            <Typography variant="body1">{resource.features.dlr_time_created}</Typography>
           </StyledFeatureWrapper>
         )}
 
         {resource.features.dlr_submitter_email && (
           <StyledFeatureWrapper>
-            <Typography variant="body2">{t('resource.metadata.owner')}</Typography>
-            <Typography variant="h6">{resource.features.dlr_submitter_email}</Typography>
+            <StyledCaption variant="caption">{t('resource.metadata.owner')}</StyledCaption>
+            <Typography variant="body1">{resource.features.dlr_submitter_email}</Typography>
           </StyledFeatureWrapper>
         )}
 
         {resource.features.dlr_description && (
           <StyledFeatureWrapper>
-            <Typography variant="body2">{t('resource.metadata.description')}</Typography>
-            <Typography variant="h6">{resource.features.dlr_description}</Typography>
+            <StyledCaption variant="caption">{t('resource.metadata.description')}</StyledCaption>
+            <Typography variant="body1">{resource.features.dlr_description}</Typography>
           </StyledFeatureWrapper>
         )}
 
         {resource.tags && resource.tags.length !== 0 && (
           <StyledFeatureWrapper>
-            <Typography variant="body2">{t('resource.metadata.tags')}</Typography>
+            <StyledCaption variant="caption">{t('resource.metadata.tags')}</StyledCaption>
             {resource.tags.map((tag, index) => (
               <StyledChip key={index} size="medium" label={tag} />
             ))}
@@ -118,7 +122,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
 
         {resource.licenses && resource.licenses.length !== 0 && (
           <StyledFeatureWrapper>
-            <Typography variant="body2">{t('resource.metadata.license')}</Typography>
+            <StyledCaption variant="caption">{t('resource.metadata.license')}</StyledCaption>
             {resource.licenses.map((license) => (
               <LicenseCard key={license.identifier} license={license} />
             ))}
