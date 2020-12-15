@@ -221,6 +221,7 @@ export const interceptRequestsOnMock = () => {
 
   // USER
   mock.onGet(new RegExp(`${API_PATHS.guiBackendUsersPath}/users/authorized`)).reply(200, mockUser);
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendLoginPath}/logout`)).reply(200);
 
   //TOKEN
   mock.onGet(new RegExp(`${API_PATHS.guiBackendLoginPath}/anonymous.*`)).reply(200, mockToken);
