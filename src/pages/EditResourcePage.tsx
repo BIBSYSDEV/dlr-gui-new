@@ -140,7 +140,7 @@ const EditResourcePage: FC = () => {
         startingResource.identifier,
         contributorResponse.data.features.dlr_contributor_identifier,
         ContributorFeatureNames.Type,
-        ContributorFeatureNames.Institution
+        'HostingInstitution'
       );
       await putContributorFeature(
         startingResource.identifier,
@@ -159,7 +159,7 @@ const EditResourcePage: FC = () => {
             features: {
               dlr_contributor_identifier: contributorResponse.data.identifier,
               dlr_contributor_name: user.institution,
-              dlr_contributor_type: ContributorFeatureNames.Institution,
+              dlr_contributor_type: 'HostingInstitution',
             },
           },
         ],
