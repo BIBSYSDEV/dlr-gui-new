@@ -18,7 +18,7 @@ interface ResourceWrapper {
   resource: Resource;
 }
 
-const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, licenses }) => {
+const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, licenses }) => {
   const { t } = useTranslation();
   const { values, setFieldValue, setFieldTouched, resetForm } = useFormikContext<ResourceWrapper>();
   const [savingLicenseError, setSavingLicensesError] = useState(false);
@@ -45,42 +45,44 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
   };
 
   return (
-    <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor1}>
-      <StyledContentWrapper>
-        <Typography variant="h4">{t('resource.metadata.license')}</Typography>
-        {licenses && (
-          <Field name="resource.licenses[0]">
-            {({ field, meta: { error, touched } }: FieldProps) => (
-              <>
-                <TextField
-                  select
-                  required
-                  label={t('resource.metadata.license')}
-                  variant="outlined"
-                  value={field.value.identifier}
-                  error={touched && !!error}
-                  fullWidth
-                  onBlur={(event) => {
-                    setFieldTouched('resource.licenses[0]', true, true);
-                  }}
-                  onChange={(event) => {
-                    saveField(event);
-                  }}>
-                  {licenses.map((license) => (
-                    <MenuItem key={license.identifier} value={license.identifier}>
-                      {license.features?.dlr_license_code}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
-                {savingLicenseError && <ErrorBanner />}
-              </>
-            )}
-          </Field>
-        )}
-      </StyledContentWrapper>
-    </StyledSchemaPartColored>
+    <>
+      <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor3}>
+        <StyledContentWrapper>
+          <Typography variant="h4">{t('resource.metadata.license')}</Typography>
+          {licenses && (
+            <Field name="resource.licenses[0]">
+              {({ field, meta: { error, touched } }: FieldProps) => (
+                <>
+                  <TextField
+                    select
+                    required
+                    label={t('resource.metadata.license')}
+                    variant="outlined"
+                    value={field.value.identifier}
+                    error={touched && !!error}
+                    fullWidth
+                    onBlur={(event) => {
+                      setFieldTouched('resource.licenses[0]', true, true);
+                    }}
+                    onChange={(event) => {
+                      saveField(event);
+                    }}>
+                    {licenses.map((license) => (
+                      <MenuItem key={license.identifier} value={license.identifier}>
+                        {license.features?.dlr_license_code}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
+                  {savingLicenseError && <ErrorBanner />}
+                </>
+              )}
+            </Field>
+          )}
+        </StyledContentWrapper>
+      </StyledSchemaPartColored>
+    </>
   );
 };
 
-export default LicenseAndAccessFields;
+export default LicenseFields;
