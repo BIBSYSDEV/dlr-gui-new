@@ -12,7 +12,6 @@ import { StyledContentWrapper, StyledSchemaPartColored } from '../components/sty
 import { Colors } from '../themes/mainTheme';
 import ErrorBanner from '../components/ErrorBanner';
 import contributorTypeList from '../resources/assets/contributorTypeList.json';
-import i18next from 'i18next';
 
 const StyledFieldsWrapper = styled.div`
   display: flex;
@@ -64,7 +63,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
 
   useEffect(() => {
     setContributorTypesTranslated(generateContributorTypesTranslated(t));
-  }, [i18next.language]);
+  }, [t]);
 
   const addContributor = async (arrayHelpers: FieldArrayRenderProps) => {
     setAllChangesSaved(false);
