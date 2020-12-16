@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Typography } from '@material-ui/core';
 import { License } from '../types/license.types';
 import i18next from 'i18next';
