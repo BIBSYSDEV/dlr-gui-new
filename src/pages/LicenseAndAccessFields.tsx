@@ -8,7 +8,12 @@ import { License } from '../types/license.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
 import ErrorBanner from '../components/ErrorBanner';
-import LicenseList from '../components/LicenseList';
+import LicenseCard from '../components/LicenseCard';
+import styled from 'styled-components';
+
+const StyledWrapper = styled.div`
+  margin-top: 1rem;
+`;
 
 interface LicenseAndAccessFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -79,14 +84,12 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
             )}
           </Field>
         )}
-        <LicenseList
-          licenseList={licenses}
-          selectedLicenseIndex={
-            values.resource.licenses?.[0]
-              ? licenses.findIndex((license) => license.identifier === values.resource.licenses?.[0].identifier)
-              : -1
-          }
-        />
+        {values.resource.licenses?.[0] && values.resource.licenses?.[0].identifier.length > 1 && (
+          <StyledWrapper>
+            <Typography variant="h6">{t('license.selected_license')}</Typography>
+            <LicenseCard license={values.resource.licenses[0]} />
+          </StyledWrapper>
+        )}
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );
