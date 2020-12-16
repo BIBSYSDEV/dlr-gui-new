@@ -9,11 +9,7 @@ import { StyledContentWrapper, StyledSchemaPartColored } from '../components/sty
 import { Colors } from '../themes/mainTheme';
 import ErrorBanner from '../components/ErrorBanner';
 import LicenseCard from '../components/LicenseCard';
-import styled from 'styled-components';
-
-const StyledWrapper = styled.div`
-  margin-top: 1rem;
-`;
+import i18next from 'i18next';
 
 interface LicenseAndAccessFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -28,6 +24,7 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
   const { t } = useTranslation();
   const { values, setFieldValue, setFieldTouched, resetForm } = useFormikContext<ResourceWrapper>();
   const [savingLicenseError, setSavingLicensesError] = useState(false);
+  const language = i18next.language;
 
   const saveField = async (event: any) => {
     const selectedLicense = licenses?.find((license) => license.identifier === event.target.value);
@@ -85,10 +82,7 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
           </Field>
         )}
         {values.resource.licenses?.[0] && values.resource.licenses?.[0].identifier.length > 1 && (
-          <StyledWrapper>
-            <Typography variant="h6">{t('license.selected_license')}</Typography>
-            <LicenseCard license={values.resource.licenses[0]} />
-          </StyledWrapper>
+          <LicenseCard license={values.resource.licenses?.[0]} />
         )}
       </StyledContentWrapper>
     </StyledSchemaPartColored>
