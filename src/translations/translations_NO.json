@@ -39,7 +39,7 @@
   "resource": {
     "access_types": {
       "open": "Offentlig",
-      "restricted": "Begrenset"
+      "private": "Begrenset"
     },
     "add_contributor": "Legg til bidragsyter",
     "add_creator": "Legg til opphaver",

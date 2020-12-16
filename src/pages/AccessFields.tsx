@@ -11,6 +11,7 @@ import ErrorBanner from '../components/ErrorBanner';
 interface AccessFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
 }
+const accessTypes = ['open'];
 
 const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
@@ -58,10 +59,13 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
                     handleChange(event);
                     saveResourceAccessType(event);
                   }}>
-                  <MenuItem value="open">
-                    <Typography>{t('resource.access_types.open')}</Typography>
-                  </MenuItem>
+                  {accessTypes.map((accessType, index) => (
+                    <MenuItem key={index} value={accessType}>
+                      <Typography>{t(`resource.access_types.${accessType}`)}</Typography>
+                    </MenuItem>
+                  ))}
                 </TextField>
+
                 {savingAccessTypeError && <ErrorBanner />}
               </>
             )}
