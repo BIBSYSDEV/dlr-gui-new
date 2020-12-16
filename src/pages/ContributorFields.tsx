@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MenuItem, TextField, Typography } from '@material-ui/core';
 import { Contributor, ContributorFeatureNames, ResourceWrapper } from '../types/resource.types';
@@ -12,6 +12,7 @@ import { StyledContentWrapper, StyledSchemaPartColored } from '../components/sty
 import { Colors } from '../themes/mainTheme';
 import ErrorBanner from '../components/ErrorBanner';
 import contributorTypeList from '../resources/assets/contributorTypeList.json';
+import i18next from 'i18next';
 
 const StyledFieldsWrapper = styled.div`
   display: flex;
@@ -57,7 +58,13 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
   const [addContributorError, setAddContributorError] = useState(false);
   const [updateContributorError, setUpdateContributorError] = useState(false);
   const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
-  const [contributorTypesTranslated] = useState<contributorTypesTranslated[]>(generateContributorTypesTranslated(t));
+  const [contributorTypesTranslated, setContributorTypesTranslated] = useState<contributorTypesTranslated[]>(
+    generateContributorTypesTranslated(t)
+  );
+
+  useEffect(() => {
+    setContributorTypesTranslated(generateContributorTypesTranslated(t));
+  }, [i18next.language]);
 
   const addContributor = async (arrayHelpers: FieldArrayRenderProps) => {
     setAllChangesSaved(false);
