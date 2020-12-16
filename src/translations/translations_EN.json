@@ -11,6 +11,8 @@
     "next": "Next",
     "none": "No",
     "or": "Or",
+    "other_options": "Other licenses",
+    "possible_options": "Possible licenses",
     "remove": "Remove",
     "search": "Search",
     "save": "Save",
@@ -30,7 +32,10 @@
   },
   "license": {
     "license_information": "License information",
-    "published_with": "Published with"
+    "other_options": "Other licenses",
+    "possible_options": "Possible licenses",
+    "published_with": "Published with",
+    "selected_license": "Selected license"
   },
   "privacy_policy": {
     "description": "Description",

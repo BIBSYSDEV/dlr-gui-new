@@ -1,7 +1,5 @@
 import React, { FC } from 'react';
 import Card from './Card';
-
-import { useTranslation } from 'react-i18next';
 import { Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { License } from '../types/license.types';
@@ -17,24 +15,22 @@ const StyledCard = styled(Card)`
 `;
 
 const LicenseCard: FC<LicenseProps> = (props) => {
-  const { t } = useTranslation();
   const language = i18next.language;
   return (
     <StyledCard>
-      <Typography variant="h6"> {t('license.license_information')}</Typography>
       <div>
-        <span>
-          <Typography variant="body2">{t('license.published_with')}</Typography>
-        </span>
+        {props.license.features?.dlr_license_code && (
+          <Typography variant="h6">{props.license.features.dlr_license_code}</Typography>
+        )}
       </div>
       {language.includes('NO') && (
         <>
           <div>
-            <Link to={props.license.features?.dlr_license_url_no ? props.license.features.dlr_license_url_no : ''}>
+            <a href={props.license.features?.dlr_license_url_no ? props.license.features.dlr_license_url_no : ''}>
               <img src={props.license.features?.dlr_license_url_image} alt={props.license.features?.dlr_license_code} />
-            </Link>
+            </a>
           </div>
-          <Typography variant="caption">{props.license.features?.dlr_license_description_no}</Typography>
+          <Typography variant="body1">{props.license.features?.dlr_license_description_no}</Typography>
         </>
       )}
       {!language.includes('NO') && (

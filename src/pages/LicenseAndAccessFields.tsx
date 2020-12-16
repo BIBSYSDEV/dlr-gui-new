@@ -8,6 +8,7 @@ import { License } from '../types/license.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
 import ErrorBanner from '../components/ErrorBanner';
+import LicenseList from '../components/LicenseList';
 
 interface LicenseAndAccessFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -78,6 +79,14 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
             )}
           </Field>
         )}
+        <LicenseList
+          licenseList={licenses}
+          selectedLicenseIndex={
+            values.resource.licenses?.[0]
+              ? licenses.findIndex((license) => license.identifier === values.resource.licenses?.[0].identifier)
+              : -1
+          }
+        />
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );
