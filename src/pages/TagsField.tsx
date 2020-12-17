@@ -8,6 +8,7 @@ import { Colors } from '../themes/mainTheme';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { deleteTag, postTag } from '../api/resourceApi';
 import ErrorBanner from '../components/ErrorBanner';
+import { resetFormButKeepTouched } from '../utils/formik-helpers';
 
 interface ResourceWrapper {
   resource: Resource;
@@ -19,7 +20,7 @@ interface TagsFieldProps {
 
 const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
-  const { values, setFieldValue, resetForm } = useFormikContext<ResourceWrapper>();
+  const { values, setFieldValue, resetForm, setTouched, touched } = useFormikContext<ResourceWrapper>();
   const [saveError, setSaveError] = useState(false);
 
   const saveTagsChanging = async (name: string, value: string[]) => {
@@ -40,7 +41,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
       setSaveError(false);
       setFieldValue('resource.tags', value);
       values.resource.tags = value;
-      resetForm({ values });
+      resetFormButKeepTouched(touched, resetForm, values, setTouched);
     } catch (saveTagsError) {
       setSaveError(true);
     } finally {

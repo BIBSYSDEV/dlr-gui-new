@@ -8,6 +8,7 @@ import { License } from '../types/license.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
 import ErrorBanner from '../components/ErrorBanner';
+import { resetFormButKeepTouched } from '../utils/formik-helpers';
 
 interface LicenseAndAccessFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -20,7 +21,14 @@ interface ResourceWrapper {
 
 const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, licenses }) => {
   const { t } = useTranslation();
-  const { values, setFieldValue, setFieldTouched, resetForm } = useFormikContext<ResourceWrapper>();
+  const {
+    values,
+    setFieldValue,
+    setFieldTouched,
+    resetForm,
+    setTouched,
+    touched,
+  } = useFormikContext<ResourceWrapper>();
   const [savingLicenseError, setSavingLicensesError] = useState(false);
 
   const saveField = async (event: any) => {
@@ -33,7 +41,7 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
         setFieldValue('resource.licenses[0]', selectedLicense);
         if (values.resource.licenses?.length === 1) {
           values.resource.licenses[0] = selectedLicense;
-          resetForm({ values });
+          resetFormButKeepTouched(touched, resetForm, values, setTouched);
         }
       } catch (err) {
         err?.response && setSavingLicensesError(err.response.status);

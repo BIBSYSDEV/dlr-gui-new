@@ -8,6 +8,7 @@ import { postResourceFeature } from '../api/resourceApi';
 import { ResourceWrapper } from '../types/resource.types';
 import ErrorBanner from '../components/ErrorBanner';
 import ResourceTypeField from './ResourceTypeField';
+import { resetFormButKeepTouched } from '../utils/formik-helpers';
 
 interface DescriptionFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -20,7 +21,7 @@ enum descriptionFieldNames {
 
 const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
-  const { values, handleBlur, resetForm } = useFormikContext<ResourceWrapper>();
+  const { values, handleBlur, resetForm, touched, setTouched } = useFormikContext<ResourceWrapper>();
   const [saveErrorFields, setSaveErrorFields] = useState<string[]>([]);
 
   const saveField = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
@@ -29,7 +30,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
       await postResourceFeature(values.resource.identifier, name, event.target.value);
       setAllChangesSaved(true);
       setSaveErrorFields([]);
-      resetForm({ values: values });
+      resetFormButKeepTouched(touched, resetForm, values, setTouched);
       //todo: remove from array
     } catch (err) {
       setSaveErrorFields([...saveErrorFields, name]);
