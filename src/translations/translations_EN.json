@@ -39,7 +39,7 @@
   "resource": {
     "access_types": {
       "open": "Open",
-      "private": "private"
+      "private": "Private"
     },
     "add_contributor": "Add contributor",
     "add_creator": "Add creator",
