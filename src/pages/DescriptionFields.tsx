@@ -9,14 +9,10 @@ import { ResourceWrapper } from '../types/resource.types';
 import ErrorBanner from '../components/ErrorBanner';
 import ResourceTypeField from './ResourceTypeField';
 import { resetFormButKeepTouched } from '../utils/formik-helpers';
+import { DescriptionFieldNames } from '../utils/FieldNames';
 
 interface DescriptionFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
-}
-
-enum descriptionFieldNames {
-  TITLE = 'dlr_title',
-  DESCRIPTION = 'dlr_description',
 }
 
 const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) => {
@@ -27,6 +23,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
   const saveField = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
     setAllChangesSaved(false);
     try {
+      const name = '' + event.target.name.split('.').pop();
       await postResourceFeature(values.resource.identifier, name, event.target.value);
       setAllChangesSaved(true);
       setSaveErrorFields([]);
@@ -41,7 +38,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
     <>
       <StyledSchemaPart>
         <StyledContentWrapper>
-          <Field name="resource.features.dlr_title">
+          <Field name={DescriptionFieldNames.TITLE}>
             {({ field, meta: { touched, error } }: FieldProps) => (
               <TextField
                 {...field}
@@ -52,17 +49,17 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
                 helperText={<ErrorMessage name={field.name} />}
                 onBlur={(event) => {
                   handleBlur(event);
-                  !error && saveField(event, descriptionFieldNames.TITLE);
+                  !error && saveField(event, DescriptionFieldNames.TITLE);
                 }}
               />
             )}
           </Field>
         </StyledContentWrapper>
-        {saveErrorFields.includes(descriptionFieldNames.TITLE) && <ErrorBanner />}
+        {saveErrorFields.includes(DescriptionFieldNames.TITLE) && <ErrorBanner />}
       </StyledSchemaPart>
       <StyledSchemaPart>
         <StyledContentWrapper>
-          <Field name="resource.features.dlr_description">
+          <Field name={DescriptionFieldNames.DESCRIPTION}>
             {({ field, meta: { error } }: FieldProps) => (
               <TextField
                 {...field}
@@ -73,13 +70,13 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
                 label={t('resource.metadata.description')}
                 onBlur={(event) => {
                   handleBlur(event);
-                  !error && saveField(event, descriptionFieldNames.DESCRIPTION);
+                  !error && saveField(event, DescriptionFieldNames.DESCRIPTION);
                 }}
               />
             )}
           </Field>
         </StyledContentWrapper>
-        {saveErrorFields.includes(descriptionFieldNames.DESCRIPTION) && <ErrorBanner />}
+        {saveErrorFields.includes(DescriptionFieldNames.DESCRIPTION) && <ErrorBanner />}
       </StyledSchemaPart>
       <ResourceTypeField setAllChangesSaved={setAllChangesSaved} />
       <TagsField setAllChangesSaved={setAllChangesSaved} />

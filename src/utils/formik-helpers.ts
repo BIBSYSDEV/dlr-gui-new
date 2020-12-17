@@ -1,10 +1,6 @@
 import { FormikErrors, FormikTouched, getIn } from 'formik';
 import { ResourceFormSteps } from '../pages/ResourceForm';
-import { FormikState } from 'formik/dist/types';
-
-enum DescriptionFieldNames {
-  TITLE = 'resource.features.dlr_title',
-}
+import { DescriptionFieldNames } from './FieldNames';
 
 const descriptionFieldNames = Object.values(DescriptionFieldNames);
 
