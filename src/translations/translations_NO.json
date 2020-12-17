@@ -29,8 +29,10 @@
     "valid_url": "Input må være gyldig URL"
   },
   "license": {
+    "external_page": "Ekstern side",
     "license_information": "Lisensinformasjon",
-    "other_options": "Andre mulige lisenser",
+    "published_with": "Published with",
+    "read_more": "Les mer om ",
     "selected_license": "Valgt lisens"
   },
   "privacy_policy": {

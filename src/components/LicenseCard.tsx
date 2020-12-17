@@ -3,6 +3,7 @@ import { Typography } from '@material-ui/core';
 import { License } from '../types/license.types';
 import i18next from 'i18next';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
 interface LicenseProps {
   license: License;
@@ -22,15 +23,15 @@ const StyledTypography = styled(Typography)`
 
 const LicenseCard: FC<LicenseProps> = (props) => {
   const language = i18next.language;
+  const { t } = useTranslation();
+
   return (
     <StyledWrapper>
-      <div>
-        {props.license.features?.dlr_license_code && (
-          <Typography variant="h6">{props.license.features?.dlr_license_name_no}</Typography>
-        )}
-      </div>
-      {language.includes('NO') && (
+      {language.includes('nb') && (
         <>
+          {props.license.features?.dlr_license_code && (
+            <Typography variant="h6">{props.license.features?.dlr_license_name_no}</Typography>
+          )}
           <Typography variant="body1">{props.license.features?.dlr_license_description_no}</Typography>
           <StyledA
             target="_blank"
@@ -40,14 +41,21 @@ const LicenseCard: FC<LicenseProps> = (props) => {
           </StyledA>
         </>
       )}
-      {!language.includes('NO') && (
+      {!language.includes('nb') && (
         <>
+          {props.license.features?.dlr_license_code && (
+            <Typography variant="h6">{props.license.features?.dlr_license_name_en}</Typography>
+          )}
           <Typography variant="caption">{props.license.features?.dlr_license_description_en}</Typography>
           <StyledA
             target="_blank"
             href={props.license.features?.dlr_license_url_en ? props.license.features.dlr_license_url_en : ''}>
             <img src={props.license.features?.dlr_license_url_image} alt={props.license.features?.dlr_license_code} />
-            <StyledTypography> {props.license.features?.dlr_license_code}</StyledTypography>
+            <StyledTypography>
+              {`${t('license.read_more')}: ${props.license.features?.dlr_license_code} (${t(
+                'license.external_page'
+              ).toLowerCase()})`}
+            </StyledTypography>
           </StyledA>
         </>
       )}
