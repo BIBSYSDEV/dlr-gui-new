@@ -1,7 +1,7 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextField, Typography } from '@material-ui/core';
-import { Contributor, ResourceWrapper } from '../types/resource.types';
+import { MenuItem, TextField, Typography } from '@material-ui/core';
+import { Contributor, ContributorFeatureNames, ResourceWrapper } from '../types/resource.types';
 import { ErrorMessage, Field, FieldArray, FieldArrayRenderProps, FieldProps, useFormikContext } from 'formik';
 import Button from '@material-ui/core/Button';
 import { createContributor, deleteContributor, putContributorFeature } from '../api/resourceApi';
@@ -11,6 +11,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
 import ErrorBanner from '../components/ErrorBanner';
+import contributorTypeList from '../resources/assets/contributorTypeList.json';
 
 const StyledFieldsWrapper = styled.div`
   display: flex;
@@ -32,12 +33,37 @@ enum ErrorIndex {
   NO_ERRORS = -1,
 }
 
+interface contributorTypesTranslated {
+  key: string;
+  description: string;
+}
+
+const generateContributorTypesTranslated = (t: any) => {
+  const contributorTypesTranslatedTemp: contributorTypesTranslated[] = [];
+  contributorTypeList.forEach((contributorType) => {
+    contributorTypesTranslatedTemp.push({
+      key: contributorType,
+      description: t(`resource.contributor_type.${contributorType}`),
+    });
+  });
+  return contributorTypesTranslatedTemp.sort((contributorType1, contributorType2) =>
+    contributorType1.description.localeCompare(contributorType2.description)
+  );
+};
+
 const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
-  const { values, handleBlur, resetForm } = useFormikContext<ResourceWrapper>();
+  const { values, handleBlur, resetForm, handleChange, setFieldTouched } = useFormikContext<ResourceWrapper>();
   const [addContributorError, setAddContributorError] = useState(false);
   const [updateContributorError, setUpdateContributorError] = useState(false);
   const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
+  const [contributorTypesTranslated, setContributorTypesTranslated] = useState<contributorTypesTranslated[]>(
+    generateContributorTypesTranslated(t)
+  );
+
+  useEffect(() => {
+    setContributorTypesTranslated(generateContributorTypesTranslated(t));
+  }, [t]);
 
   const addContributor = async (arrayHelpers: FieldArrayRenderProps) => {
     setAllChangesSaved(false);
@@ -60,7 +86,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
   };
 
   const saveContributorField = async (
-    event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     contributorIdentifier: string,
     contributorIndex: number
   ) => {
@@ -72,7 +98,13 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
       }
       setUpdateContributorError(false);
       setErrorIndex(ErrorIndex.NO_ERRORS);
-      resetForm({ values: values });
+      if (
+        values.resource?.contributors?.[contributorIndex].identifier === contributorIdentifier &&
+        name === ContributorFeatureNames.Type
+      ) {
+        values.resource.contributors[contributorIndex].features.dlr_contributor_type = event.target.value;
+      }
+      resetForm({ values });
     } catch (saveContributorError: any) {
       setUpdateContributorError(true);
       setErrorIndex(contributorIndex);
@@ -116,14 +148,32 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                         <StyledTextField
                           {...field}
                           variant="filled"
+                          select
+                          required
                           label={t('type')}
+                          value={field.value}
                           error={touched && !!error}
                           helperText={<ErrorMessage name={field.name} />}
                           onBlur={(event) => {
                             handleBlur(event);
-                            !error && saveContributorField(event, contributor.identifier, index);
+                            setFieldTouched(
+                              `resource.contributors[${index}].features.dlr_contributor_type`,
+                              true,
+                              true
+                            );
                           }}
-                        />
+                          onChange={(event) => {
+                            handleChange(event);
+                            saveContributorField(event, contributor.identifier, index);
+                          }}>
+                          {contributorTypesTranslated.map((contributorType, index) => {
+                            return (
+                              <MenuItem key={index} value={contributorType.key}>
+                                <Typography variant="inherit">{contributorType.description}</Typography>
+                              </MenuItem>
+                            );
+                          })}
+                        </StyledTextField>
                       )}
                     </Field>
                     <Field name={`resource.contributors[${index}].features.dlr_contributor_name`}>

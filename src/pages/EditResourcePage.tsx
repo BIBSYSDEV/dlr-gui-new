@@ -51,6 +51,9 @@ const StyledContentWrapper = styled.div`
   max-width: ${({ theme }) => theme.breakpoints.values.lg + 'px'};
 `;
 
+//StartingContributorType must match one of the elements in resources/assets/contributorTypeList.json. This to prevent error: "Material-UI: You have provided an out-of-range value..."
+const StartingContributorType = 'HostingInstitution';
+
 const EditResourcePage: FC = () => {
   const { t } = useTranslation();
   const { resourceIdentifierFromParam } = useParams<EditResourcePageParamTypes>();
@@ -145,7 +148,7 @@ const EditResourcePage: FC = () => {
         startingResource.identifier,
         contributorResponse.data.features.dlr_contributor_identifier,
         ContributorFeatureNames.Type,
-        ContributorFeatureNames.Institution
+        StartingContributorType
       );
       await putContributorFeature(
         startingResource.identifier,
@@ -164,7 +167,7 @@ const EditResourcePage: FC = () => {
             features: {
               dlr_contributor_identifier: contributorResponse.data.identifier,
               dlr_contributor_name: user.institution,
-              dlr_contributor_type: ContributorFeatureNames.Institution,
+              dlr_contributor_type: StartingContributorType,
             },
           },
         ],

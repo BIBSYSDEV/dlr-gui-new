@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import Login from './Login';
 import Logo from './Logo';
 import styled from 'styled-components';
-import { Button, IconButton, Typography } from '@material-ui/core';
-import { Link as RouterLink } from 'react-router-dom';
+import { Button, IconButton, ListItemIcon, Typography } from '@material-ui/core';
+import { Link, Link as RouterLink } from 'react-router-dom';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
@@ -11,6 +11,8 @@ import Logout from './Logout';
 import { useTranslation } from 'react-i18next';
 import AddIcon from '@material-ui/icons/Add';
 import { Colors } from '../../themes/mainTheme';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const StyledPageHeader = styled.div`
   display: flex;
@@ -21,7 +23,7 @@ const StyledPageHeader = styled.div`
   background-color: ${Colors.HeaderBackground};
   min-height: 4rem;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    padding: 0;
+    justify-content: flex-start;
   }
 `;
 
@@ -32,40 +34,71 @@ const StyledBurgerMenu = styled.div`
   }
 `;
 
+const StyledSecondaryButtonBar = styled.div`
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    display: none;
+  }
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    display: contents;
+  }
+`;
+
 const Header: FC = () => {
   const user = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleBurgerMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleBurgerMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <StyledPageHeader>
       <StyledBurgerMenu>
-        <IconButton>
+        <IconButton onClick={handleBurgerMenuClick}>
           <MenuIcon />
         </IconButton>
       </StyledBurgerMenu>
-      <Logo />
-      {user.id && (
-        <Button
-          color="primary"
-          component={RouterLink}
-          data-testid="new-publication"
-          to="/registration"
-          startIcon={<AddIcon />}>
+      <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleBurgerMenuClose}>
+        <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/registration">
+          <ListItemIcon>
+            <AddIcon />
+          </ListItemIcon>
           <Typography variant="button">{t('resource.new_registration')}</Typography>
-        </Button>
-      )}
-      {user.id && (
-        <Button color="primary" component={RouterLink} data-testid="my-resources" to="/resources/user/current">
+        </MenuItem>
+        <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/resources/user/current">
           <Typography variant="button">{t('resource.my_resources')}</Typography>
-        </Button>
-      )}
-      {user.id ? (
-        <div>
-          {t('user.logged_in_as')} {user.name} <Logout />
-        </div>
-      ) : (
-        <Login />
-      )}
+        </MenuItem>
+        <MenuItem onClick={handleBurgerMenuClose}>{user.id ? <Logout /> : <Login />}</MenuItem>
+      </Menu>
+      <Logo />
+      <StyledSecondaryButtonBar>
+        {user.id && (
+          <Button
+            color="primary"
+            component={RouterLink}
+            data-testid="new-publication"
+            to="/registration"
+            startIcon={<AddIcon />}>
+            <Typography variant="button">{t('resource.new_registration')}</Typography>
+          </Button>
+        )}
+        {user.id && (
+          <Button color="primary" component={RouterLink} data-testid="my-resources" to="/resources/user/current">
+            <Typography variant="button">{t('resource.my_resources')}</Typography>
+          </Button>
+        )}
+        {user.id ? (
+          <div>
+            {t('user.logged_in_as')} {user.name} <Logout />
+          </div>
+        ) : (
+          <Login />
+        )}
+      </StyledSecondaryButtonBar>
     </StyledPageHeader>
   );
 };
