@@ -9,6 +9,7 @@ import { StyledContentWrapper, StyledSchemaPartColored } from '../components/sty
 import { Colors } from '../themes/mainTheme';
 import ErrorBanner from '../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../utils/formik-helpers';
+import { AccessAndLicenseFieldNames } from '../utils/FieldNames';
 
 interface LicenseAndAccessFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -38,7 +39,7 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
       try {
         await setResourceLicense(values.resource.identifier, selectedLicense.identifier);
         setSavingLicensesError(false);
-        setFieldValue('resource.licenses[0]', selectedLicense);
+        setFieldValue(AccessAndLicenseFieldNames.LICENSE, selectedLicense);
         if (values.resource.licenses?.length === 1) {
           values.resource.licenses[0] = selectedLicense;
           resetFormButKeepTouched(touched, resetForm, values, setTouched);
@@ -57,7 +58,7 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
       <StyledContentWrapper>
         <Typography variant="h4">{t('resource.metadata.license')}</Typography>
         {licenses && (
-          <Field name="resource.licenses[0]">
+          <Field name={AccessAndLicenseFieldNames.LICENSE}>
             {({ field, meta: { error, touched } }: FieldProps) => (
               <>
                 <TextField
@@ -69,7 +70,7 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
                   error={touched && !!error}
                   fullWidth
                   onBlur={(event) => {
-                    setFieldTouched('resource.licenses[0]', true, true);
+                    setFieldTouched(AccessAndLicenseFieldNames.LICENSE, true, true);
                   }}
                   onChange={(event) => {
                     saveField(event);

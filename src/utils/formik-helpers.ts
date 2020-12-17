@@ -1,8 +1,16 @@
 import { FormikErrors, FormikTouched, getIn } from 'formik';
 import { ResourceFormSteps } from '../pages/ResourceForm';
-import { DescriptionFieldNames } from './FieldNames';
+import {
+  AccessAndLicenseFieldNames,
+  ContributorsFieldNames,
+  DescriptionFieldNames,
+  FilesFieldNames,
+} from './FieldNames';
 
 const descriptionFieldNames = Object.values(DescriptionFieldNames);
+const accessAndLicenseFieldNames = Object.values(AccessAndLicenseFieldNames);
+const contributorsFieldNames = Object.values(ContributorsFieldNames);
+const filesFieldNames = Object.values(FilesFieldNames);
 
 export const hasTouchedError = (
   errors: FormikErrors<unknown>,
@@ -13,9 +21,11 @@ export const hasTouchedError = (
     return false;
   }
   let fieldNames: string[] = [];
-  if (index === ResourceFormSteps.Description) {
-    fieldNames = descriptionFieldNames;
-  }
+  index === ResourceFormSteps.Description && (fieldNames = descriptionFieldNames);
+  index === ResourceFormSteps.AccessAndLicense && (fieldNames = accessAndLicenseFieldNames);
+  index === ResourceFormSteps.Contributors && (fieldNames = contributorsFieldNames);
+  index === ResourceFormSteps.Files && (fieldNames = filesFieldNames);
+
   if (fieldNames.length) {
     return fieldNames.some((fieldName) => {
       const fieldHasError = !!getIn(errors, fieldName);
