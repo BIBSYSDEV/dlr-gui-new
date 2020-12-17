@@ -76,7 +76,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   const [percentageFileUpload, setPersentageFileUpload] = useState(0);
   const [count, setCount] = useState<number>(0);
   const [delay] = useState<number>(500);
-  const [shouldUseInterval, setShouldUseInterval] = useState(false);
+  const [shouldUseInterval] = useState(false);
 
   const steps = [
     t('resource.form_steps.description'),
@@ -163,7 +163,6 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
     setActiveStep(step);
   };
 
-  console.log('percentage', percentageFileUpload);
   return (
     <>
       <StyledContentWrapper>
@@ -201,7 +200,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                                   value={percentageFileUpload}
                                 />
                               )}
-                            {label === t('resource.form_steps.files') && uppy.getState().totalProgress === 100 && (
+                            {label === t('resource.form_steps.files') && percentageFileUpload === 100 && (
                               <CheckCircleIcon />
                             )}
                           </StepLabel>
