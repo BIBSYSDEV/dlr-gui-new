@@ -21,7 +21,7 @@ const StyledTypography = styled(Typography)`
   padding-left: 0.2rem;
 `;
 
-const LicenseCard: FC<LicenseProps> = (props) => {
+const LicenseCard: FC<LicenseProps> = ({ license }) => {
   const language = i18next.language;
   const { t } = useTranslation();
 
@@ -29,30 +29,26 @@ const LicenseCard: FC<LicenseProps> = (props) => {
     <StyledWrapper>
       {language.includes('nb') && (
         <>
-          {props.license.features?.dlr_license_code && (
-            <Typography variant="h6">{props.license.features?.dlr_license_name_no}</Typography>
+          {license.features?.dlr_license_code && (
+            <Typography variant="h6">{license.features?.dlr_license_name_no}</Typography>
           )}
-          <Typography variant="body1">{props.license.features?.dlr_license_description_no}</Typography>
-          <StyledA
-            target="_blank"
-            href={props.license.features?.dlr_license_url_no ? props.license.features.dlr_license_url_no : ''}>
-            <img src={props.license.features?.dlr_license_url_image} alt={props.license.features?.dlr_license_code} />
-            <StyledTypography> {props.license.features?.dlr_license_code}</StyledTypography>
+          <Typography variant="body1">{license.features?.dlr_license_description_no}</Typography>
+          <StyledA target="_blank" href={license.features?.dlr_license_url_no ?? ''}>
+            <img src={license.features?.dlr_license_url_image} alt={license.features?.dlr_license_code} />
+            <StyledTypography> {license.features?.dlr_license_code}</StyledTypography>
           </StyledA>
         </>
       )}
       {!language.includes('nb') && (
         <>
-          {props.license.features?.dlr_license_code && (
-            <Typography variant="h6">{props.license.features?.dlr_license_name_en}</Typography>
+          {license.features?.dlr_license_code && (
+            <Typography variant="h6">{license.features?.dlr_license_name_en}</Typography>
           )}
-          <Typography variant="caption">{props.license.features?.dlr_license_description_en}</Typography>
-          <StyledA
-            target="_blank"
-            href={props.license.features?.dlr_license_url_en ? props.license.features.dlr_license_url_en : ''}>
-            <img src={props.license.features?.dlr_license_url_image} alt={props.license.features?.dlr_license_code} />
+          <Typography variant="caption">{license.features?.dlr_license_description_en}</Typography>
+          <StyledA target="_blank" href={license.features?.dlr_license_url_en ?? ''}>
+            <img src={license.features?.dlr_license_url_image} alt={license.features?.dlr_license_code} />
             <StyledTypography>
-              {`${t('license.read_more')}: ${props.license.features?.dlr_license_code} (${t(
+              {`${t('license.read_more')}: ${license.features?.dlr_license_code} (${t(
                 'license.external_page'
               ).toLowerCase()})`}
             </StyledTypography>

@@ -9,7 +9,6 @@ import { StyledContentWrapper, StyledSchemaPartColored } from '../components/sty
 import { Colors } from '../themes/mainTheme';
 import ErrorBanner from '../components/ErrorBanner';
 import LicenseCard from '../components/LicenseCard';
-import i18next from 'i18next';
 
 interface LicenseAndAccessFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -24,7 +23,6 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
   const { t } = useTranslation();
   const { values, setFieldValue, setFieldTouched, resetForm } = useFormikContext<ResourceWrapper>();
   const [savingLicenseError, setSavingLicensesError] = useState(false);
-  const language = i18next.language;
 
   const saveField = async (event: any) => {
     const selectedLicense = licenses?.find((license) => license.identifier === event.target.value);
