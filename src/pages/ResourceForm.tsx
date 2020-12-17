@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../components/PageHeader';
-import { Button, CircularProgress, Divider, Step, StepButton, Stepper } from '@material-ui/core';
+import { Button, CircularProgress, Divider, Step, StepButton, StepLabel, Stepper } from '@material-ui/core';
 import { getLicenses } from '../api/resourceApi';
 import { Resource, ResourceCreationType } from '../types/resource.types';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
@@ -18,6 +18,8 @@ import PreviewPanel from './PreviewPanel';
 import { StatusCode } from '../utils/constants';
 import { License } from '../types/license.types';
 import ErrorBanner from '../components/ErrorBanner';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import useInterval from '../utils/useInterval';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -63,12 +65,18 @@ interface ResourceFormProps {
   resourceType: ResourceCreationType;
 }
 
+const fileUploadPanelId = 'file-upload-panel';
+
 const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) => {
   const { t } = useTranslation();
   const [allChangesSaved, setAllChangesSaved] = useState(true);
   const [isLoadingLicenses, setIsLoadingLicenses] = useState(false);
   const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
   const [licenses, setLicenses] = useState<License[]>();
+  const [percentageFileUpload, setPersentageFileUpload] = useState(0);
+  const [count, setCount] = useState<number>(0);
+  const [delay] = useState<number>(500);
+  const [shouldUseInterval, setShouldUseInterval] = useState(false);
 
   const steps = [
     t('resource.form_steps.description'),
@@ -138,10 +146,24 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
     getAllLicences();
   }, []);
 
+  const calculateShouldUseInterval = () => {
+    if (!shouldUseInterval && percentageFileUpload === 100) {
+      return null;
+    } else {
+      return delay;
+    }
+  };
+
+  useInterval(() => {
+    setPersentageFileUpload(uppy.getState().totalProgress);
+    setCount(count + 1);
+  }, calculateShouldUseInterval());
+
   const handleStep = (step: number) => () => {
     setActiveStep(step);
   };
 
+  console.log('percentage', percentageFileUpload);
   return (
     <>
       <StyledContentWrapper>
@@ -166,7 +188,24 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                   {steps.map((label, index) => {
                     return (
                       <Step key={label} completed={false}>
-                        <StepButton onClick={handleStep(index)}>{label}</StepButton>
+                        <StepButton onClick={handleStep(index)}>
+                          <StepLabel>
+                            {label} {'  '}
+                            {label === t('resource.form_steps.files') &&
+                              percentageFileUpload > 0 &&
+                              percentageFileUpload < 100 && (
+                                <CircularProgress
+                                  aria-describedby={fileUploadPanelId}
+                                  size={20}
+                                  variant="determinate"
+                                  value={percentageFileUpload}
+                                />
+                              )}
+                            {label === t('resource.form_steps.files') && uppy.getState().totalProgress === 100 && (
+                              <CheckCircleIcon />
+                            )}
+                          </StepLabel>
+                        </StepButton>
                       </Step>
                     );
                   })}
@@ -207,7 +246,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                 </StyledPanel>
               )}
               {activeStep === ResourceFormSteps.Files && (
-                <StyledPanel>
+                <StyledPanel id={fileUploadPanelId}>
                   <FileFields uppy={uppy} setAllChangesSaved={setAllChangesSaved} />
                 </StyledPanel>
               )}
