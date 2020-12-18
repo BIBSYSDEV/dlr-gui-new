@@ -124,15 +124,14 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
         {resource.licenses && resource.licenses.length !== 0 && resource.licenses[0].identifier.length > 0 && (
           <StyledFeatureWrapper>
             <StyledCaption variant="caption">{t('resource.metadata.license')}</StyledCaption>
-            {resource.licenses.map((license) => (
-              <>
-                {license.identifier && (
+            {resource.licenses.map(
+              (license) =>
+                license.identifier && (
                   <Card key={license.identifier}>
                     <LicenseCard license={license} />
                   </Card>
-                )}
-              </>
-            ))}
+                )
+            )}
           </StyledFeatureWrapper>
         )}
       </StyledPresentationWrapper>

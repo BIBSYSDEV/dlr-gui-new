@@ -89,7 +89,7 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
           </Field>
         )}
         {values.resource.licenses?.[0] && values.resource.licenses?.[0].identifier.length > 1 && (
-          <LicenseCard license={values.resource.licenses?.[0]} />
+          <LicenseCard license={values.resource.licenses[0]} />
         )}
       </StyledContentWrapper>
     </StyledSchemaPartColored>
