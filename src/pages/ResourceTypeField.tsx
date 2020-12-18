@@ -14,6 +14,7 @@ import SlideshowIcon from '@material-ui/icons/Slideshow';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 import PhotoOutlinedIcon from '@material-ui/icons/PhotoOutlined';
 import ErrorBanner from '../components/ErrorBanner';
+import { resetFormButKeepTouched } from '../utils/formik-helpers';
 
 const StyledMenuItem = styled(MenuItem)`
   padding: 1rem;
@@ -30,7 +31,15 @@ interface ResourceWrapper {
 
 const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) => {
   const [savingResourceTypeError, setSavingResourceTypeError] = useState(false);
-  const { values, setFieldTouched, setFieldValue, handleChange, resetForm } = useFormikContext<ResourceWrapper>();
+  const {
+    values,
+    setFieldTouched,
+    setFieldValue,
+    handleChange,
+    resetForm,
+    setTouched,
+    touched,
+  } = useFormikContext<ResourceWrapper>();
   const { t } = useTranslation();
 
   const saveResourceType = async (event: any) => {
@@ -41,7 +50,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
         setFieldValue('resource.features.dlr_type', event.target.value);
         setSavingResourceTypeError(false);
         values.resource.features.dlr_type = event.target.value;
-        resetForm({ values });
+        resetFormButKeepTouched(touched, resetForm, values, setTouched);
       } catch (error) {
         setSavingResourceTypeError(true);
       } finally {
