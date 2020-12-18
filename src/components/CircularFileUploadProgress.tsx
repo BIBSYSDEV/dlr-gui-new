@@ -3,13 +3,6 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import useInterval from '../utils/useInterval';
 import { Uppy } from '../types/file.types';
 import { CircularProgress } from '@material-ui/core';
-import styled from 'styled-components';
-
-const StyledCircularProgress = styled(CircularProgress)`
-  .MuiCircularProgress-colorPrimary {
-    color: ${'green' + '!important'};
-  }
-`;
 
 interface CircularFileUploadProgressProps {
   uppy: Uppy;
@@ -23,7 +16,6 @@ const pollingDelayMilliseconds = 200;
 
 const CircularFileUploadProgress: FC<CircularFileUploadProgressProps> = ({ uppy, isUploadingNewFile }) => {
   const [percentageFileUpload, setPercentageFileUpload] = useState(0);
-  const [count, setCount] = useState(0);
   const [shouldShowCompleted, setShouldShowCompleted] = useState(false);
   const [turnOff, setTurnOff] = useState(false);
 
@@ -41,7 +33,6 @@ const CircularFileUploadProgress: FC<CircularFileUploadProgressProps> = ({ uppy,
 
   useInterval(() => {
     setPercentageFileUpload(uppy.getState().totalProgress);
-    setCount(count + 1);
     if (uppy.getState().totalProgress === 100) {
       if (!shouldShowCompleted) {
         setShouldShowCompleted(true);
@@ -55,7 +46,7 @@ const CircularFileUploadProgress: FC<CircularFileUploadProgressProps> = ({ uppy,
   return (
     <>
       {percentageFileUpload > 0 && percentageFileUpload < 100 && (
-        <StyledCircularProgress
+        <CircularProgress
           aria-describedby={fileUploadPanelId}
           size={15}
           variant="determinate"
