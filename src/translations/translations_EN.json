@@ -42,6 +42,10 @@
     "heading": "Privacy policy"
   },
   "resource": {
+    "access_types": {
+      "open": "Open",
+      "private": "Private"
+    },
     "add_contributor": "Add contributor",
     "add_creator": "Add creator",
     "add_tags": "Add 4-6 keywords. Press enter or tab for adding more keywords.",
@@ -90,6 +94,7 @@
     },
     "link_to_resource": "Link to resource",
     "metadata": {
+      "access": "Access",
       "contributor": "Contributor",
       "contributors": "Contributors",
       "created": "Created",
