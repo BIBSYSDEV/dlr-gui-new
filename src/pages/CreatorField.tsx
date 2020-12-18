@@ -11,6 +11,7 @@ import { deleteResourceCreator, postResourceCreator, putResourceCreatorFeature }
 import ErrorBanner from '../components/ErrorBanner';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
+import { resetFormButKeepTouched } from '../utils/formik-helpers';
 
 const StyledFieldsWrapper = styled.div`
   display: flex;
@@ -38,7 +39,7 @@ enum ErrorIndex {
 
 const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
-  const { values, handleBlur, resetForm } = useFormikContext<ResourceWrapper>();
+  const { values, handleBlur, resetForm, setTouched, touched } = useFormikContext<ResourceWrapper>();
   const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
   const [updateCreatorError, setUpdateCreatorError] = useState(false);
   const [addCreatorError, setAddCreatorError] = useState(false);
@@ -73,7 +74,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
         await putResourceCreatorFeature(values.resource.identifier, creatorIdentifier, name, event.target.value);
         setErrorIndex(ErrorIndex.NO_ERRORS);
         setUpdateCreatorError(false);
-        resetForm({ values });
+        resetFormButKeepTouched(touched, resetForm, values, setTouched);
       }
     } catch (error) {
       setUpdateCreatorError(true);
