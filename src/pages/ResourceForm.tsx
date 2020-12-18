@@ -20,6 +20,7 @@ import { License } from '../types/license.types';
 import ErrorBanner from '../components/ErrorBanner';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import useInterval from '../utils/useInterval';
+import { hasTouchedError } from '../utils/formik-helpers';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -54,9 +55,6 @@ export enum ResourceFormSteps {
   Files = 2,
   AccessAndLicense = 3,
   Preview = 4,
-}
-export interface ResourceFormValues {
-  resource: Resource;
 }
 
 interface ResourceFormProps {
@@ -188,8 +186,8 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                     return (
                       <Step key={label} completed={false}>
                         <StepButton onClick={handleStep(index)}>
-                          <StepLabel>
-                            {label} {'  '}
+                          <StepLabel error={hasTouchedError(formikProps.errors, formikProps.touched, index)}>
+                            {label}{' '}
                             {label === t('resource.form_steps.files') &&
                               percentageFileUpload > 0 &&
                               percentageFileUpload < 100 && (
@@ -210,7 +208,6 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                   })}
                 </Stepper>
               </StyledContentWrapper>
-
               {activeStep === ResourceFormSteps.Description && (
                 <StyledPanel>
                   <DescriptionFields

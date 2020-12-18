@@ -166,7 +166,6 @@ export enum ResourceFeatureNames {
 export enum ContributorFeatureNames {
   Type = 'dlr_contributor_type',
   Name = 'dlr_contributor_name',
-  Institution = 'institution',
 }
 
 export enum CreatorFeatureAttributes {
