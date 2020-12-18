@@ -12,13 +12,12 @@ import { Uppy } from '../types/file.types';
 import FileFields from './FileFields';
 import ContributorFields from './ContributorFields';
 import CreatorField from './CreatorField';
-import LicenseFields from './LicenseFields';
 import { StyledContentWrapper, StyledSchemaPart } from '../components/styled/Wrappers';
 import PreviewPanel from './PreviewPanel';
 import { StatusCode } from '../utils/constants';
 import { License } from '../types/license.types';
 import ErrorBanner from '../components/ErrorBanner';
-import AccessFields from './AccessFields';
+import AccessAndLicenseStep from './AccessAndLicenseStep';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -176,6 +175,11 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
 
               {activeStep === ResourceFormSteps.Description && (
                 <StyledPanel>
+                  <StyledSchemaPart>
+                    <StyledContentWrapper>
+                      <Typography variant="h4">{formikProps.values.resource.features.dlr_title}</Typography>
+                    </StyledContentWrapper>
+                  </StyledSchemaPart>
                   <DescriptionFields
                     setAllChangesSaved={(status: boolean) => {
                       setAllChangesSaved(status);
@@ -185,6 +189,11 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
               )}
               {activeStep === ResourceFormSteps.Contributors && (
                 <StyledPanel>
+                  <StyledSchemaPart>
+                    <StyledContentWrapper>
+                      <Typography variant="h4">{formikProps.values.resource.features.dlr_title}</Typography>
+                    </StyledContentWrapper>
+                  </StyledSchemaPart>
                   <CreatorField setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)} />
                   <ContributorFields
                     setAllChangesSaved={(status: boolean) => {
@@ -202,23 +211,19 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                       <Typography variant="h4">{formikProps.values.resource.features.dlr_title}</Typography>
                     </StyledContentWrapper>
                   </StyledSchemaPart>
-                  <AccessFields
-                    setAllChangesSaved={(status: boolean) => {
-                      setAllChangesSaved(status);
-                    }}
+                  <AccessAndLicenseStep
+                    setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
+                    licenses={licenses}
                   />
-                  {licenses && (
-                    <LicenseFields
-                      setAllChangesSaved={(status: boolean) => {
-                        setAllChangesSaved(status);
-                      }}
-                      licenses={licenses}
-                    />
-                  )}
                 </StyledPanel>
               )}
               {activeStep === ResourceFormSteps.Files && (
                 <StyledPanel>
+                  <StyledSchemaPart>
+                    <StyledContentWrapper>
+                      <Typography variant="h4">{formikProps.values.resource.features.dlr_title}</Typography>
+                    </StyledContentWrapper>
+                  </StyledSchemaPart>
                   <FileFields uppy={uppy} setAllChangesSaved={setAllChangesSaved} />
                 </StyledPanel>
               )}

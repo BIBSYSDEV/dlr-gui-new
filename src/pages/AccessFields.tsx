@@ -36,43 +36,41 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
   };
 
   return (
-    <>
-      <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor2}>
-        <StyledContentWrapper>
-          <Typography variant="h4">{t('resource.metadata.access')}</Typography>
-          <Field name="resource.features.dlr_access">
-            {({ field, meta: { error, touched } }: FieldProps) => (
-              <>
-                <TextField
-                  {...field}
-                  variant="outlined"
-                  select
-                  required
-                  error={touched && !!error}
-                  fullWidth
-                  value={field.value}
-                  label={t('resource.metadata.access')}
-                  onBlur={(event) => {
-                    setFieldTouched('resource.features.dlr_access', true, true);
-                  }}
-                  onChange={(event) => {
-                    handleChange(event);
-                    saveResourceAccessType(event);
-                  }}>
-                  {accessTypes.map((accessType, index) => (
-                    <MenuItem key={index} value={accessType}>
-                      <Typography>{t(`resource.access_types.${accessType}`)}</Typography>
-                    </MenuItem>
-                  ))}
-                </TextField>
+    <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor2}>
+      <StyledContentWrapper>
+        <Typography variant="h4">{t('resource.metadata.access')}</Typography>
+        <Field name="resource.features.dlr_access">
+          {({ field, meta: { error, touched } }: FieldProps) => (
+            <>
+              <TextField
+                {...field}
+                variant="outlined"
+                select
+                required
+                error={touched && !!error}
+                fullWidth
+                value={field.value}
+                label={t('resource.metadata.access')}
+                onBlur={(event) => {
+                  setFieldTouched('resource.features.dlr_access', true, true);
+                }}
+                onChange={(event) => {
+                  handleChange(event);
+                  saveResourceAccessType(event);
+                }}>
+                {accessTypes.map((accessType, index) => (
+                  <MenuItem key={index} value={accessType}>
+                    <Typography>{t(`resource.access_types.${accessType}`)}</Typography>
+                  </MenuItem>
+                ))}
+              </TextField>
 
-                {savingAccessTypeError && <ErrorBanner />}
-              </>
-            )}
-          </Field>
-        </StyledContentWrapper>
-      </StyledSchemaPartColored>
-    </>
+              {savingAccessTypeError && <ErrorBanner />}
+            </>
+          )}
+        </Field>
+      </StyledContentWrapper>
+    </StyledSchemaPartColored>
   );
 };
 
