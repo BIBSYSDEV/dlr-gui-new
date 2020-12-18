@@ -11,6 +11,8 @@
     "next": "Next",
     "none": "No",
     "or": "Or",
+    "other_options": "Other licenses",
+    "possible_options": "Possible licenses",
     "remove": "Remove",
     "search": "Search",
     "save": "Save",
@@ -29,8 +31,11 @@
     "valid_url": "Input must be a valid URL"
   },
   "license": {
+    "external_page": "External site",
     "license_information": "License information",
-    "published_with": "Published with"
+    "published_with": "Published with",
+    "read_more": "Read more about",
+    "selected_license": "Selected license"
   },
   "privacy_policy": {
     "description": "Description",
