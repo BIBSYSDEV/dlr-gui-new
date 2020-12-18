@@ -17,10 +17,9 @@ import PreviewPanel from './PreviewPanel';
 import { StatusCode } from '../utils/constants';
 import { License } from '../types/license.types';
 import ErrorBanner from '../components/ErrorBanner';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import useInterval from '../utils/useInterval';
 import AccessAndLicenseStep from './AccessAndLicenseStep';
 import { hasTouchedError } from '../utils/formik-helpers';
+import CircularFileUploadProgress from '../components/CircularFileUploadProgress';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -71,10 +70,6 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   const [isLoadingLicenses, setIsLoadingLicenses] = useState(false);
   const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
   const [licenses, setLicenses] = useState<License[]>();
-  const [percentageFileUpload, setPersentageFileUpload] = useState(0);
-  const [count, setCount] = useState<number>(0);
-  const [delay] = useState<number>(500);
-  const [shouldUseInterval] = useState(false);
 
   const steps = [
     t('resource.form_steps.description'),
@@ -144,19 +139,6 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
     getAllLicences();
   }, []);
 
-  const calculateShouldUseInterval = () => {
-    if (!shouldUseInterval && percentageFileUpload === 100) {
-      return null;
-    } else {
-      return delay;
-    }
-  };
-
-  useInterval(() => {
-    setPersentageFileUpload(uppy.getState().totalProgress);
-    setCount(count + 1);
-  }, calculateShouldUseInterval());
-
   const handleStep = (step: number) => () => {
     setActiveStep(step);
   };
@@ -188,18 +170,8 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                         <StepButton onClick={handleStep(index)}>
                           <StepLabel error={hasTouchedError(formikProps.errors, formikProps.touched, index)}>
                             {label}{' '}
-                            {label === t('resource.form_steps.files') &&
-                              percentageFileUpload > 0 &&
-                              percentageFileUpload < 100 && (
-                                <CircularProgress
-                                  aria-describedby={fileUploadPanelId}
-                                  size={20}
-                                  variant="determinate"
-                                  value={percentageFileUpload}
-                                />
-                              )}
-                            {label === t('resource.form_steps.files') && percentageFileUpload === 100 && (
-                              <CheckCircleIcon />
+                            {label === t('resource.form_steps.files') && (
+                              <CircularFileUploadProgress uppy={uppy} isUploadingNewFile={true} />
                             )}
                           </StepLabel>
                         </StepButton>
