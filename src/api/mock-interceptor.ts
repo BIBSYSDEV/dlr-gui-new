@@ -144,11 +144,21 @@ const mockContent: Content[] = [
   {
     identifier: '1231242',
     features: {
+      dlr_content: 'adfasdf',
       dlr_content_identifier: 'adfasdf',
       dlr_content_content_type: 'image',
     },
   },
 ];
+
+const mockCreatedResourceWithContents = {
+  contents: mockContent,
+  identifier: 'resource-345',
+  features: {
+    dlr_content: 'content mock',
+  },
+};
+
 const mockToken = 'mockToken';
 
 const mockCreateUpload = { uploadId: 'asd', key: 'sfd' };
@@ -221,7 +231,7 @@ export const interceptRequestsOnMock = () => {
   // RESOURCE
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*`)).reply(200, mockResource);
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/features`)).reply(200);
-  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources`)).reply(200, emptyResource);
+  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources`)).reply(200, mockCreatedResourceWithContents);
 
   //DEFAULTS
   mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*`)).reply(200, mockCalculatedResource);
