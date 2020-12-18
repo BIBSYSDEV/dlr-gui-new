@@ -37,6 +37,10 @@
     "heading": "Personvernerklæring"
   },
   "resource": {
+    "access_types": {
+      "open": "Offentlig",
+      "private": "Begrenset"
+    },
     "add_contributor": "Legg til bidragsyter",
     "add_creator": "Legg til opphaver",
     "add_tags": "Legg inn 4-6 nøkkelord. Trykk enter eller tab for å legge inn flere",
@@ -84,6 +88,7 @@
     },
     "link_to_resource": "Lenke til ressurs",
     "metadata": {
+      "access": "Tilgang",
       "contributor": "Bigragsyter",
       "contributors": "Bidragsytere",
       "created": "Opprettet",

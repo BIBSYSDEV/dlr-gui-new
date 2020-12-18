@@ -135,6 +135,11 @@ const EditResourcePage: FC = () => {
     ];
   };
 
+  const setResourceAccessType = async (tempResource: Resource) => {
+    await postResourceFeature(tempResource.identifier, 'dlr_access', 'open');
+    tempResource.features.dlr_access = 'open';
+  };
+
   const getResourceInit = async (startingResource: Resource, resourceCreationType: ResourceCreationType) => {
     try {
       setShowForm(true);
@@ -180,6 +185,9 @@ const EditResourcePage: FC = () => {
           ? responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
           : '';
         await setAddCreatorIdentifier(tempResource, startingResource.identifier, mainCreatorName);
+      }
+      if (!tempResource.features.dlr_access) {
+        await setResourceAccessType(tempResource);
       }
       setFormikInitResource(tempResource);
       setResourceInitError(false);

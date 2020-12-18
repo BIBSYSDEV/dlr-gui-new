@@ -20,7 +20,7 @@ interface ResourceWrapper {
   resource: Resource;
 }
 
-const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, licenses }) => {
+const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, licenses }) => {
   const { t } = useTranslation();
   const {
     values,
@@ -54,7 +54,7 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
   };
 
   return (
-    <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor1}>
+    <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor3}>
       <StyledContentWrapper>
         <Typography variant="h4">{t('resource.metadata.license')}</Typography>
         {licenses && (
@@ -92,4 +92,4 @@ const LicenseAndAccessFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChanges
   );
 };
 
-export default LicenseAndAccessFields;
+export default LicenseFields;
