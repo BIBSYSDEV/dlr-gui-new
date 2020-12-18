@@ -13,6 +13,7 @@ import { StyledContentWrapper, StyledSchemaPartColored } from '../components/sty
 import { Colors } from '../themes/mainTheme';
 import ErrorBanner from '../components/ErrorBanner';
 import { ResourceWrapper } from '../types/resource.types';
+import { resetFormButKeepTouched } from '../utils/formik-helpers';
 
 const StatusBarWrapper = styled.div`
   width: 100%;
@@ -46,7 +47,7 @@ interface FileFieldsProps {
 
 const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
   const { t } = useTranslation();
-  const { values, handleBlur, resetForm } = useFormikContext<ResourceWrapper>();
+  const { values, handleBlur, resetForm, setTouched, touched } = useFormikContext<ResourceWrapper>();
   const [saveTitleError, setSaveTitleError] = useState(false);
 
   const saveMainContentsFileName = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -58,7 +59,7 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
       try {
         await updateContentTitle(resourceId, contentId, event.target.value);
         setAllChangesSaved(true);
-        resetForm({ values: values });
+        resetFormButKeepTouched(touched, resetForm, values, setTouched);
       } catch (err) {
         setSaveTitleError(true);
       }

@@ -12,6 +12,7 @@ import { StyledContentWrapper, StyledSchemaPartColored } from '../components/sty
 import { Colors } from '../themes/mainTheme';
 import ErrorBanner from '../components/ErrorBanner';
 import contributorTypeList from '../resources/assets/contributorTypeList.json';
+import { resetFormButKeepTouched } from '../utils/formik-helpers';
 
 const StyledFieldsWrapper = styled.div`
   display: flex;
@@ -53,7 +54,15 @@ const generateContributorTypesTranslated = (t: any) => {
 
 const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
-  const { values, handleBlur, resetForm, handleChange, setFieldTouched } = useFormikContext<ResourceWrapper>();
+  const {
+    values,
+    handleBlur,
+    resetForm,
+    handleChange,
+    setFieldTouched,
+    setTouched,
+    touched,
+  } = useFormikContext<ResourceWrapper>();
   const [addContributorError, setAddContributorError] = useState(false);
   const [updateContributorError, setUpdateContributorError] = useState(false);
   const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
@@ -104,7 +113,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
       ) {
         values.resource.contributors[contributorIndex].features.dlr_contributor_type = event.target.value;
       }
-      resetForm({ values });
+      resetFormButKeepTouched(touched, resetForm, values, setTouched);
     } catch (saveContributorError: any) {
       setUpdateContributorError(true);
       setErrorIndex(contributorIndex);

@@ -2,10 +2,10 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../components/PageHeader';
-import { Button, CircularProgress, Divider, Step, StepButton, Stepper } from '@material-ui/core';
+import { Button, CircularProgress, Divider, Step, StepButton, StepLabel, Stepper } from '@material-ui/core';
 import { getLicenses } from '../api/resourceApi';
 import { Resource, ResourceCreationType } from '../types/resource.types';
-import { Form, Formik, FormikProps, FormikValues } from 'formik';
+import { Form, Formik, FormikErrors, FormikProps, FormikTouched, FormikValues, getIn } from 'formik';
 import * as Yup from 'yup';
 import DescriptionFields from './DescriptionFields';
 import { Uppy } from '../types/file.types';
@@ -18,6 +18,7 @@ import PreviewPanel from './PreviewPanel';
 import { StatusCode } from '../utils/constants';
 import { License } from '../types/license.types';
 import ErrorBanner from '../components/ErrorBanner';
+import { hasTouchedError } from '../utils/formik-helpers';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -52,9 +53,6 @@ export enum ResourceFormSteps {
   Files = 2,
   AccessAndLicense = 3,
   Preview = 4,
-}
-export interface ResourceFormValues {
-  resource: Resource;
 }
 
 interface ResourceFormProps {
@@ -166,13 +164,16 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                   {steps.map((label, index) => {
                     return (
                       <Step key={label} completed={false}>
-                        <StepButton onClick={handleStep(index)}>{label}</StepButton>
+                        <StepButton onClick={handleStep(index)}>
+                          <StepLabel error={hasTouchedError(formikProps.errors, formikProps.touched, index)}>
+                            {label}
+                          </StepLabel>
+                        </StepButton>
                       </Step>
                     );
                   })}
                 </Stepper>
               </StyledContentWrapper>
-
               {activeStep === ResourceFormSteps.Description && (
                 <StyledPanel>
                   <DescriptionFields
