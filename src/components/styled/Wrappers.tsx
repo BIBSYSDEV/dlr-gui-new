@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import NormalText from '../NormalText';
+import RadioGroup from '@material-ui/core/RadioGroup';
 
 export const StyledInformationWrapper = styled.div`
   width: 60%;
@@ -45,4 +46,20 @@ export const StyledSchemaPartColored = styled(StyledSchemaPart)`
 export const StyledContentWrapper = styled.div`
   width: 100%;
   max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'};
+`;
+
+export const StyledRadioBoxWrapper = styled.div`
+  width: 80%;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    width: 90%;
+  }
+  display: block;
+  padding-bottom: 2rem;
+`;
+
+export const StyledRadioGroup = styled(RadioGroup)`
+  margin-left: 20rem;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    margin-left: 0;
+  }
 `;

@@ -9,6 +9,7 @@
     "logout": "Logout",
     "name": "Name",
     "next": "Next",
+    "no": "No",
     "none": "No",
     "or": "Or",
     "other_options": "Other licenses",
@@ -16,7 +17,8 @@
     "remove": "Remove",
     "search": "Search",
     "save": "Save",
-    "type": "Type"
+    "type": "Type",
+    "yes": "Yes"
   },
   "delivered_by": "Delivered by",
   "error": {
@@ -33,7 +35,26 @@
   "license": {
     "external_page": "External site",
     "license_information": "License information",
+
+    "limitation": {
+      "creative_commons": {
+        "title": "Yes, with Creative Commons license",
+        "important_notice": "If the source content's license is CC BY-SA 4.0 or CC BY-NC 4.0, you must provide the same license"
+      },
+      "no_clearance": {
+        "title": "No",
+        "important_notice": "Copyright legislation prevents you from publishing other peoples work. We recommend that you gain license from the owner"
+      },
+      "yes_other": {
+        "title": "Yes, other"
+      }
+    },
     "published_with": "Published with",
+    "questions": {
+      "contains_other_peoples_work": "Does the resource contain other's work?",
+      "examples": "Ex. pictures or illustrations",
+      "usage_cleared_with_owner": "Is the usage cleared with the owner?"
+    },
     "read_more": "Read more about",
     "selected_license": "Selected license"
   },

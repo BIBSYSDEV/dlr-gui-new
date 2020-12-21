@@ -25,3 +25,5 @@ export const emptyLicense = {
   identifier: '',
   features: {},
 };
+
+export const AccessTypes = ['open', 'private'];
