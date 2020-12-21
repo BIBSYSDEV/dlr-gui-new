@@ -29,10 +29,31 @@
     "valid_url": "Input må være gyldig URL"
   },
   "license": {
+    "commercial_options": {
+      "yes": "Ja, materialet kan brukes for kommersielle formål",
+      "no": "Nei, andre kan ikke bruke materialet for kommersielle formål"
+    },
+    "commercial_purposes": "Kommersielle formål",
     "external_page": "Ekstern side",
+    "extra_restrictions": "Ekstra restriksjoner",
     "license_information": "Lisensinformasjon",
+    "modify_and_build": "Endre og bygge videre på",
+    "modify_and_build_options": {
+      "primary_yes": "Ja, andre kan endre og bygge videre på materialet",
+      "no": "Nei, andre kan bruke materialet i original form"
+    },
     "published_with": "Published with",
+    "questions": {
+      "commercial": "Kan andre bruke ressursen for kommersielle formål?",
+      "modify_and_build": "Kan andre endre og bygge videre på ressursen din?",
+      "special_needs": "Har du spesielle behov for å begrense bruken av ressursen?"
+    },
     "read_more": "Les mer om ",
+    "restriction_options": {
+      "no": "Nei, jeg ønsker at ressursen blir brukt og delt",
+      "yes": "Ja",
+      "yes_already_set": "Ja, den inneholder materiale med lisens CC BY-SA 4.0 eller CC BY-NC-SA 4.0"
+    },
     "selected_license": "Valgt lisens"
   },
   "privacy_policy": {

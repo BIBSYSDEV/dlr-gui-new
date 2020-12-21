@@ -19,6 +19,7 @@ import { License } from '../types/license.types';
 import ErrorBanner from '../components/ErrorBanner';
 import AccessAndLicenseStep from './AccessAndLicenseStep';
 import { hasTouchedError } from '../utils/formik-helpers';
+import LicenseWizardFields from './LicenseWizardFields';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -212,6 +213,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                       <Typography variant="h4">{formikProps.values.resource.features.dlr_title}</Typography>
                     </StyledContentWrapper>
                   </StyledSchemaPart>
+
                   <AccessAndLicenseStep
                     setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
                     licenses={licenses}
