@@ -56,7 +56,7 @@ const CircularFileUploadProgress: FC<CircularFileUploadProgressProps> = ({
           value={percentageFileUpload}
         />
       )}
-      {shouldShowCompleted && <CheckCircleIcon aria-describedby={describedById} />}
+      {shouldShowCompleted && <CheckCircleIcon color="primary" aria-describedby={describedById} />}
     </>
   );
 };
