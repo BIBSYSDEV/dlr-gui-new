@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Resource } from '../types/resource.types';
 import { Chip, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
+import Card from '../components/Card';
 import styled from 'styled-components';
 import { StyledContentWrapper } from '../components/styled/Wrappers';
 import ContentPreview from '../components/ContentPreview';
@@ -120,12 +121,17 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
           </StyledFeatureWrapper>
         )}
 
-        {resource.licenses && resource.licenses.length !== 0 && (
+        {resource.licenses && resource.licenses.length !== 0 && resource.licenses[0].identifier.length > 0 && (
           <StyledFeatureWrapper>
             <StyledCaption variant="caption">{t('resource.metadata.license')}</StyledCaption>
-            {resource.licenses.map((license) => (
-              <LicenseCard key={license.identifier} license={license} />
-            ))}
+            {resource.licenses.map(
+              (license) =>
+                license.identifier && (
+                  <Card key={license.identifier}>
+                    <LicenseCard license={license} />
+                  </Card>
+                )
+            )}
           </StyledFeatureWrapper>
         )}
       </StyledPresentationWrapper>

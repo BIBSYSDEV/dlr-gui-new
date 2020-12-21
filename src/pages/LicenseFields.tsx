@@ -8,6 +8,7 @@ import { License } from '../types/license.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
 import ErrorBanner from '../components/ErrorBanner';
+import LicenseCard from '../components/LicenseCard';
 import { resetFormButKeepTouched } from '../utils/formik-helpers';
 import { AccessAndLicenseFieldNames } from '../utils/FieldNames';
 
@@ -86,6 +87,9 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
               </>
             )}
           </Field>
+        )}
+        {values.resource.licenses?.[0] && values.resource.licenses?.[0].identifier.length > 1 && (
+          <LicenseCard license={values.resource.licenses[0]} />
         )}
       </StyledContentWrapper>
     </StyledSchemaPartColored>
