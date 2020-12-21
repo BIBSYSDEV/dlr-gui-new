@@ -15,6 +15,7 @@ import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 import PhotoOutlinedIcon from '@material-ui/icons/PhotoOutlined';
 import ErrorBanner from '../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../utils/formik-helpers';
+import { DescriptionFieldNames } from '../utils/FieldNames';
 
 const StyledMenuItem = styled(MenuItem)`
   padding: 1rem;
@@ -47,7 +48,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
       setAllChangesSaved(false);
       try {
         await postResourceFeature(values.resource.identifier, 'dlr_type', event.target.value);
-        setFieldValue('resource.features.dlr_type', event.target.value);
+        setFieldValue(DescriptionFieldNames.TYPE, event.target.value);
         setSavingResourceTypeError(false);
         values.resource.features.dlr_type = event.target.value;
         resetFormButKeepTouched(touched, resetForm, values, setTouched);
@@ -61,7 +62,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
   return (
     <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor1}>
       <StyledContentWrapper>
-        <Field name="resource.features.dlr_type">
+        <Field name={DescriptionFieldNames.TYPE}>
           {({ field, meta: { error, touched } }: FieldProps) => (
             <>
               <TextField
@@ -74,7 +75,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                 value={field.value}
                 label={t('resource.type.resource_type')}
                 onBlur={(event) => {
-                  setFieldTouched('resource.features.dlr_type', true, true);
+                  setFieldTouched(DescriptionFieldNames.TYPE, true, true);
                 }}
                 onChange={(event) => {
                   handleChange(event);

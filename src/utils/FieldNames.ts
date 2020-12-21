@@ -1,6 +1,8 @@
 export enum DescriptionFieldNames {
   TITLE = 'resource.features.dlr_title',
   DESCRIPTION = 'resource.features.dlr_description',
+  TYPE = 'resource.features.dlr_type',
+  TAGS = 'resource.tags',
 }
 
 export enum AccessAndLicenseFieldNames {
@@ -9,4 +11,14 @@ export enum AccessAndLicenseFieldNames {
 
 export enum ContributorsFieldNames {}
 
-export enum FilesFieldNames {}
+export enum ContentsFieldNames {
+  CONTENTS = 'resource.contents',
+}
+
+export enum SpecificContentFieldNames {
+  TITLE = 'dlr_content_title',
+}
+
+export enum FieldNames {
+  FEATURE = 'feature',
+}

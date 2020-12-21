@@ -50,7 +50,7 @@ const StyledButtonWrapper = styled.div`
 export enum ResourceFormSteps {
   Description = 0,
   Contributors = 1,
-  Files = 2,
+  Contents = 2,
   AccessAndLicense = 3,
   Preview = 4,
 }
@@ -79,7 +79,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   const [activeStep, setActiveStep] = useState<ResourceFormSteps>(ResourceFormSteps.Description);
 
   useEffect(() => {
-    resourceType === ResourceCreationType.FILE && setActiveStep(ResourceFormSteps.Files);
+    resourceType === ResourceCreationType.FILE && setActiveStep(ResourceFormSteps.Contents);
   }, [resourceType]);
 
   const handleNext = () => {
@@ -165,9 +165,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                     return (
                       <Step key={label} completed={false}>
                         <StepButton onClick={handleStep(index)}>
-                          <StepLabel error={hasTouchedError(formikProps.errors, formikProps.touched, index)}>
-                            {label}
-                          </StepLabel>
+                          <StepLabel error={hasTouchedError(formikProps, index)}>{label}</StepLabel>
                         </StepButton>
                       </Step>
                     );
@@ -218,7 +216,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                   />
                 </StyledPanel>
               )}
-              {activeStep === ResourceFormSteps.Files && (
+              {activeStep === ResourceFormSteps.Contents && (
                 <StyledPanel>
                   <StyledSchemaPart>
                     <StyledContentWrapper>
