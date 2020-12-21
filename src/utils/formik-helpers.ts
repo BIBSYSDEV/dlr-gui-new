@@ -1,4 +1,4 @@
-import { FormikErrors, FormikTouched, getIn } from 'formik';
+import { FormikErrors, FormikProps, FormikTouched, FormikValues, getIn } from 'formik';
 import { ResourceFormSteps } from '../pages/ResourceForm';
 import {
   AccessAndLicenseFieldNames,
@@ -7,22 +7,23 @@ import {
   DescriptionFieldNames,
   FieldNames,
   SpecificContentFieldNames,
+  SpecificContributorFieldNames,
 } from './FieldNames';
 import { Content } from '../types/content.types';
+import { Contributor } from '../types/resource.types';
 
 const descriptionFieldNames = Object.values(DescriptionFieldNames);
 const accessAndLicenseFieldNames = Object.values(AccessAndLicenseFieldNames);
-const contributorsFieldNames = Object.values(ContributorsFieldNames);
 
-export const hasTouchedError = (formikProps: any, index: number): boolean => {
+export const hasTouchedError = (formikProps: FormikProps<FormikValues>, index: number): boolean => {
   if (!Object.keys(formikProps.errors).length || !Object.keys(formikProps.touched).length) {
     return false;
   }
   let fieldNames: string[] = [];
   index === ResourceFormSteps.Description && (fieldNames = descriptionFieldNames);
   index === ResourceFormSteps.AccessAndLicense && (fieldNames = accessAndLicenseFieldNames);
-  index === ResourceFormSteps.Contributors && (fieldNames = contributorsFieldNames);
-  index === ResourceFormSteps.Contents && (fieldNames = getAllContentsFields(formikProps.values.resource.contents));
+  index === ResourceFormSteps.Contributors && (fieldNames = getAllContributorFields(formikProps.values));
+  index === ResourceFormSteps.Contents && (fieldNames = getAllContentsFields(formikProps.values));
   console.log('fieldNames', fieldNames);
   if (fieldNames.length) {
     return fieldNames.some((fieldName) => {
@@ -47,8 +48,9 @@ export const resetFormButKeepTouched = (
   setTouched(allTouched);
 };
 
-export const getAllContentsFields = (contents: Content[]): string[] => {
+export const getAllContentsFields = (values: FormikValues): string[] => {
   const fieldNames: string[] = [];
+  const contents: Content[] = values.resource.contents;
   if (contents.length === 0) {
     fieldNames.push(ContentsFieldNames.CONTENTS);
   } else {
@@ -60,19 +62,19 @@ export const getAllContentsFields = (contents: Content[]): string[] => {
   return fieldNames;
 };
 
-// export const getAllContributorFields = (contributors: Contributor[]): string[] => {
-//   const fieldNames: string[] = [];
-//   if (contributors.length === 0) {
-//     fieldNames.push(ContributorFieldNames.CONTRIBUTORS);
-//   } else {
-//     contributors.forEach((contributor, index) => {
-//       const baseFieldName = `${ContributorFieldNames.CONTRIBUTORS}[${index}]`;
-//       fieldNames.push(`${baseFieldName}.${SpecificContributorFieldNames.SEQUENCE}`);
-//       fieldNames.push(`${baseFieldName}.${SpecificContributorFieldNames.CORRESPONDING}`);
-//       if (contributor.correspondingAuthor) {
-//         fieldNames.push(`${baseFieldName}.${SpecificContributorFieldNames.EMAIL}`);
-//       }
-//     });
-//   }
-//   return fieldNames;
-// };
+export const getAllContributorFields = (values: FormikValues): string[] => {
+  const fieldNames: string[] = [];
+  const contributors: Contributor[] = values.resource.contributors;
+  if (contributors.length === 0) {
+    fieldNames.push(ContributorsFieldNames.CONTRIBUTORS);
+  } else {
+    contributors.forEach((contributor, index) => {
+      const baseFieldName = `${ContributorsFieldNames.CONTRIBUTORS}[${index}].${FieldNames.FEATURE}`;
+      fieldNames.push(`${baseFieldName}.${SpecificContributorFieldNames.NAME}`);
+      fieldNames.push(`${baseFieldName}.${SpecificContributorFieldNames.TYPE}`);
+    });
+  }
+  return fieldNames;
+};
+
+//TODO: creators:

@@ -9,7 +9,14 @@ export enum AccessAndLicenseFieldNames {
   LICENSE = 'resource.licenses[0]',
 }
 
-export enum ContributorsFieldNames {}
+export enum ContributorsFieldNames {
+  CONTRIBUTORS = 'resource.contributors',
+}
+
+export enum SpecificContributorFieldNames {
+  NAME = 'dlr_contributor_name',
+  TYPE = 'dlr_contributor_type',
+}
 
 export enum ContentsFieldNames {
   CONTENTS = 'resource.contents',
