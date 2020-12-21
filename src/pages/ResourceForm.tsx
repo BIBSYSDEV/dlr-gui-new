@@ -171,7 +171,11 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                           <StepLabel error={hasTouchedError(formikProps.errors, formikProps.touched, index)}>
                             {label}{' '}
                             {label === t('resource.form_steps.files') && (
-                              <CircularFileUploadProgress uppy={uppy} isUploadingNewFile={true} />
+                              <CircularFileUploadProgress
+                                uppy={uppy}
+                                isUploadingNewFile={true}
+                                describedById={fileUploadPanelId}
+                              />
                             )}
                           </StepLabel>
                         </StepButton>

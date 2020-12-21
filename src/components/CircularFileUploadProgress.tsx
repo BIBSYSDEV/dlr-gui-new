@@ -7,14 +7,17 @@ import { CircularProgress } from '@material-ui/core';
 interface CircularFileUploadProgressProps {
   uppy: Uppy;
   isUploadingNewFile: boolean;
+  describedById: string;
 }
 
-const fileUploadPanelId = 'file-upload-panel';
-
 const completedDelayMilliSeconds = 3000;
-const pollingDelayMilliseconds = 200;
+const pollingDelayMilliseconds = 500;
 
-const CircularFileUploadProgress: FC<CircularFileUploadProgressProps> = ({ uppy, isUploadingNewFile }) => {
+const CircularFileUploadProgress: FC<CircularFileUploadProgressProps> = ({
+  uppy,
+  isUploadingNewFile,
+  describedById,
+}) => {
   const [percentageFileUpload, setPercentageFileUpload] = useState(0);
   const [shouldShowCompleted, setShouldShowCompleted] = useState(false);
   const [turnOff, setTurnOff] = useState(false);
@@ -47,13 +50,13 @@ const CircularFileUploadProgress: FC<CircularFileUploadProgressProps> = ({ uppy,
     <>
       {percentageFileUpload > 0 && percentageFileUpload < 100 && (
         <CircularProgress
-          aria-describedby={fileUploadPanelId}
+          aria-describedby={describedById}
           size={15}
           variant="determinate"
           value={percentageFileUpload}
         />
       )}
-      {shouldShowCompleted && <CheckCircleIcon />}
+      {shouldShowCompleted && <CheckCircleIcon aria-describedby={describedById} />}
     </>
   );
 };
