@@ -41,8 +41,10 @@
     "license_information": "License information",
     "modify_and_build": "Modify and build upon",
     "modify_and_build_options": {
+      "dont_care": "And, the may choose their own license",
+      "no": "No, others can use the material in it's original form",
       "primary_yes": "Yes, others can modify and build upon your material",
-      "no": "No, others can use the material in it's original form"
+      "share_alike": "But, they have to use the same license as this resource (be aware that this might cause complications for usage of your resource)"
     },
     "published_with": "Published with",
     "questions": {
@@ -52,9 +54,10 @@
     },
     "read_more": "Read more about",
     "restriction_options": {
-      "no": "No, I want the resource to be used and shared",
+      "CC_BY_4_0": "No, I want the resource to be used and shared",
       "yes": "Yes",
-      "yes_already_set": "Yes, it contains material with license CC BY-SA 4.0 or CC BY-NC-SA 4.0"
+      "CC_BY-SA_4_0": "Yes, it contains material with license CC BY-SA 4.0",
+      "CC_BY-NC-SA_4_0": "Yes, it contains material with license CC BY-NC-SA 4.0"
     },
     "selected_license": "Selected license"
   },

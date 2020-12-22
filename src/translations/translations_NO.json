@@ -39,8 +39,10 @@
     "license_information": "Lisensinformasjon",
     "modify_and_build": "Endre og bygge videre på",
     "modify_and_build_options": {
+      "dont_care": "Og, de står fritt til å velge lisens selv",
+      "no": "Nei, andre kan bruke materialet i original form",
       "primary_yes": "Ja, andre kan endre og bygge videre på materialet",
-      "no": "Nei, andre kan bruke materialet i original form"
+      "share_alike": "Men, det må distribueres under samme lisens som originalen min (vær obs på at dette valget kan gjøre det komplisert for andre å bruke ressursen)"
     },
     "published_with": "Published with",
     "questions": {
@@ -50,9 +52,10 @@
     },
     "read_more": "Les mer om ",
     "restriction_options": {
-      "no": "Nei, jeg ønsker at ressursen blir brukt og delt",
+      "CC_BY_4_0": "Nei, jeg ønsker at ressursen blir brukt og delt",
       "yes": "Ja",
-      "yes_already_set": "Ja, den inneholder materiale med lisens CC BY-SA 4.0 eller CC BY-NC-SA 4.0"
+      "CC_BY-SA_4_0": "Ja, den inneholder materiale med lisens CC BY-SA 4.0",
+      "CC_BY-NC-SA_4_0": "Ja, den inneholder materiale med lisens CC BY-NC-SA 4.0"
     },
     "selected_license": "Valgt lisens"
   },
