@@ -2,19 +2,19 @@ import React, { FC, useState } from 'react';
 import Radio from '@material-ui/core/Radio';
 import { useTranslation } from 'react-i18next';
 import { useFormikContext } from 'formik';
-import { ResourceFeatureNames, ResourceWrapper } from '../types/resource.types';
+import { ResourceWrapper } from '../types/resource.types';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import { Colors } from '../themes/mainTheme';
 import { StyledRadioBoxWrapper, StyledRadioGroup, StyledSchemaPartColored } from '../components/styled/Wrappers';
-import { postResourceFeature } from '../api/resourceApi';
+import { putAccessType } from '../api/resourceApi';
 import ErrorBanner from '../components/ErrorBanner';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { AccessTypes } from '../types/license.types';
 
-const SyledOutLinedBox = styled.div`
+const StyledOutLinedBox = styled.div`
   display: flex;
   outline-style: solid;
   outline-color: ${({ theme }) => theme.palette.primary};
@@ -32,7 +32,17 @@ const StyledTypography = styled(Typography)`
   padding-left: 1rem;
 `;
 
-const LicenseAgreements = ['creative_commons', 'yes_other', 'no_clearance'];
+enum LicenseAgreementsOptions {
+  CC = 'creative_commons',
+  YesOther = 'yes_other',
+  NoClearance = 'no_clearance',
+}
+
+const LicenseAgreements: string[] = [
+  LicenseAgreementsOptions.CC,
+  LicenseAgreementsOptions.YesOther,
+  LicenseAgreementsOptions.NoClearance,
+];
 
 interface ContainsOtherWorksFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -45,25 +55,28 @@ const usageClearedId = 'usage-is-cleared';
 const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, resetForm, setFieldValue } = useFormikContext<ResourceWrapper>();
-  const [containsOtherPeoplesWork, setcontainsOtherPeoplesWork] = useState(false);
-  const [LicenseAgreement, setLicenseAgreement] = useState(LicenseAgreements[0]);
+  const [containsOtherPeoplesWork, setContainsOtherPeoplesWork] = useState(false);
+  const [LicenseAgreement, setLicenseAgreement] = useState<string>(LicenseAgreementsOptions.CC);
   const [savingError, setSavingError] = useState(false);
 
   //TODO: fetch additional license options such as NTNU / BI internal license possibilities and append those to LicenseAgreements
 
   const handleChangeInContainsOtherPeoplesWork = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setcontainsOtherPeoplesWork(event.target.value === 'true');
+    setContainsOtherPeoplesWork(event.target.value === 'true');
   };
 
   const handleLicenseAgreementChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setAllChangesSaved(false);
       setLicenseAgreement(event.target.value);
-      let accessType = AccessTypes[1];
-      if (event.target.value === LicenseAgreements[0] || event.target.value === LicenseAgreements[1]) {
-        accessType = AccessTypes[0];
+      let accessType = AccessTypes.private;
+      if (
+        event.target.value === LicenseAgreementsOptions.CC ||
+        event.target.value === LicenseAgreementsOptions.YesOther
+      ) {
+        accessType = AccessTypes.open;
       }
-      await postResourceFeature(values.resource.identifier, ResourceFeatureNames.access, accessType);
+      await putAccessType(values.resource.identifier, accessType);
       setFieldValue('resource.features.dlr_access', accessType);
       values.resource.features.dlr_access = accessType;
       resetForm({ values });
@@ -84,7 +97,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllCha
           <Typography variant="overline">{t('license.questions.examples')}</Typography>
         </FormLabel>
         <StyledRadioGroup
-          aria-labelby={otherPeopleWorkId}
+          aria-label={t('license.questions.examples')}
           value={containsOtherPeoplesWork}
           onChange={(event) => handleChangeInContainsOtherPeoplesWork(event)}>
           <FormControlLabel value={false} control={<Radio color="primary" />} label={t('common.no')} />
@@ -97,7 +110,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllCha
             {t('license.questions.usage_cleared_with_owner')}
           </FormLabel>
           <StyledRadioGroup
-            aria-labelby={usageClearedId}
+            aria-label={t('license.questions.usage_cleared_with_owner')}
             value={LicenseAgreement}
             onChange={(event) => handleLicenseAgreementChange(event)}>
             {LicenseAgreements.map((element, index) => (
@@ -112,11 +125,11 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllCha
         </StyledRadioBoxWrapper>
       )}
       {savingError && <ErrorBanner />}
-      {LicenseAgreement !== LicenseAgreements[1] && containsOtherPeoplesWork && (
-        <SyledOutLinedBox>
+      {LicenseAgreement !== LicenseAgreementsOptions.YesOther && containsOtherPeoplesWork && (
+        <StyledOutLinedBox>
           <ErrorOutlineIcon color="primary" />
           <StyledTypography>{t(`license.limitation.${LicenseAgreement}.important_notice`)}</StyledTypography>
-        </SyledOutLinedBox>
+        </StyledOutLinedBox>
       )}
     </StyledSchemaPartColored>
   );

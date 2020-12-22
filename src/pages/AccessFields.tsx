@@ -13,6 +13,8 @@ interface AccessFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
 }
 
+const accessTypeArray = [AccessTypes.open, AccessTypes.private];
+
 const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, setFieldTouched, setFieldValue, handleChange, resetForm } = useFormikContext<ResourceWrapper>();
@@ -58,7 +60,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
                   handleChange(event);
                   saveResourceAccessType(event);
                 }}>
-                {AccessTypes.map((accessType, index) => (
+                {accessTypeArray.map((accessType, index) => (
                   <MenuItem key={index} value={accessType}>
                     <Typography>{t(`resource.access_types.${accessType}`)}</Typography>
                   </MenuItem>
