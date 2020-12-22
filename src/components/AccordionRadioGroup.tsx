@@ -7,19 +7,12 @@ import { Typography } from '@material-ui/core';
 
 //kommer med en pull fra master
 const StyledRadioBoxWrapper = styled.div`
-  width: 80%;
+  width: 60%;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     width: 90%;
   }
   display: block;
   padding-bottom: 2rem;
-`;
-
-const StyledAccordionTypeDivHeader = styled.div`
-  display: flex;
-  padding-bottom: 0.5rem;
-  align-items: center;
-  cursor: pointer;
 `;
 
 interface AccordionRadioGroupProps {
@@ -32,16 +25,14 @@ const AccoridionRadioGroup: FC<AccordionRadioGroupProps> = ({ ariaDescription, t
 
   return (
     <StyledRadioBoxWrapper>
-      <StyledAccordionTypeDivHeader id={`${ariaDescription}-header`}>
-        <Button
-          aria-controls={ariaDescription}
-          size="large"
-          onClick={() => setShowRadioDetails(!showRadioDetails)}
-          color="primary"
-          endIcon={!showRadioDetails ? <ExpandMoreIcon /> : <ExpandLessIcon />}>
-          <Typography variant="h6">{title}</Typography>
-        </Button>
-      </StyledAccordionTypeDivHeader>
+      <Button
+        aria-controls={ariaDescription}
+        size="large"
+        onClick={() => setShowRadioDetails(!showRadioDetails)}
+        color="primary"
+        endIcon={!showRadioDetails ? <ExpandMoreIcon /> : <ExpandLessIcon />}>
+        <Typography variant="h6">{title}</Typography>
+      </Button>
 
       {showRadioDetails && <div id={ariaDescription}>{children}</div>}
     </StyledRadioBoxWrapper>

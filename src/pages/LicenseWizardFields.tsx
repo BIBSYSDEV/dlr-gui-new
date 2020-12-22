@@ -13,7 +13,7 @@ import AccordionRadioGroup from '../components/AccordionRadioGroup';
 
 //kommer med pull fra master
 const StyledRadioGroup = styled(RadioGroup)`
-  margin-left: 20rem;
+  margin-left: 30%;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     margin-left: 0;
   }
@@ -22,7 +22,7 @@ const StyledRadioGroup = styled(RadioGroup)`
 const StyledSubRadioGroup = styled(RadioGroup)`
   margin-left: 5rem;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    margin-left: 0;
+    margin-left: 2;
   }
 `;
 
@@ -123,7 +123,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
           <Typography variant="subtitle1">{t('license.questions.special_needs')}</Typography>
         </FormLabel>
         <StyledRadioGroup
-          aria-labelby={`${extraRestrictionRadio}-label`}
+          aria-label={t('license.questions.special_needs')}
           value={extraRestriction}
           onChange={(event) => handleChangeInExtraRestriction(event)}>
           {defaultRestrictionOptions.map((element, index) => (
@@ -143,7 +143,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
             <Typography variant="subtitle1">{t('license.questions.commercial')}</Typography>
           </FormLabel>
           <StyledRadioGroup
-            aria-labelby={`${commercialRadio}-label`}
+            aria-label={t('license.questions.commercial')}
             value={commercialValue}
             onChange={(event) => handleChangeInCommercialOption(event)}>
             {defaultCommercialOptions.map((element, index) => (
@@ -164,8 +164,8 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
             <Typography variant="subtitle1">{t('license.questions.modify_and_build')}</Typography>
           </FormLabel>
           <StyledRadioGroup
-            aria-labelby={`${modifyAndBuildRadio}-label`}
             value={modifyAndBuildValue}
+            aria-label={t('license.questions.modify_and_build')}
             onChange={(event) => handleChangeInModifyAndBuildOption(event)}>
             <FormControlLabel
               value={defaultModifyAndBuildOptions[0]}
@@ -174,8 +174,8 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
             />
             {modifyAndBuildValue === defaultModifyAndBuildOptions[0] && (
               <StyledSubRadioGroup
+                aria-label={t(`license.modify_and_build_options.${defaultModifyAndBuildOptions[0]}`)}
                 onChange={(event) => handleChangeInModifyAndBuildSubOptions(event)}
-                aria-labelby={`${modifyAndBuildRadio}-label`}
                 value={modifyAndBuildSubValue}>
                 <FormControlLabel
                   value={defaultModifyAndBuildOptions[2]}
