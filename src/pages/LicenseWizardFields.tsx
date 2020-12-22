@@ -45,10 +45,8 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
   const [extraRestriction, setExtraRestriction] = useState('');
   const [saveResctrictionError, setSaveResctrictionError] = useState(false);
   const [commercialValue, setCommercialValue] = useState('');
-  const [commercialRadioIsDisabled, setCommercialRadioDisable] = useState(false);
   const [modifyAndBuildValue, setModifyAndBuildValue] = useState('');
   const [modifyAndBuildSubValue, setModifyAndBuildSubValue] = useState('');
-  const [modifyAndBuildRadioIsDisabled, setModifyAndBuildRadioDisable] = useState(false);
 
   const handleChangeInExtraRestriction = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setExtraRestriction(event.target.value);
@@ -62,8 +60,6 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
     modifyAndBuildSubValue: string
   ) => {
     if (restrictedValue === defaultRestrictionOptions[1] || restrictedValue === '') {
-      setCommercialRadioDisable(false);
-      setModifyAndBuildRadioDisable(false);
       let licenseTempCode = 'CC BY';
       if (commercialValue === defaultCommercialOptions[0]) {
         licenseTempCode += '-NC';
@@ -81,8 +77,6 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
       await saveLicense(licenseTempCode);
     } else {
       await saveLicense(restrictedValue);
-      setCommercialRadioDisable(true);
-      setModifyAndBuildRadioDisable(true);
     }
   };
 
@@ -124,14 +118,14 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
 
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor3}>
-      <AccordionRadioGroup
-        disabled={false}
-        ariaDescription={extraRestrictionRadio}
-        title={t('license.extra_restrictions')}>
+      <AccordionRadioGroup ariaDescription={extraRestrictionRadio} title={t('license.extra_restrictions')}>
         <FormLabel component="legend" id={`${extraRestrictionRadio}-label`}>
           <Typography variant="subtitle1">{t('license.questions.special_needs')}</Typography>
         </FormLabel>
-        <StyledRadioGroup value={extraRestriction} onChange={(event) => handleChangeInExtraRestriction(event)}>
+        <StyledRadioGroup
+          aria-labelby={`${extraRestrictionRadio}-label`}
+          value={extraRestriction}
+          onChange={(event) => handleChangeInExtraRestriction(event)}>
           {defaultRestrictionOptions.map((element, index) => (
             <FormControlLabel
               key={index}
@@ -144,14 +138,14 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
       </AccordionRadioGroup>
 
       {extraRestriction === defaultRestrictionOptions[1] && (
-        <AccordionRadioGroup
-          disabled={commercialRadioIsDisabled}
-          ariaDescription={commercialRadio}
-          title={t('license.commercial_purposes')}>
+        <AccordionRadioGroup ariaDescription={commercialRadio} title={t('license.commercial_purposes')}>
           <FormLabel component="legend" id={`${commercialRadio}-label`}>
             <Typography variant="subtitle1">{t('license.questions.commercial')}</Typography>
           </FormLabel>
-          <StyledRadioGroup value={commercialValue} onChange={(event) => handleChangeInCommercialOption(event)}>
+          <StyledRadioGroup
+            aria-labelby={`${commercialRadio}-label`}
+            value={commercialValue}
+            onChange={(event) => handleChangeInCommercialOption(event)}>
             {defaultCommercialOptions.map((element, index) => (
               <FormControlLabel
                 key={index}
@@ -165,14 +159,14 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
       )}
 
       {extraRestriction === defaultRestrictionOptions[1] && (
-        <AccordionRadioGroup
-          disabled={modifyAndBuildRadioIsDisabled}
-          ariaDescription={modifyAndBuildRadio}
-          title={t('license.modify_and_build')}>
+        <AccordionRadioGroup ariaDescription={modifyAndBuildRadio} title={t('license.modify_and_build')}>
           <FormLabel component="legend" id={`${modifyAndBuildRadio}-label`}>
             <Typography variant="subtitle1">{t('license.questions.modify_and_build')}</Typography>
           </FormLabel>
-          <StyledRadioGroup value={modifyAndBuildValue} onChange={(event) => handleChangeInModifyAndBuildOption(event)}>
+          <StyledRadioGroup
+            aria-labelby={`${modifyAndBuildRadio}-label`}
+            value={modifyAndBuildValue}
+            onChange={(event) => handleChangeInModifyAndBuildOption(event)}>
             <FormControlLabel
               value={defaultModifyAndBuildOptions[0]}
               control={<Radio color="primary" />}
@@ -181,6 +175,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
             {modifyAndBuildValue === defaultModifyAndBuildOptions[0] && (
               <StyledSubRadioGroup
                 onChange={(event) => handleChangeInModifyAndBuildSubOptions(event)}
+                aria-labelby={`${modifyAndBuildRadio}-label`}
                 value={modifyAndBuildSubValue}>
                 <FormControlLabel
                   value={defaultModifyAndBuildOptions[2]}

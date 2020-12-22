@@ -22,44 +22,28 @@ const StyledAccordionTypeDivHeader = styled.div`
   cursor: pointer;
 `;
 
-const StyledDisabledAccordionTypeDivHeader = styled.div`
-  display: flex;
-  padding-bottom: 0.5rem;
-  align-items: center;
-`;
-
 interface AccordionRadioGroupProps {
   ariaDescription: string;
   title: string;
-  disabled: boolean;
 }
 
-const AccoridionRadioGroup: FC<AccordionRadioGroupProps> = ({ ariaDescription, title, children, disabled }) => {
+const AccoridionRadioGroup: FC<AccordionRadioGroupProps> = ({ ariaDescription, title, children }) => {
   const [showRadioDetails, setShowRadioDetails] = useState(false);
 
   return (
     <StyledRadioBoxWrapper>
-      {!disabled && (
-        <StyledAccordionTypeDivHeader id={`${ariaDescription}-header`}>
-          <Button
-            aria-controls={ariaDescription}
-            size="large"
-            onClick={() => setShowRadioDetails(!showRadioDetails)}
-            color="primary"
-            endIcon={!showRadioDetails ? <ExpandMoreIcon /> : <ExpandLessIcon />}>
-            <Typography variant="h6">{title}</Typography>
-          </Button>
-        </StyledAccordionTypeDivHeader>
-      )}
-      {disabled && (
-        <StyledDisabledAccordionTypeDivHeader id={`${ariaDescription}-header`}>
-          <Button aria-controls={ariaDescription} size="large" disabled color="primary" endIcon={<ExpandMoreIcon />}>
-            <Typography variant="h6">{title}</Typography>
-          </Button>
-        </StyledDisabledAccordionTypeDivHeader>
-      )}
+      <StyledAccordionTypeDivHeader id={`${ariaDescription}-header`}>
+        <Button
+          aria-controls={ariaDescription}
+          size="large"
+          onClick={() => setShowRadioDetails(!showRadioDetails)}
+          color="primary"
+          endIcon={!showRadioDetails ? <ExpandMoreIcon /> : <ExpandLessIcon />}>
+          <Typography variant="h6">{title}</Typography>
+        </Button>
+      </StyledAccordionTypeDivHeader>
 
-      {showRadioDetails && !disabled && <div id={ariaDescription}>{children}</div>}
+      {showRadioDetails && <div id={ariaDescription}>{children}</div>}
     </StyledRadioBoxWrapper>
   );
 };
