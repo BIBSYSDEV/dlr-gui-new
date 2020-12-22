@@ -42,7 +42,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
             {({ field, meta: { touched, error } }: FieldProps) => (
               <TextField
                 {...field}
-                variant="filled"
+                variant="outlined"
                 fullWidth
                 label={t('resource.metadata.title')}
                 error={touched && !!error}
@@ -63,7 +63,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
             {({ field, meta: { error } }: FieldProps) => (
               <TextField
                 {...field}
-                variant="filled"
+                variant="outlined"
                 fullWidth
                 multiline
                 rows="4"

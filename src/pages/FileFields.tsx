@@ -80,7 +80,7 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
                 {({ field, meta: { touched, error } }: FieldProps) => (
                   <TextField
                     {...field}
-                    variant="filled"
+                    variant="outlined"
                     fullWidth
                     label={t('resource.metadata.filename')}
                     error={touched && !!error}

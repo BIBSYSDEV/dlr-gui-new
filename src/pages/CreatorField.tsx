@@ -128,7 +128,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                       {({ field, meta: { touched, error } }: FieldProps) => (
                         <StyledTextField
                           {...field}
-                          variant="filled"
+                          variant="outlined"
                           label={t('common.name')}
                           error={touched && !!error}
                           helperText={<ErrorMessage name={field.name} />}

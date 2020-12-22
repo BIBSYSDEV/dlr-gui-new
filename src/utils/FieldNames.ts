@@ -17,6 +17,13 @@ export enum SpecificContributorFieldNames {
   NAME = 'dlr_contributor_name',
   TYPE = 'dlr_contributor_type',
 }
+export enum CreatorsFieldNames {
+  CREATORS = 'resource.creators',
+}
+
+export enum SpecificCreatorFieldNames {
+  NAME = 'dlr_creator_name',
+}
 
 export enum ContentsFieldNames {
   CONTENTS = 'resource.contents',
@@ -27,5 +34,5 @@ export enum SpecificContentFieldNames {
 }
 
 export enum FieldNames {
-  FEATURE = 'feature',
+  FEATURE = 'features',
 }
