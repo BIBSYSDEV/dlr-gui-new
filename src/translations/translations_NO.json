@@ -53,9 +53,9 @@
     "read_more": "Les mer om ",
     "restriction_options": {
       "CC_BY_4_0": "Nei, jeg ønsker at ressursen blir brukt og delt",
-      "yes": "Ja",
+      "CC_BY-NC-SA_4_0": "Ja, den inneholder materiale med lisens CC BY-NC-SA 4.0",
       "CC_BY-SA_4_0": "Ja, den inneholder materiale med lisens CC BY-SA 4.0",
-      "CC_BY-NC-SA_4_0": "Ja, den inneholder materiale med lisens CC BY-NC-SA 4.0"
+      "yes": "Ja"
     },
     "selected_license": "Valgt lisens"
   },
