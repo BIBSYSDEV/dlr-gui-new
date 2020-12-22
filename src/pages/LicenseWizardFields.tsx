@@ -57,7 +57,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
   const { t } = useTranslation();
   const { values, resetForm } = useFormikContext<ResourceWrapper>();
   const [extraRestriction, setExtraRestriction] = useState('');
-  const [saveResctrictionError, setSaveResctrictionError] = useState(false);
+  const [saveRestrictionError, setSaveRestrictionError] = useState(false);
   const [commercialValue, setCommercialValue] = useState('');
   const [modifyAndBuildValue, setModifyAndBuildValue] = useState('');
   const [modifyAndBuildSubValue, setModifyAndBuildSubValue] = useState('');
@@ -104,12 +104,12 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
           values.resource.licenses[0] = license;
           resetForm({ values });
         }
-        setSaveResctrictionError(false);
+        setSaveRestrictionError(false);
       } else {
-        setSaveResctrictionError(true);
+        setSaveRestrictionError(true);
       }
     } catch (error) {
-      setSaveResctrictionError(true);
+      setSaveRestrictionError(true);
     } finally {
       setAllChangesSaved(true);
     }
@@ -212,7 +212,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
         </AccordionRadioGroup>
       )}
 
-      {saveResctrictionError && <ErrorBanner />}
+      {saveRestrictionError && <ErrorBanner />}
     </StyledSchemaPartColored>
   );
 };
