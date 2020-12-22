@@ -19,6 +19,7 @@ import { License } from '../types/license.types';
 import ErrorBanner from '../components/ErrorBanner';
 import AccessAndLicenseStep from './AccessAndLicenseStep';
 import { hasTouchedError } from '../utils/formik-helpers';
+import CircularFileUploadProgress from '../components/CircularFileUploadProgress';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -60,6 +61,8 @@ interface ResourceFormProps {
   uppy: Uppy;
   resourceType: ResourceCreationType;
 }
+
+const fileUploadPanelId = 'file-upload-panel';
 
 const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) => {
   const { t } = useTranslation();
@@ -165,7 +168,16 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                     return (
                       <Step key={label} completed={false}>
                         <StepButton onClick={handleStep(index)}>
-                          <StepLabel error={hasTouchedError(formikProps, index)}>{label}</StepLabel>
+                          <StepLabel error={hasTouchedError(formikProps, index)}>
+                            {label}{' '}
+                            {label === t('resource.form_steps.files') && (
+                              <CircularFileUploadProgress
+                                uppy={uppy}
+                                isUploadingNewFile={true}
+                                describedById={fileUploadPanelId}
+                              />
+                            )}
+                          </StepLabel>
                         </StepButton>
                       </Step>
                     );
@@ -211,8 +223,8 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                   />
                 </StyledPanel>
               )}
-              {activeStep === ResourceFormSteps.Contents && (
-                <StyledPanel>
+                {activeStep === ResourceFormSteps.Contents && (
+                <StyledPanel id={fileUploadPanelId}>
                   <StyledSchemaPart>
                     <StyledContentWrapper>
                       <Typography variant="h4">{formikProps.values.resource.features.dlr_title}</Typography>
