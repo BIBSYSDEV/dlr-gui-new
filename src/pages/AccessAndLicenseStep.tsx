@@ -9,7 +9,7 @@ interface AccessAndLicenseStepProps {
   licenses: License[] | undefined;
 }
 
-const AcessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSaved, licenses }) => {
+const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSaved, licenses }) => {
   return (
     <>
       <AccessFields
@@ -31,4 +31,4 @@ const AcessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSaved
     </>
   );
 };
-export default AcessAndLicenseStep;
+export default AccessAndLicenseStep;

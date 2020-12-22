@@ -31,7 +31,7 @@
   "license": {
     "commercial_options": {
       "yes": "Ja, materialet kan brukes for kommersielle formål",
-      "no": "Nei, andre kan ikke bruke materialet for kommersielle formål"
+      "NC": "Nei, andre kan ikke bruke materialet for kommersielle formål"
     },
     "commercial_purposes": "Kommersielle formål",
     "external_page": "Ekstern side",
@@ -40,7 +40,7 @@
     "modify_and_build": "Endre og bygge videre på",
     "modify_and_build_options": {
       "dont_care": "Og, de står fritt til å velge lisens selv",
-      "no": "Nei, andre kan bruke materialet i original form",
+      "ND": "Nei, andre kan kun bruke materialet i original form",
       "primary_yes": "Ja, andre kan endre og bygge videre på materialet",
       "share_alike": "Men, det må distribueres under samme lisens som originalen min (vær obs på at dette valget kan gjøre det komplisert for andre å bruke ressursen)"
     },

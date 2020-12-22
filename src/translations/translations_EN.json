@@ -33,7 +33,7 @@
   "license": {
     "commercial_options": {
       "yes": "Yes, the material can be used for commercial purposes",
-      "no": "No, others cannot use the material for commercial purposes"
+      "NC": "No, others cannot use the material for commercial purposes"
     },
     "commercial_purposes": "Commercial purposes",
     "external_page": "External site",
@@ -42,7 +42,7 @@
     "modify_and_build": "Modify and build upon",
     "modify_and_build_options": {
       "dont_care": "And, the may choose their own license",
-      "no": "No, others can use the material in it's original form",
+      "ND": "No, others can only use the material in it's original form",
       "primary_yes": "Yes, others can modify and build upon your material",
       "share_alike": "But, they have to use the same license as this resource (be aware that this might cause complications for usage of your resource)"
     },

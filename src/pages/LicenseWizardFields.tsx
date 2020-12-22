@@ -30,9 +30,23 @@ const extraRestrictionRadio = 'extra-restriction';
 const commercialRadio = 'commersial';
 const modifyAndBuildRadio = 'change-and-build';
 
-const defaultRestrictionOptions = ['CC BY 4.0', 'yes'];
-const defaultCommercialOptions = ['no', 'yes'];
-const defaultModifyAndBuildOptions = ['primary_yes', 'no', 'dont_care', 'share_alike'];
+enum DefaultRestricion {
+  CC_BY = 'CC BY 4.0',
+  yes = 'yes',
+}
+enum DefaultCommercial {
+  NC = 'NC',
+  yes = 'yes',
+}
+enum DefaultModifyAndBuildOptions {
+  primaryYes = 'primary_yes',
+  ND = 'ND',
+  dontCare = 'dont_care',
+  SA = 'share_alike',
+}
+
+const defaultRestrictionOptions = [DefaultRestricion.CC_BY, DefaultRestricion.yes];
+const defaultCommercialOptions = [DefaultCommercial.yes, DefaultCommercial.NC];
 
 interface LicenseWizardFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -59,17 +73,17 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
     modifyAndBuildValue: string,
     modifyAndBuildSubValue: string
   ) => {
-    if (restrictedValue === defaultRestrictionOptions[1] || restrictedValue === '') {
+    if (restrictedValue === DefaultRestricion.yes || restrictedValue === '') {
       let licenseTempCode = 'CC BY';
-      if (commercialValue === defaultCommercialOptions[0]) {
+      if (commercialValue === DefaultCommercial.NC) {
         licenseTempCode += '-NC';
       }
-      if (modifyAndBuildValue === defaultModifyAndBuildOptions[1]) {
+      if (modifyAndBuildValue === DefaultModifyAndBuildOptions.ND) {
         licenseTempCode += '-ND';
       }
       if (
-        modifyAndBuildValue === defaultModifyAndBuildOptions[0] &&
-        modifyAndBuildSubValue === defaultModifyAndBuildOptions[3]
+        modifyAndBuildValue === DefaultModifyAndBuildOptions.primaryYes &&
+        modifyAndBuildSubValue === DefaultModifyAndBuildOptions.SA
       ) {
         licenseTempCode += '-SA';
       }
@@ -137,7 +151,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
         </StyledRadioGroup>
       </AccordionRadioGroup>
 
-      {extraRestriction === defaultRestrictionOptions[1] && (
+      {extraRestriction === DefaultRestricion.yes && (
         <AccordionRadioGroup ariaDescription={commercialRadio} title={t('license.commercial_purposes')}>
           <FormLabel component="legend" id={`${commercialRadio}-label`}>
             <Typography variant="subtitle1">{t('license.questions.commercial')}</Typography>
@@ -158,7 +172,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
         </AccordionRadioGroup>
       )}
 
-      {extraRestriction === defaultRestrictionOptions[1] && (
+      {extraRestriction === DefaultRestricion.yes && (
         <AccordionRadioGroup ariaDescription={modifyAndBuildRadio} title={t('license.modify_and_build')}>
           <FormLabel component="legend" id={`${modifyAndBuildRadio}-label`}>
             <Typography variant="subtitle1">{t('license.questions.modify_and_build')}</Typography>
@@ -168,31 +182,31 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
             aria-label={t('license.questions.modify_and_build')}
             onChange={(event) => handleChangeInModifyAndBuildOption(event)}>
             <FormControlLabel
-              value={defaultModifyAndBuildOptions[0]}
+              value={DefaultModifyAndBuildOptions.primaryYes}
               control={<Radio color="primary" />}
-              label={t(`license.modify_and_build_options.${defaultModifyAndBuildOptions[0]}`)}
+              label={t(`license.modify_and_build_options.${DefaultModifyAndBuildOptions.primaryYes}`)}
             />
-            {modifyAndBuildValue === defaultModifyAndBuildOptions[0] && (
+            {modifyAndBuildValue === DefaultModifyAndBuildOptions.primaryYes && (
               <StyledSubRadioGroup
-                aria-label={t(`license.modify_and_build_options.${defaultModifyAndBuildOptions[0]}`)}
+                aria-label={t(`license.modify_and_build_options.${DefaultModifyAndBuildOptions.primaryYes}`)}
                 onChange={(event) => handleChangeInModifyAndBuildSubOptions(event)}
                 value={modifyAndBuildSubValue}>
                 <FormControlLabel
-                  value={defaultModifyAndBuildOptions[2]}
+                  value={DefaultModifyAndBuildOptions.dontCare}
                   control={<Radio color="primary" />}
-                  label={t(`license.modify_and_build_options.${defaultModifyAndBuildOptions[2]}`)}
+                  label={t(`license.modify_and_build_options.${DefaultModifyAndBuildOptions.dontCare}`)}
                 />
                 <FormControlLabel
-                  value={defaultModifyAndBuildOptions[3]}
+                  value={DefaultModifyAndBuildOptions.SA}
                   control={<Radio color="primary" />}
-                  label={t(`license.modify_and_build_options.${defaultModifyAndBuildOptions[3]}`)}
+                  label={t(`license.modify_and_build_options.${DefaultModifyAndBuildOptions.SA}`)}
                 />
               </StyledSubRadioGroup>
             )}
             <FormControlLabel
-              value={defaultModifyAndBuildOptions[1]}
+              value={DefaultModifyAndBuildOptions.ND}
               control={<Radio color="primary" />}
-              label={t(`license.modify_and_build_options.${defaultModifyAndBuildOptions[1]}`)}
+              label={t(`license.modify_and_build_options.${DefaultModifyAndBuildOptions.ND}`)}
             />
           </StyledRadioGroup>
         </AccordionRadioGroup>

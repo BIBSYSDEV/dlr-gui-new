@@ -19,7 +19,6 @@ import { License } from '../types/license.types';
 import ErrorBanner from '../components/ErrorBanner';
 import AccessAndLicenseStep from './AccessAndLicenseStep';
 import { hasTouchedError } from '../utils/formik-helpers';
-import LicenseWizardFields from './LicenseWizardFields';
 import CircularFileUploadProgress from '../components/CircularFileUploadProgress';
 
 const StyledForm = styled(Form)`
