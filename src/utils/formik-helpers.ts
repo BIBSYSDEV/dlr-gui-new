@@ -64,7 +64,7 @@ const getAllContentsFields = (values: FormikValues): string[] => {
     fieldNames.push(ContentsFieldNames.CONTENTS);
   } else {
     contents.forEach((content, index) => {
-      const baseFieldName = `${ContentsFieldNames.CONTENTS}[${index}].${FieldNames.FEATURE}`;
+      const baseFieldName = `${ContentsFieldNames.CONTENTS}[${index}].${FieldNames.FEATURES}`;
       fieldNames.push(`${baseFieldName}.${SpecificContentFieldNames.TITLE}`);
     });
   }
@@ -77,7 +77,7 @@ const getAllContributorFields = (contributors: Contributor[]): string[] => {
     fieldNames.push(ContributorsFieldNames.CONTRIBUTORS);
   } else {
     contributors.forEach((contributor, index) => {
-      const baseFieldName = `${ContributorsFieldNames.CONTRIBUTORS}[${index}].${FieldNames.FEATURE}`;
+      const baseFieldName = `${ContributorsFieldNames.CONTRIBUTORS}[${index}].${FieldNames.FEATURES}`;
       fieldNames.push(`${baseFieldName}.${SpecificContributorFieldNames.NAME}`);
       fieldNames.push(`${baseFieldName}.${SpecificContributorFieldNames.TYPE}`);
     });
@@ -91,7 +91,7 @@ export const getAllCreatorFields = (creators: Creator[]): string[] => {
     fieldNames.push(CreatorsFieldNames.CREATORS);
   } else {
     creators.forEach((creator, index) => {
-      const baseFieldName = `${CreatorsFieldNames.CREATORS}[${index}].${FieldNames.FEATURE}`;
+      const baseFieldName = `${CreatorsFieldNames.CREATORS}[${index}].${FieldNames.FEATURES}`;
       fieldNames.push(`${baseFieldName}.${SpecificCreatorFieldNames.NAME}`);
     });
   }

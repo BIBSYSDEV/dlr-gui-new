@@ -174,11 +174,6 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
               </StyledContentWrapper>
               {activeStep === ResourceFormSteps.Description && (
                 <StyledPanel>
-                  <StyledSchemaPart>
-                    <StyledContentWrapper>
-                      <Typography variant="h4">{formikProps.values.resource.features.dlr_title}</Typography>
-                    </StyledContentWrapper>
-                  </StyledSchemaPart>
                   <DescriptionFields
                     setAllChangesSaved={(status: boolean) => {
                       setAllChangesSaved(status);

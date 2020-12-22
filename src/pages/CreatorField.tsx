@@ -12,6 +12,7 @@ import ErrorBanner from '../components/ErrorBanner';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
 import { resetFormButKeepTouched } from '../utils/formik-helpers';
+import { CreatorsFieldNames, FieldNames, SpecificCreatorFieldNames } from '../utils/FieldNames';
 
 const StyledFieldsWrapper = styled.div`
   display: flex;
@@ -118,13 +119,14 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
       <StyledContentWrapper>
         <Typography variant="h4">{t('resource.metadata.creator')}</Typography>
         <FieldArray
-          name={'resource.creators'}
+          name={CreatorsFieldNames.CREATORS}
           render={(arrayHelpers) => (
             <>
               {sortCreatorArray()?.map((creator, index) => {
                 return (
                   <StyledFieldsWrapper key={creator.identifier}>
-                    <Field name={`resource.creators[${index}].features.dlr_creator_name`}>
+                    <Field
+                      name={`${CreatorsFieldNames.CREATORS}[${index}].${FieldNames.FEATURES}.${SpecificCreatorFieldNames.NAME}`}>
                       {({ field, meta: { touched, error } }: FieldProps) => (
                         <StyledTextField
                           {...field}

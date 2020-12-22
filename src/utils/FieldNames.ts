@@ -34,5 +34,5 @@ export enum SpecificContentFieldNames {
 }
 
 export enum FieldNames {
-  FEATURE = 'features',
+  FEATURES = 'features',
 }
