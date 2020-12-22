@@ -20,6 +20,7 @@ import ErrorBanner from '../components/ErrorBanner';
 import AccessAndLicenseStep from './AccessAndLicenseStep';
 import { hasTouchedError } from '../utils/formik-helpers';
 import LicenseWizardFields from './LicenseWizardFields';
+import CircularFileUploadProgress from '../components/CircularFileUploadProgress';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -61,6 +62,8 @@ interface ResourceFormProps {
   uppy: Uppy;
   resourceType: ResourceCreationType;
 }
+
+const fileUploadPanelId = 'file-upload-panel';
 
 const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) => {
   const { t } = useTranslation();
@@ -167,7 +170,14 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                       <Step key={label} completed={false}>
                         <StepButton onClick={handleStep(index)}>
                           <StepLabel error={hasTouchedError(formikProps.errors, formikProps.touched, index)}>
-                            {label}
+                            {label}{' '}
+                            {label === t('resource.form_steps.files') && (
+                              <CircularFileUploadProgress
+                                uppy={uppy}
+                                isUploadingNewFile={true}
+                                describedById={fileUploadPanelId}
+                              />
+                            )}
                           </StepLabel>
                         </StepButton>
                       </Step>
@@ -221,7 +231,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                 </StyledPanel>
               )}
               {activeStep === ResourceFormSteps.Files && (
-                <StyledPanel>
+                <StyledPanel id={fileUploadPanelId}>
                   <StyledSchemaPart>
                     <StyledContentWrapper>
                       <Typography variant="h4">{formikProps.values.resource.features.dlr_title}</Typography>
