@@ -24,7 +24,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
     if (event.target.value.length > 0) {
       setAllChangesSaved(false);
       try {
-        await postResourceFeature(values.resource.identifier, ResourceFeatureNames.access, event.target.value);
+        await postResourceFeature(values.resource.identifier, ResourceFeatureNames.Access, event.target.value);
         setFieldValue('resource.features.dlr_access', event.target.value);
         setSavingAccessTypeError(false);
         values.resource.features.dlr_access = event.target.value;
