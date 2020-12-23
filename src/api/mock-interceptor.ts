@@ -4,7 +4,7 @@ import { mockSearchResults } from '../utils/testfiles/search_results';
 import { licenses as allLicenses } from '../utils/testfiles/licenses';
 import { API_PATHS } from '../utils/constants';
 import { User } from '../types/user.types';
-import { Contributor, Creator, emptyResource, Resource } from '../types/resource.types';
+import { Contributor, Creator, Resource } from '../types/resource.types';
 import { License } from '../types/license.types';
 import { Content } from '../types/content.types';
 import { FileApiPaths } from './fileApi';

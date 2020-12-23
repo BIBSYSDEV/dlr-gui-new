@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField, Typography } from '@material-ui/core';
-import { Resource } from '../types/resource.types';
+import { CreatorFeatureAttributes, FieldNames, Resource } from '../types/resource.types';
 import { ErrorMessage, Field, FieldArray, FieldArrayRenderProps, FieldProps, useFormikContext } from 'formik';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
@@ -12,7 +12,6 @@ import ErrorBanner from '../components/ErrorBanner';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
 import { resetFormButKeepTouched } from '../utils/formik-helpers';
-import { CreatorsFieldNames, FieldNames, SpecificCreatorFieldNames } from '../utils/FieldNames';
 
 const StyledFieldsWrapper = styled.div`
   display: flex;
@@ -22,7 +21,7 @@ const StyledFieldsWrapper = styled.div`
 
 const StyledTextField = styled(TextField)`
   width: 52rem;
-  max-width: 80%
+  max-width: 80%;
   margin-left: 0.5rem;
   margin-right: 0.5rem;
 `;
@@ -119,14 +118,14 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
       <StyledContentWrapper>
         <Typography variant="h4">{t('resource.metadata.creator')}</Typography>
         <FieldArray
-          name={CreatorsFieldNames.CREATORS}
+          name={FieldNames.CreatorsBase}
           render={(arrayHelpers) => (
             <>
               {sortCreatorArray()?.map((creator, index) => {
                 return (
                   <StyledFieldsWrapper key={creator.identifier}>
                     <Field
-                      name={`${CreatorsFieldNames.CREATORS}[${index}].${FieldNames.FEATURES}.${SpecificCreatorFieldNames.NAME}`}>
+                      name={`${FieldNames.CreatorsBase}[${index}].${FieldNames.Features}.${CreatorFeatureAttributes.Name}`}>
                       {({ field, meta: { touched, error } }: FieldProps) => (
                         <StyledTextField
                           {...field}

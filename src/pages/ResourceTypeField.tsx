@@ -5,7 +5,7 @@ import { StyledContentWrapper, StyledSchemaPartColored } from '../components/sty
 import { Colors } from '../themes/mainTheme';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { Resource, ResourceFeatureTypes } from '../types/resource.types';
+import { Resource, ResourceFeatureNamesFullPath, ResourceFeatureTypes } from '../types/resource.types';
 import { postResourceFeature } from '../api/resourceApi';
 import styled from 'styled-components';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
@@ -15,7 +15,6 @@ import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 import PhotoOutlinedIcon from '@material-ui/icons/PhotoOutlined';
 import ErrorBanner from '../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../utils/formik-helpers';
-import { DescriptionFieldNames } from '../utils/FieldNames';
 
 const StyledMenuItem = styled(MenuItem)`
   padding: 1rem;
@@ -48,7 +47,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
       setAllChangesSaved(false);
       try {
         await postResourceFeature(values.resource.identifier, 'dlr_type', event.target.value);
-        setFieldValue(DescriptionFieldNames.TYPE, event.target.value);
+        setFieldValue(ResourceFeatureNamesFullPath.Type, event.target.value);
         setSavingResourceTypeError(false);
         values.resource.features.dlr_type = event.target.value;
         resetFormButKeepTouched(touched, resetForm, values, setTouched);
@@ -62,7 +61,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
   return (
     <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor1}>
       <StyledContentWrapper>
-        <Field name={DescriptionFieldNames.TYPE}>
+        <Field name={ResourceFeatureNamesFullPath.Type}>
           {({ field, meta: { error, touched } }: FieldProps) => (
             <>
               <TextField
@@ -75,7 +74,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                 value={field.value}
                 label={t('resource.type.resource_type')}
                 onBlur={(event) => {
-                  setFieldTouched(DescriptionFieldNames.TYPE, true, true);
+                  setFieldTouched(ResourceFeatureNamesFullPath.Type, true, true);
                 }}
                 onChange={(event) => {
                   handleChange(event);
