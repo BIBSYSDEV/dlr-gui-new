@@ -9,12 +9,14 @@
     "logout": "Logg ut",
     "name": "Navn",
     "next": "Neste",
+    "no": "Nei",
     "none": "Ingen",
     "or": "Eller",
     "remove": "Fjern",
     "search": "Søk",
     "save": "Lagre",
-    "Type": "Type"
+    "Type": "Type",
+    "yes": "Ja"
   },
   "delivered_by": "Levert av",
   "error": {
@@ -29,10 +31,50 @@
     "valid_url": "Input må være gyldig URL"
   },
   "license": {
+    "commercial_options": {
+      "yes": "Ja, materialet kan brukes for kommersielle formål",
+      "NC": "Nei, andre kan ikke bruke materialet for kommersielle formål"
+    },
+    "commercial_purposes": "Kommersielle formål",
     "external_page": "Ekstern side",
+    "extra_restrictions": "Ekstra restriksjoner",
     "license_information": "Lisensinformasjon",
+    "modify_and_build": "Endre og bygge videre på",
+    "modify_and_build_options": {
+      "dont_care": "Og, de står fritt til å velge lisens selv",
+      "ND": "Nei, andre kan kun bruke materialet i original form",
+      "primary_yes": "Ja, andre kan endre og bygge videre på materialet",
+      "share_alike": "Men, det må distribueres under samme lisens som originalen min (vær obs på at dette valget kan gjøre det komplisert for andre å bruke ressursen)"
+    },
     "published_with": "Published with",
+    "questions": {
+      "commercial": "Kan andre bruke ressursen for kommersielle formål?",
+      "contains_other_peoples_work": "Inneholder ressursen andres arbeid?",
+      "examples": "F.eks bilder eller illustrasjoner",
+      "modify_and_build": "Kan andre endre og bygge videre på ressursen din?",
+      "special_needs": "Har du spesielle behov for å begrense bruken av ressursen?",
+      "usage_cleared_with_owner": "Er arbeided rettighetsklarert?"
+    },
+    "limitation": {
+      "creative_commons": {
+        "title": "Ja, med Creative Commons lisens",
+        "important_notice": "Dersom lisensen er CC BY-SA 4.0 eller CC BY-NC, må du bruke samme lisens når du deler"
+      },
+      "no_clearance": {
+        "title": "Nei",
+        "important_notice": "Åndsverkloven hindrer deg fra å publiserer andres verk. Vi anbefaler at du rettighetsklarer arbeidet før du publiserer"
+      },
+      "yes_other": {
+        "title": "Ja, annet"
+      }
+    },
     "read_more": "Les mer om ",
+    "restriction_options": {
+      "CC_BY_4_0": "Nei, jeg ønsker at ressursen blir brukt og delt",
+      "CC_BY-NC-SA_4_0": "Ja, den inneholder materiale med lisens CC BY-NC-SA 4.0",
+      "CC_BY-SA_4_0": "Ja, den inneholder materiale med lisens CC BY-SA 4.0",
+      "yes": "Ja"
+    },
     "selected_license": "Valgt lisens"
   },
   "privacy_policy": {

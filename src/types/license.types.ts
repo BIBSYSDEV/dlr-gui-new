@@ -25,3 +25,8 @@ export const emptyLicense = {
   identifier: '',
   features: {},
 };
+
+export enum AccessTypes {
+  open = 'open',
+  private = 'private',
+}
