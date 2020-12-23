@@ -159,16 +159,37 @@ export interface ResourceWrapper {
 }
 
 export enum ResourceFeatureNames {
-  type = 'dlr_type',
-  title = 'dlr_title',
-  description = 'dlr_description',
-  access = 'dlr_access',
+  Type = 'dlr_type',
+  Title = 'dlr_title',
+  Description = 'dlr_description',
+  Access = 'dlr_access',
 }
+
+export enum ResourceFeatureNamesFullPath {
+  Type = 'resource.features.dlr_type',
+  Title = 'resource.features.dlr_title',
+  Description = 'resource.features.dlr_description',
+  Access = 'resource.features.dlr_description',
+}
+
 export enum ContributorFeatureNames {
   Type = 'dlr_contributor_type',
   Name = 'dlr_contributor_name',
 }
 
 export enum CreatorFeatureAttributes {
-  name = 'dlr_creator_name',
+  Name = 'dlr_creator_name',
+}
+
+export enum ContentFeatureAttributes {
+  Title = 'dlr_content_title',
+}
+
+export enum FieldNames {
+  Features = 'features',
+  ContributorsBase = 'resource.contributors',
+  CreatorsBase = 'resource.creators',
+  ContentsBase = 'resource.contents',
+  LicensesBase = 'resource.licenses',
+  Tags = 'resource.tags',
 }

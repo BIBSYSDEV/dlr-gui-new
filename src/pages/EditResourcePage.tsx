@@ -105,7 +105,7 @@ const EditResourcePage: FC = () => {
 
   const setResourceTypeAsDocument = async (tempResouce: Resource, resourceIdentifier: string) => {
     try {
-      await postResourceFeature(resourceIdentifier, ResourceFeatureNames.type, ResourceFeatureTypes.document);
+      await postResourceFeature(resourceIdentifier, ResourceFeatureNames.Type, ResourceFeatureTypes.document);
       tempResouce.features.dlr_type = ResourceFeatureTypes.document;
     } catch (error) {
       setResourceInitError(true);
@@ -121,7 +121,7 @@ const EditResourcePage: FC = () => {
     await putResourceCreatorFeature(
       resourceIdentifier,
       postCreatorResponse.data.identifier,
-      CreatorFeatureAttributes.name,
+      CreatorFeatureAttributes.Name,
       mainCreatorName
     );
     tempResource.creators = [
@@ -222,12 +222,12 @@ const EditResourcePage: FC = () => {
 
   const saveCalculatedFields = async (_resource: Resource) => {
     if (_resource.features.dlr_title) {
-      await postResourceFeature(_resource.identifier, ResourceFeatureNames.title, _resource.features.dlr_title);
+      await postResourceFeature(_resource.identifier, ResourceFeatureNames.Title, _resource.features.dlr_title);
     }
     if (_resource.features.dlr_description) {
       await postResourceFeature(
         _resource.identifier,
-        ResourceFeatureNames.description,
+        ResourceFeatureNames.Description,
         _resource.features.dlr_description
       );
     }

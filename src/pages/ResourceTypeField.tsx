@@ -5,7 +5,7 @@ import { StyledContentWrapper, StyledSchemaPartColored } from '../components/sty
 import { Colors } from '../themes/mainTheme';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { Resource, ResourceFeatureTypes } from '../types/resource.types';
+import { Resource, ResourceFeatureNamesFullPath, ResourceFeatureTypes } from '../types/resource.types';
 import { postResourceFeature } from '../api/resourceApi';
 import styled from 'styled-components';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
@@ -47,7 +47,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
       setAllChangesSaved(false);
       try {
         await postResourceFeature(values.resource.identifier, 'dlr_type', event.target.value);
-        setFieldValue('resource.features.dlr_type', event.target.value);
+        setFieldValue(ResourceFeatureNamesFullPath.Type, event.target.value);
         setSavingResourceTypeError(false);
         values.resource.features.dlr_type = event.target.value;
         resetFormButKeepTouched(touched, resetForm, values, setTouched);
@@ -61,7 +61,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
   return (
     <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor1}>
       <StyledContentWrapper>
-        <Field name="resource.features.dlr_type">
+        <Field name={ResourceFeatureNamesFullPath.Type}>
           {({ field, meta: { error, touched } }: FieldProps) => (
             <>
               <TextField
@@ -74,7 +74,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                 value={field.value}
                 label={t('resource.type.resource_type')}
                 onBlur={(event) => {
-                  setFieldTouched('resource.features.dlr_type', true, true);
+                  setFieldTouched(ResourceFeatureNamesFullPath.Type, true, true);
                 }}
                 onChange={(event) => {
                   handleChange(event);

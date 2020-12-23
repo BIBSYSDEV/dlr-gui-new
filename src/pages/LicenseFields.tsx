@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormHelperText, MenuItem, TextField, Typography } from '@material-ui/core';
-import { Resource } from '../types/resource.types';
+import { FieldNames, Resource } from '../types/resource.types';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { setResourceLicense } from '../api/resourceApi';
 import { License } from '../types/license.types';
@@ -10,7 +10,6 @@ import { Colors } from '../themes/mainTheme';
 import ErrorBanner from '../components/ErrorBanner';
 import LicenseCard from '../components/LicenseCard';
 import { resetFormButKeepTouched } from '../utils/formik-helpers';
-import { AccessAndLicenseFieldNames } from '../utils/FieldNames';
 
 interface LicenseAndAccessFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -20,6 +19,8 @@ interface LicenseAndAccessFieldsProps {
 interface ResourceWrapper {
   resource: Resource;
 }
+
+const LicenceFieldName = `${FieldNames.LicensesBase}[0]`; //While we are dealing with only one license
 
 const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, licenses }) => {
   const { t } = useTranslation();
@@ -40,7 +41,7 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
       try {
         await setResourceLicense(values.resource.identifier, selectedLicense.identifier);
         setSavingLicensesError(false);
-        setFieldValue(AccessAndLicenseFieldNames.LICENSE, selectedLicense);
+        setFieldValue(LicenceFieldName, selectedLicense);
         if (values.resource.licenses?.length === 1) {
           values.resource.licenses[0] = selectedLicense;
           resetFormButKeepTouched(touched, resetForm, values, setTouched);
@@ -59,7 +60,7 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
       <StyledContentWrapper>
         <Typography variant="h4">{t('resource.metadata.license')}</Typography>
         {licenses && (
-          <Field name={AccessAndLicenseFieldNames.LICENSE}>
+          <Field name={LicenceFieldName}>
             {({ field, meta: { error, touched } }: FieldProps) => (
               <>
                 <TextField
@@ -71,7 +72,7 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
                   error={touched && !!error}
                   fullWidth
                   onBlur={(event) => {
-                    setFieldTouched(AccessAndLicenseFieldNames.LICENSE, true, true);
+                    setFieldTouched(LicenceFieldName, true, true);
                   }}
                   onChange={(event) => {
                     saveField(event);
