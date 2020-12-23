@@ -21,10 +21,6 @@ export const hasTouchedError = (formikProps: FormikProps<FormikValues>, index: n
   index === ResourceFormSteps.Contributors && (fieldNames = getAllFieldsFromContributorsPanel(formikProps.values));
   index === ResourceFormSteps.Contents && (fieldNames = getAllContentsFields(formikProps.values));
 
-  if (index === ResourceFormSteps.Contributors) {
-    console.log(fieldNames);
-  }
-
   if (fieldNames.length) {
     return fieldNames.some((fieldName) => {
       const fieldHasError = !!getIn(formikProps.errors, fieldName);
