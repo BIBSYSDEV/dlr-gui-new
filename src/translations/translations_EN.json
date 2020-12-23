@@ -51,8 +51,11 @@
     "published_with": "Published with",
     "questions": {
       "commercial": "Can others use the resource for commercial purposes?",
+      "contains_other_peoples_work": "Does the resource contain other's work?",
+      "examples": "Ex. pictures or illustrations",
       "modify_and_build_label": "Can others modify and build upon your resource?",
-      "special_needs": "Do you have special needs for restricting usage of the resource?"
+      "special_needs": "Do you have special needs for restricting usage of the resource?",
+      "usage_cleared_with_owner": "Is the usage cleared with the owner?"
     },
     "limitation": {
       "creative_commons": {
@@ -66,12 +69,6 @@
       "yes_other": {
         "title": "Yes, other"
       }
-    },
-    "published_with": "Published with",
-    "questions": {
-      "contains_other_peoples_work": "Does the resource contain other's work?",
-      "examples": "Ex. pictures or illustrations",
-      "usage_cleared_with_owner": "Is the usage cleared with the owner?"
     },
     "read_more": "Read more about",
     "restriction_options": {

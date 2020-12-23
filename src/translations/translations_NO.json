@@ -49,8 +49,11 @@
     "published_with": "Published with",
     "questions": {
       "commercial": "Kan andre bruke ressursen for kommersielle formål?",
+      "contains_other_peoples_work": "Inneholder ressursen andres arbeid?",
+      "examples": "F.eks bilder eller illustrasjoner",
       "modify_and_build": "Kan andre endre og bygge videre på ressursen din?",
-      "special_needs": "Har du spesielle behov for å begrense bruken av ressursen?"
+      "special_needs": "Har du spesielle behov for å begrense bruken av ressursen?",
+      "usage_cleared_with_owner": "Er arbeided rettighetsklarert?"
     },
     "limitation": {
       "creative_commons": {
@@ -64,12 +67,6 @@
       "yes_other": {
         "title": "Ja, annet"
       }
-    },
-    "published_with": "Published with",
-    "questions": {
-      "contains_other_peoples_work": "Inneholder ressursen andres arbeid?",
-      "examples": "F.eks bilder eller illustrasjoner",
-      "usage_cleared_with_owner": "Er arbeided rettighetsklarert?"
     },
     "read_more": "Les mer om ",
     "restriction_options": {
