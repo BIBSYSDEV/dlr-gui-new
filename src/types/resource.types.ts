@@ -158,6 +158,10 @@ export interface ResourceWrapper {
   resource: Resource;
 }
 
+//TODO ? store bokstaver ??
+
+//TODO: flytte fieldnames over hit
+
 export enum ResourceFeatureNames {
   type = 'dlr_type',
   title = 'dlr_title',

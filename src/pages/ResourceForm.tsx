@@ -223,7 +223,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                   />
                 </StyledPanel>
               )}
-                {activeStep === ResourceFormSteps.Contents && (
+              {activeStep === ResourceFormSteps.Contents && (
                 <StyledPanel id={fileUploadPanelId}>
                   <StyledSchemaPart>
                     <StyledContentWrapper>
