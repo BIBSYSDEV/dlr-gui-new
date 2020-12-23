@@ -27,7 +27,7 @@ const StyledContent = styled.div`
   align-self: center;
   align-items: center;
   flex-grow: 1;
-  word-break: break-all;
+  word-break: break-word;
   width: 100%;
 `;
 
