@@ -3,6 +3,7 @@ import AccessFields from './AccessFields';
 import LicenseFields from './LicenseFields';
 import { License } from '../types/license.types';
 import LicenseWizardFields from './LicenseWizardFields';
+import ContainsOtherWorksFields from './ContainsOtherWorksFields';
 
 interface AccessAndLicenseStepProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -12,6 +13,7 @@ interface AccessAndLicenseStepProps {
 const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSaved, licenses }) => {
   return (
     <>
+      <ContainsOtherWorksFields setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)} />
       <AccessFields
         setAllChangesSaved={(status: boolean) => {
           setAllChangesSaved(status);

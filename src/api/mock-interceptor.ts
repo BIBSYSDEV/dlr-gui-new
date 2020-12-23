@@ -4,7 +4,7 @@ import { mockSearchResults } from '../utils/testfiles/search_results';
 import { licenses as allLicenses } from '../utils/testfiles/licenses';
 import { API_PATHS } from '../utils/constants';
 import { User } from '../types/user.types';
-import { Contributor, Creator, emptyResource, Resource } from '../types/resource.types';
+import { Contributor, Creator, Resource } from '../types/resource.types';
 import { License } from '../types/license.types';
 import { Content } from '../types/content.types';
 import { FileApiPaths } from './fileApi';
@@ -232,6 +232,7 @@ export const interceptRequestsOnMock = () => {
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*`)).reply(200, mockResource);
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/features`)).reply(200);
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources`)).reply(200, mockCreatedResourceWithContents);
+  mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/access`)).reply(200);
 
   //DEFAULTS
   mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*`)).reply(200, mockCalculatedResource);

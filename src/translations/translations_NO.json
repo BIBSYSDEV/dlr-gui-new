@@ -9,12 +9,14 @@
     "logout": "Logg ut",
     "name": "Navn",
     "next": "Neste",
+    "no": "Nei",
     "none": "Ingen",
     "or": "Eller",
     "remove": "Fjern",
     "search": "Søk",
     "save": "Lagre",
-    "Type": "Type"
+    "Type": "Type",
+    "yes": "Ja"
   },
   "delivered_by": "Levert av",
   "error": {
@@ -49,6 +51,25 @@
       "commercial": "Kan andre bruke ressursen for kommersielle formål?",
       "modify_and_build": "Kan andre endre og bygge videre på ressursen din?",
       "special_needs": "Har du spesielle behov for å begrense bruken av ressursen?"
+    }
+    "limitation": {
+      "creative_commons": {
+        "title": "Ja, med Creative Commons lisens",
+        "important_notice": "Dersom lisensen er CC BY-SA 4.0 eller CC BY-NC, må du bruke samme lisens når du deler"
+      },
+      "no_clearance": {
+        "title": "Nei",
+        "important_notice": "Åndsverkloven hindrer deg fra å publiserer andres verk. Vi anbefaler at du rettighetsklarer arbeidet før du publiserer"
+      },
+      "yes_other": {
+        "title": "Ja, annet"
+      }
+    },
+    "published_with": "Published with",
+    "questions": {
+      "contains_other_peoples_work": "Inneholder ressursen andres arbeid?",
+      "examples": "F.eks bilder eller illustrasjoner",
+      "usage_cleared_with_owner": "Er arbeided rettighetsklarert?"
     },
     "read_more": "Les mer om ",
     "restriction_options": {

@@ -1,7 +1,7 @@
 import { API_PATHS } from '../utils/constants';
 import { AxiosResponse } from 'axios';
 import { Contributor, Creator, Resource } from '../types/resource.types';
-import { License } from '../types/license.types';
+import { AccessTypes, License } from '../types/license.types';
 import { Content } from '../types/content.types';
 import { authenticatedApiRequest } from './api';
 import { SearchResult } from '../types/search.types';
@@ -203,4 +203,13 @@ export const getMyResources = (): Promise<AxiosResponse<Resource[]>> => {
 
 export const getResourceThumbnailUrl = (identifier: string) => {
   return encodeURI(`${API_PATHS.guiBackendResourcesContentPath}/contents/${identifier}/thumbnails/default`);
+};
+
+export const putAccessType = (resourceIdentifier: string, accessType: AccessTypes) => {
+  const data = encodeURI(`access=${accessType}`);
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/access`),
+    method: 'PUT',
+    data,
+  });
 };
