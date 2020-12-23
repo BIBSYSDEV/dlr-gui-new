@@ -54,7 +54,6 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
                 value={field.value}
                 label={t('resource.metadata.access')}
                 onBlur={(event) => {
-                  //TODO
                   setFieldTouched(ResourceFeatureNamesFullPath.Access, true, true);
                 }}
                 onChange={(event) => {
