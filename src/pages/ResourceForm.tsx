@@ -222,6 +222,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                       <Typography variant="h4">{formikProps.values.resource.features.dlr_title}</Typography>
                     </StyledContentWrapper>
                   </StyledSchemaPart>
+
                   <AccessAndLicenseStep
                     setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
                     licenses={licenses}
