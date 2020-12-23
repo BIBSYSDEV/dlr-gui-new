@@ -58,6 +58,10 @@
       "usage_cleared_with_owner": "Is the usage cleared with the owner?"
     },
     "limitation": {
+      "BI": {
+        "title": "Yes, with internal BI-license",
+        "important_notice": "The resource should only be available for BI and published with internal BI-license"
+      },
       "creative_commons": {
         "title": "Yes, with Creative Commons license",
         "important_notice": "If the source content's license is CC BY-SA 4.0 or CC BY-NC 4.0, you must provide the same license"
@@ -65,6 +69,10 @@
       "no_clearance": {
         "title": "No",
         "important_notice": "Copyright legislation prevents you from publishing other peoples work. We recommend that you gain license from the owner"
+      },
+      "NTNU": {
+        "title": "Yes, with internal NTNU-license",
+        "important_notice": "The resource should only be available for NTNU and published with internal NTNU-license"
       },
       "yes_other": {
         "title": "Yes, other"

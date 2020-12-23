@@ -13,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { AccessTypes } from '../types/license.types';
+import { useSelector } from 'react-redux';
+import { RootState } from '../state/rootReducer';
 
 const StyledOutLinedBox = styled.div`
   display: flex;
@@ -36,6 +38,8 @@ enum LicenseAgreementsOptions {
   CC = 'creative_commons',
   YesOther = 'yes_other',
   NoClearance = 'no_clearance',
+  BI = 'BI',
+  NTNU = 'NTNU',
 }
 
 const LicenseAgreements: string[] = [
@@ -52,15 +56,18 @@ const otherPeopleWorkId = 'other-peoples-work';
 
 const usageClearedId = 'usage-is-cleared';
 
+const additionalLicenseProviders: string[] = [LicenseAgreementsOptions.NTNU, LicenseAgreementsOptions.BI];
+
 const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllChangesSaved }) => {
+  const { institution } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
   const { values, resetForm, setFieldValue } = useFormikContext<ResourceWrapper>();
   const [containsOtherPeoplesWork, setContainsOtherPeoplesWork] = useState(false);
   const [LicenseAgreement, setLicenseAgreement] = useState<string>(LicenseAgreementsOptions.CC);
   const [savingError, setSavingError] = useState(false);
-
-  //TODO: fetch additional license options such as NTNU / BI internal license possibilities and append those to LicenseAgreements
-
+  const [additionalLicense] = useState<string | undefined>(
+    additionalLicenseProviders.find((element) => element === institution.toUpperCase())
+  );
   const handleChangeInContainsOtherPeoplesWork = (event: React.ChangeEvent<HTMLInputElement>) => {
     setContainsOtherPeoplesWork(event.target.value === 'true');
   };
@@ -113,6 +120,13 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllCha
             aria-label={t('license.questions.usage_cleared_with_owner')}
             value={LicenseAgreement}
             onChange={(event) => handleLicenseAgreementChange(event)}>
+            {additionalLicense && (
+              <FormControlLabel
+                value={additionalLicense}
+                label={t(`license.limitation.${additionalLicense}.title`)}
+                control={<Radio color="primary" />}
+              />
+            )}
             {LicenseAgreements.map((element, index) => (
               <FormControlLabel
                 value={element}

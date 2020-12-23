@@ -56,6 +56,10 @@
       "usage_cleared_with_owner": "Er arbeided rettighetsklarert?"
     },
     "limitation": {
+      "BI": {
+        "title": "Ja, med intern BI-lisens",
+        "important_notice": "Ressursen burde kun være tilgjengelig for BI og publiseres med BI intern lisens"
+      },
       "creative_commons": {
         "title": "Ja, med Creative Commons lisens",
         "important_notice": "Dersom lisensen er CC BY-SA 4.0 eller CC BY-NC, må du bruke samme lisens når du deler"
@@ -63,6 +67,10 @@
       "no_clearance": {
         "title": "Nei",
         "important_notice": "Åndsverkloven hindrer deg fra å publiserer andres verk. Vi anbefaler at du rettighetsklarer arbeidet før du publiserer"
+      },
+      "NTNU": {
+        "title": "Ja, med intern NTNU-lisens",
+        "important_notice": "Ressursen burde kun være tilgjengelig for NTNU og publiseres med NTNU intern lisens"
       },
       "yes_other": {
         "title": "Ja, annet"
