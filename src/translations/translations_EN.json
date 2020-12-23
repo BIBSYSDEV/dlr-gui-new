@@ -95,16 +95,43 @@
     },
     "edit_resource": "Edit resource",
     "files_and_license": {
-      "browse": "browse",
-      "drag_file": "Drag file here or",
-      "drag_files": "Drag files here or",
-      "drop_here": "Drop your files here",
-      "drop_single_file_here": "Drop your file here",
-      "upload_files": "Upload Files",
-      "upload_one_file": "Upload %{smart_count} file",
-      "upload_one_more_file": "Upload %{smart_count} more file",
-      "upload_x_files": "Upload %{smart_count} files",
-      "upload_x_more_files": "Upload %{smart_count} files"
+      "dashboard_component": {
+        "browse": "browse",
+        "drag_file": "Drag file here or",
+        "drag_files": "Drag files here or",
+        "drop_here": "Drop your files here",
+        "drop_single_file_here": "Drop your file here",
+        "upload_one_file": "Upload %{smart_count} file",
+        "upload_one_more_file": "Upload %{smart_count} more file",
+        "upload_x_files": "Upload %{smart_count} files",
+        "upload_x_more_files": "Upload %{smart_count} files"
+      },
+      "status_bar_component": {
+        "cancel": "Cancel",
+        "complete": "Complete",
+        "dataUploadedOfTotal": "%{complete} of %{total}",
+        "done": "Done",
+        "filesUploadedOfTotal": {
+          "0": "%{complete} of %{smart_count} file uploaded",
+          "1": "%{complete} of %{smart_count} files uploaded"
+        },
+        "pause": "Pause",
+        "paused": "Paused",
+        "resume": "Resume",
+        "retry": "Retry",
+        "uploadFailed": "Upload failed",
+        "uploading": "Uploading",
+        "uploadXFiles": {
+          "0": "Upload %{smart_count} file",
+          "1": "Upload %{smart_count} files"
+        },
+        "uploadXNewFiles": {
+          "0": "Upload +%{smart_count} file",
+          "1": "Upload +%{smart_count} files"
+        },
+        "xTimeLeft": "%{time} left"
+      },
+      "upload_files": "Upload Files"
     },
     "form_steps": {
       "description": "Description",
