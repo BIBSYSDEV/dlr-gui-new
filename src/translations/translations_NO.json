@@ -78,9 +78,11 @@
     },
     "read_more": "Les mer om ",
     "restriction_options": {
+      "BI": "Ja, den kan kun brukes internt på BI",
       "CC_BY_4_0": "Nei, jeg ønsker at ressursen blir brukt og delt",
       "CC_BY-NC-SA_4_0": "Ja, den inneholder materiale med lisens CC BY-NC-SA 4.0",
       "CC_BY-SA_4_0": "Ja, den inneholder materiale med lisens CC BY-SA 4.0",
+      "NTNU": "Ja, den kan kun brukes internt på NTNU",
       "yes": "Ja"
     },
     "selected_license": "Valgt lisens"

@@ -4,12 +4,14 @@ import { FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@mat
 import { StyledRadioGroup, StyledSchemaPartColored } from '../components/styled/Wrappers';
 import { Colors } from '../themes/mainTheme';
 import { useTranslation } from 'react-i18next';
-import { License } from '../types/license.types';
-import { setResourceLicense } from '../api/resourceApi';
+import { AccessTypes, License } from '../types/license.types';
+import { putAccessType, setResourceLicense } from '../api/resourceApi';
 import { useFormikContext } from 'formik';
 import { ResourceWrapper } from '../types/resource.types';
 import ErrorBanner from '../components/ErrorBanner';
 import AccordionRadioGroup from '../components/AccordionRadioGroup';
+import { useSelector } from 'react-redux';
+import { RootState } from '../state/rootReducer';
 
 const StyledSubRadioGroup = styled(RadioGroup)`
   margin-left: 5rem;
@@ -25,6 +27,8 @@ const modifyAndBuildRadio = 'change-and-build';
 enum DefaultRestricion {
   CC_BY = 'CC BY 4.0',
   yes = 'yes',
+  NTNU = 'NTNU',
+  BI = 'BI',
 }
 enum DefaultCommercial {
   NC = 'NC',
@@ -45,10 +49,16 @@ interface LicenseWizardFieldsProps {
   licenses: License[];
 }
 
+const additionalLicenseProviders: string[] = [DefaultRestricion.NTNU, DefaultRestricion.BI];
+
 const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved, licenses }) => {
   const { t } = useTranslation();
+  const { institution } = useSelector((state: RootState) => state.user);
   const { values, resetForm } = useFormikContext<ResourceWrapper>();
   const [extraRestriction, setExtraRestriction] = useState('');
+  const [institutionRestriction] = useState<string | undefined>(
+    additionalLicenseProviders.find((element) => element === institution.toUpperCase())
+  );
   const [saveRestrictionError, setSaveRestrictionError] = useState(false);
   const [commercialValue, setCommercialValue] = useState('');
   const [modifyAndBuildValue, setModifyAndBuildValue] = useState('');
@@ -81,8 +91,36 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
       }
       licenseTempCode += ' 4.0';
       await saveLicense(licenseTempCode);
+    } else if (
+      restrictedValue.toUpperCase() === DefaultRestricion.BI ||
+      restrictedValue.toUpperCase() === DefaultRestricion.NTNU
+    ) {
+      await saveLicenseAndChangeAccess(restrictedValue, AccessTypes.private);
     } else {
       await saveLicense(restrictedValue);
+    }
+  };
+
+  const saveLicenseAndChangeAccess = async (licenseCode: string, accessType: AccessTypes) => {
+    try {
+      setAllChangesSaved(false);
+      const license = licenses.find((license) => license.features?.dlr_license_code === licenseCode);
+      if (license) {
+        await putAccessType(values.resource.identifier, accessType);
+        await setResourceLicense(values.resource.identifier, license.identifier);
+        values.resource.features.dlr_access = accessType;
+        if (values.resource.licenses) {
+          values.resource.licenses[0] = license;
+        }
+        resetForm({ values });
+        setSaveRestrictionError(false);
+      } else {
+        setSaveRestrictionError(true);
+      }
+    } catch (error) {
+      setSaveRestrictionError(true);
+    } finally {
+      setAllChangesSaved(true);
     }
   };
 
@@ -140,6 +178,13 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
               label={t(`license.restriction_options.${element.replace(/[.\s]/g, '_')}`)}
             />
           ))}
+          {institutionRestriction && (
+            <FormControlLabel
+              value={institutionRestriction}
+              control={<Radio color="primary" />}
+              label={t(`license.restriction_options.${institutionRestriction}`)}
+            />
+          )}
         </StyledRadioGroup>
       </AccordionRadioGroup>
 

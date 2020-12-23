@@ -80,9 +80,11 @@
     },
     "read_more": "Read more about",
     "restriction_options": {
+      "BI": "Yes, it can only be used internally at BI",
       "CC_BY_4_0": "No, I want the resource to be used and shared",
       "CC_BY-NC-SA_4_0": "Yes, it contains material with license CC BY-NC-SA 4.0",
       "CC_BY-SA_4_0": "Yes, it contains material with license CC BY-SA 4.0",
+      "NTNU": "Yes, it can only be used internally at NTNU",
       "yes": "Yes"
     },
     "selected_license": "Selected license"

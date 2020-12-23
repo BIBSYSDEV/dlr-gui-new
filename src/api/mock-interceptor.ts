@@ -12,7 +12,7 @@ import { FileApiPaths } from './fileApi';
 export const mockUser: User = {
   id: 'user123',
   issuer: 'me',
-  institution: '',
+  institution: 'bi',
   email: 'test@test.com',
   name: 'Test User',
 };
