@@ -4,7 +4,7 @@ import { StyledContentWrapper, StyledSchemaPartColored } from '../components/sty
 import { MenuItem, TextField, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { Field, useFormikContext, FieldProps } from 'formik';
-import { ResourceFeatureNames, ResourceWrapper } from '../types/resource.types';
+import { ResourceFeatureNames, ResourceFeatureNamesFullPath, ResourceWrapper } from '../types/resource.types';
 import { postResourceFeature } from '../api/resourceApi';
 import ErrorBanner from '../components/ErrorBanner';
 import { AccessTypes } from '../types/license.types';
@@ -25,7 +25,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
       setAllChangesSaved(false);
       try {
         await postResourceFeature(values.resource.identifier, ResourceFeatureNames.Access, event.target.value);
-        setFieldValue('resource.features.dlr_access', event.target.value);
+        setFieldValue(ResourceFeatureNamesFullPath.Access, event.target.value);
         setSavingAccessTypeError(false);
         values.resource.features.dlr_access = event.target.value;
         resetForm({ values });
@@ -41,7 +41,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor2}>
       <StyledContentWrapper>
         <Typography variant="h4">{t('resource.metadata.access')}</Typography>
-        <Field name="resource.features.dlr_access">
+        <Field name={ResourceFeatureNamesFullPath.Access}>
           {({ field, meta: { error, touched } }: FieldProps) => (
             <>
               <TextField
@@ -54,7 +54,8 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
                 value={field.value}
                 label={t('resource.metadata.access')}
                 onBlur={(event) => {
-                  setFieldTouched('resource.features.dlr_access', true, true);
+                  //TODO
+                  setFieldTouched(ResourceFeatureNamesFullPath.Access, true, true);
                 }}
                 onChange={(event) => {
                   handleChange(event);

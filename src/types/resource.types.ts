@@ -169,6 +169,7 @@ export enum ResourceFeatureNamesFullPath {
   Type = 'resource.features.dlr_type',
   Title = 'resource.features.dlr_title',
   Description = 'resource.features.dlr_description',
+  Access = 'resource.features.dlr_description',
 }
 
 export enum ContributorFeatureNames {
