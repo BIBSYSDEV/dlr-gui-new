@@ -162,6 +162,7 @@ export enum ResourceFeatureNames {
   type = 'dlr_type',
   title = 'dlr_title',
   description = 'dlr_description',
+  access = 'dlr_access',
 }
 export enum ContributorFeatureNames {
   Type = 'dlr_contributor_type',
