@@ -4,8 +4,8 @@ import { StyledContentWrapper, StyledSchemaPartColored } from '../components/sty
 import { MenuItem, TextField, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { Field, useFormikContext, FieldProps } from 'formik';
-import { ResourceFeatureNames, ResourceFeatureNamesFullPath, ResourceWrapper } from '../types/resource.types';
-import { postResourceFeature } from '../api/resourceApi';
+import { ResourceFeatureNamesFullPath, ResourceWrapper } from '../types/resource.types';
+import { putAccessType } from '../api/resourceApi';
 import ErrorBanner from '../components/ErrorBanner';
 import { AccessTypes } from '../types/license.types';
 
@@ -24,11 +24,13 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
     if (event.target.value.length > 0) {
       setAllChangesSaved(false);
       try {
-        await postResourceFeature(values.resource.identifier, ResourceFeatureNames.Access, event.target.value);
-        setFieldValue(ResourceFeatureNamesFullPath.Access, event.target.value);
-        setSavingAccessTypeError(false);
-        values.resource.features.dlr_access = event.target.value;
-        resetForm({ values });
+        if (event.target.value in AccessTypes) {
+          await putAccessType(values.resource.identifier, event.target.value as AccessTypes);
+          setFieldValue(ResourceFeatureNamesFullPath.Access, event.target.value);
+          setSavingAccessTypeError(false);
+          values.resource.features.dlr_access = event.target.value;
+          resetForm({ values });
+        }
       } catch (error) {
         setSavingAccessTypeError(true);
       } finally {
