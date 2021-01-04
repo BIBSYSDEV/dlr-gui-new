@@ -27,8 +27,8 @@ const modifyAndBuildRadio = 'change-and-build';
 enum DefaultRestricion {
   CC_BY = 'CC BY 4.0',
   yes = 'yes',
-  NTNU = 'NTNU',
-  BI = 'BI',
+  NTNU = 'ntnu-internt',
+  BI = 'bi-opphaver-bi',
 }
 enum DefaultCommercial {
   NC = 'NC',
@@ -57,7 +57,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
   const { values, resetForm } = useFormikContext<ResourceWrapper>();
   const [extraRestriction, setExtraRestriction] = useState('');
   const [institutionRestriction] = useState<string | undefined>(
-    additionalLicenseProviders.find((element) => element === institution.toUpperCase())
+    additionalLicenseProviders.find((element) => element.includes(institution.toLowerCase()))
   );
   const [saveRestrictionError, setSaveRestrictionError] = useState(false);
   const [commercialValue, setCommercialValue] = useState('');
@@ -90,14 +90,11 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
         licenseTempCode += '-SA';
       }
       licenseTempCode += ' 4.0';
-      await saveLicense(licenseTempCode);
-    } else if (
-      restrictedValue.toUpperCase() === DefaultRestricion.BI ||
-      restrictedValue.toUpperCase() === DefaultRestricion.NTNU
-    ) {
+      await saveLicenseAndChangeAccess(licenseTempCode, AccessTypes.open);
+    } else if (restrictedValue === DefaultRestricion.BI || restrictedValue === DefaultRestricion.NTNU) {
       await saveLicenseAndChangeAccess(restrictedValue, AccessTypes.private);
     } else {
-      await saveLicense(restrictedValue);
+      await saveLicenseAndChangeAccess(restrictedValue, AccessTypes.open);
     }
   };
 

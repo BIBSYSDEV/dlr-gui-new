@@ -7,12 +7,12 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import { Colors } from '../themes/mainTheme';
 import { StyledRadioBoxWrapper, StyledRadioGroup, StyledSchemaPartColored } from '../components/styled/Wrappers';
-import { putAccessType } from '../api/resourceApi';
+import { putAccessType, setResourceLicense } from '../api/resourceApi';
 import ErrorBanner from '../components/ErrorBanner';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import { AccessTypes } from '../types/license.types';
+import { AccessTypes, License } from '../types/license.types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../state/rootReducer';
 
@@ -38,8 +38,8 @@ enum LicenseAgreementsOptions {
   CC = 'creative_commons',
   YesOther = 'yes_other',
   NoClearance = 'no_clearance',
-  BI = 'BI',
-  NTNU = 'NTNU',
+  BI = 'bi-opphaver-bi',
+  NTNU = 'ntnu-internt',
 }
 
 const LicenseAgreements: string[] = [
@@ -50,6 +50,7 @@ const LicenseAgreements: string[] = [
 
 interface ContainsOtherWorksFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
+  licenses: License[] | undefined;
 }
 
 const otherPeopleWorkId = 'other-peoples-work';
@@ -58,7 +59,7 @@ const usageClearedId = 'usage-is-cleared';
 
 const additionalLicenseProviders: string[] = [LicenseAgreementsOptions.NTNU, LicenseAgreementsOptions.BI];
 
-const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllChangesSaved }) => {
+const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllChangesSaved, licenses }) => {
   const { institution } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
   const { values, resetForm, setFieldValue } = useFormikContext<ResourceWrapper>();
@@ -66,7 +67,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllCha
   const [LicenseAgreement, setLicenseAgreement] = useState<string>(LicenseAgreementsOptions.CC);
   const [savingError, setSavingError] = useState(false);
   const [additionalLicense] = useState<string | undefined>(
-    additionalLicenseProviders.find((element) => element === institution.toUpperCase())
+    additionalLicenseProviders.find((element) => element.includes(institution.toLowerCase()))
   );
   const handleChangeInContainsOtherPeoplesWork = (event: React.ChangeEvent<HTMLInputElement>) => {
     setContainsOtherPeoplesWork(event.target.value === 'true');
@@ -82,6 +83,15 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllCha
         event.target.value === LicenseAgreementsOptions.YesOther
       ) {
         accessType = AccessTypes.open;
+      }
+      if (event.target.value === LicenseAgreementsOptions.BI || event.target.value === LicenseAgreementsOptions.NTNU) {
+        const license = licenses?.find((license) => license.features?.dlr_license_code === event.target.value);
+        if (license) {
+          await setResourceLicense(values.resource.identifier, license.identifier);
+          if (values.resource.licenses) {
+            values.resource.licenses[0] = license;
+          }
+        }
       }
       await putAccessType(values.resource.identifier, accessType);
       setFieldValue('resource.features.dlr_access', accessType);

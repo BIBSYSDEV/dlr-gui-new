@@ -58,7 +58,7 @@
       "usage_cleared_with_owner": "Is the usage cleared with the owner?"
     },
     "limitation": {
-      "BI": {
+      "bi-opphaver-bi": {
         "title": "Yes, with internal BI-license",
         "important_notice": "The resource should only be available for BI and published with internal BI-license"
       },
@@ -70,7 +70,7 @@
         "title": "No",
         "important_notice": "Copyright legislation prevents you from publishing other peoples work. We recommend that you gain license from the owner"
       },
-      "NTNU": {
+      "ntnu-internt": {
         "title": "Yes, with internal NTNU-license",
         "important_notice": "The resource should only be available for NTNU and published with internal NTNU-license"
       },
@@ -80,11 +80,11 @@
     },
     "read_more": "Read more about",
     "restriction_options": {
-      "BI": "Yes, it can only be used internally at BI",
+      "bi-opphaver-bi": "Yes, it can only be used internally at BI",
       "CC_BY_4_0": "No, I want the resource to be used and shared",
       "CC_BY-NC-SA_4_0": "Yes, it contains material with license CC BY-NC-SA 4.0",
       "CC_BY-SA_4_0": "Yes, it contains material with license CC BY-SA 4.0",
-      "NTNU": "Yes, it can only be used internally at NTNU",
+      "ntnu-internt": "Yes, it can only be used internally at NTNU",
       "yes": "Yes"
     },
     "selected_license": "Selected license"

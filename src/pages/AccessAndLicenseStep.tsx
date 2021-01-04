@@ -13,7 +13,10 @@ interface AccessAndLicenseStepProps {
 const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSaved, licenses }) => {
   return (
     <>
-      <ContainsOtherWorksFields setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)} />
+      <ContainsOtherWorksFields
+        licenses={licenses}
+        setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
+      />
       <AccessFields
         setAllChangesSaved={(status: boolean) => {
           setAllChangesSaved(status);

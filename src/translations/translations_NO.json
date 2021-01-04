@@ -58,7 +58,7 @@
       "usage_cleared_with_owner": "Er arbeided rettighetsklarert?"
     },
     "limitation": {
-      "BI": {
+      "bi-opphaver-bi": {
         "title": "Ja, med intern BI-lisens",
         "important_notice": "Ressursen burde kun være tilgjengelig for BI og publiseres med BI intern lisens"
       },
@@ -70,7 +70,7 @@
         "title": "Nei",
         "important_notice": "Åndsverkloven hindrer deg fra å publiserer andres verk. Vi anbefaler at du rettighetsklarer arbeidet før du publiserer"
       },
-      "NTNU": {
+      "ntnu-internt": {
         "title": "Ja, med intern NTNU-lisens",
         "important_notice": "Ressursen burde kun være tilgjengelig for NTNU og publiseres med NTNU intern lisens"
       },
@@ -80,11 +80,11 @@
     },
     "read_more": "Les mer om ",
     "restriction_options": {
-      "BI": "Ja, den kan kun brukes internt på BI",
+      "bi-opphaver-bi": "Ja, den kan kun brukes internt på BI",
       "CC_BY_4_0": "Nei, jeg ønsker at ressursen blir brukt og delt",
       "CC_BY-NC-SA_4_0": "Ja, den inneholder materiale med lisens CC BY-NC-SA 4.0",
       "CC_BY-SA_4_0": "Ja, den inneholder materiale med lisens CC BY-SA 4.0",
-      "NTNU": "Ja, den kan kun brukes internt på NTNU",
+      "ntnu-internt": "Ja, den kan kun brukes internt på NTNU",
       "yes": "Ja"
     },
     "selected_license": "Valgt lisens"
