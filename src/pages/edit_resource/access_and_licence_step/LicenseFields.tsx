@@ -1,15 +1,15 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormHelperText, MenuItem, TextField, Typography } from '@material-ui/core';
-import { FieldNames, Resource } from '../types/resource.types';
+import { FieldNames, Resource } from '../../../types/resource.types';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import { setResourceLicense } from '../api/resourceApi';
-import { License } from '../types/license.types';
-import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
-import { Colors } from '../themes/mainTheme';
-import ErrorBanner from '../components/ErrorBanner';
-import LicenseCard from '../components/LicenseCard';
-import { resetFormButKeepTouched } from '../utils/formik-helpers';
+import { setResourceLicense } from '../../../api/resourceApi';
+import { License } from '../../../types/license.types';
+import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
+import { Colors } from '../../../themes/mainTheme';
+import ErrorBanner from '../../../components/ErrorBanner';
+import LicenseCard from '../../../components/LicenseCard';
+import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 
 interface LicenseAndAccessFieldsProps {
   setAllChangesSaved: (value: boolean) => void;

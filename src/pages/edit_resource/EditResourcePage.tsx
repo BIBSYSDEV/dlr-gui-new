@@ -2,12 +2,12 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { PageHeader } from '../components/PageHeader';
+import { PageHeader } from '../../components/PageHeader';
 import ResourceForm from './ResourceForm';
-import LinkResource from './LinkResource';
-import UploadRegistration from './UploadRegistration';
+import LinkRegistration from './LinkRegistration';
+import FileRegistration from './FileRegistration';
 import { CircularProgress, Typography } from '@material-ui/core';
-import PrivateRoute from '../utils/routes/PrivateRoute';
+import PrivateRoute from '../../utils/routes/PrivateRoute';
 import {
   ContributorFeatureNames,
   CreatorFeatureAttributes,
@@ -15,8 +15,8 @@ import {
   ResourceCreationType,
   ResourceFeatureNames,
   ResourceFeatureTypes,
-} from '../types/resource.types';
-import useUppy from '../utils/useUppy';
+} from '../../types/resource.types';
+import useUppy from '../../utils/useUppy';
 import { toast } from 'react-toastify';
 import {
   createContributor,
@@ -28,12 +28,12 @@ import {
   postResourceFeature,
   putContributorFeature,
   putResourceCreatorFeature,
-} from '../api/resourceApi';
+} from '../../api/resourceApi';
 import deepmerge from 'deepmerge';
 import { useSelector } from 'react-redux';
-import { RootState } from '../state/rootReducer';
-import { emptyLicense } from '../types/license.types';
-import ErrorBanner from '../components/ErrorBanner';
+import { RootState } from '../../state/rootReducer';
+import { emptyLicense } from '../../types/license.types';
+import ErrorBanner from '../../components/ErrorBanner';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -252,13 +252,13 @@ const EditResourcePage: FC = () => {
     <StyledContentWrapper>
       <PageHeader>{t('resource.new_registration')}</PageHeader>
       <StyledEditPublication>
-        <UploadRegistration
+        <FileRegistration
           expanded={expanded === 'load-panel'}
           onChange={handleChange('load-panel')}
           uppy={mainFileHandler}
         />
         <Typography style={{ margin: '2rem 2rem' }}>{t('common.or')}</Typography>
-        <LinkResource
+        <LinkRegistration
           expanded={expanded === 'link-panel'}
           onChange={handleChange('link-panel')}
           onSubmit={onSubmitLink}

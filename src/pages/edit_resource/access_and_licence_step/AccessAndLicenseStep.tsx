@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import AccessFields from './AccessFields';
 import LicenseFields from './LicenseFields';
-import { License } from '../types/license.types';
+import { License } from '../../../types/license.types';
 import LicenseWizardFields from './LicenseWizardFields';
 import ContainsOtherWorksFields from './ContainsOtherWorksFields';
 

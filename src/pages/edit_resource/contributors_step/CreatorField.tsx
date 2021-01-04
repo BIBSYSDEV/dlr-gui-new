@@ -1,17 +1,17 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField, Typography } from '@material-ui/core';
-import { CreatorFeatureAttributes, FieldNames, Resource } from '../types/resource.types';
+import { CreatorFeatureAttributes, FieldNames, Resource } from '../../../types/resource.types';
 import { ErrorMessage, Field, FieldArray, FieldArrayRenderProps, FieldProps, useFormikContext } from 'formik';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
-import { deleteResourceCreator, postResourceCreator, putResourceCreatorFeature } from '../api/resourceApi';
-import ErrorBanner from '../components/ErrorBanner';
-import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
-import { Colors } from '../themes/mainTheme';
-import { resetFormButKeepTouched } from '../utils/formik-helpers';
+import { deleteResourceCreator, postResourceCreator, putResourceCreatorFeature } from '../../../api/resourceApi';
+import ErrorBanner from '../../../components/ErrorBanner';
+import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
+import { Colors } from '../../../themes/mainTheme';
+import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 
 const StyledFieldsWrapper = styled.div`
   display: flex;
