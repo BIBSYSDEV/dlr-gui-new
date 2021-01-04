@@ -2,13 +2,13 @@ import React, { ChangeEvent, FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField } from '@material-ui/core';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import { Resource } from '../types/resource.types';
-import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
-import { Colors } from '../themes/mainTheme';
+import { Resource } from '../../../types/resource.types';
+import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
+import { Colors } from '../../../themes/mainTheme';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { deleteTag, postTag } from '../api/resourceApi';
-import ErrorBanner from '../components/ErrorBanner';
-import { resetFormButKeepTouched } from '../utils/formik-helpers';
+import { deleteTag, postTag } from '../../../api/resourceApi';
+import ErrorBanner from '../../../components/ErrorBanner';
+import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 
 interface ResourceWrapper {
   resource: Resource;

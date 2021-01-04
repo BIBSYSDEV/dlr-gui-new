@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { RouteProps, useParams } from 'react-router-dom';
-import { Resource } from '../types/resource.types';
+import { Resource } from '../../types/resource.types';
 import {
   getResource,
   getResourceContents,
@@ -9,9 +9,9 @@ import {
   getResourceCreators,
   getResourceLicenses,
   getResourceTags,
-} from '../api/resourceApi';
+} from '../../api/resourceApi';
 import { CircularProgress } from '@material-ui/core';
-import ErrorBanner from '../components/ErrorBanner';
+import ErrorBanner from '../../components/ErrorBanner';
 import ResourcePresentation from './ResourcePresentation';
 
 const StyledPageContent = styled.div`

@@ -1,11 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getMyResources } from '../api/resourceApi';
+import { getMyResources } from '../../api/resourceApi';
 import { CircularProgress, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import { Resource } from '../types/resource.types';
+import { Resource } from '../../types/resource.types';
 import ImageIcon from '@material-ui/core/SvgIcon/SvgIcon';
-import ErrorBanner from '../components/ErrorBanner';
+import ErrorBanner from '../../components/ErrorBanner';
 
 const StyledPageContent = styled.div`
   display: flex;

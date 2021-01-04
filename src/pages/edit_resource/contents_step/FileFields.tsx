@@ -1,19 +1,19 @@
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
-import { Uppy } from '../types/file.types';
+import { Uppy } from '../../../types/file.types';
 import StatusBarComponent from '@uppy/react/src/StatusBar';
 import '@uppy/core/dist/style.css';
 import '@uppy/status-bar/dist/style.css';
 import styled from 'styled-components';
 import { Paper, TextField, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import placeholderImage from '../resources/images/placeholder.png';
+import placeholderImage from '../../../resources/images/placeholder.png';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
-import { updateContentTitle } from '../api/resourceApi';
-import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
-import { Colors } from '../themes/mainTheme';
-import ErrorBanner from '../components/ErrorBanner';
-import { ResourceWrapper } from '../types/resource.types';
-import { resetFormButKeepTouched } from '../utils/formik-helpers';
+import { updateContentTitle } from '../../../api/resourceApi';
+import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
+import { Colors } from '../../../themes/mainTheme';
+import ErrorBanner from '../../../components/ErrorBanner';
+import { ResourceWrapper } from '../../../types/resource.types';
+import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 
 const StatusBarWrapper = styled.div`
   width: 100%;

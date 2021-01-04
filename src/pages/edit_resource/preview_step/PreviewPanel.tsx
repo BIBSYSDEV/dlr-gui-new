@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { FormikProps, FormikValues, useFormikContext } from 'formik';
-import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
-import ResourcePresentation from './ResourcePresentation';
-import { ResourceWrapper } from '../types/resource.types';
+import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
+import ResourcePresentation from '../../resource/ResourcePresentation';
+import { ResourceWrapper } from '../../../types/resource.types';
 import { Accordion, AccordionDetails, AccordionSummary } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 

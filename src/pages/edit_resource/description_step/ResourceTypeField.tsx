@@ -1,20 +1,20 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ListItemIcon, MenuItem, TextField, Typography } from '@material-ui/core';
-import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
-import { Colors } from '../themes/mainTheme';
+import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
+import { Colors } from '../../../themes/mainTheme';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { Resource, ResourceFeatureNamesFullPath, ResourceFeatureTypes } from '../types/resource.types';
-import { postResourceFeature } from '../api/resourceApi';
+import { Resource, ResourceFeatureNamesFullPath, ResourceFeatureTypes } from '../../../types/resource.types';
+import { postResourceFeature } from '../../../api/resourceApi';
 import styled from 'styled-components';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import SlideshowIcon from '@material-ui/icons/Slideshow';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 import PhotoOutlinedIcon from '@material-ui/icons/PhotoOutlined';
-import ErrorBanner from '../components/ErrorBanner';
-import { resetFormButKeepTouched } from '../utils/formik-helpers';
+import ErrorBanner from '../../../components/ErrorBanner';
+import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 
 const StyledMenuItem = styled(MenuItem)`
   padding: 1rem;

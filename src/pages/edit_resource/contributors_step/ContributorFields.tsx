@@ -1,18 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MenuItem, TextField, Typography } from '@material-ui/core';
-import { Contributor, ContributorFeatureNames, FieldNames, ResourceWrapper } from '../types/resource.types';
+import { Contributor, ContributorFeatureNames, FieldNames, ResourceWrapper } from '../../../types/resource.types';
 import { ErrorMessage, Field, FieldArray, FieldArrayRenderProps, FieldProps, useFormikContext } from 'formik';
 import Button from '@material-ui/core/Button';
-import { createContributor, deleteContributor, putContributorFeature } from '../api/resourceApi';
+import { createContributor, deleteContributor, putContributorFeature } from '../../../api/resourceApi';
 import styled from 'styled-components';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
-import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
-import { Colors } from '../themes/mainTheme';
-import ErrorBanner from '../components/ErrorBanner';
-import contributorTypeList from '../resources/assets/contributorTypeList.json';
-import { resetFormButKeepTouched } from '../utils/formik-helpers';
+import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
+import { Colors } from '../../../themes/mainTheme';
+import ErrorBanner from '../../../components/ErrorBanner';
+import contributorTypeList from '../../../resources/assets/contributorTypeList.json';
+import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 
 const StyledFieldsWrapper = styled.div`
   display: flex;

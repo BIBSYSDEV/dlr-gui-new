@@ -2,11 +2,11 @@ import React, { ChangeEvent, FC, FormEvent, useState } from 'react';
 import styled from 'styled-components';
 import { Button, List, ListItem, ListItemIcon, ListItemText, TextField, Typography } from '@material-ui/core';
 import ImageIcon from '@material-ui/icons/Image';
-import { searchResources } from '../api/resourceApi';
+import { searchResources } from '../../api/resourceApi';
 import { useTranslation } from 'react-i18next';
-import { SearchResult } from '../types/search.types';
-import { Resource } from '../types/resource.types';
-import ErrorBanner from '../components/ErrorBanner';
+import { SearchResult } from '../../types/search.types';
+import { Resource } from '../../types/resource.types';
+import ErrorBanner from '../../components/ErrorBanner';
 
 const StyledDashboard = styled.div`
   display: flex;

@@ -1,13 +1,13 @@
 import React, { FC, useState } from 'react';
-import { Colors } from '../themes/mainTheme';
-import { StyledContentWrapper, StyledSchemaPartColored } from '../components/styled/Wrappers';
+import { Colors } from '../../../themes/mainTheme';
+import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { MenuItem, TextField, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { Field, useFormikContext, FieldProps } from 'formik';
-import { ResourceFeatureNamesFullPath, ResourceWrapper } from '../types/resource.types';
-import { putAccessType } from '../api/resourceApi';
-import ErrorBanner from '../components/ErrorBanner';
-import { AccessTypes } from '../types/license.types';
+import { ResourceFeatureNamesFullPath, ResourceWrapper } from '../../../types/resource.types';
+import { putAccessType } from '../../../api/resourceApi';
+import ErrorBanner from '../../../components/ErrorBanner';
+import { AccessTypes } from '../../../types/license.types';
 
 interface AccessFieldsProps {
   setAllChangesSaved: (value: boolean) => void;

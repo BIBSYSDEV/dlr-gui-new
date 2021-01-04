@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import Heading from '../components/Heading';
+import Heading from '../../components/Heading';
 
 const StyledForbiddenWrapper = styled.div`
   width: 100%;
