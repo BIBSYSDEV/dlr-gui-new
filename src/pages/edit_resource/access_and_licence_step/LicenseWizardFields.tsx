@@ -121,27 +121,6 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
     }
   };
 
-  const saveLicense = async (licenseCode: string) => {
-    try {
-      setAllChangesSaved(false);
-      const license = licenses.find((license) => license.features?.dlr_license_code === licenseCode);
-      if (license) {
-        await setResourceLicense(values.resource.identifier, license.identifier);
-        if (values.resource.licenses) {
-          values.resource.licenses[0] = license;
-          resetForm({ values });
-        }
-        setSaveRestrictionError(false);
-      } else {
-        setSaveRestrictionError(true);
-      }
-    } catch (error) {
-      setSaveRestrictionError(true);
-    } finally {
-      setAllChangesSaved(true);
-    }
-  };
-
   const handleChangeInCommercialOption = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setCommercialValue(event.target.value);
     await calculatePreferredLicense(extraRestriction, event.target.value, modifyAndBuildValue, modifyAndBuildSubValue);
