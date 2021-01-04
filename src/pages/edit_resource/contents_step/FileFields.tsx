@@ -112,7 +112,7 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
                         0: t('resource.files_and_license.status_bar_component.filesUploadedOfTotal.0'),
                         1: t('resource.files_and_license.status_bar_component.filesUploadedOfTotal.1'),
                       },
-                      dataUploadedOfTotal: t('resource.files_and_license.status_bar_component.dataUpladedOfTotal'),
+                      dataUploadedOfTotal: t('resource.files_and_license.status_bar_component.dataUploadedOfTotal'),
                       xTimeLeft: t('resource.files_and_license.status_bar_component.xTimeLeft'),
                       uploadXFiles: {
                         0: t('resource.files_and_license.status_bar_component.uploadXFiles.0'),
