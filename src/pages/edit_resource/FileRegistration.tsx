@@ -2,17 +2,17 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import PublishIcon from '@material-ui/icons/Publish';
 
-import { Uppy } from '../types/file.types';
+import { Uppy } from '../../types/file.types';
 import PublicationAccordion from './PublicationAccordion';
-import UppyDashboard from '../components/UppyDashboard';
+import UppyDashboard from '../../components/UppyDashboard';
 
-interface UploadRegistrationProps {
+interface FileRegistrationProps {
   expanded: boolean;
   onChange: (event: React.ChangeEvent<unknown>, isExpanded: boolean) => void;
   uppy: Uppy;
 }
 
-const UploadRegistration: FC<UploadRegistrationProps> = ({ uppy, expanded, onChange }) => {
+const FileRegistration: FC<FileRegistrationProps> = ({ uppy, expanded, onChange }) => {
   const { t } = useTranslation();
 
   return (
@@ -32,4 +32,4 @@ const UploadRegistration: FC<UploadRegistrationProps> = ({ uppy, expanded, onCha
   );
 };
 
-export default UploadRegistration;
+export default FileRegistration;

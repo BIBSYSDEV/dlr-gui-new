@@ -2,17 +2,17 @@ import React, { FC, useState } from 'react';
 import Radio from '@material-ui/core/Radio';
 import { useTranslation } from 'react-i18next';
 import { useFormikContext } from 'formik';
-import { ResourceWrapper } from '../types/resource.types';
+import { ResourceWrapper } from '../../../types/resource.types';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
-import { Colors } from '../themes/mainTheme';
-import { StyledRadioBoxWrapper, StyledRadioGroup, StyledSchemaPartColored } from '../components/styled/Wrappers';
-import { putAccessType } from '../api/resourceApi';
-import ErrorBanner from '../components/ErrorBanner';
+import { Colors } from '../../../themes/mainTheme';
+import { StyledRadioBoxWrapper, StyledRadioGroup, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
+import { putAccessType } from '../../../api/resourceApi';
+import ErrorBanner from '../../../components/ErrorBanner';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import { AccessTypes } from '../types/license.types';
+import { AccessTypes } from '../../../types/license.types';
 
 const StyledOutLinedBox = styled.div`
   display: flex;

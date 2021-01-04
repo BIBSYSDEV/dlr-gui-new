@@ -2,13 +2,13 @@ import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField } from '@material-ui/core';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
-import { StyledContentWrapper, StyledSchemaPart } from '../components/styled/Wrappers';
+import { StyledContentWrapper, StyledSchemaPart } from '../../../components/styled/Wrappers';
 import TagsField from './TagsField';
-import { postResourceFeature } from '../api/resourceApi';
-import { ResourceFeatureNamesFullPath, ResourceWrapper } from '../types/resource.types';
-import ErrorBanner from '../components/ErrorBanner';
+import { postResourceFeature } from '../../../api/resourceApi';
+import { ResourceFeatureNamesFullPath, ResourceWrapper } from '../../../types/resource.types';
+import ErrorBanner from '../../../components/ErrorBanner';
 import ResourceTypeField from './ResourceTypeField';
-import { resetFormButKeepTouched } from '../utils/formik-helpers';
+import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 
 interface DescriptionFieldsProps {
   setAllChangesSaved: (value: boolean) => void;

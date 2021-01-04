@@ -1,5 +1,5 @@
 import { FormikErrors, FormikProps, FormikTouched, FormikValues, getIn } from 'formik';
-import { ResourceFormSteps } from '../pages/ResourceForm';
+import { ResourceFormSteps } from '../pages/edit_resource/ResourceForm';
 import { Content } from '../types/content.types';
 import {
   ContentFeatureAttributes,
