@@ -5,11 +5,10 @@ import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
 import { StyledContentWrapper, StyledSchemaPart } from '../components/styled/Wrappers';
 import TagsField from './TagsField';
 import { postResourceFeature } from '../api/resourceApi';
-import { ResourceWrapper } from '../types/resource.types';
+import { ResourceFeatureNamesFullPath, ResourceWrapper } from '../types/resource.types';
 import ErrorBanner from '../components/ErrorBanner';
 import ResourceTypeField from './ResourceTypeField';
 import { resetFormButKeepTouched } from '../utils/formik-helpers';
-import { DescriptionFieldNames } from '../utils/FieldNames';
 
 interface DescriptionFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -38,45 +37,45 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
     <>
       <StyledSchemaPart>
         <StyledContentWrapper>
-          <Field name={DescriptionFieldNames.TITLE}>
+          <Field name={ResourceFeatureNamesFullPath.Title}>
             {({ field, meta: { touched, error } }: FieldProps) => (
               <TextField
                 {...field}
-                variant="filled"
+                variant="outlined"
                 fullWidth
                 label={t('resource.metadata.title')}
                 error={touched && !!error}
                 helperText={<ErrorMessage name={field.name} />}
                 onBlur={(event) => {
                   handleBlur(event);
-                  !error && saveField(event, DescriptionFieldNames.TITLE);
+                  !error && saveField(event, ResourceFeatureNamesFullPath.Title);
                 }}
               />
             )}
           </Field>
         </StyledContentWrapper>
-        {saveErrorFields.includes(DescriptionFieldNames.TITLE) && <ErrorBanner />}
+        {saveErrorFields.includes(ResourceFeatureNamesFullPath.Title) && <ErrorBanner />}
       </StyledSchemaPart>
       <StyledSchemaPart>
         <StyledContentWrapper>
-          <Field name={DescriptionFieldNames.DESCRIPTION}>
+          <Field name={ResourceFeatureNamesFullPath.Description}>
             {({ field, meta: { error } }: FieldProps) => (
               <TextField
                 {...field}
-                variant="filled"
+                variant="outlined"
                 fullWidth
                 multiline
                 rows="4"
                 label={t('resource.metadata.description')}
                 onBlur={(event) => {
                   handleBlur(event);
-                  !error && saveField(event, DescriptionFieldNames.DESCRIPTION);
+                  !error && saveField(event, ResourceFeatureNamesFullPath.Description);
                 }}
               />
             )}
           </Field>
         </StyledContentWrapper>
-        {saveErrorFields.includes(DescriptionFieldNames.DESCRIPTION) && <ErrorBanner />}
+        {saveErrorFields.includes(ResourceFeatureNamesFullPath.Description) && <ErrorBanner />}
       </StyledSchemaPart>
       <ResourceTypeField setAllChangesSaved={setAllChangesSaved} />
       <TagsField setAllChangesSaved={setAllChangesSaved} />

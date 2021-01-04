@@ -80,7 +80,7 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
                 {({ field, meta: { touched, error } }: FieldProps) => (
                   <TextField
                     {...field}
-                    variant="filled"
+                    variant="outlined"
                     fullWidth
                     label={t('resource.metadata.filename')}
                     error={touched && !!error}
@@ -96,7 +96,37 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
             {saveTitleError && <ErrorBanner />}
             <Paper>
               <StatusBarWrapper>
-                <StatusBarComponent uppy={uppy} hideAfterFinish={false} />
+                <StatusBarComponent
+                  locale={{
+                    strings: {
+                      uploading: t('resource.files_and_license.status_bar_component.uploading'),
+                      complete: t('resource.files_and_license.status_bar_component.complete'),
+                      uploadFailed: t('resource.files_and_license.status_bar_component.uploadFailed'),
+                      paused: t('resource.files_and_license.status_bar_component.paused'),
+                      retry: t('resource.files_and_license.status_bar_component.retry'),
+                      cancel: t('resource.files_and_license.status_bar_component.cancel'),
+                      pause: t('resource.files_and_license.status_bar_component.pause'),
+                      resume: t('resource.files_and_license.status_bar_component.resume'),
+                      done: t('resource.files_and_license.status_bar_component.done'),
+                      filesUploadedOfTotal: {
+                        0: t('resource.files_and_license.status_bar_component.filesUploadedOfTotal.0'),
+                        1: t('resource.files_and_license.status_bar_component.filesUploadedOfTotal.1'),
+                      },
+                      dataUploadedOfTotal: t('resource.files_and_license.status_bar_component.dataUpladedOfTotal'),
+                      xTimeLeft: t('resource.files_and_license.status_bar_component.xTimeLeft'),
+                      uploadXFiles: {
+                        0: t('resource.files_and_license.status_bar_component.uploadXFiles.0'),
+                        1: t('resource.status_bar_component.uploadXFiles.1'),
+                      },
+                      uploadXNewFiles: {
+                        0: t('resource.files_and_license.status_bar_component.uploadXNewFiles.0'),
+                        1: t('resource.files_and_license.status_bar_component.uploadXNewFiles.1'),
+                      },
+                    },
+                  }}
+                  uppy={uppy}
+                  hideAfterFinish={false}
+                />
               </StatusBarWrapper>
             </Paper>
           </MainFileMetadata>

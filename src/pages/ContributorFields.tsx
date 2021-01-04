@@ -1,7 +1,7 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MenuItem, TextField, Typography } from '@material-ui/core';
-import { Contributor, ContributorFeatureNames, ResourceWrapper } from '../types/resource.types';
+import { Contributor, ContributorFeatureNames, FieldNames, ResourceWrapper } from '../types/resource.types';
 import { ErrorMessage, Field, FieldArray, FieldArrayRenderProps, FieldProps, useFormikContext } from 'formik';
 import Button from '@material-ui/core/Button';
 import { createContributor, deleteContributor, putContributorFeature } from '../api/resourceApi';
@@ -146,17 +146,18 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
       <StyledContentWrapper>
         <Typography variant="h4">{t('resource.metadata.contributors')}</Typography>
         <FieldArray
-          name={`resource.contributors`}
+          name={FieldNames.ContributorsBase}
           render={(arrayHelpers) => (
             <>
               {values.resource.contributors?.map((contributor: Contributor, index: number) => {
                 return (
                   <StyledFieldsWrapper key={contributor.identifier}>
-                    <Field name={`resource.contributors[${index}].features.dlr_contributor_type`}>
+                    <Field
+                      name={`${FieldNames.ContributorsBase}[${index}].${FieldNames.Features}.${ContributorFeatureNames.Type}`}>
                       {({ field, meta: { touched, error } }: FieldProps<string>) => (
                         <StyledTextField
                           {...field}
-                          variant="filled"
+                          variant="outlined"
                           select
                           required
                           label={t('type')}
@@ -166,7 +167,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                           onBlur={(event) => {
                             handleBlur(event);
                             setFieldTouched(
-                              `resource.contributors[${index}].features.dlr_contributor_type`,
+                              `${FieldNames.ContributorsBase}[${index}].${FieldNames.Features}.${ContributorFeatureNames.Type}`,
                               true,
                               true
                             );
@@ -185,11 +186,12 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                         </StyledTextField>
                       )}
                     </Field>
-                    <Field name={`resource.contributors[${index}].features.dlr_contributor_name`}>
+                    <Field
+                      name={`${FieldNames.ContributorsBase}[${index}].${FieldNames.Features}.${ContributorFeatureNames.Name}`}>
                       {({ field, meta: { touched, error } }: FieldProps<string>) => (
                         <StyledTextField
                           {...field}
-                          variant="filled"
+                          variant="outlined"
                           label={t('name')}
                           error={touched && !!error}
                           helperText={<ErrorMessage name={field.name} />}

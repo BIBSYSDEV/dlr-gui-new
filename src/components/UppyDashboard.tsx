@@ -34,20 +34,35 @@ const UppyDashboard: React.FC<UppyDashboardProps> = ({ uppy }) => {
         locale={{
           strings: {
             dropPaste: multipleFilesAllowed
-              ? `${t('resource.files_and_license.drag_files')} %{browse}`
-              : `${t('resource.files_and_license.drag_file')} %{browse}`,
-            browse: t('resource.files_and_license.browse'),
+              ? `${t('resource.files_and_license.dashboard_component.drag_files')} %{browse}`
+              : `${t('resource.files_and_license.dashboard_component.drag_file')} %{browse}`,
+            browse: t('resource.files_and_license.dashboard_component.browse'),
             dropHint: multipleFilesAllowed
-              ? t('resource.files_and_license.drop_here')
+              ? t('resource.files_and_license.dashboard_component.drop_here')
               : t('resource.files_and_license.drop_single_file_here'),
             uploadXFiles: {
-              0: t('resource.files_and_license.upload_one_file'),
-              1: t('resource.files_and_license.upload_x_files'),
+              0: t('resource.files_and_license.dashboard_component.upload_one_file'),
+              1: t('resource.files_and_license.dashboard_component.upload_x_files'),
             },
             uploadXNewFiles: {
-              0: t('resource.files_and_license.upload_one_more_file'),
-              1: t('resource.files_and_license.upload_x_more_files'),
+              0: t('resource.files_and_license.dashboard_component.upload_one_more_file'),
+              1: t('resource.files_and_license.dashboard_component.upload_x_more_files'),
             },
+            cancel: t('resource.files_and_license.status_bar_component.cancel'),
+            complete: t('resource.files_and_license.status_bar_component.complete'),
+            dataUploadedOfTotal: t('resource.files_and_license.status_bar_component.dataUploadedOfTotal'),
+            done: t('resource.files_and_license.status_bar_component.done'),
+            filesUploadedOfTotal: {
+              0: t('resource.files_and_license.status_bar_component.0'),
+              1: t('resource.files_and_license.status_bar_component.1'),
+            },
+            pause: t('resource.files_and_license.status_bar_component.pause'),
+            paused: t('resource.files_and_license.status_bar_component.paused'),
+            resume: t('resource.files_and_license.status_bar_component.resume'),
+            retry: t('resource.files_and_license.status_bar_component.retry'),
+            uploadFailed: t('resource.files_and_license.status_bar_component.uploadFailed'),
+            uploading: t('resource.files_and_license.status_bar_component.uploading'),
+            xTimeLeft: t('resource.files_and_license.status_bar_component.xTimeLeft'),
           },
         }}
       />

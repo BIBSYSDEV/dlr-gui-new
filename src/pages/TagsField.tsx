@@ -67,7 +67,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                   {...params}
                   label={t('resource.metadata.tags')}
                   helperText={t('resource.add_tags')}
-                  variant="filled"
+                  variant="outlined"
                   fullWidth
                   onBlur={(event) => {
                     const value = event.target.value;

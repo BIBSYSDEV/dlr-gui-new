@@ -12,6 +12,8 @@
     "no": "Nei",
     "none": "Ingen",
     "or": "Eller",
+    "other_options": "Andre lisenser",
+    "possible_options": "Mulige lisenser",
     "remove": "Fjern",
     "search": "Søk",
     "save": "Lagre",
@@ -124,15 +126,43 @@
     },
     "edit_resource": "Rediger ressurs",
     "files_and_license": {
-      "browse": "velg",
-      "drag_file": "Dra fil hit eller",
-      "drag_files": "Dra filer hit eller",
-      "drop_here": "Slipp filene dine her",
-      "upload_files": "Last opp filer",
-      "upload_one_file": "Last opp %{smart_count} fil",
-      "upload_one_more_file": "Last opp %{smart_count} fil til",
-      "upload_x_files": "Last opp %{smart_count} filer",
-      "upload_x_more_files": "Last opp %{smart_count} filer til"
+      "dashboard_component": {
+        "browse": "velg",
+        "drag_file": "Dra fil hit eller",
+        "drag_files": "Dra filer hit eller",
+        "drop_here": "Slipp filene dine her",
+        "drop_single_file_here": "Slipp filen din her",
+        "upload_one_file": "Last opp %{smart_count} fil",
+        "upload_one_more_file": "Last opp %{smart_count} fil til",
+        "upload_x_files": "Last opp %{smart_count} filer",
+        "upload_x_more_files": "Last opp %{smart_count} filer til"
+      },
+      "status_bar_component": {
+        "cancel": "Avbryt",
+        "complete": "Fullført",
+        "dataUploadedOfTotal": "%{complete} av %{total}",
+        "done": "Ferdig",
+        "filesUploadedOfTotal": {
+          "0": "%{complete} av %{smart_count} filer er opplastet",
+          "1": "%{complete} av %{smart_count} filer er opplastet"
+        },
+        "pause": "Pause",
+        "paused": "Satt på pause",
+        "resume": "Gjenoppta",
+        "retry": "Prøv på nytt",
+        "uploadFailed": "Opplastning mislyktes",
+        "uploading": "Laster opp",
+        "uploadXFiles": {
+          "0": "Last opp %{smart_count} fil",
+          "1": "Last opp %{smart_count} filer"
+        },
+        "uploadXNewFiles": {
+          "0": "Last opp +%{smart_count} fil",
+          "1": "Last opp +%{smart_count} filer"
+        },
+        "xTimeLeft": "%{time} gjenstår"
+      },
+      "upload_files": "Last opp filer"
     },
     "form_steps": {
       "description": "Beskrivelse",
