@@ -193,3 +193,19 @@ export enum FieldNames {
   LicensesBase = 'resource.licenses',
   Tags = 'resource.tags',
 }
+
+export enum ResourceFormStep {
+  Description = 0,
+  Contributors = 1,
+  Contents = 2,
+  AccessAndLicense = 3,
+  Preview = 4,
+}
+
+export const ResourceFormSteps = [
+  ResourceFormStep.Description,
+  ResourceFormStep.Contributors,
+  ResourceFormStep.Contents,
+  ResourceFormStep.AccessAndLicense,
+  ResourceFormStep.Preview,
+];

@@ -1,5 +1,4 @@
-import { FormikErrors, FormikProps, FormikTouched, FormikValues, getIn } from 'formik';
-import { ResourceFormSteps } from '../pages/edit_resource/ResourceForm';
+import { FormikContextType, FormikErrors, FormikProps, FormikTouched, FormikValues, getIn } from 'formik';
 import { Content } from '../types/content.types';
 import {
   ContentFeatureAttributes,
@@ -8,23 +7,26 @@ import {
   Creator,
   CreatorFeatureAttributes,
   FieldNames,
+  Resource,
   ResourceFeatureNamesFullPath,
+  ResourceFormStep,
 } from '../types/resource.types';
+import deepmerge, { Options } from 'deepmerge';
 
-export const hasTouchedError = (formikProps: FormikProps<FormikValues>, index: number): boolean => {
-  if (!Object.keys(formikProps.errors).length || !Object.keys(formikProps.touched).length) {
+export const hasTouchedError = (formikContext: FormikContextType<Resource>, index: number): boolean => {
+  if (!Object.keys(formikContext.errors).length || !Object.keys(formikContext.touched).length) {
     return false;
   }
   let fieldNames: string[] = [];
-  index === ResourceFormSteps.Description && (fieldNames = getAllDescriptionStepFieldNames());
-  index === ResourceFormSteps.AccessAndLicense && (fieldNames = getAllAccessAndLicenseStepFieldNames());
-  index === ResourceFormSteps.Contributors && (fieldNames = getAllFieldsFromContributorsPanel(formikProps.values));
-  index === ResourceFormSteps.Contents && (fieldNames = getAllContentsFields(formikProps.values));
+  index === ResourceFormStep.Description && (fieldNames = getAllDescriptionStepFieldNames());
+  index === ResourceFormStep.AccessAndLicense && (fieldNames = getAllAccessAndLicenseStepFieldNames());
+  index === ResourceFormStep.Contributors && (fieldNames = getAllFieldsFromContributorsPanel(formikContext.values));
+  index === ResourceFormStep.Contents && (fieldNames = getAllContentsFields(formikContext.values));
 
   if (fieldNames.length) {
     return fieldNames.some((fieldName) => {
-      const fieldHasError = !!getIn(formikProps.errors, fieldName);
-      const fieldIsTouched = !!getIn(formikProps.touched, fieldName);
+      const fieldHasError = !!getIn(formikContext.errors, fieldName);
+      const fieldIsTouched = !!getIn(formikContext.touched, fieldName);
       // Touched data can be inconsistent with array of null or undefined elements when adding elements dynamically
       // to a FieldArray, so ensure it is a boolean value
       return fieldHasError && fieldIsTouched;
@@ -102,3 +104,8 @@ export const getAllCreatorFields = (creators: Creator[]): string[] => {
   }
   return fieldNames;
 };
+
+export const overwriteArrayMerge = (destinationArray: unknown[], sourceArray: unknown[], options?: Options) =>
+  sourceArray;
+export const mergeTouchedFields = (touchedArray: FormikTouched<Resource>[]) =>
+  deepmerge.all(touchedArray, { arrayMerge: overwriteArrayMerge });
