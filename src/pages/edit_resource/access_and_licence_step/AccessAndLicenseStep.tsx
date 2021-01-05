@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import AccessFields from './AccessFields';
 import LicenseFields from './LicenseFields';
 import { License } from '../../../types/license.types';
@@ -11,11 +11,13 @@ interface AccessAndLicenseStepProps {
 }
 
 const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSaved, licenses }) => {
+  const [containsOtherWorksFieldsSelectedCC, setContainsOtherWorksFieldsSelectedCC] = useState(false);
   return (
     <>
       <ContainsOtherWorksFields
         licenses={licenses}
         setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
+        hasSelectedCC={(selectedCC) => setContainsOtherWorksFieldsSelectedCC(selectedCC)}
       />
       <AccessFields
         setAllChangesSaved={(status: boolean) => {
@@ -23,7 +25,11 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSave
         }}
       />
       {licenses && (
-        <LicenseWizardFields licenses={licenses} setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)} />
+        <LicenseWizardFields
+          containsOtherWorksFieldsSelectedCC={containsOtherWorksFieldsSelectedCC}
+          licenses={licenses}
+          setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
+        />
       )}
       {licenses && (
         <LicenseFields

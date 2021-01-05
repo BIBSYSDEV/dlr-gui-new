@@ -35,17 +35,27 @@ enum DefaultModifyAndBuildOptions {
   SA = 'share_alike',
 }
 
+enum OtherWorksField {
+  CC_BY_SA_4_0 = 'CC BY-SA 4.0',
+  CC_BY_NC_SA = 'CC BY-NC-SA 4.0',
+}
+
 const defaultRestrictionOptions = [LicenseConstants.CC_BY, LicenseConstants.yes];
 const defaultCommercialOptions = [DefaultCommercial.yes, DefaultCommercial.NC];
 
 interface LicenseWizardFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
   licenses: License[];
+  containsOtherWorksFieldsSelectedCC: boolean;
 }
 
 const additionalLicenseProviders: string[] = [LicenseConstants.NTNU, LicenseConstants.BI];
 
-const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved, licenses }) => {
+const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
+  setAllChangesSaved,
+  licenses,
+  containsOtherWorksFieldsSelectedCC,
+}) => {
   const { t } = useTranslation();
   const { institution } = useSelector((state: RootState) => state.user);
   const { values, resetForm } = useFormikContext<ResourceWrapper>();
@@ -154,6 +164,20 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
               control={<Radio color="primary" />}
               label={t(`license.restriction_options.${institutionRestriction}`)}
             />
+          )}
+          {containsOtherWorksFieldsSelectedCC && (
+            <>
+              <FormControlLabel
+                value={OtherWorksField.CC_BY_SA_4_0}
+                control={<Radio color="primary" />}
+                label={t(`license.restriction_options.${OtherWorksField.CC_BY_SA_4_0.replace(/[.\s]/g, '_')}`)}
+              />
+              <FormControlLabel
+                value={OtherWorksField.CC_BY_NC_SA}
+                control={<Radio color="primary" />}
+                label={t(`license.restriction_options.${OtherWorksField.CC_BY_NC_SA.replace(/[.\s]/g, '_')}`)}
+              />
+            </>
           )}
         </StyledRadioGroup>
       </AccordionRadioGroup>
