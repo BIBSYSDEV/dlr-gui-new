@@ -9,12 +9,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/rootReducer';
 import { Colors } from '../../../themes/mainTheme';
 import { StyledRadioBoxWrapper, StyledRadioGroup, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
-import { putAccessType, setResourceLicense } from '../../../api/resourceApi';
+import { deleteResourceLicense, putAccessType, setResourceLicense } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import { AccessTypes, LicenseConstants, License } from '../../../types/license.types';
+import { AccessTypes, LicenseConstants, License, emptyLicense } from '../../../types/license.types';
 
 const StyledOutLinedBox = styled.div`
   display: flex;
@@ -39,6 +39,7 @@ const LicenseAgreements: string[] = [LicenseConstants.CC, LicenseConstants.YesOt
 interface ContainsOtherWorksFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
   licenses: License[] | undefined;
+  forceRefresh: () => void;
 }
 
 const otherPeopleWorkId = 'other-peoples-work';
@@ -47,7 +48,11 @@ const usageClearedId = 'usage-is-cleared';
 
 const additionalLicenseProviders: string[] = [LicenseConstants.NTNU, LicenseConstants.BI];
 
-const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllChangesSaved, licenses }) => {
+const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
+  setAllChangesSaved,
+  licenses,
+  forceRefresh,
+}) => {
   const { institution } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
   const { values, resetForm, setFieldValue } = useFormikContext<ResourceWrapper>();
@@ -57,8 +62,21 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllCha
   const [additionalLicense] = useState<string | undefined>(
     additionalLicenseProviders.find((element) => element.includes(institution.toLowerCase()))
   );
-  const handleChangeInContainsOtherPeoplesWork = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleChangeInContainsOtherPeoplesWork = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setContainsOtherPeoplesWork(event.target.value === 'true');
+    forceRefresh();
+    if (values.resource?.licenses) {
+      await replaceOldLicense(emptyLicense);
+      resetForm({ values });
+    }
+  };
+
+  const replaceOldLicense = async (newLicence: License) => {
+    if (values.resource.licenses && values.resource.licenses[0].identifier.length > 0) {
+      await deleteResourceLicense(values.resource.identifier, values.resource.licenses[0].identifier);
+      values.resource.licenses[0] = newLicence;
+    }
   };
 
   const handleLicenseAgreementChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,22 +90,24 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllCha
       if (event.target.value === LicenseConstants.BI || event.target.value === LicenseConstants.NTNU) {
         const license = licenses?.find((license) => license.features?.dlr_license_code === event.target.value);
         if (license) {
+          await replaceOldLicense(license);
           await setResourceLicense(values.resource.identifier, license.identifier);
-          if (values.resource.licenses) {
-            values.resource.licenses[0] = license;
-          }
         }
+      } else {
+        await replaceOldLicense(emptyLicense);
       }
-      await putAccessType(values.resource.identifier, accessType);
-      setFieldValue('resource.features.dlr_access', accessType);
-      values.resource.features.dlr_access = accessType;
+      if (values.resource.features.dlr_access !== accessType) {
+        await putAccessType(values.resource.identifier, accessType);
+        setFieldValue('resource.features.dlr_access', accessType);
+        values.resource.features.dlr_access = accessType;
+      }
       resetForm({ values });
-
       setSavingError(false);
     } catch (error) {
       setSavingError(true);
     } finally {
       setAllChangesSaved(true);
+      forceRefresh();
     }
   };
 
