@@ -16,7 +16,6 @@ import {
   ResourceFeatureNames,
   ResourceFeatureTypes,
 } from '../../types/resource.types';
-import useUppy from '../../utils/useUppy';
 import { toast } from 'react-toastify';
 import {
   createContributor,
@@ -34,6 +33,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import { emptyLicense } from '../../types/license.types';
 import ErrorBanner from '../../components/ErrorBanner';
+import { createUppy } from '../../utils/uppy-config';
+import { useUppy } from '@uppy/react';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -199,7 +200,7 @@ const EditResourcePage: FC = () => {
     }
   };
 
-  const mainFileHandler = useUppy('', false, onCreateFile);
+  const mainFileHandler = useUppy(createUppy('', false, onCreateFile));
 
   const handleChange = (panel: string) => (_: React.ChangeEvent<any>, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : '');
@@ -208,15 +209,12 @@ const EditResourcePage: FC = () => {
   //triggers on uppy-events
   useEffect(() => {
     if (mainFileHandler) {
-      mainFileHandler.on('upload', (file, response) => {
+      mainFileHandler.on('upload', (file: any, response: any) => {
         setResourceType(ResourceCreationType.FILE);
       });
-      if (!mainFileHandler.hasUploadFailedEventListener) {
-        mainFileHandler.on('upload-error', () => {
-          toast.error('File upload error');
-        });
-        mainFileHandler.hasUploadFailedEventListener = true;
-      }
+      mainFileHandler.on('upload-error', () => {
+        toast.error('File upload error');
+      });
     }
   }, [mainFileHandler]);
 
@@ -231,7 +229,6 @@ const EditResourcePage: FC = () => {
         _resource.features.dlr_description
       );
     }
-    //TODO: tags, creators
   };
 
   useEffect(() => {
