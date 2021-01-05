@@ -14,7 +14,7 @@ import ErrorBanner from '../../../components/ErrorBanner';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import { AccessTypes, License } from '../../../types/license.types';
+import { AccessTypes, LicenseConstants, License } from '../../../types/license.types';
 
 const StyledOutLinedBox = styled.div`
   display: flex;
@@ -34,19 +34,7 @@ const StyledTypography = styled(Typography)`
   padding-left: 1rem;
 `;
 
-enum LicenseAgreementsOptions {
-  CC = 'creative_commons',
-  YesOther = 'yes_other',
-  NoClearance = 'no_clearance',
-  BI = 'bi-opphaver-bi',
-  NTNU = 'ntnu-internt',
-}
-
-const LicenseAgreements: string[] = [
-  LicenseAgreementsOptions.CC,
-  LicenseAgreementsOptions.YesOther,
-  LicenseAgreementsOptions.NoClearance,
-];
+const LicenseAgreements: string[] = [LicenseConstants.CC, LicenseConstants.YesOther, LicenseConstants.NoClearance];
 
 interface ContainsOtherWorksFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -57,14 +45,14 @@ const otherPeopleWorkId = 'other-peoples-work';
 
 const usageClearedId = 'usage-is-cleared';
 
-const additionalLicenseProviders: string[] = [LicenseAgreementsOptions.NTNU, LicenseAgreementsOptions.BI];
+const additionalLicenseProviders: string[] = [LicenseConstants.NTNU, LicenseConstants.BI];
 
 const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllChangesSaved, licenses }) => {
   const { institution } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
   const { values, resetForm, setFieldValue } = useFormikContext<ResourceWrapper>();
   const [containsOtherPeoplesWork, setContainsOtherPeoplesWork] = useState(false);
-  const [LicenseAgreement, setLicenseAgreement] = useState<string>(LicenseAgreementsOptions.CC);
+  const [LicenseAgreement, setLicenseAgreement] = useState<string>(LicenseConstants.CC);
   const [savingError, setSavingError] = useState(false);
   const [additionalLicense] = useState<string | undefined>(
     additionalLicenseProviders.find((element) => element.includes(institution.toLowerCase()))
@@ -78,13 +66,10 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllCha
       setAllChangesSaved(false);
       setLicenseAgreement(event.target.value);
       let accessType = AccessTypes.private;
-      if (
-        event.target.value === LicenseAgreementsOptions.CC ||
-        event.target.value === LicenseAgreementsOptions.YesOther
-      ) {
+      if (event.target.value === LicenseConstants.CC || event.target.value === LicenseConstants.YesOther) {
         accessType = AccessTypes.open;
       }
-      if (event.target.value === LicenseAgreementsOptions.BI || event.target.value === LicenseAgreementsOptions.NTNU) {
+      if (event.target.value === LicenseConstants.BI || event.target.value === LicenseConstants.NTNU) {
         const license = licenses?.find((license) => license.features?.dlr_license_code === event.target.value);
         if (license) {
           await setResourceLicense(values.resource.identifier, license.identifier);
@@ -149,7 +134,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllCha
         </StyledRadioBoxWrapper>
       )}
       {savingError && <ErrorBanner />}
-      {LicenseAgreement !== LicenseAgreementsOptions.YesOther && containsOtherPeoplesWork && (
+      {LicenseAgreement !== LicenseConstants.YesOther && containsOtherPeoplesWork && (
         <StyledOutLinedBox>
           <ErrorOutlineIcon color="primary" />
           <StyledTypography>{t(`license.limitation.${LicenseAgreement}.important_notice`)}</StyledTypography>

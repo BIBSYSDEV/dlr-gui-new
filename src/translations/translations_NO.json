@@ -60,7 +60,7 @@
     "limitation": {
       "bi-opphaver-bi": {
         "title": "Ja, med intern BI-lisens",
-        "important_notice": "Ressursen burde kun være tilgjengelig for BI og publiseres med BI intern lisens"
+        "important_notice": "Ressursen bør kun være tilgjengelig for BI og publiseres med BI intern lisens"
       },
       "creative_commons": {
         "title": "Ja, med Creative Commons lisens",
@@ -72,7 +72,7 @@
       },
       "ntnu-internt": {
         "title": "Ja, med intern NTNU-lisens",
-        "important_notice": "Ressursen burde kun være tilgjengelig for NTNU og publiseres med NTNU intern lisens"
+        "important_notice": "Ressursen bør kun være tilgjengelig for NTNU og publiseres med NTNU intern lisens"
       },
       "yes_other": {
         "title": "Ja, annet"
