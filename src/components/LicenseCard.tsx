@@ -32,7 +32,13 @@ const LicenseCard: FC<LicenseProps> = ({ license }) => {
           {license.features?.dlr_license_code && (
             <Typography variant="h6">{license.features?.dlr_license_name_no}</Typography>
           )}
+          {!license.features?.dlr_license_name_no && (
+            <Typography variant="h6">{license.features?.dlr_license_name}</Typography>
+          )}
           <Typography variant="body1">{license.features?.dlr_license_description_no}</Typography>
+          {!license.features?.dlr_license_description_no && (
+            <Typography variant="body1">{license.features?.dlr_license_description}</Typography>
+          )}
           <StyledA target="_blank" href={license.features?.dlr_license_url_no ?? ''}>
             <img src={license.features?.dlr_license_url_image} alt={license.features?.dlr_license_code} />
             <StyledTypography> {license.features?.dlr_license_code}</StyledTypography>
@@ -44,7 +50,13 @@ const LicenseCard: FC<LicenseProps> = ({ license }) => {
           {license.features?.dlr_license_code && (
             <Typography variant="h6">{license.features?.dlr_license_name_en}</Typography>
           )}
+          {!license.features?.dlr_license_name && (
+            <Typography variant="h6">{license.features?.dlr_license_name}</Typography>
+          )}
           <Typography variant="caption">{license.features?.dlr_license_description_en}</Typography>
+          {!license.features?.dlr_license_description_en && (
+            <Typography variant="body1">{license.features?.dlr_license_description}</Typography>
+          )}
           <StyledA target="_blank" href={license.features?.dlr_license_url_en ?? ''}>
             <img src={license.features?.dlr_license_url_image} alt={license.features?.dlr_license_code} />
             <StyledTypography>

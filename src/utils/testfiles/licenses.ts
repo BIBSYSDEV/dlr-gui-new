@@ -160,4 +160,64 @@ export const licenses = [
       dlr_license_url_no: 'https://creativecommons.org/publicdomain/zero/1.0/deed.no',
     },
   },
+  {
+    identifier: '2394b45d-1be7-4bb1-bc10-4b6b6726a228',
+    features: {
+      dlr_license: 'true',
+      dlr_license_code: 'ntnu-alle-rettigheter-forbeholdt-forfatter',
+      dlr_license_description:
+        'Du som forfatter/opphavsperson ønsker at materialet bare skal brukes i din egen undervisning, og at andre som ønsker å bruke det må spørre deg om lov.',
+      dlr_license_identifier: '2394b45d-1be7-4bb1-bc10-4b6b6726a228',
+      dlr_license_issuer: 'NTNU',
+      dlr_license_name: 'Alle rettigheter forbeholdt forfatter',
+      dlr_license_time_created: '2019-03-29T13:18:23.812Z',
+      dlr_license_url: 'https://dlr.bibsys.no/licenses/ntnu-alle-rettigheter-forbeholdt-forfatter',
+      dlr_license_url_image: 'https://dlr.bibsys.no/assets/images/licenses/ntnu-license.png',
+    },
+  },
+  {
+    identifier: 'd56b161e-05d0-45c9-b96b-5c0b37b952b4',
+    features: {
+      dlr_license: 'true',
+      dlr_license_code: 'ntnu-internt',
+      dlr_license_description:
+        'Du som forfatter/opphavsperson ønsker å dele materialet med kollegaer internt i institusjonen som ønsker å bruke det i deres undervisning. Dine kollegaer kan lage egne utgaver av dette materialet, men skal da samtidig oppgi deg som forfatter av det opprinnelige materialet. Dette betyr at:  Materialet kun skal benyttes i egen institusjon. Du skal kreditere opprinnelig forfatter. Har du endret materialet, skal du si klart ifra om dette, og gjøre det tydelig at dette er din personlige tolkning. Du må søke om skriftlig tillatelse før eventuell kommersiell bruk. Dersom du remixer, bearbeider eller bygger på materialet, må du distribuere dine bidrag under de samme betingelsene som over.',
+      dlr_license_identifier: 'd56b161e-05d0-45c9-b96b-5c0b37b952b4',
+      dlr_license_issuer: 'NTNU',
+      dlr_license_name: 'Internt NTNU',
+      dlr_license_restriction_private_access_only: 'true',
+      dlr_license_time_created: '2019-03-29T13:18:24.445Z',
+      dlr_license_url: 'https://dlr.bibsys.no/licenses/ntnu-internt',
+      dlr_license_url_image: 'https://dlr.bibsys.no/assets/images/licenses/ntnu-license.png',
+    },
+  },
+  {
+    identifier: '277d9cbc-1b15-45a5-a21b-fac6c27590fb',
+    features: {
+      dlr_license: 'true',
+      dlr_license_code: 'bi-opphaver',
+      dlr_license_description: 'Alle rettigheter er forbeholdt opphaver. Opphaver må kontaktes ved ønske om bruk.',
+      dlr_license_identifier: '277d9cbc-1b15-45a5-a21b-fac6c27590fb',
+      dlr_license_issuer: 'BI',
+      dlr_license_name: '©Opphaver',
+      dlr_license_time_created: '2019-03-29T13:18:25.396Z',
+      dlr_license_url: 'https://www.bi.no/studere-ved-bi/biblioteket/lisenser-bibsys-dlr/opphaver',
+      dlr_license_url_image: 'https://dlr.bibsys.no/assets/images/licenses/bi-opphaver.png',
+    },
+  },
+  {
+    identifier: '9923d5e3-5d18-417f-8196-7e48baf49509',
+    features: {
+      dlr_license: 'true',
+      dlr_license_code: 'bi-opphaver-bi',
+      dlr_license_description:
+        'Alle rettigheter er forbeholdt opphaver, men BI har en formålsstyrt bruksrett. Opphaver og BI må kontaktes ved ønske om å bruk.',
+      dlr_license_identifier: '9923d5e3-5d18-417f-8196-7e48baf49509',
+      dlr_license_issuer: 'BI',
+      dlr_license_name: '©Opphaver-BI',
+      dlr_license_time_created: '2019-03-29T13:18:25.954Z',
+      dlr_license_url: 'https://www.bi.no/studere-ved-bi/biblioteket/lisenser-bibsys-dlr/opphaver-bi',
+      dlr_license_url_image: 'https://dlr.bibsys.no/assets/images/licenses/bi-opphaver-bi.png',
+    },
+  },
 ];
