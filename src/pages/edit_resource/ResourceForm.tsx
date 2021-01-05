@@ -140,7 +140,14 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   }, []);
 
   const handleStep = (step: number) => () => {
+    console.log('ACTIVE-STEP', activeStep);
+
+    //TODO: trigger touched on former active step
+    //AND: run validation on steps before new step
     setActiveStep(step);
+
+    //if 1->4  (set touched 1-3)
+    //if 4->1  (set touched 4)
   };
 
   return (
