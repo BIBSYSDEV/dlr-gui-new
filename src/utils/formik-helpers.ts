@@ -7,13 +7,13 @@ import {
   Creator,
   CreatorFeatureAttributes,
   FieldNames,
-  Resource,
   ResourceFeatureNamesFullPath,
   ResourceFormStep,
+  ResourceWrapper,
 } from '../types/resource.types';
 import deepmerge, { Options } from 'deepmerge';
 
-export const hasTouchedError = (formikContext: FormikContextType<Resource>, index: number): boolean => {
+export const hasTouchedError = (formikContext: FormikContextType<ResourceWrapper>, index: number): boolean => {
   if (!Object.keys(formikContext.errors).length || !Object.keys(formikContext.touched).length) {
     return false;
   }
@@ -51,6 +51,7 @@ const getAllDescriptionStepFieldNames = () => {
     ResourceFeatureNamesFullPath.Type,
     ResourceFeatureNamesFullPath.Title,
     ResourceFeatureNamesFullPath.Description,
+    //TODO: tags
   ];
 };
 const getAllAccessAndLicenseStepFieldNames = () => {
@@ -107,5 +108,5 @@ export const getAllCreatorFields = (creators: Creator[]): string[] => {
 
 export const overwriteArrayMerge = (destinationArray: unknown[], sourceArray: unknown[], options?: Options) =>
   sourceArray;
-export const mergeTouchedFields = (touchedArray: FormikTouched<Resource>[]) =>
+export const mergeTouchedFields = (touchedArray: FormikTouched<ResourceWrapper>[]) =>
   deepmerge.all(touchedArray, { arrayMerge: overwriteArrayMerge });

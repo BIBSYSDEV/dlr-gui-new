@@ -1,12 +1,19 @@
 import React, { FC, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Step, StepButton, StepLabel, Stepper } from '@material-ui/core';
-import { Resource, ResourceFormStep, ResourceFormSteps } from '../../types/resource.types';
+import { ResourceFormStep, ResourceFormSteps, ResourceWrapper } from '../../types/resource.types';
 import { FormikTouched, useFormikContext } from 'formik';
 import { StyledContentWrapper } from '../../components/styled/Wrappers';
 import { hasTouchedError, mergeTouchedFields } from '../../utils/formik-helpers';
 import CircularFileUploadProgress from '../../components/CircularFileUploadProgress';
 import { Uppy } from '../../types/file.types';
+import styled from 'styled-components';
+
+const StyledDebugWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+`;
 
 interface ResourceFormNavigationHeaderProps {
   activeStep: ResourceFormStep;
@@ -18,33 +25,40 @@ const fileUploadPanelId = 'file-upload-panel';
 
 const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ activeStep, setActiveStep, uppy }) => {
   const { t } = useTranslation();
-  const formikContext = useFormikContext<Resource>();
+  const formikContext = useFormikContext<ResourceWrapper>();
 
   const handleStep = (step: number) => () => {
-    console.log('ACTIVE-STEP', activeStep);
-
     const tabFields = {
       [ResourceFormStep.Description]: () => touchedDescriptionTabFields,
+      [ResourceFormStep.AccessAndLicense]: () => touchedAccessAndLicenseTabFields,
       //...more
     };
 
-    console.log('changed step from', activeStep);
-    console.log('changed step to', step);
+    console.log(`Changed step from ${activeStep} to ${step}`);
 
     const fieldsToTouchOnMount = [];
     fieldsToTouchOnMount.push(tabFields[ResourceFormStep.Description]());
+    fieldsToTouchOnMount.push(tabFields[ResourceFormStep.AccessAndLicense]());
     const mergedFieldsOnMount = mergeTouchedFields(fieldsToTouchOnMount);
     formikContext.setTouched(mergedFieldsOnMount);
-
     setActiveStep(step);
 
     //if 1->4  (set touched 1-3)
     //if 4->1  (set touched 4)
   };
 
-  const touchedDescriptionTabFields: FormikTouched<Resource> = {
-    features: {
-      dlr_title: true,
+  const touchedDescriptionTabFields: FormikTouched<ResourceWrapper> = {
+    resource: {
+      features: {
+        dlr_title: true,
+        dlr_description: true,
+        dlr_type: true,
+      },
+    },
+  };
+  const touchedAccessAndLicenseTabFields: FormikTouched<ResourceWrapper> = {
+    resource: {
+      licenses: true,
     },
   };
 
@@ -69,6 +83,17 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
 
   return (
     <StyledContentWrapper>
+      <StyledDebugWrapper>
+        <pre style={{ whiteSpace: 'pre-wrap', border: '1px solid red', width: '40%' }}>
+          ERRORS:
+          {JSON.stringify(formikContext.errors, null, 2)}
+        </pre>
+        <pre style={{ whiteSpace: 'pre-wrap', border: '1px solid cadetblue', width: '40%' }}>
+          TOUCHED:
+          {JSON.stringify(formikContext.touched, null, 2)}
+        </pre>
+      </StyledDebugWrapper>
+
       <Stepper style={{ width: '100%' }} activeStep={activeStep} nonLinear alternativeLabel>
         {ResourceFormSteps.map((step, index) => {
           return (

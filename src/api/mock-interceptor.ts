@@ -39,9 +39,7 @@ const mockResource: Resource = {
 };
 
 const mockCalculatedResource: Resource = {
-  features: {
-    dlr_title: 'This is a mocked generated title',
-  },
+  features: {},
   identifier: 'resource-345',
 };
 
