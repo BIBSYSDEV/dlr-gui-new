@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Step, StepButton, StepLabel, Stepper } from '@material-ui/core';
 import { ResourceFormStep, ResourceFormSteps, ResourceWrapper } from '../../types/resource.types';
@@ -13,6 +13,7 @@ const StyledDebugWrapper = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
+  justify-content: space-evenly;
 `;
 
 interface ResourceFormNavigationHeaderProps {
@@ -34,7 +35,7 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
       //...more
     };
 
-    console.log(`Changed step from ${activeStep} to ${step}`);
+    //console.log(`Changed step from ${activeStep} to ${step}`);
 
     const fieldsToTouchOnMount = [];
     fieldsToTouchOnMount.push(tabFields[ResourceFormStep.Description]());
@@ -62,10 +63,6 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
     },
   };
 
-  useEffect(() => {
-    // All fields for each tab
-  }, [activeStep]);
-
   const getStepLabel = (step: ResourceFormStep) => {
     switch (step) {
       case ResourceFormStep.Description:
@@ -89,8 +86,8 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
           {JSON.stringify(formikContext.errors, null, 2)}
         </pre>
         <pre style={{ whiteSpace: 'pre-wrap', border: '1px solid cadetblue', width: '40%' }}>
-          TOUCHED:
-          {JSON.stringify(formikContext.touched, null, 2)}
+          VALUES:
+          {JSON.stringify(formikContext.values.resource.features, null, 2)}
         </pre>
       </StyledDebugWrapper>
 

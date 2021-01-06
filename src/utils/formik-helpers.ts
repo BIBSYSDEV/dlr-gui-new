@@ -1,4 +1,4 @@
-import { FormikContextType, FormikErrors, FormikProps, FormikTouched, FormikValues, getIn } from 'formik';
+import { FormikContextType, FormikErrors, FormikTouched, FormikValues, getIn } from 'formik';
 import { Content } from '../types/content.types';
 import {
   ContentFeatureAttributes,

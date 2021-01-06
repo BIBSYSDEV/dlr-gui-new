@@ -143,6 +143,7 @@ const EditResourcePage: FC = () => {
   const getResourceInit = async (startingResource: Resource, resourceCreationType: ResourceCreationType) => {
     try {
       setShowForm(true);
+      startingResource.features.dlr_title = startingResource.features.dlr_title ?? '';
       const contributorResponse = await createContributor(startingResource.identifier);
       await putContributorFeature(
         startingResource.identifier,

@@ -48,7 +48,6 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
                 helperText={<ErrorMessage name={field.name} />}
                 onBlur={(event) => {
                   handleBlur(event);
-                  console.log('BLUIR!', error);
                   !error && saveField(event, ResourceFeatureNamesFullPath.Title);
                 }}
               />
