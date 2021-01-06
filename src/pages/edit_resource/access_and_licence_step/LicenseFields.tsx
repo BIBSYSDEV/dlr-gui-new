@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { FormHelperText, MenuItem, TextField, Typography } from '@material-ui/core';
 import { FieldNames, Resource } from '../../../types/resource.types';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import { setResourceLicense } from '../../../api/resourceApi';
+import { deleteResourceLicense, setResourceLicense } from '../../../api/resourceApi';
 import { License } from '../../../types/license.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
@@ -43,6 +43,12 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
         setSavingLicensesError(false);
         setFieldValue(LicenceFieldName, selectedLicense);
         if (values.resource.licenses?.length === 1) {
+          if (
+            values.resource.licenses[0].identifier !== selectedLicense.identifier &&
+            values.resource.licenses[0].identifier.length > 0
+          ) {
+            await deleteResourceLicense(values.resource.identifier, values.resource.licenses[0].identifier);
+          }
           values.resource.licenses[0] = selectedLicense;
           resetFormButKeepTouched(touched, resetForm, values, setTouched);
         }
