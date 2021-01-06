@@ -20,6 +20,9 @@ import ErrorBanner from '../../components/ErrorBanner';
 import AccessAndLicenseStep from './access_and_licence_step/AccessAndLicenseStep';
 import { hasTouchedError } from '../../utils/formik-helpers';
 import CircularFileUploadProgress from '../../components/CircularFileUploadProgress';
+import AdditionalFilesUpload from './contents_step/AdditionalFilesUpload';
+import { useUppy } from '@uppy/react';
+import { additionalCreateFilesUppy } from '../../utils/uppy-config';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -70,6 +73,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   const [isLoadingLicenses, setIsLoadingLicenses] = useState(false);
   const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
   const [licenses, setLicenses] = useState<License[]>();
+  const additionalFilesUppy = useUppy(additionalCreateFilesUppy(resource?.identifier ?? ''));
 
   const steps = [
     t('resource.form_steps.description'),
@@ -232,6 +236,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                     </StyledContentWrapper>
                   </StyledSchemaPart>
                   <FileFields uppy={uppy} setAllChangesSaved={setAllChangesSaved} />
+                  <AdditionalFilesUpload additionalFileUploadUppy={additionalFilesUppy} />
                 </StyledPanel>
               )}
               {activeStep === ResourceFormSteps.Preview && (

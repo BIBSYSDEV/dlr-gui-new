@@ -3,6 +3,7 @@ import AwsS3Multipart, { AwsS3Part } from '@uppy/aws-s3-multipart';
 import {
   abortMultipartUpload,
   completeMultipartUpload,
+  createAdditionalFileUpload,
   createMultipartUpload,
   createResourceAndMultipartUpload,
   listParts,
@@ -42,6 +43,19 @@ export const createUppy = (
       else {
         return await createResourceAndMultipartUpload(file, onCreateFile);
       }
+    },
+    listParts: async (_: UppyFile, { uploadId, key }: UppyArgs) => await listParts(uploadId, key),
+    prepareUploadPart: async (_: UppyFile, { uploadId, key, body, number }: UppyPrepareArgs) =>
+      await prepareUploadPart(uploadId, key, body, number),
+  });
+
+export const additionalCreateFilesUppy = (resourceIdentifier: string) => () =>
+  Uppy<Uppy.StrictTypes>({ autoProceed: true }).use(AwsS3Multipart, {
+    abortMultipartUpload: async (_: UppyFile, { uploadId, key }: UppyArgs) => await abortMultipartUpload(uploadId, key),
+    completeMultipartUpload: async (_: UppyFile, { uploadId, key, parts }: UppyCompleteArgs) =>
+      await completeMultipartUpload(uploadId, key, parts),
+    createMultipartUpload: async (file: UppyFile) => {
+      if (resourceIdentifier.length > 1) return await createAdditionalFileUpload(resourceIdentifier, file);
     },
     listParts: async (_: UppyFile, { uploadId, key }: UppyArgs) => await listParts(uploadId, key),
     prepareUploadPart: async (_: UppyFile, { uploadId, key, body, number }: UppyPrepareArgs) =>
