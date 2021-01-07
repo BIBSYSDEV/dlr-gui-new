@@ -7,6 +7,7 @@ import {
   Creator,
   CreatorFeatureAttributes,
   FieldNames,
+  Resource,
   ResourceFeatureNamesFullPath,
   ResourceFormStep,
   ResourceWrapper,
@@ -110,3 +111,51 @@ export const overwriteArrayMerge = (destinationArray: unknown[], sourceArray: un
   sourceArray;
 export const mergeTouchedFields = (touchedArray: FormikTouched<ResourceWrapper>[]) =>
   deepmerge.all(touchedArray, { arrayMerge: overwriteArrayMerge });
+
+export const touchedDescriptionFields: FormikTouched<ResourceWrapper> = {
+  resource: {
+    features: {
+      dlr_title: true,
+      dlr_description: true,
+      dlr_type: true,
+    },
+  },
+};
+
+export const touchedAccessAndLicenseFields: FormikTouched<ResourceWrapper> = {
+  resource: {
+    //TODO: FAILS!
+    // licenses: [
+    //   {
+    //     identifier: true,
+    //   },
+    // ],
+  },
+};
+
+const temp: Resource = {
+  identifier: '123',
+  features: {},
+  licenses: [
+    {
+      identifier: '1234',
+      features: {
+        dlr_license_code: 'CC_BY',
+      },
+    },
+  ],
+};
+
+export const touchedContributorsFields = (contributors: Contributor[]): FormikTouched<ResourceWrapper> => ({
+  resource: {
+    // contributors: contributors.map((contributor) => ({
+    //   features: {
+    //     dlr_contributor_name: true,
+    //   },
+    // })),
+  },
+});
+
+export const touchedContentsFields = (contents: Content[]): FormikTouched<ResourceWrapper> => ({
+  resource: {},
+});
