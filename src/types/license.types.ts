@@ -39,4 +39,6 @@ export enum LicenseConstants {
   NTNU = 'ntnu-internt',
   CC_BY = 'CC BY 4.0',
   yes = 'yes',
+  CC_BY_SA_4_0 = 'CC BY-SA 4.0',
+  CC_BY_NC_SA = 'CC BY-NC-SA 4.0',
 }
