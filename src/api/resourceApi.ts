@@ -195,6 +195,15 @@ export const setResourceLicense = async (resourceIdentifier: string, licenseIden
   });
 };
 
+export const deleteResourceLicense = async (resourceIdentifier: string, licenseIdentifier: string) => {
+  await authenticatedApiRequest({
+    url: encodeURI(
+      `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/licenses/${licenseIdentifier}`
+    ),
+    method: 'DELETE',
+  });
+};
+
 export const updateContentTitle = async (resourceIdentifier: string, contentIdentifier: string, value: string) => {
   const data = encodeURI(`title=${value}`);
   await authenticatedApiRequest({
