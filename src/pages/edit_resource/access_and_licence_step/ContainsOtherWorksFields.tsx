@@ -67,6 +67,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
 
   const handleChangeInContainsOtherPeoplesWork = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setContainsOtherPeoplesWork(event.target.value === 'true');
+    setLicenseAgreement('');
     forceReset();
     if (values.resource?.licenses) {
       await replaceOldLicense(emptyLicense);
@@ -83,6 +84,8 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   const replaceOldLicense = async (newLicence: License) => {
     if (values.resource.licenses && values.resource.licenses[0].identifier.length > 0) {
       await deleteResourceLicense(values.resource.identifier, values.resource.licenses[0].identifier);
+    }
+    if (values.resource.licenses) {
       values.resource.licenses[0] = newLicence;
     }
   };
