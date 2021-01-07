@@ -18,7 +18,7 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSave
       <ContainsOtherWorksFields
         licenses={licenses}
         setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
-        forceReset={() => setForceResetInLicenseWizard(!forceResetInLicenseWizard)}
+        forceResetInLicenseWizard={() => setForceResetInLicenseWizard(!forceResetInLicenseWizard)}
         setHasSelectedCC={(selectedCC) => setContainsOtherWorksFieldsSelectedCC(selectedCC)}
       />
       <AccessFields
@@ -28,7 +28,7 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSave
       />
       {licenses && (
         <LicenseWizardFields
-          forceReset={forceResetInLicenseWizard}
+          forceResetInLicenseWizard={forceResetInLicenseWizard}
           containsOtherWorksFieldsSelectedCC={containsOtherWorksFieldsSelectedCC}
           licenses={licenses}
           setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}

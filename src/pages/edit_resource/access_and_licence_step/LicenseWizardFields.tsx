@@ -41,7 +41,7 @@ const defaultCommercialOptions = [DefaultCommercial.yes, DefaultCommercial.NC];
 interface LicenseWizardFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
   licenses: License[];
-  forceReset: boolean;
+  forceResetInLicenseWizard: boolean;
   containsOtherWorksFieldsSelectedCC: boolean;
 }
 
@@ -51,7 +51,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   setAllChangesSaved,
   licenses,
   containsOtherWorksFieldsSelectedCC,
-  forceReset,
+  forceResetInLicenseWizard,
 }) => {
   const { t } = useTranslation();
   const { institution } = useSelector((state: RootState) => state.user);
@@ -76,7 +76,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     setCommercialValue('');
     setModifyAndBuildValue('');
     setModifyAndBuildSubValue('');
-  }, [forceReset]);
+  }, [forceResetInLicenseWizard]);
 
   const calculatePreferredLicense = async (
     restrictedValue: string,

@@ -39,7 +39,7 @@ const LicenseAgreements: string[] = [LicenseConstants.CC, LicenseConstants.YesOt
 interface ContainsOtherWorksFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
   licenses: License[] | undefined;
-  forceReset: () => void;
+  forceResetInLicenseWizard: () => void;
   setHasSelectedCC: (value: boolean) => void;
 }
 
@@ -53,7 +53,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   setAllChangesSaved,
   licenses,
   setHasSelectedCC,
-  forceReset,
+  forceResetInLicenseWizard,
 }) => {
   const { institution } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
@@ -68,7 +68,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   const handleChangeInContainsOtherPeoplesWork = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setContainsOtherPeoplesWork(event.target.value === 'true');
     setLicenseAgreement('');
-    forceReset();
+    forceResetInLicenseWizard();
     if (values.resource?.licenses) {
       await replaceOldLicense(emptyLicense);
       resetForm({ values });
@@ -124,7 +124,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
       setSavingError(true);
     } finally {
       setAllChangesSaved(true);
-      forceReset();
+      forceResetInLicenseWizard();
     }
   };
 
