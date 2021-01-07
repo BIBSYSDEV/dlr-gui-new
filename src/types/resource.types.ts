@@ -16,17 +16,23 @@ export interface Resource {
   geographicalCoverages?: any[];
   observationalUnits?: any[];
   processMethods?: any[];
-  creators?: Creator[];
-  contributors?: Contributor[];
+  creators: Creator[];
+  contributors: Contributor[];
   accessRead?: string[];
   accessWrite?: string[];
-  contents?: Content[];
-  licenses?: License[];
+  contents: Content[];
+  licenses: License[];
 }
 
 export const emptyResource: Resource = {
   identifier: '',
-  features: {},
+  features: {
+    dlr_title: '',
+  },
+  contents: [],
+  contributors: [],
+  creators: [],
+  licenses: [],
 };
 
 enum ResourceType {
@@ -60,7 +66,7 @@ interface ResourceFeatures {
   dlr_submitter_email?: string;
   dlr_time_created?: string;
   dlr_time_published?: string;
-  dlr_title?: string;
+  dlr_title: string;
   dlr_title_alternative?: string;
   dlr_type?: string;
   dlr_thumbnail_url?: string;

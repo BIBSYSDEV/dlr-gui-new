@@ -7,7 +7,6 @@ import {
   Creator,
   CreatorFeatureAttributes,
   FieldNames,
-  Resource,
   ResourceFeatureNamesFullPath,
   ResourceFormStep,
   ResourceWrapper,
@@ -122,40 +121,36 @@ export const touchedDescriptionFields: FormikTouched<ResourceWrapper> = {
   },
 };
 
-export const touchedAccessAndLicenseFields: FormikTouched<ResourceWrapper> = {
+export const touchedContributorsFields = (
+  contributors: Contributor[],
+  creators: Creator[]
+): FormikTouched<ResourceWrapper> => ({
   resource: {
-    //TODO: FAILS!
-    // licenses: [
-    //   {
-    //     identifier: true,
-    //   },
-    // ],
-  },
-};
-
-const temp: Resource = {
-  identifier: '123',
-  features: {},
-  licenses: [
-    {
-      identifier: '1234',
+    contributors: contributors.map(() => ({
       features: {
-        dlr_license_code: 'CC_BY',
+        dlr_contributor_name: true,
       },
-    },
-  ],
-};
-
-export const touchedContributorsFields = (contributors: Contributor[]): FormikTouched<ResourceWrapper> => ({
-  resource: {
-    // contributors: contributors.map((contributor) => ({
-    //   features: {
-    //     dlr_contributor_name: true,
-    //   },
-    // })),
+    })),
+    creators: creators.map(() => ({
+      features: {
+        dlr_creator_name: true,
+      },
+    })),
   },
 });
 
 export const touchedContentsFields = (contents: Content[]): FormikTouched<ResourceWrapper> => ({
-  resource: {},
+  resource: {
+    contents: contents.map(() => ({
+      features: {
+        dlr_content_title: true,
+      },
+    })),
+  },
 });
+
+export const touchedAccessAndLicenseFields: FormikTouched<ResourceWrapper> = {
+  resource: {
+    licenses: [{ identifier: true }],
+  },
+};

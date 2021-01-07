@@ -2,12 +2,14 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Step, StepButton, StepLabel, Stepper } from '@material-ui/core';
 import { ResourceFormStep, ResourceFormSteps, ResourceWrapper } from '../../types/resource.types';
-import { FormikTouched, useFormikContext } from 'formik';
+import { useFormikContext } from 'formik';
 import { StyledContentWrapper } from '../../components/styled/Wrappers';
 import {
   hasTouchedError,
   mergeTouchedFields,
   touchedAccessAndLicenseFields,
+  touchedContentsFields,
+  touchedContributorsFields,
   touchedDescriptionFields,
 } from '../../utils/formik-helpers';
 import CircularFileUploadProgress from '../../components/CircularFileUploadProgress';
@@ -37,18 +39,19 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
     const stepFields = {
       [ResourceFormStep.Description]: () => touchedDescriptionFields,
       [ResourceFormStep.AccessAndLicense]: () => touchedAccessAndLicenseFields,
-      // [ResourceFormStep.Contents]: () => touchedContentsFields(formikContext.values.resource.contents),
-      // [ResourceFormStep.Contributors]: () => touchedContributorsFields(formikContext.values.resource.contributors),
-      //...more
+      [ResourceFormStep.Contents]: () => touchedContentsFields(formikContext.values.resource.contents),
+      [ResourceFormStep.Contributors]: () =>
+        touchedContributorsFields(formikContext.values.resource.contributors, formikContext.values.resource.creators),
+      //these are functions because the form is dynamic
     };
 
-    //console.log(`Changed step from ${activeStep} to ${step}`);
+    console.log(`Changed step from ${activeStep} to ${step}`);
 
     const fieldsToTouchOnMount = [];
     fieldsToTouchOnMount.push(stepFields[ResourceFormStep.Description]());
     fieldsToTouchOnMount.push(stepFields[ResourceFormStep.AccessAndLicense]());
-    // fieldsToTouchOnMount.push(stepFields[ResourceFormStep.Contents]());
-    // fieldsToTouchOnMount.push(stepFields[ResourceFormStep.Contributors]());
+    fieldsToTouchOnMount.push(stepFields[ResourceFormStep.Contents]());
+    fieldsToTouchOnMount.push(stepFields[ResourceFormStep.Contributors]());
     const mergedFieldsOnMount = mergeTouchedFields(fieldsToTouchOnMount);
     formikContext.setTouched(mergedFieldsOnMount);
     setActiveStep(step);
@@ -80,7 +83,7 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
           {JSON.stringify(formikContext.errors, null, 2)}
         </pre>
         <pre style={{ whiteSpace: 'pre-wrap', border: '1px solid cadetblue', width: '40%' }}>
-          VALUES:
+          TOUCHED:
           {JSON.stringify(formikContext.touched, null, 2)}
         </pre>
       </StyledDebugWrapper>

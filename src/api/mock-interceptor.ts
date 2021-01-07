@@ -18,12 +18,7 @@ export const mockUser: User = {
 };
 
 const mockResource: Resource = {
-  contents: [
-    {
-      features: {},
-      identifier: '456',
-    },
-  ],
+  identifier: 'resource-123',
   features: {
     dlr_title: 'This is a mocked title',
     dlr_time_published: '2020-11-06T12:47:18.635Z',
@@ -35,12 +30,29 @@ const mockResource: Resource = {
       'maximus ligula. Sed auctor elit non sapien sagittis molestie. Pellentesque habitant morbi tristique senectus ' +
       'et netus et malesuada fames.',
   },
-  identifier: 'resource-123',
+  contents: [
+    {
+      features: {
+        dlr_content: '',
+        dlr_content_title: '',
+      },
+      identifier: '456',
+    },
+  ],
+  contributors: [],
+  licenses: [],
+  creators: [],
 };
 
 const mockCalculatedResource: Resource = {
-  features: {},
+  features: {
+    dlr_title: '',
+  },
   identifier: 'resource-345',
+  licenses: [],
+  contents: [],
+  contributors: [],
+  creators: [],
 };
 
 const mockMyResources: Resource[] = [
@@ -50,6 +62,10 @@ const mockMyResources: Resource[] = [
       dlr_status_published: true,
     },
     identifier: '123',
+    licenses: [],
+    contents: [],
+    contributors: [],
+    creators: [],
   },
   {
     features: {
@@ -57,6 +73,10 @@ const mockMyResources: Resource[] = [
       dlr_status_published: false,
     },
     identifier: '456',
+    licenses: [],
+    contents: [],
+    contributors: [],
+    creators: [],
   },
   {
     features: {
@@ -64,6 +84,10 @@ const mockMyResources: Resource[] = [
       dlr_status_published: true,
     },
     identifier: '789',
+    licenses: [],
+    contents: [],
+    contributors: [],
+    creators: [],
   },
 ];
 
@@ -145,6 +169,7 @@ const mockContent: Content[] = [
       dlr_content: 'adfasdf',
       dlr_content_identifier: 'adfasdf',
       dlr_content_content_type: 'image',
+      dlr_content_title: '',
     },
   },
 ];
