@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Step, StepButton, StepLabel, Stepper } from '@material-ui/core';
 import { ResourceFormStep, ResourceFormSteps, ResourceWrapper } from '../../types/resource.types';
@@ -11,6 +11,7 @@ import {
   touchedContentsFields,
   touchedContributorsFields,
   touchedDescriptionFields,
+  touchedPreviewFields,
 } from '../../utils/formik-helpers';
 import CircularFileUploadProgress from '../../components/CircularFileUploadProgress';
 import { Uppy } from '../../types/file.types';
@@ -33,32 +34,56 @@ const fileUploadPanelId = 'file-upload-panel';
 
 const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ activeStep, setActiveStep, uppy }) => {
   const { t } = useTranslation();
-  const formikContext = useFormikContext<ResourceWrapper>();
+  const { values, touched, setTouched, errors } = useFormikContext<ResourceWrapper>();
+  const noTouchedStep = -1;
+  type HighestTouchedTab = ResourceFormStep | typeof noTouchedStep;
+  const highestPreviouslyTouchedStepRef = useRef<HighestTouchedTab>(noTouchedStep);
+
+  const valuesRef = useRef(values);
+  useEffect(() => {
+    valuesRef.current = values;
+  }, [values]);
+
+  const touchedRef = useRef(touched);
+  useEffect(() => {
+    touchedRef.current = touched;
+  }, [touched]);
 
   const handleStep = (step: number) => () => {
+    console.log(`Changed step from ${activeStep} to ${step}`);
+    setActiveStep(step);
+  };
+
+  useEffect(() => {
     const stepFields = {
+      [ResourceFormStep.Preview]: () => touchedPreviewFields, //todo: find a way to remove this. should not be needed
       [ResourceFormStep.Description]: () => touchedDescriptionFields,
       [ResourceFormStep.AccessAndLicense]: () => touchedAccessAndLicenseFields,
-      [ResourceFormStep.Contents]: () => touchedContentsFields(formikContext.values.resource.contents),
+      [ResourceFormStep.Contents]: () => touchedContentsFields(values.resource.contents),
       [ResourceFormStep.Contributors]: () =>
-        touchedContributorsFields(formikContext.values.resource.contributors, formikContext.values.resource.creators),
-      //these are functions because the form is dynamic
+        touchedContributorsFields(values.resource.contributors, values.resource.creators),
+      //These are functions because the form is dynamic
     };
+    if (activeStep > highestPreviouslyTouchedStepRef.current) {
+      // Avoid setting tabs to touched all the time
+      if (activeStep > highestPreviouslyTouchedStepRef.current) {
+        highestPreviouslyTouchedStepRef.current = activeStep;
+      }
+      const fieldsToTouchOnMount = [touchedRef.current];
+      for (let stepNumber = ResourceFormStep.Description; stepNumber < activeStep; stepNumber++) {
+        fieldsToTouchOnMount.push(stepFields[stepNumber]());
+        console.log(`...Adding touched to step  ${stepNumber} `);
+      }
+      const mergedFieldsOnMount = mergeTouchedFields(fieldsToTouchOnMount);
+      setTouched(mergedFieldsOnMount);
+    }
 
-    console.log(`Changed step from ${activeStep} to ${step}`);
-
-    const fieldsToTouchOnMount = [];
-    fieldsToTouchOnMount.push(stepFields[ResourceFormStep.Description]());
-    fieldsToTouchOnMount.push(stepFields[ResourceFormStep.AccessAndLicense]());
-    fieldsToTouchOnMount.push(stepFields[ResourceFormStep.Contents]());
-    fieldsToTouchOnMount.push(stepFields[ResourceFormStep.Contributors]());
-    const mergedFieldsOnMount = mergeTouchedFields(fieldsToTouchOnMount);
-    formikContext.setTouched(mergedFieldsOnMount);
-    setActiveStep(step);
-
-    //if 1->4  (set touched 1-3)
-    //if 4->1  (set touched 4)
-  };
+    // Set fields on current tab to touched
+    return () => {
+      const mergedFieldsOnUnmount = mergeTouchedFields([touchedRef.current, stepFields[activeStep]()]);
+      setTouched(mergedFieldsOnUnmount);
+    };
+  }, [setTouched, activeStep]);
 
   const getStepLabel = (step: ResourceFormStep) => {
     switch (step) {
@@ -77,23 +102,23 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
 
   return (
     <StyledContentWrapper>
-      <StyledDebugWrapper>
-        <pre style={{ whiteSpace: 'pre-wrap', border: '1px solid red', width: '40%' }}>
-          ERRORS:
-          {JSON.stringify(formikContext.errors, null, 2)}
-        </pre>
-        <pre style={{ whiteSpace: 'pre-wrap', border: '1px solid cadetblue', width: '40%' }}>
-          TOUCHED:
-          {JSON.stringify(formikContext.touched, null, 2)}
-        </pre>
-      </StyledDebugWrapper>
+      {/*<StyledDebugWrapper>*/}
+      {/*  <pre style={{ whiteSpace: 'pre-wrap', border: '1px solid red', width: '40%' }}>*/}
+      {/*    ERRORS:*/}
+      {/*    {JSON.stringify(errors, null, 2)}*/}
+      {/*  </pre>*/}
+      {/*  <pre style={{ whiteSpace: 'pre-wrap', border: '1px solid cadetblue', width: '40%' }}>*/}
+      {/*    TOUCHED:*/}
+      {/*    {JSON.stringify(touched, null, 2)}*/}
+      {/*  </pre>*/}
+      {/*</StyledDebugWrapper>*/}
 
       <Stepper style={{ width: '100%' }} activeStep={activeStep} nonLinear alternativeLabel>
         {ResourceFormSteps.map((step, index) => {
           return (
             <Step key={step} completed={false}>
               <StepButton onClick={handleStep(index)}>
-                <StepLabel error={hasTouchedError(formikContext, index)}>
+                <StepLabel error={hasTouchedError(errors, touched, values, index)}>
                   {getStepLabel(step)}
                   {step === ResourceFormStep.Contents && (
                     <CircularFileUploadProgress
