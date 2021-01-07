@@ -35,11 +35,6 @@ enum DefaultModifyAndBuildOptions {
   SA = 'share_alike',
 }
 
-enum OtherWorksField {
-  CC_BY_SA_4_0 = 'CC BY-SA 4.0',
-  CC_BY_NC_SA = 'CC BY-NC-SA 4.0',
-}
-
 const defaultRestrictionOptions = [LicenseConstants.CC_BY, LicenseConstants.yes];
 const defaultCommercialOptions = [DefaultCommercial.yes, DefaultCommercial.NC];
 
@@ -168,14 +163,14 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           {containsOtherWorksFieldsSelectedCC && (
             <>
               <FormControlLabel
-                value={OtherWorksField.CC_BY_SA_4_0}
+                value={LicenseConstants.CC_BY_SA_4_0}
                 control={<Radio color="primary" />}
-                label={t(`license.restriction_options.${OtherWorksField.CC_BY_SA_4_0.replace(/[.\s]/g, '_')}`)}
+                label={t(`license.restriction_options.CC_BY-SA_4_0`)}
               />
               <FormControlLabel
-                value={OtherWorksField.CC_BY_NC_SA}
+                value={LicenseConstants.CC_BY_NC_SA}
                 control={<Radio color="primary" />}
-                label={t(`license.restriction_options.${OtherWorksField.CC_BY_NC_SA.replace(/[.\s]/g, '_')}`)}
+                label={t(`license.restriction_options.CC_BY-NC-SA_4_0`)}
               />
             </>
           )}

@@ -39,7 +39,7 @@ const LicenseAgreements: string[] = [LicenseConstants.CC, LicenseConstants.YesOt
 interface ContainsOtherWorksFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
   licenses: License[] | undefined;
-  hasSelectedCC: (value: boolean) => void;
+  setHasSelectedCC: (value: boolean) => void;
 }
 
 const otherPeopleWorkId = 'other-peoples-work';
@@ -51,7 +51,7 @@ const additionalLicenseProviders: string[] = [LicenseConstants.NTNU, LicenseCons
 const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   setAllChangesSaved,
   licenses,
-  hasSelectedCC,
+  setHasSelectedCC,
 }) => {
   const { institution } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
@@ -65,10 +65,10 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   const handleChangeInContainsOtherPeoplesWork = (event: React.ChangeEvent<HTMLInputElement>) => {
     setContainsOtherPeoplesWork(event.target.value === 'true');
     if (event.target.value === 'false') {
-      hasSelectedCC(false);
+      setHasSelectedCC(false);
     }
     if (event.target.value === 'true' && LicenseAgreement === LicenseConstants.CC) {
-      hasSelectedCC(true);
+      setHasSelectedCC(true);
     }
   };
 
@@ -79,9 +79,9 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
       let accessType = AccessTypes.private;
       if (event.target.value === LicenseConstants.CC) {
         accessType = AccessTypes.open;
-        hasSelectedCC(true);
+        setHasSelectedCC(true);
       } else {
-        hasSelectedCC(false);
+        setHasSelectedCC(false);
       }
       if (event.target.value === LicenseConstants.YesOther) {
         accessType = AccessTypes.open;

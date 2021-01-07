@@ -17,7 +17,7 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSave
       <ContainsOtherWorksFields
         licenses={licenses}
         setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
-        hasSelectedCC={(selectedCC) => setContainsOtherWorksFieldsSelectedCC(selectedCC)}
+        setHasSelectedCC={(selectedCC) => setContainsOtherWorksFieldsSelectedCC(selectedCC)}
       />
       <AccessFields
         setAllChangesSaved={(status: boolean) => {
