@@ -42,11 +42,17 @@ interface LicenseWizardFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
   licenses: License[];
   forceReset: boolean;
+  containsOtherWorksFieldsSelectedCC: boolean;
 }
 
 const additionalLicenseProviders: string[] = [LicenseConstants.NTNU, LicenseConstants.BI];
 
-const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved, licenses, forceReset }) => {
+const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
+  setAllChangesSaved,
+  licenses,
+  containsOtherWorksFieldsSelectedCC,
+  forceReset,
+}) => {
   const { t } = useTranslation();
   const { institution } = useSelector((state: RootState) => state.user);
   const { values, resetForm } = useFormikContext<ResourceWrapper>();
@@ -168,6 +174,20 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
               control={<Radio color="primary" />}
               label={t(`license.restriction_options.${institutionRestriction}`)}
             />
+          )}
+          {containsOtherWorksFieldsSelectedCC && (
+            <>
+              <FormControlLabel
+                value={LicenseConstants.CC_BY_SA_4_0}
+                control={<Radio color="primary" />}
+                label={t(`license.restriction_options.CC_BY-SA_4_0`)}
+              />
+              <FormControlLabel
+                value={LicenseConstants.CC_BY_NC_SA}
+                control={<Radio color="primary" />}
+                label={t(`license.restriction_options.CC_BY-NC-SA_4_0`)}
+              />
+            </>
           )}
         </StyledRadioGroup>
       </AccordionRadioGroup>

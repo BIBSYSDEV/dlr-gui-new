@@ -12,12 +12,14 @@ interface AccessAndLicenseStepProps {
 
 const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSaved, licenses }) => {
   const [forceResetInLicenseWizard, setForceResetInLicenseWizard] = useState(false);
+  const [containsOtherWorksFieldsSelectedCC, setContainsOtherWorksFieldsSelectedCC] = useState(false);
   return (
     <>
       <ContainsOtherWorksFields
         licenses={licenses}
         setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
         forceReset={() => setForceResetInLicenseWizard(!forceResetInLicenseWizard)}
+        setHasSelectedCC={(selectedCC) => setContainsOtherWorksFieldsSelectedCC(selectedCC)}
       />
       <AccessFields
         setAllChangesSaved={(status: boolean) => {
@@ -27,6 +29,7 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSave
       {licenses && (
         <LicenseWizardFields
           forceReset={forceResetInLicenseWizard}
+          containsOtherWorksFieldsSelectedCC={containsOtherWorksFieldsSelectedCC}
           licenses={licenses}
           setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
         />
