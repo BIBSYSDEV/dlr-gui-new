@@ -4,6 +4,7 @@ import { API_PATHS } from '../utils/constants';
 import { createResource, postResourceContent } from './resourceApi';
 import { Resource, ResourceCreationType } from '../types/resource.types';
 import { authenticatedApiRequest } from './api';
+import { Content } from '../types/content.types';
 
 export enum FileApiPaths {
   ABORT = '/upload/multipart/uppy/abort',
@@ -92,9 +93,13 @@ export const prepareUploadPart = async (uploadId: string, key: string, body: Blo
   return response.data;
 };
 
-export const createAdditionalFileUpload = async (resourceIdentifier: string, file: UppyFile) => {
+export const createAdditionalFileUpload = async (
+  resourceIdentifier: string,
+  file: UppyFile,
+  onCreateContent: (newContent: Content) => void
+) => {
   const responseContent = await postResourceContent(resourceIdentifier, 'file', file.name);
-
+  onCreateContent(responseContent.data);
   const data = encodeURI(
     `filename=${file.name}&size=${file.data.size}&lastmodified=${(file.data as File).lastModified}&mimetype=${
       file.data.type

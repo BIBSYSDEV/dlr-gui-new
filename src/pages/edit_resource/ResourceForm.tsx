@@ -23,6 +23,7 @@ import CircularFileUploadProgress from '../../components/CircularFileUploadProgr
 import AdditionalFilesUpload from './contents_step/AdditionalFilesUpload';
 import { useUppy } from '@uppy/react';
 import { additionalCreateFilesUppy } from '../../utils/uppy-config';
+import { Content } from '../../types/content.types';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -71,9 +72,10 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   const { t } = useTranslation();
   const [allChangesSaved, setAllChangesSaved] = useState(true);
   const [isLoadingLicenses, setIsLoadingLicenses] = useState(false);
+  const [newContent, setNewContent] = useState<Content>();
   const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
   const [licenses, setLicenses] = useState<License[]>();
-  const additionalFilesUppy = useUppy(additionalCreateFilesUppy(resource?.identifier ?? ''));
+  const additionalFilesUppy = useUppy(additionalCreateFilesUppy(resource?.identifier ?? '', setNewContent));
 
   const steps = [
     t('resource.form_steps.description'),
@@ -236,7 +238,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                     </StyledContentWrapper>
                   </StyledSchemaPart>
                   <FileFields uppy={uppy} setAllChangesSaved={setAllChangesSaved} />
-                  <AdditionalFilesUpload additionalFileUploadUppy={additionalFilesUppy} />
+                  <AdditionalFilesUpload newContent={newContent} additionalFileUploadUppy={additionalFilesUppy} />
                 </StyledPanel>
               )}
               {activeStep === ResourceFormSteps.Preview && (
