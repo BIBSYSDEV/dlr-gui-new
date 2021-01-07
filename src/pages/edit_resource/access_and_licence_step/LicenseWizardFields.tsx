@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@material-ui/core';
 import { StyledRadioGroup, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { RootState } from '../../../state/rootReducer';
 import { useSelector } from 'react-redux';
 import { License, AccessTypes, LicenseConstants } from '../../../types/license.types';
-import { putAccessType, setResourceLicense } from '../../../api/resourceApi';
+import { deleteResourceLicense, putAccessType, setResourceLicense } from '../../../api/resourceApi';
 import { useFormikContext } from 'formik';
 import { ResourceWrapper } from '../../../types/resource.types';
 import ErrorBanner from '../../../components/ErrorBanner';
@@ -41,6 +41,7 @@ const defaultCommercialOptions = [DefaultCommercial.yes, DefaultCommercial.NC];
 interface LicenseWizardFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
   licenses: License[];
+  forceResetInLicenseWizard: boolean;
   containsOtherWorksFieldsSelectedCC: boolean;
 }
 
@@ -50,6 +51,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   setAllChangesSaved,
   licenses,
   containsOtherWorksFieldsSelectedCC,
+  forceResetInLicenseWizard,
 }) => {
   const { t } = useTranslation();
   const { institution } = useSelector((state: RootState) => state.user);
@@ -67,6 +69,14 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     setExtraRestriction(event.target.value);
     await calculatePreferredLicense(event.target.value, commercialValue, modifyAndBuildValue, modifyAndBuildSubValue);
   };
+
+  useEffect(() => {
+    setExtraRestriction('');
+    setSaveRestrictionError(false);
+    setCommercialValue('');
+    setModifyAndBuildValue('');
+    setModifyAndBuildSubValue('');
+  }, [forceResetInLicenseWizard]);
 
   const calculatePreferredLicense = async (
     restrictedValue: string,
@@ -101,14 +111,19 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     try {
       setAllChangesSaved(false);
       const license = licenses.find((license) => license.features?.dlr_license_code === licenseCode);
-      if (license) {
+      if (license && values.resource.licenses && values.resource.licenses[0].identifier !== license.identifier) {
         await putAccessType(values.resource.identifier, accessType);
         await setResourceLicense(values.resource.identifier, license.identifier);
         values.resource.features.dlr_access = accessType;
         if (values.resource.licenses) {
+          if (values.resource.licenses[0].identifier.length > 0) {
+            await deleteResourceLicense(values.resource.identifier, values.resource.licenses[0].identifier);
+          }
           values.resource.licenses[0] = license;
         }
         resetForm({ values });
+        setSaveRestrictionError(false);
+      } else if (license && values.resource.licenses && values.resource.licenses[0].identifier === license.identifier) {
         setSaveRestrictionError(false);
       } else {
         setSaveRestrictionError(true);
