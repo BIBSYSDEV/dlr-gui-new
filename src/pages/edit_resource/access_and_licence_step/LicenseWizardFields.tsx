@@ -41,12 +41,12 @@ const defaultCommercialOptions = [DefaultCommercial.yes, DefaultCommercial.NC];
 interface LicenseWizardFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
   licenses: License[];
-  forceRefresh: boolean;
+  forceReset: boolean;
 }
 
 const additionalLicenseProviders: string[] = [LicenseConstants.NTNU, LicenseConstants.BI];
 
-const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved, licenses, forceRefresh }) => {
+const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved, licenses, forceReset }) => {
   const { t } = useTranslation();
   const { institution } = useSelector((state: RootState) => state.user);
   const { values, resetForm } = useFormikContext<ResourceWrapper>();
@@ -70,7 +70,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
     setCommercialValue('');
     setModifyAndBuildValue('');
     setModifyAndBuildSubValue('');
-  }, [forceRefresh]);
+  }, [forceReset]);
 
   const calculatePreferredLicense = async (
     restrictedValue: string,

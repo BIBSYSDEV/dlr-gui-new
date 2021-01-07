@@ -11,13 +11,13 @@ interface AccessAndLicenseStepProps {
 }
 
 const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSaved, licenses }) => {
-  const [forceRefreshInLicenseWizard, setForceRefreshInLicenseWizard] = useState(false);
+  const [forceResetInLicenseWizard, setForceResetInLicenseWizard] = useState(false);
   return (
     <>
       <ContainsOtherWorksFields
         licenses={licenses}
         setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
-        forceRefresh={() => setForceRefreshInLicenseWizard(!forceRefreshInLicenseWizard)}
+        forceReset={() => setForceResetInLicenseWizard(!forceResetInLicenseWizard)}
       />
       <AccessFields
         setAllChangesSaved={(status: boolean) => {
@@ -26,7 +26,7 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSave
       />
       {licenses && (
         <LicenseWizardFields
-          forceRefresh={forceRefreshInLicenseWizard}
+          forceReset={forceResetInLicenseWizard}
           licenses={licenses}
           setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
         />

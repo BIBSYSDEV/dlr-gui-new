@@ -39,7 +39,7 @@ const LicenseAgreements: string[] = [LicenseConstants.CC, LicenseConstants.YesOt
 interface ContainsOtherWorksFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
   licenses: License[] | undefined;
-  forceRefresh: () => void;
+  forceReset: () => void;
 }
 
 const otherPeopleWorkId = 'other-peoples-work';
@@ -48,11 +48,7 @@ const usageClearedId = 'usage-is-cleared';
 
 const additionalLicenseProviders: string[] = [LicenseConstants.NTNU, LicenseConstants.BI];
 
-const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
-  setAllChangesSaved,
-  licenses,
-  forceRefresh,
-}) => {
+const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllChangesSaved, licenses, forceReset }) => {
   const { institution } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
   const { values, resetForm, setFieldValue } = useFormikContext<ResourceWrapper>();
@@ -65,7 +61,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
 
   const handleChangeInContainsOtherPeoplesWork = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setContainsOtherPeoplesWork(event.target.value === 'true');
-    forceRefresh();
+    forceReset();
     if (values.resource?.licenses) {
       await replaceOldLicense(emptyLicense);
       resetForm({ values });
@@ -107,7 +103,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
       setSavingError(true);
     } finally {
       setAllChangesSaved(true);
-      forceRefresh();
+      forceReset();
     }
   };
 
