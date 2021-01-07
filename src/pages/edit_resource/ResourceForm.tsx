@@ -132,9 +132,6 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
           initialValues={{
             resource: resource,
           }}
-          validateOnChange
-          validateOnBlur
-          validateOnMount
           validationSchema={resourceValidationSchema}
           onSubmit={() => {
             /*dont use. But cannot have empty onsubmit*/

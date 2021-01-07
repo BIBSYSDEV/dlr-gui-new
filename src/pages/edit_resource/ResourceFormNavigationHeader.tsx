@@ -15,14 +15,13 @@ import {
 } from '../../utils/formik-helpers';
 import CircularFileUploadProgress from '../../components/CircularFileUploadProgress';
 import { Uppy } from '../../types/file.types';
-import styled from 'styled-components';
 
-const StyledDebugWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-evenly;
-`;
+// const StyledDebugWrapper = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   width: 100%;
+//   justify-content: space-evenly;
+// `;
 
 interface ResourceFormNavigationHeaderProps {
   activeStep: ResourceFormStep;
@@ -59,9 +58,9 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
       [ResourceFormStep.Preview]: () => touchedPreviewFields, //todo: find a way to remove this. should not be needed
       [ResourceFormStep.Description]: () => touchedDescriptionFields,
       [ResourceFormStep.AccessAndLicense]: () => touchedAccessAndLicenseFields,
-      [ResourceFormStep.Contents]: () => touchedContentsFields(values.resource.contents),
+      [ResourceFormStep.Contents]: () => touchedContentsFields(valuesRef.current.resource.contents),
       [ResourceFormStep.Contributors]: () =>
-        touchedContributorsFields(values.resource.contributors, values.resource.creators),
+        touchedContributorsFields(valuesRef.current.resource.contributors, valuesRef.current.resource.creators),
       //These are functions because the form is dynamic
     };
     if (activeStep > highestPreviouslyTouchedStepRef.current) {
