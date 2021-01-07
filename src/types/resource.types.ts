@@ -28,6 +28,7 @@ export const emptyResource: Resource = {
   identifier: '',
   features: {
     dlr_title: '',
+    dlr_content: '',
   },
   contents: [],
   contributors: [],
@@ -48,7 +49,7 @@ export enum ResourceCreationType {
 interface ResourceFeatures {
   dlr_access?: string;
   dlr_app?: string;
-  dlr_content?: string;
+  dlr_content: string;
   dlr_content_type?: string;
   dlr_description?: string;
   dlr_identifier?: string;
