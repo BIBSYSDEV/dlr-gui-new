@@ -16,13 +16,6 @@ import {
 import CircularFileUploadProgress from '../../components/CircularFileUploadProgress';
 import { Uppy } from '../../types/file.types';
 
-// const StyledDebugWrapper = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   width: 100%;
-//   justify-content: space-evenly;
-// `;
-
 interface ResourceFormNavigationHeaderProps {
   activeStep: ResourceFormStep;
   setActiveStep: (step: number) => void;
@@ -49,7 +42,6 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
   }, [touched]);
 
   const handleStep = (step: number) => () => {
-    console.log(`Changed step from ${activeStep} to ${step}`);
     setActiveStep(step);
   };
 
@@ -71,7 +63,6 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
       const fieldsToTouchOnMount = [touchedRef.current];
       for (let stepNumber = ResourceFormStep.Description; stepNumber < activeStep; stepNumber++) {
         fieldsToTouchOnMount.push(stepFields[stepNumber]());
-        console.log(`...Adding touched to step  ${stepNumber} `);
       }
       const mergedFieldsOnMount = mergeTouchedFields(fieldsToTouchOnMount);
       setTouched(mergedFieldsOnMount);
@@ -101,17 +92,6 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
 
   return (
     <StyledContentWrapper>
-      {/*<StyledDebugWrapper>*/}
-      {/*  <pre style={{ whiteSpace: 'pre-wrap', border: '1px solid red', width: '40%' }}>*/}
-      {/*    ERRORS:*/}
-      {/*    {JSON.stringify(errors, null, 2)}*/}
-      {/*  </pre>*/}
-      {/*  <pre style={{ whiteSpace: 'pre-wrap', border: '1px solid cadetblue', width: '40%' }}>*/}
-      {/*    TOUCHED:*/}
-      {/*    {JSON.stringify(touched, null, 2)}*/}
-      {/*  </pre>*/}
-      {/*</StyledDebugWrapper>*/}
-
       <Stepper style={{ width: '100%' }} activeStep={activeStep} nonLinear alternativeLabel>
         {ResourceFormSteps.map((step, index) => {
           return (
