@@ -39,6 +39,7 @@ const LicenseAgreements: string[] = [LicenseConstants.CC, LicenseConstants.YesOt
 interface ContainsOtherWorksFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
   licenses: License[] | undefined;
+  setHasSelectedCC: (value: boolean) => void;
 }
 
 const otherPeopleWorkId = 'other-peoples-work';
@@ -47,18 +48,28 @@ const usageClearedId = 'usage-is-cleared';
 
 const additionalLicenseProviders: string[] = [LicenseConstants.NTNU, LicenseConstants.BI];
 
-const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllChangesSaved, licenses }) => {
+const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
+  setAllChangesSaved,
+  licenses,
+  setHasSelectedCC,
+}) => {
   const { institution } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
   const { values, resetForm, setFieldValue } = useFormikContext<ResourceWrapper>();
   const [containsOtherPeoplesWork, setContainsOtherPeoplesWork] = useState(false);
-  const [LicenseAgreement, setLicenseAgreement] = useState<string>(LicenseConstants.CC);
+  const [LicenseAgreement, setLicenseAgreement] = useState<string>('');
   const [savingError, setSavingError] = useState(false);
   const [additionalLicense] = useState<string | undefined>(
     additionalLicenseProviders.find((element) => element.includes(institution.toLowerCase()))
   );
   const handleChangeInContainsOtherPeoplesWork = (event: React.ChangeEvent<HTMLInputElement>) => {
     setContainsOtherPeoplesWork(event.target.value === 'true');
+    if (event.target.value === 'false') {
+      setHasSelectedCC(false);
+    }
+    if (event.target.value === 'true' && LicenseAgreement === LicenseConstants.CC) {
+      setHasSelectedCC(true);
+    }
   };
 
   const handleLicenseAgreementChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,7 +77,13 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllCha
       setAllChangesSaved(false);
       setLicenseAgreement(event.target.value);
       let accessType = AccessTypes.private;
-      if (event.target.value === LicenseConstants.CC || event.target.value === LicenseConstants.YesOther) {
+      if (event.target.value === LicenseConstants.CC) {
+        accessType = AccessTypes.open;
+        setHasSelectedCC(true);
+      } else {
+        setHasSelectedCC(false);
+      }
+      if (event.target.value === LicenseConstants.YesOther) {
         accessType = AccessTypes.open;
       }
       if (event.target.value === LicenseConstants.BI || event.target.value === LicenseConstants.NTNU) {
@@ -134,7 +151,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllCha
         </StyledRadioBoxWrapper>
       )}
       {savingError && <ErrorBanner />}
-      {LicenseAgreement !== LicenseConstants.YesOther && containsOtherPeoplesWork && (
+      {LicenseAgreement !== LicenseConstants.YesOther && LicenseAgreement !== '' && containsOtherPeoplesWork && (
         <StyledOutLinedBox>
           <ErrorOutlineIcon color="primary" />
           <StyledTypography>{t(`license.limitation.${LicenseAgreement}.important_notice`)}</StyledTypography>
