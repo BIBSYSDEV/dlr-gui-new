@@ -28,6 +28,7 @@ const UppyDashboard: React.FC<UppyDashboardProps> = ({ uppy, hideCancelButton = 
         uppy={uppy}
         proudlyDisplayPoweredByUppy={false}
         showSelectedFiles={false}
+        showProgressDetails
         hideProgressAfterFinish
         hideCancelButton={hideCancelButton}
         hidePauseResumeButton

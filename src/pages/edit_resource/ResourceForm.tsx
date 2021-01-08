@@ -9,7 +9,6 @@ import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import * as Yup from 'yup';
 import DescriptionFields from './description_step/DescriptionFields';
 import { Uppy } from '../../types/file.types';
-import FileFields from './contents_step/FileFields';
 import ContributorFields from './contributors_step/ContributorFields';
 import CreatorField from './contributors_step/CreatorField';
 import { StyledContentWrapper, StyledSchemaPart } from '../../components/styled/Wrappers';
@@ -20,10 +19,10 @@ import ErrorBanner from '../../components/ErrorBanner';
 import AccessAndLicenseStep from './access_and_licence_step/AccessAndLicenseStep';
 import { hasTouchedError } from '../../utils/formik-helpers';
 import CircularFileUploadProgress from '../../components/CircularFileUploadProgress';
-import AdditionalFilesUpload from './contents_step/AdditionalFilesUpload';
 import { useUppy } from '@uppy/react';
 import { additionalCreateFilesUppy } from '../../utils/uppy-config';
 import { Content } from '../../types/content.types';
+import ContentsStep from './contents_step/ContentsStep';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -237,8 +236,12 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                       <Typography variant="h4">{formikProps.values.resource.features.dlr_title}</Typography>
                     </StyledContentWrapper>
                   </StyledSchemaPart>
-                  <FileFields uppy={uppy} setAllChangesSaved={setAllChangesSaved} />
-                  <AdditionalFilesUpload newContent={newContent} additionalFileUploadUppy={additionalFilesUppy} />
+                  <ContentsStep
+                    uppy={uppy}
+                    setAllChangesSaved={setAllChangesSaved}
+                    newContent={newContent}
+                    additionalFileUploadUppy={additionalFilesUppy}
+                  />
                 </StyledPanel>
               )}
               {activeStep === ResourceFormSteps.Preview && (
