@@ -97,6 +97,8 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
             <Paper>
               <StatusBarWrapper>
                 <StatusBarComponent
+                  hideCancelButton
+                  hidePauseResumeButton
                   locale={{
                     strings: {
                       uploading: t('resource.files_and_license.status_bar_component.uploading'),
