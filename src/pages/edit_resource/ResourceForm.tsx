@@ -2,9 +2,9 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
-import { Button, CircularProgress, Divider, Step, StepButton, StepLabel, Stepper, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Divider, Typography } from '@material-ui/core';
 import { getLicenses } from '../../api/resourceApi';
-import { Resource, ResourceCreationType } from '../../types/resource.types';
+import { Resource, ResourceCreationType, ResourceFormStep, ResourceFormSteps } from '../../types/resource.types';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import * as Yup from 'yup';
 import DescriptionFields from './description_step/DescriptionFields';
@@ -18,8 +18,7 @@ import { StatusCode } from '../../utils/constants';
 import { License } from '../../types/license.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import AccessAndLicenseStep from './access_and_licence_step/AccessAndLicenseStep';
-import { hasTouchedError } from '../../utils/formik-helpers';
-import CircularFileUploadProgress from '../../components/CircularFileUploadProgress';
+import ResourceFormNavigationHeader from './ResourceFormNavigationHeader';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -48,14 +47,6 @@ const StyledButtonWrapper = styled.div`
   padding: 2rem 2rem 1rem;
 `;
 
-export enum ResourceFormSteps {
-  Description = 0,
-  Contributors = 1,
-  Contents = 2,
-  AccessAndLicense = 3,
-  Preview = 4,
-}
-
 interface ResourceFormProps {
   resource?: Resource;
   uppy: Uppy;
@@ -71,18 +62,10 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
   const [licenses, setLicenses] = useState<License[]>();
 
-  const steps = [
-    t('resource.form_steps.description'),
-    t('resource.form_steps.contributors'),
-    t('resource.form_steps.files'),
-    t('resource.form_steps.access_and_licence'),
-    t('resource.form_steps.preview'),
-  ];
-
-  const [activeStep, setActiveStep] = useState<ResourceFormSteps>(ResourceFormSteps.Description);
+  const [activeStep, setActiveStep] = useState<ResourceFormStep>(ResourceFormStep.Description);
 
   useEffect(() => {
-    resourceType === ResourceCreationType.FILE && setActiveStep(ResourceFormSteps.Contents);
+    resourceType === ResourceCreationType.FILE && setActiveStep(ResourceFormStep.Contents);
   }, [resourceType]);
 
   const handleNext = () => {
@@ -139,10 +122,6 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
     getAllLicences();
   }, []);
 
-  const handleStep = (step: number) => () => {
-    setActiveStep(step);
-  };
-
   return (
     <>
       <StyledContentWrapper>
@@ -153,9 +132,6 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
           initialValues={{
             resource: resource,
           }}
-          validateOnChange
-          validateOnBlur
-          validateOnMount
           validationSchema={resourceValidationSchema}
           onSubmit={() => {
             /*dont use. But cannot have empty onsubmit*/
@@ -163,28 +139,9 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
           {(formikProps: FormikProps<FormikValues>) => (
             <StyledForm>
               <StyledContentWrapper>
-                <Stepper style={{ width: '100%' }} activeStep={activeStep} nonLinear alternativeLabel>
-                  {steps.map((label, index) => {
-                    return (
-                      <Step key={label} completed={false}>
-                        <StepButton onClick={handleStep(index)}>
-                          <StepLabel error={hasTouchedError(formikProps, index)}>
-                            {label}{' '}
-                            {label === t('resource.form_steps.files') && (
-                              <CircularFileUploadProgress
-                                uppy={uppy}
-                                isUploadingNewFile={true}
-                                describedById={fileUploadPanelId}
-                              />
-                            )}
-                          </StepLabel>
-                        </StepButton>
-                      </Step>
-                    );
-                  })}
-                </Stepper>
+                <ResourceFormNavigationHeader activeStep={activeStep} setActiveStep={setActiveStep} uppy={uppy} />
               </StyledContentWrapper>
-              {activeStep === ResourceFormSteps.Description && (
+              {activeStep === ResourceFormStep.Description && (
                 <StyledPanel>
                   <DescriptionFields
                     setAllChangesSaved={(status: boolean) => {
@@ -193,7 +150,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                   />
                 </StyledPanel>
               )}
-              {activeStep === ResourceFormSteps.Contributors && (
+              {activeStep === ResourceFormStep.Contributors && (
                 <StyledPanel>
                   <StyledSchemaPart>
                     <StyledContentWrapper>
@@ -208,7 +165,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                   />
                 </StyledPanel>
               )}
-              {activeStep === ResourceFormSteps.AccessAndLicense && (
+              {activeStep === ResourceFormStep.AccessAndLicense && (
                 <StyledPanel>
                   {isLoadingLicenses && <CircularProgress />}
                   {loadingLicensesErrorStatus !== StatusCode.ACCEPTED && <ErrorBanner />}
@@ -224,7 +181,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                   />
                 </StyledPanel>
               )}
-              {activeStep === ResourceFormSteps.Contents && (
+              {activeStep === ResourceFormStep.Contents && (
                 <StyledPanel id={fileUploadPanelId}>
                   <StyledSchemaPart>
                     <StyledContentWrapper>
@@ -234,7 +191,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                   <FileFields uppy={uppy} setAllChangesSaved={setAllChangesSaved} />
                 </StyledPanel>
               )}
-              {activeStep === ResourceFormSteps.Preview && (
+              {activeStep === ResourceFormStep.Preview && (
                 <StyledPanel>
                   <PreviewPanel formikProps={formikProps} />
                 </StyledPanel>
@@ -251,7 +208,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                       {t('common.back')}
                     </Button>
                     <Button variant="contained" color="primary" onClick={handleNext}>
-                      {activeStep === steps.length - 1 ? t('common.finish') : t('common.next')}
+                      {activeStep === ResourceFormSteps.length - 1 ? t('common.finish') : t('common.next')}
                     </Button>
                   </div>
                 </StyledButtonWrapper>
