@@ -83,7 +83,9 @@ const Header: FC = () => {
             data-testid="new-publication"
             to="/registration"
             startIcon={<AddIcon />}>
-            <Typography variant="button">{t('resource.new_registration')}</Typography>
+            <Typography data-testid="new-registration-link" variant="button">
+              {t('resource.new_registration')}
+            </Typography>
           </Button>
         )}
         {user.id && (
