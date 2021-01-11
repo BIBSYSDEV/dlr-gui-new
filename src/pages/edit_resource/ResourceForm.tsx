@@ -60,7 +60,7 @@ export enum ResourceFormSteps {
 }
 
 interface ResourceFormProps {
-  resource?: Resource;
+  resource: Resource;
   uppy: Uppy;
   resourceType: ResourceCreationType;
 }
@@ -74,7 +74,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   const [newContent, setNewContent] = useState<Content>();
   const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
   const [licenses, setLicenses] = useState<License[]>();
-  const additionalFilesUppy = useUppy(additionalCreateFilesUppy(resource?.identifier ?? '', setNewContent));
+  const additionalFilesUppy = useUppy(additionalCreateFilesUppy(resource.identifier, setNewContent));
 
   const steps = [
     t('resource.form_steps.description'),

@@ -55,14 +55,13 @@ const filterAdditionalFiles = (contents: undefined | Content[]) => {
   }
 };
 
-//Benytter Si enhet for Mega, Giga og Kilo som er 1000 og ikke 1024.
 const calculateFileSizeString = (size: number): string => {
-  if (size / 1000000000 > 1) {
-    return (size / 1000000000).toFixed(2) + ' GB';
-  } else if (size / 1000000 > 1) {
-    return (size / 1000000).toFixed(2) + ' MB';
-  } else if (size / 1000 > 1) {
-    return (size / 1000).toFixed() + ' kB';
+  if (size / 1024 / 1024 / 1024 > 1) {
+    return (size / 1024 / 1024 / 1024).toFixed(2) + ' GB';
+  } else if (size / 1024 / 1024 > 1) {
+    return (size / 1024 / 1024).toFixed(2) + ' MB';
+  } else if (size / 1024 > 1) {
+    return (size / 1024).toFixed() + ' kB';
   } else {
     return size + ' Bytes';
   }
