@@ -104,7 +104,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
   };
 
   const sortCreatorArray = () => {
-    return values.resource.creators?.sort((element1, element2) => {
+    return values.resource.creators.sort((element1, element2) => {
       if (element1.features.dlr_creator_order && element2.features.dlr_creator_order) {
         return element2.features.dlr_creator_order - element1.features.dlr_creator_order;
       } else {

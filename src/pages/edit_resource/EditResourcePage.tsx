@@ -16,7 +16,6 @@ import {
   ResourceFeatureNames,
   ResourceFeatureTypes,
 } from '../../types/resource.types';
-import useUppy from '../../utils/useUppy';
 import { toast } from 'react-toastify';
 import {
   createContributor,
@@ -34,6 +33,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import { emptyLicense } from '../../types/license.types';
 import ErrorBanner from '../../components/ErrorBanner';
+import { createUppy } from '../../utils/uppy-config';
+import { useUppy } from '@uppy/react';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -143,6 +144,7 @@ const EditResourcePage: FC = () => {
   const getResourceInit = async (startingResource: Resource, resourceCreationType: ResourceCreationType) => {
     try {
       setShowForm(true);
+      startingResource.features.dlr_title = startingResource.features.dlr_title ?? '';
       const contributorResponse = await createContributor(startingResource.identifier);
       await putContributorFeature(
         startingResource.identifier,
@@ -178,8 +180,8 @@ const EditResourcePage: FC = () => {
         await setResourceTypeAsDocument(tempResource, startingResource.identifier);
       }
       if (
-        !responseWithCalculatedDefaults.data.creators?.[0]?.identifier &&
-        responseWithCalculatedDefaults.data.creators?.[0]?.features.dlr_creator_name
+        !responseWithCalculatedDefaults.data.creators[0]?.identifier &&
+        responseWithCalculatedDefaults.data.creators[0]?.features.dlr_creator_name
       ) {
         const mainCreatorName = responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
           ? responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
@@ -199,7 +201,7 @@ const EditResourcePage: FC = () => {
     }
   };
 
-  const mainFileHandler = useUppy('', false, onCreateFile);
+  const mainFileHandler = useUppy(createUppy('', false, onCreateFile));
 
   const handleChange = (panel: string) => (_: React.ChangeEvent<any>, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : '');
@@ -208,15 +210,12 @@ const EditResourcePage: FC = () => {
   //triggers on uppy-events
   useEffect(() => {
     if (mainFileHandler) {
-      mainFileHandler.on('upload', (file, response) => {
+      mainFileHandler.on('upload', () => {
         setResourceType(ResourceCreationType.FILE);
       });
-      if (!mainFileHandler.hasUploadFailedEventListener) {
-        mainFileHandler.on('upload-error', () => {
-          toast.error('File upload error');
-        });
-        mainFileHandler.hasUploadFailedEventListener = true;
-      }
+      mainFileHandler.on('upload-error', () => {
+        toast.error('File upload error');
+      });
     }
   }, [mainFileHandler]);
 
@@ -231,7 +230,6 @@ const EditResourcePage: FC = () => {
         _resource.features.dlr_description
       );
     }
-    //TODO: tags, creators
   };
 
   useEffect(() => {

@@ -1,11 +1,13 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@material-ui/core';
 import { StyledRadioGroup, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import { useTranslation } from 'react-i18next';
-import { License } from '../../../types/license.types';
-import { setResourceLicense } from '../../../api/resourceApi';
+import { RootState } from '../../../state/rootReducer';
+import { useSelector } from 'react-redux';
+import { License, AccessTypes, LicenseConstants } from '../../../types/license.types';
+import { deleteResourceLicense, putAccessType, setResourceLicense } from '../../../api/resourceApi';
 import { useFormikContext } from 'formik';
 import { ResourceWrapper } from '../../../types/resource.types';
 import ErrorBanner from '../../../components/ErrorBanner';
@@ -22,10 +24,6 @@ const extraRestrictionRadio = 'extra-restriction';
 const commercialRadio = 'commersial';
 const modifyAndBuildRadio = 'change-and-build';
 
-enum DefaultRestricion {
-  CC_BY = 'CC BY 4.0',
-  yes = 'yes',
-}
 enum DefaultCommercial {
   NC = 'NC',
   yes = 'yes',
@@ -37,18 +35,31 @@ enum DefaultModifyAndBuildOptions {
   SA = 'share_alike',
 }
 
-const defaultRestrictionOptions = [DefaultRestricion.CC_BY, DefaultRestricion.yes];
+const defaultRestrictionOptions = [LicenseConstants.CC_BY, LicenseConstants.yes];
 const defaultCommercialOptions = [DefaultCommercial.yes, DefaultCommercial.NC];
 
 interface LicenseWizardFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
   licenses: License[];
+  forceResetInLicenseWizard: boolean;
+  containsOtherWorksFieldsSelectedCC: boolean;
 }
 
-const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved, licenses }) => {
+const additionalLicenseProviders: string[] = [LicenseConstants.NTNU, LicenseConstants.BI];
+
+const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
+  setAllChangesSaved,
+  licenses,
+  containsOtherWorksFieldsSelectedCC,
+  forceResetInLicenseWizard,
+}) => {
   const { t } = useTranslation();
+  const { institution } = useSelector((state: RootState) => state.user);
   const { values, resetForm } = useFormikContext<ResourceWrapper>();
   const [extraRestriction, setExtraRestriction] = useState('');
+  const [institutionRestriction] = useState<string | undefined>(
+    additionalLicenseProviders.find((element) => element.includes(institution.toLowerCase()))
+  );
   const [saveRestrictionError, setSaveRestrictionError] = useState(false);
   const [commercialValue, setCommercialValue] = useState('');
   const [modifyAndBuildValue, setModifyAndBuildValue] = useState('');
@@ -59,13 +70,21 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
     await calculatePreferredLicense(event.target.value, commercialValue, modifyAndBuildValue, modifyAndBuildSubValue);
   };
 
+  useEffect(() => {
+    setExtraRestriction('');
+    setSaveRestrictionError(false);
+    setCommercialValue('');
+    setModifyAndBuildValue('');
+    setModifyAndBuildSubValue('');
+  }, [forceResetInLicenseWizard]);
+
   const calculatePreferredLicense = async (
     restrictedValue: string,
     commercialValue: string,
     modifyAndBuildValue: string,
     modifyAndBuildSubValue: string
   ) => {
-    if (restrictedValue === DefaultRestricion.yes || restrictedValue === '') {
+    if (restrictedValue === LicenseConstants.yes || restrictedValue === '') {
       let licenseTempCode = 'CC BY';
       if (commercialValue === DefaultCommercial.NC) {
         licenseTempCode += '-NC';
@@ -80,22 +99,31 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
         licenseTempCode += '-SA';
       }
       licenseTempCode += ' 4.0';
-      await saveLicense(licenseTempCode);
+      await saveLicenseAndChangeAccess(licenseTempCode, AccessTypes.open);
+    } else if (restrictedValue === LicenseConstants.BI || restrictedValue === LicenseConstants.NTNU) {
+      await saveLicenseAndChangeAccess(restrictedValue, AccessTypes.private);
     } else {
-      await saveLicense(restrictedValue);
+      await saveLicenseAndChangeAccess(restrictedValue, AccessTypes.open);
     }
   };
 
-  const saveLicense = async (licenseCode: string) => {
+  const saveLicenseAndChangeAccess = async (licenseCode: string, accessType: AccessTypes) => {
     try {
       setAllChangesSaved(false);
       const license = licenses.find((license) => license.features?.dlr_license_code === licenseCode);
-      if (license) {
+      if (license && values.resource.licenses && values.resource.licenses[0].identifier !== license.identifier) {
+        await putAccessType(values.resource.identifier, accessType);
         await setResourceLicense(values.resource.identifier, license.identifier);
+        values.resource.features.dlr_access = accessType;
         if (values.resource.licenses) {
+          if (values.resource.licenses[0].identifier.length > 0) {
+            await deleteResourceLicense(values.resource.identifier, values.resource.licenses[0].identifier);
+          }
           values.resource.licenses[0] = license;
-          resetForm({ values });
         }
+        resetForm({ values });
+        setSaveRestrictionError(false);
+      } else if (license && values.resource.licenses && values.resource.licenses[0].identifier === license.identifier) {
         setSaveRestrictionError(false);
       } else {
         setSaveRestrictionError(true);
@@ -140,10 +168,31 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
               label={t(`license.restriction_options.${element.replace(/[.\s]/g, '_')}`)}
             />
           ))}
+          {institutionRestriction && (
+            <FormControlLabel
+              value={institutionRestriction}
+              control={<Radio color="primary" />}
+              label={t(`license.restriction_options.${institutionRestriction}`)}
+            />
+          )}
+          {containsOtherWorksFieldsSelectedCC && (
+            <>
+              <FormControlLabel
+                value={LicenseConstants.CC_BY_SA_4_0}
+                control={<Radio color="primary" />}
+                label={t(`license.restriction_options.CC_BY-SA_4_0`)}
+              />
+              <FormControlLabel
+                value={LicenseConstants.CC_BY_NC_SA}
+                control={<Radio color="primary" />}
+                label={t(`license.restriction_options.CC_BY-NC-SA_4_0`)}
+              />
+            </>
+          )}
         </StyledRadioGroup>
       </AccordionRadioGroup>
 
-      {extraRestriction === DefaultRestricion.yes && (
+      {extraRestriction === LicenseConstants.yes && (
         <AccordionRadioGroup ariaDescription={commercialRadio} title={t('license.commercial_purposes')}>
           <FormLabel component="legend" id={`${commercialRadio}-label`}>
             <Typography variant="subtitle1">{t('license.questions.commercial')}</Typography>
@@ -164,7 +213,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({ setAllChangesSaved,
         </AccordionRadioGroup>
       )}
 
-      {extraRestriction === DefaultRestricion.yes && (
+      {extraRestriction === LicenseConstants.yes && (
         <AccordionRadioGroup ariaDescription={modifyAndBuildRadio} title={t('license.modify_and_build')}>
           <FormLabel component="legend" id={`${modifyAndBuildRadio}-label`}>
             <Typography variant="subtitle1">{t('license.questions.modify_and_build')}</Typography>

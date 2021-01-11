@@ -5,14 +5,16 @@ import { useFormikContext } from 'formik';
 import { ResourceWrapper } from '../../../types/resource.types';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../state/rootReducer';
 import { Colors } from '../../../themes/mainTheme';
 import { StyledRadioBoxWrapper, StyledRadioGroup, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
-import { putAccessType } from '../../../api/resourceApi';
+import { deleteResourceLicense, putAccessType, setResourceLicense } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import { AccessTypes } from '../../../types/license.types';
+import { AccessTypes, LicenseConstants, License, emptyLicense } from '../../../types/license.types';
 
 const StyledOutLinedBox = styled.div`
   display: flex;
@@ -32,37 +34,60 @@ const StyledTypography = styled(Typography)`
   padding-left: 1rem;
 `;
 
-enum LicenseAgreementsOptions {
-  CC = 'creative_commons',
-  YesOther = 'yes_other',
-  NoClearance = 'no_clearance',
-}
-
-const LicenseAgreements: string[] = [
-  LicenseAgreementsOptions.CC,
-  LicenseAgreementsOptions.YesOther,
-  LicenseAgreementsOptions.NoClearance,
-];
+const LicenseAgreements: string[] = [LicenseConstants.CC, LicenseConstants.YesOther, LicenseConstants.NoClearance];
 
 interface ContainsOtherWorksFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
+  licenses: License[] | undefined;
+  forceResetInLicenseWizard: () => void;
+  setHasSelectedCC: (value: boolean) => void;
 }
 
 const otherPeopleWorkId = 'other-peoples-work';
 
 const usageClearedId = 'usage-is-cleared';
 
-const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllChangesSaved }) => {
+const additionalLicenseProviders: string[] = [LicenseConstants.NTNU, LicenseConstants.BI];
+
+const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
+  setAllChangesSaved,
+  licenses,
+  setHasSelectedCC,
+  forceResetInLicenseWizard,
+}) => {
+  const { institution } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
   const { values, resetForm, setFieldValue } = useFormikContext<ResourceWrapper>();
   const [containsOtherPeoplesWork, setContainsOtherPeoplesWork] = useState(false);
-  const [LicenseAgreement, setLicenseAgreement] = useState<string>(LicenseAgreementsOptions.CC);
+  const [LicenseAgreement, setLicenseAgreement] = useState<string>('');
   const [savingError, setSavingError] = useState(false);
+  const [additionalLicense] = useState<string | undefined>(
+    additionalLicenseProviders.find((element) => element.includes(institution.toLowerCase()))
+  );
 
-  //TODO: fetch additional license options such as NTNU / BI internal license possibilities and append those to LicenseAgreements
-
-  const handleChangeInContainsOtherPeoplesWork = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeInContainsOtherPeoplesWork = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setContainsOtherPeoplesWork(event.target.value === 'true');
+    setLicenseAgreement('');
+    forceResetInLicenseWizard();
+    if (values.resource?.licenses) {
+      await replaceOldLicense(emptyLicense);
+      resetForm({ values });
+    }
+    if (event.target.value === 'false') {
+      setHasSelectedCC(false);
+    }
+    if (event.target.value === 'true' && LicenseAgreement === LicenseConstants.CC) {
+      setHasSelectedCC(true);
+    }
+  };
+
+  const replaceOldLicense = async (newLicence: License) => {
+    if (values.resource.licenses && values.resource.licenses[0].identifier.length > 0) {
+      await deleteResourceLicense(values.resource.identifier, values.resource.licenses[0].identifier);
+    }
+    if (values.resource.licenses) {
+      values.resource.licenses[0] = newLicence;
+    }
   };
 
   const handleLicenseAgreementChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,22 +95,36 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllCha
       setAllChangesSaved(false);
       setLicenseAgreement(event.target.value);
       let accessType = AccessTypes.private;
-      if (
-        event.target.value === LicenseAgreementsOptions.CC ||
-        event.target.value === LicenseAgreementsOptions.YesOther
-      ) {
+      if (event.target.value === LicenseConstants.CC) {
+        accessType = AccessTypes.open;
+        setHasSelectedCC(true);
+      } else {
+        setHasSelectedCC(false);
+      }
+      if (event.target.value === LicenseConstants.YesOther) {
         accessType = AccessTypes.open;
       }
-      await putAccessType(values.resource.identifier, accessType);
-      setFieldValue('resource.features.dlr_access', accessType);
-      values.resource.features.dlr_access = accessType;
+      if (event.target.value === LicenseConstants.BI || event.target.value === LicenseConstants.NTNU) {
+        const license = licenses?.find((license) => license.features?.dlr_license_code === event.target.value);
+        if (license) {
+          await replaceOldLicense(license);
+          await setResourceLicense(values.resource.identifier, license.identifier);
+        }
+      } else {
+        await replaceOldLicense(emptyLicense);
+      }
+      if (values.resource.features.dlr_access !== accessType) {
+        await putAccessType(values.resource.identifier, accessType);
+        setFieldValue('resource.features.dlr_access', accessType);
+        values.resource.features.dlr_access = accessType;
+      }
       resetForm({ values });
-
       setSavingError(false);
     } catch (error) {
       setSavingError(true);
     } finally {
       setAllChangesSaved(true);
+      forceResetInLicenseWizard();
     }
   };
 
@@ -113,6 +152,13 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllCha
             aria-label={t('license.questions.usage_cleared_with_owner')}
             value={LicenseAgreement}
             onChange={(event) => handleLicenseAgreementChange(event)}>
+            {additionalLicense && (
+              <FormControlLabel
+                value={additionalLicense}
+                label={t(`license.limitation.${additionalLicense}.title`)}
+                control={<Radio color="primary" />}
+              />
+            )}
             {LicenseAgreements.map((element, index) => (
               <FormControlLabel
                 value={element}
@@ -125,7 +171,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({ setAllCha
         </StyledRadioBoxWrapper>
       )}
       {savingError && <ErrorBanner />}
-      {LicenseAgreement !== LicenseAgreementsOptions.YesOther && containsOtherPeoplesWork && (
+      {LicenseAgreement !== LicenseConstants.YesOther && LicenseAgreement !== '' && containsOtherPeoplesWork && (
         <StyledOutLinedBox>
           <ErrorOutlineIcon color="primary" />
           <StyledTypography>{t(`license.limitation.${LicenseAgreement}.important_notice`)}</StyledTypography>
