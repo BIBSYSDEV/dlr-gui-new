@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { Uppy } from '../../../types/file.types';
 import StatusBarComponent from '@uppy/react/src/StatusBar';
 import '@uppy/core/dist/style.css';
@@ -49,6 +49,13 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, handleBlur, resetForm, setTouched, touched } = useFormikContext<ResourceWrapper>();
   const [saveTitleError, setSaveTitleError] = useState(false);
+  const [mainfileImage, setMainfileImage] = useState('');
+
+  useEffect(() => {
+    uppy.on('thumbnail:generated', (file, preview) => {
+      console.log('preview, preview');
+    });
+  }, [uppy]);
 
   const saveMainContentsFileName = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setAllChangesSaved(false);

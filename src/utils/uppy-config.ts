@@ -10,6 +10,7 @@ import {
 } from '../api/fileApi';
 import { Uppy as UppyType } from '../types/file.types';
 import { Resource } from '../types/resource.types';
+import ThumbnailGenerator from '@uppy/thumbnail-generator';
 
 interface UppyArgs {
   uploadId: string;
@@ -33,17 +34,26 @@ export const createUppy = (
   Uppy<Uppy.StrictTypes>({
     autoProceed: true,
     restrictions: { maxNumberOfFiles: shouldAllowMultipleFiles ? null : 1 },
-  }).use(AwsS3Multipart, {
-    abortMultipartUpload: async (_: UppyFile, { uploadId, key }: UppyArgs) => await abortMultipartUpload(uploadId, key),
-    completeMultipartUpload: async (_: UppyFile, { uploadId, key, parts }: UppyCompleteArgs) =>
-      await completeMultipartUpload(uploadId, key, parts),
-    createMultipartUpload: async (file: UppyFile) => {
-      if (resourceIdentifier) return await createMultipartUpload(file);
-      else {
-        return await createResourceAndMultipartUpload(file, onCreateFile);
-      }
-    },
-    listParts: async (_: UppyFile, { uploadId, key }: UppyArgs) => await listParts(uploadId, key),
-    prepareUploadPart: async (_: UppyFile, { uploadId, key, body, number }: UppyPrepareArgs) =>
-      await prepareUploadPart(uploadId, key, body, number),
-  });
+  })
+    .use(AwsS3Multipart, {
+      abortMultipartUpload: async (_: UppyFile, { uploadId, key }: UppyArgs) =>
+        await abortMultipartUpload(uploadId, key),
+      completeMultipartUpload: async (_: UppyFile, { uploadId, key, parts }: UppyCompleteArgs) =>
+        await completeMultipartUpload(uploadId, key, parts),
+      createMultipartUpload: async (file: UppyFile) => {
+        if (resourceIdentifier) return await createMultipartUpload(file);
+        else {
+          return await createResourceAndMultipartUpload(file, onCreateFile);
+        }
+      },
+      listParts: async (_: UppyFile, { uploadId, key }: UppyArgs) => await listParts(uploadId, key),
+      prepareUploadPart: async (_: UppyFile, { uploadId, key, body, number }: UppyPrepareArgs) =>
+        await prepareUploadPart(uploadId, key, body, number),
+    })
+    .use(ThumbnailGenerator, {
+      id: 'ThumbnailGenerator',
+      thumbnailWidth: 200,
+      thumbnailHeight: 200,
+      thumbnailType: 'image/jpeg',
+      waitForThumbnailsBeforeUpload: false,
+    });

@@ -217,6 +217,9 @@ const EditResourcePage: FC = () => {
         });
         mainFileHandler.hasUploadFailedEventListener = true;
       }
+      mainFileHandler.on('thumbnail:generated', (file, preview) => {
+        console.log('preview', preview);
+      });
     }
   }, [mainFileHandler]);
 
