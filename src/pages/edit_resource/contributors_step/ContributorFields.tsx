@@ -108,7 +108,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
       setUpdateContributorError(false);
       setErrorIndex(ErrorIndex.NO_ERRORS);
       if (
-        values.resource?.contributors?.[contributorIndex].identifier === contributorIdentifier &&
+        values.resource?.contributors[contributorIndex].identifier === contributorIdentifier &&
         name === ContributorFeatureNames.Type
       ) {
         values.resource.contributors[contributorIndex].features.dlr_contributor_type = event.target.value;
