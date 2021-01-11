@@ -126,6 +126,12 @@
     },
     "edit_resource": "Edit resource",
     "files_and_license": {
+      "additional_files": {
+        "additional_files": "Additional files",
+        "additional_files_description": "In case you need more files in order to make the resource complete. For instance if you want both a Word and a PDF document, or multiple language files, Latex files, formulas etc.",
+        "additional_files_progress_bar_aria_label": "Upload progress of",
+        "additional_files_warning": "Do not upload series nor collections of resources as additional files"
+      },
       "dashboard_component": {
         "browse": "browse",
         "drag_file": "Drag file here or",

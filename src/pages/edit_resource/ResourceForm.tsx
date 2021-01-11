@@ -9,7 +9,6 @@ import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import * as Yup from 'yup';
 import DescriptionFields from './description_step/DescriptionFields';
 import { Uppy } from '../../types/file.types';
-import FileFields from './contents_step/FileFields';
 import ContributorFields from './contributors_step/ContributorFields';
 import CreatorField from './contributors_step/CreatorField';
 import { StyledContentWrapper, StyledSchemaPart } from '../../components/styled/Wrappers';
@@ -18,6 +17,12 @@ import { StatusCode } from '../../utils/constants';
 import { License } from '../../types/license.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import AccessAndLicenseStep from './access_and_licence_step/AccessAndLicenseStep';
+import { hasTouchedError } from '../../utils/formik-helpers';
+import CircularFileUploadProgress from '../../components/CircularFileUploadProgress';
+import { useUppy } from '@uppy/react';
+import { additionalCreateFilesUppy } from '../../utils/uppy-config';
+import { Content } from '../../types/content.types';
+import ContentsStep from './contents_step/ContentsStep';
 import ResourceFormNavigationHeader from './ResourceFormNavigationHeader';
 
 const StyledForm = styled(Form)`
@@ -48,7 +53,7 @@ const StyledButtonWrapper = styled.div`
 `;
 
 interface ResourceFormProps {
-  resource?: Resource;
+  resource: Resource;
   uppy: Uppy;
   resourceType: ResourceCreationType;
 }
@@ -59,8 +64,10 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   const { t } = useTranslation();
   const [allChangesSaved, setAllChangesSaved] = useState(true);
   const [isLoadingLicenses, setIsLoadingLicenses] = useState(false);
+  const [newContent, setNewContent] = useState<Content>();
   const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
   const [licenses, setLicenses] = useState<License[]>();
+  const additionalFilesUppy = useUppy(additionalCreateFilesUppy(resource.identifier, setNewContent));
 
   const [activeStep, setActiveStep] = useState<ResourceFormStep>(ResourceFormStep.Description);
 
@@ -188,7 +195,12 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                       <Typography variant="h4">{formikProps.values.resource.features.dlr_title}</Typography>
                     </StyledContentWrapper>
                   </StyledSchemaPart>
-                  <FileFields uppy={uppy} setAllChangesSaved={setAllChangesSaved} />
+                  <ContentsStep
+                    uppy={uppy}
+                    setAllChangesSaved={setAllChangesSaved}
+                    newContent={newContent}
+                    additionalFileUploadUppy={additionalFilesUppy}
+                  />
                 </StyledPanel>
               )}
               {activeStep === ResourceFormStep.Preview && (
