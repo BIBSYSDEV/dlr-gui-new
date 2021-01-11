@@ -144,6 +144,7 @@ const EditResourcePage: FC = () => {
   const getResourceInit = async (startingResource: Resource, resourceCreationType: ResourceCreationType) => {
     try {
       setShowForm(true);
+      startingResource.features.dlr_title = startingResource.features.dlr_title ?? '';
       const contributorResponse = await createContributor(startingResource.identifier);
       await putContributorFeature(
         startingResource.identifier,
@@ -179,8 +180,8 @@ const EditResourcePage: FC = () => {
         await setResourceTypeAsDocument(tempResource, startingResource.identifier);
       }
       if (
-        !responseWithCalculatedDefaults.data.creators?.[0]?.identifier &&
-        responseWithCalculatedDefaults.data.creators?.[0]?.features.dlr_creator_name
+        !responseWithCalculatedDefaults.data.creators[0]?.identifier &&
+        responseWithCalculatedDefaults.data.creators[0]?.features.dlr_creator_name
       ) {
         const mainCreatorName = responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
           ? responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name

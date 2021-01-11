@@ -4,7 +4,7 @@ export interface Content {
 }
 
 interface ContentFeature {
-  dlr_content?: string;
+  dlr_content: string;
   dlr_content_checksum_MD5?: string;
   dlr_content_content_type?: string;
   dlr_content_default?: string;
@@ -17,13 +17,16 @@ interface ContentFeature {
   dlr_content_time_created?: string;
   dlr_content_type?: string;
   dlr_thumbnail_default?: string;
-  dlr_content_title?: string;
+  dlr_content_title: string;
 }
 
 export const emptyContents: Content[] = [
   {
     identifier: '',
-    features: {},
+    features: {
+      dlr_content_title: '',
+      dlr_content: '',
+    },
   },
 ];
 

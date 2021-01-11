@@ -16,17 +16,24 @@ export interface Resource {
   geographicalCoverages?: any[];
   observationalUnits?: any[];
   processMethods?: any[];
-  creators?: Creator[];
-  contributors?: Contributor[];
+  creators: Creator[];
+  contributors: Contributor[];
   accessRead?: string[];
   accessWrite?: string[];
-  contents?: Content[];
-  licenses?: License[];
+  contents: Content[];
+  licenses: License[];
 }
 
 export const emptyResource: Resource = {
   identifier: '',
-  features: {},
+  features: {
+    dlr_title: '',
+    dlr_content: '',
+  },
+  contents: [],
+  contributors: [],
+  creators: [],
+  licenses: [],
 };
 
 enum ResourceType {
@@ -42,7 +49,7 @@ export enum ResourceCreationType {
 interface ResourceFeatures {
   dlr_access?: string;
   dlr_app?: string;
-  dlr_content?: string;
+  dlr_content: string;
   dlr_content_type?: string;
   dlr_description?: string;
   dlr_identifier?: string;
@@ -60,7 +67,7 @@ interface ResourceFeatures {
   dlr_submitter_email?: string;
   dlr_time_created?: string;
   dlr_time_published?: string;
-  dlr_title?: string;
+  dlr_title: string;
   dlr_title_alternative?: string;
   dlr_type?: string;
   dlr_thumbnail_url?: string;
@@ -193,3 +200,19 @@ export enum FieldNames {
   LicensesBase = 'resource.licenses',
   Tags = 'resource.tags',
 }
+
+export enum ResourceFormStep {
+  Description = 0,
+  Contributors = 1,
+  Contents = 2,
+  AccessAndLicense = 3,
+  Preview = 4,
+}
+
+export const ResourceFormSteps = [
+  ResourceFormStep.Description,
+  ResourceFormStep.Contributors,
+  ResourceFormStep.Contents,
+  ResourceFormStep.AccessAndLicense,
+  ResourceFormStep.Preview,
+];
