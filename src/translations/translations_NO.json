@@ -128,7 +128,7 @@
     "files_and_license": {
       "additional_files": {
         "additional_files": "Tilleggsfiler",
-        "additional_files_description": "Dersom du trenger flere filer for å gjøre ressursen komplett. Det kan f.eks være at du ønsker både word og pdf, eller flere språkfiler, Latex, formelfiler osv.",
+        "additional_files_description": "Dersom du trenger flere filer for å gjøre ressursen komplett. Det kan f.eks være at du ønsker både Word og PDF, eller flere språkfiler, Latex, formelfiler osv.",
         "additional_files_progress_bar_aria_label": "Opplastnings framdrift av",
         "additional_files_warning": "Det er ikke meningen å laste opp en samling eller serie av ressurser her"
       },
