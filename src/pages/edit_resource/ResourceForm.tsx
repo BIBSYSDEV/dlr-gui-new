@@ -4,14 +4,14 @@ import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
 import { Button, CircularProgress, Typography } from '@material-ui/core';
 import { getLicenses } from '../../api/resourceApi';
-import { Resource, ResourceCreationType, ResourceFormStep, ResourceFormSteps } from '../../types/resource.types';
+import { Resource, ResourceCreationType, ResourceFormStep } from '../../types/resource.types';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import * as Yup from 'yup';
 import DescriptionFields from './description_step/DescriptionFields';
 import { Uppy } from '../../types/file.types';
 import ContributorFields from './contributors_step/ContributorFields';
 import CreatorField from './contributors_step/CreatorField';
-import { StyledContentWrapper, StyledSchemaPart, StyledSchemaPartColored } from '../../components/styled/Wrappers';
+import { StyledContentWrapper, StyledSchemaPart } from '../../components/styled/Wrappers';
 import PreviewPanel from './preview_step/PreviewPanel';
 import { StatusCode } from '../../utils/constants';
 import { License } from '../../types/license.types';
@@ -22,8 +22,7 @@ import { additionalCreateFilesUppy } from '../../utils/uppy-config';
 import { Content } from '../../types/content.types';
 import ContentsStep from './contents_step/ContentsStep';
 import ResourceFormNavigationHeader from './ResourceFormNavigationHeader';
-import { Colors } from '../../themes/mainTheme';
-import WarningIcon from '@material-ui/icons/Warning';
+import ResourceFormErrors from './ResourceFormErrors';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -55,10 +54,6 @@ const StyledButtonWrapper = styled.div`
 const StyledFormStatusWrapper = styled.div`
   padding-right: 1rem;
   display: inline-block;
-`;
-
-const StyledWarningIcon = styled(WarningIcon)`
-  vertical-align: text-bottom;
 `;
 
 const UpperCaseButton = styled(Button)`
@@ -226,18 +221,9 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                 </StyledPanel>
               )}
 
-              {activeStep === ResourceFormStep.Preview && !formikProps.isValid && (
-                <StyledPanel>
-                  <StyledSchemaPartColored color={Colors.DangerLight}>
-                    <StyledContentWrapper>
-                      <Typography variant={'h5'} style={{ width: '100%' }}>
-                        <StyledWarningIcon /> {t('feedback.form_errors')}
-                      </Typography>
-                    </StyledContentWrapper>
-                  </StyledSchemaPartColored>
-                </StyledPanel>
-              )}
+              {activeStep === ResourceFormStep.Preview && !formikProps.isValid && <ResourceFormErrors />}
 
+              {/*//TODO: Trekke ut form-actions som egen komponent*/}
               <StyledContentWrapper>
                 <StyledButtonWrapper>
                   <UpperCaseButton variant="outlined" disabled={activeStep === 0} onClick={handleBack}>
@@ -246,21 +232,21 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                   <div>
                     <StyledFormStatusWrapper>
                       {!allChangesSaved && <CircularProgress size="1rem" />}
-                      {allChangesSaved && !formikProps.dirty && <span>{t('common.all_changes_saved')}</span>}
+                      {allChangesSaved && !formikProps.dirty && (
+                        <Typography variant={'body1'}>{t('common.all_changes_saved')}</Typography>
+                      )}
                     </StyledFormStatusWrapper>
-                    {activeStep < ResourceFormSteps.length - 1 && (
-                      <UpperCaseButton variant="contained" color="primary" onClick={handleNext}>
-                        {t('common.next')}
-                      </UpperCaseButton>
-                    )}
-                    {/*TODO: show error */}
-                    {activeStep === ResourceFormStep.Preview && (
+                    {activeStep === ResourceFormStep.Preview ? (
                       <UpperCaseButton
                         variant="contained"
                         color="primary"
                         onClick={publishResource}
                         disabled={!formikProps.isValid}>
                         {t('common.publish')}
+                      </UpperCaseButton>
+                    ) : (
+                      <UpperCaseButton variant="contained" color="primary" onClick={handleNext}>
+                        {t('common.next')}
                       </UpperCaseButton>
                     )}
                   </div>
