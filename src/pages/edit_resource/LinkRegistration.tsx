@@ -32,8 +32,8 @@ const LinkResource: FC<LinkRegistrationPanelProps> = ({ expanded, onChange, onSu
       icon={<LinkIcon className="icon" />}
       expanded={expanded}
       onChange={onChange}
-      ariaControls="publication-method-link"
-      dataTestId="new-publication-link">
+      ariaControls="resource-method-link"
+      dataTestId="new-resource-link">
       <StyledBody>
         <Typography>{t('resource.link_to_resource')}:</Typography>
         <LinkResourceForm handleSubmit={handleSubmit} />

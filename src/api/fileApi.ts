@@ -1,9 +1,10 @@
 import { AwsS3Part } from '@uppy/aws-s3-multipart';
 import { UppyFile } from '@uppy/core';
 import { API_PATHS } from '../utils/constants';
-import { createResource } from './resourceApi';
+import { createResource, postResourceContent } from './resourceApi';
 import { Resource, ResourceCreationType } from '../types/resource.types';
 import { authenticatedApiRequest } from './api';
+import { Content } from '../types/content.types';
 
 export enum FileApiPaths {
   ABORT = '/upload/multipart/uppy/abort',
@@ -101,4 +102,27 @@ export const setContentAsDefaultThumbnail = (resourceIdentifier: string, content
     method: 'POST',
     data,
   });
+};
+
+export const createAdditionalFileUpload = async (
+  resourceIdentifier: string,
+  file: UppyFile,
+  onCreateContent: (newContent: Content) => void
+) => {
+  const responseContent = await postResourceContent(resourceIdentifier, 'file', file.name);
+  onCreateContent(responseContent.data);
+  const data = encodeURI(
+    `filename=${file.name}&size=${file.data.size}&lastmodified=${(file.data as File).lastModified}&mimetype=${
+      file.data.type
+    }`
+  );
+
+  const createMultipartUploadResponse = await authenticatedApiRequest({
+    url: encodeURI(
+      `${API_PATHS.guiBackendResourcesContentPath}/${responseContent.data.identifier}${FileApiPaths.CREATE}`
+    ),
+    method: 'POST',
+    data: data,
+  });
+  return createMultipartUploadResponse.data;
 };

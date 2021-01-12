@@ -12,12 +12,13 @@ const StyledDashboard = styled.div`
 
 interface UppyDashboardProps {
   uppy: Uppy;
+  hideCancelButton?: boolean;
 }
 
 const uploaderMaxWidthPx = 10000;
 const uploaderMaxHeightPx = 200;
 
-const UppyDashboard: React.FC<UppyDashboardProps> = ({ uppy }) => {
+const UppyDashboard: React.FC<UppyDashboardProps> = ({ uppy, hideCancelButton = true }) => {
   const { t } = useTranslation();
   const multipleFilesAllowed = (uppy as any).opts.restrictions.maxNumberOfFiles !== 1;
 
@@ -29,6 +30,8 @@ const UppyDashboard: React.FC<UppyDashboardProps> = ({ uppy }) => {
         showSelectedFiles={false}
         showProgressDetails
         hideProgressAfterFinish
+        hideCancelButton={hideCancelButton}
+        hidePauseResumeButton
         width={uploaderMaxWidthPx}
         height={uploaderMaxHeightPx}
         locale={{

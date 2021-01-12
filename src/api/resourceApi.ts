@@ -167,6 +167,18 @@ export const getResourceContents = (identifier: string): Promise<AxiosResponse<C
   });
 };
 
+export const postResourceContent = (
+  resourceIdentifier: string,
+  type: string,
+  content: string
+): Promise<AxiosResponse<Content>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contents`),
+    method: 'POST',
+    data: encodeURI(`type=${type}&content=${content}`),
+  });
+};
+
 export const getLicenses = (): Promise<AxiosResponse<License[]>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendLicensesPath}/licenses/users/authorized`),
@@ -180,6 +192,15 @@ export const setResourceLicense = async (resourceIdentifier: string, licenseIden
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/licenses`),
     method: 'POST',
     data: data,
+  });
+};
+
+export const deleteResourceLicense = async (resourceIdentifier: string, licenseIdentifier: string) => {
+  await authenticatedApiRequest({
+    url: encodeURI(
+      `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/licenses/${licenseIdentifier}`
+    ),
+    method: 'DELETE',
   });
 };
 

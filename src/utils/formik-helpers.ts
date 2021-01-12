@@ -1,5 +1,4 @@
-import { FormikErrors, FormikProps, FormikTouched, FormikValues, getIn } from 'formik';
-import { ResourceFormSteps } from '../pages/edit_resource/ResourceForm';
+import { FormikErrors, FormikTouched, FormikValues, getIn } from 'formik';
 import { Content } from '../types/content.types';
 import {
   ContentFeatureAttributes,
@@ -9,22 +8,30 @@ import {
   CreatorFeatureAttributes,
   FieldNames,
   ResourceFeatureNamesFullPath,
+  ResourceFormStep,
+  ResourceWrapper,
 } from '../types/resource.types';
+import deepmerge, { Options } from 'deepmerge';
 
-export const hasTouchedError = (formikProps: FormikProps<FormikValues>, index: number): boolean => {
-  if (!Object.keys(formikProps.errors).length || !Object.keys(formikProps.touched).length) {
+export const hasTouchedError = (
+  errors: FormikErrors<unknown>,
+  touched: FormikTouched<unknown>,
+  values: FormikValues,
+  index: number
+): boolean => {
+  if (!Object.keys(errors).length || !Object.keys(touched).length) {
     return false;
   }
   let fieldNames: string[] = [];
-  index === ResourceFormSteps.Description && (fieldNames = getAllDescriptionStepFieldNames());
-  index === ResourceFormSteps.AccessAndLicense && (fieldNames = getAllAccessAndLicenseStepFieldNames());
-  index === ResourceFormSteps.Contributors && (fieldNames = getAllFieldsFromContributorsPanel(formikProps.values));
-  index === ResourceFormSteps.Contents && (fieldNames = getAllContentsFields(formikProps.values));
+  index === ResourceFormStep.Description && (fieldNames = getAllDescriptionStepFieldNames());
+  index === ResourceFormStep.AccessAndLicense && (fieldNames = getAllAccessAndLicenseStepFieldNames());
+  index === ResourceFormStep.Contributors && (fieldNames = getAllFieldsFromContributorsPanel(values));
+  index === ResourceFormStep.Contents && (fieldNames = getAllContentsFields(values));
 
   if (fieldNames.length) {
     return fieldNames.some((fieldName) => {
-      const fieldHasError = !!getIn(formikProps.errors, fieldName);
-      const fieldIsTouched = !!getIn(formikProps.touched, fieldName);
+      const fieldHasError = !!getIn(errors, fieldName);
+      const fieldIsTouched = !!getIn(touched, fieldName);
       // Touched data can be inconsistent with array of null or undefined elements when adding elements dynamically
       // to a FieldArray, so ensure it is a boolean value
       return fieldHasError && fieldIsTouched;
@@ -49,6 +56,7 @@ const getAllDescriptionStepFieldNames = () => {
     ResourceFeatureNamesFullPath.Type,
     ResourceFeatureNamesFullPath.Title,
     ResourceFeatureNamesFullPath.Description,
+    //TODO: tags
   ];
 };
 const getAllAccessAndLicenseStepFieldNames = () => {
@@ -102,3 +110,54 @@ export const getAllCreatorFields = (creators: Creator[]): string[] => {
   }
   return fieldNames;
 };
+
+export const overwriteArrayMerge = (destinationArray: unknown[], sourceArray: unknown[], options?: Options) =>
+  sourceArray;
+export const mergeTouchedFields = (touchedArray: FormikTouched<ResourceWrapper>[]) =>
+  deepmerge.all(touchedArray, { arrayMerge: overwriteArrayMerge });
+
+export const touchedDescriptionFields: FormikTouched<ResourceWrapper> = {
+  resource: {
+    features: {
+      dlr_title: true,
+      dlr_description: true,
+      dlr_type: true,
+    },
+  },
+};
+
+export const touchedContributorsFields = (
+  contributors: Contributor[],
+  creators: Creator[]
+): FormikTouched<ResourceWrapper> => ({
+  resource: {
+    contributors: contributors.map(() => ({
+      features: {
+        dlr_contributor_name: true,
+      },
+    })),
+    creators: creators.map(() => ({
+      features: {
+        dlr_creator_name: true,
+      },
+    })),
+  },
+});
+
+export const touchedContentsFields = (contents: Content[]): FormikTouched<ResourceWrapper> => ({
+  resource: {
+    contents: contents.map(() => ({
+      features: {
+        dlr_content_title: true,
+      },
+    })),
+  },
+});
+
+export const touchedAccessAndLicenseFields: FormikTouched<ResourceWrapper> = {
+  resource: {
+    licenses: [{ identifier: true }],
+  },
+};
+
+export const touchedPreviewFields: FormikTouched<ResourceWrapper> = {};
