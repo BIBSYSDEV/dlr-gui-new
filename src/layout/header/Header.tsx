@@ -80,14 +80,14 @@ const Header: FC = () => {
           <Button
             color="primary"
             component={RouterLink}
-            data-testid="new-publication"
+            data-testid="new-registration-link"
             to="/registration"
             startIcon={<AddIcon />}>
             <Typography variant="button">{t('resource.new_registration')}</Typography>
           </Button>
         )}
         {user.id && (
-          <Button color="primary" component={RouterLink} data-testid="my-resources" to="/resources/user/current">
+          <Button color="primary" component={RouterLink} data-testid="my-resources-link" to="/resources/user/current">
             <Typography variant="button">{t('resource.my_resources')}</Typography>
           </Button>
         )}

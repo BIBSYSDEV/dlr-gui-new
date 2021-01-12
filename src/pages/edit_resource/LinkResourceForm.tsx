@@ -39,7 +39,7 @@ const LinkResourceForm: FC<LinkResourceFormProps> = ({ handleSubmit }) => {
     <Formik onSubmit={handleSubmit} initialValues={emptyLinkResourceFormValues} validationSchema={validationSchema}>
       {({ isValid, dirty }) => (
         <Form>
-          <StyledInputBox>
+          <StyledInputBox data-testid="new-resource-link-input-wrapper">
             <Field name="url">
               {({ field, meta: { error, touched } }: FieldProps) => (
                 <StyledTextField
