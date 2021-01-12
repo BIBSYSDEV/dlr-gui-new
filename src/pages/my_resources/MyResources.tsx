@@ -11,6 +11,7 @@ const StyledPageContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const StyledPageHeader = styled(Typography)`
@@ -45,24 +46,26 @@ const MyResources: FC = () => {
   return (
     <StyledPageContent>
       {loadingError && <ErrorBanner />}
-      <StyledPageHeader variant="h2">{t('resource.unpublished_resources')}</StyledPageHeader>
-      <List>
-        {isLoadingMyResources && <CircularProgress />}
-        {!isLoadingMyResources &&
-          resourcesUnpublished.length > 0 &&
-          resourcesUnpublished.map((resource: Resource, index: number) => (
-            <ResourceListItemButton key={index} resource={resource} showTimeCreated={true} />
-          ))}
-      </List>
-      <StyledPageHeader variant="h2">{t('resource.published_resources')}</StyledPageHeader>
-      <List>
-        {isLoadingMyResources && <CircularProgress />}
-        {!isLoadingMyResources &&
-          resourcesPublished.length > 0 &&
-          resourcesPublished.map((resource: Resource, index: number) => (
-            <ResourceListItemButton key={index} resource={resource} showTimeCreated={true} />
-          ))}
-      </List>
+      <div>
+        <StyledPageHeader variant="h2">{t('resource.unpublished_resources')}</StyledPageHeader>
+        <List>
+          {isLoadingMyResources && <CircularProgress />}
+          {!isLoadingMyResources &&
+            resourcesUnpublished.length > 0 &&
+            resourcesUnpublished.map((resource: Resource, index: number) => (
+              <ResourceListItemButton key={index} resource={resource} showTimeCreated={true} />
+            ))}
+        </List>
+        <StyledPageHeader variant="h2">{t('resource.published_resources')}</StyledPageHeader>
+        <List>
+          {isLoadingMyResources && <CircularProgress />}
+          {!isLoadingMyResources &&
+            resourcesPublished.length > 0 &&
+            resourcesPublished.map((resource: Resource, index: number) => (
+              <ResourceListItemButton key={index} resource={resource} showTimeCreated={true} />
+            ))}
+        </List>
+      </div>
     </StyledPageContent>
   );
 };

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Resource } from '../types/resource.types';
-import { ExtendButtonBaseTypeMap, ListItem, ListItemText, ListItemTypeMap } from '@material-ui/core';
+import { ExtendButtonBaseTypeMap, ListItem, ListItemText, ListItemTypeMap, TypographyTypeMap } from '@material-ui/core';
 import Thumbnail from './Thumbnail';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
@@ -16,6 +16,10 @@ const StyledListItem: OverridableComponent<ListItemTypeMap<{ button?: false }, '
     props: { href: string } & OverrideProps<ExtendButtonBaseTypeMap<ListItemTypeMap<{ button: true }, 'div'>>, 'a'>
   ) => JSX.Element) &
   OverridableComponent<ExtendButtonBaseTypeMap<ListItemTypeMap<{ button: true }, 'div'>>> = styled(ListItem)`
+  margin-top: 16px;
+`;
+
+const StyledTypography: OverridableComponent<TypographyTypeMap<unknown, 'span'>> = styled(Typography)`
   margin-top: 16px;
 `;
 
@@ -43,15 +47,15 @@ const ResourceListItemButton: FC<ResourceListItemButtonProps> = ({
         primary={`${resource.features.dlr_title} (${resource.features.dlr_content_type})`}
         secondary={
           <>
-            {showSubmitter && (
-              <Typography style={{ display: 'block' }} component="span" variant="body2" color="textPrimary">
+            {showSubmitter && resource.features.dlr_submitter_email && (
+              <StyledTypography style={{ display: 'block' }} component="span" variant="body2" color="textPrimary">
                 {resource.features.dlr_submitter_email}
-              </Typography>
+              </StyledTypography>
             )}
-            {showTimeCreated && (
-              <Typography style={{ display: 'block' }} component="span" variant="body2" color="textPrimary">
+            {showTimeCreated && resource.features.dlr_time_created && (
+              <StyledTypography style={{ display: 'block' }} component="span" variant="body2" color="textPrimary">
                 {resource.features.dlr_time_created}
-              </Typography>
+              </StyledTypography>
             )}
             {resource.features.dlr_identifier_handle && showHandle && (
               <span>
