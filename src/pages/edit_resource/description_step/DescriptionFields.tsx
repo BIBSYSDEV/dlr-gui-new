@@ -46,6 +46,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
                 label={t('resource.metadata.title')}
                 error={touched && !!error}
                 helperText={<ErrorMessage name={field.name} />}
+                inputProps={{ 'data-testid': 'dlr_title-input' }}
                 onBlur={(event) => {
                   handleBlur(event);
                   !error && saveField(event, ResourceFeatureNamesFullPath.Title);
