@@ -22,6 +22,13 @@ export const createResource = (type: string, content: string) => {
   });
 };
 
+export const publishResource = (resourceIdentifier: string): Promise<AxiosResponse> => {
+  return authenticatedApiRequest({
+    url: `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/publications`,
+    method: 'POST',
+  });
+};
+
 export const postResourceFeature = async (resourceIdentifier: string, feature: string, value: string) => {
   const data = encodeURI(`value=${value}&feature=${feature}`);
   await authenticatedApiRequest({

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
 import { Button, CircularProgress, Typography } from '@material-ui/core';
-import { getLicenses } from '../../api/resourceApi';
+import { getLicenses, publishResource } from '../../api/resourceApi';
 import { Resource, ResourceCreationType, ResourceFormStep } from '../../types/resource.types';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import * as Yup from 'yup';
@@ -23,6 +23,7 @@ import { Content } from '../../types/content.types';
 import ContentsStep from './contents_step/ContentsStep';
 import ResourceFormNavigationHeader from './ResourceFormNavigationHeader';
 import ResourceFormErrors from './ResourceFormErrors';
+import { useHistory } from 'react-router-dom';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -76,6 +77,8 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
   const [licenses, setLicenses] = useState<License[]>();
   const additionalFilesUppy = useUppy(additionalCreateFilesUppy(resource.identifier, setNewContent));
+  const [publishResourceError, setPublishResourceError] = useState(false);
+  const history = useHistory();
 
   const [activeStep, setActiveStep] = useState<ResourceFormStep>(ResourceFormStep.Description);
 
@@ -91,8 +94,14 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const publishResource = () => {
-    console.log('publishResource!');
+  const handlePublishResource = async () => {
+    setPublishResourceError(false);
+    try {
+      await publishResource(resource.identifier);
+      history.push(`/resource/${resource.identifier}`);
+    } catch (error) {
+      setPublishResourceError(true);
+    }
   };
 
   const resourceValidationSchema = Yup.object().shape({
@@ -240,7 +249,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                       <UpperCaseButton
                         variant="contained"
                         color="primary"
-                        onClick={publishResource}
+                        onClick={handlePublishResource}
                         disabled={!formikProps.isValid}>
                         {t('common.publish')}
                       </UpperCaseButton>
@@ -251,6 +260,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                     )}
                   </div>
                 </StyledButtonWrapper>
+                {publishResourceError && <ErrorBanner />}
               </StyledContentWrapper>
             </StyledForm>
           )}
