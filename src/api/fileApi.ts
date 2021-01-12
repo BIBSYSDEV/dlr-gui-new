@@ -91,3 +91,14 @@ export const prepareUploadPart = async (uploadId: string, key: string, body: Blo
   });
   return response.data;
 };
+
+export const setContentAsDefaultThumbnail = (resourceIdentifier: string, contentIdentifier: string) => {
+  const data = encodeURI(`identifierContent=${contentIdentifier}`);
+  return authenticatedApiRequest({
+    url: encodeURI(
+      `${API_PATHS.guiBackendResourcesContentPath}/resources/${resourceIdentifier}/contents/defaults/thumbnail`
+    ),
+    method: 'POST',
+    data,
+  });
+};
