@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
-import { Button, CircularProgress, Divider, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Typography } from '@material-ui/core';
 import { getLicenses } from '../../api/resourceApi';
 import { Resource, ResourceCreationType, ResourceFormStep, ResourceFormSteps } from '../../types/resource.types';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
@@ -11,19 +11,19 @@ import DescriptionFields from './description_step/DescriptionFields';
 import { Uppy } from '../../types/file.types';
 import ContributorFields from './contributors_step/ContributorFields';
 import CreatorField from './contributors_step/CreatorField';
-import { StyledContentWrapper, StyledSchemaPart } from '../../components/styled/Wrappers';
+import { StyledContentWrapper, StyledSchemaPart, StyledSchemaPartColored } from '../../components/styled/Wrappers';
 import PreviewPanel from './preview_step/PreviewPanel';
 import { StatusCode } from '../../utils/constants';
 import { License } from '../../types/license.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import AccessAndLicenseStep from './access_and_licence_step/AccessAndLicenseStep';
-import { hasTouchedError } from '../../utils/formik-helpers';
-import CircularFileUploadProgress from '../../components/CircularFileUploadProgress';
 import { useUppy } from '@uppy/react';
 import { additionalCreateFilesUppy } from '../../utils/uppy-config';
 import { Content } from '../../types/content.types';
 import ContentsStep from './contents_step/ContentsStep';
 import ResourceFormNavigationHeader from './ResourceFormNavigationHeader';
+import { Colors } from '../../themes/mainTheme';
+import WarningIcon from '@material-ui/icons/Warning';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -50,6 +50,19 @@ const StyledButtonWrapper = styled.div`
   justify-content: space-between;
   max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'};
   padding: 2rem 2rem 1rem;
+`;
+
+const StyledFormStatusWrapper = styled.div`
+  padding-right: 1rem;
+  display: inline-block;
+`;
+
+const StyledWarningIcon = styled(WarningIcon)`
+  vertical-align: text-bottom;
+`;
+
+const UpperCaseButton = styled(Button)`
+  text-transform: uppercase;
 `;
 
 interface ResourceFormProps {
@@ -81,6 +94,10 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const publishResource = () => {
+    console.log('publishResource!');
   };
 
   const resourceValidationSchema = Yup.object().shape({
@@ -208,20 +225,44 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                   <PreviewPanel formikProps={formikProps} />
                 </StyledPanel>
               )}
-              <Divider style={{ marginTop: '1rem', width: '100%' }} />
+
+              {activeStep === ResourceFormStep.Preview && !formikProps.isValid && (
+                <StyledPanel>
+                  <StyledSchemaPartColored color={Colors.DangerLight}>
+                    <StyledContentWrapper>
+                      <Typography variant={'h5'} style={{ width: '100%' }}>
+                        <StyledWarningIcon /> {t('feedback.form_errors')}
+                      </Typography>
+                    </StyledContentWrapper>
+                  </StyledSchemaPartColored>
+                </StyledPanel>
+              )}
+
               <StyledContentWrapper>
                 <StyledButtonWrapper>
+                  <UpperCaseButton variant="outlined" disabled={activeStep === 0} onClick={handleBack}>
+                    {t('common.back')}
+                  </UpperCaseButton>
                   <div>
-                    {!allChangesSaved && <CircularProgress size="1rem" />}
-                    {allChangesSaved && !formikProps.dirty && <span>{t('common.all_changes_saved')}</span>}
-                  </div>
-                  <div>
-                    <Button disabled={activeStep === 0} onClick={handleBack}>
-                      {t('common.back')}
-                    </Button>
-                    <Button variant="contained" color="primary" onClick={handleNext}>
-                      {activeStep === ResourceFormSteps.length - 1 ? t('common.finish') : t('common.next')}
-                    </Button>
+                    <StyledFormStatusWrapper>
+                      {!allChangesSaved && <CircularProgress size="1rem" />}
+                      {allChangesSaved && !formikProps.dirty && <span>{t('common.all_changes_saved')}</span>}
+                    </StyledFormStatusWrapper>
+                    {activeStep < ResourceFormSteps.length - 1 && (
+                      <UpperCaseButton variant="contained" color="primary" onClick={handleNext}>
+                        {t('common.next')}
+                      </UpperCaseButton>
+                    )}
+                    {/*TODO: show error */}
+                    {activeStep === ResourceFormStep.Preview && (
+                      <UpperCaseButton
+                        variant="contained"
+                        color="primary"
+                        onClick={publishResource}
+                        disabled={!formikProps.isValid}>
+                        {t('common.publish')}
+                      </UpperCaseButton>
+                    )}
                   </div>
                 </StyledButtonWrapper>
               </StyledContentWrapper>
