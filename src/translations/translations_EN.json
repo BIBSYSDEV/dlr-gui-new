@@ -185,6 +185,7 @@
       "main_file": "Main file",
       "owner": "Owner",
       "published": "Published",
+      "resource": "Resource",
       "tags": "Keywords",
       "title": "Title",
       "type": "Resource type",
