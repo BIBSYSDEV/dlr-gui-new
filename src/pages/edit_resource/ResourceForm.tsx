@@ -71,10 +71,6 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
 
   const [activeStep, setActiveStep] = useState<ResourceFormStep>(ResourceFormStep.Description);
 
-  useEffect(() => {
-    resourceType === ResourceCreationType.FILE && setActiveStep(ResourceFormStep.Contents);
-  }, [resourceType]);
-
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
