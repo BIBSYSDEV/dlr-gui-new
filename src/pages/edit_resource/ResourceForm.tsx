@@ -17,8 +17,6 @@ import { StatusCode } from '../../utils/constants';
 import { License } from '../../types/license.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import AccessAndLicenseStep from './access_and_licence_step/AccessAndLicenseStep';
-import { hasTouchedError } from '../../utils/formik-helpers';
-import CircularFileUploadProgress from '../../components/CircularFileUploadProgress';
 import { useUppy } from '@uppy/react';
 import { additionalCreateFilesUppy } from '../../utils/uppy-config';
 import { Content } from '../../types/content.types';
@@ -70,10 +68,6 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   const additionalFilesUppy = useUppy(additionalCreateFilesUppy(resource.identifier, setNewContent));
 
   const [activeStep, setActiveStep] = useState<ResourceFormStep>(ResourceFormStep.Description);
-
-  useEffect(() => {
-    resourceType === ResourceCreationType.FILE && setActiveStep(ResourceFormStep.Contents);
-  }, [resourceType]);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
