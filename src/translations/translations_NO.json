@@ -14,6 +14,7 @@
     "or": "Eller",
     "other_options": "Andre lisenser",
     "possible_options": "Mulige lisenser",
+    "publish": "Publiser",
     "remove": "Fjern",
     "search": "Søk",
     "save": "Lagre",
@@ -29,6 +30,7 @@
     "generic": "Ups, noe gikk galt. Prøv igjen senere"
   },
   "feedback": {
+    "form_errors": "Det er feil i skjema. Disse må rettes før ressursen kan publiseres",
     "required_field": "Påkrevd felt",
     "valid_url": "Input må være gyldig URL"
   },
