@@ -199,6 +199,8 @@
     },
     "my_resources": "My resources",
     "new_registration": "New registration",
+    "no_published_resources": "You have no published resources",
+    "no_unpublished_resources": "You have no unpublished resources",
     "preview_not_supported_filetype": "Preview is not supported for this file type",
     "published_resources": "Published resources",
     "search_for_resources": "Search for resources",

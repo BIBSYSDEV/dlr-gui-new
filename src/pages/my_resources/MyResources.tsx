@@ -18,6 +18,11 @@ const StyledListWrapper = styled.div`
   margin-top: 40px;
 `;
 
+const ListMarginAlign = styled.div`
+  display: block;
+  align-items: left;
+`;
+
 const MyResources: FC = () => {
   const { t } = useTranslation();
   const [isLoadingMyResources, setIsLoadingMyResources] = useState(false);
@@ -47,7 +52,7 @@ const MyResources: FC = () => {
     <StyledPageContent>
       {loadingError && <ErrorBanner />}
       {isLoadingMyResources && <CircularProgress />}
-      <div>
+      <ListMarginAlign>
         <StyledListWrapper>
           <List>
             <ListItem>
@@ -59,6 +64,11 @@ const MyResources: FC = () => {
                 <ResourceListItemButton key={index} resource={resource} showTimeCreated={true} />
               ))}
           </List>
+          {!isLoadingMyResources && resourcesUnpublished.length === 0 && (
+            <ListItem>
+              <Typography>{t('resource.no_unpublished_resources')}</Typography>
+            </ListItem>
+          )}
         </StyledListWrapper>
         <StyledListWrapper>
           <List>
@@ -70,9 +80,14 @@ const MyResources: FC = () => {
               resourcesPublished.map((resource: Resource, index: number) => (
                 <ResourceListItemButton key={index} resource={resource} showTimeCreated={true} />
               ))}
+            {!isLoadingMyResources && resourcesPublished.length === 0 && (
+              <ListItem>
+                <Typography>{t('resource.no_published_resources')}</Typography>
+              </ListItem>
+            )}
           </List>
         </StyledListWrapper>
-      </div>
+      </ListMarginAlign>
     </StyledPageContent>
   );
 };
