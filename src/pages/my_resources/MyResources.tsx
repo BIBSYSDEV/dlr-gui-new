@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getMyResources } from '../../api/resourceApi';
-import { CircularProgress, List, ListItem, ListItemText, Typography } from '@material-ui/core';
+import { CircularProgress, List, ListItem, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
@@ -46,13 +46,13 @@ const MyResources: FC = () => {
   return (
     <StyledPageContent>
       {loadingError && <ErrorBanner />}
+      {isLoadingMyResources && <CircularProgress />}
       <div>
         <StyledListWrapper>
           <List>
             <ListItem>
               <Typography variant="h2">{t('resource.unpublished_resources')}</Typography>
             </ListItem>
-            {isLoadingMyResources && <CircularProgress />}
             {!isLoadingMyResources &&
               resourcesUnpublished.length > 0 &&
               resourcesUnpublished.map((resource: Resource, index: number) => (
@@ -65,7 +65,6 @@ const MyResources: FC = () => {
             <ListItem>
               <Typography variant="h2">{t('resource.published_resources')}</Typography>
             </ListItem>
-            {isLoadingMyResources && <CircularProgress />}
             {!isLoadingMyResources &&
               resourcesPublished.length > 0 &&
               resourcesPublished.map((resource: Resource, index: number) => (

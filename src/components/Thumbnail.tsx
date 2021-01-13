@@ -5,11 +5,11 @@ import { API_PATHS, API_URL } from '../utils/constants';
 
 const StyledImage = styled.img`
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    max-width: 7rem;
+    width: 7rem;
     max-height: 7rem;
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
-    max-width: 5rem;
+    width: 5rem;
     max-height: 5rem;
   }
 `;
