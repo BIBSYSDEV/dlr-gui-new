@@ -140,15 +140,17 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                         />
                       )}
                     </Field>
-                    <Button
-                      color="secondary"
-                      startIcon={<DeleteIcon fontSize="large" />}
-                      size="large"
-                      onClick={() => {
-                        removeCreator(creator.identifier, arrayHelpers, index);
-                      }}>
-                      {t('common.remove').toUpperCase()}
-                    </Button>
+                    {index > 0 && (
+                      <Button
+                        color="secondary"
+                        startIcon={<DeleteIcon fontSize="large" />}
+                        size="large"
+                        onClick={() => {
+                          removeCreator(creator.identifier, arrayHelpers, index);
+                        }}>
+                        {t('common.remove').toUpperCase()}
+                      </Button>
+                    )}
                     {updateCreatorError && errorIndex === index && <ErrorBanner />}
                   </StyledFieldsWrapper>
                 );
