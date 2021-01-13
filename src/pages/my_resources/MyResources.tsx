@@ -1,16 +1,26 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getMyResources } from '../../api/resourceApi';
-import { CircularProgress, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
+import { CircularProgress, List, ListItem, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { Resource } from '../../types/resource.types';
-import ImageIcon from '@material-ui/core/SvgIcon/SvgIcon';
 import ErrorBanner from '../../components/ErrorBanner';
+import ResourceListItemButton from '../../components/ResourceListItemButton';
 
 const StyledPageContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
+`;
+
+const StyledListWrapper = styled.div`
+  margin-top: 40px;
+`;
+
+const ListMarginAlign = styled.div`
+  display: block;
+  align-items: left;
 `;
 
 const MyResources: FC = () => {
@@ -41,58 +51,43 @@ const MyResources: FC = () => {
   return (
     <StyledPageContent>
       {loadingError && <ErrorBanner />}
-      <Typography variant="h2">{t('resource.unpublished_resources')}</Typography>
-      <List>
-        {isLoadingMyResources && <CircularProgress />}
-        {!isLoadingMyResources &&
-          resourcesUnpublished.length > 0 &&
-          resourcesUnpublished.map((resource: Resource, index: number) => (
-            <ListItem
-              button
-              component="a"
-              href={`/resource/${resource.identifier}`}
-              key={index}
-              alignItems="flex-start">
-              <ListItemIcon>
-                <ImageIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary={`${resource.features.dlr_title} (${resource.features.dlr_content_type})`}
-                secondary={
-                  <Typography style={{ display: 'block' }} component="span" variant="body2" color="textPrimary">
-                    {resource.features.dlr_time_created}
-                  </Typography>
-                }
-              />
+      {isLoadingMyResources && <CircularProgress />}
+      <ListMarginAlign>
+        <StyledListWrapper>
+          <List>
+            <ListItem>
+              <Typography variant="h2">{t('resource.unpublished_resources')}</Typography>
             </ListItem>
-          ))}
-      </List>
-      <Typography variant="h2">{t('resource.published_resources')}</Typography>
-      <List>
-        {isLoadingMyResources && <CircularProgress />}
-        {!isLoadingMyResources &&
-          resourcesPublished.length > 0 &&
-          resourcesPublished.map((resource: Resource, index: number) => (
-            <ListItem
-              button
-              component="a"
-              href={`/resource/${resource.identifier}`}
-              key={index}
-              alignItems="flex-start">
-              <ListItemIcon>
-                <ImageIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary={`${resource.features.dlr_title} (${resource.features.dlr_content_type})`}
-                secondary={
-                  <Typography style={{ display: 'block' }} component="span" variant="body2" color="textPrimary">
-                    {resource.features.dlr_time_created}
-                  </Typography>
-                }
-              />
+            {!isLoadingMyResources &&
+              resourcesUnpublished.length > 0 &&
+              resourcesUnpublished.map((resource: Resource, index: number) => (
+                <ResourceListItemButton key={index} resource={resource} showTimeCreated={true} />
+              ))}
+          </List>
+          {!isLoadingMyResources && resourcesUnpublished.length === 0 && (
+            <ListItem>
+              <Typography>{t('resource.no_unpublished_resources')}</Typography>
             </ListItem>
-          ))}
-      </List>
+          )}
+        </StyledListWrapper>
+        <StyledListWrapper>
+          <List>
+            <ListItem>
+              <Typography variant="h2">{t('resource.published_resources')}</Typography>
+            </ListItem>
+            {!isLoadingMyResources &&
+              resourcesPublished.length > 0 &&
+              resourcesPublished.map((resource: Resource, index: number) => (
+                <ResourceListItemButton key={index} resource={resource} showTimeCreated={true} />
+              ))}
+            {!isLoadingMyResources && resourcesPublished.length === 0 && (
+              <ListItem>
+                <Typography>{t('resource.no_published_resources')}</Typography>
+              </ListItem>
+            )}
+          </List>
+        </StyledListWrapper>
+      </ListMarginAlign>
     </StyledPageContent>
   );
 };

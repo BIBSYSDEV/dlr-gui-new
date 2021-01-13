@@ -6,7 +6,6 @@ import '@uppy/status-bar/dist/style.css';
 import styled from 'styled-components';
 import { Paper, TextField, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import placeholderImage from '../../../resources/images/placeholder.png';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
 import { updateContentTitle } from '../../../api/resourceApi';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
@@ -14,6 +13,7 @@ import { Colors } from '../../../themes/mainTheme';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { ResourceWrapper } from '../../../types/resource.types';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
+import Thumbnail from '../../../components/Thumbnail';
 
 const StatusBarWrapper = styled.div`
   width: 100%;
@@ -72,7 +72,7 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
         <Typography variant="h4">{t('resource.metadata.main_file')}</Typography>
         <MainFileWrapper>
           <MainFileImageWrapper>
-            <img alt="resource" src={placeholderImage} />
+            <Thumbnail resourceIdentifier={values.resource.identifier} alt={t('resource.metadata.resource')} />
           </MainFileImageWrapper>
           <MainFileMetadata>
             <StyledFieldWrapper>
