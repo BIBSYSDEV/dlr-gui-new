@@ -14,6 +14,7 @@
     "or": "Or",
     "other_options": "Other licenses",
     "possible_options": "Possible licenses",
+    "publish": "Publish",
     "remove": "Remove",
     "search": "Search",
     "save": "Save",
@@ -29,6 +30,7 @@
     "generic": "Whoops, something went wrong. Try again later"
   },
   "feedback": {
+    "form_errors": "There are errors in the form. They have to be corrected before the resource can be published",
     "required_field": "Required field",
     "valid_url": "Input must be a valid URL"
   },

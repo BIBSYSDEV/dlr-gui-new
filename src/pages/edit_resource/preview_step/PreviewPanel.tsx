@@ -18,15 +18,6 @@ const PreviewPanel: FC<DescriptionFieldsProps> = ({ formikProps }) => {
       <StyledContentWrapper>
         {values.resource && <ResourcePresentation resource={values.resource} />}
       </StyledContentWrapper>
-
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel-content">
-          Show full object (for debugging purposes)
-        </AccordionSummary>
-        <AccordionDetails>
-          <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(formikProps.values, null, 2)}</pre>
-        </AccordionDetails>
-      </Accordion>
     </StyledSchemaPartColored>
   );
 };
