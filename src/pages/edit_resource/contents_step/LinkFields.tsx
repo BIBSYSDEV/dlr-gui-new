@@ -40,7 +40,9 @@ const LinkFields = () => {
           </ThumbnailWrapper>
           <LinkMetadata>
             <Typography variant="overline">{t('resource.metadata.link')}</Typography>
-            <MuiLink display="block">{values.resource.features.dlr_content}</MuiLink>
+            <MuiLink data-testid="content-step-link" display="block">
+              {values.resource.features.dlr_content}
+            </MuiLink>
           </LinkMetadata>
         </LinkWrapper>
       </StyledContentWrapper>

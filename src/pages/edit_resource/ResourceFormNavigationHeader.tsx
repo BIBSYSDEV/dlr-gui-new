@@ -96,7 +96,7 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
         {ResourceFormSteps.map((step, index) => {
           return (
             <Step key={step} completed={false}>
-              <StepButton onClick={handleStep(index)}>
+              <StepButton onClick={handleStep(index)} data-testid={`step-navigation-${index}`}>
                 <StepLabel error={hasTouchedError(errors, touched, values, index)}>
                   {getStepLabel(step)}
                   {step === ResourceFormStep.Contents && (
