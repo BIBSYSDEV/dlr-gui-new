@@ -167,6 +167,15 @@ export const getResourceLicenses = (identifier: string): Promise<AxiosResponse<L
   });
 };
 
+export const deleteResourceContent = (resourceIdentifier: string, contentIdentifier: string) => {
+  return authenticatedApiRequest({
+    url: encodeURI(
+      `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contents/${contentIdentifier}`
+    ),
+    method: 'DELETE',
+  });
+};
+
 export const getResourceContents = (identifier: string): Promise<AxiosResponse<Content[]>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/contents`),
