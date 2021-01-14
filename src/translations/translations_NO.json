@@ -175,7 +175,7 @@
     "form_steps": {
       "description": "Beskrivelse",
       "contributors": "Bidragsytere",
-      "files": "Filer",
+      "contents": "Innhold",
       "access_and_licence": "Tilgang og lisens",
       "preview": "Forhåndsvisning"
     },
@@ -190,6 +190,7 @@
       "description": "Beskrivelse",
       "filename": "Filnavn",
       "license": "Lisens",
+      "link": "Lenke",
       "main_file": "Hovedfil",
       "owner": "Eier",
       "published": "Publisert",

@@ -32,8 +32,6 @@ const StyledFieldWrapper = styled.div`
 const MainFileImageWrapper = styled.div`
   margin-top: 1rem;
   margin-right: 2rem;
-  max-height: 200px;
-  max-width: 200px;
 `;
 
 const MainFileMetadata = styled.div`
@@ -69,13 +67,14 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
   return (
     <StyledSchemaPartColored color={Colors.ContentsPageGradientColor1}>
       <StyledContentWrapper>
-        <Typography variant="h4">{t('resource.metadata.main_file')}</Typography>
+        <Typography variant="h5">{t('resource.metadata.main_file')}</Typography>
         <MainFileWrapper>
           <MainFileImageWrapper>
             <Thumbnail resourceIdentifier={values.resource.identifier} alt={t('resource.metadata.resource')} />
           </MainFileImageWrapper>
           <MainFileMetadata>
             <StyledFieldWrapper>
+              {/*//TODO: First item in contents is not always main content*/}
               <Field name="resource.contents[0].features.dlr_content_title">
                 {({ field, meta: { touched, error } }: FieldProps) => (
                   <TextField

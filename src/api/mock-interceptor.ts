@@ -21,7 +21,7 @@ const mockResource: Resource = {
   identifier: 'resource-123',
   features: {
     dlr_title: 'This is a mocked title',
-    dlr_content: 'some content',
+    dlr_content: 'http://www.test.com',
     dlr_time_published: '2020-11-06T12:47:18.635Z',
     dlr_time_created: '2020-11-01T12:47:18.635Z',
     dlr_submitter_email: 'Test Testesen',
@@ -48,7 +48,7 @@ const mockResource: Resource = {
 const mockCalculatedResource: Resource = {
   features: {
     dlr_title: 'This is a mocked generated title',
-    dlr_content: 'some content',
+    dlr_content: 'http://www.test.com',
   },
   identifier: 'resource-345',
   licenses: [],
