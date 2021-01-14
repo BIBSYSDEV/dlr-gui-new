@@ -19,8 +19,6 @@ const LinkWrapper = styled.div`
 const ThumbnailWrapper = styled.div`
   margin-top: 1rem;
   margin-right: 2rem;
-  max-height: 200px;
-  max-width: 200px;
 `;
 
 const LinkMetadata = styled.div`
