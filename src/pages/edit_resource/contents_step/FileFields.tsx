@@ -74,6 +74,7 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
           </MainFileImageWrapper>
           <MainFileMetadata>
             <StyledFieldWrapper>
+              {/*//TODO: First item in contents is not always main content*/}
               <Field name="resource.contents[0].features.dlr_content_title">
                 {({ field, meta: { touched, error } }: FieldProps) => (
                   <TextField
