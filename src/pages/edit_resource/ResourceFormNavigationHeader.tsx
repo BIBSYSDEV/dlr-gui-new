@@ -82,7 +82,7 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
       case ResourceFormStep.Contributors:
         return t('resource.form_steps.contributors');
       case ResourceFormStep.Contents:
-        return t('resource.form_steps.files');
+        return t('resource.form_steps.contents');
       case ResourceFormStep.AccessAndLicense:
         return t('resource.form_steps.access_and_licence');
       case ResourceFormStep.Preview:

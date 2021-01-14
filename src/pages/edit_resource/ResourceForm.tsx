@@ -178,7 +178,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                 <StyledPanel>
                   <StyledSchemaPart>
                     <StyledContentWrapper>
-                      <Typography variant="h4">{formikProps.values.resource.features.dlr_title}</Typography>
+                      <Typography variant="h5">{formikProps.values.resource.features.dlr_title}</Typography>
                     </StyledContentWrapper>
                   </StyledSchemaPart>
                   <CreatorField setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)} />
@@ -195,7 +195,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                   {loadingLicensesErrorStatus !== StatusCode.ACCEPTED && <ErrorBanner />}
                   <StyledSchemaPart>
                     <StyledContentWrapper>
-                      <Typography variant="h4">{formikProps.values.resource.features.dlr_title}</Typography>
+                      <Typography variant="h5">{formikProps.values.resource.features.dlr_title}</Typography>
                     </StyledContentWrapper>
                   </StyledSchemaPart>
 
@@ -209,7 +209,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                 <StyledPanel id={fileUploadPanelId}>
                   <StyledSchemaPart>
                     <StyledContentWrapper>
-                      <Typography variant="h4">{formikProps.values.resource.features.dlr_title}</Typography>
+                      <Typography variant="h5">{formikProps.values.resource.features.dlr_title}</Typography>
                     </StyledContentWrapper>
                   </StyledSchemaPart>
                   <ContentsStep
@@ -217,6 +217,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                     setAllChangesSaved={setAllChangesSaved}
                     newContent={newContent}
                     additionalFileUploadUppy={additionalFilesUppy}
+                    resourceType={resourceType}
                   />
                 </StyledPanel>
               )}

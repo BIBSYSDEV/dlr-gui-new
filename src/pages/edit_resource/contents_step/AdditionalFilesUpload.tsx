@@ -134,13 +134,13 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
     <StyledSchemaPartColored color={Colors.ContentsPageGradientColor2}>
       <StyledContentWrapper>
         <LargeParagraphSpace>
-          <Typography variant="h4" paragraph>
+          <Typography variant="h5" paragraph>
             {t('resource.files_and_license.additional_files.additional_files')}
           </Typography>
-          <Typography variant="h6" paragraph>
+          <Typography variant="overline" paragraph>
             {t('resource.files_and_license.additional_files.additional_files_description')}
           </Typography>
-          <Typography variant="h6" paragraph>
+          <Typography variant="overline" paragraph>
             {`${t('resource.files_and_license.additional_files.additional_files_warning')}.`}
           </Typography>
         </LargeParagraphSpace>
