@@ -162,11 +162,18 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
           }}>
           {(formikProps: FormikProps<FormikValues>) => (
             <StyledForm>
-              <StyledContentWrapper>
-                <ResourceFormNavigationHeader activeStep={activeStep} setActiveStep={setActiveStep} uppy={uppy} />
-              </StyledContentWrapper>
+              <StyledSchemaPart>
+                <StyledContentWrapper>
+                  <ResourceFormNavigationHeader activeStep={activeStep} setActiveStep={setActiveStep} uppy={uppy} />
+                </StyledContentWrapper>
+              </StyledSchemaPart>
               {activeStep === ResourceFormStep.Description && (
                 <StyledPanel>
+                  <StyledSchemaPart>
+                    <StyledContentWrapper>
+                      <Typography variant="h2">{formikProps.values.resource.features.dlr_title}</Typography>
+                    </StyledContentWrapper>
+                  </StyledSchemaPart>
                   <DescriptionFields
                     setAllChangesSaved={(status: boolean) => {
                       setAllChangesSaved(status);
@@ -178,7 +185,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                 <StyledPanel>
                   <StyledSchemaPart>
                     <StyledContentWrapper>
-                      <Typography variant="h4">{formikProps.values.resource.features.dlr_title}</Typography>
+                      <Typography variant="h2">{formikProps.values.resource.features.dlr_title}</Typography>
                     </StyledContentWrapper>
                   </StyledSchemaPart>
                   <CreatorField setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)} />
@@ -195,7 +202,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                   {loadingLicensesErrorStatus !== StatusCode.ACCEPTED && <ErrorBanner />}
                   <StyledSchemaPart>
                     <StyledContentWrapper>
-                      <Typography variant="h4">{formikProps.values.resource.features.dlr_title}</Typography>
+                      <Typography variant="h2">{formikProps.values.resource.features.dlr_title}</Typography>
                     </StyledContentWrapper>
                   </StyledSchemaPart>
 
@@ -209,7 +216,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                 <StyledPanel id={fileUploadPanelId}>
                   <StyledSchemaPart>
                     <StyledContentWrapper>
-                      <Typography variant="h4">{formikProps.values.resource.features.dlr_title}</Typography>
+                      <Typography variant="h2">{formikProps.values.resource.features.dlr_title}</Typography>
                     </StyledContentWrapper>
                   </StyledSchemaPart>
                   <ContentsStep

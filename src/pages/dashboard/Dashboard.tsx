@@ -7,6 +7,7 @@ import { SearchResult } from '../../types/search.types';
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import ResourceListItemButton from '../../components/ResourceListItemButton';
+import Typography from '@material-ui/core/Typography';
 
 const StyledDashboard = styled.div`
   display: flex;
@@ -49,7 +50,7 @@ const Dashboard: FC = () => {
 
   return (
     <StyledDashboard>
-      <h1>{t('resource.search_for_resources')}</h1>
+      <Typography variant="h1">{t('resource.search_for_resources')}</Typography>
 
       <SearchFieldWrapper>
         <form onSubmit={triggerSearch}>

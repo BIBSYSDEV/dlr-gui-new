@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { Typography } from '@material-ui/core';
+import { Typography, TypographyTypeMap } from '@material-ui/core';
+import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 
-const StyledHeader = styled(Typography)`
+const StyledHeader: OverridableComponent<TypographyTypeMap<unknown, 'span'>> = styled(Typography)`
   border-bottom: 3px solid;
   margin-top: 1rem;
   margin-bottom: 1rem;

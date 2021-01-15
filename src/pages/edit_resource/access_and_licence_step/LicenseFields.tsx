@@ -64,7 +64,6 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor3}>
       <StyledContentWrapper>
-        <Typography variant="h4">{t('resource.metadata.license')}</Typography>
         {licenses && (
           <Field name={LicenceFieldName}>
             {({ field, meta: { error, touched } }: FieldProps) => (

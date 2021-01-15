@@ -134,13 +134,11 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
     <StyledSchemaPartColored color={Colors.ContentsPageGradientColor2}>
       <StyledContentWrapper>
         <LargeParagraphSpace>
-          <Typography variant="h4" paragraph>
-            {t('resource.files_and_license.additional_files.additional_files')}
-          </Typography>
-          <Typography variant="h6" paragraph>
+          <Typography variant="h3">{t('resource.files_and_license.additional_files.additional_files')}</Typography>
+          <Typography variant="overline" paragraph>
             {t('resource.files_and_license.additional_files.additional_files_description')}
           </Typography>
-          <Typography variant="h6" paragraph>
+          <Typography variant="overline" paragraph>
             {`${t('resource.files_and_license.additional_files.additional_files_warning')}.`}
           </Typography>
         </LargeParagraphSpace>
@@ -162,8 +160,8 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
             </UploadImageProgressCard>
             <SmallParagraphSpace>
               <Typography variant="body1">{content.features.dlr_content}</Typography>
-              <Typography variant="body1">{uploadPercentageArray[index]?.fileType}</Typography>
-              <Typography variant="body2">{uploadPercentageArray[index]?.fileSize}</Typography>
+              <Typography variant="body2">{uploadPercentageArray[index]?.fileType}</Typography>
+              <Typography variant="overline">{uploadPercentageArray[index]?.fileSize}</Typography>
             </SmallParagraphSpace>
           </LargeParagraphSpace>
         ))}
