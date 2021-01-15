@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Step, StepButton, StepLabel, Stepper } from '@material-ui/core';
-import { ResourceFormStep, ResourceFormSteps, ResourceWrapper } from '../../types/resource.types';
+import { getStepLabel, ResourceFormStep, ResourceFormSteps, ResourceWrapper } from '../../types/resource.types';
 import { useFormikContext } from 'formik';
 import { StyledContentWrapper } from '../../components/styled/Wrappers';
 import {
@@ -75,21 +75,6 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
     };
   }, [setTouched, activeStep]);
 
-  const getStepLabel = (step: ResourceFormStep) => {
-    switch (step) {
-      case ResourceFormStep.Description:
-        return t('resource.form_steps.description');
-      case ResourceFormStep.Contributors:
-        return t('resource.form_steps.contributors');
-      case ResourceFormStep.Contents:
-        return t('resource.form_steps.contents');
-      case ResourceFormStep.AccessAndLicense:
-        return t('resource.form_steps.access_and_licence');
-      case ResourceFormStep.Preview:
-        return t('resource.form_steps.preview');
-    }
-  };
-
   return (
     <StyledContentWrapper>
       <Stepper style={{ width: '100%' }} activeStep={activeStep} nonLinear alternativeLabel>
@@ -98,7 +83,7 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
             <Step key={step} completed={false}>
               <StepButton onClick={handleStep(index)} data-testid={`step-navigation-${index}`}>
                 <StepLabel error={hasTouchedError(errors, touched, values, index)}>
-                  {getStepLabel(step)}
+                  {t(getStepLabel(step))}
                   {step === ResourceFormStep.Contents && (
                     <CircularFileUploadProgress
                       uppy={uppy}

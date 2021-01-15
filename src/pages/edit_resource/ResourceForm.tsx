@@ -2,8 +2,8 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
-import { Button, CircularProgress, Typography } from '@material-ui/core';
-import { getLicenses, publishResource } from '../../api/resourceApi';
+import { CircularProgress, Typography } from '@material-ui/core';
+import { getLicenses } from '../../api/resourceApi';
 import { Resource, ResourceCreationType, ResourceFormStep } from '../../types/resource.types';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import * as Yup from 'yup';
@@ -23,7 +23,7 @@ import { Content } from '../../types/content.types';
 import ContentsStep from './contents_step/ContentsStep';
 import ResourceFormNavigationHeader from './ResourceFormNavigationHeader';
 import ResourceFormErrors from './ResourceFormErrors';
-import { useHistory } from 'react-router-dom';
+import ResourceFormActions from './ResourceFormActions';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -41,24 +41,6 @@ const StyledPanel = styled.div`
   width: 100%;
   min-height: 10rem;
   padding-top: 2rem;
-  padding-bottom: 1rem;
-`;
-
-const StyledButtonWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'};
-  padding: 2rem 2rem 1rem;
-`;
-
-const StyledFormStatusWrapper = styled.div`
-  padding-right: 1rem;
-  display: inline-block;
-`;
-
-const UpperCaseButton = styled(Button)`
-  text-transform: uppercase;
 `;
 
 interface ResourceFormProps {
@@ -77,28 +59,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
   const [licenses, setLicenses] = useState<License[]>();
   const additionalFilesUppy = useUppy(additionalCreateFilesUppy(resource.identifier, setNewContent));
-  const [publishResourceError, setPublishResourceError] = useState(false);
-  const history = useHistory();
-
-  const [activeStep, setActiveStep] = useState<ResourceFormStep>(ResourceFormStep.Description);
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handlePublishResource = async () => {
-    setPublishResourceError(false);
-    try {
-      await publishResource(resource.identifier);
-      history.push(`/resource/${resource.identifier}`);
-    } catch (error) {
-      setPublishResourceError(true);
-    }
-  };
+  const [activeStep, setActiveStep] = useState(ResourceFormStep.Description);
 
   const resourceValidationSchema = Yup.object().shape({
     resource: Yup.object().shape({
@@ -228,37 +189,13 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
               )}
 
               {activeStep === ResourceFormStep.Preview && !formikProps.isValid && <ResourceFormErrors />}
-
-              {/*//TODO: Trekke ut form-actions som egen komponent*/}
-              <StyledContentWrapper>
-                <StyledButtonWrapper>
-                  <UpperCaseButton variant="outlined" disabled={activeStep === 0} onClick={handleBack}>
-                    {t('common.back')}
-                  </UpperCaseButton>
-                  <div>
-                    <StyledFormStatusWrapper>
-                      {!allChangesSaved && <CircularProgress size="1rem" />}
-                      {allChangesSaved && !formikProps.dirty && (
-                        <Typography variant={'body1'}>{t('common.all_changes_saved')}</Typography>
-                      )}
-                    </StyledFormStatusWrapper>
-                    {activeStep === ResourceFormStep.Preview ? (
-                      <UpperCaseButton
-                        variant="contained"
-                        color="primary"
-                        onClick={handlePublishResource}
-                        disabled={!formikProps.isValid}>
-                        {t('common.publish')}
-                      </UpperCaseButton>
-                    ) : (
-                      <UpperCaseButton variant="contained" color="primary" onClick={handleNext}>
-                        {t('common.next')}
-                      </UpperCaseButton>
-                    )}
-                  </div>
-                </StyledButtonWrapper>
-                {publishResourceError && <ErrorBanner />}
-              </StyledContentWrapper>
+              <StyledPanel>
+                <ResourceFormActions
+                  activeStep={activeStep}
+                  allChangesSaved={allChangesSaved}
+                  setActiveStep={setActiveStep}
+                />
+              </StyledPanel>
             </StyledForm>
           )}
         </Formik>
