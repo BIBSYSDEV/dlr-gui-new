@@ -11,7 +11,7 @@ import DescriptionFields from './description_step/DescriptionFields';
 import { Uppy } from '../../types/file.types';
 import ContributorFields from './contributors_step/ContributorFields';
 import CreatorField from './contributors_step/CreatorField';
-import { StyledContentWrapper, StyledSchemaPart } from '../../components/styled/Wrappers';
+import { StyledContentWrapper, StyledContentWrapperMedium, StyledSchemaPart } from '../../components/styled/Wrappers';
 import PreviewPanel from './preview_step/PreviewPanel';
 import { StatusCode } from '../../utils/constants';
 import { License } from '../../types/license.types';
@@ -148,9 +148,9 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
 
   return (
     <>
-      <StyledContentWrapper>
+      <StyledContentWrapperMedium>
         <PageHeader>{t('resource.edit_resource')}</PageHeader>
-      </StyledContentWrapper>
+      </StyledContentWrapperMedium>
       {resource && (
         <Formik
           initialValues={{
@@ -162,9 +162,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
           }}>
           {(formikProps: FormikProps<FormikValues>) => (
             <StyledForm>
-              <StyledContentWrapper>
-                <ResourceFormNavigationHeader activeStep={activeStep} setActiveStep={setActiveStep} uppy={uppy} />
-              </StyledContentWrapper>
+              <ResourceFormNavigationHeader activeStep={activeStep} setActiveStep={setActiveStep} uppy={uppy} />
               {activeStep === ResourceFormStep.Description && (
                 <StyledPanel>
                   <DescriptionFields
@@ -193,11 +191,6 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                 <StyledPanel>
                   {isLoadingLicenses && <CircularProgress />}
                   {loadingLicensesErrorStatus !== StatusCode.ACCEPTED && <ErrorBanner />}
-                  <StyledSchemaPart>
-                    <StyledContentWrapper>
-                      <Typography variant="h5">{formikProps.values.resource.features.dlr_title}</Typography>
-                    </StyledContentWrapper>
-                  </StyledSchemaPart>
 
                   <AccessAndLicenseStep
                     setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}

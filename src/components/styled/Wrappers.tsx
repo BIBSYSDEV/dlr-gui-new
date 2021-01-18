@@ -45,6 +45,11 @@ export const StyledSchemaPartColored = styled(StyledSchemaPart)`
 
 export const StyledContentWrapper = styled.div`
   width: 100%;
+  max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'};
+`;
+
+export const StyledContentWrapperMedium = styled.div`
+  width: 100%;
   max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'};
 `;
 
@@ -58,7 +63,7 @@ export const StyledRadioBoxWrapper = styled.div`
 `;
 
 export const StyledRadioGroup = styled(RadioGroup)`
-  margin-left: 20rem;
+  margin-left: 10vw;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     margin-left: 0;
   }
