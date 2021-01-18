@@ -218,9 +218,13 @@ export default createMuiTheme({
       label: {
         width: 'fit-content',
         fontSize: '1rem',
+        '@media (max-width:600px)': {
+          visibility: 'collapse',
+        },
         '&$active': {
           fontWeight: '600',
           color: Colors.StepperSelected,
+          visibility: 'visible',
         },
       },
     },
