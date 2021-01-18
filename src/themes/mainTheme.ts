@@ -1,5 +1,5 @@
 import { createMuiTheme } from '@material-ui/core';
-import { barlowRegular, merriweatherRegular } from './fonts';
+import { barlowRegular, merriweatherRegular, LibreFranklinRegular } from './fonts';
 
 // Extend Palette type to allow custom colors
 declare module '@material-ui/core/styles/createPalette' {
@@ -176,7 +176,7 @@ export default createMuiTheme({
     },
     MuiCssBaseline: {
       '@global': {
-        '@font-face': [merriweatherRegular, barlowRegular],
+        '@font-face': [merriweatherRegular, barlowRegular, LibreFranklinRegular],
       },
     },
     MuiInputBase: {
@@ -215,14 +215,9 @@ export default createMuiTheme({
       },
     },
     MuiStepLabel: {
-      active: {
-        borderBottomStyle: 'solid',
-        borderColor: Colors.StepperSelected,
-      },
       label: {
         width: 'fit-content',
         fontSize: '1rem',
-        paddingBottom: '0.875rem',
         '&$active': {
           fontWeight: '600',
           color: Colors.StepperSelected,
