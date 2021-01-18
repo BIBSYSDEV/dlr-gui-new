@@ -216,3 +216,18 @@ export const ResourceFormSteps = [
   ResourceFormStep.AccessAndLicense,
   ResourceFormStep.Preview,
 ];
+
+export const getStepLabel = (step: ResourceFormStep) => {
+  switch (step) {
+    case ResourceFormStep.Description:
+      return 'resource.form_steps.description';
+    case ResourceFormStep.Contributors:
+      return 'resource.form_steps.contributors';
+    case ResourceFormStep.Contents:
+      return 'resource.form_steps.contents';
+    case ResourceFormStep.AccessAndLicense:
+      return 'resource.form_steps.access_and_licence';
+    case ResourceFormStep.Preview:
+      return 'resource.form_steps.preview';
+  }
+};

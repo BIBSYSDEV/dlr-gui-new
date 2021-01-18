@@ -15,10 +15,16 @@ const StyledWrapper = styled.div`
 
 const StyledA = styled.a`
   display: flex;
+  align-items: center;
   padding: 0.2rem;
 `;
 const StyledTypography = styled(Typography)`
   padding-left: 0.2rem;
+`;
+
+const StyledLicenseLogoImage = styled.img`
+  max-height: 15px;
+  margin-right: 1rem;
 `;
 
 const LicenseCard: FC<LicenseProps> = ({ license }) => {
@@ -30,14 +36,14 @@ const LicenseCard: FC<LicenseProps> = ({ license }) => {
       {language.includes('nb') && (
         <>
           {license.features?.dlr_license_code && (
-            <Typography variant="h6">{license.features?.dlr_license_name_no}</Typography>
+            <Typography variant="subtitle1">{license.features?.dlr_license_name_no}</Typography>
           )}
           {!license.features?.dlr_license_name_no && (
-            <Typography variant="h6">{license.features?.dlr_license_name}</Typography>
+            <Typography variant="subtitle1">{license.features?.dlr_license_name}</Typography>
           )}
-          <Typography variant="body1">{license.features?.dlr_license_description_no}</Typography>
+          <Typography variant="caption">{license.features?.dlr_license_description_no}</Typography>
           {!license.features?.dlr_license_description_no && (
-            <Typography variant="body1">{license.features?.dlr_license_description}</Typography>
+            <Typography variant="caption">{license.features?.dlr_license_description}</Typography>
           )}
           <StyledA target="_blank" href={license.features?.dlr_license_url_no ?? ''}>
             <img src={license.features?.dlr_license_url_image} alt={license.features?.dlr_license_code} />
@@ -58,7 +64,10 @@ const LicenseCard: FC<LicenseProps> = ({ license }) => {
             <Typography variant="body1">{license.features?.dlr_license_description}</Typography>
           )}
           <StyledA target="_blank" href={license.features?.dlr_license_url_en ?? ''}>
-            <img src={license.features?.dlr_license_url_image} alt={license.features?.dlr_license_code} />
+            <StyledLicenseLogoImage
+              src={license.features?.dlr_license_url_image}
+              alt={license.features?.dlr_license_code}
+            />
             <StyledTypography>
               {`${t('license.read_more')}: ${license.features?.dlr_license_code} (${t(
                 'license.external_page'

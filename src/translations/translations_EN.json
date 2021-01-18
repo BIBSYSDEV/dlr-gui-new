@@ -45,7 +45,7 @@
     "license_information": "License information",
     "modify_and_build": "Modify and build upon",
     "modify_and_build_options": {
-      "dont_care": "And, the may choose their own license",
+      "dont_care": "And, they may choose their own license",
       "ND": "No, others can only use the material in it's original form",
       "primary_yes": "Yes, others can modify and build upon your material",
       "share_alike": "But, they have to use the same license as this resource (be aware that this might cause complications for usage of your resource)"
@@ -175,7 +175,7 @@
     "form_steps": {
       "description": "Description",
       "contributors": "Contributors",
-      "files": "Files",
+      "contents": "Content",
       "access_and_licence": "Access and licence",
       "preview": "Preview"
     },
@@ -190,6 +190,7 @@
       "description": "Description",
       "filename": "File name",
       "license": "License",
+      "link": "Link",
       "main_file": "Main file",
       "owner": "Owner",
       "published": "Published",

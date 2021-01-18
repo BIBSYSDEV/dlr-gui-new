@@ -32,8 +32,6 @@ const StyledFieldWrapper = styled.div`
 const MainFileImageWrapper = styled.div`
   margin-top: 1rem;
   margin-right: 2rem;
-  max-height: 200px;
-  max-width: 200px;
 `;
 
 const MainFileMetadata = styled.div`
@@ -76,6 +74,7 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
           </MainFileImageWrapper>
           <MainFileMetadata>
             <StyledFieldWrapper>
+              {/*//TODO: First item in contents is not always main content*/}
               <Field name="resource.contents[0].features.dlr_content_title">
                 {({ field, meta: { touched, error } }: FieldProps) => (
                   <TextField
