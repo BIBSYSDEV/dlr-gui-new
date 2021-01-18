@@ -19,6 +19,10 @@ const StyledSubRadioGroup = styled(StyledRadioGroup)`
   }
 `;
 
+const StyledOverlineWrapper = styled.div`
+  padding-bottom: 1rem;
+`;
+
 const extraRestrictionRadio = 'extra-restriction';
 const commercialRadio = 'commersial';
 const modifyAndBuildRadio = 'change-and-build';
@@ -153,9 +157,9 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor3}>
       <StyledContentWrapper>
         <Typography variant="h3">{t('resource.metadata.license')}</Typography>
-        <Typography variant="overline">
-          Svar på spørsmålene for å få hjelp til å velge lisens eller velg lisens direkte fra nedtrekksmenyen{' '}
-        </Typography>
+        <StyledOverlineWrapper>
+          <Typography variant="overline">{t('license.radio_information')}</Typography>
+        </StyledOverlineWrapper>
         <AccordionRadioGroup ariaDescription={extraRestrictionRadio} title={t('license.extra_restrictions')}>
           <FormLabel component="legend" id={`${extraRestrictionRadio}-label`}>
             <Typography variant="overline">{t('license.questions.special_needs')}</Typography>
