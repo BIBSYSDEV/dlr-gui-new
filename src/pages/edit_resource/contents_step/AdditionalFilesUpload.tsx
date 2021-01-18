@@ -166,6 +166,10 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
     }
   };
 
+  const displayContent = (dlrContenName: string): UploadPerFile | undefined => {
+    return uploadPercentageArray.find((uploadFile) => uploadFile.filename === dlrContenName);
+  };
+
   return (
     <StyledSchemaPartColored color={Colors.ContentsPageGradientColor2}>
       <StyledContentWrapper>
@@ -185,21 +189,21 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
             <UploadImageProgressCard>
               <StyledImg alt="resource" src={placeholderImage} />
               <Typography align="right" variant="body1">
-                {uploadPercentageArray[index]?.percentage} %
+                {displayContent(content.features.dlr_content)?.percentage} %
               </Typography>
               <LinearProgress
                 aria-label={`${t(
                   'resource.files_and_license.additional_files.additional_files_progress_bar_aria_label'
                 )} ${content.features.dlr_content}`}
                 variant="determinate"
-                value={uploadPercentageArray[index]?.percentage ?? 0}
+                value={displayContent(content.features.dlr_content)?.percentage ?? 0}
                 role="progressbar"
               />
             </UploadImageProgressCard>
             <SmallParagraphSpace>
               <Typography variant="body1">{content.features.dlr_content}</Typography>
-              <Typography variant="body1">{uploadPercentageArray[index]?.fileType}</Typography>
-              <Typography variant="body2">{uploadPercentageArray[index]?.fileSize}</Typography>
+              <Typography variant="body1">{displayContent(content.features.dlr_content)?.fileType}</Typography>
+              <Typography variant="body2">{displayContent(content.features.dlr_content)?.fileSize}</Typography>
             </SmallParagraphSpace>
             <Button
               color="secondary"
