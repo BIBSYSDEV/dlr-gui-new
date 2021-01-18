@@ -8,26 +8,27 @@ import FormLabel from '@material-ui/core/FormLabel';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/rootReducer';
 import { Colors } from '../../../themes/mainTheme';
-import { StyledRadioBoxWrapper, StyledRadioGroup, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
+import {
+  StyledContentWrapper,
+  StyledRadioBoxWrapper,
+  StyledRadioGroup,
+  StyledSchemaPartColored,
+} from '../../../components/styled/Wrappers';
 import { deleteResourceLicense, putAccessType, setResourceLicense } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import { AccessTypes, LicenseConstants, License, emptyLicense } from '../../../types/license.types';
+import { AccessTypes, emptyLicense, License, LicenseConstants } from '../../../types/license.types';
 
 const StyledOutLinedBox = styled.div`
   display: flex;
   outline-style: solid;
   outline-color: ${({ theme }) => theme.palette.primary};
+  outline-width: 0.1rem;
   padding: 1rem;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
-  outline-width: 0.1rem;
-  width: 80%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    width: 90%;
-  }
 `;
 
 const StyledTypography = styled(Typography)`
@@ -130,53 +131,55 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
 
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor1}>
-      <StyledRadioBoxWrapper>
-        <FormLabel component="legend" id={otherPeopleWorkId}>
-          <Typography variant="subtitle1">{t('license.questions.contains_other_peoples_work')}</Typography>
-          <Typography variant="overline">{t('license.questions.examples')}</Typography>
-        </FormLabel>
-        <StyledRadioGroup
-          aria-label={t('license.questions.examples')}
-          value={containsOtherPeoplesWork}
-          onChange={(event) => handleChangeInContainsOtherPeoplesWork(event)}>
-          <FormControlLabel value={false} control={<Radio color="primary" />} label={t('common.no')} />
-          <FormControlLabel value={true} control={<Radio color="primary" />} label={t('common.yes')} />
-        </StyledRadioGroup>
-      </StyledRadioBoxWrapper>
-      {containsOtherPeoplesWork && (
+      <StyledContentWrapper>
         <StyledRadioBoxWrapper>
-          <FormLabel id={usageClearedId} component="legend">
-            {t('license.questions.usage_cleared_with_owner')}
+          <FormLabel component="legend" id={otherPeopleWorkId}>
+            <Typography variant="subtitle1">{t('license.questions.contains_other_peoples_work')}</Typography>
+            <Typography variant="overline">{t('license.questions.examples')}</Typography>
           </FormLabel>
           <StyledRadioGroup
-            aria-label={t('license.questions.usage_cleared_with_owner')}
-            value={LicenseAgreement}
-            onChange={(event) => handleLicenseAgreementChange(event)}>
-            {additionalLicense && (
-              <FormControlLabel
-                value={additionalLicense}
-                label={t(`license.limitation.${additionalLicense}.title`)}
-                control={<Radio color="primary" />}
-              />
-            )}
-            {LicenseAgreements.map((element, index) => (
-              <FormControlLabel
-                value={element}
-                key={index}
-                label={t(`license.limitation.${element}.title`)}
-                control={<Radio color="primary" />}
-              />
-            ))}
+            aria-label={t('license.questions.examples')}
+            value={containsOtherPeoplesWork}
+            onChange={(event) => handleChangeInContainsOtherPeoplesWork(event)}>
+            <FormControlLabel value={false} control={<Radio color="primary" />} label={t('common.no')} />
+            <FormControlLabel value={true} control={<Radio color="primary" />} label={t('common.yes')} />
           </StyledRadioGroup>
         </StyledRadioBoxWrapper>
-      )}
-      {savingError && <ErrorBanner />}
-      {LicenseAgreement !== LicenseConstants.YesOther && LicenseAgreement !== '' && containsOtherPeoplesWork && (
-        <StyledOutLinedBox>
-          <ErrorOutlineIcon color="primary" />
-          <StyledTypography>{t(`license.limitation.${LicenseAgreement}.important_notice`)}</StyledTypography>
-        </StyledOutLinedBox>
-      )}
+        {containsOtherPeoplesWork && (
+          <StyledRadioBoxWrapper>
+            <FormLabel id={usageClearedId} component="legend">
+              <Typography variant="subtitle1"> {t('license.questions.usage_cleared_with_owner')}</Typography>
+            </FormLabel>
+            <StyledRadioGroup
+              aria-label={t('license.questions.usage_cleared_with_owner')}
+              value={LicenseAgreement}
+              onChange={(event) => handleLicenseAgreementChange(event)}>
+              {additionalLicense && (
+                <FormControlLabel
+                  value={additionalLicense}
+                  label={t(`license.limitation.${additionalLicense}.title`)}
+                  control={<Radio color="primary" />}
+                />
+              )}
+              {LicenseAgreements.map((element, index) => (
+                <FormControlLabel
+                  value={element}
+                  key={index}
+                  label={t(`license.limitation.${element}.title`)}
+                  control={<Radio color="primary" />}
+                />
+              ))}
+            </StyledRadioGroup>
+          </StyledRadioBoxWrapper>
+        )}
+        {savingError && <ErrorBanner />}
+        {LicenseAgreement !== LicenseConstants.YesOther && LicenseAgreement !== '' && containsOtherPeoplesWork && (
+          <StyledOutLinedBox>
+            <ErrorOutlineIcon color="primary" />
+            <StyledTypography>{t(`license.limitation.${LicenseAgreement}.important_notice`)}</StyledTypography>
+          </StyledOutLinedBox>
+        )}
+      </StyledContentWrapper>
     </StyledSchemaPartColored>
   );
 };
