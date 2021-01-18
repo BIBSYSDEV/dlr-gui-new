@@ -52,6 +52,15 @@ const StyledContentWrapper = styled.div`
   max-width: ${({ theme }) => theme.breakpoints.values.lg + 'px'};
 `;
 
+const potentialDLRTypes = [
+  ResourceFeatureTypes.audio,
+  ResourceFeatureTypes.image,
+  ResourceFeatureTypes.presentation,
+  ResourceFeatureTypes.simulation,
+  ResourceFeatureTypes.video,
+  ResourceFeatureTypes.document,
+];
+
 //StartingContributorType must match one of the elements in resources/assets/contributorTypeList.json. This to prevent error: "Material-UI: You have provided an out-of-range value..."
 const StartingContributorType = 'HostingInstitution';
 
@@ -73,6 +82,7 @@ const EditResourcePage: FC = () => {
     setIsLoadingResource(true);
     getResourceInit(newResource, ResourceCreationType.FILE);
   };
+  const mainFileHandler = useUppy(createUppy('', false, onCreateFile));
 
   const onSubmitLink = async (url: string) => {
     setShowForm(true);
@@ -86,9 +96,9 @@ const EditResourcePage: FC = () => {
     }
   };
 
-  const resourceHasKnownType = (resource: Resource): boolean => {
+  const resourceDLRTypeFromDefaults = (resource: Resource): ResourceFeatureTypes => {
     if (!resource.features.dlr_type) {
-      return false;
+      return ResourceFeatureTypes.document;
     } else {
       switch (resource.features.dlr_type) {
         case ResourceFeatureTypes.audio:
@@ -97,27 +107,27 @@ const EditResourcePage: FC = () => {
         case ResourceFeatureTypes.presentation:
         case ResourceFeatureTypes.simulation:
         case ResourceFeatureTypes.video:
-          return true;
+          return resource.features.dlr_type as ResourceFeatureTypes;
         default:
-          return false;
+          return ResourceFeatureTypes.document;
       }
     }
   };
 
-  const setResourceTypeAsDocument = async (tempResouce: Resource, resourceIdentifier: string) => {
+  const saveResourceDLRType = async (
+    tempResouce: Resource,
+    resourceIdentifier: string,
+    dlrType: ResourceFeatureTypes
+  ) => {
     try {
-      await postResourceFeature(resourceIdentifier, ResourceFeatureNames.Type, ResourceFeatureTypes.document);
-      tempResouce.features.dlr_type = ResourceFeatureTypes.document;
+      await postResourceFeature(resourceIdentifier, ResourceFeatureNames.Type, dlrType);
+      tempResouce.features.dlr_type = dlrType;
     } catch (error) {
       setResourceInitError(true);
     }
   };
 
-  const setAddCreatorIdentifier = async (
-    tempResource: Resource,
-    resourceIdentifier: string,
-    mainCreatorName: string
-  ) => {
+  const setCreator = async (tempResource: Resource, resourceIdentifier: string, mainCreatorName: string) => {
     const postCreatorResponse = await postResourceCreator(resourceIdentifier);
     await putResourceCreatorFeature(
       resourceIdentifier,
@@ -140,6 +150,31 @@ const EditResourcePage: FC = () => {
     await postResourceFeature(tempResource.identifier, 'dlr_access', 'open');
     tempResource.features.dlr_access = 'open';
   };
+
+  async function setDLRType(
+    resourceCreationType: ResourceCreationType,
+    responseWithCalculatedDefaults: Resource,
+    tempResource: Resource,
+    startingResource: Resource
+  ) {
+    let resourceDLRType = ResourceFeatureTypes.document;
+    if (resourceCreationType === ResourceCreationType.FILE) {
+      const filetype = mainFileHandler.getFiles()[0].type;
+      if (filetype) {
+        const suggestion = potentialDLRTypes.findIndex((type) => {
+          return filetype.toLowerCase().includes(type.toLowerCase());
+        });
+        if (suggestion >= 0) {
+          resourceDLRType = potentialDLRTypes[suggestion];
+        } else {
+          resourceDLRType = resourceDLRTypeFromDefaults(responseWithCalculatedDefaults);
+        }
+      } else {
+        resourceDLRType = resourceDLRTypeFromDefaults(responseWithCalculatedDefaults);
+      }
+    }
+    await saveResourceDLRType(tempResource, startingResource.identifier, resourceDLRType);
+  }
 
   const getResourceInit = async (startingResource: Resource, resourceCreationType: ResourceCreationType) => {
     try {
@@ -176,18 +211,9 @@ const EditResourcePage: FC = () => {
         licenses: [emptyLicense],
         tags: [],
       };
-      if (!resourceHasKnownType(tempResource)) {
-        await setResourceTypeAsDocument(tempResource, startingResource.identifier);
-      }
-      if (
-        !responseWithCalculatedDefaults.data.creators[0]?.identifier &&
-        responseWithCalculatedDefaults.data.creators[0]?.features.dlr_creator_name
-      ) {
-        const mainCreatorName = responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
-          ? responseWithCalculatedDefaults.data.creators[0].features.dlr_creator_name
-          : '';
-        await setAddCreatorIdentifier(tempResource, startingResource.identifier, mainCreatorName);
-      }
+      await setDLRType(resourceCreationType, responseWithCalculatedDefaults.data, tempResource, startingResource);
+      await setCreator(tempResource, startingResource.identifier, user.name);
+
       if (!tempResource.features.dlr_access) {
         await setResourceAccessType(tempResource);
       }
@@ -200,8 +226,6 @@ const EditResourcePage: FC = () => {
       setIsLoadingResource(false);
     }
   };
-
-  const mainFileHandler = useUppy(createUppy('', false, onCreateFile));
 
   const handleChange = (panel: string) => (_: React.ChangeEvent<any>, isExpanded: boolean) => {
     setExpanded(isExpanded ? panel : '');
