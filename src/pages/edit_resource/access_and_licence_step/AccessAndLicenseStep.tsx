@@ -4,7 +4,7 @@ import LicenseFields from './LicenseFields';
 import { License } from '../../../types/license.types';
 import LicenseWizardFields from './LicenseWizardFields';
 import ContainsOtherWorksFields from './ContainsOtherWorksFields';
-import { StyledContentWrapper, StyledSchemaPart } from '../../../components/styled/Wrappers';
+import { StyledSchemaPart } from '../../../components/styled/Wrappers';
 import { Typography } from '@material-ui/core';
 import { useFormikContext } from 'formik';
 import { ResourceWrapper } from '../../../types/resource.types';
