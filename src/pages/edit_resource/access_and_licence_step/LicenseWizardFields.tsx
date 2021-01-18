@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@material-ui/core';
+import { FormControlLabel, FormLabel, Radio, Typography } from '@material-ui/core';
 import { StyledContentWrapper, StyledRadioGroup, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import { useTranslation } from 'react-i18next';
