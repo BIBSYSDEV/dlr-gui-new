@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Button, CircularProgress, Typography } from '@material-ui/core';
 import { publishResource } from '../../api/resourceApi';
 import { getStepLabel, ResourceFormStep, ResourceWrapper } from '../../types/resource.types';
-import { StyledContentWrapper, StyledSchemaPart } from '../../components/styled/Wrappers';
+import { StyledSchemaPart } from '../../components/styled/Wrappers';
 import ErrorBanner from '../../components/ErrorBanner';
 import { useHistory } from 'react-router-dom';
 import { useFormikContext } from 'formik';
@@ -25,6 +25,12 @@ const StyledFormStatusWrapper = styled.div`
 
 const StyledRightSideButtonWrapper = styled.div`
   display: inline-block;
+`;
+
+const StyledButtonText = styled.span`
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    display: none;
+  }
 `;
 
 const UpperCaseButton = styled(Button)`
@@ -73,7 +79,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, allChange
       <StyledButtonWrapper>
         {activeStep > 0 ? (
           <UpperCaseButton variant="outlined" disabled={activeStep === 0} onClick={handleBack}>
-            <StyledArrowBackIcon /> {t(getStepLabel(activeStep - 1))}
+            <StyledArrowBackIcon /> <StyledButtonText>{t(getStepLabel(activeStep - 1))}</StyledButtonText>
           </UpperCaseButton>
         ) : (
           <span />
@@ -89,7 +95,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, allChange
             </UpperCaseButton>
           ) : (
             <UpperCaseButton variant="contained" color="primary" onClick={handleNext}>
-              {t(getStepLabel(activeStep + 1))}
+              <StyledButtonText>{t(getStepLabel(activeStep + 1))}</StyledButtonText>
               <StyledArrowForwardIcon />
             </UpperCaseButton>
           )}
