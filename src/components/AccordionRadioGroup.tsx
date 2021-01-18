@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
@@ -18,10 +18,15 @@ const StyledRadioBoxWrapper = styled.div`
 interface AccordionRadioGroupProps {
   ariaDescription: string;
   title: string;
+  expanded: boolean;
 }
 
-const AccoridionRadioGroup: FC<AccordionRadioGroupProps> = ({ ariaDescription, title, children }) => {
-  const [showRadioDetails, setShowRadioDetails] = useState(false);
+const AccoridionRadioGroup: FC<AccordionRadioGroupProps> = ({ ariaDescription, title, children, expanded }) => {
+  const [showRadioDetails, setShowRadioDetails] = useState(expanded);
+
+  useEffect(() => {
+    setShowRadioDetails(expanded);
+  }, [expanded]);
 
   return (
     <StyledRadioBoxWrapper>
@@ -33,7 +38,6 @@ const AccoridionRadioGroup: FC<AccordionRadioGroupProps> = ({ ariaDescription, t
         endIcon={!showRadioDetails ? <ExpandMoreIcon /> : <ExpandLessIcon />}>
         <Typography variant="h6">{title}</Typography>
       </Button>
-
       {showRadioDetails && <div id={ariaDescription}>{children}</div>}
     </StyledRadioBoxWrapper>
   );
