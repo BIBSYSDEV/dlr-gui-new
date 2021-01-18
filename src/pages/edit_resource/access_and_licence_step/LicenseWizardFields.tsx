@@ -13,10 +13,9 @@ import { ResourceWrapper } from '../../../types/resource.types';
 import ErrorBanner from '../../../components/ErrorBanner';
 import AccordionRadioGroup from '../../../components/AccordionRadioGroup';
 
-const StyledSubRadioGroup = styled(RadioGroup)`
-  margin-left: 5rem;
+const StyledSubRadioGroup = styled(StyledRadioGroup)`
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    margin-left: 2;
+    margin-left: 2rem;
   }
 `;
 

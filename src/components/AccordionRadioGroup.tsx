@@ -7,7 +7,6 @@ import { Typography } from '@material-ui/core';
 
 //kommer med en pull fra master
 const StyledRadioBoxWrapper = styled.div`
-  width: 60%;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     width: 90%;
   }

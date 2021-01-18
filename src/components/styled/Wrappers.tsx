@@ -60,6 +60,7 @@ export const StyledRadioBoxWrapper = styled.div`
 
 export const StyledRadioGroup = styled(RadioGroup)`
   margin-left: 4rem;
+  padding-top: 0.5rem;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     margin-left: 0;
   }
