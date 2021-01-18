@@ -4,7 +4,7 @@ import LicenseFields from './LicenseFields';
 import { License } from '../../../types/license.types';
 import LicenseWizardFields from './LicenseWizardFields';
 import ContainsOtherWorksFields from './ContainsOtherWorksFields';
-import { StyledSchemaPart } from '../../../components/styled/Wrappers';
+import { StyledContentWrapper, StyledSchemaPart } from '../../../components/styled/Wrappers';
 import { Typography } from '@material-ui/core';
 import { useFormikContext } from 'formik';
 import { ResourceWrapper } from '../../../types/resource.types';
@@ -22,7 +22,9 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSave
   return (
     <>
       <StyledSchemaPart>
-        <Typography variant="h5">{values.resource.features.dlr_title}</Typography>
+        <StyledContentWrapper>
+          <Typography variant="h5">{values.resource.features.dlr_title}</Typography>
+        </StyledContentWrapper>
       </StyledSchemaPart>
 
       <ContainsOtherWorksFields
