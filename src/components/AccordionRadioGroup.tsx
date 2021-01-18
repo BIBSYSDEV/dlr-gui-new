@@ -7,12 +7,15 @@ import { Typography } from '@material-ui/core';
 
 //kommer med en pull fra master
 const StyledRadioBoxWrapper = styled.div`
-  width: 60%;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     width: 90%;
   }
   display: block;
   padding-bottom: 2rem;
+`;
+
+const StyledButton = styled(Button)`
+  padding: 0;
 `;
 
 interface AccordionRadioGroupProps {
@@ -25,14 +28,13 @@ const AccoridionRadioGroup: FC<AccordionRadioGroupProps> = ({ ariaDescription, t
 
   return (
     <StyledRadioBoxWrapper>
-      <Button
+      <StyledButton
         aria-controls={ariaDescription}
-        size="large"
         onClick={() => setShowRadioDetails(!showRadioDetails)}
         color="primary"
         endIcon={!showRadioDetails ? <ExpandMoreIcon /> : <ExpandLessIcon />}>
         <Typography variant="h6">{title}</Typography>
-      </Button>
+      </StyledButton>
 
       {showRadioDetails && <div id={ariaDescription}>{children}</div>}
     </StyledRadioBoxWrapper>

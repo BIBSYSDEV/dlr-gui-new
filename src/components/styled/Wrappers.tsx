@@ -45,20 +45,22 @@ export const StyledSchemaPartColored = styled(StyledSchemaPart)`
 
 export const StyledContentWrapper = styled.div`
   width: 100%;
+  max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'};
+`;
+
+export const StyledContentWrapperMedium = styled.div`
+  width: 100%;
   max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'};
 `;
 
 export const StyledRadioBoxWrapper = styled.div`
-  width: 80%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    width: 90%;
-  }
   display: block;
   padding-bottom: 2rem;
 `;
 
 export const StyledRadioGroup = styled(RadioGroup)`
-  margin-left: 20rem;
+  margin-left: 4rem;
+  padding-top: 0.5rem;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     margin-left: 0;
   }

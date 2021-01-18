@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Step, StepButton, StepLabel, Stepper } from '@material-ui/core';
 import { getStepLabel, ResourceFormStep, ResourceFormSteps, ResourceWrapper } from '../../types/resource.types';
 import { useFormikContext } from 'formik';
-import { StyledContentWrapper } from '../../components/styled/Wrappers';
+import { StyledContentWrapperMedium } from '../../components/styled/Wrappers';
 import {
   hasTouchedError,
   mergeTouchedFields,
@@ -76,7 +76,7 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
   }, [setTouched, activeStep]);
 
   return (
-    <StyledContentWrapper>
+    <StyledContentWrapperMedium>
       <Stepper style={{ width: '100%' }} activeStep={activeStep} nonLinear alternativeLabel>
         {ResourceFormSteps.map((step, index) => {
           return (
@@ -97,7 +97,7 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
           );
         })}
       </Stepper>
-    </StyledContentWrapper>
+    </StyledContentWrapperMedium>
   );
 };
 
