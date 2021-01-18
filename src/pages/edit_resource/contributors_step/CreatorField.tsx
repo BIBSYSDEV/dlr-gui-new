@@ -43,6 +43,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
   const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
   const [updateCreatorError, setUpdateCreatorError] = useState(false);
   const [addCreatorError, setAddCreatorError] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const addCreator = async (arrayHelpers: FieldArrayRenderProps) => {
     setAllChangesSaved(false);
@@ -89,6 +90,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
     arrayHelpers: FieldArrayRenderProps,
     creatorIndex: number
   ) => {
+    setIsDeleting(true);
     setAllChangesSaved(false);
     try {
       await deleteResourceCreator(values.resource.identifier, creatorIdentifier);
@@ -100,6 +102,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
       setErrorIndex(creatorIndex);
     } finally {
       setAllChangesSaved(true);
+      setIsDeleting(false);
     }
   };
 
@@ -140,7 +143,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                         />
                       )}
                     </Field>
-                    {index > 0 && (
+                    {values.resource.creators?.length > 1 && !isDeleting && (
                       <Button
                         color="secondary"
                         startIcon={<DeleteIcon fontSize="large" />}
