@@ -138,7 +138,6 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   const handleChangeInCommercialOption = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setCommercialValue(event.target.value);
     setExpandModifyAndBuildOption(true);
-    console.log('expand!');
     await calculatePreferredLicense(extraRestriction, event.target.value, modifyAndBuildValue, modifyAndBuildSubValue);
   };
 
@@ -155,7 +154,10 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor3}>
       <StyledContentWrapper>
-        <AccordionRadioGroup ariaDescription={extraRestrictionRadio} title={t('license.extra_restrictions')} expanded={true}>
+        <AccordionRadioGroup
+          ariaDescription={extraRestrictionRadio}
+          title={t('license.extra_restrictions')}
+          expanded={true}>
           <FormLabel component="legend" id={`${extraRestrictionRadio}-label`}>
             <Typography variant="subtitle1">{t('license.questions.special_needs')}</Typography>
           </FormLabel>
@@ -196,7 +198,10 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
         </AccordionRadioGroup>
 
         {extraRestriction === LicenseConstants.yes && (
-          <AccordionRadioGroup ariaDescription={commercialRadio} title={t('license.commercial_purposes')}  expanded={true}>
+          <AccordionRadioGroup
+            ariaDescription={commercialRadio}
+            title={t('license.commercial_purposes')}
+            expanded={true}>
             <FormLabel component="legend" id={`${commercialRadio}-label`}>
               <Typography variant="subtitle1">{t('license.questions.commercial')}</Typography>
             </FormLabel>
@@ -217,7 +222,10 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
         )}
 
         {extraRestriction === LicenseConstants.yes && (
-          <AccordionRadioGroup ariaDescription={modifyAndBuildRadio} title={t('license.modify_and_build')} expanded={expandModifyAndBuildOption}>
+          <AccordionRadioGroup
+            ariaDescription={modifyAndBuildRadio}
+            title={t('license.modify_and_build')}
+            expanded={expandModifyAndBuildOption}>
             <FormLabel component="legend" id={`${modifyAndBuildRadio}-label`}>
               <Typography variant="subtitle1">{t('license.questions.modify_and_build')}</Typography>
             </FormLabel>
