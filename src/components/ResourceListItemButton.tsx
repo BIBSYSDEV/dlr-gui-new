@@ -67,7 +67,7 @@ const ResourceListItemButton: FC<ResourceListItemButtonProps> = ({
       </Button>
       {handleDelete && (
         <>
-          <Button onClick={() => setShowConfirmDialog(true)}>Slett</Button>
+          <Button onClick={() => setShowConfirmDialog(true)}>{t('common.delete')}</Button>
           <ConfirmDeleteDialog
             resourceIdentifier={resource.identifier}
             open={showConfirmDialog}
