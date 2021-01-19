@@ -1,40 +1,53 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Button, CircularProgress, Typography } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { publishResource } from '../../api/resourceApi';
 import { getStepLabel, ResourceFormStep, ResourceWrapper } from '../../types/resource.types';
-import { StyledSchemaPart } from '../../components/styled/Wrappers';
+import { StyledContentWrapperMedium, StyledSchemaPart } from '../../components/styled/Wrappers';
 import ErrorBanner from '../../components/ErrorBanner';
 import { useHistory } from 'react-router-dom';
 import { useFormikContext } from 'formik';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
+const PageWidthThresholdForButtons = '45rem';
+
 const StyledButtonWrapper = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
+  align-items: center;
   max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'};
+  @media (max-width: ${PageWidthThresholdForButtons}) {
+    flex-direction: column;
+    justify-content: center;
+  }
 `;
 
-const StyledFormStatusWrapper = styled.div`
-  padding-right: 1rem;
+const StyledSaveButtonWrapper = styled.div`
+  margin-right: 1rem;
   display: inline-block;
+  @media (max-width: ${PageWidthThresholdForButtons}) {
+    margin-right: 0;
+    display: block;
+  }
 `;
 
 const StyledRightSideButtonWrapper = styled.div`
   display: inline-block;
-`;
-
-const StyledButtonText = styled.span`
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    display: none;
+  @media (max-width: ${PageWidthThresholdForButtons}) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 `;
 
+const StyledButtonText = styled.span``;
+
 const UpperCaseButton = styled(Button)`
   text-transform: uppercase;
+  margin-top: 1rem;
 `;
 
 const StyledArrowBackIcon = styled(ArrowBackIcon)`
@@ -50,11 +63,11 @@ interface ResourceFormActionProps {
   setActiveStep: (step: ResourceFormStep) => void;
 }
 
-const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, allChangesSaved, setActiveStep }) => {
+const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActiveStep }) => {
   const { t } = useTranslation();
   const history = useHistory();
   const [publishResourceError, setPublishResourceError] = useState(false);
-  const { values, dirty, isValid } = useFormikContext<ResourceWrapper>();
+  const { values, isValid } = useFormikContext<ResourceWrapper>();
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -74,34 +87,43 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, allChange
     }
   };
 
+  const handleLeaveForm = async () => {
+    history.push('resources/user/current');
+  };
+
   return (
     <StyledSchemaPart>
-      <StyledButtonWrapper>
-        {activeStep > 0 ? (
-          <UpperCaseButton variant="outlined" disabled={activeStep === 0} onClick={handleBack}>
-            <StyledArrowBackIcon /> <StyledButtonText>{t(getStepLabel(activeStep - 1))}</StyledButtonText>
-          </UpperCaseButton>
-        ) : (
-          <span />
-        )}
-        <StyledRightSideButtonWrapper>
-          <StyledFormStatusWrapper>
-            {!allChangesSaved && <CircularProgress size="1rem" />}
-            {allChangesSaved && !dirty && <Typography variant={'body1'}>{t('common.all_changes_saved')}</Typography>}
-          </StyledFormStatusWrapper>
-          {activeStep === ResourceFormStep.Preview ? (
-            <UpperCaseButton variant="contained" color="primary" onClick={handlePublishResource} disabled={!isValid}>
-              {t('common.publish')}
-            </UpperCaseButton>
-          ) : (
-            <UpperCaseButton variant="contained" color="primary" onClick={handleNext}>
-              <StyledButtonText>{t(getStepLabel(activeStep + 1))}</StyledButtonText>
-              <StyledArrowForwardIcon />
-            </UpperCaseButton>
-          )}
-        </StyledRightSideButtonWrapper>
-      </StyledButtonWrapper>
-      {publishResourceError && <ErrorBanner />}
+      <StyledContentWrapperMedium>
+        <StyledButtonWrapper>
+          <div>
+            {activeStep > 0 ? (
+              <UpperCaseButton variant="outlined" disabled={activeStep === 0} onClick={handleBack}>
+                <StyledArrowBackIcon /> <StyledButtonText>{t(getStepLabel(activeStep - 1))}</StyledButtonText>
+              </UpperCaseButton>
+            ) : (
+              <span />
+            )}
+          </div>
+          <StyledRightSideButtonWrapper>
+            <StyledSaveButtonWrapper>
+              <UpperCaseButton variant="outlined" onClick={handleLeaveForm}>
+                {t('resource.leave_form')}
+              </UpperCaseButton>
+            </StyledSaveButtonWrapper>
+            {activeStep === ResourceFormStep.Preview ? (
+              <UpperCaseButton variant="contained" color="primary" onClick={handlePublishResource} disabled={!isValid}>
+                {t('common.publish')}
+              </UpperCaseButton>
+            ) : (
+              <UpperCaseButton variant="contained" color="primary" onClick={handleNext}>
+                <StyledButtonText>{t(getStepLabel(activeStep + 1))}</StyledButtonText>
+                <StyledArrowForwardIcon />
+              </UpperCaseButton>
+            )}
+          </StyledRightSideButtonWrapper>
+        </StyledButtonWrapper>
+        {publishResourceError && <ErrorBanner />}
+      </StyledContentWrapperMedium>
     </StyledSchemaPart>
   );
 };
