@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import Button from '@material-ui/core/Button';
 import ConfirmDeleteDialog from './ConfirmDeleteDialog.';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const StyledListItemText = styled(ListItemText)`
   padding-left: 16px;
@@ -67,7 +68,13 @@ const ResourceListItemButton: FC<ResourceListItemButtonProps> = ({
       </Button>
       {handleDelete && (
         <>
-          <Button onClick={() => setShowConfirmDialog(true)}>{t('common.delete')}</Button>
+          <Button
+            color="secondary"
+            startIcon={<DeleteIcon fontSize="large" />}
+            size="large"
+            onClick={() => setShowConfirmDialog(true)}>
+            {t('common.delete')}
+          </Button>
           <ConfirmDeleteDialog
             resourceIdentifier={resource.identifier}
             open={showConfirmDialog}
