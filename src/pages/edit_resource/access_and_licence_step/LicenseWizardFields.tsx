@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@material-ui/core';
-import { StyledRadioGroup, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
+import { FormControlLabel, FormLabel, Radio, Typography } from '@material-ui/core';
+import { StyledContentWrapper, StyledRadioGroup, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import { useTranslation } from 'react-i18next';
 import { RootState } from '../../../state/rootReducer';
@@ -13,10 +13,9 @@ import { ResourceWrapper } from '../../../types/resource.types';
 import ErrorBanner from '../../../components/ErrorBanner';
 import AccordionRadioGroup from '../../../components/AccordionRadioGroup';
 
-const StyledSubRadioGroup = styled(RadioGroup)`
-  margin-left: 5rem;
+const StyledSubRadioGroup = styled(StyledRadioGroup)`
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    margin-left: 2;
+    margin-left: 2rem;
   }
 `;
 
@@ -155,114 +154,110 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
 
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor3}>
-      <AccordionRadioGroup
-        ariaDescription={extraRestrictionRadio}
-        title={t('license.extra_restrictions')}
-        expanded={true}>
-        <FormLabel component="legend" id={`${extraRestrictionRadio}-label`}>
-          <Typography variant="subtitle1">{t('license.questions.special_needs')}</Typography>
-        </FormLabel>
-        <StyledRadioGroup
-          aria-label={t('license.questions.special_needs')}
-          value={extraRestriction}
-          onChange={(event) => handleChangeInExtraRestriction(event)}>
-          {defaultRestrictionOptions.map((element, index) => (
-            <FormControlLabel
-              key={index}
-              value={element}
-              control={<Radio color="primary" />}
-              label={t(`license.restriction_options.${element.replace(/[.\s]/g, '_')}`)}
-            />
-          ))}
-          {institutionRestriction && (
-            <FormControlLabel
-              value={institutionRestriction}
-              control={<Radio color="primary" />}
-              label={t(`license.restriction_options.${institutionRestriction}`)}
-            />
-          )}
-          {containsOtherWorksFieldsSelectedCC && (
-            <>
-              <FormControlLabel
-                value={LicenseConstants.CC_BY_SA_4_0}
-                control={<Radio color="primary" />}
-                label={t(`license.restriction_options.CC_BY-SA_4_0`)}
-              />
-              <FormControlLabel
-                value={LicenseConstants.CC_BY_NC_SA}
-                control={<Radio color="primary" />}
-                label={t(`license.restriction_options.CC_BY-NC-SA_4_0`)}
-              />
-            </>
-          )}
-        </StyledRadioGroup>
-      </AccordionRadioGroup>
-
-      {extraRestriction === LicenseConstants.yes && (
-        <AccordionRadioGroup ariaDescription={commercialRadio} title={t('license.commercial_purposes')} expanded={true}>
-          <FormLabel component="legend" id={`${commercialRadio}-label`}>
-            <Typography variant="subtitle1">{t('license.questions.commercial')}</Typography>
+      <StyledContentWrapper>
+        <AccordionRadioGroup ariaDescription={extraRestrictionRadio} title={t('license.extra_restrictions')} expanded={true}>
+          <FormLabel component="legend" id={`${extraRestrictionRadio}-label`}>
+            <Typography variant="subtitle1">{t('license.questions.special_needs')}</Typography>
           </FormLabel>
           <StyledRadioGroup
-            aria-label={t('license.questions.commercial')}
-            value={commercialValue}
-            onChange={(event) => handleChangeInCommercialOption(event)}>
-            {defaultCommercialOptions.map((element, index) => (
+            aria-label={t('license.questions.special_needs')}
+            value={extraRestriction}
+            onChange={(event) => handleChangeInExtraRestriction(event)}>
+            {defaultRestrictionOptions.map((element, index) => (
               <FormControlLabel
                 key={index}
                 value={element}
                 control={<Radio color="primary" />}
-                label={t(`license.commercial_options.${element}`)}
+                label={t(`license.restriction_options.${element.replace(/[.\s]/g, '_')}`)}
               />
             ))}
-          </StyledRadioGroup>
-        </AccordionRadioGroup>
-      )}
-
-      {extraRestriction === LicenseConstants.yes && (
-        <AccordionRadioGroup
-          ariaDescription={modifyAndBuildRadio}
-          title={t('license.modify_and_build')}
-          expanded={expandModifyAndBuildOption}>
-          <FormLabel component="legend" id={`${modifyAndBuildRadio}-label`}>
-            <Typography variant="subtitle1">{t('license.questions.modify_and_build')}</Typography>
-          </FormLabel>
-          <StyledRadioGroup
-            value={modifyAndBuildValue}
-            aria-label={t('license.questions.modify_and_build')}
-            onChange={(event) => handleChangeInModifyAndBuildOption(event)}>
-            <FormControlLabel
-              value={DefaultModifyAndBuildOptions.primaryYes}
-              control={<Radio color="primary" />}
-              label={t(`license.modify_and_build_options.${DefaultModifyAndBuildOptions.primaryYes}`)}
-            />
-            {modifyAndBuildValue === DefaultModifyAndBuildOptions.primaryYes && (
-              <StyledSubRadioGroup
-                aria-label={t(`license.modify_and_build_options.${DefaultModifyAndBuildOptions.primaryYes}`)}
-                onChange={(event) => handleChangeInModifyAndBuildSubOptions(event)}
-                value={modifyAndBuildSubValue}>
-                <FormControlLabel
-                  value={DefaultModifyAndBuildOptions.dontCare}
-                  control={<Radio color="primary" />}
-                  label={t(`license.modify_and_build_options.${DefaultModifyAndBuildOptions.dontCare}`)}
-                />
-                <FormControlLabel
-                  value={DefaultModifyAndBuildOptions.SA}
-                  control={<Radio color="primary" />}
-                  label={t(`license.modify_and_build_options.${DefaultModifyAndBuildOptions.SA}`)}
-                />
-              </StyledSubRadioGroup>
+            {institutionRestriction && (
+              <FormControlLabel
+                value={institutionRestriction}
+                control={<Radio color="primary" />}
+                label={t(`license.restriction_options.${institutionRestriction}`)}
+              />
             )}
-            <FormControlLabel
-              value={DefaultModifyAndBuildOptions.ND}
-              control={<Radio color="primary" />}
-              label={t(`license.modify_and_build_options.${DefaultModifyAndBuildOptions.ND}`)}
-            />
+            {containsOtherWorksFieldsSelectedCC && (
+              <>
+                <FormControlLabel
+                  value={LicenseConstants.CC_BY_SA_4_0}
+                  control={<Radio color="primary" />}
+                  label={t(`license.restriction_options.CC_BY-SA_4_0`)}
+                />
+                <FormControlLabel
+                  value={LicenseConstants.CC_BY_NC_SA}
+                  control={<Radio color="primary" />}
+                  label={t(`license.restriction_options.CC_BY-NC-SA_4_0`)}
+                />
+              </>
+            )}
           </StyledRadioGroup>
         </AccordionRadioGroup>
-      )}
 
-      {saveRestrictionError && <ErrorBanner />}
+        {extraRestriction === LicenseConstants.yes && (
+          <AccordionRadioGroup ariaDescription={commercialRadio} title={t('license.commercial_purposes')}  expanded={true}>
+            <FormLabel component="legend" id={`${commercialRadio}-label`}>
+              <Typography variant="subtitle1">{t('license.questions.commercial')}</Typography>
+            </FormLabel>
+            <StyledRadioGroup
+              aria-label={t('license.questions.commercial')}
+              value={commercialValue}
+              onChange={(event) => handleChangeInCommercialOption(event)}>
+              {defaultCommercialOptions.map((element, index) => (
+                <FormControlLabel
+                  key={index}
+                  value={element}
+                  control={<Radio color="primary" />}
+                  label={t(`license.commercial_options.${element}`)}
+                />
+              ))}
+            </StyledRadioGroup>
+          </AccordionRadioGroup>
+        )}
+
+        {extraRestriction === LicenseConstants.yes && (
+          <AccordionRadioGroup ariaDescription={modifyAndBuildRadio} title={t('license.modify_and_build')} expanded={expandModifyAndBuildOption}>
+            <FormLabel component="legend" id={`${modifyAndBuildRadio}-label`}>
+              <Typography variant="subtitle1">{t('license.questions.modify_and_build')}</Typography>
+            </FormLabel>
+            <StyledRadioGroup
+              value={modifyAndBuildValue}
+              aria-label={t('license.questions.modify_and_build')}
+              onChange={(event) => handleChangeInModifyAndBuildOption(event)}>
+              <FormControlLabel
+                value={DefaultModifyAndBuildOptions.primaryYes}
+                control={<Radio color="primary" />}
+                label={t(`license.modify_and_build_options.${DefaultModifyAndBuildOptions.primaryYes}`)}
+              />
+              {modifyAndBuildValue === DefaultModifyAndBuildOptions.primaryYes && (
+                <StyledSubRadioGroup
+                  aria-label={t(`license.modify_and_build_options.${DefaultModifyAndBuildOptions.primaryYes}`)}
+                  onChange={(event) => handleChangeInModifyAndBuildSubOptions(event)}
+                  value={modifyAndBuildSubValue}>
+                  <FormControlLabel
+                    value={DefaultModifyAndBuildOptions.dontCare}
+                    control={<Radio color="primary" />}
+                    label={t(`license.modify_and_build_options.${DefaultModifyAndBuildOptions.dontCare}`)}
+                  />
+                  <FormControlLabel
+                    value={DefaultModifyAndBuildOptions.SA}
+                    control={<Radio color="primary" />}
+                    label={t(`license.modify_and_build_options.${DefaultModifyAndBuildOptions.SA}`)}
+                  />
+                </StyledSubRadioGroup>
+              )}
+              <FormControlLabel
+                value={DefaultModifyAndBuildOptions.ND}
+                control={<Radio color="primary" />}
+                label={t(`license.modify_and_build_options.${DefaultModifyAndBuildOptions.ND}`)}
+              />
+            </StyledRadioGroup>
+          </AccordionRadioGroup>
+        )}
+
+        {saveRestrictionError && <ErrorBanner />}
+      </StyledContentWrapper>
     </StyledSchemaPartColored>
   );
 };
