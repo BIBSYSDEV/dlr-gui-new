@@ -22,6 +22,13 @@ export const createResource = (type: string, content: string) => {
   });
 };
 
+export const deleteResource = async (resourceIdentifier: string) => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}`),
+    method: 'DELETE',
+  });
+};
+
 export const publishResource = (resourceIdentifier: string): Promise<AxiosResponse> => {
   return authenticatedApiRequest({
     url: `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/publications`,
