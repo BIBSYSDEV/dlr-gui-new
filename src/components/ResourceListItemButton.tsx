@@ -18,6 +18,22 @@ const StyledTypography: OverridableComponent<TypographyTypeMap<unknown, 'span'>>
   margin-top: 16px;
 `;
 
+const StyledListItem: any = styled(ListItem)`
+  display: flex;
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    width: 45rem;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
+    display: block;
+  }
+`;
+
+const StyledDeleteButton = styled(Button)`
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    margin-left: 16px;
+  }
+`;
+
 interface ResourceListItemButtonProps {
   resource: Resource;
   showSubmitter?: boolean;
@@ -37,7 +53,7 @@ const ResourceListItemButton: FC<ResourceListItemButtonProps> = ({
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   return (
-    <ListItem>
+    <StyledListItem>
       <Button component="a" href={`/resource/${resource.identifier}`}>
         <Thumbnail
           resourceIdentifier={resource.identifier}
@@ -68,13 +84,13 @@ const ResourceListItemButton: FC<ResourceListItemButtonProps> = ({
       </Button>
       {handleDelete && (
         <>
-          <Button
+          <StyledDeleteButton
             color="secondary"
             startIcon={<DeleteIcon fontSize="large" />}
             size="large"
             onClick={() => setShowConfirmDialog(true)}>
-            {t('common.delete')}
-          </Button>
+            {t('common.delete')} {window.innerWidth < 600 && resource.features.dlr_title}
+          </StyledDeleteButton>
           <ConfirmDeleteDialog
             resourceIdentifier={resource.identifier}
             open={showConfirmDialog}
@@ -88,7 +104,7 @@ const ResourceListItemButton: FC<ResourceListItemButtonProps> = ({
           />
         </>
       )}
-    </ListItem>
+    </StyledListItem>
   );
 };
 
