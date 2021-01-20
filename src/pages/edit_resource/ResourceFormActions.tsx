@@ -20,7 +20,7 @@ const StyledButtonWrapper = styled.div`
   align-items: center;
   max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'};
   @media (max-width: ${PageWidthThresholdForButtons}) {
-    flex-direction: column;
+    flex-direction: column-reverse;
     justify-content: center;
   }
 `;
@@ -38,7 +38,7 @@ const StyledRightSideButtonWrapper = styled.div`
   display: inline-block;
   @media (max-width: ${PageWidthThresholdForButtons}) {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     justify-content: center;
   }
 `;
@@ -53,6 +53,11 @@ const UpperCaseButton = styled(Button)`
 const StyledArrowBackIcon = styled(ArrowBackIcon)`
   margin-right: 1rem;
 `;
+
+const StyledSchemaPartWithoutTopPadding = styled(StyledSchemaPart)`
+  padding-top: 0.5rem;
+`;
+
 const StyledArrowForwardIcon = styled(ArrowForwardIcon)`
   margin-left: 1rem;
 `;
@@ -92,7 +97,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
   };
 
   return (
-    <StyledSchemaPart>
+    <StyledSchemaPartWithoutTopPadding>
       <StyledContentWrapperMedium>
         <StyledButtonWrapper>
           <div>
@@ -124,7 +129,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
         </StyledButtonWrapper>
         {publishResourceError && <ErrorBanner />}
       </StyledContentWrapperMedium>
-    </StyledSchemaPart>
+    </StyledSchemaPartWithoutTopPadding>
   );
 };
 
