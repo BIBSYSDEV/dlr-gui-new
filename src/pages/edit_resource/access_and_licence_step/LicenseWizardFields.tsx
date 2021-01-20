@@ -64,6 +64,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     additionalLicenseProviders.find((element) => element.includes(institution.toLowerCase()))
   );
   const [saveRestrictionError, setSaveRestrictionError] = useState(false);
+  const [expandModifyAndBuildOption, setExpandModifyAndBuildOption] = useState(false);
   const [commercialValue, setCommercialValue] = useState('');
   const [modifyAndBuildValue, setModifyAndBuildValue] = useState('');
   const [modifyAndBuildSubValue, setModifyAndBuildSubValue] = useState('');
@@ -140,6 +141,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
 
   const handleChangeInCommercialOption = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setCommercialValue(event.target.value);
+    setExpandModifyAndBuildOption(true);
     await calculatePreferredLicense(extraRestriction, event.target.value, modifyAndBuildValue, modifyAndBuildSubValue);
   };
 
@@ -156,11 +158,10 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor3}>
       <StyledContentWrapper>
-        <Typography variant="h3">{t('resource.metadata.license')}</Typography>
-        <StyledOverlineWrapper>
-          <Typography variant="overline">{t('license.radio_information')}</Typography>
-        </StyledOverlineWrapper>
-        <AccordionRadioGroup ariaDescription={extraRestrictionRadio} title={t('license.extra_restrictions')}>
+        <AccordionRadioGroup
+          ariaDescription={extraRestrictionRadio}
+          title={t('license.extra_restrictions')}
+          expanded={true}>
           <FormLabel component="legend" id={`${extraRestrictionRadio}-label`}>
             <Typography variant="overline">{t('license.questions.special_needs')}</Typography>
           </FormLabel>
@@ -201,7 +202,10 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
         </AccordionRadioGroup>
 
         {extraRestriction === LicenseConstants.yes && (
-          <AccordionRadioGroup ariaDescription={commercialRadio} title={t('license.commercial_purposes')}>
+          <AccordionRadioGroup
+            ariaDescription={commercialRadio}
+            title={t('license.commercial_purposes')}
+            expanded={true}>
             <FormLabel component="legend" id={`${commercialRadio}-label`}>
               <Typography variant="overline">{t('license.questions.commercial')}</Typography>
             </FormLabel>
@@ -222,7 +226,10 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
         )}
 
         {extraRestriction === LicenseConstants.yes && (
-          <AccordionRadioGroup ariaDescription={modifyAndBuildRadio} title={t('license.modify_and_build')}>
+          <AccordionRadioGroup
+            ariaDescription={modifyAndBuildRadio}
+            title={t('license.modify_and_build')}
+            expanded={expandModifyAndBuildOption}>
             <FormLabel component="legend" id={`${modifyAndBuildRadio}-label`}>
               <Typography variant="overline">{t('license.questions.modify_and_build')}</Typography>
             </FormLabel>
