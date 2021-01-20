@@ -29,6 +29,7 @@ const StyledListItem: any = styled(ListItem)`
 `;
 
 const StyledDeleteButton = styled(Button)`
+  align-self: flex-end;
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     margin-left: 16px;
   }
