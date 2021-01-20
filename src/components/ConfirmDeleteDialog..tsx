@@ -41,7 +41,11 @@ const ConfirmDeleteDialog: FC<ConfirmDeleteDialogProps> = ({
   };
 
   return (
-    <Dialog open={open} onClose={performAbort} aria-labelledby="alert-dialog-title">
+    <Dialog
+      open={open}
+      onClose={performAbort}
+      aria-labelledby="alert-dialog-title"
+      data-testid={`delete-confirm-dialog`}>
       <DialogTitle id="alert-dialog-title">{`${t('resource.delete_resource_confirmation')}?`}</DialogTitle>
       <DialogContent>
         {!deleteErrorOccured && (
@@ -52,11 +56,18 @@ const ConfirmDeleteDialog: FC<ConfirmDeleteDialogProps> = ({
         {deleteErrorOccured && <ErrorBanner />}
       </DialogContent>
       <DialogActions>
-        <Button onClick={performAbort} color="primary">
+        <Button
+          data-testid={`delete-confirm-dialog-abort-button-${resourceIdentifier}`}
+          onClick={performAbort}
+          color="primary">
           {t('common.cancel')}
         </Button>
         {!deleteErrorOccured && (
-          <Button onClick={performDeletion} color="primary" autoFocus>
+          <Button
+            data-testid={`delete-confirm-dialog-confirm-button-${resourceIdentifier}`}
+            onClick={performDeletion}
+            color="primary"
+            autoFocus>
             {t('common.delete')}
           </Button>
         )}

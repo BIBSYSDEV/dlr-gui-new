@@ -74,6 +74,7 @@ const MyResources: FC = () => {
               resourcesUnpublished.length > 0 &&
               resourcesUnpublished.map((resource: Resource, index: number) => (
                 <ResourceListItemButton
+                  data-testid={`my-unpublished-resources-${resource.identifier}`}
                   key={index}
                   resource={resource}
                   showTimeCreated={true}
@@ -98,6 +99,7 @@ const MyResources: FC = () => {
               resourcesPublished.length > 0 &&
               resourcesPublished.map((resource: Resource, index: number) => (
                 <ResourceListItemButton
+                  data-testid={`my-published-resources-${resource.identifier}`}
                   key={index}
                   resource={resource}
                   showTimeCreated={true}

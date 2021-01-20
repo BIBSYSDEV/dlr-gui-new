@@ -53,7 +53,7 @@ const ResourceListItemButton: FC<ResourceListItemButtonProps> = ({
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   return (
-    <StyledListItem>
+    <StyledListItem data-testid={`list-item-resources-${resource.identifier}`}>
       <Button component="a" href={`/resource/${resource.identifier}`}>
         <Thumbnail
           resourceIdentifier={resource.identifier}
@@ -85,6 +85,7 @@ const ResourceListItemButton: FC<ResourceListItemButtonProps> = ({
       {handleDelete && (
         <>
           <StyledDeleteButton
+            data-testid={`delete-my-resources-${resource.identifier}`}
             color="secondary"
             startIcon={<DeleteIcon fontSize="large" />}
             size="large"
@@ -92,6 +93,7 @@ const ResourceListItemButton: FC<ResourceListItemButtonProps> = ({
             {t('common.delete')} {window.innerWidth < 600 && resource.features.dlr_title}
           </StyledDeleteButton>
           <ConfirmDeleteDialog
+            data-testid={`delete-my-resource-confirm-dialog-${resource.identifier}`}
             resourceIdentifier={resource.identifier}
             open={showConfirmDialog}
             confirmedDelete={() => {
