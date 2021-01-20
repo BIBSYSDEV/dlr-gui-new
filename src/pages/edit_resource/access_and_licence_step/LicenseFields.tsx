@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormHelperText, MenuItem, TextField, Typography } from '@material-ui/core';
+import { FormHelperText, MenuItem, TextField } from '@material-ui/core';
 import { FieldNames, Resource } from '../../../types/resource.types';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { deleteResourceLicense, setResourceLicense } from '../../../api/resourceApi';

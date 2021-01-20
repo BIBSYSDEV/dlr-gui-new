@@ -1,5 +1,5 @@
 import { createMuiTheme } from '@material-ui/core';
-import { barlowRegular, merriweatherRegular, LibreFranklinRegular } from './fonts';
+import { barlowRegular, LibreFranklinRegular, CrimsonTextRegular } from './fonts';
 
 // Extend Palette type to allow custom colors
 declare module '@material-ui/core/styles/createPalette' {
@@ -80,20 +80,20 @@ export default createMuiTheme({
   typography: {
     fontFamily: 'Barlow,  sans-serif',
     h1: {
-      fontFamily: 'Merriweather, serif',
+      fontFamily: 'Crimson Text, serif',
       fontSize: '3rem',
       lineHeight: '4.125rem',
       color: Colors.InitialText,
     },
     h2: {
-      fontFamily: 'Merriweather, serif',
+      fontFamily: 'Crimson Text, serif',
       fontSize: '2.25rem',
       lineHeight: '3rem',
       letterSpacing: '0.0025em',
       color: Colors.InitialText,
     },
     h3: {
-      fontFamily: 'Merriweather, serif',
+      fontFamily: 'Crimson Text, serif',
       fontSize: '1.5rem',
       lineHeight: '2.0625rem',
       color: Colors.InitialText,
@@ -176,7 +176,7 @@ export default createMuiTheme({
     },
     MuiCssBaseline: {
       '@global': {
-        '@font-face': [merriweatherRegular, barlowRegular, LibreFranklinRegular],
+        '@font-face': [barlowRegular, LibreFranklinRegular, CrimsonTextRegular],
       },
     },
     MuiInputBase: {
