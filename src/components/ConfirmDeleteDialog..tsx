@@ -50,7 +50,7 @@ const ConfirmDeleteDialog: FC<ConfirmDeleteDialogProps> = ({
       data-testid={`delete-confirm-dialog`}>
       <DialogTitle id="alert-dialog-title">{`${t(
         'resource.delete_resource_confirmation'
-      )} ${resourceTitle}?`}</DialogTitle>
+      )} "${resourceTitle}"?`}</DialogTitle>
       <DialogContent>
         {!deleteErrorOccured && (
           <DialogContentText id="alert-dialog-description">
