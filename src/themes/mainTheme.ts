@@ -43,6 +43,13 @@ export enum Colors {
   LicenseAccessPageGradientColor3 = 'rgba(68,242,193,0.50)',
 }
 
+export enum StyleWidths {
+  width1 = '21rem',
+  width2 = '29rem',
+  width3 = '37rem',
+  width4 = '52rem',
+}
+
 export default createMuiTheme({
   breakpoints: {
     values: {
