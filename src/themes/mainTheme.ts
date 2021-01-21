@@ -16,7 +16,7 @@ declare module '@material-ui/core/styles/createPalette' {
 }
 
 export enum Colors {
-  Primary = '#284b63',
+  Primary = 'rgba(99, 34, 107, 1)',
   Secondary = '#ff5555',
   Background = '#fff',
   Box = '#f5f5f5',

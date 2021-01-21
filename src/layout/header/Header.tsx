@@ -77,12 +77,7 @@ const Header: FC = () => {
       <Logo />
       <StyledSecondaryButtonBar>
         {user.id && (
-          <Button
-            color="primary"
-            component={RouterLink}
-            data-testid="new-registration-link"
-            to="/registration"
-            startIcon={<AddIcon />}>
+          <Button component={RouterLink} data-testid="new-registration-link" to="/registration" startIcon={<AddIcon />}>
             <Typography variant="button">{t('resource.new_registration')}</Typography>
           </Button>
         )}
@@ -92,9 +87,9 @@ const Header: FC = () => {
           </Button>
         )}
         {user.id ? (
-          <div>
+          <Typography variant="body1">
             {t('user.logged_in_as')} {user.name} <Logout />
-          </div>
+          </Typography>
         ) : (
           <Login />
         )}

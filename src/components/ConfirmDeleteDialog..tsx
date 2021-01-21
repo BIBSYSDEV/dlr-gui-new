@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import ErrorBanner from './ErrorBanner';
 import { useTranslation } from 'react-i18next';
 import { deleteResource } from '../api/resourceApi';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 interface ConfirmDeleteDialogProps {
   resourceIdentifier: string;
@@ -63,14 +64,16 @@ const ConfirmDeleteDialog: FC<ConfirmDeleteDialogProps> = ({
         <Button
           data-testid={`delete-confirm-dialog-abort-button-${resourceIdentifier}`}
           onClick={performAbort}
-          color="primary">
+          color="default">
           {t('common.cancel')}
         </Button>
         {!deleteErrorOccured && (
           <Button
             data-testid={`delete-confirm-dialog-confirm-button-${resourceIdentifier}`}
             onClick={performDeletion}
+            startIcon={<DeleteIcon />}
             color="primary"
+            variant="contained"
             autoFocus>
             {t('common.delete')}
           </Button>
