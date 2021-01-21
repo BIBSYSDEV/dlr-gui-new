@@ -18,7 +18,7 @@ import { License } from '../../types/license.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import AccessAndLicenseStep from './access_and_licence_step/AccessAndLicenseStep';
 import { useUppy } from '@uppy/react';
-import { additionalCreateFilesUppy } from '../../utils/uppy-config';
+import { additionalCreateFilesUppy, createThumbnailFileUppy } from '../../utils/uppy-config';
 import { Content } from '../../types/content.types';
 import ContentsStep from './contents_step/ContentsStep';
 import ResourceFormNavigationHeader from './ResourceFormNavigationHeader';
@@ -56,9 +56,11 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   const [allChangesSaved, setAllChangesSaved] = useState(true);
   const [isLoadingLicenses, setIsLoadingLicenses] = useState(false);
   const [newContent, setNewContent] = useState<Content>();
+  const [newThumbnailContent, setNewThumbnailContent] = useState<Content>();
   const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
   const [licenses, setLicenses] = useState<License[]>();
   const additionalFilesUppy = useUppy(additionalCreateFilesUppy(resource.identifier, setNewContent));
+  const thumbnailUppy = useUppy(createThumbnailFileUppy(resource.identifier, setNewThumbnailContent));
   const [activeStep, setActiveStep] = useState(ResourceFormStep.Description);
 
   const resourceValidationSchema = Yup.object().shape({
@@ -170,7 +172,9 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                     uppy={uppy}
                     setAllChangesSaved={setAllChangesSaved}
                     newContent={newContent}
+                    newThumbnailContent={newThumbnailContent}
                     additionalFileUploadUppy={additionalFilesUppy}
+                    thumbnailUppy={thumbnailUppy}
                     resourceType={resourceType}
                   />
                 </StyledPanel>

@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { Uppy } from '../../../types/file.types';
 import StatusBarComponent from '@uppy/react/src/StatusBar';
 import '@uppy/core/dist/style.css';
@@ -14,6 +14,9 @@ import ErrorBanner from '../../../components/ErrorBanner';
 import { ResourceWrapper } from '../../../types/resource.types';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import Thumbnail from '../../../components/Thumbnail';
+import { Dashboard } from '@uppy/react';
+import { setContentAsDefaultThumbnail } from '../../../api/fileApi';
+import { Content } from '../../../types/content.types';
 
 const StatusBarWrapper = styled.div`
   width: 100%;
@@ -41,9 +44,11 @@ const MainFileMetadata = styled.div`
 interface FileFieldsProps {
   uppy: Uppy;
   setAllChangesSaved: Dispatch<SetStateAction<boolean>>;
+  thumbnailUppy: Uppy;
+  newThumbnailContent: Content | undefined;
 }
 
-const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
+const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUppy, newThumbnailContent }) => {
   const { t } = useTranslation();
   const { values, handleBlur, resetForm, setTouched, touched } = useFormikContext<ResourceWrapper>();
   const [saveTitleError, setSaveTitleError] = useState(false);
@@ -64,6 +69,18 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
     }
   };
 
+  useEffect(() => {
+    if (thumbnailUppy) {
+      thumbnailUppy.on('complete', () => {
+        if (newThumbnailContent) {
+          setContentAsDefaultThumbnail(values.resource.identifier, newThumbnailContent.identifier);
+        }
+      });
+    }
+  }, [thumbnailUppy]);
+
+  console.log('thumbnailUppy', thumbnailUppy);
+
   return (
     <StyledSchemaPartColored color={Colors.ContentsPageGradientColor1}>
       <StyledContentWrapper>
@@ -72,6 +89,7 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
           <MainFileImageWrapper>
             <Thumbnail resourceIdentifier={values.resource.identifier} alt={t('resource.metadata.resource')} />
           </MainFileImageWrapper>
+          <Dashboard uppy={thumbnailUppy}>Velg fil</Dashboard>
           <MainFileMetadata>
             <StyledFieldWrapper>
               {/*//TODO: First item in contents is not always main content*/}
