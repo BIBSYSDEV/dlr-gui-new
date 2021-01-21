@@ -119,7 +119,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
   return (
     <StyledSchemaPartColored color={Colors.ContributorsPageGradientColor1}>
       <StyledContentWrapper>
-        <Typography variant="h4">{t('resource.metadata.creator')}</Typography>
+        <Typography variant="h3">{t('resource.metadata.creator')}</Typography>
         <FieldArray
           name={FieldNames.CreatorsBase}
           render={(arrayHelpers) => (

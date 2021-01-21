@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormHelperText, MenuItem, TextField, Typography } from '@material-ui/core';
+import { FormHelperText, MenuItem, TextField } from '@material-ui/core';
 import { FieldNames, Resource } from '../../../types/resource.types';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { deleteResourceLicense, setResourceLicense } from '../../../api/resourceApi';
@@ -64,7 +64,6 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor3}>
       <StyledContentWrapper>
-        <Typography variant="h4">{t('resource.metadata.license')}</Typography>
         {licenses && (
           <Field name={LicenceFieldName}>
             {({ field, meta: { error, touched } }: FieldProps) => (

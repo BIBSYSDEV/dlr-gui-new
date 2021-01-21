@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
@@ -7,7 +7,6 @@ import { Typography } from '@material-ui/core';
 
 //kommer med en pull fra master
 const StyledRadioBoxWrapper = styled.div`
-  width: 60%;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     width: 90%;
   }
@@ -15,25 +14,32 @@ const StyledRadioBoxWrapper = styled.div`
   padding-bottom: 2rem;
 `;
 
+const StyledButton = styled(Button)`
+  padding: 0;
+`;
+
 interface AccordionRadioGroupProps {
   ariaDescription: string;
   title: string;
+  expanded: boolean;
 }
 
-const AccoridionRadioGroup: FC<AccordionRadioGroupProps> = ({ ariaDescription, title, children }) => {
-  const [showRadioDetails, setShowRadioDetails] = useState(false);
+const AccoridionRadioGroup: FC<AccordionRadioGroupProps> = ({ ariaDescription, title, children, expanded }) => {
+  const [showRadioDetails, setShowRadioDetails] = useState(expanded);
+
+  useEffect(() => {
+    setShowRadioDetails(expanded);
+  }, [expanded]);
 
   return (
     <StyledRadioBoxWrapper>
-      <Button
+      <StyledButton
         aria-controls={ariaDescription}
-        size="large"
         onClick={() => setShowRadioDetails(!showRadioDetails)}
         color="primary"
         endIcon={!showRadioDetails ? <ExpandMoreIcon /> : <ExpandLessIcon />}>
-        <Typography variant="h6">{title}</Typography>
-      </Button>
-
+        <Typography variant="h4">{title}</Typography>
+      </StyledButton>
       {showRadioDetails && <div id={ariaDescription}>{children}</div>}
     </StyledRadioBoxWrapper>
   );

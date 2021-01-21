@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Colors } from '../../../themes/mainTheme';
+import { Colors, StyleWidths } from '../../../themes/mainTheme';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { MenuItem, TextField, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +8,11 @@ import { ResourceFeatureNamesFullPath, ResourceWrapper } from '../../../types/re
 import { putAccessType } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { AccessTypes } from '../../../types/license.types';
+import styled from 'styled-components';
+
+const StyledFieldWrapper = styled.div`
+  max-width: ${StyleWidths.width1};
+`;
 
 interface AccessFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -42,37 +47,39 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor2}>
       <StyledContentWrapper>
-        <Typography variant="h4">{t('resource.metadata.access')}</Typography>
-        <Field name={ResourceFeatureNamesFullPath.Access}>
-          {({ field, meta: { error, touched } }: FieldProps) => (
-            <>
-              <TextField
-                {...field}
-                variant="outlined"
-                select
-                required
-                error={touched && !!error}
-                fullWidth
-                value={field.value}
-                label={t('resource.metadata.access')}
-                onBlur={(event) => {
-                  setFieldTouched(ResourceFeatureNamesFullPath.Access, true, true);
-                }}
-                onChange={(event) => {
-                  handleChange(event);
-                  saveResourceAccessType(event);
-                }}>
-                {accessTypeArray.map((accessType, index) => (
-                  <MenuItem key={index} value={accessType}>
-                    <Typography>{t(`resource.access_types.${accessType}`)}</Typography>
-                  </MenuItem>
-                ))}
-              </TextField>
+        <Typography variant="h3">{t('resource.metadata.access')}</Typography>
+        <StyledFieldWrapper>
+          <Field name={ResourceFeatureNamesFullPath.Access}>
+            {({ field, meta: { error, touched } }: FieldProps) => (
+              <>
+                <TextField
+                  {...field}
+                  variant="outlined"
+                  select
+                  required
+                  error={touched && !!error}
+                  fullWidth
+                  value={field.value}
+                  label={t('resource.metadata.access')}
+                  onBlur={(event) => {
+                    setFieldTouched(ResourceFeatureNamesFullPath.Access, true, true);
+                  }}
+                  onChange={(event) => {
+                    handleChange(event);
+                    saveResourceAccessType(event);
+                  }}>
+                  {accessTypeArray.map((accessType, index) => (
+                    <MenuItem key={index} value={accessType}>
+                      <Typography>{t(`resource.access_types.${accessType}`)}</Typography>
+                    </MenuItem>
+                  ))}
+                </TextField>
 
-              {savingAccessTypeError && <ErrorBanner />}
-            </>
-          )}
-        </Field>
+                {savingAccessTypeError && <ErrorBanner />}
+              </>
+            )}
+          </Field>
+        </StyledFieldWrapper>
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );

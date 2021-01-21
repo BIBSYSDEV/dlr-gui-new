@@ -174,7 +174,7 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
     <StyledSchemaPartColored color={Colors.ContentsPageGradientColor2}>
       <StyledContentWrapper>
         <LargeParagraphSpace>
-          <Typography variant="h5" paragraph>
+          <Typography variant="h3" paragraph>
             {t('resource.files_and_license.additional_files.additional_files')}
           </Typography>
           <Typography variant="overline" paragraph>
@@ -202,8 +202,8 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
             </UploadImageProgressCard>
             <SmallParagraphSpace>
               <Typography variant="body1">{content.features.dlr_content}</Typography>
-              <Typography variant="body1">{displayContent(content.features.dlr_content)?.fileType}</Typography>
-              <Typography variant="body2">{displayContent(content.features.dlr_content)?.fileSize}</Typography>
+              <Typography variant="body2">{displayContent(content.features.dlr_content)?.fileType}</Typography>
+              <Typography variant="overline">{displayContent(content.features.dlr_content)?.fileSize}</Typography>
             </SmallParagraphSpace>
             <Button
               color="secondary"
