@@ -87,6 +87,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
           identifier: Yup.string().required(t('feedback.required_field')).min(1),
         })
       ),
+      containsContainsOtherPeoplesWork: Yup.boolean().required(t('feedback.required_field')),
     }),
   });
 

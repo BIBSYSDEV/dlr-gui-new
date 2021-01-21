@@ -22,6 +22,7 @@ export interface Resource {
   accessWrite?: string[];
   contents: Content[];
   licenses: License[];
+  containsContainsOtherPeoplesWork: boolean;
 }
 
 export const emptyResource: Resource = {
@@ -34,6 +35,7 @@ export const emptyResource: Resource = {
   contributors: [],
   creators: [],
   licenses: [],
+  containsContainsOtherPeoplesWork: false,
 };
 
 enum ResourceType {

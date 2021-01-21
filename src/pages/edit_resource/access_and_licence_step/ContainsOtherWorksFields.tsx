@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import Radio from '@material-ui/core/Radio';
 import { useTranslation } from 'react-i18next';
-import { useFormikContext } from 'formik';
+import { Field, FieldProps, useFormikContext } from 'formik';
 import { ResourceWrapper } from '../../../types/resource.types';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -20,6 +20,7 @@ import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { AccessTypes, emptyLicense, License, LicenseConstants } from '../../../types/license.types';
+import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 
 const StyledOutLinedBox = styled.div`
   display: flex;
@@ -50,6 +51,8 @@ const usageClearedId = 'usage-is-cleared';
 
 const additionalLicenseProviders: string[] = [LicenseConstants.NTNU, LicenseConstants.BI];
 
+// const options = ['Yes', 'No', 'Maybe'];
+
 const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   setAllChangesSaved,
   licenses,
@@ -58,7 +61,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
 }) => {
   const { institution } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
-  const { values, resetForm, setFieldValue } = useFormikContext<ResourceWrapper>();
+  const { values, resetForm, setFieldValue, handleChange, setTouched, touched } = useFormikContext<ResourceWrapper>();
   const [containsOtherPeoplesWork, setContainsOtherPeoplesWork] = useState(false);
   const [LicenseAgreement, setLicenseAgreement] = useState<string>('');
   const [savingError, setSavingError] = useState(false);
@@ -67,12 +70,17 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   );
 
   const handleChangeInContainsOtherPeoplesWork = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(values.resource.containsContainsOtherPeoplesWork);
+    console.log(event.target.value);
+
     setContainsOtherPeoplesWork(event.target.value === 'true');
     setLicenseAgreement('');
     forceResetInLicenseWizard();
     if (values.resource?.licenses) {
       await replaceOldLicense(emptyLicense);
-      resetForm({ values });
+      //TODO!!! Funker ikke
+      //resetFormButKeepTouched(touched, resetForm, values, setTouched);
+      //setFieldValue('resource.containsContainsOtherPeoplesWork', true);
     }
     if (event.target.value === 'false') {
       setHasSelectedCC(false);
@@ -137,13 +145,24 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
             <Typography variant="subtitle1">{t('license.questions.contains_other_peoples_work')}</Typography>
             <Typography variant="overline">{t('license.questions.examples')}</Typography>
           </FormLabel>
-          <StyledRadioGroup
-            aria-label={t('license.questions.examples')}
-            value={containsOtherPeoplesWork}
-            onChange={(event) => handleChangeInContainsOtherPeoplesWork(event)}>
-            <FormControlLabel value={false} control={<Radio color="primary" />} label={t('common.no')} />
-            <FormControlLabel value={true} control={<Radio color="primary" />} label={t('common.yes')} />
-          </StyledRadioGroup>
+          <Field name={'resource.containsContainsOtherPeoplesWork'}>
+            {({ field }: FieldProps) => (
+              <>
+                VERDI: {field.value}
+                <StyledRadioGroup
+                  {...field}
+                  aria-label={t('license.questions.examples')}
+                  value={field.value}
+                  onChange={(event) => {
+                    handleChange(event);
+                    handleChangeInContainsOtherPeoplesWork(event);
+                  }}>
+                  <FormControlLabel value={'false'} control={<Radio color="primary" />} label={t('common.no')} />
+                  <FormControlLabel value={'true'} control={<Radio color="primary" />} label={t('common.yes')} />
+                </StyledRadioGroup>
+              </>
+            )}
+          </Field>
         </StyledRadioBoxWrapper>
         {containsOtherPeoplesWork && (
           <StyledRadioBoxWrapper>

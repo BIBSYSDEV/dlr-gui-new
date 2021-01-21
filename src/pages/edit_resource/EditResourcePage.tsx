@@ -210,6 +210,7 @@ const EditResourcePage: FC = () => {
         ],
         licenses: [emptyLicense],
         tags: [],
+        containsContainsOtherPeoplesWork: false,
       };
       await setDLRType(resourceCreationType, responseWithCalculatedDefaults.data, tempResource, startingResource);
       await setCreator(tempResource, startingResource.identifier, user.name);
