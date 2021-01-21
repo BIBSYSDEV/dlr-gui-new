@@ -127,7 +127,7 @@
       "Supervisor": "Supervisor",
       "WorkpackageLeader": "Workpackage leader"
     },
-    "delete_resource_confirmation": "Are you really sure you want to delete the resource",
+    "delete_resource_confirmation": "Are you really sure you want to delete",
     "delete_resource_description": "This will permanently delete the resource and the resource cannot be restored",
     "edit_resource": "Edit resource",
     "files_and_license": {

@@ -11,6 +11,7 @@ import { deleteResource } from '../api/resourceApi';
 
 interface ConfirmDeleteDialogProps {
   resourceIdentifier: string;
+  resourceTitle: string;
   open: boolean;
   confirmedDelete: () => void;
   abortDelete: () => void;
@@ -21,6 +22,7 @@ const ConfirmDeleteDialog: FC<ConfirmDeleteDialogProps> = ({
   open,
   abortDelete,
   confirmedDelete,
+  resourceTitle,
 }) => {
   const { t } = useTranslation();
   const [deleteErrorOccured, seDeleteErrorOccured] = useState(false);
@@ -46,7 +48,9 @@ const ConfirmDeleteDialog: FC<ConfirmDeleteDialogProps> = ({
       onClose={performAbort}
       aria-labelledby="alert-dialog-title"
       data-testid={`delete-confirm-dialog`}>
-      <DialogTitle id="alert-dialog-title">{`${t('resource.delete_resource_confirmation')}?`}</DialogTitle>
+      <DialogTitle id="alert-dialog-title">{`${t(
+        'resource.delete_resource_confirmation'
+      )} ${resourceTitle}?`}</DialogTitle>
       <DialogContent>
         {!deleteErrorOccured && (
           <DialogContentText id="alert-dialog-description">

@@ -127,7 +127,7 @@
       "Supervisor": "Veilleder",
       "WorkpackageLeader": "Workpackage leader"
     },
-    "delete_resource_confirmation": "Vil du virkelig slette ressursen",
+    "delete_resource_confirmation": "Vil du virkelig slette",
     "delete_resource_description": "Slettingen vil være permament og ressursen kan ikke gjenopprettes",
     "edit_resource": "Rediger ressurs",
     "files_and_license": {

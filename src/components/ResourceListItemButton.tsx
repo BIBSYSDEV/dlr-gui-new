@@ -29,6 +29,7 @@ const StyledListItem: any = styled(ListItem)`
 `;
 
 const StyledDeleteButton = styled(Button)`
+  min-width: 5rem;
   align-self: flex-end;
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     margin-left: 16px;
@@ -97,6 +98,7 @@ const ResourceListItemButton: FC<ResourceListItemButtonProps> = ({
             data-testid={`delete-my-resource-confirm-dialog-${resource.identifier}`}
             resourceIdentifier={resource.identifier}
             open={showConfirmDialog}
+            resourceTitle={resource.features.dlr_title}
             confirmedDelete={() => {
               setShowConfirmDialog(false);
               handleDelete();
