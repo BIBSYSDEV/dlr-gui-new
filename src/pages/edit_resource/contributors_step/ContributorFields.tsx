@@ -145,7 +145,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
   return (
     <StyledSchemaPartColored color={Colors.ContributorsPageGradientColor2}>
       <StyledContentWrapper>
-        <Typography variant="h4">{t('resource.metadata.contributors')}</Typography>
+        <Typography variant="h3">{t('resource.metadata.contributors')}</Typography>
         <FieldArray
           name={FieldNames.ContributorsBase}
           render={(arrayHelpers) => (

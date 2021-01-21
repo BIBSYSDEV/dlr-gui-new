@@ -47,7 +47,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor2}>
       <StyledContentWrapper>
-        <Typography variant="h4">{t('resource.metadata.access')}</Typography>
+        <Typography variant="h3">{t('resource.metadata.access')}</Typography>
         <StyledFieldWrapper>
           <Field name={ResourceFeatureNamesFullPath.Access}>
             {({ field, meta: { error, touched } }: FieldProps) => (

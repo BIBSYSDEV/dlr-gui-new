@@ -60,7 +60,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
   return (
     resource && (
       <StyledPresentationWrapper>
-        <Typography variant="h4">{resource.features?.dlr_title}</Typography>
+        <Typography variant="h2">{resource.features?.dlr_title}</Typography>
 
         {preview && (
           <PreviewComponentWrapper>
