@@ -22,7 +22,7 @@ context('Actions', () => {
     cy.get('[data-testid=delete-confirm-dialog]').should('not.exist');
     cy.get('[data-testid=list-item-resources-123]').should('exist');
   });
-  it('can start deleting, then aborting deletion by clicking outside the confirm-delete dialog', () => {
+  it('can start deleting, then aborting deletion by clicking \n outside the confirm-delete dialog', () => {
     cy.get('[data-testid=my-resources-link]').click();
     cy.get('[data-testid=delete-confirm-dialog]').should('not.exist');
     cy.get('[data-testid=delete-my-resources-123]').click();
