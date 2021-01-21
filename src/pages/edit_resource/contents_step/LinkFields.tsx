@@ -33,7 +33,7 @@ const LinkFields = () => {
   return (
     <StyledSchemaPartColored color={Colors.ContentsPageGradientColor1}>
       <StyledContentWrapper>
-        <Typography variant="h5">{t('resource.metadata.link')}</Typography>
+        <Typography variant="h3">{t('resource.metadata.link')}</Typography>
         <LinkWrapper>
           <ThumbnailWrapper>
             <Thumbnail resourceIdentifier={values.resource.identifier} alt={t('resource.metadata.resource')} />

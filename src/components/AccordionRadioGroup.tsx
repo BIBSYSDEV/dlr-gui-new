@@ -38,9 +38,8 @@ const AccoridionRadioGroup: FC<AccordionRadioGroupProps> = ({ ariaDescription, t
         onClick={() => setShowRadioDetails(!showRadioDetails)}
         color="primary"
         endIcon={!showRadioDetails ? <ExpandMoreIcon /> : <ExpandLessIcon />}>
-        <Typography variant="h6">{title}</Typography>
+        <Typography variant="h4">{title}</Typography>
       </StyledButton>
-
       {showRadioDetails && <div id={ariaDescription}>{children}</div>}
     </StyledRadioBoxWrapper>
   );

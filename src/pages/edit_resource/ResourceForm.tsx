@@ -138,7 +138,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                 <StyledPanel>
                   <StyledSchemaPart>
                     <StyledContentWrapper>
-                      <Typography variant="h5">{formikProps.values.resource.features.dlr_title}</Typography>
+                      <Typography variant="h2">{formikProps.values.resource.features.dlr_title}</Typography>
                     </StyledContentWrapper>
                   </StyledSchemaPart>
                   <CreatorField setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)} />
@@ -164,7 +164,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                 <StyledPanel id={fileUploadPanelId}>
                   <StyledSchemaPart>
                     <StyledContentWrapper>
-                      <Typography variant="h5">{formikProps.values.resource.features.dlr_title}</Typography>
+                      <Typography variant="h2">{formikProps.values.resource.features.dlr_title}</Typography>
                     </StyledContentWrapper>
                   </StyledSchemaPart>
                   <ContentsStep

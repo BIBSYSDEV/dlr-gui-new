@@ -23,7 +23,7 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSave
     <>
       <StyledSchemaPart>
         <StyledContentWrapper>
-          <Typography variant="h5">{values.resource.features.dlr_title}</Typography>
+          <Typography variant="h2">{values.resource.features.dlr_title}</Typography>
         </StyledContentWrapper>
       </StyledSchemaPart>
 
