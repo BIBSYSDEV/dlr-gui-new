@@ -134,7 +134,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
       <StyledContentWrapper>
         <StyledRadioBoxWrapper>
           <FormLabel component="legend" id={otherPeopleWorkId}>
-            <Typography variant="subtitle1">{t('license.questions.contains_other_peoples_work')}</Typography>
+            <Typography variant="h3">{t('license.questions.contains_other_peoples_work')}</Typography>
             <Typography variant="overline">{t('license.questions.examples')}</Typography>
           </FormLabel>
           <StyledRadioGroup

@@ -1,5 +1,5 @@
 import { createMuiTheme } from '@material-ui/core';
-import { barlowRegular, merriweatherRegular } from './fonts';
+import { barlowRegular, LibreFranklinRegular, CrimsonTextRegular } from './fonts';
 
 // Extend Palette type to allow custom colors
 declare module '@material-ui/core/styles/createPalette' {
@@ -16,14 +16,16 @@ declare module '@material-ui/core/styles/createPalette' {
 }
 
 export enum Colors {
-  Primary = '#284B63',
+  Primary = '#284b63',
   Secondary = '#ff5555',
   Background = '#fff',
   Box = '#f5f5f5',
   Link = '#06f',
   Separator = '#3d4349',
-  PrimaryText = 'rgba(0, 0, 0, 0.87)',
+  PrimaryText = 'rgba(0,0,0,0.87)',
+  InitialText = 'rgba(0, 0, 0, 1)',
   SecondaryText = '#44515d',
+  LightHeaderText = 'rgba(0,0,0,0.29)',
   Panel = '#A9D8B8',
   Disabled = '#bbb',
   Danger = '#ff5555',
@@ -31,6 +33,7 @@ export enum Colors {
   Indicator = '#FFB546',
   HeaderBackground = 'rgba(99,34,107, 0.15)',
   HeaderText = 'rgba(0,0,0, 1)',
+  StepperSelected = 'rgba(99, 34, 107, 1)',
   DescriptionPageGradientColor1 = 'rgba(66,127,140,0.10)',
   DescriptionPageGradientColor2 = 'rgba(66,127,140,0.25)',
   DescriptionPageGradientColor3 = 'rgba(66,127,140,0.35)',
@@ -84,20 +87,82 @@ export default createMuiTheme({
   typography: {
     fontFamily: 'Barlow,  sans-serif',
     h1: {
-      fontFamily: 'Merriweather, serif',
-      fontSize: '2.1rem',
+      fontFamily: 'Crimson Text, serif',
+      fontSize: '3rem',
+      lineHeight: '4.125rem',
+      color: Colors.InitialText,
     },
     h2: {
-      fontFamily: 'Merriweather, serif',
-      fontSize: '1.8rem',
+      fontFamily: 'Crimson Text, serif',
+      fontSize: '2.25rem',
+      lineHeight: '3rem',
+      letterSpacing: '0.0025em',
+      color: Colors.InitialText,
     },
     h3: {
-      fontFamily: 'Merriweather, serif',
-      fontSize: '1.6rem',
+      fontFamily: 'Crimson Text, serif',
+      fontSize: '1.5rem',
+      lineHeight: '2.0625rem',
+      color: Colors.InitialText,
     },
     h4: {
-      fontFamily: 'Merriweather, serif',
-      fontSize: '1.4rem',
+      fontFamily: 'Barlow, serif',
+      fontSize: '1.125rem',
+      fontWeight: 'bold',
+      lineHeight: '1.5rem',
+      letterSpacing: '0.0015em',
+      color: Colors.InitialText,
+    },
+    subtitle1: {
+      fontFamily: 'Barlow, serif',
+      fontSize: '1rem',
+      lineHeight: '1.1875rem',
+      letterSpacing: '0.0015em',
+      color: Colors.InitialText,
+    },
+    subtitle2: {
+      fontFamily: 'Barlow, serif',
+      fontSize: '0.875rem',
+      fontWeight: 'bold',
+      lineHeight: '1.0625rem',
+      color: Colors.InitialText,
+    },
+    body1: {
+      fontFamily: 'Barlow, serif',
+      fontSize: '1rem',
+      lineHeight: '1.5rem',
+      letterSpacing: '0.005em',
+      color: Colors.InitialText,
+    },
+    body2: {
+      fontFamily: 'Barlow, serif',
+      fontSize: '0.875rem',
+      lineHeight: '1.0625rem',
+      letterSpacing: '0.0025em',
+      color: Colors.InitialText,
+    },
+    button: {
+      fontFamily: 'Barlow, serif',
+      fontSize: '0.875rem',
+      lineHeight: '1.0625rem',
+      letterSpacing: '0.02em',
+      fontWeight: 500,
+      color: Colors.InitialText,
+    },
+    caption: {
+      fontFamily: 'Barlow, serif',
+      fontSize: '0.75rem',
+      lineHeight: '0.875rem',
+      letterSpacing: '0.004em',
+      color: Colors.InitialText,
+    },
+    overline: {
+      fontFamily: 'Barlow, serif',
+      fontSize: '0.75rem',
+      lineHeight: '0.875rem',
+      letterSpacing: '0.015em',
+      color: Colors.InitialText,
+      textTransform: 'none',
     },
   },
   overrides: {
@@ -118,7 +183,7 @@ export default createMuiTheme({
     },
     MuiCssBaseline: {
       '@global': {
-        '@font-face': [merriweatherRegular, barlowRegular],
+        '@font-face': [barlowRegular, LibreFranklinRegular, CrimsonTextRegular],
       },
     },
     MuiInputBase: {
@@ -154,6 +219,20 @@ export default createMuiTheme({
     MuiTextField: {
       root: {
         marginTop: '1rem',
+      },
+    },
+    MuiStepLabel: {
+      label: {
+        width: 'fit-content',
+        fontSize: '1rem',
+        '@media (max-width:600px)': {
+          visibility: 'collapse',
+        },
+        '&$active': {
+          fontWeight: '600',
+          color: Colors.StepperSelected,
+          visibility: 'visible',
+        },
       },
     },
   },
