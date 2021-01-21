@@ -13,6 +13,7 @@ import { Colors } from '../../../themes/mainTheme';
 import ErrorBanner from '../../../components/ErrorBanner';
 import contributorTypeList from '../../../resources/assets/contributorTypeList.json';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
+import { StyledDeleteButton } from '../../../components/styled/DeleteButton';
 
 const StyledFieldsWrapper = styled.div`
   display: flex;
@@ -202,7 +203,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                         />
                       )}
                     </Field>
-                    <Button
+                    <StyledDeleteButton
                       color="secondary"
                       startIcon={<DeleteIcon fontSize="large" />}
                       size="large"
@@ -210,7 +211,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                         removeContributor(contributor.features.dlr_contributor_identifier, arrayHelpers, index);
                       }}>
                       {t('common.remove').toUpperCase()}
-                    </Button>
+                    </StyledDeleteButton>
                     {updateContributorError && errorIndex === index && <ErrorBanner />}
                   </StyledFieldsWrapper>
                 );

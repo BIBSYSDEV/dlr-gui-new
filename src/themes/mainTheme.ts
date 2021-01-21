@@ -27,6 +27,7 @@ export enum Colors {
   Panel = '#A9D8B8',
   Disabled = '#bbb',
   Danger = '#ff5555',
+  Warning = 'rgba(147, 10, 10, 1)',
   DangerLight = '#ffbbbb',
   Indicator = '#FFB546',
   HeaderBackground = 'rgba(99,34,107, 0.15)',

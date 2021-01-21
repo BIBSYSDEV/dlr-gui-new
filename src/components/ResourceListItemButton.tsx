@@ -9,6 +9,7 @@ import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import Button from '@material-ui/core/Button';
 import ConfirmDeleteDialog from './ConfirmDeleteDialog.';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { Colors, StyleWidths } from '../themes/mainTheme';
 
 const StyledListItemText = styled(ListItemText)`
   padding-left: 16px;
@@ -19,21 +20,28 @@ const StyledTypography: OverridableComponent<TypographyTypeMap<unknown, 'span'>>
 `;
 
 const StyledListItem: any = styled(ListItem)`
-  display: flex;
-  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    width: 45rem;
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
+  justify-content: space-between;
+  width: 100%;
+  max-width: ${StyleWidths.width4};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     display: block;
+    flex-direction: column;
+    width: 100vw;
   }
 `;
 
 const StyledDeleteButton = styled(Button)`
-  min-width: 5rem;
-  align-self: flex-end;
+  min-width: 8rem;
+  align-self: flex-start;
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    margin-left: 16px;
+    margin-left: 1.5rem;
   }
+  color: ${Colors.Warning};
+`;
+
+const StyledLinkButton: any = styled(Button)`
+  flex-grow: 1;
 `;
 
 interface ResourceListItemButtonProps {
@@ -56,7 +64,7 @@ const ResourceListItemButton: FC<ResourceListItemButtonProps> = ({
 
   return (
     <StyledListItem data-testid={`list-item-resources-${resource.identifier}`}>
-      <Button component="a" href={`/resource/${resource.identifier}`}>
+      <StyledLinkButton component="a" href={`/resource/${resource.identifier}`}>
         <Thumbnail
           resourceIdentifier={resource.identifier}
           alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
@@ -83,7 +91,7 @@ const ResourceListItemButton: FC<ResourceListItemButtonProps> = ({
             </>
           }
         />
-      </Button>
+      </StyledLinkButton>
       {handleDelete && (
         <>
           <StyledDeleteButton
@@ -92,7 +100,7 @@ const ResourceListItemButton: FC<ResourceListItemButtonProps> = ({
             startIcon={<DeleteIcon fontSize="large" />}
             size="large"
             onClick={() => setShowConfirmDialog(true)}>
-            {t('common.delete')} {window.innerWidth < 600 && resource.features.dlr_title}
+            {t('common.delete').toUpperCase()} {window.innerWidth < 600 && resource.features.dlr_title.toUpperCase()}
           </StyledDeleteButton>
           <ConfirmDeleteDialog
             data-testid={`delete-my-resource-confirm-dialog-${resource.identifier}`}
