@@ -19,6 +19,10 @@ const StyledSubRadioGroup = styled(StyledRadioGroup)`
   }
 `;
 
+const StyledOverlineWrapper = styled.div`
+  padding-bottom: 1rem;
+`;
+
 const extraRestrictionRadio = 'extra-restriction';
 const commercialRadio = 'commersial';
 const modifyAndBuildRadio = 'change-and-build';
@@ -159,7 +163,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           title={t('license.extra_restrictions')}
           expanded={true}>
           <FormLabel component="legend" id={`${extraRestrictionRadio}-label`}>
-            <Typography variant="subtitle1">{t('license.questions.special_needs')}</Typography>
+            <Typography variant="overline">{t('license.questions.special_needs')}</Typography>
           </FormLabel>
           <StyledRadioGroup
             aria-label={t('license.questions.special_needs')}
@@ -203,7 +207,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
             title={t('license.commercial_purposes')}
             expanded={true}>
             <FormLabel component="legend" id={`${commercialRadio}-label`}>
-              <Typography variant="subtitle1">{t('license.questions.commercial')}</Typography>
+              <Typography variant="overline">{t('license.questions.commercial')}</Typography>
             </FormLabel>
             <StyledRadioGroup
               aria-label={t('license.questions.commercial')}
@@ -227,7 +231,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
             title={t('license.modify_and_build')}
             expanded={expandModifyAndBuildOption}>
             <FormLabel component="legend" id={`${modifyAndBuildRadio}-label`}>
-              <Typography variant="subtitle1">{t('license.questions.modify_and_build')}</Typography>
+              <Typography variant="overline">{t('license.questions.modify_and_build')}</Typography>
             </FormLabel>
             <StyledRadioGroup
               value={modifyAndBuildValue}

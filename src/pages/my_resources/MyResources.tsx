@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import ResourceListItemButton from '../../components/ResourceListItemButton';
+import { PageHeader } from '../../components/PageHeader';
 
 const StyledPageContent = styled.div`
   display: flex;
@@ -55,6 +56,9 @@ const MyResources: FC = () => {
       <ListMarginAlign>
         <StyledListWrapper>
           <List>
+            <ListItem>
+              <PageHeader>{t('resource.my_resources')}</PageHeader>
+            </ListItem>
             <ListItem>
               <Typography variant="h2">{t('resource.unpublished_resources')}</Typography>
             </ListItem>

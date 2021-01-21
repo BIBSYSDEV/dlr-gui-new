@@ -80,6 +80,7 @@
         "title": "Yes, other"
       }
     },
+    "radio_information": "Answer the questions below to receive a license suggestion, or pick a license directly from the drop-down menu below",
     "read_more": "Read more about",
     "restriction_options": {
       "bi-opphaver-bi": "Yes, it can only be used internally at BI",
@@ -179,6 +180,7 @@
       "access_and_licence": "Access and licence",
       "preview": "Preview"
     },
+    "leave_form": "Save and continue later",
     "link_to_resource": "Link to resource",
     "metadata": {
       "access": "Access",

@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Colors } from '../../../themes/mainTheme';
+import { Colors, StyleWidths } from '../../../themes/mainTheme';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { MenuItem, TextField, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +11,7 @@ import { AccessTypes } from '../../../types/license.types';
 import styled from 'styled-components';
 
 const StyledFieldWrapper = styled.div`
-  width: 20rem;
+  max-width: ${StyleWidths.width1};
 `;
 
 interface AccessFieldsProps {
@@ -47,7 +47,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor2}>
       <StyledContentWrapper>
-        <Typography variant="h4">{t('resource.metadata.access')}</Typography>
+        <Typography variant="h3">{t('resource.metadata.access')}</Typography>
         <StyledFieldWrapper>
           <Field name={ResourceFeatureNamesFullPath.Access}>
             {({ field, meta: { error, touched } }: FieldProps) => (

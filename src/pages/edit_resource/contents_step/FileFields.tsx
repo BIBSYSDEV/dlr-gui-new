@@ -84,7 +84,7 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUp
   return (
     <StyledSchemaPartColored color={Colors.ContentsPageGradientColor1}>
       <StyledContentWrapper>
-        <Typography variant="h5">{t('resource.metadata.main_file')}</Typography>
+        <Typography variant="h3">{t('resource.metadata.main_file')}</Typography>
         <MainFileWrapper>
           <MainFileImageWrapper>
             <Thumbnail resourceIdentifier={values.resource.identifier} alt={t('resource.metadata.resource')} />

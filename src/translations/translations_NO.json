@@ -80,6 +80,7 @@
         "title": "Ja, annet"
       }
     },
+    "radio_information": "Svar på spørsmålene for å få hjelp til å velge lisens eller velg lisens direkte fra nedtrekksmenyen",
     "read_more": "Les mer om ",
     "restriction_options": {
       "bi-opphaver-bi": "Ja, den kan kun brukes internt på BI",
@@ -179,6 +180,7 @@
       "access_and_licence": "Tilgang og lisens",
       "preview": "Forhåndsvisning"
     },
+    "leave_form": "Lagre og fortsett senere",
     "link_to_resource": "Lenke til ressurs",
     "metadata": {
       "access": "Tilgang",
