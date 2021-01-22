@@ -45,6 +45,10 @@ interface ContainsOtherWorksFieldsProps {
   setHasSelectedCC: (value: boolean) => void;
 }
 
+export enum ContainsContainsOtherPeoplesWorkOptions {
+  Yes = 'yes',
+  No = 'no',
+}
 const otherPeopleWorkId = 'other-peoples-work';
 
 const usageClearedId = 'usage-is-cleared';
@@ -70,22 +74,21 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   );
 
   const handleChangeInContainsOtherPeoplesWork = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(values.resource.containsContainsOtherPeoplesWork);
-    console.log(event.target.value);
-
-    setContainsOtherPeoplesWork(event.target.value === 'true');
+    setContainsOtherPeoplesWork(event.target.value === ContainsContainsOtherPeoplesWorkOptions.Yes);
     setLicenseAgreement('');
     forceResetInLicenseWizard();
     if (values.resource?.licenses) {
       await replaceOldLicense(emptyLicense);
-      //TODO!!! Funker ikke
-      //resetFormButKeepTouched(touched, resetForm, values, setTouched);
-      //setFieldValue('resource.containsContainsOtherPeoplesWork', true);
+      resetFormButKeepTouched(touched, resetForm, values, setTouched);
+      setFieldValue('resource.containsContainsOtherPeoplesWork', event.target.value);
     }
-    if (event.target.value === 'false') {
+    if (event.target.value === ContainsContainsOtherPeoplesWorkOptions.No) {
       setHasSelectedCC(false);
     }
-    if (event.target.value === 'true' && LicenseAgreement === LicenseConstants.CC) {
+    if (
+      event.target.value === ContainsContainsOtherPeoplesWorkOptions.Yes &&
+      LicenseAgreement === LicenseConstants.CC
+    ) {
       setHasSelectedCC(true);
     }
   };
@@ -147,20 +150,24 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
           </FormLabel>
           <Field name={'resource.containsContainsOtherPeoplesWork'}>
             {({ field }: FieldProps) => (
-              <>
-                VERDI: {field.value}
-                <StyledRadioGroup
-                  {...field}
-                  aria-label={t('license.questions.examples')}
-                  value={field.value}
-                  onChange={(event) => {
-                    handleChange(event);
-                    handleChangeInContainsOtherPeoplesWork(event);
-                  }}>
-                  <FormControlLabel value={'false'} control={<Radio color="primary" />} label={t('common.no')} />
-                  <FormControlLabel value={'true'} control={<Radio color="primary" />} label={t('common.yes')} />
-                </StyledRadioGroup>
-              </>
+              <StyledRadioGroup
+                {...field}
+                aria-label={t('license.questions.examples')}
+                value={field.value}
+                onChange={(event) => {
+                  handleChangeInContainsOtherPeoplesWork(event);
+                }}>
+                <FormControlLabel
+                  value={ContainsContainsOtherPeoplesWorkOptions.No}
+                  control={<Radio color="primary" />}
+                  label={t('common.no')}
+                />
+                <FormControlLabel
+                  value={ContainsContainsOtherPeoplesWorkOptions.Yes}
+                  control={<Radio color="primary" />}
+                  label={t('common.yes')}
+                />
+              </StyledRadioGroup>
             )}
           </Field>
         </StyledRadioBoxWrapper>

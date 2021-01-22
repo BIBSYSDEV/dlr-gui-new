@@ -43,7 +43,7 @@ const mockResource: Resource = {
   contributors: [],
   licenses: [],
   creators: [],
-  containsContainsOtherPeoplesWork: false,
+  containsContainsOtherPeoplesWork: '',
 };
 
 const mockCalculatedResource: Resource = {
@@ -56,7 +56,7 @@ const mockCalculatedResource: Resource = {
   contents: [],
   contributors: [],
   creators: [],
-  containsContainsOtherPeoplesWork: false,
+  containsContainsOtherPeoplesWork: '',
 };
 
 const mockMyResources: Resource[] = [
@@ -71,7 +71,7 @@ const mockMyResources: Resource[] = [
     contents: [],
     contributors: [],
     creators: [],
-    containsContainsOtherPeoplesWork: false,
+    containsContainsOtherPeoplesWork: '',
   },
   {
     features: {
@@ -84,7 +84,7 @@ const mockMyResources: Resource[] = [
     contents: [],
     contributors: [],
     creators: [],
-    containsContainsOtherPeoplesWork: false,
+    containsContainsOtherPeoplesWork: '',
   },
   {
     features: {
@@ -97,7 +97,7 @@ const mockMyResources: Resource[] = [
     contents: [],
     contributors: [],
     creators: [],
-    containsContainsOtherPeoplesWork: false,
+    containsContainsOtherPeoplesWork: '',
   },
 ];
 
