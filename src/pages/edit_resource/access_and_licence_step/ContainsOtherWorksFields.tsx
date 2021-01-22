@@ -65,7 +65,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
 }) => {
   const { institution } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
-  const { values, resetForm, setFieldValue, handleChange, setTouched, touched } = useFormikContext<ResourceWrapper>();
+  const { values, resetForm, setFieldValue, setTouched, touched } = useFormikContext<ResourceWrapper>();
   const [containsOtherPeoplesWork, setContainsOtherPeoplesWork] = useState(false);
   const [LicenseAgreement, setLicenseAgreement] = useState<string>('');
   const [savingError, setSavingError] = useState(false);
