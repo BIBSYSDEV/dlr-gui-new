@@ -56,8 +56,6 @@ const usageClearedId = 'usage-is-cleared';
 
 const additionalLicenseProviders: string[] = [LicenseConstants.NTNU, LicenseConstants.BI];
 
-// const options = ['Yes', 'No', 'Maybe'];
-
 const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   setAllChangesSaved,
   licenses,
