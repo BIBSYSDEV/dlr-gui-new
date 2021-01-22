@@ -77,6 +77,7 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
 
   return (
     <StyledContentWrapperMedium>
+      <pre style={{ maxWidth: '90%' }}>PER2: {JSON.stringify(errors, null, 2)}</pre>
       <Stepper style={{ width: '100%' }} activeStep={activeStep} nonLinear alternativeLabel>
         {ResourceFormSteps.map((step, index) => {
           return (

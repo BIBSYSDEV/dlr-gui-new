@@ -156,6 +156,7 @@ export const touchedContentsFields = (contents: Content[]): FormikTouched<Resour
 
 export const touchedAccessAndLicenseFields: FormikTouched<ResourceWrapper> = {
   resource: {
+    containsContainsOtherPeoplesWork: true,
     licenses: [{ identifier: true }],
   },
 };

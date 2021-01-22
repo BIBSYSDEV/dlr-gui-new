@@ -21,6 +21,7 @@ import styled from 'styled-components';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import { AccessTypes, emptyLicense, License, LicenseConstants } from '../../../types/license.types';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
+import { FormHelperText } from '@material-ui/core';
 
 const StyledOutLinedBox = styled.div`
   display: flex;
@@ -149,25 +150,28 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
             <Typography variant="overline">{t('license.questions.examples')}</Typography>
           </FormLabel>
           <Field name={'resource.containsContainsOtherPeoplesWork'}>
-            {({ field }: FieldProps) => (
-              <StyledRadioGroup
-                {...field}
-                aria-label={t('license.questions.examples')}
-                value={field.value}
-                onChange={(event) => {
-                  handleChangeInContainsOtherPeoplesWork(event);
-                }}>
-                <FormControlLabel
-                  value={ContainsContainsOtherPeoplesWorkOptions.No}
-                  control={<Radio color="primary" />}
-                  label={t('common.no')}
-                />
-                <FormControlLabel
-                  value={ContainsContainsOtherPeoplesWorkOptions.Yes}
-                  control={<Radio color="primary" />}
-                  label={t('common.yes')}
-                />
-              </StyledRadioGroup>
+            {({ field, meta: { error, touched } }: FieldProps) => (
+              <>
+                <StyledRadioGroup
+                  {...field}
+                  aria-label={t('license.questions.examples')}
+                  value={field.value}
+                  onChange={(event) => {
+                    handleChangeInContainsOtherPeoplesWork(event);
+                  }}>
+                  <FormControlLabel
+                    value={ContainsContainsOtherPeoplesWorkOptions.No}
+                    control={<Radio color="primary" />}
+                    label={t('common.no')}
+                  />
+                  <FormControlLabel
+                    value={ContainsContainsOtherPeoplesWorkOptions.Yes}
+                    control={<Radio color="primary" />}
+                    label={t('common.yes')}
+                  />
+                </StyledRadioGroup>
+                {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
+              </>
             )}
           </Field>
         </StyledRadioBoxWrapper>
