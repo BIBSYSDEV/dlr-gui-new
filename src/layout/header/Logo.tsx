@@ -19,8 +19,8 @@ const StyledDivider = styled(Divider)`
 
 const Logo: FC = () => (
   <StyledLogo data-testid="logo">
-    <MuiLink component={Link} to="/">
-      <Typography variant="h1" component="h1" color="primary">
+    <MuiLink component={Link} to="/" underline="none">
+      <Typography variant="h3" component="abbr">
         DLR
       </Typography>
     </MuiLink>

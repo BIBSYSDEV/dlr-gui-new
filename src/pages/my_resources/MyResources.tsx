@@ -49,6 +49,18 @@ const MyResources: FC = () => {
     fetchData();
   }, []);
 
+  const deleteResource = (resourceIdentifier: string, isPublished: boolean) => {
+    if (isPublished) {
+      setMyPublishedResources((prevState) =>
+        prevState.filter((resource) => resource.identifier !== resourceIdentifier)
+      );
+    } else {
+      setMyUnpublishedResources((prevState) =>
+        prevState.filter((resource) => resource.identifier !== resourceIdentifier)
+      );
+    }
+  };
+
   return (
     <StyledPageContent>
       {loadingError && <ErrorBanner />}
@@ -65,7 +77,15 @@ const MyResources: FC = () => {
             {!isLoadingMyResources &&
               resourcesUnpublished.length > 0 &&
               resourcesUnpublished.map((resource: Resource, index: number) => (
-                <ResourceListItemButton key={index} resource={resource} showTimeCreated={true} />
+                <ResourceListItemButton
+                  data-testid={`my-unpublished-resources-${resource.identifier}`}
+                  key={index}
+                  resource={resource}
+                  showTimeCreated={true}
+                  handleDelete={() => {
+                    deleteResource(resource.identifier, false);
+                  }}
+                />
               ))}
           </List>
           {!isLoadingMyResources && resourcesUnpublished.length === 0 && (
@@ -82,7 +102,15 @@ const MyResources: FC = () => {
             {!isLoadingMyResources &&
               resourcesPublished.length > 0 &&
               resourcesPublished.map((resource: Resource, index: number) => (
-                <ResourceListItemButton key={index} resource={resource} showTimeCreated={true} />
+                <ResourceListItemButton
+                  data-testid={`my-published-resources-${resource.identifier}`}
+                  key={index}
+                  resource={resource}
+                  showTimeCreated={true}
+                  handleDelete={() => {
+                    deleteResource(resource.identifier, true);
+                  }}
+                />
               ))}
             {!isLoadingMyResources && resourcesPublished.length === 0 && (
               <ListItem>
