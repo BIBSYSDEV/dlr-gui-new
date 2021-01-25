@@ -114,6 +114,12 @@ export default createMuiTheme({
       letterSpacing: '0.0015em',
       color: Colors.InitialText,
     },
+    h5: {
+      color: Colors.InitialText,
+    },
+    h6: {
+      color: Colors.InitialText,
+    },
     subtitle1: {
       fontFamily: 'Barlow, serif',
       fontSize: '1rem',
