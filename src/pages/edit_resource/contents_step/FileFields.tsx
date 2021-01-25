@@ -14,7 +14,7 @@ import ErrorBanner from '../../../components/ErrorBanner';
 import { ResourceWrapper } from '../../../types/resource.types';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import Thumbnail from '../../../components/Thumbnail';
-import { Dashboard } from '@uppy/react';
+import { FileInput } from '@uppy/react';
 import { setContentAsDefaultThumbnail } from '../../../api/fileApi';
 import { Content } from '../../../types/content.types';
 
@@ -52,6 +52,7 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUp
   const { t } = useTranslation();
   const { values, handleBlur, resetForm, setTouched, touched } = useFormikContext<ResourceWrapper>();
   const [saveTitleError, setSaveTitleError] = useState(false);
+  const [tempThumbnailContentIdentifier, setTempThumbnailContentIdentifier] = useState<string | undefined>();
 
   const saveMainContentsFileName = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setAllChangesSaved(false);
@@ -70,14 +71,19 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUp
   };
 
   useEffect(() => {
+    console.log('inside useEffect');
     if (thumbnailUppy) {
+      console.log('has thumbnailUppy');
       thumbnailUppy.on('complete', () => {
+        console.log('detecting complete from uppy');
         if (newThumbnailContent) {
+          console.log('has newThumbnailContent');
           setContentAsDefaultThumbnail(values.resource.identifier, newThumbnailContent.identifier);
+          setTempThumbnailContentIdentifier(newThumbnailContent.identifier);
         }
       });
     }
-  }, [thumbnailUppy]);
+  }, [thumbnailUppy, newThumbnailContent]);
 
   console.log('thumbnailUppy', thumbnailUppy);
 
@@ -87,9 +93,14 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUp
         <Typography variant="h3">{t('resource.metadata.main_file')}</Typography>
         <MainFileWrapper>
           <MainFileImageWrapper>
-            <Thumbnail resourceIdentifier={values.resource.identifier} alt={t('resource.metadata.resource')} />
+            <Thumbnail
+              tempContentIdentifier={tempThumbnailContentIdentifier}
+              resourceIdentifier={values.resource.identifier}
+              alt={t('resource.metadata.resource')}
+            />
           </MainFileImageWrapper>
-          <Dashboard uppy={thumbnailUppy}>Velg fil</Dashboard>
+
+          <FileInput uppy={thumbnailUppy} />
           <MainFileMetadata>
             <StyledFieldWrapper>
               {/*//TODO: First item in contents is not always main content*/}
