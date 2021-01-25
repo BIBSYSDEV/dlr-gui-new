@@ -78,6 +78,9 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUp
         if (newThumbnailContent) {
           setFileInputIsBusy(true);
           setContentAsDefaultThumbnail(values.resource.identifier, newThumbnailContent.identifier).then(() => {
+            const valueContent = values.resource?.contents.find(
+              (content) => content.identifier === newThumbnailContent.identifier
+            );
             setShouldPollNewThumbnail(true);
             setTimeout(() => {
               setShouldPollNewThumbnail(false);

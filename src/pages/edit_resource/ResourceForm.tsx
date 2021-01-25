@@ -52,15 +52,21 @@ interface ResourceFormProps {
 const fileUploadPanelId = 'file-upload-panel';
 
 const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) => {
+  const setNewContentAndThumbnail = (newContent: Content) => {
+    newContent.features.dlr_thumbnail_default = 'true';
+    setNewContent(newContent);
+    setNewThumbnailContent(newContent);
+  };
+
   const { t } = useTranslation();
   const [allChangesSaved, setAllChangesSaved] = useState(true);
   const [isLoadingLicenses, setIsLoadingLicenses] = useState(false);
   const [newContent, setNewContent] = useState<Content>();
-  const [newThumbnailContent, setNewThumbnailContent] = useState<Content>();
   const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
   const [licenses, setLicenses] = useState<License[]>();
   const additionalFilesUppy = useUppy(additionalCreateFilesUppy(resource.identifier, setNewContent));
-  const thumbnailUppy = useUppy(createThumbnailFileUppy(resource.identifier, setNewThumbnailContent));
+  const [newThumbnailContent, setNewThumbnailContent] = useState<Content>();
+  const thumbnailUppy = useUppy(createThumbnailFileUppy(resource.identifier, setNewContentAndThumbnail));
   const [activeStep, setActiveStep] = useState(ResourceFormStep.Description);
 
   const resourceValidationSchema = Yup.object().shape({
@@ -172,10 +178,10 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                     uppy={uppy}
                     setAllChangesSaved={setAllChangesSaved}
                     newContent={newContent}
-                    newThumbnailContent={newThumbnailContent}
                     additionalFileUploadUppy={additionalFilesUppy}
                     thumbnailUppy={thumbnailUppy}
                     resourceType={resourceType}
+                    newThumbnailContent={newThumbnailContent}
                   />
                 </StyledPanel>
               )}

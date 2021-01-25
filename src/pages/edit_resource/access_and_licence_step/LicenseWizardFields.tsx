@@ -19,10 +19,6 @@ const StyledSubRadioGroup = styled(StyledRadioGroup)`
   }
 `;
 
-const StyledOverlineWrapper = styled.div`
-  padding-bottom: 1rem;
-`;
-
 const extraRestrictionRadio = 'extra-restriction';
 const commercialRadio = 'commersial';
 const modifyAndBuildRadio = 'change-and-build';

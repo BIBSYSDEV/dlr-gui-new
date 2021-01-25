@@ -20,6 +20,7 @@ import ErrorBanner from '../../../components/ErrorBanner';
 interface AdditionalFilesUploadProps {
   additionalFileUploadUppy: Uppy;
   newContent: Content | undefined;
+  thumbnailUppy: Uppy;
 }
 interface UploadPerFile {
   percentage: number;
@@ -81,17 +82,26 @@ const calculateFileSizeString = (size: number): string => {
   }
 };
 
-const getIndividualProgress = (contents: Content[] | undefined, uppy: Uppy) => {
+const getIndividualProgress = (contents: Content[] | undefined, additionalFilesUppy: Uppy, thumbnailUppy: Uppy) => {
   const additionalFilesContents = filterAdditionalFiles(contents);
   const uploadedFiles: UploadPerFile[] = [];
   for (let i = 0; i < additionalFilesContents.length; i++) {
     const filename = additionalFilesContents[i].features.dlr_content ?? '';
-    const uppyFile = uppy.getFiles().find((file) => file.meta.name === filename);
-    const percentage = uppyFile?.progress?.percentage ?? 0;
-    const fileType = uppyFile?.type ?? '';
+    const uppyAdditionalFile = additionalFilesUppy.getFiles().find((file) => file.meta.name === filename);
+    let percentage = 0;
+    let fileType = '';
     let fileSize = '0 MB';
-    if (uppyFile) {
-      fileSize = calculateFileSizeString(uppyFile.size);
+    if (uppyAdditionalFile) {
+      fileSize = calculateFileSizeString(uppyAdditionalFile.size);
+      percentage = uppyAdditionalFile.progress?.percentage ?? 0;
+      fileType = uppyAdditionalFile.type ?? '';
+    } else {
+      const thumbnailFile = thumbnailUppy.getFiles().find((file) => file.meta.name === filename);
+      if (thumbnailFile) {
+        fileSize = calculateFileSizeString(thumbnailFile.size);
+        percentage = thumbnailFile.progress?.percentage ?? 0;
+        fileType = thumbnailFile.type ?? '';
+      }
     }
     uploadedFiles.push({ filename, percentage, fileType, fileSize });
   }
@@ -99,13 +109,17 @@ const getIndividualProgress = (contents: Content[] | undefined, uppy: Uppy) => {
   return uploadedFiles;
 };
 
-const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileUploadUppy, newContent }) => {
+const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({
+  additionalFileUploadUppy,
+  newContent,
+  thumbnailUppy,
+}) => {
   const { t } = useTranslation();
   const { values } = useFormikContext<ResourceWrapper>();
   const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
   const [contents, setContents] = useState<Content[]>(filterAdditionalFiles(values.resource.contents));
   const [uploadPercentageArray, setUploadPercentageArray] = useState<UploadPerFile[]>(
-    getIndividualProgress(values.resource.contents, additionalFileUploadUppy)
+    getIndividualProgress(values.resource.contents, additionalFileUploadUppy, thumbnailUppy)
   );
 
   useEffect(() => {
@@ -119,6 +133,18 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
       });
     });
   }, [additionalFileUploadUppy]);
+
+  useEffect(() => {
+    thumbnailUppy.on('upload-progress', (file: UppyFile, progress) => {
+      setUploadPercentageArray((prevState) => {
+        const index = prevState.findIndex((element) => element.filename === file.meta.name);
+        if (index >= 0) {
+          prevState[index].percentage = Math.ceil((progress.bytesUploaded / progress.bytesTotal) * 100);
+        }
+        return [...prevState];
+      });
+    });
+  }, [thumbnailUppy]);
 
   useEffect(() => {
     if (newContent && !values.resource.contents?.find((content) => content.identifier === newContent.identifier)) {
@@ -138,12 +164,19 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
             newUploadPerFile.fileSize = calculateFileSizeString(uppyFile.size);
             newUploadPerFile.fileType = uppyFile.type;
             newUploadPerFile.percentage = uppyFile.progress?.percentage ?? 0;
+          } else if (thumbnailUppy) {
+            const thumbnailFile = thumbnailUppy.getFiles().find((file) => file.meta.name === newUploadPerFile.filename);
+            if (thumbnailFile) {
+              newUploadPerFile.fileSize = calculateFileSizeString(thumbnailFile.size);
+              newUploadPerFile.fileType = thumbnailFile.type;
+              newUploadPerFile.percentage = thumbnailFile.progress?.percentage ?? 0;
+            }
           }
         }
         return [...prevState, newUploadPerFile];
       });
     }
-  }, [newContent, values.resource, additionalFileUploadUppy]);
+  }, [newContent, values.resource, additionalFileUploadUppy, thumbnailUppy]);
 
   const deleteContent = async (contentToBeDeleted: Content, index: number) => {
     try {
@@ -205,15 +238,22 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
               <Typography variant="body2">{displayContent(content.features.dlr_content)?.fileType}</Typography>
               <Typography variant="overline">{displayContent(content.features.dlr_content)?.fileSize}</Typography>
             </SmallParagraphSpace>
-            <Button
-              color="secondary"
-              startIcon={<DeleteIcon fontSize="large" />}
-              size="large"
-              onClick={() => {
-                deleteContent(content, index);
-              }}>
-              {t('common.remove').toUpperCase()}
-            </Button>
+            {content.features.dlr_thumbnail_default === 'false' && (
+              <Button
+                color="secondary"
+                startIcon={<DeleteIcon fontSize="large" />}
+                size="large"
+                onClick={() => {
+                  deleteContent(content, index);
+                }}>
+                {t('common.remove').toUpperCase()}
+              </Button>
+            )}
+            {content.features.dlr_thumbnail_default === 'true' && (
+              <Button color="secondary" startIcon={<DeleteIcon fontSize="large" />} size="large" disabled>
+                {t('common.remove').toUpperCase()}
+              </Button>
+            )}
             {errorIndex === index && <ErrorBanner />}
           </LargeParagraphSpace>
         ))}

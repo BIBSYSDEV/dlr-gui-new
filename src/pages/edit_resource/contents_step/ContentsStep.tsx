@@ -36,7 +36,11 @@ const ContentsStep: FC<ContentsStepProps> = ({
         />
       )}
       {resourceType === ResourceCreationType.LINK && <LinkFields />}
-      <AdditionalFilesUpload additionalFileUploadUppy={additionalFileUploadUppy} newContent={newContent} />
+      <AdditionalFilesUpload
+        thumbnailUppy={thumbnailUppy}
+        additionalFileUploadUppy={additionalFileUploadUppy}
+        newContent={newContent}
+      />
     </>
   );
 };
