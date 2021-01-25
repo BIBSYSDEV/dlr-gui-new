@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import placeholderImage from '../resources/images/placeholder.png';
 import { API_PATHS, API_URL } from '../utils/constants';
-import { ref } from 'yup';
+import useInterval from '../utils/useInterval';
 
 const StyledImage = styled.img`
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
@@ -19,25 +19,61 @@ interface thumbnailProps {
   resourceIdentifier: string;
   alt: string;
   tempContentIdentifier?: string;
+  needsToStartToPoll?: boolean;
 }
 
-const Thumbnail: FC<thumbnailProps> = ({ resourceIdentifier, alt, tempContentIdentifier = false }) => {
+const pollingDelayMilliseconds = 500;
+
+const Thumbnail: FC<thumbnailProps> = ({
+  resourceIdentifier,
+  alt,
+  tempContentIdentifier = false,
+  needsToStartToPoll = false,
+}) => {
   const [url, setUrl] = useState(
     tempContentIdentifier
-      ? `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${tempContentIdentifier}/thumbnails/default`
-      : `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${resourceIdentifier}/thumbnails/default`
+      ? `${API_URL}${
+          API_PATHS.guiBackendResourcesContentPath
+        }/${tempContentIdentifier}/thumbnails/default?t=${new Date().getTime().toString()}`
+      : `${API_URL}${
+          API_PATHS.guiBackendResourcesContentPath
+        }/${resourceIdentifier}/thumbnails/default?t=${new Date().getTime().toString()}`
   );
   const addDefaultImage = (event: any) => {
     event.target.src = placeholderImage;
   };
 
+  const calculateShouldUseInterval = () => {
+    if (!needsToStartToPoll) {
+      return null;
+    } else {
+      return pollingDelayMilliseconds;
+    }
+  };
+
+  useInterval(() => {
+    setUrl(
+      tempContentIdentifier
+        ? `${API_URL}${
+            API_PATHS.guiBackendResourcesContentPath
+          }/${tempContentIdentifier}/thumbnails/default?t=${new Date().getTime().toString()}`
+        : `${API_URL}${
+            API_PATHS.guiBackendResourcesContentPath
+          }/${resourceIdentifier}/thumbnails/default?t=${new Date().getTime().toString()}`
+    );
+  }, calculateShouldUseInterval());
+
   useEffect(() => {
     setUrl(
       tempContentIdentifier
-        ? `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${tempContentIdentifier}/thumbnails/default`
-        : `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${resourceIdentifier}/thumbnails/default`
+        ? `${API_URL}${
+            API_PATHS.guiBackendResourcesContentPath
+          }/${tempContentIdentifier}/thumbnails/default?t=${new Date().getTime().toString()}`
+        : `${API_URL}${
+            API_PATHS.guiBackendResourcesContentPath
+          }/${resourceIdentifier}/thumbnails/default?t=${new Date().getTime().toString()}`
     );
-  }, [tempContentIdentifier]);
+  }, [tempContentIdentifier, resourceIdentifier]);
 
   return (
     <>

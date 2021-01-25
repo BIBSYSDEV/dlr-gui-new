@@ -17,6 +17,7 @@ import Thumbnail from '../../../components/Thumbnail';
 import { FileInput } from '@uppy/react';
 import { setContentAsDefaultThumbnail } from '../../../api/fileApi';
 import { Content } from '../../../types/content.types';
+import Button from '@material-ui/core/Button';
 
 const StatusBarWrapper = styled.div`
   width: 100%;
@@ -52,7 +53,8 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUp
   const { t } = useTranslation();
   const { values, handleBlur, resetForm, setTouched, touched } = useFormikContext<ResourceWrapper>();
   const [saveTitleError, setSaveTitleError] = useState(false);
-  const [tempThumbnailContentIdentifier, setTempThumbnailContentIdentifier] = useState<string | undefined>();
+  const [shouldPollNewThumbnail, setShouldPollNewThumbnail] = useState(false);
+  const [fileInputIsBusy, setFileInputIsBusy] = useState(false);
 
   const saveMainContentsFileName = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setAllChangesSaved(false);
@@ -71,21 +73,24 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUp
   };
 
   useEffect(() => {
-    console.log('inside useEffect');
     if (thumbnailUppy) {
-      console.log('has thumbnailUppy');
       thumbnailUppy.on('complete', () => {
-        console.log('detecting complete from uppy');
         if (newThumbnailContent) {
-          console.log('has newThumbnailContent');
-          setContentAsDefaultThumbnail(values.resource.identifier, newThumbnailContent.identifier);
-          setTempThumbnailContentIdentifier(newThumbnailContent.identifier);
+          setFileInputIsBusy(true);
+          setContentAsDefaultThumbnail(values.resource.identifier, newThumbnailContent.identifier).then(() => {
+            setShouldPollNewThumbnail(true);
+            setTimeout(() => {
+              setShouldPollNewThumbnail(false);
+              setFileInputIsBusy(false);
+            }, 1000);
+          });
         }
+      });
+      thumbnailUppy.on('file-added', () => {
+        setFileInputIsBusy(true);
       });
     }
   }, [thumbnailUppy, newThumbnailContent]);
-
-  console.log('thumbnailUppy', thumbnailUppy);
 
   return (
     <StyledSchemaPartColored color={Colors.ContentsPageGradientColor1}>
@@ -94,13 +99,13 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUp
         <MainFileWrapper>
           <MainFileImageWrapper>
             <Thumbnail
-              tempContentIdentifier={tempThumbnailContentIdentifier}
+              needsToStartToPoll={shouldPollNewThumbnail}
               resourceIdentifier={values.resource.identifier}
               alt={t('resource.metadata.resource')}
             />
           </MainFileImageWrapper>
-
-          <FileInput uppy={thumbnailUppy} />
+          {!fileInputIsBusy && <FileInput uppy={thumbnailUppy} />}
+          {fileInputIsBusy && <Button disabled> wait for previous upload</Button>}
           <MainFileMetadata>
             <StyledFieldWrapper>
               {/*//TODO: First item in contents is not always main content*/}
