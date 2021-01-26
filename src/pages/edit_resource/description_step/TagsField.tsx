@@ -9,6 +9,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { deleteTag, postTag } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
+import styled from 'styled-components';
 
 interface ResourceWrapper {
   resource: Resource;
@@ -17,6 +18,10 @@ interface ResourceWrapper {
 interface TagsFieldProps {
   setAllChangesSaved: (status: boolean) => void;
 }
+
+const StyledAutocomplete = styled(Autocomplete)`
+  margin: 5rem;
+`;
 
 const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
@@ -59,6 +64,10 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
               freeSolo
               multiple
               options={[]}
+              ChipProps={{
+                size: 'medium',
+                style: { marginTop: '1rem', marginRight: '0.5rem', marginBottom: '0.5rem' },
+              }}
               onChange={(_: ChangeEvent<unknown>, value: string[]) => {
                 saveTagsChanging(field.name, value);
               }}
