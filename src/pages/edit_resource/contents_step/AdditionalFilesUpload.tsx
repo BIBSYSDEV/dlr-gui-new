@@ -188,7 +188,7 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
           <LargeParagraphSpace key={content.identifier}>
             <UploadImageProgressCard>
               <StyledImg alt="resource" src={placeholderImage} />
-              {displayContent(content.features.dlr_content)?.percentage != 0 && (
+              {displayContent(content.features.dlr_content)?.percentage !== 0 && (
                 <>
                   <Typography align="right" variant="body1">
                     {displayContent(content.features.dlr_content)?.percentage} %
