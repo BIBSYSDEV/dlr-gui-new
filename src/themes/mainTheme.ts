@@ -16,7 +16,7 @@ declare module '@material-ui/core/styles/createPalette' {
 }
 
 export enum Colors {
-  Primary = '#284b63',
+  Primary = 'rgba(99, 34, 107, 1)',
   Secondary = '#ff5555',
   Background = '#fff',
   Box = '#f5f5f5',
@@ -29,6 +29,7 @@ export enum Colors {
   Panel = '#A9D8B8',
   Disabled = '#bbb',
   Danger = '#ff5555',
+  Warning = 'rgba(147, 10, 10, 1)',
   DangerLight = '#ffbbbb',
   Indicator = '#FFB546',
   HeaderBackground = 'rgba(99,34,107, 0.15)',
@@ -111,6 +112,12 @@ export default createMuiTheme({
       fontWeight: 'bold',
       lineHeight: '1.5rem',
       letterSpacing: '0.0015em',
+      color: Colors.InitialText,
+    },
+    h5: {
+      color: Colors.InitialText,
+    },
+    h6: {
       color: Colors.InitialText,
     },
     subtitle1: {

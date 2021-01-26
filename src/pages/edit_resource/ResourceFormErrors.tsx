@@ -25,7 +25,7 @@ const ResourceFormErrors = () => {
     <StyledPanel>
       <StyledSchemaPartColored color={Colors.DangerLight}>
         <StyledContentWrapper>
-          <Typography variant={'h5'}>
+          <Typography variant={'h5'} component="h2">
             <StyledWarningIcon /> {t('feedback.form_errors')}
           </Typography>
         </StyledContentWrapper>

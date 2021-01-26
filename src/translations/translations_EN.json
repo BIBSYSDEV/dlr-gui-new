@@ -2,6 +2,7 @@
   "common": {
     "all_changes_saved": "All changes saved",
     "back": "Back",
+    "cancel": "Cancel",
     "delete": "Delete",
     "finish": "Finish",
     "home": "Home",
@@ -127,6 +128,8 @@
       "Supervisor": "Supervisor",
       "WorkpackageLeader": "Workpackage leader"
     },
+    "delete_resource_confirmation": "Are you really sure you want to delete",
+    "delete_resource_description": "This will permanently delete the resource and the resource cannot be restored",
     "edit_resource": "Edit resource",
     "files_and_license": {
       "additional_files": {
