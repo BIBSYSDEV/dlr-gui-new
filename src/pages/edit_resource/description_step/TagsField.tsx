@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextField } from '@material-ui/core';
+import { Chip, TextField } from '@material-ui/core';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
@@ -10,6 +10,7 @@ import { deleteTag, postTag } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import styled from 'styled-components';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 interface ResourceWrapper {
   resource: Resource;
@@ -18,9 +19,22 @@ interface ResourceWrapper {
 interface TagsFieldProps {
   setAllChangesSaved: (status: boolean) => void;
 }
+const StyledChip = styled(Chip)`
+  && {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-right: 0.5rem;
+    background-color: ${Colors.ChipBackground};
+    color: ${Colors.Background};
+    &:focus {
+      color: ${Colors.PrimaryText};
+      background-color: ${Colors.ChipBackgroundFocus};
+    }
+  }
+`;
 
-const StyledAutocomplete = styled(Autocomplete)`
-  margin: 5rem;
+const StyledCancelIcon = styled(CancelIcon)`
+  color: ${Colors.ChipIconBackground};
 `;
 
 const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
@@ -64,13 +78,14 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
               freeSolo
               multiple
               options={[]}
-              ChipProps={{
-                size: 'medium',
-                style: { marginTop: '1rem', marginRight: '0.5rem', marginBottom: '1rem' },
-              }}
               onChange={(_: ChangeEvent<unknown>, value: string[]) => {
                 saveTagsChanging(field.name, value);
               }}
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                  <StyledChip deleteIcon={<StyledCancelIcon />} label={option} {...getTagProps({ index })} />
+                ))
+              }
               renderInput={(params) => (
                 <TextField
                   {...params}

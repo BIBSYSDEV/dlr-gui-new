@@ -20,6 +20,7 @@ export enum Colors {
   Secondary = '#ff5555',
   Background = '#fff',
   Box = '#f5f5f5',
+  HoverTextFieldFilled = '#F5F5F5',
   Link = '#06f',
   Separator = '#3d4349',
   PrimaryText = 'rgba(0,0,0,0.87)',
@@ -45,6 +46,9 @@ export enum Colors {
   LicenseAccessPageGradientColor1 = 'rgba(68,242,193,0.10)',
   LicenseAccessPageGradientColor2 = 'rgba(68,242,193,0.25)',
   LicenseAccessPageGradientColor3 = 'rgba(68,242,193,0.50)',
+  ChipBackground = 'rgba(66, 127, 140, 1)',
+  ChipBackgroundFocus = 'hsl(191, 37%, 80%)',
+  ChipIconBackground = 'hsl(191, 37%, 60%)',
 }
 
 export enum StyleWidths {
@@ -232,10 +236,10 @@ export default createMuiTheme({
       root: {
         backgroundColor: Colors.Background,
         '&:hover': {
-          backgroundColor: '#F5F5F5',
+          backgroundColor: Colors.HoverTextFieldFilled,
         },
         '&$focused': {
-          backgroundColor: '#F5F5F5',
+          backgroundColor: Colors.HoverTextFieldFilled,
         },
         '&$disabled': {
           backgroundColor: Colors.Background,
