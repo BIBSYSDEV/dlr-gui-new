@@ -21,8 +21,12 @@ import {
   createContributor,
   createResource,
   getResource,
+  getResourceContents,
   getResourceContributors,
+  getResourceCreators,
   getResourceDefaults,
+  getResourceLicenses,
+  getResourceTags,
   postResourceCreator,
   postResourceFeature,
   putContributorFeature,
@@ -45,7 +49,7 @@ const StyledEditPublication = styled.div`
 `;
 
 interface EditResourcePageParamTypes {
-  resourceIdentifierFromParam: string;
+  identifier: string;
 }
 
 const StyledContentWrapper = styled.div`
@@ -66,13 +70,12 @@ const StartingContributorType = 'HostingInstitution';
 
 const EditResourcePage: FC = () => {
   const { t } = useTranslation();
-  const { resourceIdentifierFromParam } = useParams<EditResourcePageParamTypes>();
+  const { identifier } = useParams<EditResourcePageParamTypes>();
   const [formikInitResource, setFormikInitResource] = useState<Resource>();
   const [expanded, setExpanded] = useState('');
   const [isLoadingResource, setIsLoadingResource] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [resourceType, setResourceType] = useState<ResourceCreationType>(ResourceCreationType.FILE);
-
   const [resourceInitError, setResourceInitError] = useState(false);
 
   const user = useSelector((state: RootState) => state.user);
@@ -257,18 +260,23 @@ const EditResourcePage: FC = () => {
   };
 
   useEffect(() => {
-    if (resourceIdentifierFromParam) {
+    const loadResource = async () => {
       setIsLoadingResource(true);
-      getResource(resourceIdentifierFromParam).then((resourceResponse) => {
-        getResourceContributors(resourceIdentifierFromParam).then((contributorRespone) => {
-          const tempResource = resourceResponse.data;
-          tempResource.contributors = contributorRespone.data;
-          setFormikInitResource(tempResource);
-          setIsLoadingResource(false);
-        });
-      });
+      const tempResource = (await getResource(identifier)).data;
+      tempResource.contributors = (await getResourceContributors(identifier)).data;
+      tempResource.creators = (await getResourceCreators(identifier)).data;
+      tempResource.licenses = (await getResourceLicenses(identifier)).data;
+      if (!tempResource.licenses[0]) tempResource.licenses = [emptyLicense];
+      tempResource.contents = (await getResourceContents(identifier)).data;
+      tempResource.tags = (await getResourceTags(identifier)).data;
+      setFormikInitResource(tempResource);
+      setIsLoadingResource(false);
+    };
+    if (identifier) {
+      setShowForm(true);
+      loadResource();
     }
-  }, [resourceIdentifierFromParam]);
+  }, [identifier]);
 
   return !showForm ? (
     <StyledContentWrapper>
