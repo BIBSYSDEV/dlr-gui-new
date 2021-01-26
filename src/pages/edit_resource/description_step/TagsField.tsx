@@ -66,7 +66,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
               options={[]}
               ChipProps={{
                 size: 'medium',
-                style: { marginTop: '1rem', marginRight: '0.5rem', marginBottom: '0.5rem' },
+                style: { marginTop: '1rem', marginRight: '0.5rem', marginBottom: '1rem' },
               }}
               onChange={(_: ChangeEvent<unknown>, value: string[]) => {
                 saveTagsChanging(field.name, value);
