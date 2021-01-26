@@ -4,7 +4,7 @@ import StatusBarComponent from '@uppy/react/src/StatusBar';
 import '@uppy/core/dist/style.css';
 import '@uppy/status-bar/dist/style.css';
 import styled from 'styled-components';
-import { Paper, TextField, Typography } from '@material-ui/core';
+import { ButtonTypeMap, ExtendButtonBase, Paper, TextField, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
 import { updateContentTitle } from '../../../api/resourceApi';
