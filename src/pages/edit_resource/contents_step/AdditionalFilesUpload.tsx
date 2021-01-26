@@ -188,17 +188,21 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
           <LargeParagraphSpace key={content.identifier}>
             <UploadImageProgressCard>
               <StyledImg alt="resource" src={placeholderImage} />
-              <Typography align="right" variant="body1">
-                {displayContent(content.features.dlr_content)?.percentage} %
-              </Typography>
-              <LinearProgress
-                aria-label={`${t(
-                  'resource.files_and_license.additional_files.additional_files_progress_bar_aria_label'
-                )} ${content.features.dlr_content}`}
-                variant="determinate"
-                value={displayContent(content.features.dlr_content)?.percentage ?? 0}
-                role="progressbar"
-              />
+              {displayContent(content.features.dlr_content)?.percentage != 0 && (
+                <>
+                  <Typography align="right" variant="body1">
+                    {displayContent(content.features.dlr_content)?.percentage} %
+                  </Typography>
+                  <LinearProgress
+                    aria-label={`${t(
+                      'resource.files_and_license.additional_files.additional_files_progress_bar_aria_label'
+                    )} ${content.features.dlr_content}`}
+                    variant="determinate"
+                    value={displayContent(content.features.dlr_content)?.percentage ?? 0}
+                    role="progressbar"
+                  />
+                </>
+              )}
             </UploadImageProgressCard>
             <SmallParagraphSpace>
               <Typography variant="body1">{content.features.dlr_content}</Typography>
