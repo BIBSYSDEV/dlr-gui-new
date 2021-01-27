@@ -263,6 +263,11 @@ const EditResourcePage: FC = () => {
     const loadResource = async () => {
       setIsLoadingResource(true);
       const tempResource = (await getResource(identifier)).data;
+      setResourceType(
+        tempResource.features.dlr_content_type === ResourceCreationType.LINK
+          ? ResourceCreationType.LINK
+          : ResourceCreationType.FILE
+      );
       tempResource.contributors = (await getResourceContributors(identifier)).data;
       tempResource.creators = (await getResourceCreators(identifier)).data;
       tempResource.licenses = (await getResourceLicenses(identifier)).data;
