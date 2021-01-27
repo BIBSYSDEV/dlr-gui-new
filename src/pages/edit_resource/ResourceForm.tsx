@@ -14,7 +14,7 @@ import CreatorField from './contributors_step/CreatorField';
 import { StyledContentWrapper, StyledContentWrapperMedium, StyledSchemaPart } from '../../components/styled/Wrappers';
 import PreviewPanel from './preview_step/PreviewPanel';
 import { StatusCode } from '../../utils/constants';
-import { License } from '../../types/license.types';
+import { ContainsOtherPeoplesWorkOptions, License } from '../../types/license.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import AccessAndLicenseStep from './access_and_licence_step/AccessAndLicenseStep';
 import { useUppy } from '@uppy/react';
@@ -87,10 +87,12 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
       })
     ),
     containsOtherPeoplesWork: Yup.string().required(t('feedback.required_field')).min(1),
-    usageClearedWithOwner: Yup.string().when('containsOtherPeoplesWork', {
-      is: 'yes_other',
-      then: Yup.string().required(t('feedback.required_field')).min(1),
-    }),
+    usageClearedWithOwner: Yup.string()
+      .optional()
+      .when('containsOtherPeoplesWork', {
+        is: ContainsOtherPeoplesWorkOptions.Yes,
+        then: Yup.string().required(t('feedback.required_field')).min(1),
+      }),
   });
 
   useEffect(() => {

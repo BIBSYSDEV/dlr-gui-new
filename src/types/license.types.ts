@@ -31,12 +31,26 @@ export enum AccessTypes {
   private = 'private',
 }
 
-export enum LicenseConstants {
+export enum Licenses {
   CC = 'creative_commons',
   BI = 'bi-opphaver-bi',
   NTNU = 'ntnu-internt',
   CC_BY = 'CC BY 4.0',
-  yes = 'yes',
   CC_BY_SA_4_0 = 'CC BY-SA 4.0',
   CC_BY_NC_SA = 'CC BY-NC-SA 4.0',
+}
+
+export enum InstitutionLicenseProviders {
+  NTNU = 'ntnu',
+  BI = 'bi',
+}
+
+export enum ContainsOtherPeoplesWorkOptions {
+  Yes = 'yes',
+  No = 'no',
+}
+
+export enum LicenseAgreementsOptions {
+  YesOther = 'yes_other',
+  NoClearance = 'no_clearance',
 }

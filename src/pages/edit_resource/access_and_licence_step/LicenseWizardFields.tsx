@@ -6,7 +6,7 @@ import { Colors } from '../../../themes/mainTheme';
 import { useTranslation } from 'react-i18next';
 import { RootState } from '../../../state/rootReducer';
 import { useSelector } from 'react-redux';
-import { AccessTypes, License, LicenseConstants } from '../../../types/license.types';
+import { AccessTypes, License, Licenses } from '../../../types/license.types';
 import { deleteResourceLicense, putAccessType, setResourceLicense } from '../../../api/resourceApi';
 import { useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
@@ -23,10 +23,15 @@ const extraRestrictionRadio = 'extra-restriction';
 const commercialRadio = 'commersial';
 const modifyAndBuildRadio = 'change-and-build';
 
+enum LicenseRestrictionValues {
+  yes = 'yes',
+}
+
 enum DefaultCommercial {
   NC = 'NC',
   yes = 'yes',
 }
+
 enum DefaultModifyAndBuildOptions {
   primaryYes = 'primary_yes',
   ND = 'ND',
@@ -34,7 +39,7 @@ enum DefaultModifyAndBuildOptions {
   SA = 'share_alike',
 }
 
-const defaultRestrictionOptions = [LicenseConstants.CC_BY, LicenseConstants.yes];
+const defaultRestrictionOptions = [Licenses.CC_BY, LicenseRestrictionValues.yes];
 const defaultCommercialOptions = [DefaultCommercial.yes, DefaultCommercial.NC];
 
 interface LicenseWizardFieldsProps {
@@ -44,7 +49,7 @@ interface LicenseWizardFieldsProps {
   containsOtherWorksFieldsSelectedCC: boolean;
 }
 
-const additionalLicenseProviders: string[] = [LicenseConstants.NTNU, LicenseConstants.BI];
+const additionalLicenseProviders: string[] = [Licenses.NTNU, Licenses.BI];
 
 const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   setAllChangesSaved,
@@ -84,7 +89,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     modifyAndBuildValue: string,
     modifyAndBuildSubValue: string
   ) => {
-    if (restrictedValue === LicenseConstants.yes || restrictedValue === '') {
+    if (restrictedValue === LicenseRestrictionValues.yes || restrictedValue === '') {
       let licenseTempCode = 'CC BY';
       if (commercialValue === DefaultCommercial.NC) {
         licenseTempCode += '-NC';
@@ -100,7 +105,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
       }
       licenseTempCode += ' 4.0';
       await saveLicenseAndChangeAccess(licenseTempCode, AccessTypes.open);
-    } else if (restrictedValue === LicenseConstants.BI || restrictedValue === LicenseConstants.NTNU) {
+    } else if (restrictedValue === Licenses.BI || restrictedValue === Licenses.NTNU) {
       await saveLicenseAndChangeAccess(restrictedValue, AccessTypes.private);
     } else {
       await saveLicenseAndChangeAccess(restrictedValue, AccessTypes.open);
@@ -183,12 +188,12 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
             {containsOtherWorksFieldsSelectedCC && (
               <>
                 <FormControlLabel
-                  value={LicenseConstants.CC_BY_SA_4_0}
+                  value={Licenses.CC_BY_SA_4_0}
                   control={<Radio color="primary" />}
                   label={t(`license.restriction_options.CC_BY-SA_4_0`)}
                 />
                 <FormControlLabel
-                  value={LicenseConstants.CC_BY_NC_SA}
+                  value={Licenses.CC_BY_NC_SA}
                   control={<Radio color="primary" />}
                   label={t(`license.restriction_options.CC_BY-NC-SA_4_0`)}
                 />
@@ -197,7 +202,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           </StyledRadioGroup>
         </AccordionRadioGroup>
 
-        {extraRestriction === LicenseConstants.yes && (
+        {extraRestriction === LicenseRestrictionValues.yes && (
           <AccordionRadioGroup
             ariaDescription={commercialRadio}
             title={t('license.commercial_purposes')}
@@ -221,7 +226,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           </AccordionRadioGroup>
         )}
 
-        {extraRestriction === LicenseConstants.yes && (
+        {extraRestriction === LicenseRestrictionValues.yes && (
           <AccordionRadioGroup
             ariaDescription={modifyAndBuildRadio}
             title={t('license.modify_and_build')}

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import Radio from '@material-ui/core/Radio';
 import { useTranslation } from 'react-i18next';
 import { Field, FieldProps, useFormikContext } from 'formik';
@@ -19,7 +19,15 @@ import ErrorBanner from '../../../components/ErrorBanner';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
-import { AccessTypes, emptyLicense, License, LicenseConstants } from '../../../types/license.types';
+import {
+  AccessTypes,
+  ContainsOtherPeoplesWorkOptions,
+  emptyLicense,
+  InstitutionLicenseProviders,
+  License,
+  LicenseAgreementsOptions,
+  Licenses,
+} from '../../../types/license.types';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import { FormHelperText } from '@material-ui/core';
 
@@ -37,27 +45,9 @@ const StyledTypography = styled(Typography)`
   padding-left: 1rem;
 `;
 
-enum ContainsOtherPeoplesWorkOptions {
-  Yes = 'yes',
-  No = 'no',
-}
-
-enum LicenseAgreementsOptions {
-  YesOther = 'yes_other',
-  NoClearance = 'no_clearance',
-}
-
-const LicenseAgreements: string[] = [
-  LicenseConstants.CC,
-  LicenseAgreementsOptions.YesOther,
-  LicenseAgreementsOptions.NoClearance,
-];
-
 const otherPeopleWorkId = 'other-peoples-work';
 
 const usageClearedId = 'usage-is-cleared';
-
-const additionalLicenseProviders: string[] = [LicenseConstants.NTNU, LicenseConstants.BI];
 
 interface ContainsOtherWorksFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -77,16 +67,17 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   const { values, resetForm, setFieldValue, setTouched, touched } = useFormikContext<Resource>();
   const [savingError, setSavingError] = useState(false);
 
-  useEffect(() => {
-    const additionalLicense = additionalLicenseProviders.find((element) => element.includes(institution.toLowerCase()));
-    if (additionalLicense) {
-      LicenseAgreements.push(additionalLicense);
-    }
-  }, [institution]);
+  const LicenseAgreements: string[] = [
+    Licenses.CC,
+    LicenseAgreementsOptions.YesOther,
+    LicenseAgreementsOptions.NoClearance,
+    ...(institution.toLowerCase() === InstitutionLicenseProviders.NTNU ? [Licenses.NTNU] : []),
+    ...(institution.toLowerCase() === InstitutionLicenseProviders.BI ? [Licenses.BI] : []),
+  ];
 
   const handleChangeInContainsOtherPeoplesWork = async (event: React.ChangeEvent<HTMLInputElement>) => {
     forceResetInLicenseWizard();
-    if (values?.licenses) {
+    if (values.licenses) {
       await replaceOldLicense(emptyLicense);
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
       setFieldValue('containsOtherPeoplesWork', event.target.value);
@@ -94,10 +85,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
     if (event.target.value === ContainsOtherPeoplesWorkOptions.No) {
       setHasSelectedCC(false);
     }
-    if (
-      event.target.value === ContainsOtherPeoplesWorkOptions.Yes &&
-      values.usageClearedWithOwner === LicenseConstants.CC
-    ) {
+    if (event.target.value === ContainsOtherPeoplesWorkOptions.Yes && values.usageClearedWithOwner === Licenses.CC) {
       setHasSelectedCC(true);
     }
   };
@@ -115,7 +103,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
     try {
       setAllChangesSaved(false);
       let accessType = AccessTypes.private;
-      if (event.target.value === LicenseConstants.CC) {
+      if (event.target.value === Licenses.CC) {
         accessType = AccessTypes.open;
         setHasSelectedCC(true);
       } else {
@@ -124,7 +112,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
       if (event.target.value === LicenseAgreementsOptions.YesOther) {
         accessType = AccessTypes.open;
       }
-      if (event.target.value === LicenseConstants.BI || event.target.value === LicenseConstants.NTNU) {
+      if (event.target.value === Licenses.BI || event.target.value === Licenses.NTNU) {
         const license = licenses?.find((license) => license.features?.dlr_license_code === event.target.value);
         if (license) {
           await replaceOldLicense(license);
@@ -183,7 +171,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
             )}
           </Field>
         </StyledRadioBoxWrapper>
-        {values.containsOtherPeoplesWork && (
+        {values.containsOtherPeoplesWork === ContainsOtherPeoplesWorkOptions.Yes && (
           <StyledRadioBoxWrapper>
             <FormLabel id={usageClearedId} component="legend">
               <Typography variant="subtitle1"> {t('license.questions.usage_cleared_with_owner')}</Typography>

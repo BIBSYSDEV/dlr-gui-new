@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Step, StepButton, StepLabel, Stepper } from '@material-ui/core';
-import { getStepLabel, ResourceFormStep, ResourceFormSteps, Resource } from '../../types/resource.types';
+import { getStepLabel, Resource, ResourceFormStep, ResourceFormSteps } from '../../types/resource.types';
 import { useFormikContext } from 'formik';
 import { StyledContentWrapperMedium } from '../../components/styled/Wrappers';
 import {
@@ -77,7 +77,6 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
 
   return (
     <StyledContentWrapperMedium>
-      {/*<pre style={{ maxWidth: '90%' }}>{JSON.stringify(values, null, 2)}</pre>*/}
       <Stepper style={{ width: '100%' }} activeStep={activeStep} nonLinear alternativeLabel>
         {ResourceFormSteps.map((step, index) => {
           return (
