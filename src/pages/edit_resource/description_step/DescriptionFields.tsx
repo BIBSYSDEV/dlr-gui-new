@@ -5,7 +5,7 @@ import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
 import { StyledContentWrapper, StyledSchemaPart } from '../../../components/styled/Wrappers';
 import TagsField from './TagsField';
 import { postResourceFeature } from '../../../api/resourceApi';
-import { ResourceFeatureNamesFullPath, ResourceWrapper } from '../../../types/resource.types';
+import { ResourceFeatureNamesFullPath, Resource } from '../../../types/resource.types';
 import ErrorBanner from '../../../components/ErrorBanner';
 import ResourceTypeField from './ResourceTypeField';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
@@ -16,14 +16,14 @@ interface DescriptionFieldsProps {
 
 const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
-  const { values, handleBlur, resetForm, touched, setTouched } = useFormikContext<ResourceWrapper>();
+  const { values, handleBlur, resetForm, touched, setTouched } = useFormikContext<Resource>();
   const [saveErrorFields, setSaveErrorFields] = useState<string[]>([]);
 
   const saveField = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
     setAllChangesSaved(false);
     try {
       const name = '' + event.target.name.split('.').pop();
-      await postResourceFeature(values.resource.identifier, name, event.target.value);
+      await postResourceFeature(values.identifier, name, event.target.value);
       setAllChangesSaved(true);
       setSaveErrorFields([]);
       resetFormButKeepTouched(touched, resetForm, values, setTouched);

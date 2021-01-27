@@ -62,32 +62,34 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   const [activeStep, setActiveStep] = useState(ResourceFormStep.Description);
 
   const resourceValidationSchema = Yup.object().shape({
-    resource: Yup.object().shape({
-      features: Yup.object().shape({
-        dlr_title: Yup.string().required(t('feedback.required_field')),
-        dlr_type: Yup.string().required(t('feedback.required_field')).min(1, t('feedback.required_field')),
-      }),
-      creators: Yup.array().of(
-        Yup.object().shape({
-          features: Yup.object().shape({
-            dlr_creator_name: Yup.string().required(t('feedback.required_field')),
-          }),
-        })
-      ),
-      contributors: Yup.array().of(
-        Yup.object().shape({
-          features: Yup.object().shape({
-            dlr_contributor_name: Yup.string().required(t('feedback.required_field')),
-            dlr_contributor_type: Yup.string().required(t('feedback.required_field')),
-          }),
-        })
-      ),
-      licenses: Yup.array().of(
-        Yup.object().shape({
-          identifier: Yup.string().required(t('feedback.required_field')).min(1),
-        })
-      ),
-      containsContainsOtherPeoplesWork: Yup.string().required(t('feedback.required_field')).min(1),
+    features: Yup.object().shape({
+      dlr_title: Yup.string().required(t('feedback.required_field')),
+      dlr_type: Yup.string().required(t('feedback.required_field')).min(1, t('feedback.required_field')),
+    }),
+    creators: Yup.array().of(
+      Yup.object().shape({
+        features: Yup.object().shape({
+          dlr_creator_name: Yup.string().required(t('feedback.required_field')),
+        }),
+      })
+    ),
+    contributors: Yup.array().of(
+      Yup.object().shape({
+        features: Yup.object().shape({
+          dlr_contributor_name: Yup.string().required(t('feedback.required_field')),
+          dlr_contributor_type: Yup.string().required(t('feedback.required_field')),
+        }),
+      })
+    ),
+    licenses: Yup.array().of(
+      Yup.object().shape({
+        identifier: Yup.string().required(t('feedback.required_field')).min(1),
+      })
+    ),
+    containsOtherPeoplesWork: Yup.string().required(t('feedback.required_field')).min(1),
+    usageClearedWithOwner: Yup.string().when('containsOtherPeoplesWork', {
+      is: 'yes_other',
+      then: Yup.string().required(t('feedback.required_field')).min(1),
     }),
   });
 
@@ -115,9 +117,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
       </StyledContentWrapperMedium>
       {resource && (
         <Formik
-          initialValues={{
-            resource: resource,
-          }}
+          initialValues={resource}
           validationSchema={resourceValidationSchema}
           onSubmit={() => {
             /*dont use. But cannot have empty onsubmit*/
@@ -138,7 +138,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                 <StyledPanel>
                   <StyledSchemaPart>
                     <StyledContentWrapper>
-                      <Typography variant="h2">{formikProps.values.resource.features.dlr_title}</Typography>
+                      <Typography variant="h2">{formikProps.values.features.dlr_title}</Typography>
                     </StyledContentWrapper>
                   </StyledSchemaPart>
                   <CreatorField setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)} />
@@ -164,7 +164,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                 <StyledPanel id={fileUploadPanelId}>
                   <StyledSchemaPart>
                     <StyledContentWrapper>
-                      <Typography variant="h2">{formikProps.values.resource.features.dlr_title}</Typography>
+                      <Typography variant="h2">{formikProps.values.features.dlr_title}</Typography>
                     </StyledContentWrapper>
                   </StyledSchemaPart>
                   <ContentsStep

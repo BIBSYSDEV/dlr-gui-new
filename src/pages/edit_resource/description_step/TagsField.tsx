@@ -10,17 +10,13 @@ import { deleteTag, postTag } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 
-interface ResourceWrapper {
-  resource: Resource;
-}
-
 interface TagsFieldProps {
   setAllChangesSaved: (status: boolean) => void;
 }
 
 const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
-  const { values, setFieldValue, resetForm, setTouched, touched } = useFormikContext<ResourceWrapper>();
+  const { values, setFieldValue, resetForm, setTouched, touched } = useFormikContext<Resource>();
   const [saveError, setSaveError] = useState(false);
 
   const saveTagsChanging = async (name: string, value: string[]) => {
@@ -28,19 +24,19 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
 
     try {
       const promiseArray: Promise<any>[] = [];
-      const newTags = value.filter((tag) => !values.resource.tags?.includes(tag));
+      const newTags = value.filter((tag) => !values.tags?.includes(tag));
       newTags.forEach((tag) => {
-        promiseArray.push(postTag(values.resource.identifier, tag));
+        promiseArray.push(postTag(values.identifier, tag));
       });
-      const removeTags = values.resource.tags?.filter((tag) => !value.includes(tag));
+      const removeTags = values.tags?.filter((tag) => !value.includes(tag));
       removeTags?.forEach((tag) => {
-        promiseArray.push(deleteTag(values.resource.identifier, tag));
+        promiseArray.push(deleteTag(values.identifier, tag));
       });
       //Must wait for all the promises to finish or we will get race conditions for updating setAllChangesSaved.
       await Promise.all(promiseArray);
       setSaveError(false);
-      setFieldValue('resource.tags', value);
-      values.resource.tags = value;
+      setFieldValue('tags', value);
+      values.tags = value;
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
     } catch (saveTagsError) {
       setSaveError(true);
@@ -52,7 +48,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
   return (
     <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor3}>
       <StyledContentWrapper>
-        <Field name={'resource.tags'}>
+        <Field name={'tags'}>
           {({ field }: FieldProps) => (
             <Autocomplete
               {...field}

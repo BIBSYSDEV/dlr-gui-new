@@ -22,7 +22,8 @@ export interface Resource {
   accessWrite?: string[];
   contents: Content[];
   licenses: License[];
-  containsContainsOtherPeoplesWork: string;
+  containsOtherPeoplesWork: string;
+  usageClearedWithOwner: string;
 }
 
 export const emptyResource: Resource = {
@@ -35,7 +36,8 @@ export const emptyResource: Resource = {
   contributors: [],
   creators: [],
   licenses: [],
-  containsContainsOtherPeoplesWork: '',
+  containsOtherPeoplesWork: '',
+  usageClearedWithOwner: '',
 };
 
 enum ResourceType {
@@ -163,10 +165,6 @@ export enum ResourceFeatureTypes {
   video = 'Video',
 }
 
-export interface ResourceWrapper {
-  resource: Resource;
-}
-
 export enum ResourceFeatureNames {
   Type = 'dlr_type',
   Title = 'dlr_title',
@@ -175,10 +173,10 @@ export enum ResourceFeatureNames {
 }
 
 export enum ResourceFeatureNamesFullPath {
-  Type = 'resource.features.dlr_type',
-  Title = 'resource.features.dlr_title',
-  Description = 'resource.features.dlr_description',
-  Access = 'resource.features.dlr_access',
+  Type = 'features.dlr_type',
+  Title = 'features.dlr_title',
+  Description = 'features.dlr_description',
+  Access = 'features.dlr_access',
 }
 
 export enum ContributorFeatureNames {
@@ -196,11 +194,11 @@ export enum ContentFeatureAttributes {
 
 export enum FieldNames {
   Features = 'features',
-  ContributorsBase = 'resource.contributors',
-  CreatorsBase = 'resource.creators',
-  ContentsBase = 'resource.contents',
-  LicensesBase = 'resource.licenses',
-  Tags = 'resource.tags',
+  ContributorsBase = 'contributors',
+  CreatorsBase = 'creators',
+  ContentsBase = 'contents',
+  LicensesBase = 'licenses',
+  Tags = 'tags',
 }
 
 export enum ResourceFormStep {

@@ -33,8 +33,6 @@ export enum AccessTypes {
 
 export enum LicenseConstants {
   CC = 'creative_commons',
-  YesOther = 'yes_other',
-  NoClearance = 'no_clearance',
   BI = 'bi-opphaver-bi',
   NTNU = 'ntnu-internt',
   CC_BY = 'CC BY 4.0',

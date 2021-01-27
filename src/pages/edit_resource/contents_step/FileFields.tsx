@@ -11,7 +11,7 @@ import { updateContentTitle } from '../../../api/resourceApi';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import ErrorBanner from '../../../components/ErrorBanner';
-import { ResourceWrapper } from '../../../types/resource.types';
+import { Resource } from '../../../types/resource.types';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import Thumbnail from '../../../components/Thumbnail';
 
@@ -45,14 +45,14 @@ interface FileFieldsProps {
 
 const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
   const { t } = useTranslation();
-  const { values, handleBlur, resetForm, setTouched, touched } = useFormikContext<ResourceWrapper>();
+  const { values, handleBlur, resetForm, setTouched, touched } = useFormikContext<Resource>();
   const [saveTitleError, setSaveTitleError] = useState(false);
 
   const saveMainContentsFileName = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setAllChangesSaved(false);
     setSaveTitleError(false);
-    const contentId = values?.resource?.contents?.[0]?.identifier;
-    const resourceId = values?.resource?.identifier;
+    const contentId = values?.contents?.[0]?.identifier;
+    const resourceId = values?.identifier;
     if (resourceId && contentId) {
       try {
         await updateContentTitle(resourceId, contentId, event.target.value);
@@ -70,7 +70,7 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
         <Typography variant="h3">{t('resource.metadata.main_file')}</Typography>
         <MainFileWrapper>
           <MainFileImageWrapper>
-            <Thumbnail resourceIdentifier={values.resource.identifier} alt={t('resource.metadata.resource')} />
+            <Thumbnail resourceIdentifier={values.identifier} alt={t('resource.metadata.resource')} />
           </MainFileImageWrapper>
           <MainFileMetadata>
             <StyledFieldWrapper>

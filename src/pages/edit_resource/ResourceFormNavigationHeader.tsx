@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Step, StepButton, StepLabel, Stepper } from '@material-ui/core';
-import { getStepLabel, ResourceFormStep, ResourceFormSteps, ResourceWrapper } from '../../types/resource.types';
+import { getStepLabel, ResourceFormStep, ResourceFormSteps, Resource } from '../../types/resource.types';
 import { useFormikContext } from 'formik';
 import { StyledContentWrapperMedium } from '../../components/styled/Wrappers';
 import {
@@ -26,7 +26,7 @@ const fileUploadPanelId = 'file-upload-panel';
 
 const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ activeStep, setActiveStep, uppy }) => {
   const { t } = useTranslation();
-  const { values, touched, setTouched, errors } = useFormikContext<ResourceWrapper>();
+  const { values, touched, setTouched, errors } = useFormikContext<Resource>();
   const noTouchedStep = -1;
   type HighestTouchedTab = ResourceFormStep | typeof noTouchedStep;
   const highestPreviouslyTouchedStepRef = useRef<HighestTouchedTab>(noTouchedStep);
@@ -50,9 +50,9 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
       [ResourceFormStep.Preview]: () => touchedPreviewFields, //todo: find a way to remove this. should not be needed
       [ResourceFormStep.Description]: () => touchedDescriptionFields,
       [ResourceFormStep.AccessAndLicense]: () => touchedAccessAndLicenseFields,
-      [ResourceFormStep.Contents]: () => touchedContentsFields(valuesRef.current.resource.contents),
+      [ResourceFormStep.Contents]: () => touchedContentsFields(valuesRef.current.contents),
       [ResourceFormStep.Contributors]: () =>
-        touchedContributorsFields(valuesRef.current.resource.contributors, valuesRef.current.resource.creators),
+        touchedContributorsFields(valuesRef.current.contributors, valuesRef.current.creators),
       //These are functions because the form is dynamic
     };
     if (activeStep > highestPreviouslyTouchedStepRef.current) {
@@ -77,6 +77,7 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
 
   return (
     <StyledContentWrapperMedium>
+      {/*<pre style={{ maxWidth: '90%' }}>{JSON.stringify(values, null, 2)}</pre>*/}
       <Stepper style={{ width: '100%' }} activeStep={activeStep} nonLinear alternativeLabel>
         {ResourceFormSteps.map((step, index) => {
           return (
