@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Uppy } from '../../../types/file.types';
 import AdditionalFilesUpload from './AdditionalFilesUpload';
 import { Content } from '../../../types/content.types';
