@@ -10,7 +10,7 @@ import { UppyFile } from '@uppy/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { Colors } from '../../../themes/mainTheme';
 import styled from 'styled-components';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -64,7 +64,15 @@ const UploadImageProgressCard = styled.div`
 
 const filterAdditionalFiles = (contents: undefined | Content[]) => {
   if (contents) {
-    return contents.slice(1).filter((content) => content.features.dlr_content_type === 'file') ?? [];
+    return (
+      contents.filter((content) => {
+        return (
+          content.features.dlr_content_type === 'file' &&
+          content.features.dlr_content_master === 'false' &&
+          content.features.dlr_thumbnail_default === 'false'
+        );
+      }) ?? []
+    );
   } else {
     return [];
   }
@@ -82,7 +90,7 @@ const calculateFileSizeString = (size: number): string => {
   }
 };
 
-const getIndividualProgress = (contents: Content[] | undefined, additionalFilesUppy: Uppy, thumbnailUppy: Uppy) => {
+const getIndividualProgress = (contents: Content[] | undefined, additionalFilesUppy: Uppy) => {
   const additionalFilesContents = filterAdditionalFiles(contents);
   const uploadedFiles: UploadPerFile[] = [];
   for (let i = 0; i < additionalFilesContents.length; i++) {
@@ -95,13 +103,6 @@ const getIndividualProgress = (contents: Content[] | undefined, additionalFilesU
       fileSize = calculateFileSizeString(uppyAdditionalFile.size);
       percentage = uppyAdditionalFile.progress?.percentage ?? 0;
       fileType = uppyAdditionalFile.type ?? '';
-    } else {
-      const thumbnailFile = thumbnailUppy.getFiles().find((file) => file.meta.name === filename);
-      if (thumbnailFile) {
-        fileSize = calculateFileSizeString(thumbnailFile.size);
-        percentage = thumbnailFile.progress?.percentage ?? 0;
-        fileType = thumbnailFile.type ?? '';
-      }
     }
     uploadedFiles.push({ filename, percentage, fileType, fileSize });
   }
@@ -109,17 +110,13 @@ const getIndividualProgress = (contents: Content[] | undefined, additionalFilesU
   return uploadedFiles;
 };
 
-const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({
-  additionalFileUploadUppy,
-  newContent,
-  thumbnailUppy,
-}) => {
+const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileUploadUppy, newContent }) => {
   const { t } = useTranslation();
   const { values } = useFormikContext<ResourceWrapper>();
   const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
   const [contents, setContents] = useState<Content[]>(filterAdditionalFiles(values.resource.contents));
   const [uploadPercentageArray, setUploadPercentageArray] = useState<UploadPerFile[]>(
-    getIndividualProgress(values.resource.contents, additionalFileUploadUppy, thumbnailUppy)
+    getIndividualProgress(values.resource.contents, additionalFileUploadUppy)
   );
 
   useEffect(() => {
@@ -133,18 +130,6 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({
       });
     });
   }, [additionalFileUploadUppy]);
-
-  useEffect(() => {
-    thumbnailUppy.on('upload-progress', (file: UppyFile, progress) => {
-      setUploadPercentageArray((prevState) => {
-        const index = prevState.findIndex((element) => element.filename === file.meta.name);
-        if (index >= 0) {
-          prevState[index].percentage = Math.ceil((progress.bytesUploaded / progress.bytesTotal) * 100);
-        }
-        return [...prevState];
-      });
-    });
-  }, [thumbnailUppy]);
 
   useEffect(() => {
     if (newContent && !values.resource.contents?.find((content) => content.identifier === newContent.identifier)) {
@@ -164,19 +149,12 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({
             newUploadPerFile.fileSize = calculateFileSizeString(uppyFile.size);
             newUploadPerFile.fileType = uppyFile.type;
             newUploadPerFile.percentage = uppyFile.progress?.percentage ?? 0;
-          } else if (thumbnailUppy) {
-            const thumbnailFile = thumbnailUppy.getFiles().find((file) => file.meta.name === newUploadPerFile.filename);
-            if (thumbnailFile) {
-              newUploadPerFile.fileSize = calculateFileSizeString(thumbnailFile.size);
-              newUploadPerFile.fileType = thumbnailFile.type;
-              newUploadPerFile.percentage = thumbnailFile.progress?.percentage ?? 0;
-            }
           }
         }
         return [...prevState, newUploadPerFile];
       });
     }
-  }, [newContent, values.resource, additionalFileUploadUppy, thumbnailUppy]);
+  }, [newContent, values.resource, additionalFileUploadUppy]);
 
   const deleteContent = async (contentToBeDeleted: Content, index: number) => {
     try {
@@ -238,22 +216,15 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({
               <Typography variant="body2">{displayContent(content.features.dlr_content)?.fileType}</Typography>
               <Typography variant="overline">{displayContent(content.features.dlr_content)?.fileSize}</Typography>
             </SmallParagraphSpace>
-            {content.features.dlr_thumbnail_default === 'false' && (
-              <Button
-                color="secondary"
-                startIcon={<DeleteIcon fontSize="large" />}
-                size="large"
-                onClick={() => {
-                  deleteContent(content, index);
-                }}>
-                {t('common.remove').toUpperCase()}
-              </Button>
-            )}
-            {content.features.dlr_thumbnail_default === 'true' && (
-              <Button color="secondary" startIcon={<DeleteIcon fontSize="large" />} size="large" disabled>
-                {t('common.remove').toUpperCase()}
-              </Button>
-            )}
+            <Button
+              color="secondary"
+              startIcon={<DeleteIcon fontSize="large" />}
+              size="large"
+              onClick={() => {
+                deleteContent(content, index);
+              }}>
+              {t('common.remove').toUpperCase()}
+            </Button>
             {errorIndex === index && <ErrorBanner />}
           </LargeParagraphSpace>
         ))}

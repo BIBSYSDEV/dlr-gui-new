@@ -4,7 +4,7 @@ import StatusBarComponent from '@uppy/react/src/StatusBar';
 import '@uppy/core/dist/style.css';
 import '@uppy/status-bar/dist/style.css';
 import styled from 'styled-components';
-import { ButtonTypeMap, ExtendButtonBase, Paper, TextField, Typography } from '@material-ui/core';
+import { Paper, TextField, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
 import { updateContentTitle } from '../../../api/resourceApi';
@@ -73,19 +73,34 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUp
   };
 
   useEffect(() => {
+    const setNewThumbnailAPICallAndFormikChange = async () => {
+      try {
+        setFileInputIsBusy(true);
+        if (newThumbnailContent) {
+          await setContentAsDefaultThumbnail(values.resource.identifier, newThumbnailContent.identifier);
+          values.resource?.contents.forEach((content) => {
+            if (content.identifier === newThumbnailContent.identifier) {
+              content.features.dlr_thumbnail_default = 'true';
+            } else {
+              content.features.dlr_thumbnail_default = 'false';
+            }
+          });
+          setShouldPollNewThumbnail(true);
+          await new Promise((r) => setTimeout(r, 1000));
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setShouldPollNewThumbnail(false);
+        setFileInputIsBusy(false);
+      }
+    };
+
     if (thumbnailUppy) {
       thumbnailUppy.on('complete', () => {
         if (newThumbnailContent) {
-          setFileInputIsBusy(true);
-          setContentAsDefaultThumbnail(values.resource.identifier, newThumbnailContent.identifier).then(() => {
-            const valueContent = values.resource?.contents.find(
-              (content) => content.identifier === newThumbnailContent.identifier
-            );
-            setShouldPollNewThumbnail(true);
-            setTimeout(() => {
-              setShouldPollNewThumbnail(false);
-              setFileInputIsBusy(false);
-            }, 1000);
+          setNewThumbnailAPICallAndFormikChange().then(() => {
+            //TODO: reset uppyen.
           });
         }
       });
@@ -95,10 +110,18 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUp
     }
   }, [thumbnailUppy, newThumbnailContent]);
 
+  console.log('values.resource.contents', values.resource.contents);
+
   return (
     <StyledSchemaPartColored color={Colors.ContentsPageGradientColor1}>
       <StyledContentWrapper>
         <Typography variant="h3">{t('resource.metadata.main_file')}</Typography>
+        <Typography>Kjente issues:</Typography>
+        <Typography>
+          Kan foreløpig bare laste opp ett miniatyrbilde så må man refreshe-sida og begynne på nytt (skal fikses)
+        </Typography>
+        <Typography>Mangler funksjonalitet for å reverte tilbake til default på selve hovedfil seksjonen</Typography>
+        <Typography>Denne utgaven mangler masse design greier og ting flyter rundt</Typography>
         <MainFileWrapper>
           <MainFileImageWrapper>
             <Thumbnail
