@@ -211,6 +211,7 @@ const EditResourcePage: FC = () => {
         licenses: [emptyLicense],
         tags: [],
         containsOtherPeoplesWork: '',
+        usageClearedWithOwner: '',
       };
       await setDLRType(resourceCreationType, responseWithCalculatedDefaults.data, tempResource, startingResource);
       await setCreator(tempResource, startingResource.identifier, user.name);
