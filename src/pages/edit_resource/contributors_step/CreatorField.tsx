@@ -12,6 +12,7 @@ import ErrorBanner from '../../../components/ErrorBanner';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
+import { StyledDeleteButton } from '../../../components/styled/DeleteButton';
 
 const StyledFieldsWrapper = styled.div`
   display: flex;
@@ -144,7 +145,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                       )}
                     </Field>
                     {values.resource.creators?.length > 1 && !isDeleting && (
-                      <Button
+                      <StyledDeleteButton
                         color="secondary"
                         startIcon={<DeleteIcon fontSize="large" />}
                         size="large"
@@ -152,7 +153,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                           removeCreator(creator.identifier, arrayHelpers, index);
                         }}>
                         {t('common.remove').toUpperCase()}
-                      </Button>
+                      </StyledDeleteButton>
                     )}
                     {updateCreatorError && errorIndex === index && <ErrorBanner />}
                   </StyledFieldsWrapper>
