@@ -257,3 +257,10 @@ export const putAccessType = (resourceIdentifier: string, accessType: AccessType
     data,
   });
 };
+
+export const getResourceContentEvent = (contentIdentifier: string) => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesEventsPath}/resources/${contentIdentifier}/events`),
+    method: 'GET',
+  });
+};

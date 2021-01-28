@@ -62,6 +62,8 @@ const UploadImageProgressCard = styled.div`
   width: 100px;
 `;
 
+const LinkMetadataFilename = 'metadata_external.json';
+
 const filterAdditionalFiles = (contents: undefined | Content[]) => {
   if (contents) {
     return (
@@ -69,7 +71,8 @@ const filterAdditionalFiles = (contents: undefined | Content[]) => {
         return (
           content.features.dlr_content_type === 'file' &&
           content.features.dlr_content_master === 'false' &&
-          content.features.dlr_thumbnail_default === 'false'
+          content.features.dlr_thumbnail_default === 'false' &&
+          content.features.dlr_content_title !== LinkMetadataFilename
         );
       }) ?? []
     );

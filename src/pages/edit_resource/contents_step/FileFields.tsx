@@ -108,12 +108,13 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUp
           await new Promise((r) => setTimeout(r, 2000));
           setShouldPollNewThumbnail(false);
           setFileInputIsBusy(false);
-          await new Promise((r) => setTimeout(r, 3000));
+          await new Promise((r) => setTimeout(r, 10000));
           if (tobeDeletedIdentifier.length > 0) {
-            await deleteResourceContent(values.resource.identifier, tobeDeletedIdentifier);
             values.resource.contents = values.resource.contents.filter(
               (content) => content.identifier !== tobeDeletedIdentifier
             );
+            await deleteResourceContent(values.resource.identifier, tobeDeletedIdentifier);
+            console.log('managed to delete content');
           }
         }
       } catch (error) {
@@ -122,20 +123,57 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUp
     };
 
     if (thumbnailUppy) {
-      if (!thumbnailUppy.hasUploadSuccessEventListener) {
-        thumbnailUppy.on('complete', () => {
-          if (newThumbnailContent) {
-            setNewThumbnailAPICallAndFormikChange().then(() => {
-              thumbnailUppy.reset();
+      thumbnailUppy.on('upload-success', () => {
+        console.log('detected uppy complete');
+        setNewThumbnailAPICallAndFormikChange().then(() => {
+          const files = thumbnailUppy.getFiles();
+          files.forEach((file) => {
+            thumbnailUppy.removeFile(file.id);
+            thumbnailUppy.off('complete', () => {
+              console.log('unsubscribed to complete');
             });
-          }
+          });
         });
-      }
+        console.log('done with uppy complete listener');
+      });
       thumbnailUppy.on('file-added', () => {
         setFileInputIsBusy(true);
       });
     }
-  }, [thumbnailUppy, newThumbnailContent, values.resource]);
+  }, [thumbnailUppy]);
+
+  const returnToDefaultThumbnail = async () => {
+    setFileInputIsBusy(true);
+    try {
+      const masterContent = values.resource.contents.find((content) => content.features.dlr_content_master === 'true');
+      if (masterContent) {
+        await setContentAsDefaultThumbnail(values.resource.identifier, masterContent.identifier);
+        const previousThumbnailContent = values.resource.contents.find(
+          (content) =>
+            content.features.dlr_thumbnail_default === 'true' && content.features.dlr_content_master === 'false'
+        );
+        if (previousThumbnailContent) {
+          await deleteResourceContent(values.resource.identifier, previousThumbnailContent.identifier);
+          values.resource.contents = values.resource.contents.filter(
+            (content) => content.identifier !== previousThumbnailContent.identifier
+          );
+        }
+        const masterIndex = values.resource.contents.findIndex(
+          (content) => content.features.dlr_content_master === 'true'
+        );
+        if (values.resource.contents[masterIndex]) {
+          values.resource.contents[masterIndex].features.dlr_thumbnail_default = 'true';
+        }
+        setShouldPollNewThumbnail(true);
+        await new Promise((r) => setTimeout(r, 2000));
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setFileInputIsBusy(false);
+      setShouldPollNewThumbnail(false);
+    }
+  };
 
   console.log('values.resource.contents', values.resource.contents);
 
@@ -153,23 +191,30 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUp
           </MainFileImageWrapper>
           <MainFileMetadata>
             <StyledFieldWrapper>
-              {/*//TODO: First item in contents is not always main content*/}
-              <Field name="resource.contents[0].features.dlr_content_title">
-                {({ field, meta: { touched, error } }: FieldProps) => (
-                  <TextField
-                    {...field}
-                    variant="outlined"
-                    fullWidth
-                    label={t('resource.metadata.filename')}
-                    error={touched && !!error}
-                    helperText={<ErrorMessage name={field.name} />}
-                    onBlur={(event) => {
-                      handleBlur(event);
-                      !error && saveMainContentsFileName(event);
-                    }}
-                  />
+              {values.resource.contents.findIndex((content) => content.features.dlr_content_master === 'true') > -1 &&
+                values.resource.contents[
+                  values.resource.contents.findIndex((content) => content.features.dlr_content_master === 'true')
+                ].features.dlr_content_type === 'file' && (
+                  <Field
+                    name={`resource.contents[${values.resource.contents.findIndex(
+                      (content) => content.features.dlr_content_master === 'true'
+                    )}].features.dlr_content_title`}>
+                    {({ field, meta: { touched, error } }: FieldProps) => (
+                      <TextField
+                        {...field}
+                        variant="outlined"
+                        fullWidth
+                        label={t('resource.metadata.filename')}
+                        error={touched && !!error}
+                        helperText={<ErrorMessage name={field.name} />}
+                        onBlur={(event) => {
+                          handleBlur(event);
+                          !error && saveMainContentsFileName(event);
+                        }}
+                      />
+                    )}
+                  </Field>
                 )}
-              </Field>
             </StyledFieldWrapper>
             {saveTitleError && <ErrorBanner />}
             <Paper>
@@ -247,7 +292,13 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUp
               }}>
               <ListItemText primary="Last opp nytt" />
             </ListItem>
-            <ListItem button>
+            <ListItem
+              button
+              onClick={() => {
+                setAnchorEl(null);
+                setShowPopover(false);
+                returnToDefaultThumbnail();
+              }}>
               <ListItemText primary="Slett opplastet og gå tilbake til foreslått miniatyrbilde" />
             </ListItem>
           </List>
