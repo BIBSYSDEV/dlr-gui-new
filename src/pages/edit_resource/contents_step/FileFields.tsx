@@ -92,7 +92,7 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
                 )}
               </Field>
             </StyledFieldWrapper>
-            {saveTitleError && <ErrorBanner />}
+            {saveTitleError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
             <Paper>
               <StatusBarWrapper>
                 <StatusBarComponent

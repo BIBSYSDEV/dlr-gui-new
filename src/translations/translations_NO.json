@@ -28,6 +28,7 @@
     "403_page": "Du må være pålogget for å benytte denne funksjonaliteten",
     "404_page": "Gått deg vill? (404-page)",
     "500_page": "Ups, noe gikk galt. Prøv igjen senere",
+    "expired_session": "Ups, sesjonen din har gått ut. Vennligst logg på",
     "generic": "Ups, noe gikk galt. Prøv igjen senere"
   },
   "feedback": {

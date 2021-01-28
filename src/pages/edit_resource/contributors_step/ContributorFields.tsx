@@ -226,7 +226,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                 }}>
                 {t('resource.add_contributor').toUpperCase()}
               </Button>
-              {addContributorError && <ErrorBanner />}
+              {addContributorError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
             </>
           )}
         />

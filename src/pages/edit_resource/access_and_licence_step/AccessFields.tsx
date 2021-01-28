@@ -75,7 +75,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
                   ))}
                 </TextField>
 
-                {savingAccessTypeError && <ErrorBanner />}
+                {savingAccessTypeError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
               </>
             )}
           </Field>

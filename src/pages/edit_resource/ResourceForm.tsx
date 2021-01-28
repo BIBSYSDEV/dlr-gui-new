@@ -151,7 +151,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
               {activeStep === ResourceFormStep.AccessAndLicense && (
                 <StyledPanel>
                   {isLoadingLicenses && <CircularProgress />}
-                  {loadingLicensesErrorStatus !== StatusCode.ACCEPTED && <ErrorBanner />}
+                  {loadingLicensesErrorStatus !== StatusCode.ACCEPTED && <ErrorBanner userNeedsToBeLoggedIn={true} />}
 
                   <AccessAndLicenseStep
                     setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}

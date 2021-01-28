@@ -264,7 +264,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           </AccordionRadioGroup>
         )}
 
-        {saveRestrictionError && <ErrorBanner />}
+        {saveRestrictionError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );

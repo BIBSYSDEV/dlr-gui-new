@@ -63,7 +63,7 @@ const MyResources: FC = () => {
 
   return (
     <StyledPageContent>
-      {loadingError && <ErrorBanner />}
+      {loadingError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
       {isLoadingMyResources && <CircularProgress />}
       <ListMarginAlign>
         <StyledListWrapper>

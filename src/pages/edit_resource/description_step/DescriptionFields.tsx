@@ -56,7 +56,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
             )}
           </Field>
         </StyledContentWrapper>
-        {saveErrorFields.includes(ResourceFeatureNamesFullPath.Title) && <ErrorBanner />}
+        {saveErrorFields.includes(ResourceFeatureNamesFullPath.Title) && <ErrorBanner userNeedsToBeLoggedIn={true} />}
       </StyledSchemaPartColored>
       <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor1}>
         <StyledContentWrapper>
@@ -77,7 +77,9 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
             )}
           </Field>
         </StyledContentWrapper>
-        {saveErrorFields.includes(ResourceFeatureNamesFullPath.Description) && <ErrorBanner />}
+        {saveErrorFields.includes(ResourceFeatureNamesFullPath.Description) && (
+          <ErrorBanner userNeedsToBeLoggedIn={true} />
+        )}
       </StyledSchemaPartColored>
       <ResourceTypeField setAllChangesSaved={setAllChangesSaved} />
       <TagsField setAllChangesSaved={setAllChangesSaved} />

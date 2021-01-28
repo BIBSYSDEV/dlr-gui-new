@@ -127,7 +127,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
             )}
           </StyledRightSideButtonWrapper>
         </StyledButtonWrapper>
-        {publishResourceError && <ErrorBanner />}
+        {publishResourceError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
       </StyledContentWrapperMedium>
     </StyledSchemaPartWithoutTopPadding>
   );

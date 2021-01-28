@@ -172,7 +172,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
             </StyledRadioGroup>
           </StyledRadioBoxWrapper>
         )}
-        {savingError && <ErrorBanner />}
+        {savingError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
         {LicenseAgreement !== LicenseConstants.YesOther && LicenseAgreement !== '' && containsOtherPeoplesWork && (
           <StyledOutLinedBox>
             <ErrorOutlineIcon color="primary" />

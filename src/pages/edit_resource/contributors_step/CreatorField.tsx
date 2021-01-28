@@ -155,7 +155,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                         {t('common.remove').toUpperCase()}
                       </StyledDeleteButton>
                     )}
-                    {updateCreatorError && errorIndex === index && <ErrorBanner />}
+                    {updateCreatorError && errorIndex === index && <ErrorBanner userNeedsToBeLoggedIn={true} />}
                   </StyledFieldsWrapper>
                 );
               })}
@@ -169,7 +169,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                 }}>
                 {t('resource.add_creator').toUpperCase()}
               </Button>
-              {addCreatorError && <ErrorBanner />}
+              {addCreatorError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
             </>
           )}
         />
