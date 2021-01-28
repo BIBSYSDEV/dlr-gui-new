@@ -43,7 +43,7 @@ const LinkResourceForm: FC<LinkResourceFormProps> = ({ handleSubmit }) => {
             <Field name="url">
               {({ field, meta: { error, touched } }: FieldProps) => (
                 <StyledTextField
-                  variant="outlined"
+                  variant="filled"
                   fullWidth
                   aria-label="link"
                   inputProps={{ 'data-testid': 'new-resource-link-input' }}
