@@ -59,14 +59,14 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
     }
   };
   return (
-    <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor1}>
+    <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor2}>
       <StyledContentWrapper>
         <Field name={ResourceFeatureNamesFullPath.Type}>
           {({ field, meta: { error, touched } }: FieldProps) => (
             <>
               <TextField
                 {...field}
-                variant="outlined"
+                variant="filled"
                 select
                 required
                 error={touched && !!error}
