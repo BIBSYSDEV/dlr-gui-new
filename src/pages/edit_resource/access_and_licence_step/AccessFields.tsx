@@ -54,7 +54,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
               <>
                 <TextField
                   {...field}
-                  variant="outlined"
+                  variant="filled"
                   select
                   required
                   error={touched && !!error}
