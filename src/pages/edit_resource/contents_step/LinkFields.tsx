@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useFormikContext } from 'formik';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
-import { ResourceWrapper } from '../../../types/resource.types';
+import { Resource } from '../../../types/resource.types';
 import Thumbnail from '../../../components/Thumbnail';
 
 const LinkWrapper = styled.div`
@@ -28,7 +28,7 @@ const LinkMetadata = styled.div`
 
 const LinkFields = () => {
   const { t } = useTranslation();
-  const { values } = useFormikContext<ResourceWrapper>();
+  const { values } = useFormikContext<Resource>();
 
   return (
     <StyledSchemaPartColored color={Colors.ContentsPageGradientColor1}>
@@ -36,17 +36,17 @@ const LinkFields = () => {
         <Typography variant="h3">{t('resource.metadata.link')}</Typography>
         <LinkWrapper>
           <ThumbnailWrapper>
-            <Thumbnail resourceIdentifier={values.resource.identifier} alt={t('resource.metadata.resource')} />
+            <Thumbnail resourceIdentifier={values.identifier} alt={t('resource.metadata.resource')} />
           </ThumbnailWrapper>
           <LinkMetadata>
             <Typography variant="overline">{t('resource.metadata.link')}</Typography>
             <MuiLink
-              href={values.resource.features.dlr_content}
+              href={values.features.dlr_content}
               target="_blank"
               rel="noreferrer noopener"
               data-testid="content-step-link"
               display="block">
-              {values.resource.features.dlr_content}
+              {values.features.dlr_content}
             </MuiLink>
           </LinkMetadata>
         </LinkWrapper>

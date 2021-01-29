@@ -7,9 +7,9 @@ import {
   Creator,
   CreatorFeatureAttributes,
   FieldNames,
+  Resource,
   ResourceFeatureNamesFullPath,
   ResourceFormStep,
-  ResourceWrapper,
 } from '../types/resource.types';
 import deepmerge, { Options } from 'deepmerge';
 
@@ -65,14 +65,12 @@ const getAllAccessAndLicenseStepFieldNames = () => {
 
 const getAllFieldsFromContributorsPanel = (values: FormikValues): string[] => {
   const fieldNames: string[] = [];
-  return fieldNames
-    .concat(getAllContributorFields(values.resource.contributors))
-    .concat(getAllCreatorFields(values.resource.creators));
+  return fieldNames.concat(getAllContributorFields(values.contributors)).concat(getAllCreatorFields(values.creators));
 };
 
 const getAllContentsFields = (values: FormikValues): string[] => {
   const fieldNames: string[] = [];
-  const contents: Content[] = values.resource.contents;
+  const contents: Content[] = values.contents;
   if (!contents || contents.length === 0) {
     fieldNames.push(FieldNames.ContentsBase);
   } else {
@@ -113,51 +111,45 @@ export const getAllCreatorFields = (creators: Creator[]): string[] => {
 
 export const overwriteArrayMerge = (destinationArray: unknown[], sourceArray: unknown[], options?: Options) =>
   sourceArray;
-export const mergeTouchedFields = (touchedArray: FormikTouched<ResourceWrapper>[]) =>
+export const mergeTouchedFields = (touchedArray: FormikTouched<Resource>[]) =>
   deepmerge.all(touchedArray, { arrayMerge: overwriteArrayMerge });
 
-export const touchedDescriptionFields: FormikTouched<ResourceWrapper> = {
-  resource: {
-    features: {
-      dlr_title: true,
-      dlr_description: true,
-      dlr_type: true,
-    },
+export const touchedDescriptionFields: FormikTouched<Resource> = {
+  features: {
+    dlr_title: true,
+    dlr_description: true,
+    dlr_type: true,
   },
 };
 
 export const touchedContributorsFields = (
   contributors: Contributor[],
   creators: Creator[]
-): FormikTouched<ResourceWrapper> => ({
-  resource: {
-    contributors: contributors.map(() => ({
-      features: {
-        dlr_contributor_name: true,
-      },
-    })),
-    creators: creators.map(() => ({
-      features: {
-        dlr_creator_name: true,
-      },
-    })),
-  },
+): FormikTouched<Resource> => ({
+  contributors: contributors.map(() => ({
+    features: {
+      dlr_contributor_name: true,
+    },
+  })),
+  creators: creators.map(() => ({
+    features: {
+      dlr_creator_name: true,
+    },
+  })),
 });
 
-export const touchedContentsFields = (contents: Content[]): FormikTouched<ResourceWrapper> => ({
-  resource: {
-    contents: contents.map(() => ({
-      features: {
-        dlr_content_title: true,
-      },
-    })),
-  },
+export const touchedContentsFields = (contents: Content[]): FormikTouched<Resource> => ({
+  contents: contents.map(() => ({
+    features: {
+      dlr_content_title: true,
+    },
+  })),
 });
 
-export const touchedAccessAndLicenseFields: FormikTouched<ResourceWrapper> = {
-  resource: {
-    licenses: [{ identifier: true }],
-  },
+export const touchedAccessAndLicenseFields: FormikTouched<Resource> = {
+  containsOtherPeoplesWork: true,
+  usageClearedWithOwner: true,
+  licenses: [{ identifier: true }],
 };
 
-export const touchedPreviewFields: FormikTouched<ResourceWrapper> = {};
+export const touchedPreviewFields: FormikTouched<Resource> = {};

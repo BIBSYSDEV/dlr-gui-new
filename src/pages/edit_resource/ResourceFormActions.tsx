@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { publishResource } from '../../api/resourceApi';
-import { getStepLabel, ResourceFormStep, ResourceWrapper } from '../../types/resource.types';
+import { getStepLabel, ResourceFormStep, Resource } from '../../types/resource.types';
 import { StyledContentWrapperMedium, StyledSchemaPart } from '../../components/styled/Wrappers';
 import ErrorBanner from '../../components/ErrorBanner';
 import { useHistory } from 'react-router-dom';
@@ -72,7 +72,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
   const { t } = useTranslation();
   const history = useHistory();
   const [publishResourceError, setPublishResourceError] = useState(false);
-  const { values, isValid } = useFormikContext<ResourceWrapper>();
+  const { values, isValid } = useFormikContext<Resource>();
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -85,8 +85,8 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
   const handlePublishResource = async () => {
     setPublishResourceError(false);
     try {
-      await publishResource(values.resource.identifier);
-      history.push(`/resource/${values.resource.identifier}`);
+      await publishResource(values.identifier);
+      history.push(`/resource/${values.identifier}`);
     } catch (error) {
       setPublishResourceError(true);
     }

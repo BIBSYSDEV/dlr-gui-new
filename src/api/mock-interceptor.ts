@@ -8,6 +8,7 @@ import { Contributor, Creator, Resource } from '../types/resource.types';
 import { License } from '../types/license.types';
 import { Content } from '../types/content.types';
 import { FileApiPaths } from './fileApi';
+import { v4 as uuidv4 } from 'uuid';
 
 export const mockUser: User = {
   id: 'user123',
@@ -43,6 +44,8 @@ const mockResource: Resource = {
   contributors: [],
   licenses: [],
   creators: [],
+  containsOtherPeoplesWork: '',
+  usageClearedWithOwner: '',
 };
 
 const mockCalculatedResource: Resource = {
@@ -55,6 +58,8 @@ const mockCalculatedResource: Resource = {
   contents: [],
   contributors: [],
   creators: [],
+  containsOtherPeoplesWork: '',
+  usageClearedWithOwner: '',
 };
 
 const mockMyResources: Resource[] = [
@@ -69,6 +74,8 @@ const mockMyResources: Resource[] = [
     contents: [],
     contributors: [],
     creators: [],
+    containsOtherPeoplesWork: '',
+    usageClearedWithOwner: '',
   },
   {
     features: {
@@ -81,6 +88,8 @@ const mockMyResources: Resource[] = [
     contents: [],
     contributors: [],
     creators: [],
+    containsOtherPeoplesWork: '',
+    usageClearedWithOwner: '',
   },
   {
     features: {
@@ -93,6 +102,8 @@ const mockMyResources: Resource[] = [
     contents: [],
     contributors: [],
     creators: [],
+    containsOtherPeoplesWork: '',
+    usageClearedWithOwner: '',
   },
 ];
 
@@ -159,12 +170,15 @@ const mockCreators: Creator[] = [
   },
 ];
 
-const mockEmptyCreator: Creator = {
-  identifier: 'creator-3',
-  features: {
-    dlr_creator_identifier: 'creator-3',
-    dlr_creator_time_created: '2020-12-07T08:19:55.294Z',
-  },
+const createMockCreator = (): Creator => {
+  const generatedId = uuidv4();
+  return {
+    identifier: `creator-${generatedId}`,
+    features: {
+      dlr_creator_identifier: `creator-${generatedId}`,
+      dlr_creator_time_created: '2020-12-07T08:19:55.294Z',
+    },
+  };
 };
 
 const mockContent: Content[] = [
@@ -238,7 +252,7 @@ export const interceptRequestsOnMock = () => {
 
   //RESOURCE CREATORS
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators`)).reply(200, mockCreators);
-  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators`)).reply(202, mockEmptyCreator);
+  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators`)).reply(202, createMockCreator);
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*`)).reply(202, {});
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*`)).reply(202, {});
 
