@@ -226,6 +226,12 @@
     },
     "unpublished_resources": "Unpublished resources"
   },
+  "thumbnail": {
+    "change_thumbnail": "Change thumbnail",
+    "revert_thumbnail": "Delete uploaded thumbnail and revert to suggested thumbnail",
+    "thumbnail_options": "thumbnail options",
+    "upload_new_thumbnail": "Upload new thumbnail"
+  },
   "user": {
     "logged_in_as": "Logged in as"
   }
