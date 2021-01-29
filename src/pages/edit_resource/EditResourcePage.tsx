@@ -276,7 +276,6 @@ const EditResourcePage: FC = () => {
       tempResource.licenses = (await getResourceLicenses(identifier)).data;
       tempResource.contents = (await getResourceContents(identifier)).data;
       tempResource.tags = (await getResourceTags(identifier)).data;
-      //TODO: if file - get content-title
       if (!tempResource.features.dlr_type) tempResource.features.dlr_type = '';
       if (!tempResource.licenses[0]) tempResource.licenses = [emptyLicense];
       setFormikInitResource(tempResource);

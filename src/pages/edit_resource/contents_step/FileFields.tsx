@@ -75,13 +75,13 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
           <MainFileMetadata>
             <StyledFieldWrapper>
               {/*//TODO: First item in contents is not always main content*/}
-              <Field name="resource.contents[0].features.dlr_content_title">
+              <Field name="contents[0].features.dlr_content_title">
                 {({ field, meta: { touched, error } }: FieldProps) => (
                   <TextField
                     {...field}
                     variant="filled"
                     fullWidth
-                    label={t('resource.metadata.filename')}
+                    label={t('resource.metadata.file_title')}
                     error={touched && !!error}
                     helperText={<ErrorMessage name={field.name} />}
                     onBlur={(event) => {
