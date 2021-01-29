@@ -84,6 +84,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
     }
     if (event.target.value === ContainsOtherPeoplesWorkOptions.No) {
       setHasSelectedCC(false);
+      setFieldValue('usageClearedWithOwner', '');
     }
     if (event.target.value === ContainsOtherPeoplesWorkOptions.Yes && values.usageClearedWithOwner === Licenses.CC) {
       setHasSelectedCC(true);
