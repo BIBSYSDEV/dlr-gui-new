@@ -182,6 +182,15 @@ const mockContent: Content[] = [
       dlr_content_title: '',
     },
   },
+  {
+    identifier: '437829',
+    features: {
+      dlr_content: 'metadata_external.json',
+      dlr_content_identifier: 'adfasdf',
+      dlr_content_content_type: 'image',
+      dlr_content_title: 'metadata_external.json',
+    },
+  },
 ];
 
 const mockCreatedResourceWithContents = {
