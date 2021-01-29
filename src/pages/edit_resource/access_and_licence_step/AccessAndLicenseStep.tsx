@@ -7,7 +7,7 @@ import ContainsOtherWorksFields from './ContainsOtherWorksFields';
 import { StyledContentWrapper, StyledSchemaPart } from '../../../components/styled/Wrappers';
 import { Typography } from '@material-ui/core';
 import { useFormikContext } from 'formik';
-import { ResourceWrapper } from '../../../types/resource.types';
+import { Resource } from '../../../types/resource.types';
 
 interface AccessAndLicenseStepProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -17,13 +17,13 @@ interface AccessAndLicenseStepProps {
 const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSaved, licenses }) => {
   const [forceResetInLicenseWizard, setForceResetInLicenseWizard] = useState(false);
   const [containsOtherWorksFieldsSelectedCC, setContainsOtherWorksFieldsSelectedCC] = useState(false);
-  const { values } = useFormikContext<ResourceWrapper>();
+  const { values } = useFormikContext<Resource>();
 
   return (
     <>
       <StyledSchemaPart>
         <StyledContentWrapper>
-          <Typography variant="h2">{values.resource.features.dlr_title}</Typography>
+          <Typography variant="h2">{values.features.dlr_title}</Typography>
         </StyledContentWrapper>
       </StyledSchemaPart>
 

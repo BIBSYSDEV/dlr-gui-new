@@ -4,7 +4,7 @@ import { StyledContentWrapper, StyledSchemaPartColored } from '../../../componen
 import { MenuItem, TextField, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { Field, useFormikContext, FieldProps } from 'formik';
-import { ResourceFeatureNamesFullPath, ResourceWrapper } from '../../../types/resource.types';
+import { Resource, ResourceFeatureNamesFullPath } from '../../../types/resource.types';
 import { putAccessType } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { AccessTypes } from '../../../types/license.types';
@@ -22,7 +22,7 @@ const accessTypeArray = [AccessTypes.open, AccessTypes.private];
 
 const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
-  const { values, setFieldTouched, setFieldValue, handleChange, resetForm } = useFormikContext<ResourceWrapper>();
+  const { values, setFieldTouched, setFieldValue, handleChange, resetForm } = useFormikContext<Resource>();
   const [savingAccessTypeError, setSavingAccessTypeError] = useState(false);
 
   const saveResourceAccessType = async (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -30,10 +30,10 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
       setAllChangesSaved(false);
       try {
         if (event.target.value in AccessTypes) {
-          await putAccessType(values.resource.identifier, event.target.value as AccessTypes);
+          await putAccessType(values.identifier, event.target.value as AccessTypes);
           setFieldValue(ResourceFeatureNamesFullPath.Access, event.target.value);
           setSavingAccessTypeError(false);
-          values.resource.features.dlr_access = event.target.value;
+          values.features.dlr_access = event.target.value;
           resetForm({ values });
         }
       } catch (error) {
