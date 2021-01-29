@@ -182,6 +182,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                     thumbnailUppy={thumbnailUppy}
                     resourceType={resourceType}
                     newThumbnailContent={newThumbnailContent}
+                    newThumbnailIsReady={() => setNewThumbnailContent(undefined)}
                   />
                 </StyledPanel>
               )}

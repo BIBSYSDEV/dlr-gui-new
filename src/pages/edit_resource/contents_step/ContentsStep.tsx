@@ -14,6 +14,7 @@ interface ContentsStepProps {
   newContent: Content | undefined;
   resourceType: ResourceCreationType;
   newThumbnailContent: Content | undefined;
+  newThumbnailIsReady: () => void;
 }
 
 const ContentsStep: FC<ContentsStepProps> = ({
@@ -24,12 +25,14 @@ const ContentsStep: FC<ContentsStepProps> = ({
   resourceType,
   thumbnailUppy,
   newThumbnailContent,
+  newThumbnailIsReady,
 }) => {
   return (
     <>
       {resourceType === ResourceCreationType.FILE && (
         <FileFields
           uppy={uppy}
+          newThumbnailIsReady={newThumbnailIsReady}
           setAllChangesSaved={setAllChangesSaved}
           thumbnailUppy={thumbnailUppy}
           newThumbnailContent={newThumbnailContent}

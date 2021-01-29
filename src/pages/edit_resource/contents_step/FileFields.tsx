@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { CircularProgress, List, ListItem, ListItemText, Paper, TextField, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
-import { deleteResourceContent, updateContentTitle } from '../../../api/resourceApi';
+import { deleteResourceContent, getResourceContentEvent, updateContentTitle } from '../../../api/resourceApi';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import ErrorBanner from '../../../components/ErrorBanner';
@@ -52,9 +52,16 @@ interface FileFieldsProps {
   setAllChangesSaved: Dispatch<SetStateAction<boolean>>;
   thumbnailUppy: Uppy;
   newThumbnailContent: Content | undefined;
+  newThumbnailIsReady: () => void;
 }
 
-const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUppy, newThumbnailContent }) => {
+const FileFields: FC<FileFieldsProps> = ({
+  uppy,
+  setAllChangesSaved,
+  thumbnailUppy,
+  newThumbnailContent,
+  newThumbnailIsReady,
+}) => {
   const { t } = useTranslation();
   const { values, handleBlur, resetForm, setTouched, touched } = useFormikContext<ResourceWrapper>();
   const [saveTitleError, setSaveTitleError] = useState(false);
@@ -63,6 +70,7 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUp
   const [showThumbnailDashboardModal, setShowThumbnailDashboardModal] = useState(false);
   const [showPopover, setShowPopover] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const [thumbnailUpdateError, setThumbnailUpdateError] = useState(false);
 
   const saveMainContentsFileName = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setAllChangesSaved(false);
@@ -80,67 +88,75 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUp
     }
   };
 
-  useEffect(() => {
-    const setNewThumbnailAPICallAndFormikChange = async () => {
-      try {
-        setFileInputIsBusy(true);
-        if (newThumbnailContent) {
-          await setContentAsDefaultThumbnail(values.resource.identifier, newThumbnailContent.identifier);
-          let tobeDeletedIdentifier = '';
-          for (let i = 0; i < values.resource.contents.length; i++) {
-            if (values.resource.contents[i].identifier === newThumbnailContent.identifier) {
-              console.log('detected correct content identifier', values.resource.contents[i].identifier);
-              values.resource.contents[i].features.dlr_thumbnail_default = 'true';
-            } else if (
-              values.resource.contents[i].identifier !== newThumbnailContent.identifier &&
-              values.resource.contents[i].features.dlr_thumbnail_default === 'true' &&
-              values.resource.contents[i].features.dlr_content_master === 'false'
-            ) {
-              console.log('detected the need to delete', values.resource.contents[i].identifier);
-              tobeDeletedIdentifier = values.resource.contents[i].identifier;
-            } else {
-              values.resource.contents[i].features.dlr_thumbnail_default = 'false';
-              console.log('detected master content', values.resource.contents[i].identifier);
-            }
-          }
-
-          setShouldPollNewThumbnail(true);
-          await new Promise((r) => setTimeout(r, 2000));
-          setShouldPollNewThumbnail(false);
-          setFileInputIsBusy(false);
-          await new Promise((r) => setTimeout(r, 10000));
-          if (tobeDeletedIdentifier.length > 0) {
-            values.resource.contents = values.resource.contents.filter(
-              (content) => content.identifier !== tobeDeletedIdentifier
-            );
-            await deleteResourceContent(values.resource.identifier, tobeDeletedIdentifier);
-            console.log('managed to delete content');
+  const setNewThumbnailAPICallAndFormikChange = async () => {
+    try {
+      setFileInputIsBusy(true);
+      if (newThumbnailContent) {
+        let responseEvents = await getResourceContentEvent(newThumbnailContent.identifier);
+        let thumbnailReady = responseEvents.data.resource_events.find(
+          (event) => event.event === 'RESOURCE_THUMBNAIL_UPLOADED'
+        );
+        let numberOfTries = 0;
+        while (!thumbnailReady && numberOfTries < 4) {
+          await new Promise((r) => setTimeout(r, 1000));
+          responseEvents = await getResourceContentEvent(newThumbnailContent.identifier);
+          thumbnailReady = responseEvents.data.resource_events.find(
+            (event) => event.event === 'RESOURCE_THUMBNAIL_UPLOADED'
+          );
+          numberOfTries++;
+        }
+        await setContentAsDefaultThumbnail(values.resource.identifier, newThumbnailContent.identifier);
+        let tobeDeletedIdentifier = '';
+        for (let i = 0; i < values.resource.contents.length; i++) {
+          if (values.resource.contents[i].identifier === newThumbnailContent.identifier) {
+            values.resource.contents[i].features.dlr_thumbnail_default = 'true';
+          } else if (
+            values.resource.contents[i].identifier !== newThumbnailContent.identifier &&
+            values.resource.contents[i].features.dlr_thumbnail_default === 'true' &&
+            values.resource.contents[i].features.dlr_content_master === 'false'
+          ) {
+            tobeDeletedIdentifier = values.resource.contents[i].identifier;
+          } else {
+            values.resource.contents[i].features.dlr_thumbnail_default = 'false';
           }
         }
-      } catch (error) {
-        console.log(error);
-      }
-    };
 
+        setShouldPollNewThumbnail(true);
+        await new Promise((r) => setTimeout(r, 1000));
+        setShouldPollNewThumbnail(false);
+        setFileInputIsBusy(false);
+        if (tobeDeletedIdentifier.length > 0) {
+          values.resource.contents = values.resource.contents.filter(
+            (content) => content.identifier !== tobeDeletedIdentifier
+          );
+          await deleteResourceContent(values.resource.identifier, tobeDeletedIdentifier);
+        }
+      }
+      setThumbnailUpdateError(false);
+    } catch (error) {
+      setThumbnailUpdateError(true);
+    } finally {
+      newThumbnailIsReady();
+    }
+  };
+
+  useEffect(() => {
     if (thumbnailUppy) {
       thumbnailUppy.on('upload-success', () => {
-        console.log('detected uppy complete');
-        setNewThumbnailAPICallAndFormikChange().then(() => {
-          const files = thumbnailUppy.getFiles();
-          files.forEach((file) => {
-            thumbnailUppy.removeFile(file.id);
-            thumbnailUppy.off('complete', () => {
-              console.log('unsubscribed to complete');
-            });
-          });
-        });
-        console.log('done with uppy complete listener');
+        thumbnailUppy.reset();
+        setShowThumbnailDashboardModal(false);
       });
       thumbnailUppy.on('file-added', () => {
         setFileInputIsBusy(true);
       });
     }
   }, [thumbnailUppy]);
+
+  useEffect(() => {
+    if (newThumbnailContent) {
+      setNewThumbnailAPICallAndFormikChange();
+    }
+  }, [newThumbnailContent]);
 
   const returnToDefaultThumbnail = async () => {
     setFileInputIsBusy(true);
@@ -167,15 +183,28 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUp
         setShouldPollNewThumbnail(true);
         await new Promise((r) => setTimeout(r, 2000));
       }
+      setThumbnailUpdateError(false);
     } catch (error) {
-      console.log(error);
+      setThumbnailUpdateError(true);
     } finally {
       setFileInputIsBusy(false);
       setShouldPollNewThumbnail(false);
+      newThumbnailIsReady();
     }
   };
 
-  console.log('values.resource.contents', values.resource.contents);
+  const handleThumbnailClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const thumbnailIsMasterContent =
+      values.resource.contents.findIndex(
+        (content) => content.features.dlr_content_master === 'true' && content.features.dlr_thumbnail_default === 'true'
+      ) > -1;
+    if (thumbnailIsMasterContent) {
+      setShowThumbnailDashboardModal(true);
+    } else {
+      setAnchorEl(event.currentTarget);
+      setShowPopover(true);
+    }
+  };
 
   return (
     <StyledSchemaPartColored color={Colors.ContentsPageGradientColor1}>
@@ -257,13 +286,13 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved, thumbnailUp
           </MainFileMetadata>
         </MainFileWrapper>
         {fileInputIsBusy && <CircularProgress />}
+        {thumbnailUpdateError && <ErrorBanner />}
         <StyledAddThumbnailButton
           variant="outlined"
           color="primary"
           disabled={fileInputIsBusy}
           onClick={(event) => {
-            setAnchorEl(event.currentTarget);
-            setShowPopover(true);
+            handleThumbnailClick(event);
           }}>
           BYTT MINIATYRBILDE
         </StyledAddThumbnailButton>
