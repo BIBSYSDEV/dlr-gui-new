@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextField } from '@material-ui/core';
+import { Chip, TextField } from '@material-ui/core';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
@@ -9,10 +9,29 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { deleteTag, postTag } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
+import styled from 'styled-components';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 interface TagsFieldProps {
   setAllChangesSaved: (status: boolean) => void;
 }
+const StyledChip = styled(Chip)`
+  && {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-right: 0.5rem;
+    background-color: ${Colors.ChipBackground};
+    color: ${Colors.Background};
+    &:focus {
+      color: ${Colors.PrimaryText};
+      background-color: ${Colors.ChipBackgroundFocus};
+    }
+  }
+`;
+
+const StyledCancelIcon = styled(CancelIcon)`
+  color: ${Colors.ChipIconBackground};
+`;
 
 const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
@@ -58,12 +77,17 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
               onChange={(_: ChangeEvent<unknown>, value: string[]) => {
                 saveTagsChanging(field.name, value);
               }}
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                  <StyledChip deleteIcon={<StyledCancelIcon />} label={option} {...getTagProps({ index })} />
+                ))
+              }
               renderInput={(params) => (
                 <TextField
                   {...params}
                   label={t('resource.metadata.tags')}
                   helperText={t('resource.add_tags')}
-                  variant="outlined"
+                  variant="filled"
                   fullWidth
                   onBlur={(event) => {
                     const value = event.target.value;

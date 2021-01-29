@@ -20,6 +20,7 @@ export enum Colors {
   Secondary = '#ff5555',
   Background = '#fff',
   Box = '#f5f5f5',
+  HoverTextFieldFilled = '#F5F5F5',
   Link = '#06f',
   Separator = '#3d4349',
   PrimaryText = 'rgba(0,0,0,0.87)',
@@ -35,9 +36,9 @@ export enum Colors {
   HeaderBackground = 'rgba(99,34,107, 0.15)',
   HeaderText = 'rgba(0,0,0, 1)',
   StepperSelected = 'rgba(99, 34, 107, 1)',
-  DescriptionPageGradientColor1 = 'rgba(66,127,140,0.10)',
-  DescriptionPageGradientColor2 = 'rgba(66,127,140,0.25)',
-  DescriptionPageGradientColor3 = 'rgba(66,127,140,0.35)',
+  DescriptionPageGradientColor1 = 'rgba(66, 127, 140,0.10)',
+  DescriptionPageGradientColor2 = 'rgba(66,127,140,0.20)',
+  DescriptionPageGradientColor3 = 'rgba(66,127,140,0.30)',
   ContributorsPageGradientColor1 = 'rgba(242,229,189,0.25)',
   ContributorsPageGradientColor2 = 'rgba(242,229,189,0.50)',
   ContentsPageGradientColor1 = 'rgba(42,191,164,0.10)',
@@ -45,6 +46,9 @@ export enum Colors {
   LicenseAccessPageGradientColor1 = 'rgba(68,242,193,0.10)',
   LicenseAccessPageGradientColor2 = 'rgba(68,242,193,0.25)',
   LicenseAccessPageGradientColor3 = 'rgba(68,242,193,0.50)',
+  ChipBackground = 'rgba(66, 127, 140, 1)',
+  ChipBackgroundFocus = 'hsl(191, 37%, 80%)',
+  ChipIconBackground = 'hsl(191, 37%, 60%)',
 }
 
 export enum StyleWidths {
@@ -226,6 +230,20 @@ export default createMuiTheme({
     MuiTextField: {
       root: {
         marginTop: '1rem',
+      },
+    },
+    MuiFilledInput: {
+      root: {
+        backgroundColor: Colors.Background,
+        '&:hover': {
+          backgroundColor: Colors.HoverTextFieldFilled,
+        },
+        '&$focused': {
+          backgroundColor: Colors.HoverTextFieldFilled,
+        },
+        '&$disabled': {
+          backgroundColor: Colors.Background,
+        },
       },
     },
     MuiStepLabel: {

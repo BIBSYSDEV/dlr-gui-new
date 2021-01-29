@@ -61,7 +61,7 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
                   select
                   required
                   label={t('resource.metadata.license')}
-                  variant="outlined"
+                  variant="filled"
                   value={field.value.identifier}
                   error={touched && !!error}
                   fullWidth

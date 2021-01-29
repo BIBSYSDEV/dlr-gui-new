@@ -158,7 +158,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                       {({ field, meta: { touched, error } }: FieldProps<string>) => (
                         <StyledTextField
                           {...field}
-                          variant="outlined"
+                          variant="filled"
                           select
                           required
                           label={t('type')}
@@ -192,7 +192,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                       {({ field, meta: { touched, error } }: FieldProps<string>) => (
                         <StyledTextField
                           {...field}
-                          variant="outlined"
+                          variant="filled"
                           label={t('name')}
                           error={touched && !!error}
                           helperText={<ErrorMessage name={field.name} />}

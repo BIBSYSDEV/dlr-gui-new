@@ -2,13 +2,14 @@ import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField } from '@material-ui/core';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
-import { StyledContentWrapper, StyledSchemaPart } from '../../../components/styled/Wrappers';
+import { StyledContentWrapper, StyledSchemaPart, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import TagsField from './TagsField';
 import { postResourceFeature } from '../../../api/resourceApi';
 import { ResourceFeatureNamesFullPath, Resource } from '../../../types/resource.types';
 import ErrorBanner from '../../../components/ErrorBanner';
 import ResourceTypeField from './ResourceTypeField';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
+import { Colors } from '../../../themes/mainTheme';
 
 interface DescriptionFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -35,13 +36,13 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
 
   return (
     <>
-      <StyledSchemaPart>
+      <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor1}>
         <StyledContentWrapper>
           <Field name={ResourceFeatureNamesFullPath.Title}>
             {({ field, meta: { touched, error } }: FieldProps) => (
               <TextField
                 {...field}
-                variant="outlined"
+                variant="filled"
                 fullWidth
                 label={t('resource.metadata.title')}
                 error={touched && !!error}
@@ -56,14 +57,14 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
           </Field>
         </StyledContentWrapper>
         {saveErrorFields.includes(ResourceFeatureNamesFullPath.Title) && <ErrorBanner />}
-      </StyledSchemaPart>
-      <StyledSchemaPart>
+      </StyledSchemaPartColored>
+      <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor1}>
         <StyledContentWrapper>
           <Field name={ResourceFeatureNamesFullPath.Description}>
             {({ field, meta: { error } }: FieldProps) => (
               <TextField
                 {...field}
-                variant="outlined"
+                variant="filled"
                 fullWidth
                 multiline
                 rows="4"
@@ -77,7 +78,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
           </Field>
         </StyledContentWrapper>
         {saveErrorFields.includes(ResourceFeatureNamesFullPath.Description) && <ErrorBanner />}
-      </StyledSchemaPart>
+      </StyledSchemaPartColored>
       <ResourceTypeField setAllChangesSaved={setAllChangesSaved} />
       <TagsField setAllChangesSaved={setAllChangesSaved} />
     </>
