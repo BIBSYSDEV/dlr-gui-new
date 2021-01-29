@@ -20,8 +20,14 @@ interface ChangeThumbnailButtonProps {
   pollNewThumbnail: (status: boolean) => void;
 }
 
-const StyledAddThumbnailButton = styled(Button)`
+const StyledWrapper = styled.div`
+  display: flex;
   margin-top: 1rem;
+`;
+
+const StyledCircularProgress = styled(CircularProgress)`
+  align-self: center;
+  margin-left: 1rem;
 `;
 
 const ResourceThumbnailUploaded = 'RESOURCE_THUMBNAIL_UPLOADED';
@@ -158,10 +164,9 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
   };
 
   return (
-    <>
-      {fileInputIsBusy && <CircularProgress />}
+    <StyledWrapper>
       {thumbnailUpdateError && <ErrorBanner />}
-      <StyledAddThumbnailButton
+      <Button
         variant="outlined"
         color="primary"
         disabled={fileInputIsBusy}
@@ -169,7 +174,8 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
           handleThumbnailClick(event);
         }}>
         {t('thumbnail.change_thumbnail')}
-      </StyledAddThumbnailButton>
+      </Button>
+      {fileInputIsBusy && <StyledCircularProgress size="1rem" aria-label={t('thumbnail.busy_changing')} />}
       <Popover
         open={showPopover}
         anchorEl={anchorEl}
@@ -248,7 +254,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
           },
         }}
       />
-    </>
+    </StyledWrapper>
   );
 };
 

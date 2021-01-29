@@ -227,6 +227,7 @@
     "unpublished_resources": "Upubliserte ressurser"
   },
   "thumbnail": {
+    "busy_changing": "Bytter ut miniatyrbilde",
     "change_thumbnail": "Bytt miniatyrbilde",
     "revert_thumbnail": "Slett opplastet og gå tilbake til foreslått miniatyrbilde",
     "thumbnail_options": "Miniatyrbilde valg",

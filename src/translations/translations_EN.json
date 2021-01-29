@@ -227,6 +227,7 @@
     "unpublished_resources": "Unpublished resources"
   },
   "thumbnail": {
+    "busy_changing": "Changing thumbnail",
     "change_thumbnail": "Change thumbnail",
     "revert_thumbnail": "Delete uploaded thumbnail and revert to suggested thumbnail",
     "thumbnail_options": "thumbnail options",
