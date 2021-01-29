@@ -16,22 +16,11 @@ interface LicenseAndAccessFieldsProps {
   licenses: License[];
 }
 
-interface ResourceWrapper {
-  resource: Resource;
-}
-
 const LicenceFieldName = `${FieldNames.LicensesBase}[0]`; //While we are dealing with only one license
 
 const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, licenses }) => {
   const { t } = useTranslation();
-  const {
-    values,
-    setFieldValue,
-    setFieldTouched,
-    resetForm,
-    setTouched,
-    touched,
-  } = useFormikContext<ResourceWrapper>();
+  const { values, setFieldValue, setFieldTouched, resetForm, setTouched, touched } = useFormikContext<Resource>();
   const [savingLicenseError, setSavingLicensesError] = useState(false);
 
   const saveField = async (event: any) => {
@@ -39,17 +28,17 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
     setAllChangesSaved(false);
     if (selectedLicense) {
       try {
-        await setResourceLicense(values.resource.identifier, selectedLicense.identifier);
+        await setResourceLicense(values.identifier, selectedLicense.identifier);
         setSavingLicensesError(false);
         setFieldValue(LicenceFieldName, selectedLicense);
-        if (values.resource.licenses?.length === 1) {
+        if (values.licenses?.length === 1) {
           if (
-            values.resource.licenses[0].identifier !== selectedLicense.identifier &&
-            values.resource.licenses[0].identifier.length > 0
+            values.licenses[0].identifier !== selectedLicense.identifier &&
+            values.licenses[0].identifier.length > 0
           ) {
-            await deleteResourceLicense(values.resource.identifier, values.resource.licenses[0].identifier);
+            await deleteResourceLicense(values.identifier, values.licenses[0].identifier);
           }
-          values.resource.licenses[0] = selectedLicense;
+          values.licenses[0] = selectedLicense;
           resetFormButKeepTouched(touched, resetForm, values, setTouched);
         }
       } catch (err) {
@@ -72,7 +61,7 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
                   select
                   required
                   label={t('resource.metadata.license')}
-                  variant="outlined"
+                  variant="filled"
                   value={field.value.identifier}
                   error={touched && !!error}
                   fullWidth
@@ -95,8 +84,8 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
             )}
           </Field>
         )}
-        {values.resource.licenses?.[0] && values.resource.licenses?.[0].identifier.length > 1 && (
-          <LicenseCard license={values.resource.licenses[0]} />
+        {values.licenses?.[0] && values.licenses?.[0].identifier.length > 1 && (
+          <LicenseCard license={values.licenses[0]} />
         )}
       </StyledContentWrapper>
     </StyledSchemaPartColored>

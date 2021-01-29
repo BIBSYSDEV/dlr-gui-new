@@ -11,7 +11,7 @@ import { updateContentTitle } from '../../../api/resourceApi';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import ErrorBanner from '../../../components/ErrorBanner';
-import { ResourceWrapper } from '../../../types/resource.types';
+import { Resource } from '../../../types/resource.types';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import Thumbnail from '../../../components/Thumbnail';
 import { Content } from '../../../types/content.types';
@@ -56,15 +56,15 @@ const FileFields: FC<FileFieldsProps> = ({
   newThumbnailIsReady,
 }) => {
   const { t } = useTranslation();
-  const { values, handleBlur, resetForm, setTouched, touched } = useFormikContext<ResourceWrapper>();
+  const { values, handleBlur, resetForm, setTouched, touched } = useFormikContext<Resource>();
   const [saveTitleError, setSaveTitleError] = useState(false);
   const [shouldPollNewThumbnail, setShouldPollNewThumbnail] = useState(false);
 
   const saveMainContentsFileName = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setAllChangesSaved(false);
     setSaveTitleError(false);
-    const contentId = values?.resource?.contents?.[0]?.identifier;
-    const resourceId = values?.resource?.identifier;
+    const contentId = values?.contents?.[0]?.identifier;
+    const resourceId = values?.identifier;
     if (resourceId && contentId) {
       try {
         await updateContentTitle(resourceId, contentId, event.target.value);
@@ -84,18 +84,17 @@ const FileFields: FC<FileFieldsProps> = ({
           <MainFileImageWrapper>
             <Thumbnail
               needsToStartToPoll={shouldPollNewThumbnail}
-              resourceIdentifier={values.resource.identifier}
+              resourceIdentifier={values.identifier}
               alt={t('resource.metadata.resource')}
             />
           </MainFileImageWrapper>
           <MainFileMetadata>
             <StyledFieldWrapper>
-              {values.resource.contents.findIndex((content) => content.features.dlr_content_master === 'true') > -1 &&
-                values.resource.contents[
-                  values.resource.contents.findIndex((content) => content.features.dlr_content_master === 'true')
-                ].features.dlr_content_type === 'file' && (
+              {values.contents.findIndex((content) => content.features.dlr_content_master === 'true') > -1 &&
+                values.contents[values.contents.findIndex((content) => content.features.dlr_content_master === 'true')]
+                  .features.dlr_content_type === 'file' && (
                   <Field
-                    name={`resource.contents[${values.resource.contents.findIndex(
+                    name={`contents[${values.contents.findIndex(
                       (content) => content.features.dlr_content_master === 'true'
                     )}].features.dlr_content_title`}>
                     {({ field, meta: { touched, error } }: FieldProps) => (

@@ -1,9 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Content } from '../types/content.types';
-import { Uppy } from '../types/file.types';
 import { useTranslation } from 'react-i18next';
 import { useFormikContext } from 'formik';
-import { ResourceWrapper } from '../types/resource.types';
+import { Resource } from '../types/resource.types';
 import { deleteResourceContent, getResourceContentEvent } from '../api/resourceApi';
 import { setContentAsDefaultThumbnail } from '../api/fileApi';
 import { CircularProgress, List, ListItem, ListItemText } from '@material-ui/core';
@@ -12,6 +11,7 @@ import Popover from '@material-ui/core/Popover';
 import { DashboardModal } from '@uppy/react';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
+import { Uppy } from '@uppy/core';
 
 interface ChangeThumbnailButtonProps {
   thumbnailUppy: Uppy;
@@ -39,7 +39,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
   pollNewThumbnail,
 }) => {
   const { t } = useTranslation();
-  const { values } = useFormikContext<ResourceWrapper>();
+  const { values } = useFormikContext<Resource>();
   const [fileInputIsBusy, setFileInputIsBusy] = useState(false);
   const [showThumbnailDashboardModal, setShowThumbnailDashboardModal] = useState(false);
   const [showPopover, setShowPopover] = useState(false);
@@ -76,19 +76,19 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
             );
             numberOfTries++;
           }
-          await setContentAsDefaultThumbnail(values.resource.identifier, newThumbnailContent.identifier);
+          await setContentAsDefaultThumbnail(values.identifier, newThumbnailContent.identifier);
           let tobeDeletedIdentifier = '';
-          for (let i = 0; i < values.resource.contents.length; i++) {
-            if (values.resource.contents[i].identifier === newThumbnailContent.identifier) {
-              values.resource.contents[i].features.dlr_thumbnail_default = 'true';
+          for (let i = 0; i < values.contents.length; i++) {
+            if (values.contents[i].identifier === newThumbnailContent.identifier) {
+              values.contents[i].features.dlr_thumbnail_default = 'true';
             } else if (
-              values.resource.contents[i].identifier !== newThumbnailContent.identifier &&
-              values.resource.contents[i].features.dlr_thumbnail_default === 'true' &&
-              values.resource.contents[i].features.dlr_content_master === 'false'
+              values.contents[i].identifier !== newThumbnailContent.identifier &&
+              values.contents[i].features.dlr_thumbnail_default === 'true' &&
+              values.contents[i].features.dlr_content_master === 'false'
             ) {
-              tobeDeletedIdentifier = values.resource.contents[i].identifier;
+              tobeDeletedIdentifier = values.contents[i].identifier;
             } else {
-              values.resource.contents[i].features.dlr_thumbnail_default = 'false';
+              values.contents[i].features.dlr_thumbnail_default = 'false';
             }
           }
 
@@ -97,10 +97,8 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
           pollNewThumbnail(false);
           setFileInputIsBusy(false);
           if (tobeDeletedIdentifier.length > 0) {
-            values.resource.contents = values.resource.contents.filter(
-              (content) => content.identifier !== tobeDeletedIdentifier
-            );
-            await deleteResourceContent(values.resource.identifier, tobeDeletedIdentifier);
+            values.contents = values.contents.filter((content) => content.identifier !== tobeDeletedIdentifier);
+            await deleteResourceContent(values.identifier, tobeDeletedIdentifier);
           }
         }
         setThumbnailUpdateError(false);
@@ -113,29 +111,27 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
     if (newThumbnailContent) {
       setNewThumbnailAPICallAndFormikChange();
     }
-  }, [newThumbnailContent, pollNewThumbnail, newThumbnailIsReady, values.resource]);
+  }, [newThumbnailContent, pollNewThumbnail, newThumbnailIsReady, values]);
 
   const returnToDefaultThumbnail = async () => {
     setFileInputIsBusy(true);
     try {
-      const masterContent = values.resource.contents.find((content) => content.features.dlr_content_master === 'true');
+      const masterContent = values.contents.find((content) => content.features.dlr_content_master === 'true');
       if (masterContent) {
-        await setContentAsDefaultThumbnail(values.resource.identifier, masterContent.identifier);
-        const previousThumbnailContent = values.resource.contents.find(
+        await setContentAsDefaultThumbnail(values.identifier, masterContent.identifier);
+        const previousThumbnailContent = values.contents.find(
           (content) =>
             content.features.dlr_thumbnail_default === 'true' && content.features.dlr_content_master === 'false'
         );
         if (previousThumbnailContent) {
-          await deleteResourceContent(values.resource.identifier, previousThumbnailContent.identifier);
-          values.resource.contents = values.resource.contents.filter(
+          await deleteResourceContent(values.identifier, previousThumbnailContent.identifier);
+          values.contents = values.contents.filter(
             (content) => content.identifier !== previousThumbnailContent.identifier
           );
         }
-        const masterIndex = values.resource.contents.findIndex(
-          (content) => content.features.dlr_content_master === 'true'
-        );
-        if (values.resource.contents[masterIndex]) {
-          values.resource.contents[masterIndex].features.dlr_thumbnail_default = 'true';
+        const masterIndex = values.contents.findIndex((content) => content.features.dlr_content_master === 'true');
+        if (values.contents[masterIndex]) {
+          values.contents[masterIndex].features.dlr_thumbnail_default = 'true';
         }
         pollNewThumbnail(true);
         await new Promise((r) => setTimeout(r, 2000));
@@ -152,7 +148,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
 
   const handleThumbnailClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const thumbnailIsMasterContent =
-      values.resource.contents.findIndex(
+      values.contents.findIndex(
         (content) => content.features.dlr_content_master === 'true' && content.features.dlr_thumbnail_default === 'true'
       ) > -1;
     if (thumbnailIsMasterContent) {

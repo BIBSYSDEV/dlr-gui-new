@@ -25,10 +25,6 @@ interface ResourceTypeFieldProps {
   setAllChangesSaved: (value: boolean) => void;
 }
 
-interface ResourceWrapper {
-  resource: Resource;
-}
-
 const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) => {
   const [savingResourceTypeError, setSavingResourceTypeError] = useState(false);
   const {
@@ -39,17 +35,17 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
     resetForm,
     setTouched,
     touched,
-  } = useFormikContext<ResourceWrapper>();
+  } = useFormikContext<Resource>();
   const { t } = useTranslation();
 
   const saveResourceType = async (event: any) => {
     if (event.target.value.length > 0) {
       setAllChangesSaved(false);
       try {
-        await postResourceFeature(values.resource.identifier, 'dlr_type', event.target.value);
+        await postResourceFeature(values.identifier, 'dlr_type', event.target.value);
         setFieldValue(ResourceFeatureNamesFullPath.Type, event.target.value);
         setSavingResourceTypeError(false);
-        values.resource.features.dlr_type = event.target.value;
+        values.features.dlr_type = event.target.value;
         resetFormButKeepTouched(touched, resetForm, values, setTouched);
       } catch (error) {
         setSavingResourceTypeError(true);
@@ -59,14 +55,14 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
     }
   };
   return (
-    <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor1}>
+    <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor2}>
       <StyledContentWrapper>
         <Field name={ResourceFeatureNamesFullPath.Type}>
           {({ field, meta: { error, touched } }: FieldProps) => (
             <>
               <TextField
                 {...field}
-                variant="outlined"
+                variant="filled"
                 select
                 required
                 error={touched && !!error}

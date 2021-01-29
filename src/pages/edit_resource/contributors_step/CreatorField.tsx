@@ -31,16 +31,13 @@ interface CreatorFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
 }
 
-interface ResourceWrapper {
-  resource: Resource;
-}
 enum ErrorIndex {
   NO_ERRORS = -1,
 }
 
 const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
-  const { values, handleBlur, resetForm, setTouched, touched } = useFormikContext<ResourceWrapper>();
+  const { values, handleBlur, resetForm, setTouched, touched } = useFormikContext<Resource>();
   const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
   const [updateCreatorError, setUpdateCreatorError] = useState(false);
   const [addCreatorError, setAddCreatorError] = useState(false);
@@ -49,7 +46,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
   const addCreator = async (arrayHelpers: FieldArrayRenderProps) => {
     setAllChangesSaved(false);
     try {
-      const postCreatorResponse = await postResourceCreator(values.resource.identifier);
+      const postCreatorResponse = await postResourceCreator(values.identifier);
       arrayHelpers.push({
         identifier: postCreatorResponse.data.identifier,
         features: {
@@ -73,7 +70,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
     try {
       const name = '' + event.target.name.split('.').pop();
       if (event.target.value.length > 0) {
-        await putResourceCreatorFeature(values.resource.identifier, creatorIdentifier, name, event.target.value);
+        await putResourceCreatorFeature(values.identifier, creatorIdentifier, name, event.target.value);
         setErrorIndex(ErrorIndex.NO_ERRORS);
         setUpdateCreatorError(false);
         resetFormButKeepTouched(touched, resetForm, values, setTouched);
@@ -94,7 +91,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
     setIsDeleting(true);
     setAllChangesSaved(false);
     try {
-      await deleteResourceCreator(values.resource.identifier, creatorIdentifier);
+      await deleteResourceCreator(values.identifier, creatorIdentifier);
       arrayHelpers.remove(creatorIndex);
       setUpdateCreatorError(false);
       setErrorIndex(ErrorIndex.NO_ERRORS);
@@ -108,7 +105,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
   };
 
   const sortCreatorArray = () => {
-    return values.resource.creators.sort((element1, element2) => {
+    return values.creators?.sort((element1, element2) => {
       if (element1.features.dlr_creator_order && element2.features.dlr_creator_order) {
         return element2.features.dlr_creator_order - element1.features.dlr_creator_order;
       } else {
@@ -127,13 +124,13 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
             <>
               {sortCreatorArray()?.map((creator, index) => {
                 return (
-                  <StyledFieldsWrapper key={creator.identifier}>
+                  <StyledFieldsWrapper key={index}>
                     <Field
                       name={`${FieldNames.CreatorsBase}[${index}].${FieldNames.Features}.${CreatorFeatureAttributes.Name}`}>
                       {({ field, meta: { touched, error } }: FieldProps) => (
                         <StyledTextField
                           {...field}
-                          variant="outlined"
+                          variant="filled"
                           label={t('common.name')}
                           error={touched && !!error}
                           helperText={<ErrorMessage name={field.name} />}
@@ -144,7 +141,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                         />
                       )}
                     </Field>
-                    {values.resource.creators?.length > 1 && !isDeleting && (
+                    {values.creators?.length > 1 && !isDeleting && (
                       <StyledDeleteButton
                         color="secondary"
                         startIcon={<DeleteIcon fontSize="large" />}

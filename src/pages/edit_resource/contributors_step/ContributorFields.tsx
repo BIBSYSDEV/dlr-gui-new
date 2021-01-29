@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MenuItem, TextField, Typography } from '@material-ui/core';
-import { Contributor, ContributorFeatureNames, FieldNames, ResourceWrapper } from '../../../types/resource.types';
+import { Contributor, ContributorFeatureNames, FieldNames, Resource } from '../../../types/resource.types';
 import { ErrorMessage, Field, FieldArray, FieldArrayRenderProps, FieldProps, useFormikContext } from 'formik';
 import Button from '@material-ui/core/Button';
 import { createContributor, deleteContributor, putContributorFeature } from '../../../api/resourceApi';
@@ -63,7 +63,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
     setFieldTouched,
     setTouched,
     touched,
-  } = useFormikContext<ResourceWrapper>();
+  } = useFormikContext<Resource>();
   const [addContributorError, setAddContributorError] = useState(false);
   const [updateContributorError, setUpdateContributorError] = useState(false);
   const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
@@ -78,7 +78,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
   const addContributor = async (arrayHelpers: FieldArrayRenderProps) => {
     setAllChangesSaved(false);
     try {
-      const contributorResponse = await createContributor(values.resource.identifier);
+      const contributorResponse = await createContributor(values.identifier);
       arrayHelpers.push({
         identifier: contributorResponse.data.identifier,
         features: {
@@ -104,15 +104,15 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
       setAllChangesSaved(false);
       const name = '' + event.target.name.split('.').pop();
       if (event.target.value.length > 0) {
-        await putContributorFeature(values.resource.identifier, contributorIdentifier, name, event.target.value);
+        await putContributorFeature(values.identifier, contributorIdentifier, name, event.target.value);
       }
       setUpdateContributorError(false);
       setErrorIndex(ErrorIndex.NO_ERRORS);
       if (
-        values.resource?.contributors[contributorIndex].identifier === contributorIdentifier &&
+        values?.contributors[contributorIndex].identifier === contributorIdentifier &&
         name === ContributorFeatureNames.Type
       ) {
-        values.resource.contributors[contributorIndex].features.dlr_contributor_type = event.target.value;
+        values.contributors[contributorIndex].features.dlr_contributor_type = event.target.value;
       }
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
     } catch (saveContributorError: any) {
@@ -130,7 +130,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
   ) => {
     try {
       setAllChangesSaved(false);
-      await deleteContributor(values.resource.identifier, contributorIdentifier);
+      await deleteContributor(values.identifier, contributorIdentifier);
       arrayHelpers.remove(contributorIndex);
       setUpdateContributorError(false);
       setErrorIndex(ErrorIndex.NO_ERRORS);
@@ -150,7 +150,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
           name={FieldNames.ContributorsBase}
           render={(arrayHelpers) => (
             <>
-              {values.resource.contributors?.map((contributor: Contributor, index: number) => {
+              {values.contributors?.map((contributor: Contributor, index: number) => {
                 return (
                   <StyledFieldsWrapper key={contributor.identifier}>
                     <Field
@@ -158,7 +158,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                       {({ field, meta: { touched, error } }: FieldProps<string>) => (
                         <StyledTextField
                           {...field}
-                          variant="outlined"
+                          variant="filled"
                           select
                           required
                           label={t('type')}
@@ -192,7 +192,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                       {({ field, meta: { touched, error } }: FieldProps<string>) => (
                         <StyledTextField
                           {...field}
-                          variant="outlined"
+                          variant="filled"
                           label={t('name')}
                           error={touched && !!error}
                           helperText={<ErrorMessage name={field.name} />}
