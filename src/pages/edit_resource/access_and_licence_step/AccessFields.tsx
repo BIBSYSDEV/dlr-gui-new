@@ -14,6 +14,10 @@ const StyledFieldWrapper = styled.div`
   max-width: ${StyleWidths.width1};
 `;
 
+const StyledPrivateAccessSubfields = styled.div`
+  margin-top: 2.5rem;
+`;
+
 interface AccessFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
 }
@@ -79,6 +83,11 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
               </>
             )}
           </Field>
+          {values.features.dlr_access === AccessTypes.private && (
+            <StyledPrivateAccessSubfields>
+              <Typography variant="subtitle1">*** Hvem som har tilgang ***</Typography>
+            </StyledPrivateAccessSubfields>
+          )}
         </StyledFieldWrapper>
       </StyledContentWrapper>
     </StyledSchemaPartColored>

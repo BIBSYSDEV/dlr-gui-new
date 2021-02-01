@@ -9,6 +9,7 @@ import { License } from '../types/license.types';
 import { Content } from '../types/content.types';
 import { FileApiPaths } from './fileApi';
 import { v4 as uuidv4 } from 'uuid';
+import { ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
 
 export const mockUser: User = {
   id: 'user123',
@@ -215,6 +216,23 @@ const mockCreatedResourceWithContents = {
   },
 };
 
+const mockResourceReadAccess: ResourceReadAccess[] = [
+  {
+    time: '2021-02-01T13:54:35.263Z',
+    subject: 'someUser@user.no',
+    object: 'resource-345',
+    features: { dlr_resource_app: 'learning', dlr_resource_title: 'This is a mocked generated title' },
+    profiles: [{ time: '2021-02-01T13:36:25.421Z', name: ResourceReadAccessNames.Person, ttlSeconds: 0 }],
+  },
+  {
+    time: '2021-02-01T13:54:35.263Z',
+    subject: 'unit',
+    object: 'resource-345',
+    features: { dlr_resource_app: 'learning', dlr_resource_title: 'This is a mocked generated title' },
+    profiles: [{ time: '2021-02-01T13:24:03.022Z', name: ResourceReadAccessNames.Institution, ttlSeconds: 0 }],
+  },
+];
+
 const mockToken = 'mockToken';
 
 const mockCreateUpload = { uploadId: 'asd', key: 'sfd' };
@@ -293,6 +311,20 @@ export const interceptRequestsOnMock = () => {
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources`)).reply(200, mockCreatedResourceWithContents);
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/access`)).reply(200);
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*`)).reply(202);
+
+  //RESOURCE SHARING
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*`))
+    .reply(200, mockResourceReadAccess);
+  mock
+    .onPost(new RegExp(`${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*/profiles/consumer`))
+    .reply(200);
+  mock
+    .onPost(new RegExp(`${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*/profiles/consumer`))
+    .reply(200);
+  mock
+    .onPost(new RegExp(`${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*/profiles/consumer/user`))
+    .reply(200);
 
   //DEFAULTS
   mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*`)).reply(200, mockCalculatedResource);

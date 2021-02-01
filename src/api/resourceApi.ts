@@ -5,6 +5,7 @@ import { AccessTypes, License } from '../types/license.types';
 import { Content } from '../types/content.types';
 import { authenticatedApiRequest } from './api';
 import { SearchResult } from '../types/search.types';
+import { ResourceReadAccess } from '../types/resourceReadAccess.types';
 
 export const searchResources = (query: string): Promise<AxiosResponse<SearchResult>> => {
   return authenticatedApiRequest({
@@ -255,5 +256,28 @@ export const putAccessType = (resourceIdentifier: string, accessType: AccessType
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/access`),
     method: 'PUT',
     data,
+  });
+};
+
+export const postCurrentUserInstitutionAccess = (resourceIdentifier: string) => {
+  return authenticatedApiRequest({
+    url: `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/${resourceIdentifier}/profiles/consumer`,
+    method: 'POST',
+  });
+};
+
+export const postAdditionalUserAccess = (resourceIdentifier: string, email: string) => {
+  const data = encodeURI(`user=${email}`);
+  return authenticatedApiRequest({
+    url: `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/${resourceIdentifier}/profiles/consumer/user`,
+    method: 'POST',
+    data,
+  });
+};
+
+export const getResourceReaders = (resourceIdentifier: string): Promise<AxiosResponse<ResourceReadAccess[]>> => {
+  return authenticatedApiRequest({
+    url: `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/${resourceIdentifier}`,
+    method: 'GET',
   });
 };
