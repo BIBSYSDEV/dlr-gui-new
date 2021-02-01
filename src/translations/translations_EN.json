@@ -193,7 +193,7 @@
       "creator": "Creator",
       "categories": "Categories",
       "description": "Description",
-      "filename": "File name",
+      "file_title": "File title",
       "license": "License",
       "link": "Link",
       "main_file": "Main file",

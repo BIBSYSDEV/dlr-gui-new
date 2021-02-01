@@ -2,13 +2,14 @@ import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField } from '@material-ui/core';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
-import { StyledContentWrapper, StyledSchemaPart } from '../../../components/styled/Wrappers';
+import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import TagsField from './TagsField';
 import { postResourceFeature } from '../../../api/resourceApi';
-import { ResourceFeatureNamesFullPath, ResourceWrapper } from '../../../types/resource.types';
+import { ResourceFeatureNamesFullPath, Resource } from '../../../types/resource.types';
 import ErrorBanner from '../../../components/ErrorBanner';
 import ResourceTypeField from './ResourceTypeField';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
+import { Colors } from '../../../themes/mainTheme';
 
 interface DescriptionFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -16,14 +17,14 @@ interface DescriptionFieldsProps {
 
 const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
-  const { values, handleBlur, resetForm, touched, setTouched } = useFormikContext<ResourceWrapper>();
+  const { values, handleBlur, resetForm, touched, setTouched } = useFormikContext<Resource>();
   const [saveErrorFields, setSaveErrorFields] = useState<string[]>([]);
 
   const saveField = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
     setAllChangesSaved(false);
     try {
       const name = '' + event.target.name.split('.').pop();
-      await postResourceFeature(values.resource.identifier, name, event.target.value);
+      await postResourceFeature(values.identifier, name, event.target.value);
       setAllChangesSaved(true);
       setSaveErrorFields([]);
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
@@ -35,13 +36,13 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
 
   return (
     <>
-      <StyledSchemaPart>
+      <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor1}>
         <StyledContentWrapper>
           <Field name={ResourceFeatureNamesFullPath.Title}>
             {({ field, meta: { touched, error } }: FieldProps) => (
               <TextField
                 {...field}
-                variant="outlined"
+                variant="filled"
                 fullWidth
                 label={t('resource.metadata.title')}
                 error={touched && !!error}
@@ -55,15 +56,15 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
             )}
           </Field>
         </StyledContentWrapper>
-        {saveErrorFields.includes(ResourceFeatureNamesFullPath.Title) && <ErrorBanner />}
-      </StyledSchemaPart>
-      <StyledSchemaPart>
+        {saveErrorFields.includes(ResourceFeatureNamesFullPath.Title) && <ErrorBanner userNeedsToBeLoggedIn={true} />}
+      </StyledSchemaPartColored>
+      <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor1}>
         <StyledContentWrapper>
           <Field name={ResourceFeatureNamesFullPath.Description}>
             {({ field, meta: { error } }: FieldProps) => (
               <TextField
                 {...field}
-                variant="outlined"
+                variant="filled"
                 fullWidth
                 multiline
                 rows="4"
@@ -76,8 +77,10 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
             )}
           </Field>
         </StyledContentWrapper>
-        {saveErrorFields.includes(ResourceFeatureNamesFullPath.Description) && <ErrorBanner />}
-      </StyledSchemaPart>
+        {saveErrorFields.includes(ResourceFeatureNamesFullPath.Description) && (
+          <ErrorBanner userNeedsToBeLoggedIn={true} />
+        )}
+      </StyledSchemaPartColored>
       <ResourceTypeField setAllChangesSaved={setAllChangesSaved} />
       <TagsField setAllChangesSaved={setAllChangesSaved} />
     </>

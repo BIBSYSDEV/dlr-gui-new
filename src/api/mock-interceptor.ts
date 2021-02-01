@@ -8,6 +8,7 @@ import { Contributor, Creator, Resource } from '../types/resource.types';
 import { License } from '../types/license.types';
 import { Content } from '../types/content.types';
 import { FileApiPaths } from './fileApi';
+import { v4 as uuidv4 } from 'uuid';
 
 export const mockUser: User = {
   id: 'user123',
@@ -22,6 +23,7 @@ const mockResource: Resource = {
   features: {
     dlr_title: 'This is a mocked title',
     dlr_content: 'http://www.test.com',
+    dlr_content_type: 'file',
     dlr_time_published: '2020-11-06T12:47:18.635Z',
     dlr_time_created: '2020-11-01T12:47:18.635Z',
     dlr_submitter_email: 'Test Testesen',
@@ -43,18 +45,23 @@ const mockResource: Resource = {
   contributors: [],
   licenses: [],
   creators: [],
+  containsOtherPeoplesWork: '',
+  usageClearedWithOwner: '',
 };
 
 const mockCalculatedResource: Resource = {
   features: {
     dlr_title: 'This is a mocked generated title',
     dlr_content: 'http://www.test.com',
+    dlr_content_type: 'link',
   },
   identifier: 'resource-345',
   licenses: [],
   contents: [],
   contributors: [],
   creators: [],
+  containsOtherPeoplesWork: '',
+  usageClearedWithOwner: '',
 };
 
 const mockMyResources: Resource[] = [
@@ -62,6 +69,7 @@ const mockMyResources: Resource[] = [
     features: {
       dlr_title: 'MockTitle (Published)',
       dlr_status_published: true,
+      dlr_content_type: 'link',
       dlr_content: 'some content',
     },
     identifier: '123',
@@ -69,9 +77,12 @@ const mockMyResources: Resource[] = [
     contents: [],
     contributors: [],
     creators: [],
+    containsOtherPeoplesWork: '',
+    usageClearedWithOwner: '',
   },
   {
     features: {
+      dlr_content_type: 'link',
       dlr_title: 'MockTitle (Unpublished)',
       dlr_status_published: false,
       dlr_content: 'some content',
@@ -81,10 +92,13 @@ const mockMyResources: Resource[] = [
     contents: [],
     contributors: [],
     creators: [],
+    containsOtherPeoplesWork: '',
+    usageClearedWithOwner: '',
   },
   {
     features: {
       dlr_title: 'AnotherMockTitle (Published)',
+      dlr_content_type: 'link',
       dlr_status_published: true,
       dlr_content: 'some content',
     },
@@ -93,6 +107,8 @@ const mockMyResources: Resource[] = [
     contents: [],
     contributors: [],
     creators: [],
+    containsOtherPeoplesWork: '',
+    usageClearedWithOwner: '',
   },
 ];
 
@@ -159,12 +175,15 @@ const mockCreators: Creator[] = [
   },
 ];
 
-const mockEmptyCreator: Creator = {
-  identifier: 'creator-3',
-  features: {
-    dlr_creator_identifier: 'creator-3',
-    dlr_creator_time_created: '2020-12-07T08:19:55.294Z',
-  },
+const createMockCreator = (): Creator => {
+  const generatedId = uuidv4();
+  return {
+    identifier: `creator-${generatedId}`,
+    features: {
+      dlr_creator_identifier: `creator-${generatedId}`,
+      dlr_creator_time_created: '2020-12-07T08:19:55.294Z',
+    },
+  };
 };
 
 const mockContent: Content[] = [
@@ -175,6 +194,15 @@ const mockContent: Content[] = [
       dlr_content_identifier: 'adfasdf',
       dlr_content_content_type: 'image',
       dlr_content_title: '',
+    },
+  },
+  {
+    identifier: '437829',
+    features: {
+      dlr_content: 'metadata_external.json',
+      dlr_content_identifier: 'adfasdf',
+      dlr_content_content_type: 'image',
+      dlr_content_title: 'metadata_external.json',
     },
   },
 ];
@@ -238,7 +266,7 @@ export const interceptRequestsOnMock = () => {
 
   //RESOURCE CREATORS
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators`)).reply(200, mockCreators);
-  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators`)).reply(202, mockEmptyCreator);
+  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators`)).reply(202, createMockCreator);
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*`)).reply(202, {});
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*`)).reply(202, {});
 
