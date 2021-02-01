@@ -307,7 +307,7 @@ const EditResourcePage: FC = () => {
   ) : isLoadingResource ? (
     <CircularProgress />
   ) : resourceInitError ? (
-    <ErrorBanner />
+    <ErrorBanner userNeedsToBeLoggedIn={true} />
   ) : formikInitResource ? (
     <ResourceForm resource={formikInitResource} uppy={mainFileHandler} resourceType={resourceType} />
   ) : null;

@@ -200,7 +200,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
             </Field>
           </StyledRadioBoxWrapper>
         )}
-        {savingError && <ErrorBanner />}
+        {savingError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
         {values.usageClearedWithOwner !== LicenseAgreementsOptions.YesOther &&
           values.usageClearedWithOwner !== '' &&
           values.containsOtherPeoplesWork && (

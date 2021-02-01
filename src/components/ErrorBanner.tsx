@@ -2,6 +2,8 @@ import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Typography } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import { RootState } from '../state/rootReducer';
 
 const StyledErrorDiv = styled.div`
   padding: 0.5rem;
@@ -10,11 +12,25 @@ const StyledErrorDiv = styled.div`
   margin-bottom: 0.5rem;
 `;
 
-const ErrorBanner: FC = () => {
+interface ErrorBannerProps {
+  userNeedsToBeLoggedIn?: boolean;
+}
+
+const ErrorBanner: FC<ErrorBannerProps> = ({ userNeedsToBeLoggedIn = false }) => {
   const { t } = useTranslation();
+  const user = useSelector((state: RootState) => state.user);
+
+  const getErrorMessage = () => {
+    if (userNeedsToBeLoggedIn && user.id.length === 0) {
+      return t('error.403_page');
+    } else {
+      return t('error.generic');
+    }
+  };
+
   return (
     <StyledErrorDiv>
-      <Typography>{t('error.generic')}</Typography>
+      <Typography>{getErrorMessage()}</Typography>
     </StyledErrorDiv>
   );
 };
