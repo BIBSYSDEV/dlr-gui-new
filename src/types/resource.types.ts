@@ -31,6 +31,7 @@ export const emptyResource: Resource = {
   features: {
     dlr_title: '',
     dlr_content: '',
+    dlr_content_type: '',
   },
   contents: [],
   contributors: [],
@@ -54,7 +55,7 @@ interface ResourceFeatures {
   dlr_access?: string;
   dlr_app?: string;
   dlr_content: string;
-  dlr_content_type?: string;
+  dlr_content_type: string;
   dlr_description?: string;
   dlr_identifier?: string;
   dlr_identifier_handle?: string;

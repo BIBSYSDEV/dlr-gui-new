@@ -36,7 +36,7 @@ const AppRoutes: FC = () => {
         {/*hack: uuidv4-key is forcing page refresh*/}
         <Route
           exact
-          path="/registration/:identifier"
+          path="/editresource/:identifier"
           render={(props) => <EditResourcePage id={user.id} {...props} key={uuidv4()} />}
         />
         <Route exact path="/forbidden" component={Forbidden} />
