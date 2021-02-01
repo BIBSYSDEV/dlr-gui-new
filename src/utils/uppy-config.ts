@@ -73,7 +73,7 @@ export const createThumbnailFileUppy = (
   Uppy<Uppy.StrictTypes>({
     autoProceed: true,
     allowMultipleUploads: true,
-    restrictions: { allowedFileTypes: ['.jpg', '.jpeg', 'gif', '.png'], maxNumberOfFiles: 1 },
+    restrictions: { allowedFileTypes: ['image/*'], maxNumberOfFiles: 1 },
   }).use(AwsS3Multipart, {
     abortMultipartUpload: async (_: UppyFile, { uploadId, key }: UppyArgs) => await abortMultipartUpload(uploadId, key),
     completeMultipartUpload: async (_: UppyFile, { uploadId, key, parts }: UppyCompleteArgs) =>
