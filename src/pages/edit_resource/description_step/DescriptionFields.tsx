@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField } from '@material-ui/core';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
-import { StyledContentWrapper, StyledSchemaPart, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
+import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import TagsField from './TagsField';
 import { postResourceFeature } from '../../../api/resourceApi';
 import { ResourceFeatureNamesFullPath, Resource } from '../../../types/resource.types';

@@ -23,6 +23,7 @@ const mockResource: Resource = {
   features: {
     dlr_title: 'This is a mocked title',
     dlr_content: 'http://www.test.com',
+    dlr_content_type: 'file',
     dlr_time_published: '2020-11-06T12:47:18.635Z',
     dlr_time_created: '2020-11-01T12:47:18.635Z',
     dlr_submitter_email: 'Test Testesen',
@@ -52,6 +53,7 @@ const mockCalculatedResource: Resource = {
   features: {
     dlr_title: 'This is a mocked generated title',
     dlr_content: 'http://www.test.com',
+    dlr_content_type: 'link',
   },
   identifier: 'resource-345',
   licenses: [],
@@ -67,6 +69,7 @@ const mockMyResources: Resource[] = [
     features: {
       dlr_title: 'MockTitle (Published)',
       dlr_status_published: true,
+      dlr_content_type: 'link',
       dlr_content: 'some content',
     },
     identifier: '123',
@@ -79,6 +82,7 @@ const mockMyResources: Resource[] = [
   },
   {
     features: {
+      dlr_content_type: 'link',
       dlr_title: 'MockTitle (Unpublished)',
       dlr_status_published: false,
       dlr_content: 'some content',
@@ -94,6 +98,7 @@ const mockMyResources: Resource[] = [
   {
     features: {
       dlr_title: 'AnotherMockTitle (Published)',
+      dlr_content_type: 'link',
       dlr_status_published: true,
       dlr_content: 'some content',
     },
@@ -189,6 +194,15 @@ const mockContent: Content[] = [
       dlr_content_identifier: 'adfasdf',
       dlr_content_content_type: 'image',
       dlr_content_title: '',
+    },
+  },
+  {
+    identifier: '437829',
+    features: {
+      dlr_content: 'metadata_external.json',
+      dlr_content_identifier: 'adfasdf',
+      dlr_content_content_type: 'image',
+      dlr_content_title: 'metadata_external.json',
     },
   },
 ];
