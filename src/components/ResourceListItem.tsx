@@ -5,11 +5,39 @@ import Thumbnail from './Thumbnail';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
-import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import Button from '@material-ui/core/Button';
 import ConfirmDeleteDialog from './ConfirmDeleteDialog.';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { Colors, StyleWidths } from '../themes/mainTheme';
+import { useHistory } from 'react-router-dom';
+import { OverridableComponent } from '@material-ui/core/OverridableComponent';
+
+const StyledListItem: any = styled(ListItem)`
+  justify-content: space-between;
+  margin-right: 2rem;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    display: block;
+    width: 100vw;
+  }
+`;
+
+const StyledDeleteButton = styled(Button)`
+  min-width: 8rem;
+  height: 2.25rem;
+  align-self: flex-start;
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    margin-left: 1.5rem;
+  }
+`;
+
+const StyledEditButton = styled(Button)`
+  min-width: 8rem;
+  height: 2.25rem;
+  align-self: flex-start;
+`;
+
+const StyledLinkButton: any = styled(Button)`
+  flex-grow: 1;
+`;
 
 const StyledListItemText = styled(ListItemText)`
   padding-left: 16px;
@@ -19,32 +47,7 @@ const StyledTypography: OverridableComponent<TypographyTypeMap<unknown, 'span'>>
   margin-top: 16px;
 `;
 
-const StyledListItem: any = styled(ListItem)`
-  justify-content: space-between;
-  width: 100%;
-  max-width: ${StyleWidths.width4};
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    display: block;
-    flex-direction: column;
-    width: 100vw;
-  }
-`;
-
-const StyledDeleteButton = styled(Button)`
-  min-width: 8rem;
-  align-self: flex-start;
-  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    margin-left: 1.5rem;
-  }
-  color: ${Colors.Warning};
-`;
-
-const StyledLinkButton: any = styled(Button)`
-  flex-grow: 1;
-`;
-
-interface ResourceListItemButtonProps {
+interface ResourceListItemProps {
   resource: Resource;
   showSubmitter?: boolean;
   showHandle?: boolean;
@@ -52,7 +55,7 @@ interface ResourceListItemButtonProps {
   handleDelete?: () => void;
 }
 
-const ResourceListItemButton: FC<ResourceListItemButtonProps> = ({
+const ResourceListItem: FC<ResourceListItemProps> = ({
   resource,
   showSubmitter = false,
   showHandle = false,
@@ -61,6 +64,11 @@ const ResourceListItemButton: FC<ResourceListItemButtonProps> = ({
 }) => {
   const { t } = useTranslation();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const history = useHistory();
+
+  const handleClickEditButton = () => {
+    history.push(`/editresource/${resource.identifier}`);
+  };
 
   return (
     <StyledListItem data-testid={`list-item-resources-${resource.identifier}`}>
@@ -92,6 +100,16 @@ const ResourceListItemButton: FC<ResourceListItemButtonProps> = ({
           }
         />
       </StyledLinkButton>
+      {!resource.features.dlr_status_published && (
+        <StyledEditButton
+          data-testid={`edit-resource-button-${resource.identifier}`}
+          color="primary"
+          size="large"
+          variant="outlined"
+          onClick={handleClickEditButton}>
+          {t('common.edit').toUpperCase()}
+        </StyledEditButton>
+      )}
       {handleDelete && (
         <>
           <StyledDeleteButton
@@ -99,8 +117,9 @@ const ResourceListItemButton: FC<ResourceListItemButtonProps> = ({
             color="secondary"
             startIcon={<DeleteIcon fontSize="large" />}
             size="large"
+            variant="outlined"
             onClick={() => setShowConfirmDialog(true)}>
-            {t('common.delete').toUpperCase()} {window.innerWidth < 600 && resource.features.dlr_title.toUpperCase()}
+            {t('common.delete').toUpperCase()}
           </StyledDeleteButton>
           <ConfirmDeleteDialog
             data-testid={`delete-my-resource-confirm-dialog-${resource.identifier}`}
@@ -121,4 +140,4 @@ const ResourceListItemButton: FC<ResourceListItemButtonProps> = ({
   );
 };
 
-export default ResourceListItemButton;
+export default ResourceListItem;
