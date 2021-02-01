@@ -12,6 +12,7 @@ import { DashboardModal } from '@uppy/react';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { Uppy } from '@uppy/core';
+import { uppyLocale } from '../utils/uppy-config';
 
 interface ChangeThumbnailButtonProps {
   thumbnailUppy: Uppy;
@@ -31,6 +32,7 @@ const StyledCircularProgress = styled(CircularProgress)`
 `;
 
 const ResourceThumbnailUploaded = 'RESOURCE_THUMBNAIL_UPLOADED';
+const MaxNumberOfAPICallsAttemps = 4;
 
 const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
   newThumbnailContent,
@@ -45,8 +47,13 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
   const [showPopover, setShowPopover] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const [thumbnailUpdateError, setThumbnailUpdateError] = useState(false);
+  const [showSpinnerWhileBusy, setShowSpinnerWhileBusy] = useState(false);
 
   useEffect(() => {
+    const countDownSpinner = async () => {
+      await new Promise((r) => setTimeout(r, 2000));
+      setShowSpinnerWhileBusy(false);
+    };
     if (thumbnailUppy) {
       thumbnailUppy.on('upload-success', () => {
         thumbnailUppy.reset();
@@ -54,6 +61,8 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
       });
       thumbnailUppy.on('file-added', () => {
         setFileInputIsBusy(true);
+        setShowSpinnerWhileBusy(true);
+        countDownSpinner();
       });
     }
   }, [thumbnailUppy]);
@@ -62,13 +71,14 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
     const setNewThumbnailAPICallAndFormikChange = async () => {
       try {
         setFileInputIsBusy(true);
+        setShowSpinnerWhileBusy(true);
         if (newThumbnailContent) {
           let responseEvents = await getResourceContentEvent(newThumbnailContent.identifier);
           let thumbnailReady = responseEvents.data.resource_events.find(
             (event) => event.event === ResourceThumbnailUploaded
           );
           let numberOfTries = 0;
-          while (!thumbnailReady && numberOfTries < 4) {
+          while (!thumbnailReady && numberOfTries < MaxNumberOfAPICallsAttemps) {
             await new Promise((r) => setTimeout(r, 1000));
             responseEvents = await getResourceContentEvent(newThumbnailContent.identifier);
             thumbnailReady = responseEvents.data.resource_events.find(
@@ -106,6 +116,8 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
         setThumbnailUpdateError(true);
       } finally {
         newThumbnailIsReady();
+        setFileInputIsBusy(false);
+        setShowSpinnerWhileBusy(false);
       }
     };
     if (newThumbnailContent) {
@@ -115,6 +127,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
 
   const returnToDefaultThumbnail = async () => {
     setFileInputIsBusy(true);
+    setShowSpinnerWhileBusy(true);
     try {
       const masterContent = values.contents.find((content) => content.features.dlr_content_master === 'true');
       if (masterContent) {
@@ -141,6 +154,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
       setThumbnailUpdateError(true);
     } finally {
       setFileInputIsBusy(false);
+      setShowSpinnerWhileBusy(false);
       pollNewThumbnail(false);
       newThumbnailIsReady();
     }
@@ -171,7 +185,9 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
         }}>
         {t('thumbnail.change_thumbnail')}
       </Button>
-      {fileInputIsBusy && <StyledCircularProgress size="1rem" aria-label={t('thumbnail.busy_changing')} />}
+      {fileInputIsBusy && showSpinnerWhileBusy && (
+        <StyledCircularProgress size="1rem" aria-label={t('thumbnail.busy_changing')} />
+      )}
       <Popover
         open={showPopover}
         anchorEl={anchorEl}
@@ -219,36 +235,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
           setShowThumbnailDashboardModal(false);
         }}
         uppy={thumbnailUppy}
-        locale={{
-          strings: {
-            dropPaste: `${t('resource.files_and_license.dashboard_component.drag_file')} %{browse}`,
-            browse: t('resource.files_and_license.dashboard_component.browse'),
-            dropHint: t('resource.files_and_license.drop_single_file_here'),
-            uploadXFiles: {
-              0: t('resource.files_and_license.dashboard_component.upload_one_file'),
-              1: t('resource.files_and_license.dashboard_component.upload_x_files'),
-            },
-            uploadXNewFiles: {
-              0: t('resource.files_and_license.dashboard_component.upload_one_more_file'),
-              1: t('resource.files_and_license.dashboard_component.upload_x_more_files'),
-            },
-            cancel: t('resource.files_and_license.status_bar_component.cancel'),
-            complete: t('resource.files_and_license.status_bar_component.complete'),
-            dataUploadedOfTotal: t('resource.files_and_license.status_bar_component.dataUploadedOfTotal'),
-            done: t('resource.files_and_license.status_bar_component.done'),
-            filesUploadedOfTotal: {
-              0: t('resource.files_and_license.status_bar_component.0'),
-              1: t('resource.files_and_license.status_bar_component.1'),
-            },
-            pause: t('resource.files_and_license.status_bar_component.pause'),
-            paused: t('resource.files_and_license.status_bar_component.paused'),
-            resume: t('resource.files_and_license.status_bar_component.resume'),
-            retry: t('resource.files_and_license.status_bar_component.retry'),
-            uploadFailed: t('resource.files_and_license.status_bar_component.uploadFailed'),
-            uploading: t('resource.files_and_license.status_bar_component.uploading'),
-            xTimeLeft: t('resource.files_and_license.status_bar_component.xTimeLeft'),
-          },
-        }}
+        locale={uppyLocale(t)}
       />
     </StyledWrapper>
   );

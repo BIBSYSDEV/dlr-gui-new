@@ -24,21 +24,23 @@ interface thumbnailProps {
 
 const pollingDelayMilliseconds = 500;
 
+const urlGenerator = (tempContentIdentifier: string | undefined, resourceIdentifier: string) => {
+  return tempContentIdentifier
+    ? `${API_URL}${
+        API_PATHS.guiBackendResourcesContentPath
+      }/${tempContentIdentifier}/thumbnails/default?t=${new Date().getTime().toString()}`
+    : `${API_URL}${
+        API_PATHS.guiBackendResourcesContentPath
+      }/${resourceIdentifier}/thumbnails/default?t=${new Date().getTime().toString()}`;
+};
+
 const Thumbnail: FC<thumbnailProps> = ({
   resourceIdentifier,
   alt,
-  tempContentIdentifier = false,
+  tempContentIdentifier,
   needsToStartToPoll = false,
 }) => {
-  const [url, setUrl] = useState(
-    tempContentIdentifier
-      ? `${API_URL}${
-          API_PATHS.guiBackendResourcesContentPath
-        }/${tempContentIdentifier}/thumbnails/default?t=${new Date().getTime().toString()}`
-      : `${API_URL}${
-          API_PATHS.guiBackendResourcesContentPath
-        }/${resourceIdentifier}/thumbnails/default?t=${new Date().getTime().toString()}`
-  );
+  const [url, setUrl] = useState(urlGenerator(tempContentIdentifier, resourceIdentifier));
   const addDefaultImage = (event: any) => {
     event.target.src = placeholderImage;
   };
@@ -52,27 +54,11 @@ const Thumbnail: FC<thumbnailProps> = ({
   };
 
   useInterval(() => {
-    setUrl(
-      tempContentIdentifier
-        ? `${API_URL}${
-            API_PATHS.guiBackendResourcesContentPath
-          }/${tempContentIdentifier}/thumbnails/default?t=${new Date().getTime().toString()}`
-        : `${API_URL}${
-            API_PATHS.guiBackendResourcesContentPath
-          }/${resourceIdentifier}/thumbnails/default?t=${new Date().getTime().toString()}`
-    );
+    setUrl(urlGenerator(tempContentIdentifier, resourceIdentifier));
   }, calculateShouldUseInterval());
 
   useEffect(() => {
-    setUrl(
-      tempContentIdentifier
-        ? `${API_URL}${
-            API_PATHS.guiBackendResourcesContentPath
-          }/${tempContentIdentifier}/thumbnails/default?t=${new Date().getTime().toString()}`
-        : `${API_URL}${
-            API_PATHS.guiBackendResourcesContentPath
-          }/${resourceIdentifier}/thumbnails/default?t=${new Date().getTime().toString()}`
-    );
+    setUrl(urlGenerator(tempContentIdentifier, resourceIdentifier));
   }, [tempContentIdentifier, resourceIdentifier]);
 
   return (

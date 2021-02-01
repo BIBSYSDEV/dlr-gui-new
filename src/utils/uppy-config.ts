@@ -11,6 +11,7 @@ import {
 } from '../api/fileApi';
 import { Resource } from '../types/resource.types';
 import { Content } from '../types/content.types';
+import { TFunction } from 'react-i18next';
 
 interface UppyArgs {
   uploadId: string;
@@ -86,3 +87,36 @@ export const createThumbnailFileUppy = (
     prepareUploadPart: async (_: UppyFile, { uploadId, key, body, number }: UppyPrepareArgs) =>
       await prepareUploadPart(uploadId, key, body, number),
   });
+
+export const uppyLocale = (t: TFunction<string>) => {
+  return {
+    strings: {
+      dropPaste: `${t('resource.files_and_license.dashboard_component.drag_file')} %{browse}`,
+      browse: t('resource.files_and_license.dashboard_component.browse'),
+      dropHint: t('resource.files_and_license.drop_single_file_here'),
+      uploadXFiles: {
+        0: t('resource.files_and_license.dashboard_component.upload_one_file'),
+        1: t('resource.files_and_license.dashboard_component.upload_x_files'),
+      },
+      uploadXNewFiles: {
+        0: t('resource.files_and_license.dashboard_component.upload_one_more_file'),
+        1: t('resource.files_and_license.dashboard_component.upload_x_more_files'),
+      },
+      cancel: t('resource.files_and_license.status_bar_component.cancel'),
+      complete: t('resource.files_and_license.status_bar_component.complete'),
+      dataUploadedOfTotal: t('resource.files_and_license.status_bar_component.dataUploadedOfTotal'),
+      done: t('resource.files_and_license.status_bar_component.done'),
+      filesUploadedOfTotal: {
+        0: t('resource.files_and_license.status_bar_component.0'),
+        1: t('resource.files_and_license.status_bar_component.1'),
+      },
+      pause: t('resource.files_and_license.status_bar_component.pause'),
+      paused: t('resource.files_and_license.status_bar_component.paused'),
+      resume: t('resource.files_and_license.status_bar_component.resume'),
+      retry: t('resource.files_and_license.status_bar_component.retry'),
+      uploadFailed: t('resource.files_and_license.status_bar_component.uploadFailed'),
+      uploading: t('resource.files_and_license.status_bar_component.uploading'),
+      xTimeLeft: t('resource.files_and_license.status_bar_component.xTimeLeft'),
+    },
+  };
+};

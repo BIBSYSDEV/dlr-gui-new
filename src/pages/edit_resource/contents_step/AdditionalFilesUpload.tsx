@@ -20,7 +20,6 @@ import ErrorBanner from '../../../components/ErrorBanner';
 interface AdditionalFilesUploadProps {
   additionalFileUploadUppy: Uppy;
   newContent: Content | undefined;
-  thumbnailUppy: Uppy;
 }
 interface UploadPerFile {
   percentage: number;

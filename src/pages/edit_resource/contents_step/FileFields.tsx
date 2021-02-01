@@ -16,6 +16,7 @@ import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import Thumbnail from '../../../components/Thumbnail';
 import { Content } from '../../../types/content.types';
 import ChangeThumbnailButton from '../../../components/ChangeThumbnailButton';
+import { uppyLocale } from '../../../utils/uppy-config';
 
 const StatusBarWrapper = styled.div`
   width: 100%;
@@ -102,7 +103,7 @@ const FileFields: FC<FileFieldsProps> = ({
                         {...field}
                         variant="filled"
                         fullWidth
-                        label={t('resource.metadata.filename')}
+                        label={t('resource.metadata.file_title')}
                         error={touched && !!error}
                         helperText={<ErrorMessage name={field.name} />}
                         onBlur={(event) => {
@@ -120,33 +121,7 @@ const FileFields: FC<FileFieldsProps> = ({
                 <StatusBarComponent
                   hideCancelButton
                   hidePauseResumeButton
-                  locale={{
-                    strings: {
-                      uploading: t('resource.files_and_license.status_bar_component.uploading'),
-                      complete: t('resource.files_and_license.status_bar_component.complete'),
-                      uploadFailed: t('resource.files_and_license.status_bar_component.uploadFailed'),
-                      paused: t('resource.files_and_license.status_bar_component.paused'),
-                      retry: t('resource.files_and_license.status_bar_component.retry'),
-                      cancel: t('resource.files_and_license.status_bar_component.cancel'),
-                      pause: t('resource.files_and_license.status_bar_component.pause'),
-                      resume: t('resource.files_and_license.status_bar_component.resume'),
-                      done: t('resource.files_and_license.status_bar_component.done'),
-                      filesUploadedOfTotal: {
-                        0: t('resource.files_and_license.status_bar_component.filesUploadedOfTotal.0'),
-                        1: t('resource.files_and_license.status_bar_component.filesUploadedOfTotal.1'),
-                      },
-                      dataUploadedOfTotal: t('resource.files_and_license.status_bar_component.dataUploadedOfTotal'),
-                      xTimeLeft: t('resource.files_and_license.status_bar_component.xTimeLeft'),
-                      uploadXFiles: {
-                        0: t('resource.files_and_license.status_bar_component.uploadXFiles.0'),
-                        1: t('resource.status_bar_component.uploadXFiles.1'),
-                      },
-                      uploadXNewFiles: {
-                        0: t('resource.files_and_license.status_bar_component.uploadXNewFiles.0'),
-                        1: t('resource.files_and_license.status_bar_component.uploadXNewFiles.1'),
-                      },
-                    },
-                  }}
+                  locale={uppyLocale(t)}
                   uppy={uppy}
                   hideAfterFinish={false}
                 />
