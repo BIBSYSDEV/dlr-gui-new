@@ -261,7 +261,7 @@ export const putAccessType = (resourceIdentifier: string, accessType: AccessType
 
 export const postCurrentUserInstitutionAccess = (resourceIdentifier: string) => {
   return authenticatedApiRequest({
-    url: `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/${resourceIdentifier}/profiles/consumer`,
+    url: `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/${resourceIdentifier}/profiles/consumer/institutions/current`,
     method: 'POST',
   });
 };

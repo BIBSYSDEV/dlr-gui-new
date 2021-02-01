@@ -1,8 +1,8 @@
 export interface ResourceReadAccess {
-  time: string;
+  time?: string;
   subject: string;
-  object: string;
-  features: ResourceReadAccessFeatures;
+  object?: string;
+  features?: ResourceReadAccessFeatures;
   profiles: ResourceReadAccessProfiles[];
 }
 
@@ -12,7 +12,7 @@ interface ResourceReadAccessFeatures {
 }
 
 interface ResourceReadAccessProfiles {
-  time: string;
+  time?: string;
   name: ResourceReadAccessNames;
   expiryTime?: string;
   ttlSeconds?: number;
