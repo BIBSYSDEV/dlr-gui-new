@@ -209,6 +209,22 @@ const mockCompleteUpload = {};
 
 const mockTags: string[] = ['mock tag1', 'mock tag2'];
 
+const mockResourceEvents = {
+  limit: '1000',
+  offset: '0',
+  total: 2,
+  resource_events: [
+    {
+      time: '2021-02-01T07:57:04.625Z',
+      event: 'RESOURCE_THUMBNAIL_UPLOADED',
+    },
+    {
+      time: '2021-02-01T07:57:04.617Z',
+      event: 'RESOURCE_THUMBNAIL_CREATED',
+    },
+  ],
+};
+
 // AXIOS INTERCEPTOR
 export const interceptRequestsOnMock = () => {
   const mock = new MockAdapter(Axios);
@@ -279,6 +295,11 @@ export const interceptRequestsOnMock = () => {
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources`)).reply(200, mockCreatedResourceWithContents);
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/access`)).reply(200);
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*`)).reply(202);
+
+  //RESOURCE CONTENT EVENTS:
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendResourcesEventsPath}/resources/.*/events`))
+    .reply(200, mockResourceEvents);
 
   //DEFAULTS
   mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*`)).reply(200, mockCalculatedResource);
