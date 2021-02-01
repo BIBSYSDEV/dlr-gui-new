@@ -3,7 +3,7 @@ import UppyDashboard from '../../../components/UppyDashboard';
 import { Uppy } from '../../../types/file.types';
 import { Content } from '../../../types/content.types';
 import { useFormikContext } from 'formik';
-import { ResourceWrapper } from '../../../types/resource.types';
+import { Resource } from '../../../types/resource.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import placeholderImage from '../../../resources/images/placeholder.png';
 import { UppyFile } from '@uppy/core';
@@ -101,11 +101,11 @@ const getIndividualProgress = (contents: Content[] | undefined, uppy: Uppy) => {
 
 const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileUploadUppy, newContent }) => {
   const { t } = useTranslation();
-  const { values } = useFormikContext<ResourceWrapper>();
+  const { values } = useFormikContext<Resource>();
   const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
-  const [contents, setContents] = useState<Content[]>(filterAdditionalFiles(values.resource.contents));
+  const [contents, setContents] = useState<Content[]>(filterAdditionalFiles(values.contents));
   const [uploadPercentageArray, setUploadPercentageArray] = useState<UploadPerFile[]>(
-    getIndividualProgress(values.resource.contents, additionalFileUploadUppy)
+    getIndividualProgress(values.contents, additionalFileUploadUppy)
   );
 
   useEffect(() => {
@@ -121,13 +121,13 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
   }, [additionalFileUploadUppy]);
 
   useEffect(() => {
-    if (newContent && !values.resource.contents?.find((content) => content.identifier === newContent.identifier)) {
-      if (values.resource.contents) {
-        values.resource.contents.push(newContent);
+    if (newContent && !values.contents?.find((content) => content.identifier === newContent.identifier)) {
+      if (values.contents) {
+        values.contents.push(newContent);
       } else {
-        values.resource.contents = [newContent];
+        values.contents = [newContent];
       }
-      setContents([...filterAdditionalFiles(values.resource.contents)]);
+      setContents([...filterAdditionalFiles(values.contents)]);
       setUploadPercentageArray((prevState) => {
         const newUploadPerFile: UploadPerFile = { filename: newContent.features.dlr_content ?? '', percentage: 0 };
         if (additionalFileUploadUppy) {
@@ -143,15 +143,13 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
         return [...prevState, newUploadPerFile];
       });
     }
-  }, [newContent, values.resource, additionalFileUploadUppy]);
+  }, [newContent, values, additionalFileUploadUppy]);
 
   const deleteContent = async (contentToBeDeleted: Content, index: number) => {
     try {
-      await deleteResourceContent(values.resource.identifier, contentToBeDeleted.identifier);
-      if (values.resource.contents) {
-        values.resource.contents = values.resource.contents.filter(
-          (content) => content.identifier !== contentToBeDeleted.identifier
-        );
+      await deleteResourceContent(values.identifier, contentToBeDeleted.identifier);
+      if (values.contents) {
+        values.contents = values.contents.filter((content) => content.identifier !== contentToBeDeleted.identifier);
         setContents((prevState) => prevState.filter((content) => content.identifier !== contentToBeDeleted.identifier));
         setErrorIndex(ErrorIndex.NO_ERRORS);
         const fileId = additionalFileUploadUppy
@@ -188,17 +186,21 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
           <LargeParagraphSpace key={content.identifier}>
             <UploadImageProgressCard>
               <StyledImg alt="resource" src={placeholderImage} />
-              <Typography align="right" variant="body1">
-                {displayContent(content.features.dlr_content)?.percentage} %
-              </Typography>
-              <LinearProgress
-                aria-label={`${t(
-                  'resource.files_and_license.additional_files.additional_files_progress_bar_aria_label'
-                )} ${content.features.dlr_content}`}
-                variant="determinate"
-                value={displayContent(content.features.dlr_content)?.percentage ?? 0}
-                role="progressbar"
-              />
+              {displayContent(content.features.dlr_content)?.percentage !== 0 && (
+                <>
+                  <Typography align="right" variant="body1">
+                    {displayContent(content.features.dlr_content)?.percentage} %
+                  </Typography>
+                  <LinearProgress
+                    aria-label={`${t(
+                      'resource.files_and_license.additional_files.additional_files_progress_bar_aria_label'
+                    )} ${content.features.dlr_content}`}
+                    variant="determinate"
+                    value={displayContent(content.features.dlr_content)?.percentage ?? 0}
+                    role="progressbar"
+                  />
+                </>
+              )}
             </UploadImageProgressCard>
             <SmallParagraphSpace>
               <Typography variant="body1">{content.features.dlr_content}</Typography>

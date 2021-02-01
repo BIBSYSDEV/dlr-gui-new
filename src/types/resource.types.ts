@@ -22,6 +22,8 @@ export interface Resource {
   accessWrite?: string[];
   contents: Content[];
   licenses: License[];
+  containsOtherPeoplesWork: string;
+  usageClearedWithOwner: string;
 }
 
 export const emptyResource: Resource = {
@@ -29,11 +31,14 @@ export const emptyResource: Resource = {
   features: {
     dlr_title: '',
     dlr_content: '',
+    dlr_content_type: '',
   },
   contents: [],
   contributors: [],
   creators: [],
   licenses: [],
+  containsOtherPeoplesWork: '',
+  usageClearedWithOwner: '',
 };
 
 enum ResourceType {
@@ -50,7 +55,7 @@ interface ResourceFeatures {
   dlr_access?: string;
   dlr_app?: string;
   dlr_content: string;
-  dlr_content_type?: string;
+  dlr_content_type: string;
   dlr_description?: string;
   dlr_identifier?: string;
   dlr_identifier_handle?: string;
@@ -161,10 +166,6 @@ export enum ResourceFeatureTypes {
   video = 'Video',
 }
 
-export interface ResourceWrapper {
-  resource: Resource;
-}
-
 export enum ResourceFeatureNames {
   Type = 'dlr_type',
   Title = 'dlr_title',
@@ -173,10 +174,10 @@ export enum ResourceFeatureNames {
 }
 
 export enum ResourceFeatureNamesFullPath {
-  Type = 'resource.features.dlr_type',
-  Title = 'resource.features.dlr_title',
-  Description = 'resource.features.dlr_description',
-  Access = 'resource.features.dlr_access',
+  Type = 'features.dlr_type',
+  Title = 'features.dlr_title',
+  Description = 'features.dlr_description',
+  Access = 'features.dlr_access',
 }
 
 export enum ContributorFeatureNames {
@@ -194,11 +195,11 @@ export enum ContentFeatureAttributes {
 
 export enum FieldNames {
   Features = 'features',
-  ContributorsBase = 'resource.contributors',
-  CreatorsBase = 'resource.creators',
-  ContentsBase = 'resource.contents',
-  LicensesBase = 'resource.licenses',
-  Tags = 'resource.tags',
+  ContributorsBase = 'contributors',
+  CreatorsBase = 'creators',
+  ContentsBase = 'contents',
+  LicensesBase = 'licenses',
+  Tags = 'tags',
 }
 
 export enum ResourceFormStep {
