@@ -157,6 +157,18 @@ interface AuthorityFeatures {
   dlr_authority_time_created?: string;
 }
 
+export interface ResourceEvent {
+  limit: number;
+  offset: number;
+  resource_events: Event[];
+  total: number;
+}
+
+export interface Event {
+  event: string;
+  time: string;
+}
+
 export enum ResourceFeatureTypes {
   audio = 'Audio',
   document = 'Document',

@@ -14,6 +14,9 @@ import ErrorBanner from '../../../components/ErrorBanner';
 import { Resource } from '../../../types/resource.types';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import Thumbnail from '../../../components/Thumbnail';
+import { Content } from '../../../types/content.types';
+import ChangeThumbnailButton from '../../../components/ChangeThumbnailButton';
+import { uppyLocale } from '../../../utils/uppy-config';
 
 const StatusBarWrapper = styled.div`
   width: 100%;
@@ -41,12 +44,22 @@ const MainFileMetadata = styled.div`
 interface FileFieldsProps {
   uppy: Uppy;
   setAllChangesSaved: Dispatch<SetStateAction<boolean>>;
+  thumbnailUppy: Uppy;
+  newThumbnailContent: Content | undefined;
+  newThumbnailIsReady: () => void;
 }
 
-const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
+const FileFields: FC<FileFieldsProps> = ({
+  uppy,
+  setAllChangesSaved,
+  thumbnailUppy,
+  newThumbnailContent,
+  newThumbnailIsReady,
+}) => {
   const { t } = useTranslation();
   const { values, handleBlur, resetForm, setTouched, touched } = useFormikContext<Resource>();
   const [saveTitleError, setSaveTitleError] = useState(false);
+  const [shouldPollNewThumbnail, setShouldPollNewThumbnail] = useState(false);
 
   const saveMainContentsFileName = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setAllChangesSaved(false);
@@ -70,27 +83,37 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
         <Typography variant="h3">{t('resource.metadata.main_file')}</Typography>
         <MainFileWrapper>
           <MainFileImageWrapper>
-            <Thumbnail resourceIdentifier={values.identifier} alt={t('resource.metadata.resource')} />
+            <Thumbnail
+              needsToStartToPoll={shouldPollNewThumbnail}
+              resourceOrContentIdentifier={values.identifier}
+              alt={t('resource.metadata.resource')}
+            />
           </MainFileImageWrapper>
           <MainFileMetadata>
             <StyledFieldWrapper>
-              {/*//TODO: First item in contents is not always main content*/}
-              <Field name="contents[0].features.dlr_content_title">
-                {({ field, meta: { touched, error } }: FieldProps) => (
-                  <TextField
-                    {...field}
-                    variant="filled"
-                    fullWidth
-                    label={t('resource.metadata.file_title')}
-                    error={touched && !!error}
-                    helperText={<ErrorMessage name={field.name} />}
-                    onBlur={(event) => {
-                      handleBlur(event);
-                      !error && saveMainContentsFileName(event);
-                    }}
-                  />
+              {values.contents.findIndex((content) => content.features.dlr_content_master === 'true') > -1 &&
+                values.contents[values.contents.findIndex((content) => content.features.dlr_content_master === 'true')]
+                  .features.dlr_content_type === 'file' && (
+                  <Field
+                    name={`contents[${values.contents.findIndex(
+                      (content) => content.features.dlr_content_master === 'true'
+                    )}].features.dlr_content_title`}>
+                    {({ field, meta: { touched, error } }: FieldProps) => (
+                      <TextField
+                        {...field}
+                        variant="filled"
+                        fullWidth
+                        label={t('resource.metadata.file_title')}
+                        error={touched && !!error}
+                        helperText={<ErrorMessage name={field.name} />}
+                        onBlur={(event) => {
+                          handleBlur(event);
+                          !error && saveMainContentsFileName(event);
+                        }}
+                      />
+                    )}
+                  </Field>
                 )}
-              </Field>
             </StyledFieldWrapper>
             {saveTitleError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
             <Paper>
@@ -98,33 +121,7 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
                 <StatusBarComponent
                   hideCancelButton
                   hidePauseResumeButton
-                  locale={{
-                    strings: {
-                      uploading: t('resource.files_and_license.status_bar_component.uploading'),
-                      complete: t('resource.files_and_license.status_bar_component.complete'),
-                      uploadFailed: t('resource.files_and_license.status_bar_component.uploadFailed'),
-                      paused: t('resource.files_and_license.status_bar_component.paused'),
-                      retry: t('resource.files_and_license.status_bar_component.retry'),
-                      cancel: t('resource.files_and_license.status_bar_component.cancel'),
-                      pause: t('resource.files_and_license.status_bar_component.pause'),
-                      resume: t('resource.files_and_license.status_bar_component.resume'),
-                      done: t('resource.files_and_license.status_bar_component.done'),
-                      filesUploadedOfTotal: {
-                        0: t('resource.files_and_license.status_bar_component.filesUploadedOfTotal.0'),
-                        1: t('resource.files_and_license.status_bar_component.filesUploadedOfTotal.1'),
-                      },
-                      dataUploadedOfTotal: t('resource.files_and_license.status_bar_component.dataUploadedOfTotal'),
-                      xTimeLeft: t('resource.files_and_license.status_bar_component.xTimeLeft'),
-                      uploadXFiles: {
-                        0: t('resource.files_and_license.status_bar_component.uploadXFiles.0'),
-                        1: t('resource.status_bar_component.uploadXFiles.1'),
-                      },
-                      uploadXNewFiles: {
-                        0: t('resource.files_and_license.status_bar_component.uploadXNewFiles.0'),
-                        1: t('resource.files_and_license.status_bar_component.uploadXNewFiles.1'),
-                      },
-                    },
-                  }}
+                  locale={uppyLocale(t)}
                   uppy={uppy}
                   hideAfterFinish={false}
                 />
@@ -132,6 +129,12 @@ const FileFields: FC<FileFieldsProps> = ({ uppy, setAllChangesSaved }) => {
             </Paper>
           </MainFileMetadata>
         </MainFileWrapper>
+        <ChangeThumbnailButton
+          thumbnailUppy={thumbnailUppy}
+          newThumbnailContent={newThumbnailContent}
+          newThumbnailIsReady={newThumbnailIsReady}
+          pollNewThumbnail={(status) => setShouldPollNewThumbnail(status)}
+        />
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );

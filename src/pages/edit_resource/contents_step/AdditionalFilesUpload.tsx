@@ -10,7 +10,7 @@ import { UppyFile } from '@uppy/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { Colors } from '../../../themes/mainTheme';
 import styled from 'styled-components';
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -61,9 +61,20 @@ const UploadImageProgressCard = styled.div`
   width: 100px;
 `;
 
+const LinkMetadataFilename = 'metadata_external.json';
+
 const filterAdditionalFiles = (contents: undefined | Content[]) => {
   if (contents) {
-    return contents.slice(1).filter((content) => content.features.dlr_content_type === 'file') ?? [];
+    return (
+      contents.filter((content) => {
+        return (
+          content.features.dlr_content_type === 'file' &&
+          content.features.dlr_content_master === 'false' &&
+          content.features.dlr_thumbnail_default === 'false' &&
+          content.features.dlr_content_title !== LinkMetadataFilename
+        );
+      }) ?? []
+    );
   } else {
     return [];
   }
@@ -81,17 +92,19 @@ const calculateFileSizeString = (size: number): string => {
   }
 };
 
-const getIndividualProgress = (contents: Content[] | undefined, uppy: Uppy) => {
+const getIndividualProgress = (contents: Content[] | undefined, additionalFilesUppy: Uppy) => {
   const additionalFilesContents = filterAdditionalFiles(contents);
   const uploadedFiles: UploadPerFile[] = [];
   for (let i = 0; i < additionalFilesContents.length; i++) {
     const filename = additionalFilesContents[i].features.dlr_content ?? '';
-    const uppyFile = uppy.getFiles().find((file) => file.meta.name === filename);
-    const percentage = uppyFile?.progress?.percentage ?? 0;
-    const fileType = uppyFile?.type ?? '';
+    const uppyAdditionalFile = additionalFilesUppy.getFiles().find((file) => file.meta.name === filename);
+    let percentage = 0;
+    let fileType = '';
     let fileSize = '0 MB';
-    if (uppyFile) {
-      fileSize = calculateFileSizeString(uppyFile.size);
+    if (uppyAdditionalFile) {
+      fileSize = calculateFileSizeString(uppyAdditionalFile.size);
+      percentage = uppyAdditionalFile.progress?.percentage ?? 0;
+      fileType = uppyAdditionalFile.type ?? '';
     }
     uploadedFiles.push({ filename, percentage, fileType, fileSize });
   }
