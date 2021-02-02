@@ -4,7 +4,6 @@ import { Chip, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import Card from '../../components/Card';
 import styled from 'styled-components';
-import { StyledContentWrapper } from '../../components/styled/Wrappers';
 import ContentPreview from '../../components/ContentPreview';
 import LicenseCard from '../../components/LicenseCard';
 import { API_PATHS, API_URL } from '../../utils/constants';
