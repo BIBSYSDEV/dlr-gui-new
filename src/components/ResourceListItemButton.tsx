@@ -66,7 +66,7 @@ const ResourceListItemButton: FC<ResourceListItemButtonProps> = ({
     <StyledListItem data-testid={`list-item-resources-${resource.identifier}`}>
       <StyledLinkButton component="a" href={`/resource/${resource.identifier}`}>
         <Thumbnail
-          resourceIdentifier={resource.identifier}
+          resourceOrContentIdentifier={resource.identifier}
           alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
         />
         <StyledListItemText

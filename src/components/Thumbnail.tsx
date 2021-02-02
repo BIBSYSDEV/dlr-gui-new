@@ -15,32 +15,22 @@ const StyledImage = styled.img`
   }
 `;
 
+const pollingDelayMilliseconds = 500;
+
+const urlGenerator = (resourceOrContentIdentifier: string) => {
+  return `${API_URL}${
+    API_PATHS.guiBackendResourcesContentPath
+  }/${resourceOrContentIdentifier}/thumbnails/default?t=${new Date().getTime().toString()}`;
+};
+
 interface thumbnailProps {
-  resourceIdentifier: string;
+  resourceOrContentIdentifier: string;
   alt: string;
-  tempContentIdentifier?: string;
   needsToStartToPoll?: boolean;
 }
 
-const pollingDelayMilliseconds = 500;
-
-const urlGenerator = (tempContentIdentifier: string | undefined, resourceIdentifier: string) => {
-  return tempContentIdentifier
-    ? `${API_URL}${
-        API_PATHS.guiBackendResourcesContentPath
-      }/${tempContentIdentifier}/thumbnails/default?t=${new Date().getTime().toString()}`
-    : `${API_URL}${
-        API_PATHS.guiBackendResourcesContentPath
-      }/${resourceIdentifier}/thumbnails/default?t=${new Date().getTime().toString()}`;
-};
-
-const Thumbnail: FC<thumbnailProps> = ({
-  resourceIdentifier,
-  alt,
-  tempContentIdentifier,
-  needsToStartToPoll = false,
-}) => {
-  const [url, setUrl] = useState(urlGenerator(tempContentIdentifier, resourceIdentifier));
+const Thumbnail: FC<thumbnailProps> = ({ resourceOrContentIdentifier, alt, needsToStartToPoll = false }) => {
+  const [url, setUrl] = useState(urlGenerator(resourceOrContentIdentifier));
   const addDefaultImage = (event: any) => {
     event.target.src = placeholderImage;
   };
@@ -54,12 +44,12 @@ const Thumbnail: FC<thumbnailProps> = ({
   };
 
   useInterval(() => {
-    setUrl(urlGenerator(tempContentIdentifier, resourceIdentifier));
+    setUrl(urlGenerator(resourceOrContentIdentifier));
   }, calculateShouldUseInterval());
 
   useEffect(() => {
-    setUrl(urlGenerator(tempContentIdentifier, resourceIdentifier));
-  }, [tempContentIdentifier, resourceIdentifier]);
+    setUrl(urlGenerator(resourceOrContentIdentifier));
+  }, [resourceOrContentIdentifier]);
 
   return (
     <>

@@ -85,7 +85,7 @@ const FileFields: FC<FileFieldsProps> = ({
           <MainFileImageWrapper>
             <Thumbnail
               needsToStartToPoll={shouldPollNewThumbnail}
-              resourceIdentifier={values.identifier}
+              resourceOrContentIdentifier={values.identifier}
               alt={t('resource.metadata.resource')}
             />
           </MainFileImageWrapper>

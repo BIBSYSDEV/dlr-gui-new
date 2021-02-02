@@ -36,7 +36,7 @@ const LinkFields = () => {
         <Typography variant="h3">{t('resource.metadata.link')}</Typography>
         <LinkWrapper>
           <ThumbnailWrapper>
-            <Thumbnail resourceIdentifier={values.identifier} alt={t('resource.metadata.resource')} />
+            <Thumbnail resourceOrContentIdentifier={values.identifier} alt={t('resource.metadata.resource')} />
           </ThumbnailWrapper>
           <LinkMetadata>
             <Typography variant="overline">{t('resource.metadata.link')}</Typography>
