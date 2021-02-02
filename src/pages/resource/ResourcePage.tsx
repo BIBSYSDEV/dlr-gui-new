@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { RouteProps, useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { Resource } from '../../types/resource.types';
 import {
   getResource,
@@ -10,9 +10,10 @@ import {
   getResourceLicenses,
   getResourceTags,
 } from '../../api/resourceApi';
-import { CircularProgress } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
 import ErrorBanner from '../../components/ErrorBanner';
 import ResourcePresentation from './ResourcePresentation';
+import { useTranslation } from 'react-i18next';
 
 const StyledPageContent = styled.div`
   display: flex;
@@ -21,15 +22,29 @@ const StyledPageContent = styled.div`
   align-items: center;
 `;
 
+const StyledResourceActionBar = styled.div`
+  display: flex;
+  width: ${({ theme }) => theme.breakpoints.values.md + 'px'};
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-top: 2rem;
+`;
+
 interface resourcePageParamTypes {
   identifier: string;
 }
 
-const ResourcePage: FC<RouteProps> = (props) => {
+const ResourcePage = () => {
   const { identifier } = useParams<resourcePageParamTypes>();
   const [resource, setResource] = useState<Resource>();
   const [isLoadingResource, setIsLoadingResource] = useState(false);
   const [resourceLoadingError, setResourceLoadingError] = useState(false);
+  const { t } = useTranslation();
+  const history = useHistory();
+
+  const handleClickEditButton = () => {
+    history.push(`/editresource/${resource?.identifier}`);
+  };
 
   useEffect(() => {
     const fetchData = async (identifier: string) => {
@@ -56,11 +71,23 @@ const ResourcePage: FC<RouteProps> = (props) => {
   }, [identifier]);
 
   return (
-    <StyledPageContent>
-      {isLoadingResource && <CircularProgress />}
-      {resourceLoadingError && <ErrorBanner />}
-      {resource && <ResourcePresentation resource={resource} />}
-    </StyledPageContent>
+    <>
+      <StyledResourceActionBar>
+        <Button
+          size="large"
+          variant="outlined"
+          color="primary"
+          data-testid={`edit-resource-button`}
+          onClick={handleClickEditButton}>
+          {t('common.edit').toUpperCase()}
+        </Button>
+      </StyledResourceActionBar>
+      <StyledPageContent>
+        {isLoadingResource && <CircularProgress />}
+        {resourceLoadingError && <ErrorBanner />}
+        {resource && <ResourcePresentation resource={resource} />}
+      </StyledPageContent>
+    </>
   );
 };
 
