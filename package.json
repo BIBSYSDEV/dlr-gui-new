@@ -10,7 +10,7 @@
     "@reduxjs/toolkit": "^1.5.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
-    "@testing-library/user-event": "^12.6.2",
+    "@testing-library/user-event": "^12.6.3",
     "@uppy/aws-s3-multipart": "^1.8.12",
     "@uppy/core": "^1.16.0",
     "@uppy/dashboard": "^1.16.0",
