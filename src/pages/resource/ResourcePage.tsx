@@ -42,7 +42,7 @@ interface resourcePageParamTypes {
 
 const ResourcePage = () => {
   const { identifier } = useParams<resourcePageParamTypes>();
-  const [resource, setResource] = useState<Resource>(emptyResource);
+  const [resource, setResource] = useState(emptyResource);
   const [isLoadingResource, setIsLoadingResource] = useState(true);
   const [resourceLoadingError, setResourceLoadingError] = useState(false);
   const { t } = useTranslation();
