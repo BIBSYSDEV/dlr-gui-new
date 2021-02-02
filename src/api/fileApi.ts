@@ -96,9 +96,7 @@ export const prepareUploadPart = async (uploadId: string, key: string, body: Blo
 export const setContentAsDefaultThumbnail = (resourceIdentifier: string, contentIdentifier: string) => {
   const data = encodeURI(`identifierContent=${contentIdentifier}`);
   return authenticatedApiRequest({
-    url: encodeURI(
-      `${API_PATHS.guiBackendResourcesContentPath}/resources/${resourceIdentifier}/contents/defaults/thumbnail`
-    ),
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contents/defaults/thumbnail`),
     method: 'POST',
     data,
   });
