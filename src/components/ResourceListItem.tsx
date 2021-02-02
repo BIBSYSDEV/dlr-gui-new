@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { Resource } from '../types/resource.types';
-import { ListItem, ListItemText, TypographyTypeMap } from '@material-ui/core';
+import { ListItemText, TypographyTypeMap } from '@material-ui/core';
 import Thumbnail from './Thumbnail';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
@@ -10,33 +10,38 @@ import ConfirmDeleteDialog from './ConfirmDeleteDialog.';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useHistory } from 'react-router-dom';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
+import { StyleWidths } from '../themes/mainTheme';
 
-const StyledListItem: any = styled(ListItem)`
-  justify-content: space-between;
-  margin-right: 2rem;
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+const StyledListItem: any = styled.li`
+  display: flex;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
     display: block;
-    width: 100vw;
   }
-`;
-
-const StyledDeleteButton = styled(Button)`
-  min-width: 8rem;
-  height: 2.25rem;
-  align-self: flex-start;
-  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    margin-left: 1.5rem;
-  }
-`;
-
-const StyledEditButton = styled(Button)`
-  min-width: 8rem;
-  height: 2.25rem;
-  align-self: flex-start;
 `;
 
 const StyledLinkButton: any = styled(Button)`
   flex-grow: 1;
+  justify-content: space-between;
+  margin-right: 2rem;
+  max-width: ${StyleWidths.width3};
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
+    display: block;
+    margin: 0 1rem;
+  }
+`;
+
+const StyledActions: any = styled.div`
+  display: flex;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
+    margin-bottom: 3rem;
+  }
+`;
+
+const StyledActionButton = styled(Button)`
+  min-width: 8rem;
+  height: 2.25rem;
+  align-self: flex-start;
+  margin-left: 1.5rem;
 `;
 
 const StyledListItemText = styled(ListItemText)`
@@ -100,42 +105,44 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
           }
         />
       </StyledLinkButton>
-      {!resource.features.dlr_status_published && (
-        <StyledEditButton
-          data-testid={`edit-resource-button-${resource.identifier}`}
-          color="primary"
-          size="large"
-          variant="outlined"
-          onClick={handleClickEditButton}>
-          {t('common.edit').toUpperCase()}
-        </StyledEditButton>
-      )}
-      {handleDelete && (
-        <>
-          <StyledDeleteButton
-            data-testid={`delete-my-resources-${resource.identifier}`}
-            color="secondary"
-            startIcon={<DeleteIcon fontSize="large" />}
+      <StyledActions>
+        {!resource.features.dlr_status_published && (
+          <StyledActionButton
+            data-testid={`edit-resource-button-${resource.identifier}`}
+            color="primary"
             size="large"
             variant="outlined"
-            onClick={() => setShowConfirmDialog(true)}>
-            {t('common.delete').toUpperCase()}
-          </StyledDeleteButton>
-          <ConfirmDeleteDialog
-            data-testid={`delete-my-resource-confirm-dialog-${resource.identifier}`}
-            resourceIdentifier={resource.identifier}
-            open={showConfirmDialog}
-            resourceTitle={resource.features.dlr_title}
-            confirmedDelete={() => {
-              setShowConfirmDialog(false);
-              handleDelete();
-            }}
-            abortDelete={() => {
-              setShowConfirmDialog(false);
-            }}
-          />
-        </>
-      )}
+            onClick={handleClickEditButton}>
+            {t('common.edit').toUpperCase()}
+          </StyledActionButton>
+        )}
+        {handleDelete && (
+          <>
+            <StyledActionButton
+              data-testid={`delete-my-resources-${resource.identifier}`}
+              color="secondary"
+              startIcon={<DeleteIcon fontSize="large" />}
+              size="large"
+              variant="outlined"
+              onClick={() => setShowConfirmDialog(true)}>
+              {t('common.delete').toUpperCase()}
+            </StyledActionButton>
+            <ConfirmDeleteDialog
+              data-testid={`delete-my-resource-confirm-dialog-${resource.identifier}`}
+              resourceIdentifier={resource.identifier}
+              open={showConfirmDialog}
+              resourceTitle={resource.features.dlr_title}
+              confirmedDelete={() => {
+                setShowConfirmDialog(false);
+                handleDelete();
+              }}
+              abortDelete={() => {
+                setShowConfirmDialog(false);
+              }}
+            />
+          </>
+        )}
+      </StyledActions>
     </StyledListItem>
   );
 };
