@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useHistory, useParams } from 'react-router-dom';
-import { Resource } from '../../types/resource.types';
+import { emptyResource, Resource } from '../../types/resource.types';
 import {
   getResource,
   getResourceContents,
@@ -14,17 +14,23 @@ import { Button, CircularProgress } from '@material-ui/core';
 import ErrorBanner from '../../components/ErrorBanner';
 import ResourcePresentation from './ResourcePresentation';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../state/rootReducer';
+import { StyleWidths } from '../../themes/mainTheme';
 
 const StyledPageContent = styled.div`
   display: flex;
+  flex-direction: column;
   justify-items: center;
   margin-top: 2rem;
   align-items: center;
+  width: 100%;
 `;
 
 const StyledResourceActionBar = styled.div`
   display: flex;
-  width: ${({ theme }) => theme.breakpoints.values.md + 'px'};
+  width: 100%;
+  max-width: ${StyleWidths.width4};
   flex-direction: row;
   justify-content: flex-end;
   margin-top: 2rem;
@@ -36,11 +42,12 @@ interface resourcePageParamTypes {
 
 const ResourcePage = () => {
   const { identifier } = useParams<resourcePageParamTypes>();
-  const [resource, setResource] = useState<Resource>();
-  const [isLoadingResource, setIsLoadingResource] = useState(false);
+  const [resource, setResource] = useState<Resource>(emptyResource);
+  const [isLoadingResource, setIsLoadingResource] = useState(true);
   const [resourceLoadingError, setResourceLoadingError] = useState(false);
   const { t } = useTranslation();
   const history = useHistory();
+  const user = useSelector((state: RootState) => state.user);
 
   const handleClickEditButton = () => {
     history.push(`/editresource/${resource?.identifier}`);
@@ -70,24 +77,29 @@ const ResourcePage = () => {
     }
   }, [identifier]);
 
-  return (
-    <>
-      <StyledResourceActionBar>
-        <Button
-          size="large"
-          variant="outlined"
-          color="primary"
-          data-testid={`edit-resource-button`}
-          onClick={handleClickEditButton}>
-          {t('common.edit').toUpperCase()}
-        </Button>
-      </StyledResourceActionBar>
-      <StyledPageContent>
-        {isLoadingResource && <CircularProgress />}
-        {resourceLoadingError && <ErrorBanner />}
-        {resource && <ResourcePresentation resource={resource} />}
-      </StyledPageContent>
-    </>
+  const isAuthor = () => resource.features.dlr_submitter_email === user.email;
+  const isUnpublished = () => !resource.features.dlr_status_published;
+
+  return isLoadingResource ? (
+    <CircularProgress />
+  ) : resourceLoadingError ? (
+    <ErrorBanner />
+  ) : (
+    <StyledPageContent>
+      {isUnpublished && isAuthor && (
+        <StyledResourceActionBar>
+          <Button
+            size="large"
+            variant="outlined"
+            color="primary"
+            data-testid={`edit-resource-button`}
+            onClick={handleClickEditButton}>
+            {t('common.edit').toUpperCase()}
+          </Button>
+        </StyledResourceActionBar>
+      )}
+      <ResourcePresentation resource={resource} />
+    </StyledPageContent>
   );
 };
 
