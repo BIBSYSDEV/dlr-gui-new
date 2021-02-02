@@ -114,7 +114,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                 </StyledMenuItem>
               </TextField>
               {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
-              {savingResourceTypeError && <ErrorBanner />}
+              {savingResourceTypeError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
             </>
           )}
         </Field>

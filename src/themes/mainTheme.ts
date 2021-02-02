@@ -1,5 +1,5 @@
 import { createMuiTheme } from '@material-ui/core';
-import { barlowRegular, LibreFranklinRegular, CrimsonTextRegular } from './fonts';
+import { barlowRegular, CrimsonTextRegular, LibreFranklinRegular } from './fonts';
 
 // Extend Palette type to allow custom colors
 declare module '@material-ui/core/styles/createPalette' {
@@ -17,7 +17,7 @@ declare module '@material-ui/core/styles/createPalette' {
 
 export enum Colors {
   Primary = 'rgba(99, 34, 107, 1)',
-  Secondary = '#ff5555',
+  Secondary = 'rgba(147, 10, 10, 1)',
   Background = '#fff',
   Box = '#f5f5f5',
   HoverTextFieldFilled = '#F5F5F5',

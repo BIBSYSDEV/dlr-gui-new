@@ -5,7 +5,7 @@ import { CircularProgress, List, ListItem, Typography } from '@material-ui/core'
 import { useTranslation } from 'react-i18next';
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
-import ResourceListItemButton from '../../components/ResourceListItemButton';
+import ResourceListItem from '../../components/ResourceListItem';
 import { PageHeader } from '../../components/PageHeader';
 
 const StyledPageContent = styled.div`
@@ -13,6 +13,8 @@ const StyledPageContent = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
+  max-width: ${({ theme }) => theme.breakpoints.values.lg + 'px'};
 `;
 
 const StyledListWrapper = styled.div`
@@ -21,7 +23,7 @@ const StyledListWrapper = styled.div`
 
 const ListMarginAlign = styled.div`
   display: block;
-  align-items: left;
+  align-items: start;
 `;
 
 const MyResources: FC = () => {
@@ -63,7 +65,7 @@ const MyResources: FC = () => {
 
   return (
     <StyledPageContent>
-      {loadingError && <ErrorBanner />}
+      {loadingError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
       {isLoadingMyResources && <CircularProgress />}
       <ListMarginAlign>
         <StyledListWrapper>
@@ -77,7 +79,7 @@ const MyResources: FC = () => {
             {!isLoadingMyResources &&
               resourcesUnpublished.length > 0 &&
               resourcesUnpublished.map((resource: Resource, index: number) => (
-                <ResourceListItemButton
+                <ResourceListItem
                   data-testid={`my-unpublished-resources-${resource.identifier}`}
                   key={index}
                   resource={resource}
@@ -102,7 +104,7 @@ const MyResources: FC = () => {
             {!isLoadingMyResources &&
               resourcesPublished.length > 0 &&
               resourcesPublished.map((resource: Resource, index: number) => (
-                <ResourceListItemButton
+                <ResourceListItem
                   data-testid={`my-published-resources-${resource.identifier}`}
                   key={index}
                   resource={resource}

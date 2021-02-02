@@ -79,7 +79,7 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
                   ))}
                 </TextField>
                 {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
-                {savingLicenseError && <ErrorBanner />}
+                {savingLicenseError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
               </>
             )}
           </Field>

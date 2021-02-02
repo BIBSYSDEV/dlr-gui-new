@@ -102,7 +102,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
             />
           )}
         </Field>
-        {saveError && <ErrorBanner />}
+        {saveError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );

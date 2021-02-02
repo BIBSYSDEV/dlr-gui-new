@@ -115,7 +115,7 @@ const FileFields: FC<FileFieldsProps> = ({
                   </Field>
                 )}
             </StyledFieldWrapper>
-            {saveTitleError && <ErrorBanner />}
+            {saveTitleError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
             <Paper>
               <StatusBarWrapper>
                 <StatusBarComponent
