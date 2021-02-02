@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useHistory, useParams } from 'react-router-dom';
-import { emptyResource, Resource } from '../../types/resource.types';
+import { emptyResource } from '../../types/resource.types';
 import {
   getResource,
   getResourceContents,
