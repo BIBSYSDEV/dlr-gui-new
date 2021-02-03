@@ -24,6 +24,10 @@ export interface Resource {
   licenses: License[];
   containsOtherPeoplesWork: string;
   usageClearedWithOwner: string;
+  resourceRestriction: string;
+  othersCanModifyAndBuildUpon: string;
+  othersCanModifyAndBuildUponSUB: string;
+  canBeUsedCommercially: string;
 }
 
 export const emptyResource: Resource = {
@@ -39,6 +43,10 @@ export const emptyResource: Resource = {
   licenses: [],
   containsOtherPeoplesWork: '',
   usageClearedWithOwner: '',
+  resourceRestriction: '',
+  othersCanModifyAndBuildUpon: '',
+  othersCanModifyAndBuildUponSUB: '',
+  canBeUsedCommercially: '',
 };
 
 enum ResourceType {

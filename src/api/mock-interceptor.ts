@@ -4,11 +4,12 @@ import { mockSearchResults } from '../utils/testfiles/search_results';
 import { licenses as allLicenses } from '../utils/testfiles/licenses';
 import { API_PATHS } from '../utils/constants';
 import { User } from '../types/user.types';
-import { Contributor, Creator, Resource } from '../types/resource.types';
+import { Contributor, Creator, emptyResource, Resource } from '../types/resource.types';
 import { License } from '../types/license.types';
 import { Content } from '../types/content.types';
 import { FileApiPaths } from './fileApi';
 import { v4 as uuidv4 } from 'uuid';
+import deepmerge from 'deepmerge';
 
 export const mockUser: User = {
   id: 'user123',
@@ -18,11 +19,12 @@ export const mockUser: User = {
   name: 'Test User',
 };
 
-const mockResource: Resource = {
+const mockResource: Resource = deepmerge(emptyResource, {
   identifier: 'resource-123',
   features: {
     dlr_title: 'This is a mocked title',
     dlr_content: 'http://www.test.com',
+    dlr_access: '',
     dlr_content_type: 'file',
     dlr_time_published: '2020-11-06T12:47:18.635Z',
     dlr_time_created: '2020-11-01T12:47:18.635Z',
@@ -47,25 +49,19 @@ const mockResource: Resource = {
   creators: [],
   containsOtherPeoplesWork: '',
   usageClearedWithOwner: '',
-};
+});
 
-const mockCalculatedResource: Resource = {
+const mockCalculatedResource: Resource = deepmerge(emptyResource, {
   features: {
     dlr_title: 'This is a mocked generated title',
     dlr_content: 'http://www.test.com',
     dlr_content_type: 'link',
   },
   identifier: 'resource-345',
-  licenses: [],
-  contents: [],
-  contributors: [],
-  creators: [],
-  containsOtherPeoplesWork: '',
-  usageClearedWithOwner: '',
-};
+});
 
 const mockMyResources: Resource[] = [
-  {
+  deepmerge(emptyResource, {
     features: {
       dlr_title: 'MockTitle (Published)',
       dlr_status_published: true,
@@ -73,14 +69,8 @@ const mockMyResources: Resource[] = [
       dlr_content: 'some content',
     },
     identifier: '123',
-    licenses: [],
-    contents: [],
-    contributors: [],
-    creators: [],
-    containsOtherPeoplesWork: '',
-    usageClearedWithOwner: '',
-  },
-  {
+  }),
+  deepmerge(emptyResource, {
     features: {
       dlr_content_type: 'link',
       dlr_title: 'MockTitle (Unpublished)',
@@ -88,14 +78,8 @@ const mockMyResources: Resource[] = [
       dlr_content: 'some content',
     },
     identifier: '456',
-    licenses: [],
-    contents: [],
-    contributors: [],
-    creators: [],
-    containsOtherPeoplesWork: '',
-    usageClearedWithOwner: '',
-  },
-  {
+  }),
+  deepmerge(emptyResource, {
     features: {
       dlr_title: 'AnotherMockTitle (Published)',
       dlr_content_type: 'link',
@@ -103,13 +87,7 @@ const mockMyResources: Resource[] = [
       dlr_content: 'some content',
     },
     identifier: '789',
-    licenses: [],
-    contents: [],
-    contributors: [],
-    creators: [],
-    containsOtherPeoplesWork: '',
-    usageClearedWithOwner: '',
-  },
+  }),
 ];
 
 const mockResourceContributors: Contributor[] = [
