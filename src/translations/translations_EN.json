@@ -1,8 +1,30 @@
 {
+  "access": {
+    "access_types": "Access types",
+    "add_access": "Add access",
+    "email_label": "Email(s) or Feide-id(s)",
+    "course": "Course",
+    "course_code": "Course code",
+    "everyone_at": "Everyone at",
+    "everyone_participating_in": "Everyone participating in",
+    "grant_access": "Grant access",
+    "hide_list": "Hide list",
+    "no_courses_available": "No courses available",
+    "season": {
+      "0": "Winter",
+      "1": "Spring",
+      "2": "Summer",
+      "3": "Autumn"
+    },
+    "single_persons": "Single persons",
+    "show_list": "Show list",
+    "who_got_access": "Who got access"
+  },
   "common": {
     "all_changes_saved": "All changes saved",
     "back": "Back",
     "cancel": "Cancel",
+    "clear": "Clear",
     "delete": "Delete",
     "finish": "Finish",
     "home": "Home",
