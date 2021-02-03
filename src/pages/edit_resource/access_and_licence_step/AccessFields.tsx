@@ -31,6 +31,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Popover from '@material-ui/core/Popover';
 import {
   deleteAdditionalUserConsumerAccess,
+  deleteCourseConsumerAccess,
   deleteCurrentUserInstitutionConsumerAccess,
   getCoursesForInstitution,
   getResourceReaders,
@@ -83,6 +84,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
   const [showPersonAccessField, setShowPersonAccessField] = useState(false);
   const [personAccessTextFieldValue, setPersonAccessFieldTextValue] = useState('');
   const [personAccessTextFieldValueError, setPersonAccessTextFieldValueError] = useState(false);
+  const [savePrivateAccessNetworkError, setSavePrivateAccessNetworkError] = useState(false);
   const [courses, setCourses] = useState<Course[]>([]);
   const [waitingForCourses, setWaitingForCourses] = useState(false);
   const [showCourseAutoComplete, setShowCourseAutocomplete] = useState(false);
@@ -115,8 +117,10 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
             await addInstitutionPrivateConsumerAccess();
           }
         }
+        setSavePrivateAccessNetworkError(false);
       } catch (error) {
         setSavingAccessTypeError(true);
+        setSavePrivateAccessNetworkError(true);
       } finally {
         setAllChangesSaved(true);
       }
@@ -133,17 +137,36 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
 
   const deleteAccess = async (access: ResourceReadAccess) => {
     try {
+      let deleteAPISuccessful = false;
       if (access.profiles[0].name === ResourceReadAccessNames.Institution) {
         setUpdatingPrivateAccessList(true);
         await deleteCurrentUserInstitutionConsumerAccess(values.identifier);
+        deleteAPISuccessful = true;
       } else if (access.profiles[0].name === ResourceReadAccessNames.Person) {
         setUpdatingPrivateAccessList(true);
         await deleteAdditionalUserConsumerAccess(values.identifier, access.subject);
-      } //TODO: handle delete course
-      setPrivateAccessList((prevState) => prevState.filter((accessState) => accessState !== access));
+        deleteAPISuccessful = true;
+      } else if (access.profiles[0].name === ResourceReadAccessNames.Course) {
+        setUpdatingPrivateAccessList(true);
+        const tempCourse = access.subject.split(':: ');
+        deleteAPISuccessful = true;
+        //tempCourse[0]: courseCode, tempCourse[1]: institution, tempCourse[2]: year, tempCourse[3]: Season
+        if (tempCourse[0]?.trim().length > 0 && tempCourse[2]?.trim().length > 0 && tempCourse[3]?.trim().length > 0) {
+          await deleteCourseConsumerAccess(
+            values.identifier,
+            tempCourse[0].trim(),
+            tempCourse[2].trim(),
+            tempCourse[3].trim()
+          );
+          deleteAPISuccessful = true;
+        }
+      }
+      if (deleteAPISuccessful) {
+        setPrivateAccessList((prevState) => prevState.filter((accessState) => accessState !== access));
+        setSavePrivateAccessNetworkError(false);
+      }
     } catch (error) {
-      //TODO: handle error
-      console.log(error);
+      setSavePrivateAccessNetworkError(true);
     } finally {
       setUpdatingPrivateAccessList(false);
     }
@@ -181,7 +204,10 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
       if (courses.length === 0) {
         const courseResponse = await getCoursesForInstitution(user.institution);
         setCourses(courseResponse.data);
+        setSavePrivateAccessNetworkError(false);
       }
+    } catch (error) {
+      setSavePrivateAccessNetworkError(true);
     } finally {
       setWaitingForCourses(false);
       setShowCourseAutocomplete(true);
@@ -212,9 +238,10 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
       }
       setPersonAccessFieldTextValue(errorList);
       setPersonAccessTextFieldValueError(errorOccurred);
+      setSavePrivateAccessNetworkError(false);
     } catch (error) {
-      //TODO: netverksfeil ikke input feil. Vis errorbanner i stedet.
       setPersonAccessTextFieldValueError(true);
+      setSavePrivateAccessNetworkError(true);
     } finally {
       setUpdatingPrivateAccessList(false);
     }
@@ -222,7 +249,6 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
 
   const addCourseConsumerAccess = async (course: Course | undefined | null) => {
     if (course) {
-      console.log('ready for this part');
       try {
         setPersonAccessTextFieldValueError(true);
         await postCourseConsumerAccess(values.identifier, course);
@@ -235,8 +261,10 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
             profiles: [{ name: ResourceReadAccessNames.Course }],
           },
         ]);
+        setSavePrivateAccessNetworkError(false);
       } catch (error) {
         console.log(error);
+        setSavePrivateAccessNetworkError(true);
       } finally {
         setUpdatingPrivateAccessList(false);
       }
@@ -292,6 +320,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
                 />
               ))}
               {updatingPrivateAccessList && <CircularProgress size="small" />}
+              {savePrivateAccessNetworkError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
               <StyledAddAccessButton
                 startIcon={<AddIcon />}
                 color="primary"
@@ -323,18 +352,25 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
                       ) > -1
                     }
                     onClick={() => {
+                      setSavePrivateAccessNetworkError(false);
                       addInstitutionPrivateConsumerAccess();
                       handlePopoverClose();
                     }}
                     button>
                     <ListItemText primary={`*** ALLE HOS *** ${user.institution}`} />
                   </ListItem>
-                  <ListItem button onClick={() => handlePopoverCourseClick()}>
+                  <ListItem
+                    button
+                    onClick={() => {
+                      setSavePrivateAccessNetworkError(false);
+                      handlePopoverCourseClick();
+                    }}>
                     <ListItemText primary={`*** EMNEKODE ***`} />
                   </ListItem>
                   <ListItem
                     button
                     onClick={() => {
+                      setSavePrivateAccessNetworkError(false);
                       setShowPersonAccessField(true);
                       handlePopoverClose();
                     }}>

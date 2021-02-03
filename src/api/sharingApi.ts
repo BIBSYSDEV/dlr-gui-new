@@ -1,7 +1,7 @@
 import { authenticatedApiRequest } from './api';
 import { API_PATHS } from '../utils/constants';
 import { AxiosResponse } from 'axios';
-import { Course, CourseSeason, ResourceReadAccess } from '../types/resourceReadAccess.types';
+import { Course, ResourceReadAccess } from '../types/resourceReadAccess.types';
 import moment from 'moment/moment';
 
 export const postCurrentUserInstitutionConsumerAccess = (resourceIdentifier: string) => {
@@ -28,11 +28,9 @@ export const postAdditionalUserConsumerAccess = (resourceIdentifier: string, ema
 };
 
 export const deleteAdditionalUserConsumerAccess = (resourceIdentifier: string, email: string) => {
-  const data = encodeURI(`user=${email}`);
   return authenticatedApiRequest({
-    url: `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/${resourceIdentifier}/profiles/consumer/user`,
+    url: `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/${resourceIdentifier}/profiles/consumer/users/${email}`,
     method: 'DELETE',
-    data,
   });
 };
 
@@ -54,9 +52,14 @@ export const postCourseConsumerAccess = (resourceIdentifier: string, course: Cou
   });
 };
 
-export const deleteCourseConsumerAccess = (resourceIdentifier: string, course: Course) => {
+export const deleteCourseConsumerAccess = (
+  resourceIdentifier: string,
+  courseCode: string,
+  courseYear: string,
+  courseSeasonNumber: string
+) => {
   return authenticatedApiRequest({
-    url: `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/${resourceIdentifier}/profiles/consumer/institutions/current/courses/subjects/codes/${course.features.code}/years/${course.features.year}/seasons/${course.features.season_nr}`,
+    url: `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/${resourceIdentifier}/profiles/consumer/institutions/current/courses/subjects/codes/${courseCode}/years/${courseYear}/seasons/${courseSeasonNumber}`,
     method: 'DELETE',
   });
 };
