@@ -9,7 +9,7 @@ import { License } from '../types/license.types';
 import { Content } from '../types/content.types';
 import { FileApiPaths } from './fileApi';
 import { v4 as uuidv4 } from 'uuid';
-import { ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
+import { Course, CourseSeason, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
 
 export const mockUser: User = {
   id: 'user123',
@@ -226,10 +226,33 @@ const mockResourceReadAccess: ResourceReadAccess[] = [
   },
   {
     time: '2021-02-01T13:54:35.263Z',
-    subject: 'unit',
+    subject: 'ntnu',
     object: 'resource-345',
     features: { dlr_resource_app: 'learning', dlr_resource_title: 'This is a mocked generated title' },
     profiles: [{ time: '2021-02-01T13:24:03.022Z', name: ResourceReadAccessNames.Institution, ttlSeconds: 0 }],
+  },
+];
+
+const mockCourses: Course[] = [
+  {
+    features: {
+      code: 'emne1',
+      title_nn: 'emne 1',
+      title_nb: 'emne 1',
+      title_en: 'subject 1',
+      season_nr: CourseSeason.Winter,
+      year: '2020',
+    },
+  },
+  {
+    features: {
+      code: 'test2',
+      title_nn: 'test 2',
+      title_nb: 'test 2',
+      title_en: 'test 2',
+      season_nr: CourseSeason.Winter,
+      year: '2020',
+    },
   },
 ];
 
@@ -317,14 +340,30 @@ export const interceptRequestsOnMock = () => {
     .onGet(new RegExp(`${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*`))
     .reply(200, mockResourceReadAccess);
   mock
-    .onPost(new RegExp(`${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*/profiles/consumer`))
+    .onPost(
+      new RegExp(
+        `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*/profiles/consumer/institutions/current`
+      )
+    )
     .reply(200);
   mock
-    .onPost(new RegExp(`${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*/profiles/consumer`))
-    .reply(200);
+    .onDelete(
+      new RegExp(
+        `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*/profiles/consumer/institutions/current`
+      )
+    )
+    .reply(202);
   mock
     .onPost(new RegExp(`${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*/profiles/consumer/user`))
     .reply(200);
+  mock
+    .onDelete(new RegExp(`${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*/profiles/consumer/user`))
+    .reply(202);
+
+  //Courses:
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendTeachingPath}/teachings/institutions/.*?after=.*`))
+    .reply(200, mockCourses);
 
   //DEFAULTS
   mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*`)).reply(200, mockCalculatedResource);

@@ -23,3 +23,23 @@ export enum ResourceReadAccessNames {
   Institution = 'dlr_shared_resource_consumer_institution',
   Course = 'dlr_shared_resource_consumer_course',
 }
+
+export interface Course {
+  features: CourseFeatures;
+}
+
+interface CourseFeatures {
+  code: string;
+  title_nn: string;
+  title_nb: string;
+  title_en: string;
+  year: string;
+  season_nr: CourseSeason;
+}
+
+export enum CourseSeason {
+  Winter = '0',
+  Spring = '1',
+  Summer = '2',
+  Autumn = '3',
+}

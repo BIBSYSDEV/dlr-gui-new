@@ -1,17 +1,45 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Colors, StyleWidths } from '../../../themes/mainTheme';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
-import { MenuItem, TextField, Typography } from '@material-ui/core';
+import {
+  Chip,
+  CircularProgress,
+  FilledInput,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  List,
+  ListItem,
+  ListItemText,
+  MenuItem,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import { Field, useFormikContext, FieldProps } from 'formik';
+import { Field, FieldProps, useFormikContext } from 'formik';
 import { Resource, ResourceFeatureNamesFullPath } from '../../../types/resource.types';
-import { getResourceReaders, postCurrentUserInstitutionAccess, putAccessType } from '../../../api/resourceApi';
+import { putAccessType } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { AccessTypes } from '../../../types/license.types';
 import styled from 'styled-components';
-import { ResourceReadAccess, ResourceReadAccessNames } from '../../../types/resourceReadAccess.types';
+import { Course, ResourceReadAccess, ResourceReadAccessNames } from '../../../types/resourceReadAccess.types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/rootReducer';
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
+import Popover from '@material-ui/core/Popover';
+import {
+  deleteAdditionalUserConsumerAccess,
+  deleteCurrentUserInstitutionConsumerAccess,
+  getCoursesForInstitution,
+  getResourceReaders,
+  postAdditionalUserConsumerAccess,
+  postCourseConsumerAccess,
+  postCurrentUserInstitutionConsumerAccess,
+} from '../../../api/sharingApi';
+import { Autocomplete } from '@material-ui/lab';
+import ClearIcon from '@material-ui/icons/Clear';
 
 const StyledFieldWrapper = styled.div`
   max-width: ${StyleWidths.width1};
@@ -21,11 +49,27 @@ const StyledPrivateAccessSubfields = styled.div`
   margin-top: 2.5rem;
 `;
 
+const StyledChip = styled(Chip)`
+  && {
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+`;
+
+const StyledAddAccessButton = styled(Button)`
+  margin-top: 1rem;
+`;
+
+const StyledFormControl = styled(FormControl)`
+  margin-top: 1rem;
+`;
+
+const accessTypeArray = [AccessTypes.open, AccessTypes.private];
+
 interface AccessFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
 }
-
-const accessTypeArray = [AccessTypes.open, AccessTypes.private];
 
 const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
@@ -33,6 +77,29 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
   const { values, setFieldTouched, setFieldValue, handleChange, resetForm } = useFormikContext<Resource>();
   const [savingAccessTypeError, setSavingAccessTypeError] = useState(false);
   const [privateAccessList, setPrivateAccessList] = useState<ResourceReadAccess[]>([]);
+  const [updatingPrivateAccessList, setUpdatingPrivateAccessList] = useState(false);
+  const [showAddAccessPopover, setShowAddAccessPopover] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [showPersonAccessField, setShowPersonAccessField] = useState(false);
+  const [personAccessTextFieldValue, setPersonAccessFieldTextValue] = useState('');
+  const [personAccessTextFieldValueError, setPersonAccessTextFieldValueError] = useState(false);
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [waitingForCourses, setWaitingForCourses] = useState(false);
+  const [showCourseAutoComplete, setShowCourseAutocomplete] = useState(false);
+  const [courseAutocompleteValue, setCourseAutocompleteValue] = useState<Course | null>();
+
+  const addInstitutionPrivateConsumerAccess = async () => {
+    await postCurrentUserInstitutionConsumerAccess(values.identifier);
+    if (privateAccessList.findIndex((privateAccess) => privateAccess.subject === user.institution) === -1) {
+      setPrivateAccessList((prevState) => [
+        ...prevState,
+        {
+          subject: user.institution,
+          profiles: [{ name: ResourceReadAccessNames.Institution }],
+        },
+      ]);
+    }
+  };
 
   const saveResourceAccessType = async (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (event.target.value.length > 0) {
@@ -45,21 +112,11 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
           values.features.dlr_access = event.target.value;
           resetForm({ values });
           if (event.target.value === AccessTypes.private) {
-            await postCurrentUserInstitutionAccess(values.identifier);
-            if (privateAccessList.findIndex((privateAccess) => privateAccess.subject === user.institution) === -1) {
-              setPrivateAccessList((prevState) => [
-                ...prevState,
-                {
-                  subject: user.institution,
-                  profiles: [{ name: ResourceReadAccessNames.Institution }],
-                },
-              ]);
-            }
+            await addInstitutionPrivateConsumerAccess();
           }
         }
       } catch (error) {
         setSavingAccessTypeError(true);
-        console.log(error);
       } finally {
         setAllChangesSaved(true);
       }
@@ -73,6 +130,118 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
     };
     getPrivateAccessList();
   }, [values.identifier]);
+
+  const deleteAccess = async (access: ResourceReadAccess) => {
+    try {
+      if (access.profiles[0].name === ResourceReadAccessNames.Institution) {
+        setUpdatingPrivateAccessList(true);
+        await deleteCurrentUserInstitutionConsumerAccess(values.identifier);
+      } else if (access.profiles[0].name === ResourceReadAccessNames.Person) {
+        setUpdatingPrivateAccessList(true);
+        await deleteAdditionalUserConsumerAccess(values.identifier, access.subject);
+      } //TODO: handle delete course
+      setPrivateAccessList((prevState) => prevState.filter((accessState) => accessState !== access));
+    } catch (error) {
+      //TODO: handle error
+      console.log(error);
+    } finally {
+      setUpdatingPrivateAccessList(false);
+    }
+  };
+
+  const generateChipLabel = (access: ResourceReadAccess): string => {
+    if (access.profiles[0].name === ResourceReadAccessNames.Person) {
+      return access.subject;
+    } else if (access.profiles[0].name === ResourceReadAccessNames.Institution) {
+      return `*** alle hos *** ${access.subject}`; //TODO: lag translation
+    } else {
+      const courseTemp = access.subject.split(' :: ');
+      if (courseTemp[3]) {
+        courseTemp[3] = t(`course.season.${courseTemp[3].trim()}`);
+      }
+      return `*** alle som deltar på *** ${courseTemp.join(' - ')}`; //TODO: lag translation
+    }
+  };
+
+  const handlePopoverClose = () => {
+    setShowAddAccessPopover(false);
+    setAnchorEl(null);
+  };
+
+  const handleAddAccessButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setShowAddAccessPopover(true);
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverCourseClick = async () => {
+    setShowAddAccessPopover(false);
+    setAnchorEl(null);
+    setWaitingForCourses(true);
+    try {
+      if (courses.length === 0) {
+        const courseResponse = await getCoursesForInstitution(user.institution);
+        setCourses(courseResponse.data);
+      }
+    } finally {
+      setWaitingForCourses(false);
+      setShowCourseAutocomplete(true);
+    }
+  };
+
+  const savePersonConsumerAccess = async () => {
+    const emailRegex = /(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
+    const accessUsers = personAccessTextFieldValue.split(/[,;\s]/g);
+    let errorOccurred = false;
+    let errorList = '';
+    try {
+      for (let i = 0; i < accessUsers.length; i++) {
+        if (accessUsers[i].length > 0 && !emailRegex.test(accessUsers[i])) {
+          errorOccurred = true;
+          errorList += ' ' + accessUsers[i];
+        } else if (
+          !privateAccessList.find((access) => access.subject === accessUsers[i]) &&
+          accessUsers[i].length > 3
+        ) {
+          setUpdatingPrivateAccessList(true);
+          await postAdditionalUserConsumerAccess(values.identifier, accessUsers[i]);
+          setPrivateAccessList((prevState) => [
+            ...prevState,
+            { subject: accessUsers[i], profiles: [{ name: ResourceReadAccessNames.Person }] },
+          ]);
+        }
+      }
+      setPersonAccessFieldTextValue(errorList);
+      setPersonAccessTextFieldValueError(errorOccurred);
+    } catch (error) {
+      //TODO: netverksfeil ikke input feil. Vis errorbanner i stedet.
+      setPersonAccessTextFieldValueError(true);
+    } finally {
+      setUpdatingPrivateAccessList(false);
+    }
+  };
+
+  const addCourseConsumerAccess = async (course: Course | undefined | null) => {
+    if (course) {
+      console.log('ready for this part');
+      try {
+        setPersonAccessTextFieldValueError(true);
+        await postCourseConsumerAccess(values.identifier, course);
+        setPrivateAccessList((prevState) => [
+          ...prevState,
+          {
+            subject: `${course.features.code} :: ${user.institution.toLowerCase()} :: ${course.features.year} :: ${
+              course.features.season_nr
+            }`,
+            profiles: [{ name: ResourceReadAccessNames.Course }],
+          },
+        ]);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setUpdatingPrivateAccessList(false);
+      }
+    }
+  };
 
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor2}>
@@ -112,9 +281,143 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
           {values.features.dlr_access === AccessTypes.private && (
             <StyledPrivateAccessSubfields>
               <Typography variant="subtitle1">*** Hvem som har tilgang ***</Typography>
-              {privateAccessList.map((access) => (
-                <Typography> {access.subject}</Typography>
+              {privateAccessList.map((access, index) => (
+                <StyledChip
+                  key={index}
+                  label={generateChipLabel(access)}
+                  variant="outlined"
+                  onDelete={() => {
+                    deleteAccess(access);
+                  }}
+                />
               ))}
+              {updatingPrivateAccessList && <CircularProgress size="small" />}
+              <StyledAddAccessButton
+                startIcon={<AddIcon />}
+                color="primary"
+                variant="outlined"
+                onClick={(event) => {
+                  setShowPersonAccessField(false);
+                  setShowCourseAutocomplete(false);
+                  handleAddAccessButtonClick(event);
+                }}>
+                ***LEGG TIL TILGANG
+              </StyledAddAccessButton>
+              <Popover
+                open={showAddAccessPopover}
+                anchorEl={anchorEl}
+                onClose={handlePopoverClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}>
+                <List aria-label="tilgangstyper">
+                  <ListItem
+                    disabled={
+                      privateAccessList.findIndex(
+                        (access) => access.profiles[0].name === ResourceReadAccessNames.Institution
+                      ) > -1
+                    }
+                    onClick={() => {
+                      addInstitutionPrivateConsumerAccess();
+                      handlePopoverClose();
+                    }}
+                    button>
+                    <ListItemText primary={`*** ALLE HOS *** ${user.institution}`} />
+                  </ListItem>
+                  <ListItem button onClick={() => handlePopoverCourseClick()}>
+                    <ListItemText primary={`*** EMNEKODE ***`} />
+                  </ListItem>
+                  <ListItem
+                    button
+                    onClick={() => {
+                      setShowPersonAccessField(true);
+                      handlePopoverClose();
+                    }}>
+                    <ListItemText primary={`*** ENKELTPERSON ***`} />
+                  </ListItem>
+                </List>
+              </Popover>
+              {showPersonAccessField && (
+                <>
+                  <StyledFormControl variant="filled" fullWidth>
+                    <InputLabel htmlFor="feide-id-input">{`***Epost eller feide-id`}</InputLabel>
+                    <FilledInput
+                      id="feide-id-input"
+                      value={personAccessTextFieldValue}
+                      multiline
+                      fullWidth
+                      error={personAccessTextFieldValueError}
+                      onChange={(event) => setPersonAccessFieldTextValue(event.target.value)}
+                      onKeyPress={(event) => {
+                        if (event.key === 'Enter') {
+                          savePersonConsumerAccess();
+                        }
+                      }}
+                      endAdornment={
+                        personAccessTextFieldValue.length > 0 ? (
+                          <InputAdornment position="end">
+                            <IconButton
+                              size="small"
+                              aria-label="*** clear input ***"
+                              title={`***avbryt***`}
+                              onClick={() => {
+                                setPersonAccessTextFieldValueError(false);
+                                setPersonAccessFieldTextValue('');
+                              }}>
+                              <ClearIcon />
+                            </IconButton>
+                          </InputAdornment>
+                        ) : null
+                      }
+                    />
+                  </StyledFormControl>
+                  <Button
+                    disabled={personAccessTextFieldValue.length < 3}
+                    variant="contained"
+                    color="primary"
+                    onClick={() => savePersonConsumerAccess()}>
+                    *** GI TILGANG ***
+                  </Button>
+                </>
+              )}
+              {waitingForCourses && <CircularProgress />}
+              {showCourseAutoComplete && courses.length > 0 && (
+                <>
+                  <Autocomplete
+                    renderInput={(params) => <TextField {...params} label="*** EMNE *** " variant="filled" />}
+                    options={courses}
+                    defaultValue={courseAutocompleteValue}
+                    openText={`*** vis liste ***`}
+                    closeText={`*** skjul liste***`}
+                    clearText={`*** avbryt ***`}
+                    getOptionLabel={(option) =>
+                      `${option.features.code.toUpperCase()} - ${option.features.year} - ${t(
+                        `course.season.${option.features.season_nr}`
+                      )}`
+                    }
+                    onChange={(event: any, newValue: Course | null) => {
+                      setCourseAutocompleteValue(newValue);
+                    }}
+                  />
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled={!courseAutocompleteValue}
+                    onClick={() => addCourseConsumerAccess(courseAutocompleteValue)}>
+                    *** GI TILGANG ***
+                  </Button>
+                </>
+              )}
+              {showCourseAutoComplete && courses.length === 0 && (
+                <Typography color="secondary" variant="subtitle1">
+                  *** Det finnes ingen kurs ***
+                </Typography>
+              )}
             </StyledPrivateAccessSubfields>
           )}
         </StyledFieldWrapper>
