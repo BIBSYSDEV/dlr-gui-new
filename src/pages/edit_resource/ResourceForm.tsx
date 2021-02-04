@@ -18,7 +18,7 @@ import { ContainsOtherPeoplesWorkOptions, License } from '../../types/license.ty
 import ErrorBanner from '../../components/ErrorBanner';
 import AccessAndLicenseStep from './access_and_licence_step/AccessAndLicenseStep';
 import { useUppy } from '@uppy/react';
-import { additionalCreateFilesUppy } from '../../utils/uppy-config';
+import { additionalCreateFilesUppy, createThumbnailFileUppy } from '../../utils/uppy-config';
 import { Content } from '../../types/content.types';
 import ContentsStep from './contents_step/ContentsStep';
 import ResourceFormNavigationHeader from './ResourceFormNavigationHeader';
@@ -52,6 +52,12 @@ interface ResourceFormProps {
 const fileUploadPanelId = 'file-upload-panel';
 
 const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) => {
+  const setNewContentAndThumbnail = (newContent: Content) => {
+    newContent.features.dlr_thumbnail_default = 'true';
+    setNewContent(newContent);
+    setNewThumbnailContent(newContent);
+  };
+
   const { t } = useTranslation();
   const [allChangesSaved, setAllChangesSaved] = useState(true);
   const [isLoadingLicenses, setIsLoadingLicenses] = useState(false);
@@ -59,6 +65,8 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
   const [licenses, setLicenses] = useState<License[]>();
   const additionalFilesUppy = useUppy(additionalCreateFilesUppy(resource.identifier, setNewContent));
+  const [newThumbnailContent, setNewThumbnailContent] = useState<Content>();
+  const thumbnailUppy = useUppy(createThumbnailFileUppy(resource.identifier, setNewContentAndThumbnail));
   const [activeStep, setActiveStep] = useState(ResourceFormStep.Description);
 
   const resourceValidationSchema = Yup.object().shape({
@@ -174,7 +182,10 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                     setAllChangesSaved={setAllChangesSaved}
                     newContent={newContent}
                     additionalFileUploadUppy={additionalFilesUppy}
+                    thumbnailUppy={thumbnailUppy}
                     resourceType={resourceType}
+                    newThumbnailContent={newThumbnailContent}
+                    newThumbnailIsReady={() => setNewThumbnailContent(undefined)}
                   />
                 </StyledPanel>
               )}

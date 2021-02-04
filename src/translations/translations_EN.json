@@ -26,6 +26,7 @@
     "cancel": "Cancel",
     "clear": "Clear",
     "delete": "Delete",
+    "edit": "Edit",
     "finish": "Finish",
     "home": "Home",
     "login": "Login",
@@ -247,6 +248,13 @@
       "video": "Video"
     },
     "unpublished_resources": "Unpublished resources"
+  },
+  "thumbnail": {
+    "busy_changing": "Changing thumbnail",
+    "change_thumbnail": "Change thumbnail",
+    "revert_thumbnail": "Delete uploaded thumbnail and revert to suggested thumbnail",
+    "thumbnail_options": "Thumbnail options",
+    "upload_new_thumbnail": "Upload new thumbnail"
   },
   "user": {
     "logged_in_as": "Logged in as"

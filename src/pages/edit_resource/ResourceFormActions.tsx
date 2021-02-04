@@ -93,7 +93,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
   };
 
   const handleLeaveForm = async () => {
-    history.push('resources/user/current');
+    history.push('/resources/user/current');
   };
 
   return (

@@ -26,6 +26,7 @@
     "cancel": "Avbryt",
     "clear": "Tøm",
     "delete": "Slett",
+    "edit": "Rediger",
     "finish": "Avslutt",
     "home": "Hjem",
     "login": "Logg inn",
@@ -247,6 +248,13 @@
       "video": "Video"
     },
     "unpublished_resources": "Upubliserte ressurser"
+  },
+  "thumbnail": {
+    "busy_changing": "Bytter ut miniatyrbilde",
+    "change_thumbnail": "Bytt miniatyrbilde",
+    "revert_thumbnail": "Slett opplastet og gå tilbake til foreslått miniatyrbilde",
+    "thumbnail_options": "Miniatyrbilde valg",
+    "upload_new_thumbnail": "Last opp nytt miniatyrbilde"
   },
   "user": {
     "logged_in_as": "Logget på som"

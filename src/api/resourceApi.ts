@@ -1,6 +1,6 @@
 import { API_PATHS } from '../utils/constants';
 import { AxiosResponse } from 'axios';
-import { Contributor, Creator, Resource } from '../types/resource.types';
+import { Contributor, Creator, Resource, ResourceEvent } from '../types/resource.types';
 import { AccessTypes, License } from '../types/license.types';
 import { Content } from '../types/content.types';
 import { authenticatedApiRequest } from './api';
@@ -255,5 +255,12 @@ export const putAccessType = (resourceIdentifier: string, accessType: AccessType
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/access`),
     method: 'PUT',
     data,
+  });
+};
+
+export const getResourceContentEvent = (contentIdentifier: string): Promise<AxiosResponse<ResourceEvent>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesEventsPath}/resources/${contentIdentifier}/events`),
+    method: 'GET',
   });
 };

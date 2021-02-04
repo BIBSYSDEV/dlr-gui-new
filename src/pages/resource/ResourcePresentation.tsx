@@ -4,11 +4,11 @@ import { Chip, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import Card from '../../components/Card';
 import styled from 'styled-components';
-import { StyledContentWrapper } from '../../components/styled/Wrappers';
 import ContentPreview from '../../components/ContentPreview';
 import LicenseCard from '../../components/LicenseCard';
 import { API_PATHS, API_URL } from '../../utils/constants';
 import { emptyPreview } from '../../types/content.types';
+import { StyleWidths } from '../../themes/mainTheme';
 
 const PreviewComponentWrapper = styled.div`
   margin: 1rem 0;
@@ -17,10 +17,12 @@ const PreviewComponentWrapper = styled.div`
   max-width: 100%;
 `;
 
-const StyledPresentationWrapper = styled(StyledContentWrapper)`
+const StyledPresentationWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
+  width: 100%;
+  max-width: ${StyleWidths.width3};
 `;
 
 const StyledFeatureWrapper = styled.div`

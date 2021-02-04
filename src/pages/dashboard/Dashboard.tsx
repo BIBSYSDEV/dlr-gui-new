@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { SearchResult } from '../../types/search.types';
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
-import ResourceListItemButton from '../../components/ResourceListItemButton';
+import ResourceListItem from '../../components/ResourceListItem';
 import Typography from '@material-ui/core/Typography';
 
 const StyledDashboard = styled.div`
@@ -74,7 +74,7 @@ const Dashboard: FC = () => {
         {resources &&
           resources.length > 0 &&
           resources.map((resource: Resource, index: number) => (
-            <ResourceListItemButton resource={resource} key={index} showHandle={true} showSubmitter={true} />
+            <ResourceListItem resource={resource} key={index} showHandle={true} showSubmitter={true} />
           ))}
       </List>
     </StyledDashboard>
