@@ -13,34 +13,27 @@ import { Resource } from '../../../types/resource.types';
 import AccordionRadioGroup from '../../../components/AccordionRadioGroup';
 import ErrorBanner from '../../../components/ErrorBanner';
 
-const StyledSubRadioGroup = styled(StyledRadioGroup)`
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    margin-left: 2rem;
-  }
-`;
-
 const extraRestrictionRadio = 'extra-restriction';
 const commercialRadio = 'commersial';
 const modifyAndBuildRadio = 'change-and-build';
 
-enum LicenseRestrictionValues {
+enum LicenseRestrictionOptions {
   yes = 'yes',
   CC_BY = 'CC BY 4.0',
 }
 
-enum DefaultCommercial {
+enum CommercialOptions {
   NC = 'NC',
   yes = 'yes',
 }
 
-enum DefaultModifyAndBuildOptions {
+enum ModifyAndBuildOptions {
   primaryYes = 'primary_yes',
   ND = 'ND',
-  dontCare = 'dont_care',
   SA = 'share_alike',
 }
 
-const defaultCommercialOptions = [DefaultCommercial.yes, DefaultCommercial.NC];
+const commercialPurposes = [CommercialOptions.yes, CommercialOptions.NC];
 
 interface LicenseWizardFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -60,11 +53,10 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   const { values, resetForm, setFieldValue } = useFormikContext<Resource>();
   const [saveRestrictionError, setSaveRestrictionError] = useState(false);
   const [expandModifyAndBuildOption, setExpandModifyAndBuildOption] = useState(false);
-  const [modifyAndBuildSubValue, setModifyAndBuildSubValue] = useState('');
 
-  const licenseRestrictionOptions = [
-    LicenseRestrictionValues.CC_BY,
-    LicenseRestrictionValues.yes,
+  const licenseRestrictions = [
+    LicenseRestrictionOptions.CC_BY,
+    LicenseRestrictionOptions.yes,
     ...(institution.toLowerCase() === InstitutionLicenseProviders.NTNU ? [Licenses.NTNU] : []),
     ...(institution.toLowerCase() === InstitutionLicenseProviders.BI ? [Licenses.BI] : []),
   ];
@@ -73,28 +65,23 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     setFieldValue('resourceRestriction', '');
     setFieldValue('canBeUsedCommercially', '');
     setFieldValue('othersCanModifyAndBuildUpon', '');
-    setModifyAndBuildSubValue('');
     setSaveRestrictionError(false);
   }, [forceResetInLicenseWizard, setFieldValue]);
 
   const calculatePreferredLicense = async (
     restrictedValue: string,
     commercialValue: string,
-    modifyAndBuildValue: string,
-    modifyAndBuildSubValue: string
+    modifyAndBuildValue: string
   ) => {
-    if (restrictedValue === LicenseRestrictionValues.yes || restrictedValue === '') {
+    if (restrictedValue === LicenseRestrictionOptions.yes || restrictedValue === '') {
       let licenseTempCode = 'CC BY';
-      if (commercialValue === DefaultCommercial.NC) {
+      if (commercialValue === CommercialOptions.NC) {
         licenseTempCode += '-NC';
       }
-      if (modifyAndBuildValue === DefaultModifyAndBuildOptions.ND) {
+      if (modifyAndBuildValue === ModifyAndBuildOptions.ND) {
         licenseTempCode += '-ND';
       }
-      if (
-        modifyAndBuildValue === DefaultModifyAndBuildOptions.primaryYes &&
-        modifyAndBuildSubValue === DefaultModifyAndBuildOptions.SA
-      ) {
+      if (modifyAndBuildValue === ModifyAndBuildOptions.SA) {
         licenseTempCode += '-SA';
       }
       licenseTempCode += ' 4.0';
@@ -138,42 +125,24 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     await calculatePreferredLicense(
       event.target.value,
       values.canBeUsedCommercially,
-      values.othersCanModifyAndBuildUpon,
-      modifyAndBuildSubValue
+      values.othersCanModifyAndBuildUpon
     );
+    if (event.target.value !== LicenseRestrictionOptions.yes) {
+      setFieldValue('canBeUsedCommercially', '');
+      setFieldValue('othersCanModifyAndBuildUpon', '');
+    }
     setFieldValue('resourceRestriction', event.target.value);
   };
 
   const handleChangeInCommercialOption = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setExpandModifyAndBuildOption(true);
-    await calculatePreferredLicense(
-      values.resourceRestriction,
-      event.target.value,
-      values.othersCanModifyAndBuildUpon,
-      modifyAndBuildSubValue
-    );
+    await calculatePreferredLicense(values.resourceRestriction, event.target.value, values.othersCanModifyAndBuildUpon);
     setFieldValue('canBeUsedCommercially', event.target.value);
   };
 
   const handleChangeInModifyAndBuildOption = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    await calculatePreferredLicense(
-      values.resourceRestriction,
-      values.canBeUsedCommercially,
-      event.target.value,
-      modifyAndBuildSubValue
-    );
+    await calculatePreferredLicense(values.resourceRestriction, values.canBeUsedCommercially, event.target.value);
     setFieldValue('othersCanModifyAndBuildUpon', event.target.value);
-  };
-
-  const handleChangeInModifyAndBuildSubOptions = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    setModifyAndBuildSubValue(event.target.value);
-    await calculatePreferredLicense(
-      values.resourceRestriction,
-      values.canBeUsedCommercially,
-      values.othersCanModifyAndBuildUpon,
-      event.target.value
-    );
-    setFieldValue('othersCanModifyAndBuildUponSUB', event.target.value);
   };
 
   return (
@@ -193,7 +162,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                 aria-label={t('license.questions.special_needs')}
                 value={field.value}
                 onChange={(event) => handleChangeInExtraRestriction(event)}>
-                {licenseRestrictionOptions.map((element, index) => (
+                {licenseRestrictions.map((element, index) => (
                   <FormControlLabel
                     key={element}
                     value={element}
@@ -220,7 +189,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           </Field>
         </AccordionRadioGroup>
 
-        {values.resourceRestriction === LicenseRestrictionValues.yes && (
+        {values.resourceRestriction === LicenseRestrictionOptions.yes && (
           <AccordionRadioGroup
             ariaDescription={commercialRadio}
             title={t('license.commercial_purposes')}
@@ -236,7 +205,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                     aria-label={t('license.questions.commercial')}
                     value={field.value}
                     onChange={(event) => handleChangeInCommercialOption(event)}>
-                    {defaultCommercialOptions.map((element, index) => (
+                    {commercialPurposes.map((element, index) => (
                       <FormControlLabel
                         key={index}
                         value={element}
@@ -251,7 +220,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           </AccordionRadioGroup>
         )}
 
-        {values.resourceRestriction === LicenseRestrictionValues.yes && (
+        {values.resourceRestriction === LicenseRestrictionOptions.yes && (
           <AccordionRadioGroup
             ariaDescription={modifyAndBuildRadio}
             title={t('license.modify_and_build')}
@@ -268,40 +237,19 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                     aria-label={t('license.questions.modify_and_build')}
                     onChange={(event) => handleChangeInModifyAndBuildOption(event)}>
                     <FormControlLabel
-                      value={DefaultModifyAndBuildOptions.primaryYes}
+                      value={ModifyAndBuildOptions.primaryYes}
                       control={<Radio color="primary" />}
-                      label={t(`license.modify_and_build_options.${DefaultModifyAndBuildOptions.primaryYes}`)}
+                      label={t(`license.modify_and_build_options.${ModifyAndBuildOptions.primaryYes}`)}
                     />
-                    {values.othersCanModifyAndBuildUpon === DefaultModifyAndBuildOptions.primaryYes && (
-                      <Field name={'othersCanModifyAndBuildUponSUB'}>
-                        {({ field }: FieldProps) => (
-                          <>
-                            <StyledSubRadioGroup
-                              {...field}
-                              value={field.value}
-                              aria-label={t(
-                                `license.modify_and_build_options.${DefaultModifyAndBuildOptions.primaryYes}`
-                              )}
-                              onChange={(event) => handleChangeInModifyAndBuildSubOptions(event)}>
-                              <FormControlLabel
-                                value={DefaultModifyAndBuildOptions.dontCare}
-                                control={<Radio color="primary" />}
-                                label={t(`license.modify_and_build_options.${DefaultModifyAndBuildOptions.dontCare}`)}
-                              />
-                              <FormControlLabel
-                                value={DefaultModifyAndBuildOptions.SA}
-                                control={<Radio color="primary" />}
-                                label={t(`license.modify_and_build_options.${DefaultModifyAndBuildOptions.SA}`)}
-                              />
-                            </StyledSubRadioGroup>
-                          </>
-                        )}
-                      </Field>
-                    )}
                     <FormControlLabel
-                      value={DefaultModifyAndBuildOptions.ND}
+                      value={ModifyAndBuildOptions.SA}
                       control={<Radio color="primary" />}
-                      label={t(`license.modify_and_build_options.${DefaultModifyAndBuildOptions.ND}`)}
+                      label={t(`license.modify_and_build_options.${ModifyAndBuildOptions.SA}`)}
+                    />
+                    <FormControlLabel
+                      value={ModifyAndBuildOptions.ND}
+                      control={<Radio color="primary" />}
+                      label={t(`license.modify_and_build_options.${ModifyAndBuildOptions.ND}`)}
                     />
                   </StyledRadioGroup>
                 </>

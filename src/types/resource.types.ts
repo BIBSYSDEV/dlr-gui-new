@@ -26,7 +26,6 @@ export interface Resource {
   usageClearedWithOwner: string;
   resourceRestriction: string;
   othersCanModifyAndBuildUpon: string;
-  othersCanModifyAndBuildUponSUB: string;
   canBeUsedCommercially: string;
 }
 
@@ -45,7 +44,6 @@ export const emptyResource: Resource = {
   usageClearedWithOwner: '',
   resourceRestriction: '',
   othersCanModifyAndBuildUpon: '',
-  othersCanModifyAndBuildUponSUB: '',
   canBeUsedCommercially: '',
 };
 
