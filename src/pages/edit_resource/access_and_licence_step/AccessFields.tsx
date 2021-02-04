@@ -83,8 +83,8 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
               </>
             )}
           </Field>
-          {values.features.dlr_access === AccessTypes.private && <PrivateConsumerAccessFields />}
         </StyledFieldWrapper>
+        {values.features.dlr_access === AccessTypes.private && <PrivateConsumerAccessFields />}
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );

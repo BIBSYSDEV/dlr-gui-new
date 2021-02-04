@@ -21,7 +21,7 @@ import ErrorBanner from './ErrorBanner';
 import AddIcon from '@material-ui/icons/Add';
 import Popover from '@material-ui/core/Popover';
 import ClearIcon from '@material-ui/icons/Clear';
-import { Autocomplete } from '@material-ui/lab';
+import { Autocomplete, AutocompleteRenderInputParams } from '@material-ui/lab';
 import {
   deleteAdditionalUserConsumerAccess,
   deleteCourseConsumerAccess,
@@ -36,9 +36,14 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../state/rootReducer';
 import { useFormikContext } from 'formik';
 import { Resource } from '../types/resource.types';
+import { StyleWidths } from '../themes/mainTheme';
 
 const StyledPrivateAccessFields = styled.div`
   margin-top: 2.5rem;
+`;
+
+const StyledChipWrapper = styled.div`
+  display: block;
 `;
 
 const StyledChip = styled(Chip)`
@@ -46,15 +51,57 @@ const StyledChip = styled(Chip)`
     margin-top: 1rem;
     margin-right: 0.5rem;
     background-color: rgba(255, 255, 255, 0.8);
+    height: 100%;
   }
+`;
+
+const StyledChipLabelTypography = styled(Typography)`
+  white-space: normal;
+`;
+
+const StyledAccessButtonWrapper = styled.div`
+  margin-top: 2.5rem;
+  display: block;
 `;
 
 const StyledAddAccessButton = styled(Button)`
   margin-top: 1rem;
 `;
 
+const StyledCancelButton = styled(Button)`
+  align-self: flex-end;
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    margin-left: 1rem;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    margin-top: 1rem;
+  }
+`;
+
+const StyledConfirmButton = styled(Button)`
+  margin-left: 1rem;
+  align-self: flex-end;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    margin-top: 45rem;
+  }
+`;
+
+const StyledFieldsWrapper = styled.div`
+  display: flex;
+  align-items: flex-end;
+  margin-top: 2.5rem;
+`;
+
 const StyledFormControl = styled(FormControl)`
-  margin-top: 1rem;
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    width: ${StyleWidths.width1};
+  }
+`;
+
+const StyledCourseAutocomplete: any = styled(Autocomplete)`
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    width: ${StyleWidths.width1};
+  }
 `;
 
 const PrivateConsumerAccessFields = () => {
@@ -73,6 +120,7 @@ const PrivateConsumerAccessFields = () => {
   const [waitingForCourses, setWaitingForCourses] = useState(false);
   const [showCourseAutoComplete, setShowCourseAutocomplete] = useState(false);
   const [courseAutocompleteValue, setCourseAutocompleteValue] = useState<Course | null>();
+  const [courseAutocompleteTypedValue, setCourseAutocompleteTypedValue] = useState('');
 
   const addInstitutionPrivateConsumerAccess = async () => {
     await postCurrentUserInstitutionConsumerAccess(values.identifier);
@@ -218,13 +266,13 @@ const PrivateConsumerAccessFields = () => {
         setPrivateAccessList((prevState) => [
           ...prevState,
           {
-            subject: `${course.features.code} :: ${user.institution.toLowerCase()} :: ${course.features.year} :: ${
-              course.features.season_nr
-            }`,
+            subject: generateCourseSubjectTag(course),
             profiles: [{ name: ResourceReadAccessNames.Course }],
           },
         ]);
         setSavePrivateAccessNetworkError(false);
+        setCourseAutocompleteValue(null);
+        setCourseAutocompleteTypedValue('');
       } catch (error) {
         setSavePrivateAccessNetworkError(true);
       } finally {
@@ -233,32 +281,40 @@ const PrivateConsumerAccessFields = () => {
     }
   };
 
+  const generateCourseSubjectTag = (course: Course): string => {
+    return `${course.features.code} :: ${user.institution.toLowerCase()} :: ${course.features.year} :: ${
+      course.features.season_nr
+    }`;
+  };
+
   return (
     <StyledPrivateAccessFields>
-      <Typography variant="subtitle1">{t('access.who_got_access')}</Typography>
-      {privateAccessList.map((access, index) => (
-        <StyledChip
-          key={index}
-          label={generateChipLabel(access)}
-          variant="outlined"
-          onDelete={() => {
-            deleteAccess(access);
-          }}
-        />
-      ))}
-      {updatingPrivateAccessList && <CircularProgress size="small" />}
+      <Typography variant="subtitle1">{`${t('access.who_got_access')}:`}</Typography>
+      <StyledChipWrapper>
+        {privateAccessList.map((access, index) => (
+          <StyledChip
+            key={index}
+            label={<StyledChipLabelTypography>{generateChipLabel(access)}</StyledChipLabelTypography>}
+            variant="outlined"
+            onDelete={() => {
+              deleteAccess(access);
+            }}
+          />
+        ))}
+        {updatingPrivateAccessList && <CircularProgress size="small" />}
+      </StyledChipWrapper>
       {savePrivateAccessNetworkError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
-      <StyledAddAccessButton
-        startIcon={<AddIcon />}
-        color="primary"
-        variant="outlined"
-        onClick={(event) => {
-          setShowPersonAccessField(false);
-          setShowCourseAutocomplete(false);
-          handleAddAccessButtonClick(event);
-        }}>
-        {t('access.add_access')}
-      </StyledAddAccessButton>
+      <StyledAccessButtonWrapper>
+        <StyledAddAccessButton
+          startIcon={<AddIcon />}
+          color="primary"
+          variant="outlined"
+          onClick={(event) => {
+            handleAddAccessButtonClick(event);
+          }}>
+          {t('access.add_access')}
+        </StyledAddAccessButton>
+      </StyledAccessButtonWrapper>
       <Popover
         open={showAddAccessPopover}
         anchorEl={anchorEl}
@@ -305,7 +361,7 @@ const PrivateConsumerAccessFields = () => {
         </List>
       </Popover>
       {showPersonAccessField && (
-        <>
+        <StyledFieldsWrapper>
           <StyledFormControl variant="filled" fullWidth>
             <InputLabel htmlFor="feide-id-input">{t('access.email_label')}</InputLabel>
             <FilledInput
@@ -339,26 +395,46 @@ const PrivateConsumerAccessFields = () => {
               }
             />
           </StyledFormControl>
-          <Button
+          <StyledCancelButton
+            variant="outlined"
+            color="primary"
+            onClick={() => {
+              setPersonAccessFieldTextValue('');
+              setShowPersonAccessField(false);
+            }}>
+            {t('common.cancel')}
+          </StyledCancelButton>
+          <StyledConfirmButton
             disabled={personAccessTextFieldValue.length < 3}
             variant="contained"
             color="primary"
             onClick={() => savePersonConsumerAccess()}>
             {t('access.grant_access')}
-          </Button>
-        </>
+          </StyledConfirmButton>
+        </StyledFieldsWrapper>
       )}
       {waitingForCourses && <CircularProgress />}
       {showCourseAutoComplete && courses.length > 0 && (
-        <>
-          <Autocomplete
-            renderInput={(params) => <TextField {...params} label={t('access.course')} variant="filled" />}
-            options={courses}
-            defaultValue={courseAutocompleteValue}
+        <StyledFieldsWrapper>
+          <StyledCourseAutocomplete
+            renderInput={(params: AutocompleteRenderInputParams) => (
+              <TextField {...params} label={t('access.course')} variant="filled" />
+            )}
+            options={courses.sort((a, b) => -b.features.code.localeCompare(a.features.code))}
+            groupBy={(course: Course) => course.features.code[0]}
+            getOptionDisabled={(course: Course) => {
+              const courseSubject = generateCourseSubjectTag(course);
+              return privateAccessList.findIndex((access) => access.subject.includes(courseSubject)) > -1;
+            }}
+            inputValue={courseAutocompleteTypedValue}
+            onInputChange={(_event: any, newInputValue: string) => {
+              setCourseAutocompleteTypedValue(newInputValue);
+            }}
+            value={courseAutocompleteValue}
             openText={t('access.show_list')}
             closeText={t('access.hide_list')}
             clearText={t('common.cancel')}
-            getOptionLabel={(option) =>
+            getOptionLabel={(option: Course) =>
               `${option.features.code.toUpperCase()} - ${option.features.year} - ${t(
                 `access.season.${option.features.season_nr}`
               )}`
@@ -367,14 +443,23 @@ const PrivateConsumerAccessFields = () => {
               setCourseAutocompleteValue(newValue);
             }}
           />
-          <Button
+          <StyledCancelButton
+            variant="outlined"
+            color="primary"
+            onClick={() => {
+              setShowCourseAutocomplete(false);
+              setCourseAutocompleteValue(null);
+            }}>
+            {t('common.cancel')}
+          </StyledCancelButton>
+          <StyledConfirmButton
             variant="contained"
             color="primary"
             disabled={!courseAutocompleteValue}
             onClick={() => addCourseConsumerAccess(courseAutocompleteValue)}>
             {t('access.grant_access')}
-          </Button>
-        </>
+          </StyledConfirmButton>
+        </StyledFieldsWrapper>
       )}
       {showCourseAutoComplete && courses.length === 0 && (
         <Typography color="secondary" variant="subtitle1">
