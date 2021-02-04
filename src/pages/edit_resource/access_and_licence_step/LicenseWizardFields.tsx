@@ -6,7 +6,7 @@ import { Colors } from '../../../themes/mainTheme';
 import { useTranslation } from 'react-i18next';
 import { RootState } from '../../../state/rootReducer';
 import { useSelector } from 'react-redux';
-import { AccessTypes, License, Licenses } from '../../../types/license.types';
+import { AccessTypes, InstitutionLicenseProviders, License, Licenses } from '../../../types/license.types';
 import { deleteResourceLicense, putAccessType, setResourceLicense } from '../../../api/resourceApi';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
@@ -25,6 +25,7 @@ const modifyAndBuildRadio = 'change-and-build';
 
 enum LicenseRestrictionValues {
   yes = 'yes',
+  CC_BY = 'CC BY 4.0',
 }
 
 enum DefaultCommercial {
@@ -39,7 +40,6 @@ enum DefaultModifyAndBuildOptions {
   SA = 'share_alike',
 }
 
-const defaultRestrictionOptions = [Licenses.CC_BY, LicenseRestrictionValues.yes];
 const defaultCommercialOptions = [DefaultCommercial.yes, DefaultCommercial.NC];
 
 interface LicenseWizardFieldsProps {
@@ -48,8 +48,6 @@ interface LicenseWizardFieldsProps {
   forceResetInLicenseWizard: boolean;
   containsOtherWorksFieldsSelectedCC: boolean;
 }
-
-const additionalLicenseProviders: string[] = [Licenses.NTNU, Licenses.BI];
 
 const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   setAllChangesSaved,
@@ -60,12 +58,16 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   const { t } = useTranslation();
   const { institution } = useSelector((state: RootState) => state.user);
   const { values, resetForm, setFieldValue } = useFormikContext<Resource>();
-  const [institutionRestriction] = useState<string | undefined>(
-    additionalLicenseProviders.find((element) => element.includes(institution.toLowerCase()))
-  );
   const [saveRestrictionError, setSaveRestrictionError] = useState(false);
   const [expandModifyAndBuildOption, setExpandModifyAndBuildOption] = useState(false);
   const [modifyAndBuildSubValue, setModifyAndBuildSubValue] = useState('');
+
+  const licenseRestrictionOptions = [
+    LicenseRestrictionValues.CC_BY,
+    LicenseRestrictionValues.yes,
+    ...(institution.toLowerCase() === InstitutionLicenseProviders.NTNU ? [Licenses.NTNU] : []),
+    ...(institution.toLowerCase() === InstitutionLicenseProviders.BI ? [Licenses.BI] : []),
+  ];
 
   useEffect(() => {
     setFieldValue('resourceRestriction', '');
@@ -191,21 +193,14 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                 aria-label={t('license.questions.special_needs')}
                 value={field.value}
                 onChange={(event) => handleChangeInExtraRestriction(event)}>
-                {defaultRestrictionOptions.map((element, index) => (
+                {licenseRestrictionOptions.map((element, index) => (
                   <FormControlLabel
-                    key={index}
+                    key={element}
                     value={element}
                     control={<Radio color="primary" />}
                     label={t(`license.restriction_options.${element.replace(/[.\s]/g, '_')}`)}
                   />
                 ))}
-                {institutionRestriction && (
-                  <FormControlLabel
-                    value={institutionRestriction}
-                    control={<Radio color="primary" />}
-                    label={t(`license.restriction_options.${institutionRestriction}`)}
-                  />
-                )}
                 {containsOtherWorksFieldsSelectedCC && (
                   <>
                     <FormControlLabel
