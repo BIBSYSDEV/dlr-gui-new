@@ -35,9 +35,9 @@ export enum Licenses {
   CC = 'creative_commons',
   BI = 'bi-opphaver-bi',
   NTNU = 'ntnu-internt',
-  CC_BY = 'CC BY 4.0',
-  CC_BY_SA_4_0 = 'CC BY-SA 4.0',
+  CC_BY_SA = 'CC BY-SA 4.0',
   CC_BY_NC_SA = 'CC BY-NC-SA 4.0',
+  CC_BY_NC_ND = 'CC BY-NC-ND 4.0',
 }
 
 export enum InstitutionLicenseProviders {

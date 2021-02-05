@@ -73,18 +73,20 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     modifyAndBuildValue: string
   ) => {
     if (restrictedValue === LicenseRestrictionOptions.yes || restrictedValue === '') {
-      let licenseTempCode = 'CC BY';
+      let licenseCode = 'CC BY';
       if (commercialValue === CommercialOptions.NC) {
-        licenseTempCode += '-NC';
+        licenseCode += '-NC';
       }
       if (modifyAndBuildValue === ModifyAndBuildOptions.ND) {
-        licenseTempCode += '-ND';
+        licenseCode += '-ND';
+      } else if (modifyAndBuildValue === ModifyAndBuildOptions.SA) {
+        licenseCode += '-SA';
       }
-      if (modifyAndBuildValue === ModifyAndBuildOptions.SA) {
-        licenseTempCode += '-SA';
+      licenseCode += ' 4.0';
+      if (commercialValue === '' && modifyAndBuildValue === '') {
+        licenseCode = Licenses.CC_BY_NC_ND;
       }
-      licenseTempCode += ' 4.0';
-      await saveLicenseAndChangeAccess(licenseTempCode, AccessTypes.open);
+      await saveLicenseAndChangeAccess(licenseCode, AccessTypes.open);
     } else if (restrictedValue === Licenses.BI || restrictedValue === Licenses.NTNU) {
       await saveLicenseAndChangeAccess(restrictedValue, AccessTypes.private);
     } else {
@@ -172,7 +174,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                 {containsOtherWorksFieldsSelectedCC && (
                   <>
                     <FormControlLabel
-                      value={Licenses.CC_BY_SA_4_0}
+                      value={Licenses.CC_BY_SA}
                       control={<Radio color="primary" />}
                       label={t(`license.restriction_options.CC_BY-SA_4_0`)}
                     />
