@@ -7,7 +7,7 @@ import { Field, FieldProps, useFormikContext } from 'formik';
 import { Resource, ResourceFeatureNamesFullPath } from '../../../types/resource.types';
 import { putAccessType } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
-import { AccessTypes } from '../../../types/license.types';
+import { AccessTypes, LicenseAgreementsOptions } from '../../../types/license.types';
 import styled from 'styled-components';
 import { postCurrentUserInstitutionConsumerAccess } from '../../../api/sharingApi';
 import PrivateConsumerAccessFields from '../../../components/PrivateConsumerAccessFields';
@@ -37,7 +37,10 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
           setSavingAccessTypeError(false);
           values.features.dlr_access = event.target.value;
           resetForm({ values });
-          if (event.target.value === AccessTypes.private) {
+          if (
+            event.target.value === AccessTypes.private &&
+            values.containsOtherPeoplesWork !== LicenseAgreementsOptions.NoClearance
+          ) {
             await postCurrentUserInstitutionConsumerAccess(values.identifier);
           }
         }
