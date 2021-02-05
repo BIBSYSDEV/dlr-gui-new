@@ -97,7 +97,7 @@ const StyledConfirmButton = styled(Button)`
   margin-left: 1rem;
   align-self: flex-end;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    margin-top: 45rem;
+    margin-top: 1rem;
   }
 `;
 
@@ -246,16 +246,21 @@ const PrivateConsumerAccessFields = () => {
     let errorOccurred = false;
     let errorList = '';
     try {
+      const alreadysavedEmails: string[] = [];
       for (let i = 0; i < accessUsers.length; i++) {
         if (accessUsers[i].length > 0 && !emailRegex.test(accessUsers[i])) {
           errorOccurred = true;
-          errorList += ' ' + accessUsers[i];
+          errorList += ' ' + accessUsers[i] + ' ';
+        } else if (alreadysavedEmails.includes(accessUsers[i])) {
+          errorOccurred = true;
+          errorList += ' ' + accessUsers[i] + ' ';
         } else if (
           !privateAccessList.find((access) => access.subject === accessUsers[i]) &&
           accessUsers[i].length > 3
         ) {
           setUpdatingPrivateAccessList(true);
           await postAdditionalUserConsumerAccess(values.identifier, accessUsers[i]);
+          alreadysavedEmails.push(accessUsers[i]);
           setPrivateAccessList((prevState) => [
             ...prevState,
             { subject: accessUsers[i], profiles: [{ name: ResourceReadAccessNames.Person }] },
@@ -308,8 +313,9 @@ const PrivateConsumerAccessFields = () => {
       <StyledChipWrapper>
         {privateAccessList.map((access, index) => (
           <StyledChip
+            data-testid={`private-consumer-access-chip-${index}`}
             key={index}
-            deleteIcon={<StyledCancelIcon />}
+            deleteIcon={<StyledCancelIcon data-testid={`delete-private-consumer-access-chip-${index}`} />}
             label={
               <StyledChipLabelTypography variant="subtitle1">{generateChipLabel(access)}</StyledChipLabelTypography>
             }
@@ -324,6 +330,7 @@ const PrivateConsumerAccessFields = () => {
       {savePrivateAccessNetworkError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
       <StyledAccessButtonWrapper>
         <StyledAddAccessButton
+          data-testid="add-private-consumer-access-button"
           startIcon={<AddIcon />}
           color="primary"
           variant="outlined"
@@ -347,6 +354,7 @@ const PrivateConsumerAccessFields = () => {
         }}>
         <List aria-label={t('access.access_types')}>
           <ListItem
+            data-testid="add-institution-consumer-access"
             disabled={
               privateAccessList.findIndex((access) => access.profiles[0].name === ResourceReadAccessNames.Institution) >
               -1
@@ -363,6 +371,7 @@ const PrivateConsumerAccessFields = () => {
           </ListItem>
           <ListItem
             button
+            data-testid="add-course-consumer-access"
             onClick={() => {
               setShowPersonAccessField(false);
               setSavePrivateAccessNetworkError(false);
@@ -372,6 +381,7 @@ const PrivateConsumerAccessFields = () => {
           </ListItem>
           <ListItem
             button
+            data-testid="add-person-consumer-access"
             onClick={() => {
               setSavePrivateAccessNetworkError(false);
               setShowCourseAutocomplete(false);
@@ -387,6 +397,7 @@ const PrivateConsumerAccessFields = () => {
           <StyledFormControl variant="filled" fullWidth>
             <InputLabel htmlFor="feide-id-input">{t('access.email_label')}</InputLabel>
             <FilledInput
+              data-testid="feide-id-input"
               id="feide-id-input"
               value={personAccessTextFieldValue}
               autoFocus={true}
@@ -439,6 +450,7 @@ const PrivateConsumerAccessFields = () => {
       {showCourseAutoComplete && courses.length > 0 && (
         <StyledFieldsWrapper>
           <StyledCourseAutocomplete
+            data-testid="course-input"
             renderInput={(params: AutocompleteRenderInputParams) => (
               <TextField {...params} label={t('access.course')} variant="filled" />
             )}
@@ -475,6 +487,7 @@ const PrivateConsumerAccessFields = () => {
             {t('common.cancel')}
           </StyledCancelButton>
           <StyledConfirmButton
+            data-testid="confirm-adding-access"
             variant="contained"
             color="primary"
             disabled={!courseAutocompleteValue}

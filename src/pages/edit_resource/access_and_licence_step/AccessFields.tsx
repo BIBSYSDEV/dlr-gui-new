@@ -59,6 +59,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
               <>
                 <TextField
                   {...field}
+                  data-testid="access-dropdown-menu"
                   variant="filled"
                   select
                   required
@@ -74,7 +75,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
                     saveResourceAccessType(event);
                   }}>
                   {accessTypeArray.map((accessType, index) => (
-                    <MenuItem key={index} value={accessType}>
+                    <MenuItem data-testid={`access-dropdown-menu-option-${accessType}`} key={index} value={accessType}>
                       <Typography>{t(`resource.access_types.${accessType}`)}</Typography>
                     </MenuItem>
                   ))}
