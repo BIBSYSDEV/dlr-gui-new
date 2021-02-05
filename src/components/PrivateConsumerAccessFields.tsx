@@ -36,7 +36,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../state/rootReducer';
 import { useFormikContext } from 'formik';
 import { Resource } from '../types/resource.types';
-import { StyleWidths } from '../themes/mainTheme';
+import { Colors, StyleWidths } from '../themes/mainTheme';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 const StyledPrivateAccessFields = styled.div`
   margin-top: 2.5rem;
@@ -50,13 +51,27 @@ const StyledChip = styled(Chip)`
   && {
     margin-top: 1rem;
     margin-right: 0.5rem;
-    background-color: rgba(255, 255, 255, 0.8);
     height: 100%;
+    color: ${Colors.Background};
+    background-color: ${Colors.ChipAccessBackground};
+
+    &:focus {
+      color: ${Colors.PrimaryText} !important;
+      background-color: ${Colors.ChipAccessBackgroundFocus};
+      color: ${Colors.PrimaryText};
+      color: ${Colors.PrimaryText} !important;
+    }
   }
 `;
 
+const StyledCancelIcon = styled(CancelIcon)`
+  color: ${Colors.ChipAccessIconBackground};
+`;
+
 const StyledChipLabelTypography = styled(Typography)`
+  padding: 0.3rem;
   white-space: normal;
+  color: inherit;
 `;
 
 const StyledAccessButtonWrapper = styled.div`
@@ -294,7 +309,10 @@ const PrivateConsumerAccessFields = () => {
         {privateAccessList.map((access, index) => (
           <StyledChip
             key={index}
-            label={<StyledChipLabelTypography>{generateChipLabel(access)}</StyledChipLabelTypography>}
+            deleteIcon={<StyledCancelIcon />}
+            label={
+              <StyledChipLabelTypography variant="subtitle1">{generateChipLabel(access)}</StyledChipLabelTypography>
+            }
             variant="outlined"
             onDelete={() => {
               deleteAccess(access);
@@ -335,6 +353,8 @@ const PrivateConsumerAccessFields = () => {
             }
             onClick={() => {
               setSavePrivateAccessNetworkError(false);
+              setShowCourseAutocomplete(false);
+              setShowPersonAccessField(false);
               addInstitutionPrivateConsumerAccess();
               handlePopoverClose();
             }}
@@ -344,6 +364,7 @@ const PrivateConsumerAccessFields = () => {
           <ListItem
             button
             onClick={() => {
+              setShowPersonAccessField(false);
               setSavePrivateAccessNetworkError(false);
               handlePopoverCourseClick();
             }}>
@@ -353,6 +374,7 @@ const PrivateConsumerAccessFields = () => {
             button
             onClick={() => {
               setSavePrivateAccessNetworkError(false);
+              setShowCourseAutocomplete(false);
               setShowPersonAccessField(true);
               handlePopoverClose();
             }}>

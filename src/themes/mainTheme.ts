@@ -49,6 +49,9 @@ export enum Colors {
   ChipBackground = 'rgba(66, 127, 140, 1)',
   ChipBackgroundFocus = 'hsl(191, 37%, 80%)',
   ChipIconBackground = 'hsl(191, 37%, 60%)',
+  ChipAccessBackground = 'hsl(163, 87%, 35%)',
+  ChipAccessBackgroundFocus = 'hsl(163, 87%, 80%)',
+  ChipAccessIconBackground = 'hsl(163, 87%, 45%)',
 }
 
 export enum StyleWidths {
