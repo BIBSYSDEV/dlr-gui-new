@@ -123,6 +123,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   };
 
   const handleChangeInExtraRestriction = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFieldValue('resourceRestriction', event.target.value);
     await calculatePreferredLicense(
       event.target.value,
       values.canBeUsedCommercially,
@@ -136,12 +137,14 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   };
 
   const handleChangeInCommercialOption = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFieldValue('canBeUsedCommercially', event.target.value);
     setExpandModifyAndBuildOption(true);
     await calculatePreferredLicense(values.resourceRestriction, event.target.value, values.othersCanModifyAndBuildUpon);
     setFieldValue('canBeUsedCommercially', event.target.value);
   };
 
   const handleChangeInModifyAndBuildOption = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFieldValue('othersCanModifyAndBuildUpon', event.target.value);
     await calculatePreferredLicense(values.resourceRestriction, values.canBeUsedCommercially, event.target.value);
     setFieldValue('othersCanModifyAndBuildUpon', event.target.value);
   };
@@ -248,19 +251,26 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                       value={ModifyAndBuildOptions.primaryYes}
                       data-testid={`modify_and_build_option_${ModifyAndBuildOptions.primaryYes}`}
                       control={<Radio color="primary" />}
-                      label={t(`license.modify_and_build_options.${ModifyAndBuildOptions.primaryYes}`)}
+                      label={t(`license.modify_and_build_options.yes`)}
                     />
                     <FormControlLabel
                       value={ModifyAndBuildOptions.SA}
                       data-testid={`modify_and_build_option_${ModifyAndBuildOptions.SA}`}
                       control={<Radio color="primary" />}
-                      label={t(`license.modify_and_build_options.${ModifyAndBuildOptions.SA}`)}
+                      label={
+                        <>
+                          <Typography variant="body1">{t(`license.modify_and_build_options.share_alike`)}</Typography>
+                          <Typography variant="caption">
+                            {t(`license.modify_and_build_options.share_alike_warning`)}
+                          </Typography>
+                        </>
+                      }
                     />
                     <FormControlLabel
                       value={ModifyAndBuildOptions.ND}
                       data-testid={`modify_and_build_option_${ModifyAndBuildOptions.ND}`}
                       control={<Radio color="primary" />}
-                      label={t(`license.modify_and_build_options.${ModifyAndBuildOptions.ND}`)}
+                      label={t(`license.modify_and_build_options.non_destructive`)}
                     />
                   </StyledRadioGroup>
                 </>

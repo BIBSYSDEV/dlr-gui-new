@@ -76,6 +76,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   ];
 
   const handleChangeInContainsOtherPeoplesWork = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFieldValue('containsOtherPeoplesWork', event.target.value);
     forceResetInLicenseWizard();
     if (values.licenses) {
       await replaceOldLicense(emptyLicense);
@@ -123,6 +124,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
         await replaceOldLicense(emptyLicense);
       }
       if (values.features.dlr_access !== accessType) {
+        setFieldValue('features.dlr_access', accessType);
         await putAccessType(values.identifier, accessType);
         setFieldValue('features.dlr_access', accessType);
         values.features.dlr_access = accessType;
