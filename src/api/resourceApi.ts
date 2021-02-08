@@ -1,6 +1,6 @@
 import { API_PATHS } from '../utils/constants';
 import { AxiosResponse } from 'axios';
-import { Contributor, Creator, Resource, ResourceEvent } from '../types/resource.types';
+import { Contributor, Creator, Resource, ResourceContents, ResourceEvent } from '../types/resource.types';
 import { AccessTypes, License } from '../types/license.types';
 import { Content } from '../types/content.types';
 import { authenticatedApiRequest } from './api';
@@ -183,11 +183,23 @@ export const deleteResourceContent = (resourceIdentifier: string, contentIdentif
   });
 };
 
-export const getResourceContents = (identifier: string): Promise<AxiosResponse<Content[]>> => {
-  return authenticatedApiRequest({
+export const getResourceContents = async (identifier: string): Promise<ResourceContents> => {
+  const contentResponse = await authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/contents`),
     method: 'GET',
   });
+  const resourceContent: ResourceContents = {
+    masterContent: { identifier: '', features: { dlr_content_title: '', dlr_content: '' } },
+    sideContent: [],
+  };
+  contentResponse.data.forEach((content: Content) => {
+    if (content.features.dlr_content_master === 'true') {
+      resourceContent.masterContent = content;
+    } else {
+      resourceContent.sideContent.push(content);
+    }
+  });
+  return resourceContent;
 };
 
 export const postResourceContent = (

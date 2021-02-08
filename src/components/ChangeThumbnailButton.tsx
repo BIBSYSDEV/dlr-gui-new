@@ -83,17 +83,17 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
           }
           await setContentAsDefaultThumbnail(values.identifier, newThumbnailContent.identifier);
           let tobeDeletedIdentifier = '';
-          for (let i = 0; i < values.contents.length; i++) {
-            if (values.contents[i].identifier === newThumbnailContent.identifier) {
-              values.contents[i].features.dlr_thumbnail_default = 'true';
+          for (let i = 0; i < values.contents.sideContent.length; i++) {
+            if (values.contents.sideContent[i].identifier === newThumbnailContent.identifier) {
+              values.contents.sideContent[i].features.dlr_thumbnail_default = 'true';
+              values.contents.masterContent.features.dlr_thumbnail_default = 'false';
             } else if (
-              values.contents[i].identifier !== newThumbnailContent.identifier &&
-              values.contents[i].features.dlr_thumbnail_default === 'true' &&
-              values.contents[i].features.dlr_content_master === 'false'
+              values.contents.sideContent[i].identifier !== newThumbnailContent.identifier &&
+              values.contents.sideContent[i].features.dlr_thumbnail_default === 'true'
             ) {
-              tobeDeletedIdentifier = values.contents[i].identifier;
+              tobeDeletedIdentifier = values.contents.sideContent[i].identifier;
             } else {
-              values.contents[i].features.dlr_thumbnail_default = 'false';
+              values.contents.sideContent[i].features.dlr_thumbnail_default = 'false';
             }
           }
 
@@ -102,7 +102,9 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
           pollNewThumbnail(false);
           setFileInputIsBusy(false);
           if (tobeDeletedIdentifier.length > 0) {
-            values.contents = values.contents.filter((content) => content.identifier !== tobeDeletedIdentifier);
+            values.contents.sideContent = values.contents.sideContent.filter(
+              (content) => content.identifier !== tobeDeletedIdentifier
+            );
             await deleteResourceContent(values.identifier, tobeDeletedIdentifier);
           }
         }
@@ -122,26 +124,20 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
   const returnToDefaultThumbnail = async () => {
     setFileInputIsBusy(true);
     try {
-      const masterContent = values.contents.find((content) => content.features.dlr_content_master === 'true');
-      if (masterContent) {
-        await setContentAsDefaultThumbnail(values.identifier, masterContent.identifier);
-        const previousThumbnailContent = values.contents.find(
-          (content) =>
-            content.features.dlr_thumbnail_default === 'true' && content.features.dlr_content_master === 'false'
+      await setContentAsDefaultThumbnail(values.identifier, values.contents.masterContent.identifier);
+      const previousThumbnailContent = values.contents.sideContent.find(
+        (content) =>
+          content.features.dlr_thumbnail_default === 'true' && content.features.dlr_content_master === 'false'
+      );
+      if (previousThumbnailContent) {
+        await deleteResourceContent(values.identifier, previousThumbnailContent.identifier);
+        values.contents.sideContent = values.contents.sideContent.filter(
+          (content) => content.identifier !== previousThumbnailContent.identifier
         );
-        if (previousThumbnailContent) {
-          await deleteResourceContent(values.identifier, previousThumbnailContent.identifier);
-          values.contents = values.contents.filter(
-            (content) => content.identifier !== previousThumbnailContent.identifier
-          );
-        }
-        const masterIndex = values.contents.findIndex((content) => content.features.dlr_content_master === 'true');
-        if (values.contents[masterIndex]) {
-          values.contents[masterIndex].features.dlr_thumbnail_default = 'true';
-        }
-        pollNewThumbnail(true);
-        await new Promise((r) => setTimeout(r, 2000));
       }
+      values.contents.masterContent.features.dlr_thumbnail_default = 'true';
+      pollNewThumbnail(true);
+      await new Promise((r) => setTimeout(r, 2000));
       setThumbnailUpdateError(false);
     } catch (error) {
       setThumbnailUpdateError(true);
@@ -153,11 +149,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
   };
 
   const handleThumbnailClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const thumbnailIsMasterContent =
-      values.contents.findIndex(
-        (content) => content.features.dlr_content_master === 'true' && content.features.dlr_thumbnail_default === 'true'
-      ) > -1;
-    if (thumbnailIsMasterContent) {
+    if (values.contents.masterContent.features.dlr_thumbnail_default === 'true') {
       setShowThumbnailDashboardModal(true);
     } else {
       setAnchorEl(event.currentTarget);

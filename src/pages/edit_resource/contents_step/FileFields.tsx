@@ -64,7 +64,7 @@ const FileFields: FC<FileFieldsProps> = ({
   const saveMainContentsFileName = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setAllChangesSaved(false);
     setSaveTitleError(false);
-    const contentId = values?.contents?.[0]?.identifier;
+    const contentId = values?.contents?.masterContent.identifier;
     const resourceId = values?.identifier;
     if (resourceId && contentId) {
       try {
@@ -91,29 +91,24 @@ const FileFields: FC<FileFieldsProps> = ({
           </MainFileImageWrapper>
           <MainFileMetadata>
             <StyledFieldWrapper>
-              {values.contents.findIndex((content) => content.features.dlr_content_master === 'true') > -1 &&
-                values.contents[values.contents.findIndex((content) => content.features.dlr_content_master === 'true')]
-                  .features.dlr_content_type === 'file' && (
-                  <Field
-                    name={`contents[${values.contents.findIndex(
-                      (content) => content.features.dlr_content_master === 'true'
-                    )}].features.dlr_content_title`}>
-                    {({ field, meta: { touched, error } }: FieldProps) => (
-                      <TextField
-                        {...field}
-                        variant="filled"
-                        fullWidth
-                        label={t('resource.metadata.file_title')}
-                        error={touched && !!error}
-                        helperText={<ErrorMessage name={field.name} />}
-                        onBlur={(event) => {
-                          handleBlur(event);
-                          !error && saveMainContentsFileName(event);
-                        }}
-                      />
-                    )}
-                  </Field>
-                )}
+              {values.contents.masterContent && values.contents.masterContent.features.dlr_content_type === 'file' && (
+                <Field name={`contents.masterContent.features.dlr_content_title`}>
+                  {({ field, meta: { touched, error } }: FieldProps) => (
+                    <TextField
+                      {...field}
+                      variant="filled"
+                      fullWidth
+                      label={t('resource.metadata.file_title')}
+                      error={touched && !!error}
+                      helperText={<ErrorMessage name={field.name} />}
+                      onBlur={(event) => {
+                        handleBlur(event);
+                        !error && saveMainContentsFileName(event);
+                      }}
+                    />
+                  )}
+                </Field>
+              )}
             </StyledFieldWrapper>
             {saveTitleError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
             <Paper>

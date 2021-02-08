@@ -20,7 +20,7 @@ export interface Resource {
   contributors: Contributor[];
   accessRead?: string[];
   accessWrite?: string[];
-  contents: Content[];
+  contents: ResourceContents;
   licenses: License[];
   containsOtherPeoplesWork: string;
   usageClearedWithOwner: string;
@@ -33,7 +33,16 @@ export const emptyResource: Resource = {
     dlr_content: '',
     dlr_content_type: '',
   },
-  contents: [],
+  contents: {
+    masterContent: {
+      identifier: '',
+      features: {
+        dlr_content_title: '',
+        dlr_content: '',
+      },
+    },
+    sideContent: [],
+  },
   contributors: [],
   creators: [],
   licenses: [],
@@ -76,6 +85,11 @@ interface ResourceFeatures {
   dlr_title_alternative?: string;
   dlr_type?: string;
   dlr_thumbnail_url?: string;
+}
+
+export interface ResourceContents {
+  masterContent: Content;
+  sideContent: Content[];
 }
 
 interface Course {

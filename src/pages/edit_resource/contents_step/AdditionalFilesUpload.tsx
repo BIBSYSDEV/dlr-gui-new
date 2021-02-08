@@ -69,7 +69,6 @@ const filterAdditionalFiles = (contents: undefined | Content[]) => {
       contents.filter((content) => {
         return (
           content.features.dlr_content_type === 'file' &&
-          content.features.dlr_content_master === 'false' &&
           content.features.dlr_thumbnail_default === 'false' &&
           content.features.dlr_content_title !== LinkMetadataFilename
         );
@@ -116,9 +115,9 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
   const { t } = useTranslation();
   const { values } = useFormikContext<Resource>();
   const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
-  const [contents, setContents] = useState<Content[]>(filterAdditionalFiles(values.contents));
+  const [contents, setContents] = useState<Content[]>(filterAdditionalFiles(values.contents.sideContent));
   const [uploadPercentageArray, setUploadPercentageArray] = useState<UploadPerFile[]>(
-    getIndividualProgress(values.contents, additionalFileUploadUppy)
+    getIndividualProgress(values.contents.sideContent, additionalFileUploadUppy)
   );
 
   useEffect(() => {
@@ -134,13 +133,13 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
   }, [additionalFileUploadUppy]);
 
   useEffect(() => {
-    if (newContent && !values.contents?.find((content) => content.identifier === newContent.identifier)) {
-      if (values.contents) {
-        values.contents.push(newContent);
+    if (newContent && !values.contents?.sideContent.find((content) => content.identifier === newContent.identifier)) {
+      if (values.contents.sideContent) {
+        values.contents.sideContent.push(newContent);
       } else {
-        values.contents = [newContent];
+        values.contents.sideContent = [newContent];
       }
-      setContents([...filterAdditionalFiles(values.contents)]);
+      setContents([...filterAdditionalFiles(values.contents.sideContent)]);
       setUploadPercentageArray((prevState) => {
         const newUploadPerFile: UploadPerFile = { filename: newContent.features.dlr_content ?? '', percentage: 0 };
         if (additionalFileUploadUppy) {
@@ -162,7 +161,9 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
     try {
       await deleteResourceContent(values.identifier, contentToBeDeleted.identifier);
       if (values.contents) {
-        values.contents = values.contents.filter((content) => content.identifier !== contentToBeDeleted.identifier);
+        values.contents.sideContent = values.contents.sideContent.filter(
+          (content) => content.identifier !== contentToBeDeleted.identifier
+        );
         setContents((prevState) => prevState.filter((content) => content.identifier !== contentToBeDeleted.identifier));
         setErrorIndex(ErrorIndex.NO_ERRORS);
         const fileId = additionalFileUploadUppy

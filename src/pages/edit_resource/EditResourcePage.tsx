@@ -274,7 +274,7 @@ const EditResourcePage: FC = () => {
       tempResource.contributors = (await getResourceContributors(identifier)).data;
       tempResource.creators = (await getResourceCreators(identifier)).data;
       tempResource.licenses = (await getResourceLicenses(identifier)).data;
-      tempResource.contents = (await getResourceContents(identifier)).data;
+      tempResource.contents = await getResourceContents(identifier);
       tempResource.tags = (await getResourceTags(identifier)).data;
       if (!tempResource.features.dlr_type) tempResource.features.dlr_type = '';
       if (!tempResource.licenses[0]) tempResource.licenses = [emptyLicense];
