@@ -70,6 +70,7 @@ const filterAdditionalFiles = (contents: undefined | Content[]) => {
         return (
           content.features.dlr_content_type === 'file' &&
           content.features.dlr_thumbnail_default === 'false' &&
+          content.features.dlr_content !== LinkMetadataFilename &&
           content.features.dlr_content_title !== LinkMetadataFilename
         );
       }) ?? []
