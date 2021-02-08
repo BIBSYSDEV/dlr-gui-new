@@ -93,7 +93,7 @@ const EditResourcePage: FC = () => {
     try {
       setIsLoadingResource(true);
       const createResourceResponse = await createResource(ResourceCreationType.LINK, url);
-      await getResourceInit(createResourceResponse.data, ResourceCreationType.LINK);
+      await getResourceInit(createResourceResponse, ResourceCreationType.LINK);
     } catch (error) {
       setResourceInitError(true);
       setIsLoadingResource(false);
@@ -222,6 +222,9 @@ const EditResourcePage: FC = () => {
 
       if (!tempResource.features.dlr_access) {
         await setResourceAccessType(tempResource);
+      }
+      if (!tempResource.contents) {
+        tempResource.contents = await getResourceContents(tempResource.identifier);
       }
       setFormikInitResource(tempResource);
       setResourceInitError(false);

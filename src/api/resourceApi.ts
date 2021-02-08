@@ -13,13 +13,25 @@ export const searchResources = (query: string): Promise<AxiosResponse<SearchResu
   });
 };
 
-export const createResource = (type: string, content: string) => {
+export const createResource = async (type: string, content: string): Promise<Resource> => {
   const data = encodeURI(`type=${type}&app=learning&content=${content}`);
-  return authenticatedApiRequest({
+  const apiResourceResponse = await authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources`),
     method: 'POST',
     data: data,
   });
+  const resource = apiResourceResponse.data;
+  const resourceContents: Content[] = resource.contents;
+  resource.contents = { sideContent: [] };
+  resourceContents.forEach((content) => {
+    if (content.features.dlr_content_master === 'true') {
+      resource.contents.masterContent = content;
+      resource.contents.masterContent.features.dlr_content_title = content.features.dlr_content;
+    } else {
+      resource.contents.sideContent.push(content);
+    }
+  });
+  return resource;
 };
 
 export const deleteResource = async (resourceIdentifier: string) => {
