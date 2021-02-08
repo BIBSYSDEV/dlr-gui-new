@@ -86,22 +86,22 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
       if (commercialValue === '' && modifyAndBuildValue === '') {
         licenseCode = Licenses.CC_BY_NC_ND;
       }
-      await saveLicenseAndChangeAccess(licenseCode, AccessTypes.open);
-    } else if (restrictedValue === Licenses.BI || restrictedValue === Licenses.NTNU) {
-      await saveLicenseAndChangeAccess(restrictedValue, AccessTypes.private);
+      await saveLicense(licenseCode);
     } else {
-      await saveLicenseAndChangeAccess(restrictedValue, AccessTypes.open);
+      await saveLicense(restrictedValue);
+      if (restrictedValue === Licenses.BI || restrictedValue === Licenses.NTNU) {
+        await putAccessType(values.identifier, AccessTypes.private);
+        setFieldValue('features.dlr_access', AccessTypes.private);
+      }
     }
   };
 
-  const saveLicenseAndChangeAccess = async (licenseCode: string, accessType: AccessTypes) => {
+  const saveLicense = async (licenseCode: string) => {
     try {
       setAllChangesSaved(false);
       const license = licenses.find((license) => license.features?.dlr_license_code === licenseCode);
       if (license && values.licenses && values.licenses[0].identifier !== license.identifier) {
-        await putAccessType(values.identifier, accessType);
         await setResourceLicense(values.identifier, license.identifier);
-        values.features.dlr_access = accessType;
         if (values.licenses) {
           if (values.licenses[0].identifier.length > 0) {
             await deleteResourceLicense(values.identifier, values.licenses[0].identifier);

@@ -102,6 +102,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   };
 
   const handleLicenseAgreementChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFieldValue('usageClearedWithOwner', event.target.value);
     try {
       setAllChangesSaved(false);
       let accessType = AccessTypes.private;
@@ -126,10 +127,11 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
       if (values.features.dlr_access !== accessType) {
         setFieldValue('features.dlr_access', accessType);
         await putAccessType(values.identifier, accessType);
-        setFieldValue('features.dlr_access', accessType);
-        values.features.dlr_access = accessType;
       }
       resetForm({ values });
+      if (values.features.dlr_access !== accessType) {
+        setFieldValue('features.dlr_access', accessType);
+      }
       setFieldValue('usageClearedWithOwner', event.target.value);
       setSavingError(false);
     } catch (error) {
