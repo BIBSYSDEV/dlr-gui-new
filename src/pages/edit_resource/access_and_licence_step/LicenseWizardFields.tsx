@@ -49,7 +49,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
 }) => {
   const { t } = useTranslation();
   const { institution } = useSelector((state: RootState) => state.user);
-  const { values, resetForm, setFieldValue } = useFormikContext<Resource>();
+  const { values, resetForm, setFieldValue, handleChange } = useFormikContext<Resource>();
   const [saveRestrictionError, setSaveRestrictionError] = useState(false);
   const [expandModifyAndBuildOption, setExpandModifyAndBuildOption] = useState(false);
 
@@ -123,7 +123,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   };
 
   const handleChangeInExtraRestriction = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFieldValue('resourceRestriction', event.target.value);
+    handleChange(event);
     await calculatePreferredLicense(
       event.target.value,
       values.canBeUsedCommercially,
@@ -137,14 +137,14 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   };
 
   const handleChangeInCommercialOption = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFieldValue('canBeUsedCommercially', event.target.value);
+    handleChange(event);
     setExpandModifyAndBuildOption(true);
     await calculatePreferredLicense(values.resourceRestriction, event.target.value, values.othersCanModifyAndBuildUpon);
     setFieldValue('canBeUsedCommercially', event.target.value);
   };
 
   const handleChangeInModifyAndBuildOption = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFieldValue('othersCanModifyAndBuildUpon', event.target.value);
+    handleChange(event);
     await calculatePreferredLicense(values.resourceRestriction, values.canBeUsedCommercially, event.target.value);
     setFieldValue('othersCanModifyAndBuildUpon', event.target.value);
   };

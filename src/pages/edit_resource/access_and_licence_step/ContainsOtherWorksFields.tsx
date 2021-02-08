@@ -64,7 +64,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
 }) => {
   const { institution } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
-  const { values, resetForm, setFieldValue, setTouched, touched } = useFormikContext<Resource>();
+  const { values, resetForm, setFieldValue, setTouched, touched, handleChange } = useFormikContext<Resource>();
   const [savingError, setSavingError] = useState(false);
 
   const LicenseAgreements: string[] = [
@@ -76,7 +76,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   ];
 
   const handleChangeInContainsOtherPeoplesWork = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFieldValue('containsOtherPeoplesWork', event.target.value);
+    handleChange(event);
     forceResetInLicenseWizard();
     if (values.licenses) {
       await replaceOldLicense(emptyLicense);
@@ -102,7 +102,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   };
 
   const handleLicenseAgreementChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFieldValue('usageClearedWithOwner', event.target.value);
+    handleChange(event);
     try {
       setAllChangesSaved(false);
       let accessType = AccessTypes.private;
