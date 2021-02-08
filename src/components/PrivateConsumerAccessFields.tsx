@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Course, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
 import styled from 'styled-components';
@@ -13,7 +13,6 @@ import {
   List,
   ListItem,
   ListItemText,
-  TextField,
   Typography,
 } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -21,7 +20,6 @@ import ErrorBanner from './ErrorBanner';
 import AddIcon from '@material-ui/icons/Add';
 import Popover from '@material-ui/core/Popover';
 import ClearIcon from '@material-ui/icons/Clear';
-import { Autocomplete, AutocompleteRenderInputParams } from '@material-ui/lab';
 import {
   deleteAdditionalUserConsumerAccess,
   deleteCourseConsumerAccess,
@@ -29,7 +27,6 @@ import {
   getCoursesForInstitution,
   getResourceReaders,
   postAdditionalUserConsumerAccess,
-  postCourseConsumerAccess,
   postCurrentUserInstitutionConsumerAccess,
 } from '../api/sharingApi';
 import { useSelector } from 'react-redux';
@@ -38,6 +35,7 @@ import { useFormikContext } from 'formik';
 import { Resource } from '../types/resource.types';
 import { Colors, StyleWidths } from '../themes/mainTheme';
 import CancelIcon from '@material-ui/icons/Cancel';
+import PrivateConsumerCourseAccessFields from './PrivateConsumerCourseAccessFields';
 
 const StyledPrivateAccessFields = styled.div`
   margin-top: 2.5rem;
@@ -66,6 +64,9 @@ const StyledChip = styled(Chip)`
 
 const StyledCancelIcon = styled(CancelIcon)`
   color: ${Colors.ChipAccessIconBackground};
+  &:hover {
+    color: ${Colors.ChipAccessIconHoverBackground};
+  }
 `;
 
 const StyledChipLabelTypography = styled(Typography)`
@@ -113,13 +114,9 @@ const StyledFormControl = styled(FormControl)`
   }
 `;
 
-const StyledCourseAutocomplete: any = styled(Autocomplete)`
-  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    width: ${StyleWidths.width1};
-  }
-`;
+const MinimumEmailLength = 6;
 
-const PrivateConsumerAccessFields = () => {
+const PrivateConsumerAccessFields: FC = () => {
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.user);
   const { values } = useFormikContext<Resource>();
@@ -134,8 +131,6 @@ const PrivateConsumerAccessFields = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [waitingForCourses, setWaitingForCourses] = useState(false);
   const [showCourseAutoComplete, setShowCourseAutocomplete] = useState(false);
-  const [courseAutocompleteValue, setCourseAutocompleteValue] = useState<Course | null>();
-  const [courseAutocompleteTypedValue, setCourseAutocompleteTypedValue] = useState('');
 
   const addInstitutionPrivateConsumerAccess = async () => {
     await postCurrentUserInstitutionConsumerAccess(values.identifier);
@@ -240,6 +235,12 @@ const PrivateConsumerAccessFields = () => {
     }
   };
 
+  const hasInstitutionPrivateAccess = (): boolean => {
+    return (
+      privateAccessList.findIndex((access) => access.profiles[0].name === ResourceReadAccessNames.Institution) > -1
+    );
+  };
+
   const savePersonConsumerAccess = async () => {
     const emailRegex = /(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
     const accessUsers = personAccessTextFieldValue.split(/[,;\s]/g);
@@ -250,13 +251,13 @@ const PrivateConsumerAccessFields = () => {
       for (let i = 0; i < accessUsers.length; i++) {
         if (accessUsers[i].length > 0 && !emailRegex.test(accessUsers[i])) {
           errorOccurred = true;
-          errorList += ' ' + accessUsers[i] + ' ';
+          errorList += accessUsers[i] + ' ';
         } else if (alreadysavedEmails.includes(accessUsers[i])) {
           errorOccurred = true;
           errorList += ' ' + accessUsers[i] + ' ';
         } else if (
           !privateAccessList.find((access) => access.subject === accessUsers[i]) &&
-          accessUsers[i].length > 3
+          accessUsers[i].length > MinimumEmailLength
         ) {
           setUpdatingPrivateAccessList(true);
           await postAdditionalUserConsumerAccess(values.identifier, accessUsers[i]);
@@ -276,35 +277,6 @@ const PrivateConsumerAccessFields = () => {
     } finally {
       setUpdatingPrivateAccessList(false);
     }
-  };
-
-  const addCourseConsumerAccess = async (course: Course | undefined | null) => {
-    if (course) {
-      try {
-        setPersonAccessTextFieldValueError(true);
-        await postCourseConsumerAccess(values.identifier, course);
-        setPrivateAccessList((prevState) => [
-          ...prevState,
-          {
-            subject: generateCourseSubjectTag(course),
-            profiles: [{ name: ResourceReadAccessNames.Course }],
-          },
-        ]);
-        setSavePrivateAccessNetworkError(false);
-        setCourseAutocompleteValue(null);
-        setCourseAutocompleteTypedValue('');
-      } catch (error) {
-        setSavePrivateAccessNetworkError(true);
-      } finally {
-        setUpdatingPrivateAccessList(false);
-      }
-    }
-  };
-
-  const generateCourseSubjectTag = (course: Course): string => {
-    return `${course.features.code} :: ${user.institution.toLowerCase()} :: ${course.features.year} :: ${
-      course.features.season_nr
-    }`;
   };
 
   return (
@@ -355,10 +327,7 @@ const PrivateConsumerAccessFields = () => {
         <List aria-label={t('access.access_types')}>
           <ListItem
             data-testid="add-institution-consumer-access"
-            disabled={
-              privateAccessList.findIndex((access) => access.profiles[0].name === ResourceReadAccessNames.Institution) >
-              -1
-            }
+            disabled={hasInstitutionPrivateAccess()}
             onClick={() => {
               setSavePrivateAccessNetworkError(false);
               setShowCourseAutocomplete(false);
@@ -447,59 +416,16 @@ const PrivateConsumerAccessFields = () => {
         </StyledFieldsWrapper>
       )}
       {waitingForCourses && <CircularProgress />}
-      {showCourseAutoComplete && courses.length > 0 && (
-        <StyledFieldsWrapper>
-          <StyledCourseAutocomplete
-            data-testid="course-input"
-            renderInput={(params: AutocompleteRenderInputParams) => (
-              <TextField {...params} label={t('access.course')} variant="filled" />
-            )}
-            options={courses.sort((a, b) => -b.features.code.localeCompare(a.features.code))}
-            groupBy={(course: Course) => course.features.code[0]}
-            getOptionDisabled={(course: Course) => {
-              const courseSubject = generateCourseSubjectTag(course);
-              return privateAccessList.findIndex((access) => access.subject.includes(courseSubject)) > -1;
-            }}
-            inputValue={courseAutocompleteTypedValue}
-            onInputChange={(_event: any, newInputValue: string) => {
-              setCourseAutocompleteTypedValue(newInputValue);
-            }}
-            value={courseAutocompleteValue}
-            openText={t('access.show_list')}
-            closeText={t('access.hide_list')}
-            clearText={t('common.cancel')}
-            getOptionLabel={(option: Course) =>
-              `${option.features.code.toUpperCase()} - ${option.features.year} - ${t(
-                `access.season.${option.features.season_nr}`
-              )}`
-            }
-            onChange={(event: any, newValue: Course | null) => {
-              setCourseAutocompleteValue(newValue);
-            }}
-          />
-          <StyledCancelButton
-            variant="outlined"
-            color="primary"
-            onClick={() => {
-              setShowCourseAutocomplete(false);
-              setCourseAutocompleteValue(null);
-            }}>
-            {t('common.cancel')}
-          </StyledCancelButton>
-          <StyledConfirmButton
-            data-testid="confirm-adding-access"
-            variant="contained"
-            color="primary"
-            disabled={!courseAutocompleteValue}
-            onClick={() => addCourseConsumerAccess(courseAutocompleteValue)}>
-            {t('access.grant_access')}
-          </StyledConfirmButton>
-        </StyledFieldsWrapper>
-      )}
-      {showCourseAutoComplete && courses.length === 0 && (
-        <Typography color="secondary" variant="subtitle1">
-          {t('access.no_courses_available')}
-        </Typography>
+      {showCourseAutoComplete && (
+        <PrivateConsumerCourseAccessFields
+          setShowCourseAutocomplete={setShowCourseAutocomplete}
+          setPersonAccessTextFieldValueError={setPersonAccessTextFieldValueError}
+          setSavePrivateAccessNetworkError={setSavePrivateAccessNetworkError}
+          setUpdatingPrivateAccessList={setUpdatingPrivateAccessList}
+          privateAccessList={privateAccessList}
+          addPrivateAccess={(newPrivateAccess) => setPrivateAccessList((prevState) => [...prevState, newPrivateAccess])}
+          courses={courses}
+        />
       )}
     </StyledPrivateAccessFields>
   );
