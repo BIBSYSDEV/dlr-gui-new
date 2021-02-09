@@ -7,7 +7,6 @@ export const StyledDeleteButton = styled(Button)`
 `;
 
 export const StyledCancelButton = styled(Button)`
-  align-self: flex-end;
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     margin-left: 1rem;
   }
@@ -18,7 +17,6 @@ export const StyledCancelButton = styled(Button)`
 
 export const StyledConfirmButton = styled(Button)`
   margin-left: 1rem;
-  align-self: flex-end;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     margin-top: 1rem;
   }

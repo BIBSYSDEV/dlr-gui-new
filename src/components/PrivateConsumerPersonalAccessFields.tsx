@@ -17,7 +17,7 @@ const StyledFormControl = styled(FormControl)`
   }
 `;
 
-const MinimumEmailLength = 6;
+const MinimumEmailLength = 5;
 
 interface PrivateConsumerPersonalAccessFieldsProps {
   privateAccessList: ResourceReadAccess[];
@@ -42,36 +42,32 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
   const savePersonConsumerAccess = async () => {
     const emailRegex = /(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
     const accessUsers = personAccessTextFieldValue.split(/[,;\s]/g);
-    let errorOccurred = false;
     let errorList = '';
-    try {
-      const alreadysavedEmails: string[] = [];
-      for (let i = 0; i < accessUsers.length; i++) {
-        if (accessUsers[i].length > 0 && !emailRegex.test(accessUsers[i])) {
-          errorOccurred = true;
-          errorList += accessUsers[i] + ' ';
-        } else if (alreadysavedEmails.includes(accessUsers[i])) {
-          errorOccurred = true;
-          errorList += ' ' + accessUsers[i] + ' ';
-        } else if (
-          !privateAccessList.find((access) => access.subject === accessUsers[i]) &&
-          accessUsers[i].length > MinimumEmailLength
-        ) {
-          setUpdatingPrivateAccessList(true);
+    const alreadySavedEmails: string[] = [];
+    setSavePrivateAccessNetworkError(false);
+    for (let i = 0; i < accessUsers.length; i++) {
+      if (accessUsers[i].length > 0 && !emailRegex.test(accessUsers[i])) {
+        errorList += accessUsers[i] + ' ';
+      } else if (alreadySavedEmails.includes(accessUsers[i])) {
+        errorList += accessUsers[i] + ' ';
+      } else if (
+        !privateAccessList.find((access) => access.subject === accessUsers[i]) &&
+        accessUsers[i].length > MinimumEmailLength
+      ) {
+        setUpdatingPrivateAccessList(true);
+        try {
           await postAdditionalUserConsumerAccess(values.identifier, accessUsers[i]);
-          alreadysavedEmails.push(accessUsers[i]);
+          alreadySavedEmails.push(accessUsers[i]);
           addPrivateAccess({ subject: accessUsers[i], profiles: [{ name: ResourceReadAccessNames.Person }] });
+        } catch (error) {
+          errorList += accessUsers[i] + ' ';
+          setSavePrivateAccessNetworkError(true);
         }
       }
-      setPersonAccessFieldTextValue(errorList);
-      setPersonAccessTextFieldValueError(errorOccurred);
-      setSavePrivateAccessNetworkError(false);
-    } catch (error) {
-      setPersonAccessTextFieldValueError(true);
-      setSavePrivateAccessNetworkError(true);
-    } finally {
-      setUpdatingPrivateAccessList(false);
     }
+    setUpdatingPrivateAccessList(false);
+    setPersonAccessTextFieldValueError(errorList.length > 0);
+    setPersonAccessFieldTextValue(errorList);
   };
 
   return (

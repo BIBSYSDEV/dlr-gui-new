@@ -32,7 +32,7 @@ context('Actions', () => {
     cy.get('[data-testid=step-navigation-3]').click();
     cy.get('[data-testid=access-dropdown-menu]').click();
     cy.get('[data-testid=access-dropdown-menu-option-private]').click();
-    cy.get('[data-testid=private-consumer-access-chip-1]').contains('Alle hos ntnu');
+    cy.get('[data-testid=private-consumer-access-chip-1]').contains('Alle hos NTNU');
   });
 
   it('is possible to delete private access chips', () => {
@@ -44,7 +44,7 @@ context('Actions', () => {
     cy.get('[data-testid=step-navigation-3]').click();
     cy.get('[data-testid=access-dropdown-menu]').click();
     cy.get('[data-testid=access-dropdown-menu-option-private]').click();
-    cy.get('[data-testid=private-consumer-access-chip-1]').contains('Alle hos ntnu');
+    cy.get('[data-testid=private-consumer-access-chip-1]').contains('Alle hos NTNU');
     cy.get('[data-testid=delete-private-consumer-access-chip-1]').click().should('not.exist');
   });
 
@@ -57,7 +57,7 @@ context('Actions', () => {
     cy.get('[data-testid=step-navigation-3]').click();
     cy.get('[data-testid=access-dropdown-menu]').click();
     cy.get('[data-testid=access-dropdown-menu-option-private]').click();
-    cy.get('[data-testid=private-consumer-access-chip-1]').contains('Alle hos ntnu');
+    cy.get('[data-testid=private-consumer-access-chip-1]').contains('Alle hos NTNU');
     cy.get('[data-testid=add-private-consumer-access-button]').click();
     cy.get('[data-testid=add-institution-consumer-access]').click({ force: true });
     cy.get('[data-testid=private-consumer-access-chip-2]').should('not.exist');
@@ -65,7 +65,7 @@ context('Actions', () => {
     cy.get('[data-testid=private-consumer-access-chip-1]').should('not.exist');
     cy.get('[data-testid=add-private-consumer-access-button]').click();
     cy.get('[data-testid=add-institution-consumer-access]').click();
-    cy.get('[data-testid=private-consumer-access-chip-1]').contains('Alle hos ntnu');
+    cy.get('[data-testid=private-consumer-access-chip-1]').contains('Alle hos NTNU');
   });
 
   it('is possible to register a list of emails, invalid emails remains in the input field', () => {

@@ -29,12 +29,15 @@ export interface Course {
 }
 
 interface CourseFeatures {
-  code: string;
-  title_nn: string;
-  title_nb: string;
-  title_en: string;
+  code?: string;
+  title_nn?: string;
+  title_nb?: string;
+  season_title_nb?: string;
+  title_en?: string;
+  term_nr?: string;
+  version?: string;
   year: string;
-  season_nr: CourseSeason;
+  season_nr: string | CourseSeason;
 }
 
 export enum CourseSeason {

@@ -3,6 +3,7 @@ import { API_PATHS } from '../utils/constants';
 import { AxiosResponse } from 'axios';
 import { Course, ResourceReadAccess } from '../types/resourceReadAccess.types';
 import moment from 'moment/moment';
+import coursesAtOsloMet from '../resources/assets/coursesAtOsloMet.json';
 
 export const postCurrentUserInstitutionConsumerAccess = (resourceIdentifier: string) => {
   return authenticatedApiRequest({
@@ -52,23 +53,27 @@ export const postCourseConsumerAccess = (resourceIdentifier: string, course: Cou
   });
 };
 
-export const deleteCourseConsumerAccess = (
-  resourceIdentifier: string,
-  courseCode: string,
-  courseYear: string,
-  courseSeasonNumber: string
-) => {
+export const deleteCourseConsumerAccess = (resourceIdentifier: string, course: Course) => {
   return authenticatedApiRequest({
-    url: `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/${resourceIdentifier}/profiles/consumer/institutions/current/courses/subjects/codes/${courseCode}/years/${courseYear}/seasons/${courseSeasonNumber}`,
+    url: `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/${resourceIdentifier}/profiles/consumer/institutions/current/courses/subjects/codes/${course.features.code}/years/${course.features.year}/seasons/${course.features.season_nr}`,
     method: 'DELETE',
   });
 };
 
-export const getCoursesForInstitution = (institution: string): Promise<AxiosResponse<Course[]>> => {
-  return authenticatedApiRequest({
-    url: `${API_PATHS.guiBackendTeachingPath}/teachings/institutions/${institution}?after=${moment(new Date()).format(
-      'YYYY-MM-DDTHH:mm:ss.SSSZ'
-    )}`,
-    method: 'GET',
-  });
+export const getCoursesForInstitution = async (institution: string): Promise<Course[]> => {
+  try {
+    const response = await authenticatedApiRequest({
+      url: `${API_PATHS.guiBackendTeachingPath}/teachings/institutions/${institution}?after=${moment(new Date()).format(
+        'YYYY-MM-DDTHH:mm:ss.SSSZ'
+      )}`,
+      method: 'GET',
+    });
+    return await response.data;
+  } catch (error) {
+    if (process.env.REACT_APP_API_URL === 'https://api-dev.dlr.aws.unit.no') {
+      return JSON.parse(JSON.stringify(coursesAtOsloMet));
+    } else {
+      throw error;
+    }
+  }
 };

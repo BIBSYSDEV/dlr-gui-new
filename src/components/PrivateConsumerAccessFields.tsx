@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Course, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
+import { Course, CourseSeason, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
 import styled from 'styled-components';
 import { Chip, CircularProgress, List, ListItem, ListItemText, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -60,6 +60,7 @@ const StyledChipLabelTypography = styled(Typography)`
   padding: 0.3rem;
   white-space: normal;
   color: inherit;
+  font-weight: 900;
 `;
 
 const StyledAccessButtonWrapper = styled.div`
@@ -111,6 +112,28 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
     getPrivateAccessList();
   }, [values.identifier, forceRefresh]);
 
+  const parseCourse = (subject: string): Course | null => {
+    const courseString = subject.split(':: ');
+    //tempCourse[0]: courseCode, tempCourse[1]: institution, tempCourse[2]: year, tempCourse[3]: Season
+    if (
+      courseString[0]?.trim().length > 0 &&
+      courseString[2]?.trim().length > 0 &&
+      courseString[3]?.trim().length > 0
+    ) {
+      return {
+        features: {
+          code: courseString[0].trim(),
+          year: courseString[2].trim(),
+          season_nr: courseString[3].trim() as CourseSeason,
+        },
+      };
+    } else {
+      return null;
+    }
+  };
+
+  console.log(courses);
+
   const deleteAccess = async (access: ResourceReadAccess) => {
     try {
       let deleteAPISuccessful = false;
@@ -124,16 +147,10 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
         deleteAPISuccessful = true;
       } else if (access.profiles[0].name === ResourceReadAccessNames.Course) {
         setUpdatingPrivateAccessList(true);
-        const tempCourse = access.subject.split(':: ');
-        deleteAPISuccessful = true;
-        //tempCourse[0]: courseCode, tempCourse[1]: institution, tempCourse[2]: year, tempCourse[3]: Season
-        if (tempCourse[0]?.trim().length > 0 && tempCourse[2]?.trim().length > 0 && tempCourse[3]?.trim().length > 0) {
-          await deleteCourseConsumerAccess(
-            values.identifier,
-            tempCourse[0].trim(),
-            tempCourse[2].trim(),
-            tempCourse[3].trim()
-          );
+
+        const course = parseCourse(access.subject);
+        if (course) {
+          await deleteCourseConsumerAccess(values.identifier, course);
           deleteAPISuccessful = true;
         }
       }
@@ -152,16 +169,18 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
     if (access.profiles[0].name === ResourceReadAccessNames.Person) {
       return access.subject;
     } else if (access.profiles[0].name === ResourceReadAccessNames.Institution) {
-      return `${t('access.everyone_at')} ${access.subject}`;
+      return `${t('access.everyone_at')} ${access.subject.toUpperCase()}`;
     } else {
-      const courseTemp = access.subject.split(' :: ');
-      if (courseTemp[0]) {
-        courseTemp[0] = courseTemp[0].toUpperCase();
+      const course = parseCourse(access.subject);
+      if (course) {
+        return `${t(
+          'access.everyone_participating_in'
+        )} ${course.features.code?.toUpperCase()} - ${user.institution.toUpperCase()} - ${course.features.year} - ${t(
+          `access.season.${course.features.season_nr}`
+        )}`;
+      } else {
+        return `${t('access.everyone_participating_in')} ${access.subject} `;
       }
-      if (courseTemp[3]) {
-        courseTemp[3] = t(`access.season.${courseTemp[3].trim()}`);
-      }
-      return `${t('access.everyone_participating_in')} ${courseTemp.join(' - ')}`;
     }
   };
 
@@ -182,7 +201,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
     try {
       if (courses.length === 0) {
         const courseResponse = await getCoursesForInstitution(user.institution);
-        setCourses(courseResponse.data);
+        setCourses(courseResponse);
         setSavePrivateAccessNetworkError(false);
       }
     } catch (error) {
@@ -201,7 +220,12 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
 
   return (
     <StyledPrivateAccessFields>
-      <Typography variant="subtitle1">{`${t('access.who_got_access')}:`}</Typography>
+      {privateAccessList.length > 0 && <Typography variant="subtitle1">{`${t('access.who_got_access')}:`}</Typography>}
+      {privateAccessList.length === 0 && (
+        <Typography color="secondary" variant="subtitle1">
+          {t('access.no_one_has_read_access')}
+        </Typography>
+      )}
       <StyledChipWrapper>
         {privateAccessList.map((access, index) => (
           <StyledChip

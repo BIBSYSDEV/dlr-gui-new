@@ -17,6 +17,9 @@ const StyledCourseAutocomplete: any = styled(Autocomplete)`
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     width: ${StyleWidths.width1};
   }
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    width: 100%;
+  }
 `;
 
 interface PrivateConsumerCourseAccessFieldsProps {
@@ -39,7 +42,7 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.user);
   const { values } = useFormikContext<Resource>();
-  const [courseAutocompleteValue, setCourseAutocompleteValue] = useState<Course | null>();
+  const [courseAutocompleteValue, setCourseAutocompleteValue] = useState<Course | null>(null);
   const [courseAutocompleteTypedValue, setCourseAutocompleteTypedValue] = useState('');
 
   const generateCourseSubjectTag = (course: Course): string => {
@@ -48,7 +51,7 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
     }`;
   };
 
-  const addCourseConsumerAccess = async (course: Course | undefined | null) => {
+  const addCourseConsumerAccess = async (course: Course) => {
     if (course) {
       try {
         setUpdatingPrivateAccessList(true);
@@ -77,8 +80,16 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
             renderInput={(params: AutocompleteRenderInputParams) => (
               <TextField {...params} label={t('access.course')} variant="filled" />
             )}
-            options={courses.sort((a, b) => -b.features.code.localeCompare(a.features.code))}
-            groupBy={(course: Course) => course.features.code[0]}
+            options={courses.sort((a, b) => {
+              if (b.features.code && a.features.code) {
+                return -b.features.code.toUpperCase().localeCompare(a.features.code.toUpperCase());
+              } else if (!a.features.code) {
+                return 1;
+              } else {
+                return -1;
+              }
+            })}
+            groupBy={(course: Course) => course.features.code?.[0].toUpperCase()}
             getOptionDisabled={(course: Course) => {
               const courseSubject = generateCourseSubjectTag(course);
               return privateAccessList.findIndex((access) => access.subject.includes(courseSubject)) > -1;
@@ -92,7 +103,7 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
             closeText={t('access.hide_list')}
             clearText={t('common.cancel')}
             getOptionLabel={(option: Course) =>
-              `${option.features.code.toUpperCase()} - ${option.features.year} - ${t(
+              `${option.features.code?.toUpperCase()} - ${option.features.year} - ${t(
                 `access.season.${option.features.season_nr}`
               )}`
             }
@@ -114,7 +125,11 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
             variant="contained"
             color="primary"
             disabled={!courseAutocompleteValue}
-            onClick={() => addCourseConsumerAccess(courseAutocompleteValue)}>
+            onClick={() => {
+              if (courseAutocompleteValue) {
+                addCourseConsumerAccess(courseAutocompleteValue);
+              }
+            }}>
             {t('access.grant_access')}
           </StyledConfirmButton>
         </StyledFieldsWrapper>

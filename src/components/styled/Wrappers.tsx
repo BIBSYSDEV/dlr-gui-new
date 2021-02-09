@@ -68,7 +68,12 @@ export const StyledRadioGroup = styled(RadioGroup)`
 `;
 
 export const StyledFieldsWrapper = styled.div`
-  display: flex;
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    display: flex;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    display: block;
+  }
   align-items: flex-end;
   margin-top: 2.5rem;
 `;
