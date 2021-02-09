@@ -10,7 +10,7 @@ import ErrorBanner from '../../../components/ErrorBanner';
 import { AccessTypes, LicenseAgreementsOptions } from '../../../types/license.types';
 import styled from 'styled-components';
 import { postCurrentUserInstitutionConsumerAccess } from '../../../api/sharingApi';
-import PrivateConsumerAccessFields from '../../../components/PrivateConsumerAccessFields';
+import PrivateConsumerAccessFields from './PrivateConsumerAccessFields';
 
 const StyledFieldWrapper = styled.div`
   max-width: ${StyleWidths.width1};

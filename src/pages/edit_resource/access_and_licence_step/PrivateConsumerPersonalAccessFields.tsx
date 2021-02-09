@@ -2,14 +2,14 @@ import React, { FC, useState } from 'react';
 import { FilledInput, FormControl, IconButton, InputAdornment, InputLabel } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import styled from 'styled-components';
-import { StyleWidths } from '../themes/mainTheme';
-import { postAdditionalUserConsumerAccess } from '../api/sharingApi';
-import { ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
+import { StyleWidths } from '../../../themes/mainTheme';
+import { postAdditionalUserConsumerAccess } from '../../../api/sharingApi';
+import { ResourceReadAccess, ResourceReadAccessNames } from '../../../types/resourceReadAccess.types';
 import { useTranslation } from 'react-i18next';
 import { useFormikContext } from 'formik';
-import { Resource } from '../types/resource.types';
-import { StyledCancelButton, StyledConfirmButton } from './styled/StyledButtons';
-import { StyledFieldsWrapper } from './styled/Wrappers';
+import { Resource } from '../../../types/resource.types';
+import { StyledCancelButton, StyledConfirmButton } from '../../../components/styled/StyledButtons';
+import { StyledFieldsWrapper } from '../../../components/styled/Wrappers';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
 const StyledFormControl = styled(FormControl)`

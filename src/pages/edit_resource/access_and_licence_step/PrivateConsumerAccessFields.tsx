@@ -1,10 +1,15 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Course, CourseSeason, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
+import {
+  Course,
+  CourseSeason,
+  ResourceReadAccess,
+  ResourceReadAccessNames,
+} from '../../../types/resourceReadAccess.types';
 import styled from 'styled-components';
 import { Chip, CircularProgress, List, ListItem, ListItemText, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import ErrorBanner from './ErrorBanner';
+import ErrorBanner from '../../../components/ErrorBanner';
 import AddIcon from '@material-ui/icons/Add';
 import Popover from '@material-ui/core/Popover';
 import {
@@ -14,12 +19,12 @@ import {
   getCoursesForInstitution,
   getResourceReaders,
   postCurrentUserInstitutionConsumerAccess,
-} from '../api/sharingApi';
+} from '../../../api/sharingApi';
 import { useSelector } from 'react-redux';
-import { RootState } from '../state/rootReducer';
+import { RootState } from '../../../state/rootReducer';
 import { useFormikContext } from 'formik';
-import { Resource } from '../types/resource.types';
-import { Colors } from '../themes/mainTheme';
+import { Resource } from '../../../types/resource.types';
+import { Colors } from '../../../themes/mainTheme';
 import CancelIcon from '@material-ui/icons/Cancel';
 import PrivateConsumerCourseAccessFields from './PrivateConsumerCourseAccessFields';
 import PrivateConsumerPersonalAccessFields from './PrivateConsumerPersonalAccessFields';

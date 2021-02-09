@@ -15,7 +15,7 @@
     "save_personal_access_error": {
       "duplicate_email": "One or more emails already have access",
       "invalid_email": "One or more emails are incorrectly typed",
-      "network_error": "problem contacting the server, try again later"
+      "network_error": "Problem contacting the server, try again later"
     },
     "season": {
       "0": "Winter",

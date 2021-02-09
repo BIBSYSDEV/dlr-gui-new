@@ -1,17 +1,17 @@
 import React, { FC, useState } from 'react';
 import { Autocomplete, AutocompleteRenderInputParams } from '@material-ui/lab';
 import { TextField, Typography } from '@material-ui/core';
-import { Course, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
+import { Course, ResourceReadAccess, ResourceReadAccessNames } from '../../../types/resourceReadAccess.types';
 import styled from 'styled-components';
-import { StyleWidths } from '../themes/mainTheme';
+import { StyleWidths } from '../../../themes/mainTheme';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { RootState } from '../state/rootReducer';
-import { postCourseConsumerAccess } from '../api/sharingApi';
+import { RootState } from '../../../state/rootReducer';
+import { postCourseConsumerAccess } from '../../../api/sharingApi';
 import { useFormikContext } from 'formik';
-import { Resource } from '../types/resource.types';
-import { StyledCancelButton, StyledConfirmButton } from './styled/StyledButtons';
-import { StyledFieldsWrapper } from './styled/Wrappers';
+import { Resource } from '../../../types/resource.types';
+import { StyledCancelButton, StyledConfirmButton } from '../../../components/styled/StyledButtons';
+import { StyledFieldsWrapper } from '../../../components/styled/Wrappers';
 
 const StyledCourseAutocomplete: any = styled(Autocomplete)`
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
