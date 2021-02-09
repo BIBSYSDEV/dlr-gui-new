@@ -12,7 +12,7 @@ import AppRoutes from './AppRoutes';
 import { RootState } from './state/rootReducer';
 import { CircularProgress } from '@material-ui/core';
 import { USE_MOCK_DATA } from './utils/constants';
-import { mockUser } from './api/mock-interceptor';
+import { mockUser } from './api/mockdata';
 
 const StyledApp = styled.div`
   min-height: 100vh;

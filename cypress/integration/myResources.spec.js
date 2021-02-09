@@ -1,3 +1,5 @@
+import { mockMyResources } from '../../src/api/mockdata';
+
 context('Actions', () => {
   beforeEach(() => {
     cy.visit('/');
@@ -5,10 +7,16 @@ context('Actions', () => {
 
   it('can se a list of published and unpublished resources', () => {
     cy.get('[data-testid=my-resources-link]').click();
-    cy.get('[data-testid=list-item-resources-456]').should('exist'); //unpublished
-    cy.get('[data-testid=list-item-resources-456]').contains('MockTitle (Unpublished) (link)'); //unpublished
-    cy.get('[data-testid=list-item-resources-789]').should('exist'); //published
-    cy.get('[data-testid=list-item-resources-789]').contains('AnotherMockTitle (Published) (link)'); //unpublished
+    const publishedTestPost = mockMyResources[0];
+    const unpublishedTestPost = mockMyResources[1];
+    cy.get(`[data-testid=list-item-resources-${unpublishedTestPost.identifier}]`).should('exist');
+    cy.get(`[data-testid=list-item-resources-${unpublishedTestPost.identifier}]`).contains(
+      unpublishedTestPost.features.dlr_title
+    );
+    cy.get(`[data-testid=list-item-resources-${publishedTestPost.identifier}]`).should('exist');
+    cy.get(`[data-testid=list-item-resources-${publishedTestPost.identifier}]`).contains(
+      publishedTestPost.features.dlr_title
+    );
   });
 
   it('can delete a resource', () => {

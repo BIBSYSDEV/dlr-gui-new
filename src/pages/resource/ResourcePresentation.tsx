@@ -62,16 +62,18 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
   return (
     resource && (
       <StyledPresentationWrapper>
-        <Typography variant="h2">{resource.features?.dlr_title}</Typography>
+        <Typography data-testid="resource-title" variant="h2">
+          {resource.features?.dlr_title}
+        </Typography>
 
         {preview && (
-          <PreviewComponentWrapper>
+          <PreviewComponentWrapper data-testid="resource-preview">
             <ContentPreview preview={preview} />
           </PreviewComponentWrapper>
         )}
 
         {resource.creators && resource.creators.length !== 0 && (
-          <StyledFeatureWrapper>
+          <StyledFeatureWrapper data-testid="resource-creators">
             <Typography variant="h6">
               {resource.creators.map((creator) => creator.features.dlr_creator_name).join(', ')}
             </Typography>
@@ -79,7 +81,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
         )}
 
         {resource.contributors && resource.contributors.length !== 0 && (
-          <StyledFeatureWrapper>
+          <StyledFeatureWrapper data-testid="resource-contributors">
             <Typography variant="subtitle1">
               {resource.contributors.map((contributor) => contributor.features.dlr_contributor_name).join(', ')}
             </Typography>
@@ -87,35 +89,35 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
         )}
 
         {resource.features.dlr_time_published && (
-          <StyledFeatureWrapper>
+          <StyledFeatureWrapper data-testid="resource-time-published">
             <StyledCaption variant="caption">{t('resource.metadata.published')}</StyledCaption>
             <Typography variant="body1">{resource.features.dlr_time_published}</Typography>
           </StyledFeatureWrapper>
         )}
 
         {resource.features.dlr_time_created && (
-          <StyledFeatureWrapper>
+          <StyledFeatureWrapper data-testid="resource-time-created">
             <StyledCaption variant="caption">{t('resource.metadata.created')}</StyledCaption>
             <Typography variant="body1">{resource.features.dlr_time_created}</Typography>
           </StyledFeatureWrapper>
         )}
 
         {resource.features.dlr_submitter_email && (
-          <StyledFeatureWrapper>
+          <StyledFeatureWrapper data-testid="resource-submitter">
             <StyledCaption variant="caption">{t('resource.metadata.owner')}</StyledCaption>
             <Typography variant="body1">{resource.features.dlr_submitter_email}</Typography>
           </StyledFeatureWrapper>
         )}
 
         {resource.features.dlr_description && (
-          <StyledFeatureWrapper>
+          <StyledFeatureWrapper data-testid="resource-description">
             <StyledCaption variant="caption">{t('resource.metadata.description')}</StyledCaption>
             <Typography variant="body1">{resource.features.dlr_description}</Typography>
           </StyledFeatureWrapper>
         )}
 
         {resource.tags && resource.tags.length !== 0 && (
-          <StyledFeatureWrapper>
+          <StyledFeatureWrapper data-testid="resource-tags">
             <StyledCaption variant="caption">{t('resource.metadata.tags')}</StyledCaption>
             {resource.tags.map((tag, index) => (
               <StyledChip key={index} size="medium" label={tag} />
@@ -124,7 +126,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
         )}
 
         {resource.licenses && resource.licenses.length !== 0 && resource.licenses[0].identifier.length > 0 && (
-          <StyledFeatureWrapper>
+          <StyledFeatureWrapper data-testid="resource-license">
             <StyledCaption variant="caption">{t('resource.metadata.license')}</StyledCaption>
             {resource.licenses.map(
               (license) =>
