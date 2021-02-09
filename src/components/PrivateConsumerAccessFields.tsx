@@ -114,7 +114,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
 
   const parseCourse = (subject: string): Course | null => {
     const courseString = subject.split(':: ');
-    //tempCourse[0]: courseCode, tempCourse[1]: institution, tempCourse[2]: year, tempCourse[3]: Season
+    //subject[0]: courseCode, subject[1]: institution, subject[2]: year, subject[3]: Season
     if (
       courseString[0]?.trim().length > 0 &&
       courseString[2]?.trim().length > 0 &&
@@ -131,8 +131,6 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
       return null;
     }
   };
-
-  console.log(courses);
 
   const deleteAccess = async (access: ResourceReadAccess) => {
     try {

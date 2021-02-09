@@ -71,6 +71,18 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
     }
   };
 
+  const sortCourses = () => {
+    return courses.sort((a, b) => {
+      if (b.features.code && a.features.code) {
+        return -b.features.code.toUpperCase().localeCompare(a.features.code.toUpperCase());
+      } else if (!a.features.code) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
+  };
+
   return (
     <>
       {courses.length > 0 && (
@@ -80,15 +92,7 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
             renderInput={(params: AutocompleteRenderInputParams) => (
               <TextField {...params} label={t('access.course')} variant="filled" />
             )}
-            options={courses.sort((a, b) => {
-              if (b.features.code && a.features.code) {
-                return -b.features.code.toUpperCase().localeCompare(a.features.code.toUpperCase());
-              } else if (!a.features.code) {
-                return 1;
-              } else {
-                return -1;
-              }
-            })}
+            options={sortCourses()}
             groupBy={(course: Course) => course.features.code?.[0].toUpperCase()}
             getOptionDisabled={(course: Course) => {
               const courseSubject = generateCourseSubjectTag(course);
