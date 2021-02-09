@@ -66,3 +66,9 @@ export const StyledRadioGroup = styled(RadioGroup)`
     margin-left: 0;
   }
 `;
+
+export const StyledFieldsWrapper = styled.div`
+  display: flex;
+  align-items: flex-end;
+  margin-top: 2.5rem;
+`;

@@ -2,40 +2,27 @@ import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Course, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
 import styled from 'styled-components';
-import {
-  Chip,
-  CircularProgress,
-  FilledInput,
-  FormControl,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  List,
-  ListItem,
-  ListItemText,
-  Typography,
-} from '@material-ui/core';
+import { Chip, CircularProgress, List, ListItem, ListItemText, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import ErrorBanner from './ErrorBanner';
 import AddIcon from '@material-ui/icons/Add';
 import Popover from '@material-ui/core/Popover';
-import ClearIcon from '@material-ui/icons/Clear';
 import {
   deleteAdditionalUserConsumerAccess,
   deleteCourseConsumerAccess,
   deleteCurrentUserInstitutionConsumerAccess,
   getCoursesForInstitution,
   getResourceReaders,
-  postAdditionalUserConsumerAccess,
   postCurrentUserInstitutionConsumerAccess,
 } from '../api/sharingApi';
 import { useSelector } from 'react-redux';
 import { RootState } from '../state/rootReducer';
 import { useFormikContext } from 'formik';
 import { Resource } from '../types/resource.types';
-import { Colors, StyleWidths } from '../themes/mainTheme';
+import { Colors } from '../themes/mainTheme';
 import CancelIcon from '@material-ui/icons/Cancel';
 import PrivateConsumerCourseAccessFields from './PrivateConsumerCourseAccessFields';
+import PrivateConsumerPersonalAccessFields from './PrivateConsumerPersonalAccessFields';
 
 const StyledPrivateAccessFields = styled.div`
   margin-top: 2.5rem;
@@ -84,39 +71,12 @@ const StyledAddAccessButton = styled(Button)`
   margin-top: 1rem;
 `;
 
-const StyledCancelButton = styled(Button)`
-  align-self: flex-end;
-  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    margin-left: 1rem;
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    margin-top: 1rem;
-  }
-`;
+//if private ResourceReadAccess is added outside the component, then forcerefresh must change to a new value in order to add new private access chips
+interface PrivateConsumerAccessFieldsProps {
+  forceRefresh: boolean | undefined;
+}
 
-const StyledConfirmButton = styled(Button)`
-  margin-left: 1rem;
-  align-self: flex-end;
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    margin-top: 1rem;
-  }
-`;
-
-const StyledFieldsWrapper = styled.div`
-  display: flex;
-  align-items: flex-end;
-  margin-top: 2.5rem;
-`;
-
-const StyledFormControl = styled(FormControl)`
-  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    width: ${StyleWidths.width1};
-  }
-`;
-
-const MinimumEmailLength = 6;
-
-const PrivateConsumerAccessFields: FC = () => {
+const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ forceRefresh = false }) => {
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.user);
   const { values } = useFormikContext<Resource>();
@@ -125,8 +85,6 @@ const PrivateConsumerAccessFields: FC = () => {
   const [showAddAccessPopover, setShowAddAccessPopover] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [showPersonAccessField, setShowPersonAccessField] = useState(false);
-  const [personAccessTextFieldValue, setPersonAccessFieldTextValue] = useState('');
-  const [personAccessTextFieldValueError, setPersonAccessTextFieldValueError] = useState(false);
   const [savePrivateAccessNetworkError, setSavePrivateAccessNetworkError] = useState(false);
   const [courses, setCourses] = useState<Course[]>([]);
   const [waitingForCourses, setWaitingForCourses] = useState(false);
@@ -151,7 +109,7 @@ const PrivateConsumerAccessFields: FC = () => {
       setPrivateAccessList(resourceReadAccessListResponse.data);
     };
     getPrivateAccessList();
-  }, [values.identifier]);
+  }, [values.identifier, forceRefresh]);
 
   const deleteAccess = async (access: ResourceReadAccess) => {
     try {
@@ -241,44 +199,6 @@ const PrivateConsumerAccessFields: FC = () => {
     );
   };
 
-  const savePersonConsumerAccess = async () => {
-    const emailRegex = /(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
-    const accessUsers = personAccessTextFieldValue.split(/[,;\s]/g);
-    let errorOccurred = false;
-    let errorList = '';
-    try {
-      const alreadysavedEmails: string[] = [];
-      for (let i = 0; i < accessUsers.length; i++) {
-        if (accessUsers[i].length > 0 && !emailRegex.test(accessUsers[i])) {
-          errorOccurred = true;
-          errorList += accessUsers[i] + ' ';
-        } else if (alreadysavedEmails.includes(accessUsers[i])) {
-          errorOccurred = true;
-          errorList += ' ' + accessUsers[i] + ' ';
-        } else if (
-          !privateAccessList.find((access) => access.subject === accessUsers[i]) &&
-          accessUsers[i].length > MinimumEmailLength
-        ) {
-          setUpdatingPrivateAccessList(true);
-          await postAdditionalUserConsumerAccess(values.identifier, accessUsers[i]);
-          alreadysavedEmails.push(accessUsers[i]);
-          setPrivateAccessList((prevState) => [
-            ...prevState,
-            { subject: accessUsers[i], profiles: [{ name: ResourceReadAccessNames.Person }] },
-          ]);
-        }
-      }
-      setPersonAccessFieldTextValue(errorList);
-      setPersonAccessTextFieldValueError(errorOccurred);
-      setSavePrivateAccessNetworkError(false);
-    } catch (error) {
-      setPersonAccessTextFieldValueError(true);
-      setSavePrivateAccessNetworkError(true);
-    } finally {
-      setUpdatingPrivateAccessList(false);
-    }
-  };
-
   return (
     <StyledPrivateAccessFields>
       <Typography variant="subtitle1">{`${t('access.who_got_access')}:`}</Typography>
@@ -362,64 +282,18 @@ const PrivateConsumerAccessFields: FC = () => {
         </List>
       </Popover>
       {showPersonAccessField && (
-        <StyledFieldsWrapper>
-          <StyledFormControl variant="filled" fullWidth>
-            <InputLabel htmlFor="feide-id-input">{t('access.email_label')}</InputLabel>
-            <FilledInput
-              data-testid="feide-id-input"
-              id="feide-id-input"
-              value={personAccessTextFieldValue}
-              autoFocus={true}
-              multiline
-              fullWidth
-              error={personAccessTextFieldValueError && personAccessTextFieldValue.length > 0}
-              onChange={(event) => setPersonAccessFieldTextValue(event.target.value)}
-              onKeyPress={(event) => {
-                if (event.key === 'Enter') {
-                  savePersonConsumerAccess();
-                }
-              }}
-              endAdornment={
-                personAccessTextFieldValue.length > 0 ? (
-                  <InputAdornment position="end">
-                    <IconButton
-                      size="small"
-                      aria-label={t('common.clear')}
-                      title={t('common.cancel')}
-                      onClick={() => {
-                        setPersonAccessTextFieldValueError(false);
-                        setPersonAccessFieldTextValue('');
-                      }}>
-                      <ClearIcon />
-                    </IconButton>
-                  </InputAdornment>
-                ) : null
-              }
-            />
-          </StyledFormControl>
-          <StyledCancelButton
-            variant="outlined"
-            color="primary"
-            onClick={() => {
-              setPersonAccessFieldTextValue('');
-              setShowPersonAccessField(false);
-            }}>
-            {t('common.cancel')}
-          </StyledCancelButton>
-          <StyledConfirmButton
-            disabled={personAccessTextFieldValue.length < 3}
-            variant="contained"
-            color="primary"
-            onClick={() => savePersonConsumerAccess()}>
-            {t('access.grant_access')}
-          </StyledConfirmButton>
-        </StyledFieldsWrapper>
+        <PrivateConsumerPersonalAccessFields
+          privateAccessList={privateAccessList}
+          setShowPersonAccessField={setShowPersonAccessField}
+          setUpdatingPrivateAccessList={setUpdatingPrivateAccessList}
+          setSavePrivateAccessNetworkError={setSavePrivateAccessNetworkError}
+          addPrivateAccess={(newPrivateAccess) => setPrivateAccessList((prevState) => [...prevState, newPrivateAccess])}
+        />
       )}
       {waitingForCourses && <CircularProgress />}
       {showCourseAutoComplete && (
         <PrivateConsumerCourseAccessFields
           setShowCourseAutocomplete={setShowCourseAutocomplete}
-          setPersonAccessTextFieldValueError={setPersonAccessTextFieldValueError}
           setSavePrivateAccessNetworkError={setSavePrivateAccessNetworkError}
           setUpdatingPrivateAccessList={setUpdatingPrivateAccessList}
           privateAccessList={privateAccessList}

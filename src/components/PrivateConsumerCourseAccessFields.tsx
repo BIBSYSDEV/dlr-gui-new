@@ -5,28 +5,13 @@ import { Course, ResourceReadAccess, ResourceReadAccessNames } from '../types/re
 import styled from 'styled-components';
 import { StyleWidths } from '../themes/mainTheme';
 import { useTranslation } from 'react-i18next';
-import Button from '@material-ui/core/Button';
 import { useSelector } from 'react-redux';
 import { RootState } from '../state/rootReducer';
 import { postCourseConsumerAccess } from '../api/sharingApi';
 import { useFormikContext } from 'formik';
 import { Resource } from '../types/resource.types';
-
-const StyledFieldsWrapper = styled.div`
-  display: flex;
-  align-items: flex-end;
-  margin-top: 2.5rem;
-`;
-
-const StyledCancelButton = styled(Button)`
-  align-self: flex-end;
-  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    margin-left: 1rem;
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    margin-top: 1rem;
-  }
-`;
+import { StyledCancelButton, StyledConfirmButton } from './styled/StyledButtons';
+import { StyledFieldsWrapper } from './styled/Wrappers';
 
 const StyledCourseAutocomplete: any = styled(Autocomplete)`
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
@@ -34,17 +19,8 @@ const StyledCourseAutocomplete: any = styled(Autocomplete)`
   }
 `;
 
-const StyledConfirmButton = styled(Button)`
-  margin-left: 1rem;
-  align-self: flex-end;
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    margin-top: 1rem;
-  }
-`;
-
 interface PrivateConsumerCourseAccessFieldsProps {
   setShowCourseAutocomplete: (showCourseAutocomplete: boolean) => void;
-  setPersonAccessTextFieldValueError: (personAccessTextFieldValueError: boolean) => void;
   setSavePrivateAccessNetworkError: (savePrivateAccessNetworkError: boolean) => void;
   setUpdatingPrivateAccessList: (updatingPrivateAccessList: boolean) => void;
   privateAccessList: ResourceReadAccess[];
@@ -54,7 +30,6 @@ interface PrivateConsumerCourseAccessFieldsProps {
 
 const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsProps> = ({
   setShowCourseAutocomplete,
-  setPersonAccessTextFieldValueError,
   setSavePrivateAccessNetworkError,
   setUpdatingPrivateAccessList,
   privateAccessList,
@@ -76,7 +51,7 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
   const addCourseConsumerAccess = async (course: Course | undefined | null) => {
     if (course) {
       try {
-        setPersonAccessTextFieldValueError(true);
+        setUpdatingPrivateAccessList(true);
         await postCourseConsumerAccess(values.identifier, course);
         addPrivateAccess({
           subject: generateCourseSubjectTag(course),

@@ -26,6 +26,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, setFieldTouched, setFieldValue, handleChange, resetForm } = useFormikContext<Resource>();
   const [savingAccessTypeError, setSavingAccessTypeError] = useState(false);
+  const [forceRefreshInPrivateConsumerAccessFields, setForceRefreshInPrivateConsumerAccessFields] = useState(false);
 
   const saveResourceAccessType = async (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (event.target.value.length > 0) {
@@ -42,6 +43,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
             values.containsOtherPeoplesWork !== LicenseAgreementsOptions.NoClearance
           ) {
             await postCurrentUserInstitutionConsumerAccess(values.identifier);
+            setForceRefreshInPrivateConsumerAccessFields((prevState) => !prevState);
           }
         }
       } catch (error) {
@@ -88,7 +90,9 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
             )}
           </Field>
         </StyledFieldWrapper>
-        {values.features.dlr_access === AccessTypes.private && <PrivateConsumerAccessFields />}
+        {values.features.dlr_access === AccessTypes.private && (
+          <PrivateConsumerAccessFields forceRefresh={forceRefreshInPrivateConsumerAccessFields} />
+        )}
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );
