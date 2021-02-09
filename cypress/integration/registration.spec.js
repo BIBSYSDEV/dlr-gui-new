@@ -1,3 +1,5 @@
+import { mockMyResources, mockCalculatedResource } from '../../src/api/mockdata';
+
 context('Actions', () => {
   beforeEach(() => {
     cy.visit('/');
@@ -8,8 +10,8 @@ context('Actions', () => {
     cy.get('[data-testid=new-registration-link]').click();
     cy.get('[data-testid=new-resource-link]').click();
     cy.get('[data-testid=new-resource-link-input]').type(testLink);
-    cy.get('[data-testid=new-resource-link-submit-button]').click({ force: true });
-    cy.get('[data-testid=dlr_title-input]').should('have.value', 'This is a mocked generated title');
+    cy.get('[data-testid=new-resource-link-submit-button]').click();
+    cy.get('[data-testid=dlr_title-input]').should('have.value', mockCalculatedResource.features.dlr_title);
     cy.get('[data-testid=step-navigation-2').click();
     cy.get('[data-testid=content-step-link]').contains(testLink);
   });
@@ -24,7 +26,9 @@ context('Actions', () => {
   });
 
   it('uses licenseWizard', () => {
-    cy.visit('/editresource/123');
+    const unpublishedTestPost = mockMyResources[1];
+    cy.visit(`/editresource/${unpublishedTestPost.identifier}]`);
+
     cy.get('[data-testid=step-navigation-3]').click();
     cy.get('[data-testid=licence-field]').contains('CC BY 4.0');
 
