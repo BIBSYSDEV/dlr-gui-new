@@ -3,6 +3,14 @@ context('Actions', () => {
     cy.visit('/');
   });
 
+  it('can se a list of published and unpublished resources', () => {
+    cy.get('[data-testid=my-resources-link]').click();
+    cy.get('[data-testid=list-item-resources-456]').should('exist'); //unpublished
+    cy.get('[data-testid=list-item-resources-456]').contains('MockTitle (Unpublished) (link)'); //unpublished
+    cy.get('[data-testid=list-item-resources-789]').should('exist'); //published
+    cy.get('[data-testid=list-item-resources-789]').contains('AnotherMockTitle (Published) (link)'); //unpublished
+  });
+
   it('can delete a resource', () => {
     cy.get('[data-testid=my-resources-link]').click();
     cy.get('[data-testid=delete-confirm-dialog]').should('not.exist');
