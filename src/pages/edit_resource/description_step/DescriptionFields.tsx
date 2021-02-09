@@ -47,7 +47,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
                 label={t('resource.metadata.title')}
                 error={touched && !!error}
                 helperText={<ErrorMessage name={field.name} />}
-                inputProps={{ 'data-testid': 'dlr_title-input' }}
+                inputProps={{ 'data-testid': 'dlr-title-input' }}
                 onBlur={(event) => {
                   handleBlur(event);
                   !error && saveField(event, ResourceFeatureNamesFullPath.Title);
@@ -68,6 +68,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
                 fullWidth
                 multiline
                 rows="4"
+                inputProps={{ 'data-testid': 'dlr-description-input' }}
                 label={t('resource.metadata.description')}
                 onBlur={(event) => {
                   handleBlur(event);
