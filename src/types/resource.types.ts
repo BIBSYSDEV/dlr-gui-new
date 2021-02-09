@@ -40,6 +40,7 @@ export const emptyResource: Resource = {
   contributors: [],
   creators: [],
   licenses: [],
+  tags: [],
   containsOtherPeoplesWork: '',
   usageClearedWithOwner: '',
   resourceRestriction: '',
