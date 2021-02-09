@@ -64,7 +64,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
 }) => {
   const { institution } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
-  const { values, resetForm, setFieldValue, setTouched, touched } = useFormikContext<Resource>();
+  const { values, resetForm, setFieldValue, setTouched, touched, handleChange } = useFormikContext<Resource>();
   const [savingError, setSavingError] = useState(false);
 
   const LicenseAgreements: string[] = [
@@ -76,6 +76,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   ];
 
   const handleChangeInContainsOtherPeoplesWork = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleChange(event);
     forceResetInLicenseWizard();
     if (values.licenses) {
       await replaceOldLicense(emptyLicense);
@@ -101,6 +102,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   };
 
   const handleLicenseAgreementChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleChange(event);
     try {
       setAllChangesSaved(false);
       let accessType = AccessTypes.private;
@@ -123,11 +125,13 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
         await replaceOldLicense(emptyLicense);
       }
       if (values.features.dlr_access !== accessType) {
-        await putAccessType(values.identifier, accessType);
         setFieldValue('features.dlr_access', accessType);
-        values.features.dlr_access = accessType;
+        await putAccessType(values.identifier, accessType);
       }
       resetForm({ values });
+      if (values.features.dlr_access !== accessType) {
+        setFieldValue('features.dlr_access', accessType);
+      }
       setFieldValue('usageClearedWithOwner', event.target.value);
       setSavingError(false);
     } catch (error) {
@@ -153,9 +157,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
                   {...field}
                   aria-label={t('license.questions.examples')}
                   value={field.value}
-                  onChange={(event) => {
-                    handleChangeInContainsOtherPeoplesWork(event);
-                  }}>
+                  onChange={(event) => handleChangeInContainsOtherPeoplesWork(event)}>
                   <FormControlLabel
                     value={ContainsOtherPeoplesWorkOptions.No}
                     control={<Radio color="primary" />}
