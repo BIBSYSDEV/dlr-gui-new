@@ -65,6 +65,7 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
                   value={field.value.identifier}
                   error={touched && !!error}
                   fullWidth
+                  data-testid="licence-field"
                   onClick={(event) => {
                     //OnBlur does not work until clicked twice outside selector. Using onClick instead
                     setFieldTouched(LicenceFieldName, true, true);
