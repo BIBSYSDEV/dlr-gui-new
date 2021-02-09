@@ -10,6 +10,7 @@ import { useFormikContext } from 'formik';
 import { Resource } from '../types/resource.types';
 import { StyledCancelButton, StyledConfirmButton } from './styled/StyledButtons';
 import { StyledFieldsWrapper } from './styled/Wrappers';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 const StyledFormControl = styled(FormControl)`
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
@@ -18,6 +19,7 @@ const StyledFormControl = styled(FormControl)`
 `;
 
 const MinimumEmailLength = 5;
+const HelperTextId = 'email-helper-text';
 
 interface PrivateConsumerPersonalAccessFieldsProps {
   privateAccessList: ResourceReadAccess[];
@@ -38,6 +40,9 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
   const { values } = useFormikContext<Resource>();
   const [personAccessTextFieldValue, setPersonAccessFieldTextValue] = useState('');
   const [personAccessTextFieldValueError, setPersonAccessTextFieldValueError] = useState(false);
+  const [hasDuplicateEmail, setHasDuplicateEmail] = useState(false);
+  const [networkErrorOccured, setNetworkErrorOccured] = useState(false);
+  const [containsInvalidEmail, setContainsInvalidEmail] = useState(false);
 
   const savePersonConsumerAccess = async () => {
     const emailRegex = /(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
@@ -45,11 +50,19 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
     let errorList = '';
     const alreadySavedEmails: string[] = [];
     setSavePrivateAccessNetworkError(false);
+    setHasDuplicateEmail(false);
+    setNetworkErrorOccured(false);
+    setContainsInvalidEmail(false);
     for (let i = 0; i < accessUsers.length; i++) {
       if (accessUsers[i].length > 0 && !emailRegex.test(accessUsers[i])) {
         errorList += accessUsers[i] + ' ';
-      } else if (alreadySavedEmails.includes(accessUsers[i])) {
+        setContainsInvalidEmail(true);
+      } else if (
+        alreadySavedEmails.includes(accessUsers[i]) ||
+        privateAccessList.find((access) => access.subject === accessUsers[i])
+      ) {
         errorList += accessUsers[i] + ' ';
+        setHasDuplicateEmail(true);
       } else if (
         !privateAccessList.find((access) => access.subject === accessUsers[i]) &&
         accessUsers[i].length > MinimumEmailLength
@@ -61,6 +74,7 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
           addPrivateAccess({ subject: accessUsers[i], profiles: [{ name: ResourceReadAccessNames.Person }] });
         } catch (error) {
           errorList += accessUsers[i] + ' ';
+          setNetworkErrorOccured(true);
           setSavePrivateAccessNetworkError(true);
         }
       }
@@ -80,6 +94,7 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
             id="feide-id-input"
             value={personAccessTextFieldValue}
             autoFocus={true}
+            aria-describedby={HelperTextId}
             multiline
             fullWidth
             error={personAccessTextFieldValueError && personAccessTextFieldValue.length > 0}
@@ -98,6 +113,9 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
                     title={t('common.cancel')}
                     onClick={() => {
                       setPersonAccessTextFieldValueError(false);
+                      setHasDuplicateEmail(false);
+                      setNetworkErrorOccured(false);
+                      setContainsInvalidEmail(false);
                       setPersonAccessFieldTextValue('');
                     }}>
                     <ClearIcon />
@@ -106,6 +124,24 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
               ) : null
             }
           />
+          {!containsInvalidEmail && !networkErrorOccured && !hasDuplicateEmail && (
+            <FormHelperText id={HelperTextId}>{t('access.email_helper_text')}</FormHelperText>
+          )}
+          {hasDuplicateEmail && (
+            <FormHelperText id={HelperTextId} error>
+              {t('access.save_personal_access_error.duplicate_email')}.
+            </FormHelperText>
+          )}
+          {networkErrorOccured && (
+            <FormHelperText id={HelperTextId} error>
+              {t('access.save_personal_access_error.network_error')}.
+            </FormHelperText>
+          )}
+          {containsInvalidEmail && (
+            <FormHelperText id={HelperTextId} error>
+              {t('access.save_personal_access_error.invalid_email')}.
+            </FormHelperText>
+          )}
         </StyledFormControl>
         <StyledCancelButton
           variant="outlined"
@@ -113,6 +149,9 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
           onClick={() => {
             setPersonAccessFieldTextValue('');
             setShowPersonAccessField(false);
+            setHasDuplicateEmail(false);
+            setNetworkErrorOccured(false);
+            setContainsInvalidEmail(false);
           }}>
           {t('common.cancel')}
         </StyledCancelButton>

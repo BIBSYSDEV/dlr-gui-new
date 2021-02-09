@@ -3,6 +3,7 @@
     "access_types": "Access types",
     "add_access": "Add access",
     "email_label": "Email(s) or Feide-id(s)",
+    "email_helper_text": "It is possible to fill in several emails as a list",
     "course": "Course",
     "course_code": "Course code",
     "everyone_at": "Everyone at",
@@ -11,6 +12,11 @@
     "hide_list": "Hide list",
     "no_courses_available": "No courses available",
     "no_one_has_read_access": "No one has read access",
+    "save_personal_access_error": {
+      "duplicate_email": "One or more emails already have access",
+      "invalid_email": "One or more emails are incorrectly typed",
+      "network_error": "problem contacting the server, try again later"
+    },
     "season": {
       "0": "Winter",
       "1": "Spring",
