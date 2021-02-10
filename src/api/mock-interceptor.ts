@@ -4,10 +4,12 @@ import { mockSearchResults } from '../utils/testfiles/search_results';
 import { licenses as allLicenses } from '../utils/testfiles/licenses';
 import { API_PATHS } from '../utils/constants';
 import { User } from '../types/user.types';
-import { Contributor, Creator, Resource, ResourceContents } from '../types/resource.types';
+import { Contributor, Creator, emptyResource, Resource, ResourceContents } from '../types/resource.types';
 import { License } from '../types/license.types';
 import { FileApiPaths } from './fileApi';
 import { v4 as uuidv4 } from 'uuid';
+import { Course, CourseSeason, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
+import deepmerge from 'deepmerge';
 
 export const mockUser: User = {
   id: 'user123',
@@ -17,11 +19,12 @@ export const mockUser: User = {
   name: 'Test User',
 };
 
-const mockResource: Resource = {
+const mockResource: Resource = deepmerge(emptyResource, {
   identifier: 'resource-123',
   features: {
     dlr_title: 'This is a mocked title',
     dlr_content: 'http://www.test.com',
+    dlr_access: '',
     dlr_content_type: 'file',
     dlr_time_published: '2020-11-06T12:47:18.635Z',
     dlr_time_created: '2020-11-01T12:47:18.635Z',
@@ -55,36 +58,19 @@ const mockResource: Resource = {
   creators: [],
   containsOtherPeoplesWork: '',
   usageClearedWithOwner: '',
-};
+});
 
-const mockEmptyContent: ResourceContents = {
-  masterContent: {
-    identifier: '',
-    features: {
-      dlr_content: '',
-      dlr_content_title: '',
-    },
-  },
-  additionalContent: [],
-};
-
-const mockCalculatedResource: Resource = {
+const mockCalculatedResource: Resource = deepmerge(emptyResource, {
   features: {
     dlr_title: 'This is a mocked generated title',
     dlr_content: 'http://www.test.com',
     dlr_content_type: 'link',
   },
   identifier: 'resource-345',
-  licenses: [],
-  contents: mockEmptyContent,
-  contributors: [],
-  creators: [],
-  containsOtherPeoplesWork: '',
-  usageClearedWithOwner: '',
-};
+});
 
 const mockMyResources: Resource[] = [
-  {
+  deepmerge(emptyResource, {
     features: {
       dlr_title: 'MockTitle (Published)',
       dlr_status_published: true,
@@ -92,14 +78,8 @@ const mockMyResources: Resource[] = [
       dlr_content: 'some content',
     },
     identifier: '123',
-    licenses: [],
-    contents: mockEmptyContent,
-    contributors: [],
-    creators: [],
-    containsOtherPeoplesWork: '',
-    usageClearedWithOwner: '',
-  },
-  {
+  }),
+  deepmerge(emptyResource, {
     features: {
       dlr_content_type: 'link',
       dlr_title: 'MockTitle (Unpublished)',
@@ -107,14 +87,8 @@ const mockMyResources: Resource[] = [
       dlr_content: 'some content',
     },
     identifier: '456',
-    licenses: [],
-    contents: mockEmptyContent,
-    contributors: [],
-    creators: [],
-    containsOtherPeoplesWork: '',
-    usageClearedWithOwner: '',
-  },
-  {
+  }),
+  deepmerge(emptyResource, {
     features: {
       dlr_title: 'AnotherMockTitle (Published)',
       dlr_content_type: 'link',
@@ -122,13 +96,7 @@ const mockMyResources: Resource[] = [
       dlr_content: 'some content',
     },
     identifier: '789',
-    licenses: [],
-    contents: mockEmptyContent,
-    contributors: [],
-    creators: [],
-    containsOtherPeoplesWork: '',
-    usageClearedWithOwner: '',
-  },
+  }),
 ];
 
 const mockResourceContributors: Contributor[] = [
@@ -245,6 +213,46 @@ const mockCreatedResourceWithContents = {
   },
 };
 
+const mockResourceReadAccess: ResourceReadAccess[] = [
+  {
+    time: '2021-02-01T13:54:35.263Z',
+    subject: 'someUser@user.no',
+    object: 'resource-345',
+    features: { dlr_resource_app: 'learning', dlr_resource_title: 'This is a mocked generated title' },
+    profiles: [{ time: '2021-02-01T13:36:25.421Z', name: ResourceReadAccessNames.Person, ttlSeconds: 0 }],
+  },
+  {
+    time: '2021-02-01T13:54:35.263Z',
+    subject: 'ntnu',
+    object: 'resource-345',
+    features: { dlr_resource_app: 'learning', dlr_resource_title: 'This is a mocked generated title' },
+    profiles: [{ time: '2021-02-01T13:24:03.022Z', name: ResourceReadAccessNames.Institution, ttlSeconds: 0 }],
+  },
+];
+
+const mockCourses: Course[] = [
+  {
+    features: {
+      code: 'emne1',
+      title_nn: 'emne 1',
+      title_nb: 'emne 1',
+      title_en: 'subject 1',
+      season_nr: CourseSeason.Winter,
+      year: '2020',
+    },
+  },
+  {
+    features: {
+      code: 'test2',
+      title_nn: 'test 2',
+      title_nb: 'test 2',
+      title_en: 'test 2',
+      season_nr: CourseSeason.Winter,
+      year: '2020',
+    },
+  },
+];
+
 const mockToken = 'mockToken';
 
 const mockCreateUpload = { uploadId: 'asd', key: 'sfd' };
@@ -339,6 +347,36 @@ export const interceptRequestsOnMock = () => {
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources`)).reply(200, mockCreatedResourceWithContents);
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/access`)).reply(200);
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*`)).reply(202);
+
+  //RESOURCE SHARING
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*`))
+    .reply(200, mockResourceReadAccess);
+  mock
+    .onPost(
+      new RegExp(
+        `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*/profiles/consumer/institutions/current`
+      )
+    )
+    .reply(200);
+  mock
+    .onDelete(
+      new RegExp(
+        `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*/profiles/consumer/institutions/current`
+      )
+    )
+    .reply(202);
+  mock
+    .onPost(new RegExp(`${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*/profiles/consumer/user`))
+    .reply(200);
+  mock
+    .onDelete(new RegExp(`${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*/profiles/consumer/user`))
+    .reply(202);
+
+  //Courses:
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendTeachingPath}/teachings/institutions/.*?after=.*`))
+    .reply(200, mockCourses);
 
   //RESOURCE CONTENT EVENTS:
   mock

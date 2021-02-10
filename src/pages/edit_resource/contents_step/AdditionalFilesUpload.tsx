@@ -5,7 +5,6 @@ import { Content } from '../../../types/content.types';
 import { useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
-import placeholderImage from '../../../resources/images/placeholder.png';
 import { UppyFile } from '@uppy/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { Colors } from '../../../themes/mainTheme';
@@ -16,6 +15,7 @@ import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { deleteResourceContent } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
+import Thumbnail from '../../../components/Thumbnail';
 
 interface AdditionalFilesUploadProps {
   additionalFileUploadUppy: Uppy;
@@ -51,10 +51,6 @@ const SmallParagraphSpace = styled.div`
   @media (min-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
     padding-left: 2rem;
   }
-`;
-
-const StyledImg = styled.img`
-  width: 100px;
 `;
 
 const UploadImageProgressCard = styled.div`
@@ -197,7 +193,7 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
         {contents.map((content, index) => (
           <LargeParagraphSpace key={content.identifier}>
             <UploadImageProgressCard>
-              <StyledImg alt="resource" src={placeholderImage} />
+              <Thumbnail alt="resource" resourceOrContentIdentifier={content.identifier} />
               {displayContent(content.features.dlr_content)?.percentage !== 0 && (
                 <>
                   <Typography align="right" variant="body1">

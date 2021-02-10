@@ -1,8 +1,37 @@
 {
+  "access": {
+    "access_types": "Access types",
+    "add_access": "Add access",
+    "email_label": "Email(s) or Feide-id(s)",
+    "email_helper_text": "It is possible to fill in several emails as a list",
+    "course": "Course",
+    "course_code": "Course code",
+    "everyone_at": "Everyone at",
+    "everyone_participating_in": "Everyone participating in",
+    "grant_access": "Grant access",
+    "hide_list": "Hide list",
+    "no_courses_available": "No courses available",
+    "no_one_has_read_access": "No one has read access",
+    "save_personal_access_error": {
+      "duplicate_email": "One or more emails already have access",
+      "invalid_email": "One or more emails are incorrectly typed",
+      "network_error": "Problem contacting the server, try again later"
+    },
+    "season": {
+      "0": "Winter",
+      "1": "Spring",
+      "2": "Summer",
+      "3": "Autumn"
+    },
+    "single_persons": "Single persons",
+    "show_list": "Show list",
+    "who_got_access": "Who got access"
+  },
   "common": {
     "all_changes_saved": "All changes saved",
     "back": "Back",
     "cancel": "Cancel",
+    "clear": "Clear",
     "delete": "Delete",
     "edit": "Edit",
     "finish": "Finish",
@@ -47,10 +76,10 @@
     "license_information": "License information",
     "modify_and_build": "Modify and build upon",
     "modify_and_build_options": {
-      "dont_care": "And, they may choose their own license",
-      "ND": "No, others can only use the material in it's original form",
-      "primary_yes": "Yes, others can modify and build upon your material",
-      "share_alike": "But, they have to use the same license as this resource (be aware that this might cause complications for usage of your resource)"
+      "non_destructive": "No, others can only use the material in it's original form",
+      "yes": "Yes, others can modify and build upon your material",
+      "share_alike": "Yes, but they have to use the same license as this resource",
+      "share_alike_warning": "Be aware that this might cause complications for usage of your resource"
     },
     "published_with": "Published with",
     "questions": {
@@ -90,7 +119,7 @@
       "CC_BY-NC-SA_4_0": "Yes, it contains material with license CC BY-NC-SA 4.0",
       "CC_BY-SA_4_0": "Yes, it contains material with license CC BY-SA 4.0",
       "ntnu-internt": "Yes, it can only be used internally at NTNU",
-      "yes": "Yes"
+      "yes": "Yes, I want to apply restrictions on the use of the resource"
     },
     "selected_license": "Selected license"
   },

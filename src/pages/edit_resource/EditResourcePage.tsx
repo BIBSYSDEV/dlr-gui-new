@@ -11,6 +11,7 @@ import PrivateRoute from '../../utils/routes/PrivateRoute';
 import {
   ContributorFeatureNames,
   CreatorFeatureAttributes,
+  emptyResource,
   Resource,
   ResourceCreationType,
   ResourceFeatureNames,
@@ -198,10 +199,11 @@ const EditResourcePage: FC = () => {
         user.institution
       );
 
-      const responseWithCalculatedDefaults = await getResourceDefaults(startingResource.identifier);
-      await saveCalculatedFields(responseWithCalculatedDefaults.data);
-      const tempResource: Resource = {
-        ...deepmerge(startingResource, responseWithCalculatedDefaults.data),
+      const responseWithCalculatedDefaults = (await getResourceDefaults(startingResource.identifier)).data;
+      await saveCalculatedFields(responseWithCalculatedDefaults);
+      const tempResource = deepmerge(emptyResource, startingResource);
+      const resource: Resource = {
+        ...deepmerge(tempResource, responseWithCalculatedDefaults),
         contributors: [
           {
             identifier: contributorResponse.data.identifier,
@@ -213,20 +215,18 @@ const EditResourcePage: FC = () => {
           },
         ],
         licenses: [emptyLicense],
-        tags: [],
-        containsOtherPeoplesWork: '',
-        usageClearedWithOwner: '',
       };
-      await setDLRType(resourceCreationType, responseWithCalculatedDefaults.data, tempResource, startingResource);
-      await setCreator(tempResource, startingResource.identifier, user.name);
+      await setDLRType(resourceCreationType, responseWithCalculatedDefaults, resource, startingResource);
+      await setCreator(resource, startingResource.identifier, user.name);
 
-      if (!tempResource.features.dlr_access) {
-        await setResourceAccessType(tempResource);
+      if (!resource.features.dlr_access) {
+        await setResourceAccessType(resource);
       }
-      if (!tempResource.contents) {
-        tempResource.contents = await getResourceContents(tempResource.identifier);
+      if (!resource.contents) {
+        resource.contents = await getResourceContents(resource.identifier);
       }
-      setFormikInitResource(tempResource);
+
+      setFormikInitResource(resource);
       setResourceInitError(false);
     } catch (error) {
       setResourceInitError(true);
@@ -268,20 +268,20 @@ const EditResourcePage: FC = () => {
   useEffect(() => {
     const loadResource = async () => {
       setIsLoadingResource(true);
-      const tempResource = (await getResource(identifier)).data;
+      const resource = deepmerge(emptyResource, (await getResource(identifier)).data);
       setResourceType(
-        tempResource.features.dlr_content_type === ResourceCreationType.LINK
+        resource.features.dlr_content_type === ResourceCreationType.LINK
           ? ResourceCreationType.LINK
           : ResourceCreationType.FILE
       );
-      tempResource.contributors = (await getResourceContributors(identifier)).data;
-      tempResource.creators = (await getResourceCreators(identifier)).data;
-      tempResource.licenses = (await getResourceLicenses(identifier)).data;
-      tempResource.contents = await getResourceContents(identifier);
-      tempResource.tags = (await getResourceTags(identifier)).data;
-      if (!tempResource.features.dlr_type) tempResource.features.dlr_type = '';
-      if (!tempResource.licenses[0]) tempResource.licenses = [emptyLicense];
-      setFormikInitResource(tempResource);
+      resource.contributors = (await getResourceContributors(identifier)).data;
+      resource.creators = (await getResourceCreators(identifier)).data;
+      resource.licenses = (await getResourceLicenses(identifier)).data;
+      resource.contents = await getResourceContents(identifier);
+      resource.tags = (await getResourceTags(identifier)).data;
+      if (!resource.features.dlr_type) resource.features.dlr_type = '';
+      if (!resource.licenses[0]) resource.licenses = [emptyLicense];
+      setFormikInitResource(resource);
       setIsLoadingResource(false);
     };
     if (identifier) {

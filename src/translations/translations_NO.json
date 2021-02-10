@@ -1,8 +1,37 @@
 {
+  "access": {
+    "access_types": "Tilgangstyper",
+    "add_access": "Legg til tilgang",
+    "email_helper_text": "Det er mulig å fylle ut flere eposter som en liste",
+    "email_label": "Epost eller Feide-id",
+    "course": "Emne",
+    "course_code": "Emnekode",
+    "everyone_at": "Alle hos",
+    "everyone_participating_in": "Alle som deltar på",
+    "grant_access": "Gi tilgang",
+    "hide_list": "Skjul liste",
+    "no_courses_available": "Det finnes ingen emner tilgjengelig",
+    "no_one_has_read_access": "Ingen har lesetilgang",
+    "save_personal_access_error": {
+      "duplicate_email": "En eller flere av epostene du skrev har allerede tilgang",
+      "invalid_email": "En eller flere eposter er feilstavet",
+      "network_error": "Problem med å kontakte server, prøv igjen senere"
+    },
+    "season": {
+      "0": "Vinter",
+      "1": "Vår",
+      "2": "Sommer",
+      "3": "Høst"
+    },
+    "single_persons": "Enkeltpersoner",
+    "show_list": "Vis liste",
+    "who_got_access": "Hvem har tilgang"
+  },
   "common": {
     "all_changes_saved": "Alle endringer er lagret",
     "back": "Tilbake",
     "cancel": "Avbryt",
+    "clear": "Tøm",
     "delete": "Slett",
     "edit": "Rediger",
     "finish": "Avslutt",
@@ -47,10 +76,10 @@
     "license_information": "Lisensinformasjon",
     "modify_and_build": "Endre og bygge videre på",
     "modify_and_build_options": {
-      "dont_care": "Og, de står fritt til å velge lisens selv",
-      "ND": "Nei, andre kan kun bruke materialet i original form",
-      "primary_yes": "Ja, andre kan endre og bygge videre på materialet",
-      "share_alike": "Men, det må distribueres under samme lisens som originalen min (vær obs på at dette valget kan gjøre det komplisert for andre å bruke ressursen)"
+      "non_destructive": "Nei, andre kan kun bruke materialet i original form",
+      "yes": "Ja, andre kan endre og bygge videre på materialet",
+      "share_alike": "Ja, men det må distribueres under samme lisens som originalen min",
+      "share_alike_warning": " Vær obs på at dette valget kan gjøre det komplisert for andre å bruke ressursen"
     },
     "published_with": "Published with",
     "questions": {
@@ -90,7 +119,7 @@
       "CC_BY-NC-SA_4_0": "Ja, den inneholder materiale med lisens CC BY-NC-SA 4.0",
       "CC_BY-SA_4_0": "Ja, den inneholder materiale med lisens CC BY-SA 4.0",
       "ntnu-internt": "Ja, den kan kun brukes internt på NTNU",
-      "yes": "Ja"
+      "yes": "Ja, jeg vil legge restriksjoner på bruken av ressursen"
     },
     "selected_license": "Valgt lisens"
   },
