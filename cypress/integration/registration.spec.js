@@ -194,4 +194,27 @@ context('Actions', () => {
     cy.get('[data-testid=commercial_use_radio_group]').should('exist');
     cy.get('[data-testid=commercial_use_radio_group] .Mui-checked').should('not.exist');
   });
+
+  it('adds and removes contributors', () => {
+    const unpublishedTestPost = mockMyResources[1];
+    cy.visit(`/editresource/${unpublishedTestPost.identifier}]`);
+    const mockContributor1 = 'Mock Contributor1';
+    const mockContributor2 = 'Mock Contributor2';
+    cy.get('[data-testid=step-navigation-1]').click();
+    //add
+    cy.get('[data-testid=contributor-add-button]').click();
+    cy.get('[data-testid=contributor-type-field-1]').click();
+    cy.get('[data-testid=contributor-type-options-4]').click();
+    cy.get('[data-testid=contributor-name-field-1]').type(mockContributor1).type('{enter}');
+    //add and delete
+    cy.get('[data-testid=contributor-add-button]').click();
+    cy.get('[data-testid=contributor-type-field-2]').click();
+    cy.get('[data-testid=contributor-type-options-2]').click();
+    cy.get('[data-testid=contributor-name-field-2]').type(mockContributor2).type('{enter}');
+    cy.get('[data-testid=contributor-delete-button-2]').click();
+    //test preview
+    cy.get('[data-testid=step-navigation-4]').click();
+    cy.get('[data-testid=resource-contributors]').should('contain', mockContributor1);
+    cy.get('[data-testid=resource-contributors]').should('not.contain', mockContributor2);
+  });
 });
