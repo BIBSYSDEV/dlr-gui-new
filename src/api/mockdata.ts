@@ -5,6 +5,7 @@ import { License } from '../types/license.types';
 import { v4 as uuidv4 } from 'uuid';
 import { Content } from '../types/content.types';
 import { API_PATHS } from '../utils/constants';
+import { Course, CourseSeason, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
 
 export const mockResource: Resource = deepmerge(emptyResource, {
   identifier: 'resource-123',
@@ -209,3 +210,43 @@ export const mockResourceEvents = {
     },
   ],
 };
+
+export const mockResourceReadAccess: ResourceReadAccess[] = [
+  {
+    time: '2021-02-01T13:54:35.263Z',
+    subject: 'someUser@user.no',
+    object: 'resource-345',
+    features: { dlr_resource_app: 'learning', dlr_resource_title: 'This is a mocked generated title' },
+    profiles: [{ time: '2021-02-01T13:36:25.421Z', name: ResourceReadAccessNames.Person, ttlSeconds: 0 }],
+  },
+  {
+    time: '2021-02-01T13:54:35.263Z',
+    subject: 'ntnu',
+    object: 'resource-345',
+    features: { dlr_resource_app: 'learning', dlr_resource_title: 'This is a mocked generated title' },
+    profiles: [{ time: '2021-02-01T13:24:03.022Z', name: ResourceReadAccessNames.Institution, ttlSeconds: 0 }],
+  },
+];
+
+export const mockCourses: Course[] = [
+  {
+    features: {
+      code: 'emne1',
+      title_nn: 'emne 1',
+      title_nb: 'emne 1',
+      title_en: 'subject 1',
+      season_nr: CourseSeason.Winter,
+      year: '2020',
+    },
+  },
+  {
+    features: {
+      code: 'test2',
+      title_nn: 'test 2',
+      title_nb: 'test 2',
+      title_en: 'test 2',
+      season_nr: CourseSeason.Winter,
+      year: '2020',
+    },
+  },
+];
