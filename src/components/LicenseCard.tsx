@@ -4,6 +4,7 @@ import { License } from '../types/license.types';
 import i18next from 'i18next';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
+import CClogoImage from './CClogoImage';
 
 interface LicenseProps {
   license: License;
@@ -46,7 +47,7 @@ const LicenseCard: FC<LicenseProps> = ({ license }) => {
             <Typography variant="caption">{license.features?.dlr_license_description}</Typography>
           )}
           <StyledA target="_blank" href={license.features?.dlr_license_url_no ?? ''}>
-            <img src={license.features?.dlr_license_url_image} alt={license.features?.dlr_license_code} />
+            {license.features?.dlr_license_code && <CClogoImage licenseCode={license.features.dlr_license_code} />}
             <StyledTypography> {license.features?.dlr_license_code}</StyledTypography>
           </StyledA>
         </>
@@ -64,10 +65,7 @@ const LicenseCard: FC<LicenseProps> = ({ license }) => {
             <Typography variant="body1">{license.features?.dlr_license_description}</Typography>
           )}
           <StyledA target="_blank" href={license.features?.dlr_license_url_en ?? ''}>
-            <StyledLicenseLogoImage
-              src={license.features?.dlr_license_url_image}
-              alt={license.features?.dlr_license_code}
-            />
+            {license.features?.dlr_license_code && <CClogoImage licenseCode={license.features.dlr_license_code} />}
             <StyledTypography>
               {`${t('license.read_more')}: ${license.features?.dlr_license_code} (${t(
                 'license.external_page'
