@@ -11,7 +11,7 @@ import { updateContentTitle } from '../../../api/resourceApi';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import ErrorBanner from '../../../components/ErrorBanner';
-import { Resource } from '../../../types/resource.types';
+import { ContentFeatureNames, FieldNames, Resource } from '../../../types/resource.types';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import Thumbnail from '../../../components/Thumbnail';
 import { Content } from '../../../types/content.types';
@@ -92,7 +92,8 @@ const FileFields: FC<FileFieldsProps> = ({
           <MainFileMetadata>
             <StyledFieldWrapper>
               {values.contents.masterContent && values.contents.masterContent.features.dlr_content_type === 'file' && (
-                <Field name={`contents.masterContent.features.dlr_content_title`}>
+                <Field
+                  name={`${FieldNames.ContentsBase}.${FieldNames.MasterContent}.${FieldNames.Features}.${ContentFeatureNames.Title}`}>
                   {({ field, meta: { touched, error } }: FieldProps) => (
                     <TextField
                       {...field}

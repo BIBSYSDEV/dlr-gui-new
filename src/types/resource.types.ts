@@ -41,7 +41,7 @@ export const emptyResource: Resource = {
         dlr_content: '',
       },
     },
-    sideContent: [],
+    additionalContent: [],
   },
   contributors: [],
   creators: [],
@@ -89,7 +89,7 @@ interface ResourceFeatures {
 
 export interface ResourceContents {
   masterContent: Content;
-  sideContent: Content[];
+  additionalContent: Content[];
 }
 
 interface Course {
@@ -206,6 +206,10 @@ export enum ResourceFeatureNamesFullPath {
   Access = 'features.dlr_access',
 }
 
+export enum ContentFeatureNames {
+  Title = 'dlr_content_title',
+}
+
 export enum ContributorFeatureNames {
   Type = 'dlr_contributor_type',
   Name = 'dlr_contributor_name',
@@ -226,6 +230,8 @@ export enum FieldNames {
   ContentsBase = 'contents',
   LicensesBase = 'licenses',
   Tags = 'tags',
+  MasterContent = 'masterContent',
+  AdditionalContent = 'additionalContent',
 }
 
 export enum ResourceFormStep {

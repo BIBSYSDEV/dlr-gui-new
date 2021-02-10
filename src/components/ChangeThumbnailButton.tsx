@@ -83,17 +83,17 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
           }
           await setContentAsDefaultThumbnail(values.identifier, newThumbnailContent.identifier);
           let tobeDeletedIdentifier = '';
-          for (let i = 0; i < values.contents.sideContent.length; i++) {
-            if (values.contents.sideContent[i].identifier === newThumbnailContent.identifier) {
-              values.contents.sideContent[i].features.dlr_thumbnail_default = 'true';
+          for (let i = 0; i < values.contents.additionalContent.length; i++) {
+            if (values.contents.additionalContent[i].identifier === newThumbnailContent.identifier) {
+              values.contents.additionalContent[i].features.dlr_thumbnail_default = 'true';
               values.contents.masterContent.features.dlr_thumbnail_default = 'false';
             } else if (
-              values.contents.sideContent[i].identifier !== newThumbnailContent.identifier &&
-              values.contents.sideContent[i].features.dlr_thumbnail_default === 'true'
+              values.contents.additionalContent[i].identifier !== newThumbnailContent.identifier &&
+              values.contents.additionalContent[i].features.dlr_thumbnail_default === 'true'
             ) {
-              tobeDeletedIdentifier = values.contents.sideContent[i].identifier;
+              tobeDeletedIdentifier = values.contents.additionalContent[i].identifier;
             } else {
-              values.contents.sideContent[i].features.dlr_thumbnail_default = 'false';
+              values.contents.additionalContent[i].features.dlr_thumbnail_default = 'false';
             }
           }
 
@@ -102,7 +102,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
           pollNewThumbnail(false);
           setFileInputIsBusy(false);
           if (tobeDeletedIdentifier.length > 0) {
-            values.contents.sideContent = values.contents.sideContent.filter(
+            values.contents.additionalContent = values.contents.additionalContent.filter(
               (content) => content.identifier !== tobeDeletedIdentifier
             );
             await deleteResourceContent(values.identifier, tobeDeletedIdentifier);
@@ -125,13 +125,13 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
     setFileInputIsBusy(true);
     try {
       await setContentAsDefaultThumbnail(values.identifier, values.contents.masterContent.identifier);
-      const previousThumbnailContent = values.contents.sideContent.find(
+      const previousThumbnailContent = values.contents.additionalContent.find(
         (content) =>
           content.features.dlr_thumbnail_default === 'true' && content.features.dlr_content_master === 'false'
       );
       if (previousThumbnailContent) {
         await deleteResourceContent(values.identifier, previousThumbnailContent.identifier);
-        values.contents.sideContent = values.contents.sideContent.filter(
+        values.contents.additionalContent = values.contents.additionalContent.filter(
           (content) => content.identifier !== previousThumbnailContent.identifier
         );
       }

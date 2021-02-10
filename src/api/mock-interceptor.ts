@@ -40,7 +40,7 @@ const mockResource: Resource = {
       },
       identifier: '45456',
     },
-    sideContent: [
+    additionalContent: [
       {
         features: {
           dlr_content: '',
@@ -65,7 +65,7 @@ const mockEmptyContent: ResourceContents = {
       dlr_content_title: '',
     },
   },
-  sideContent: [],
+  additionalContent: [],
 };
 
 const mockCalculatedResource: Resource = {
@@ -215,7 +215,7 @@ const mockResourceContents: ResourceContents = {
       dlr_content_title: '',
     },
   },
-  sideContent: [
+  additionalContent: [
     {
       identifier: '1231242',
       features: {
