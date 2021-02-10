@@ -32,6 +32,7 @@ import {
   postResourceFeature,
   putContributorFeature,
   putResourceCreatorFeature,
+  updateContentTitle,
 } from '../../api/resourceApi';
 import deepmerge from 'deepmerge';
 import { useSelector } from 'react-redux';
@@ -224,6 +225,15 @@ const EditResourcePage: FC = () => {
       }
       if (!resource.contents) {
         resource.contents = await getResourceContents(resource.identifier);
+      }
+      if (!resource.contents.masterContent.features.dlr_content_title) {
+        await updateContentTitle(
+          resource.identifier,
+          resource.contents.masterContent.identifier,
+          resource.contents.masterContent.features.dlr_content
+        );
+        resource.contents.masterContent.features.dlr_content_title =
+          resource.contents.masterContent.features.dlr_content;
       }
 
       setFormikInitResource(resource);

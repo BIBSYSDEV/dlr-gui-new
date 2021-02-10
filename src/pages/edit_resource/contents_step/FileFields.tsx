@@ -91,7 +91,7 @@ const FileFields: FC<FileFieldsProps> = ({
           </MainFileImageWrapper>
           <MainFileMetadata>
             <StyledFieldWrapper>
-              {values.contents.masterContent && values.contents.masterContent.features.dlr_content_type === 'file' && (
+              {values.contents.masterContent.features.dlr_content_type === 'file' && (
                 <Field
                   name={`${FieldNames.ContentsBase}.${FieldNames.MasterContent}.${FieldNames.Features}.${ContentFeatureNames.Title}`}>
                   {({ field, meta: { touched, error } }: FieldProps) => (
