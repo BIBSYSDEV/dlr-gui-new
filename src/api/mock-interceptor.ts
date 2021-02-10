@@ -4,9 +4,8 @@ import { mockSearchResults } from '../utils/testfiles/search_results';
 import { licenses as allLicenses } from '../utils/testfiles/licenses';
 import { API_PATHS } from '../utils/constants';
 import { User } from '../types/user.types';
-import { Contributor, Creator, emptyResource, Resource } from '../types/resource.types';
+import { Contributor, Creator, emptyResource, Resource, ResourceContents } from '../types/resource.types';
 import { License } from '../types/license.types';
-import { Content } from '../types/content.types';
 import { FileApiPaths } from './fileApi';
 import { v4 as uuidv4 } from 'uuid';
 import { Course, CourseSeason, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
@@ -36,15 +35,24 @@ const mockResource: Resource = deepmerge(emptyResource, {
       'maximus ligula. Sed auctor elit non sapien sagittis molestie. Pellentesque habitant morbi tristique senectus ' +
       'et netus et malesuada fames.',
   },
-  contents: [
-    {
+  contents: {
+    masterContent: {
       features: {
         dlr_content: '',
         dlr_content_title: '',
       },
-      identifier: '456',
+      identifier: '45456',
     },
-  ],
+    additionalContent: [
+      {
+        features: {
+          dlr_content: '',
+          dlr_content_title: '',
+        },
+        identifier: '456',
+      },
+    ],
+  },
   contributors: [],
   licenses: [],
   creators: [],
@@ -165,9 +173,9 @@ const createMockCreator = (): Creator => {
   };
 };
 
-const mockContent: Content[] = [
-  {
-    identifier: '1231242',
+const mockResourceContents: ResourceContents = {
+  masterContent: {
+    identifier: '123452',
     features: {
       dlr_content: 'adfasdf',
       dlr_content_identifier: 'adfasdf',
@@ -175,19 +183,30 @@ const mockContent: Content[] = [
       dlr_content_title: '',
     },
   },
-  {
-    identifier: '437829',
-    features: {
-      dlr_content: 'metadata_external.json',
-      dlr_content_identifier: 'adfasdf',
-      dlr_content_content_type: 'image',
-      dlr_content_title: 'metadata_external.json',
+  additionalContent: [
+    {
+      identifier: '1231242',
+      features: {
+        dlr_content: 'adfasdf',
+        dlr_content_identifier: 'adfasdf',
+        dlr_content_content_type: 'image',
+        dlr_content_title: '',
+      },
     },
-  },
-];
+    {
+      identifier: '437829',
+      features: {
+        dlr_content: 'metadata_external.json',
+        dlr_content_identifier: 'adfasdf',
+        dlr_content_content_type: 'image',
+        dlr_content_title: 'metadata_external.json',
+      },
+    },
+  ],
+};
 
 const mockCreatedResourceWithContents = {
-  contents: mockContent,
+  contents: mockResourceContents,
   identifier: 'resource-345',
   features: {
     dlr_content: 'content mock',
@@ -295,7 +314,7 @@ export const interceptRequestsOnMock = () => {
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/licenses.*`)).reply(202);
 
   //RESOURCE CONTENTS
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents`)).reply(200, mockContent);
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents`)).reply(200, mockResourceContents);
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents/.*/titles`)).reply(200);
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents/.*`)).reply(202);
 

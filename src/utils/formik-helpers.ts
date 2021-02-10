@@ -8,6 +8,7 @@ import {
   CreatorFeatureAttributes,
   FieldNames,
   Resource,
+  ResourceContents,
   ResourceFeatureNamesFullPath,
   ResourceFormStep,
 } from '../types/resource.types';
@@ -70,7 +71,7 @@ const getAllFieldsFromContributorsPanel = (values: FormikValues): string[] => {
 
 const getAllContentsFields = (values: FormikValues): string[] => {
   const fieldNames: string[] = [];
-  const contents: Content[] = values.contents;
+  const contents: Content[] = values.contents.additionalContent;
   if (!contents || contents.length === 0) {
     fieldNames.push(FieldNames.ContentsBase);
   } else {
@@ -138,12 +139,11 @@ export const touchedContributorsFields = (
   })),
 });
 
-export const touchedContentsFields = (contents: Content[]): FormikTouched<Resource> => ({
-  contents: contents.map(() => ({
-    features: {
-      dlr_content_title: true,
-    },
-  })),
+export const touchedContentsFields = (contents: ResourceContents): FormikTouched<Resource> => ({
+  contents: {
+    additionalContent: contents.additionalContent.map(() => ({ features: { dlr_content_title: true } })),
+    masterContent: { features: { dlr_content_title: true } },
+  },
 });
 
 export const touchedAccessAndLicenseFields: FormikTouched<Resource> = {

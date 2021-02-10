@@ -1,8 +1,8 @@
 import { API_PATHS } from '../utils/constants';
 import { AxiosResponse } from 'axios';
-import { Contributor, Creator, Resource, ResourceEvent } from '../types/resource.types';
+import { Contributor, Creator, Resource, ResourceContents, ResourceEvent } from '../types/resource.types';
 import { AccessTypes, License } from '../types/license.types';
-import { Content } from '../types/content.types';
+import { Content, emptyResourceContent, LinkMetadataFilename } from '../types/content.types';
 import { authenticatedApiRequest } from './api';
 import { SearchResult } from '../types/search.types';
 
@@ -13,13 +13,25 @@ export const searchResources = (query: string): Promise<AxiosResponse<SearchResu
   });
 };
 
-export const createResource = (type: string, content: string) => {
+export const createResource = async (type: string, content: string): Promise<Resource> => {
   const data = encodeURI(`type=${type}&app=learning&content=${content}`);
-  return authenticatedApiRequest({
+  const apiResourceResponse = await authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources`),
     method: 'POST',
     data: data,
   });
+  const resource = apiResourceResponse.data;
+  const resourceContents: Content[] = resource.contents;
+  resource.contents = { sideContent: [] };
+  resourceContents.forEach((content) => {
+    if (content.features.dlr_content_master === 'true') {
+      resource.contents.masterContent = content;
+      resource.contents.masterContent.features.dlr_content_title = content.features.dlr_content;
+    } else {
+      resource.contents.additionalContent.push(content);
+    }
+  });
+  return resource;
 };
 
 export const deleteResource = async (resourceIdentifier: string) => {
@@ -183,11 +195,20 @@ export const deleteResourceContent = (resourceIdentifier: string, contentIdentif
   });
 };
 
-export const getResourceContents = (identifier: string): Promise<AxiosResponse<Content[]>> => {
-  return authenticatedApiRequest({
+export const getResourceContents = async (identifier: string): Promise<ResourceContents> => {
+  const contentResponse = await authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/contents`),
     method: 'GET',
   });
+  const resourceContent: ResourceContents = emptyResourceContent;
+  contentResponse.data.forEach((content: Content) => {
+    if (content.features.dlr_content_master === 'true') {
+      resourceContent.masterContent = content;
+    } else if (content.features.dlr_content !== LinkMetadataFilename) {
+      resourceContent.additionalContent.push(content);
+    }
+  });
+  return resourceContent;
 };
 
 export const postResourceContent = (
@@ -235,6 +256,18 @@ export const updateContentTitle = async (resourceIdentifier: string, contentIden
     ),
     method: 'PUT',
     data: data,
+  });
+};
+
+export const getContentById = (
+  resourceIdentifier: string,
+  contentIdentifier: string
+): Promise<AxiosResponse<Content>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(
+      `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contents/${contentIdentifier}`
+    ),
+    method: 'GET',
   });
 };
 

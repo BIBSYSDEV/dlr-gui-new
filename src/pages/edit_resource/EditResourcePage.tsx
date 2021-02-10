@@ -32,6 +32,7 @@ import {
   postResourceFeature,
   putContributorFeature,
   putResourceCreatorFeature,
+  updateContentTitle,
 } from '../../api/resourceApi';
 import deepmerge from 'deepmerge';
 import { useSelector } from 'react-redux';
@@ -94,7 +95,7 @@ const EditResourcePage: FC = () => {
     try {
       setIsLoadingResource(true);
       const createResourceResponse = await createResource(ResourceCreationType.LINK, url);
-      await getResourceInit(createResourceResponse.data, ResourceCreationType.LINK);
+      await getResourceInit(createResourceResponse, ResourceCreationType.LINK);
     } catch (error) {
       setResourceInitError(true);
       setIsLoadingResource(false);
@@ -222,6 +223,19 @@ const EditResourcePage: FC = () => {
       if (!resource.features.dlr_access) {
         await setResourceAccessType(resource);
       }
+      if (!resource.contents) {
+        resource.contents = await getResourceContents(resource.identifier);
+      }
+      if (!resource.contents.masterContent.features.dlr_content_title) {
+        await updateContentTitle(
+          resource.identifier,
+          resource.contents.masterContent.identifier,
+          resource.contents.masterContent.features.dlr_content
+        );
+        resource.contents.masterContent.features.dlr_content_title =
+          resource.contents.masterContent.features.dlr_content;
+      }
+
       setFormikInitResource(resource);
       setResourceInitError(false);
     } catch (error) {
@@ -273,7 +287,7 @@ const EditResourcePage: FC = () => {
       resource.contributors = (await getResourceContributors(identifier)).data;
       resource.creators = (await getResourceCreators(identifier)).data;
       resource.licenses = (await getResourceLicenses(identifier)).data;
-      resource.contents = (await getResourceContents(identifier)).data;
+      resource.contents = await getResourceContents(identifier);
       resource.tags = (await getResourceTags(identifier)).data;
       if (!resource.features.dlr_type) resource.features.dlr_type = '';
       if (!resource.licenses[0]) resource.licenses = [emptyLicense];

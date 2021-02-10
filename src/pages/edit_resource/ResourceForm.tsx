@@ -81,6 +81,13 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
         }),
       })
     ),
+    contents: Yup.object().shape({
+      masterContent: Yup.object().shape({
+        features: Yup.object().shape({
+          dlr_content_title: Yup.string().required(t('feedback.required_field')),
+        }),
+      }),
+    }),
     contributors: Yup.array().of(
       Yup.object().shape({
         features: Yup.object().shape({
