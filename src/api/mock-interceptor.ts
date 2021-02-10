@@ -99,6 +99,36 @@ export const interceptRequestsOnMock = () => {
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/access`)).reply(200);
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*`)).reply(202);
 
+  //RESOURCE SHARING
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*`))
+    .reply(200, mockResourceReadAccess);
+  mock
+    .onPost(
+      new RegExp(
+        `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*/profiles/consumer/institutions/current`
+      )
+    )
+    .reply(200);
+  mock
+    .onDelete(
+      new RegExp(
+        `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*/profiles/consumer/institutions/current`
+      )
+    )
+    .reply(202);
+  mock
+    .onPost(new RegExp(`${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*/profiles/consumer/user`))
+    .reply(200);
+  mock
+    .onDelete(new RegExp(`${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*/profiles/consumer/user`))
+    .reply(202);
+
+  //Courses:
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendTeachingPath}/teachings/institutions/.*?after=.*`))
+    .reply(200, mockCourses);
+
   //RESOURCE CONTENT EVENTS:
   mock
     .onGet(new RegExp(`${API_PATHS.guiBackendResourcesEventsPath}/resources/.*/events`))

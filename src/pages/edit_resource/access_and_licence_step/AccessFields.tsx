@@ -3,27 +3,30 @@ import { Colors, StyleWidths } from '../../../themes/mainTheme';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { MenuItem, TextField, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import { Field, useFormikContext, FieldProps } from 'formik';
+import { Field, FieldProps, useFormikContext } from 'formik';
 import { Resource, ResourceFeatureNamesFullPath } from '../../../types/resource.types';
 import { putAccessType } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
-import { AccessTypes } from '../../../types/license.types';
+import { AccessTypes, LicenseAgreementsOptions } from '../../../types/license.types';
 import styled from 'styled-components';
+import { postCurrentUserInstitutionConsumerAccess } from '../../../api/sharingApi';
+import PrivateConsumerAccessFields from './PrivateConsumerAccessFields';
 
 const StyledFieldWrapper = styled.div`
   max-width: ${StyleWidths.width1};
 `;
 
+const accessTypeArray = [AccessTypes.open, AccessTypes.private];
+
 interface AccessFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
 }
-
-const accessTypeArray = [AccessTypes.open, AccessTypes.private];
 
 const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, setFieldTouched, setFieldValue, handleChange, resetForm } = useFormikContext<Resource>();
   const [savingAccessTypeError, setSavingAccessTypeError] = useState(false);
+  const [forceRefreshInPrivateConsumerAccessFields, setForceRefreshInPrivateConsumerAccessFields] = useState(false);
 
   const saveResourceAccessType = async (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (event.target.value.length > 0) {
@@ -35,6 +38,13 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
           setSavingAccessTypeError(false);
           values.features.dlr_access = event.target.value;
           resetForm({ values });
+          if (
+            event.target.value === AccessTypes.private &&
+            values.containsOtherPeoplesWork !== LicenseAgreementsOptions.NoClearance
+          ) {
+            await postCurrentUserInstitutionConsumerAccess(values.identifier);
+            setForceRefreshInPrivateConsumerAccessFields((prevState) => !prevState);
+          }
         }
       } catch (error) {
         setSavingAccessTypeError(true);
@@ -54,6 +64,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
               <>
                 <TextField
                   {...field}
+                  data-testid="access-dropdown-menu"
                   variant="filled"
                   select
                   required
@@ -69,17 +80,19 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
                     saveResourceAccessType(event);
                   }}>
                   {accessTypeArray.map((accessType, index) => (
-                    <MenuItem key={index} value={accessType}>
+                    <MenuItem data-testid={`access-dropdown-menu-option-${accessType}`} key={index} value={accessType}>
                       <Typography>{t(`resource.access_types.${accessType}`)}</Typography>
                     </MenuItem>
                   ))}
                 </TextField>
-
                 {savingAccessTypeError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
               </>
             )}
           </Field>
         </StyledFieldWrapper>
+        {values.features.dlr_access === AccessTypes.private && (
+          <PrivateConsumerAccessFields forceRefresh={forceRefreshInPrivateConsumerAccessFields} />
+        )}
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );
