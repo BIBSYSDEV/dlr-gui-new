@@ -13,7 +13,7 @@ import { Colors } from '../../../themes/mainTheme';
 import ErrorBanner from '../../../components/ErrorBanner';
 import contributorTypeList from '../../../resources/assets/contributorTypeList.json';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
-import { StyledDeleteButton } from '../../../components/styled/DeleteButton';
+import { StyledDeleteButton } from '../../../components/styled/StyledButtons';
 
 const StyledFieldsWrapper = styled.div`
   display: flex;

@@ -1,8 +1,37 @@
 {
+  "access": {
+    "access_types": "Tilgangstyper",
+    "add_access": "Legg til tilgang",
+    "email_helper_text": "Det er mulig å fylle ut flere eposter som en liste",
+    "email_label": "Epost eller Feide-id",
+    "course": "Emne",
+    "course_code": "Emnekode",
+    "everyone_at": "Alle hos",
+    "everyone_participating_in": "Alle som deltar på",
+    "grant_access": "Gi tilgang",
+    "hide_list": "Skjul liste",
+    "no_courses_available": "Det finnes ingen emner tilgjengelig",
+    "no_one_has_read_access": "Ingen har lesetilgang",
+    "save_personal_access_error": {
+      "duplicate_email": "En eller flere av epostene du skrev har allerede tilgang",
+      "invalid_email": "En eller flere eposter er feilstavet",
+      "network_error": "Problem med å kontakte server, prøv igjen senere"
+    },
+    "season": {
+      "0": "Vinter",
+      "1": "Vår",
+      "2": "Sommer",
+      "3": "Høst"
+    },
+    "single_persons": "Enkeltpersoner",
+    "show_list": "Vis liste",
+    "who_got_access": "Hvem har tilgang"
+  },
   "common": {
     "all_changes_saved": "Alle endringer er lagret",
     "back": "Tilbake",
     "cancel": "Avbryt",
+    "clear": "Tøm",
     "delete": "Slett",
     "edit": "Rediger",
     "finish": "Avslutt",
