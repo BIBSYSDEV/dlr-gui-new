@@ -8,15 +8,15 @@ context('Actions', () => {
     cy.visit('/');
   });
 
-    it('starts a registration with a link', () => {
-      cy.get('[data-testid=new-registration-link]').click();
-      cy.get('[data-testid=new-resource-link]').click();
-      cy.get('[data-testid=new-resource-link-input]').type(testLink);
-      cy.get('[data-testid=new-resource-link-submit-button]').click();
-      cy.get('[data-testid=dlr-title-input]').should('have.value', mockCalculatedResource.features.dlr_title);
-      cy.get('[data-testid=step-navigation-2').click();
-      cy.get('[data-testid=content-step-link]').contains(testLink);
-    });
+  it('starts a registration with a link', () => {
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-link]').click();
+    cy.get('[data-testid=new-resource-link-input]').type(testLink);
+    cy.get('[data-testid=new-resource-link-submit-button]').click();
+    cy.get('[data-testid=dlr-title-input]').should('have.value', mockCalculatedResource.features.dlr_title);
+    cy.get('[data-testid=step-navigation-2').click();
+    cy.get('[data-testid=content-step-link]').contains(testLink);
+  });
 
   it('starts a registration - invalid url', () => {
     cy.get('[data-testid=new-registration-link]').click();
