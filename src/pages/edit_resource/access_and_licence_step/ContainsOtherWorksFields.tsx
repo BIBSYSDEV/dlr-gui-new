@@ -155,7 +155,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
               <>
                 <StyledRadioGroup
                   {...field}
-                  aria-label={t('license.questions.examples')}
+                  aria-label={t('license.questions.contains_other_peoples_work')}
                   value={field.value}
                   onChange={(event) => handleChangeInContainsOtherPeoplesWork(event)}>
                   <FormControlLabel

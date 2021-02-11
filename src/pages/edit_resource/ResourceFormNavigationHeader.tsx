@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Step, StepButton, StepLabel, Stepper } from '@material-ui/core';
+import { Step, StepButton, StepContent, StepLabel, Stepper, Typography } from '@material-ui/core';
 import { getStepLabel, Resource, ResourceFormStep, ResourceFormSteps } from '../../types/resource.types';
 import { useFormikContext } from 'formik';
 import { StyledContentWrapperMedium } from '../../components/styled/Wrappers';
@@ -15,6 +15,7 @@ import {
 } from '../../utils/formik-helpers';
 import CircularFileUploadProgress from '../../components/CircularFileUploadProgress';
 import { Uppy } from '../../types/file.types';
+import styled from 'styled-components';
 
 interface ResourceFormNavigationHeaderProps {
   activeStep: ResourceFormStep;
@@ -24,7 +25,12 @@ interface ResourceFormNavigationHeaderProps {
 
 const fileUploadPanelId = 'file-upload-panel';
 
-const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ activeStep, setActiveStep, uppy }) => {
+const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({
+  activeStep,
+  setActiveStep,
+  uppy,
+  children,
+}) => {
   const { t } = useTranslation();
   const { values, touched, setTouched, errors } = useFormikContext<Resource>();
   const noTouchedStep = -1;
@@ -82,7 +88,9 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
           return (
             <Step key={step} completed={false}>
               <StepButton onClick={handleStep(index)} data-testid={`step-navigation-${index}`}>
-                <StepLabel error={hasTouchedError(errors, touched, values, index)}>
+                <StepLabel
+                  error={hasTouchedError(errors, touched, values, index)}
+                  title={hasTouchedError(errors, touched, values, index) ? 'error' : t(getStepLabel(step))}>
                   {t(getStepLabel(step))}
                   {step === ResourceFormStep.Contents && (
                     <CircularFileUploadProgress

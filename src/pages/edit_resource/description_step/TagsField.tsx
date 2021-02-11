@@ -85,6 +85,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  id="resource-feature-tags"
                   label={t('resource.metadata.tags')}
                   helperText={t('resource.add_tags')}
                   variant="filled"
