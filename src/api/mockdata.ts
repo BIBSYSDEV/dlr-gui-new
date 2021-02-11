@@ -1,10 +1,11 @@
-import { Contributor, Creator, emptyResource, Resource, ResourceContents } from '../types/resource.types';
+import { Contributor, Creator, emptyResource, Resource } from '../types/resource.types';
 import deepmerge from 'deepmerge';
 import { User } from '../types/user.types';
 import { License } from '../types/license.types';
 import { v4 as uuidv4 } from 'uuid';
 import { API_PATHS } from '../utils/constants';
 import { Course, CourseSeason, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
+import { Content } from '../types/content.types';
 
 export const mockResource: Resource = deepmerge(emptyResource, {
   identifier: 'resource-123',
@@ -22,24 +23,15 @@ export const mockResource: Resource = deepmerge(emptyResource, {
       'maximus ligula. Sed auctor elit non sapien sagittis molestie. Pellentesque habitant morbi tristique senectus ' +
       'et netus et malesuada fames.',
   },
-  contents: {
-    masterContent: {
+  contents: [
+    {
       features: {
-        dlr_content: '',
-        dlr_content_title: '',
+        dlr_content: 'fsd',
+        dlr_content_title: 'fsdfsd',
       },
-      identifier: '45456',
+      identifier: '456111',
     },
-    additionalContent: [
-      {
-        features: {
-          dlr_content: '',
-          dlr_content_title: '',
-        },
-        identifier: '456',
-      },
-    ],
-  },
+  ],
 });
 
 export const mockMyResources: Resource[] = [
@@ -83,13 +75,14 @@ export const mockUser: User = {
   name: 'Test User',
 };
 
-export const mockCalculatedResource: Resource = deepmerge(emptyResource, {
+export const mockDefaultResource: Resource = deepmerge(emptyResource, {
   features: {
     dlr_title: 'This is a mocked generated title',
     dlr_content: 'http://www.test.com',
     dlr_content_type: 'link',
   },
   identifier: 'resource-345',
+  contents: [],
 });
 
 export const mockContributors: Contributor[] = [
@@ -166,37 +159,27 @@ export const createMockCreator = (): Creator => {
   };
 };
 
-export const mockContents: ResourceContents = {
-  masterContent: {
-    identifier: '123452',
+export const mockContents: Content[] = [
+  {
+    identifier: 'mockMasterContentID',
     features: {
-      dlr_content: 'adfasdf',
-      dlr_content_identifier: 'adfasdf',
+      dlr_content: 'mockMasterContent',
+      dlr_content_master: 'true',
+      dlr_content_identifier: 'mockMasterContentID',
       dlr_content_content_type: 'image',
-      dlr_content_title: '',
+      dlr_content_title: 'mockMasterContentTitle',
     },
   },
-  additionalContent: [
-    {
-      identifier: '1231242',
-      features: {
-        dlr_content: 'adffdsfasdf',
-        dlr_content_identifier: 'adfaffsdsdf',
-        dlr_content_content_type: 'image',
-        dlr_content_title: '',
-      },
+  {
+    identifier: '437829',
+    features: {
+      dlr_content: 'metadata_external.json',
+      dlr_content_identifier: 'adfasf1sdfsdfdf',
+      dlr_content_content_type: 'image',
+      dlr_content_title: 'metadata_external.json',
     },
-    {
-      identifier: '437829',
-      features: {
-        dlr_content: 'metadata_external.json',
-        dlr_content_identifier: 'adfaffsdfsdsdf',
-        dlr_content_content_type: 'image',
-        dlr_content_title: 'metadata_external.json',
-      },
-    },
-  ],
-};
+  },
+];
 
 export const mockCreatedResourceWithContents = {
   contents: mockContents,

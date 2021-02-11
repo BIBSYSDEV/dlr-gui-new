@@ -1,4 +1,4 @@
-import { mockCalculatedResource, mockMyResources } from '../../src/api/mockdata';
+import { mockDefaultResource, mockMyResources } from '../../src/api/mockdata';
 import { licenses } from '../../src/utils/testfiles/licenses';
 import 'cypress-file-upload';
 
@@ -13,7 +13,7 @@ context('Actions', () => {
     cy.get('[data-testid=new-resource-link]').click();
     cy.get('[data-testid=new-resource-link-input]').type(testLink);
     cy.get('[data-testid=new-resource-link-submit-button]').click();
-    cy.get('[data-testid=dlr-title-input]').should('have.value', mockCalculatedResource.features.dlr_title);
+    cy.get('[data-testid=dlr-title-input]').should('have.value', mockDefaultResource.features.dlr_title);
     cy.get('[data-testid=step-navigation-2').click();
     cy.get('[data-testid=content-step-link]').contains(testLink);
   });
@@ -52,7 +52,7 @@ context('Actions', () => {
     cy.get('[data-testid=resource-title]').contains(mockTitle);
     cy.get('[data-testid=resource-description]').contains(mockDescription);
     cy.get('[data-testid=publish-button]').click();
-    cy.url().should('include', `/resource/${mockCalculatedResource.identifier}`);
+    cy.url().should('include', `/resource/${mockDefaultResource.identifier}`);
   });
 
   it('registers institution when selecting private access', () => {
@@ -250,7 +250,7 @@ context('Actions', () => {
       });
     });
     cy.get('[data-testid=step-navigation-2').click();
-    cy.get(`[data-testid=thumbnail-${mockCalculatedResource.identifier}]`).should('exist');
+    cy.get(`[data-testid=thumbnail-${mockDefaultResource.identifier}]`).should('exist');
     cy.get('Button.uppy-StatusBar-actionBtn--retry').should('exist'); //because it is failing with mock
   });
 });

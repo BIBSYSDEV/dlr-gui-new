@@ -22,7 +22,7 @@ export const createResource = async (type: string, content: string): Promise<Res
   });
   const resource = apiResourceResponse.data;
   const resourceContents: Content[] = resource.contents;
-  resource.contents = { sideContent: [] };
+  resource.contents = { additionalContent: [] };
   resourceContents.forEach((content) => {
     if (content.features.dlr_content_master === 'true') {
       resource.contents.masterContent = content;
@@ -78,14 +78,14 @@ export const getResourceTags = (identifier: string): Promise<AxiosResponse<strin
   });
 };
 
-export const deleteTag = (resourceIdentifier: string, tag: string): Promise<AxiosResponse<any>> => {
+export const deleteTag = (resourceIdentifier: string, tag: string): Promise<AxiosResponse> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/tags/${tag}/types/tag`),
     method: 'DELETE',
   });
 };
 
-export const postTag = (resourceIdentifier: string, tag: string): Promise<AxiosResponse<any>> => {
+export const postTag = (resourceIdentifier: string, tag: string): Promise<AxiosResponse> => {
   const encodedValue = encodeURIComponent(tag);
   const data = `tag=${encodedValue}&type=tag`;
   return authenticatedApiRequest({
@@ -112,7 +112,7 @@ export const createContributor = (resourceIdentifier: string): Promise<AxiosResp
 export const deleteContributor = (
   resourceIdentifier: string,
   contributorIdentifier: string
-): Promise<AxiosResponse<any>> => {
+): Promise<AxiosResponse> => {
   return authenticatedApiRequest({
     url: encodeURI(
       `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contributors/${contributorIdentifier}`
@@ -154,7 +154,7 @@ export const postResourceCreator = (resourceIdentifier: string): Promise<AxiosRe
 export const deleteResourceCreator = (
   resourceIdentifier: string,
   creatorIdentifier: string
-): Promise<AxiosResponse<any>> => {
+): Promise<AxiosResponse> => {
   return authenticatedApiRequest({
     url: encodeURI(
       `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/creators/${creatorIdentifier}`
@@ -168,7 +168,7 @@ export const putResourceCreatorFeature = (
   creatorIdentifier: string,
   feature: string,
   value: string
-): Promise<AxiosResponse<any>> => {
+): Promise<AxiosResponse> => {
   const data = encodeURI(`value=${value}`);
   return authenticatedApiRequest({
     url: encodeURI(

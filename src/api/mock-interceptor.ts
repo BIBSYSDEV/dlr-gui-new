@@ -6,7 +6,7 @@ import { API_PATHS } from '../utils/constants';
 import { FileApiPaths } from './fileApi';
 import {
   createMockCreator,
-  mockCalculatedResource,
+  mockDefaultResource,
   mockCompleteUpload,
   mockContents,
   mockContributors,
@@ -137,7 +137,7 @@ export const interceptRequestsOnMock = () => {
     .reply(200, mockResourceEvents);
 
   //DEFAULTS
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*`)).reply(200, mockCalculatedResource);
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*`)).reply(200, mockDefaultResource);
 
   // USER
   mock.onGet(new RegExp(`${API_PATHS.guiBackendUsersPath}/users/authorized`)).reply(200, mockUser);
