@@ -63,7 +63,7 @@ const ResourcePage = () => {
         tempResource.tags = (await getResourceTags(identifier)).data;
         tempResource.licenses = (await getResourceLicenses(identifier)).data;
         setResource(tempResource);
-        tempResource.contents = (await getResourceContents(identifier)).data;
+        tempResource.contents = await getResourceContents(identifier);
         setResourceLoadingError(false);
       } catch (error) {
         setResourceLoadingError(true);

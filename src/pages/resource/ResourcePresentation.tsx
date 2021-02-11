@@ -48,7 +48,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
 
   useEffect(() => {
     if (resource.contents) {
-      const masterContent = resource.contents.find((content) => content.features.dlr_content_default === 'true');
+      const masterContent = resource.contents.masterContent;
       if (masterContent) {
         const type = masterContent.features.dlr_content_content_type ?? '';
         setPreview({

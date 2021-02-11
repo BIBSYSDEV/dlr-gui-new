@@ -20,7 +20,7 @@ export interface Resource {
   contributors: Contributor[];
   accessRead?: string[];
   accessWrite?: string[];
-  contents: Content[];
+  contents: ResourceContents;
   licenses: License[];
   containsOtherPeoplesWork: string;
   usageClearedWithOwner: string;
@@ -36,7 +36,16 @@ export const emptyResource: Resource = {
     dlr_content: '',
     dlr_content_type: '',
   },
-  contents: [],
+  contents: {
+    masterContent: {
+      identifier: '',
+      features: {
+        dlr_content_title: '',
+        dlr_content: '',
+      },
+    },
+    additionalContent: [],
+  },
   contributors: [],
   creators: [],
   licenses: [],
@@ -83,6 +92,11 @@ interface ResourceFeatures {
   dlr_title_alternative?: string;
   dlr_type?: string;
   dlr_thumbnail_url?: string;
+}
+
+export interface ResourceContents {
+  masterContent: Content;
+  additionalContent: Content[];
 }
 
 interface Course {
@@ -199,6 +213,10 @@ export enum ResourceFeatureNamesFullPath {
   Access = 'features.dlr_access',
 }
 
+export enum ContentFeatureNames {
+  Title = 'dlr_content_title',
+}
+
 export enum ContributorFeatureNames {
   Type = 'dlr_contributor_type',
   Name = 'dlr_contributor_name',
@@ -219,6 +237,8 @@ export enum FieldNames {
   ContentsBase = 'contents',
   LicensesBase = 'licenses',
   Tags = 'tags',
+  MasterContent = 'masterContent',
+  AdditionalContent = 'additionalContent',
 }
 
 export enum ResourceFormStep {
