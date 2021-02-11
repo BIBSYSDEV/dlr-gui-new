@@ -1,7 +1,6 @@
 import { mockCalculatedResource, mockMyResources } from '../../src/api/mockdata';
 import { licenses } from '../../src/utils/testfiles/licenses';
-
-const testLink = 'http://www.test.com';
+import 'cypress-file-upload';
 
 context('Actions', () => {
   beforeEach(() => {
@@ -9,6 +8,7 @@ context('Actions', () => {
   });
 
   it('starts a registration with a link', () => {
+    const testLink = 'http://www.test.com';
     cy.get('[data-testid=new-registration-link]').click();
     cy.get('[data-testid=new-resource-link]').click();
     cy.get('[data-testid=new-resource-link-input]').type(testLink);
@@ -28,6 +28,7 @@ context('Actions', () => {
   });
 
   it('runs a minimal registration and publishes', () => {
+    const testLink = 'http://www.test.com';
     cy.get('[data-testid=new-registration-link]').click();
     cy.get('[data-testid=new-resource-link]').click();
     cy.get('[data-testid=new-resource-link-input]').type(testLink);
@@ -235,5 +236,21 @@ context('Actions', () => {
     cy.get('[data-testid=step-navigation-4]').click();
     cy.get('[data-testid=resource-creators]').should('contain', mockCreator1);
     cy.get('[data-testid=resource-creators]').should('not.contain', mockCreator2);
+  });
+
+  it('starts a registration with a file', () => {
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-file]').click();
+    cy.get('input[type="file"]');
+    cy.fixture('testPicture.png').then((fileContent) => {
+      cy.get('input[type="file"]').attachFile({
+        fileContent: fileContent.toString(),
+        fileName: 'testPicture.png',
+        mimeType: 'image/png',
+      });
+    });
+    cy.get('[data-testid=step-navigation-2').click();
+    cy.get(`[data-testid=thumbnail-${mockCalculatedResource.identifier}]`).should('exist');
+    cy.get('Button.uppy-StatusBar-actionBtn--retry').should('exist'); //because it is failing with mock
   });
 });
