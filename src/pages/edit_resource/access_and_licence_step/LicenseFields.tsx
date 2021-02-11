@@ -77,7 +77,7 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
                     <MenuItem
                       key={license.identifier}
                       value={license.identifier}
-                      data-testid={`license_option_${license.identifier}`}>
+                      data-testid={`license-option-${license.identifier}`}>
                       {license.features?.dlr_license_code}
                     </MenuItem>
                   ))}
