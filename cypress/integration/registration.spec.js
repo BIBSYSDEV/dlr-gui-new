@@ -1,4 +1,5 @@
 import { mockDefaultResource, mockMyResources } from '../../src/api/mockdata';
+import { licenses } from '../../src/utils/testfiles/licenses';
 import 'cypress-file-upload';
 
 context('Actions', () => {
