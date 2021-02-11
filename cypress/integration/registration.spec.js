@@ -8,7 +8,7 @@ context('Actions', () => {
     cy.visit('/');
   });
 
-  it('starts a registration with a link', () => {
+  /*  it('starts a registration with a link', () => {
     cy.get('[data-testid=new-registration-link]').click();
     cy.get('[data-testid=new-resource-link]').click();
     cy.get('[data-testid=new-resource-link-input]').type(testLink);
@@ -216,5 +216,24 @@ context('Actions', () => {
     cy.get('[data-testid=step-navigation-4]').click();
     cy.get('[data-testid=resource-contributors]').should('contain', mockContributor1);
     cy.get('[data-testid=resource-contributors]').should('not.contain', mockContributor2);
+  });*/
+
+  it('adds and removes creators', () => {
+    const unpublishedTestPost = mockMyResources[1];
+    cy.visit(`/editresource/${unpublishedTestPost.identifier}]`);
+    const mockCreator1 = 'Mock Creator1';
+    const mockCreator2 = 'Mock Creator2';
+    cy.get('[data-testid=step-navigation-1]').click();
+    //add
+    cy.get('[data-testid=creator-add-button]').click();
+    cy.get('[data-testid=creator-name-field-1]').type(mockCreator1).type('{enter}');
+    //add and delete
+    cy.get('[data-testid=creator-add-button]').click();
+    cy.get('[data-testid=creator-name-field-2]').type(mockCreator2).type('{enter}');
+    cy.get('[data-testid=creator-delete-button-2]').click();
+    //test preview
+    cy.get('[data-testid=step-navigation-4]').click();
+    cy.get('[data-testid=resource-creators]').should('contain', mockCreator1);
+    cy.get('[data-testid=resource-creators]').should('not.contain', mockCreator2);
   });
 });
