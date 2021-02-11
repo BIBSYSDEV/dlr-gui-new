@@ -3,7 +3,6 @@ import deepmerge from 'deepmerge';
 import { User } from '../types/user.types';
 import { License } from '../types/license.types';
 import { v4 as uuidv4 } from 'uuid';
-import { Content } from '../types/content.types';
 import { API_PATHS } from '../utils/constants';
 import { Course, CourseSeason, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
 
