@@ -189,11 +189,13 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
                     {...field}
                     aria-label={t('license.questions.usage_cleared_with_owner')}
                     value={field.value}
+                    data-testid="usage_cleared_with_owner_radio_group"
                     onChange={(event) => handleLicenseAgreementChange(event)}>
                     {LicenseAgreements.map((element, index) => (
                       <FormControlLabel
                         value={element}
                         key={index}
+                        data-testid={`usage_cleared_with_owner_option_${element}`}
                         label={t(`license.limitation.${element}.title`)}
                         control={<Radio color="primary" />}
                       />
@@ -209,7 +211,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
         {values.usageClearedWithOwner !== LicenseAgreementsOptions.YesOther &&
           values.usageClearedWithOwner !== '' &&
           values.containsOtherPeoplesWork && (
-            <StyledOutLinedBox>
+            <StyledOutLinedBox data-testid={'usage_cleared_with_owner_info'}>
               <ErrorOutlineIcon color="primary" />
               <StyledTypography>
                 {t(`license.limitation.${values.usageClearedWithOwner}.important_notice`)}

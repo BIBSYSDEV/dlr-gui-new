@@ -173,13 +173,17 @@ context('Actions', () => {
   });
 
   it('uses licenseWizard', () => {
-    const unpublishedTestPost = mockMyResources[1];
-    cy.visit(`/editresource/${unpublishedTestPost.identifier}]`);
+    const testLink = 'http://www.test.com';
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-link]').click();
+    cy.get('[data-testid=new-resource-link-input]').type(testLink);
+    cy.get('[data-testid=new-resource-link-submit-button]').click();
 
     cy.get('[data-testid=step-navigation-3]').click();
-    cy.get('[data-testid=licence-field]').contains('CC BY 4.0');
+    cy.get('[data-testid=licence-field] input').should('have.value', '');
 
     cy.get('[data-testid=resource_restriction_option_ntnu-internt]').click();
+    cy.get('[data-testid=licence-field] input').should('have.value', 'd56b161e-05d0-45c9-b96b-5c0b37b952b4');
     cy.get('[data-testid=licence-field]').contains('ntnu-internt');
     cy.get('[data-testid=resource_restriction_option_yes]').click();
     cy.get('[data-testid=licence-field]').contains('CC BY-NC-ND 4.0');
@@ -211,6 +215,29 @@ context('Actions', () => {
     cy.get('[data-testid=modify_and_build_radio_group]').should('exist');
     cy.get('[data-testid=commercial_use_radio_group]').should('exist');
     cy.get('[data-testid=commercial_use_radio_group] .Mui-checked').should('not.exist');
+  });
+
+  it('uses otherPeoplesWorkWizard', () => {
+    const testLink = 'http://www.test.com';
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-link]').click();
+    cy.get('[data-testid=new-resource-link-input]').type(testLink);
+    cy.get('[data-testid=new-resource-link-submit-button]').click();
+    cy.get('[data-testid=step-navigation-3]').click();
+
+    cy.get('[data-testid=contains_other_peoples_work_radio_group] .Mui-checked').should('not.exist');
+    cy.get('[data-testid=usage_cleared_with_owner_option-radio_group]').should('not.exist');
+    cy.get('[data-testid=usage_cleared_with_owner_info]').should('not.exist');
+
+    cy.get('[data-testid=contains_other_peoples_work_option_yes]').click();
+    cy.get('[data-testid=usage_cleared_with_owner_radio_group]').should('exist');
+
+    cy.get('[data-testid=usage_cleared_with_owner_option_creative_commons]').click();
+    cy.get('[data-testid=usage_cleared_with_owner_info]').should('exist');
+    cy.get('[data-testid=access-dropdown-menu] input').should('have.value', 'open');
+    cy.get('[data-testid=usage_cleared_with_owner_option_no_clearance]').click();
+    cy.get('[data-testid=usage_cleared_with_owner_info]').should('exist');
+    cy.get('[data-testid=access-dropdown-menu] input').should('have.value', 'private');
   });
 
   it('adds and removes contributors', () => {
