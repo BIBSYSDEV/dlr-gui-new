@@ -8,15 +8,15 @@ context('Actions', () => {
     cy.visit('/');
   });
 
-  /*  it('starts a registration with a link', () => {
-    cy.get('[data-testid=new-registration-link]').click();
-    cy.get('[data-testid=new-resource-link]').click();
-    cy.get('[data-testid=new-resource-link-input]').type(testLink);
-    cy.get('[data-testid=new-resource-link-submit-button]').click();
-    cy.get('[data-testid=dlr-title-input]').should('have.value', mockCalculatedResource.features.dlr_title);
-    cy.get('[data-testid=step-navigation-2').click();
-    cy.get('[data-testid=content-step-link]').contains(testLink);
-  });
+    it('starts a registration with a link', () => {
+      cy.get('[data-testid=new-registration-link]').click();
+      cy.get('[data-testid=new-resource-link]').click();
+      cy.get('[data-testid=new-resource-link-input]').type(testLink);
+      cy.get('[data-testid=new-resource-link-submit-button]').click();
+      cy.get('[data-testid=dlr-title-input]').should('have.value', mockCalculatedResource.features.dlr_title);
+      cy.get('[data-testid=step-navigation-2').click();
+      cy.get('[data-testid=content-step-link]').contains(testLink);
+    });
 
   it('starts a registration - invalid url', () => {
     cy.get('[data-testid=new-registration-link]').click();
@@ -216,7 +216,7 @@ context('Actions', () => {
     cy.get('[data-testid=step-navigation-4]').click();
     cy.get('[data-testid=resource-contributors]').should('contain', mockContributor1);
     cy.get('[data-testid=resource-contributors]').should('not.contain', mockContributor2);
-  });*/
+  });
 
   it('adds and removes creators', () => {
     const unpublishedTestPost = mockMyResources[1];
@@ -226,11 +226,11 @@ context('Actions', () => {
     cy.get('[data-testid=step-navigation-1]').click();
     //add
     cy.get('[data-testid=creator-add-button]').click();
-    cy.get('[data-testid=creator-name-field-1]').type(mockCreator1).type('{enter}');
+    cy.get('[data-testid=creator-name-field-2]').type(mockCreator1).type('{enter}');
     //add and delete
     cy.get('[data-testid=creator-add-button]').click();
-    cy.get('[data-testid=creator-name-field-2]').type(mockCreator2).type('{enter}');
-    cy.get('[data-testid=creator-delete-button-2]').click();
+    cy.get('[data-testid=creator-name-field-3]').type(mockCreator2).type('{enter}');
+    cy.get('[data-testid=creator-delete-button-3]').click();
     //test preview
     cy.get('[data-testid=step-navigation-4]').click();
     cy.get('[data-testid=resource-creators]').should('contain', mockCreator1);
