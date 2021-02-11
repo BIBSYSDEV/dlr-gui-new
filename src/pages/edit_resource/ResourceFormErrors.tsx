@@ -22,7 +22,7 @@ const StyledWarningIcon = styled(WarningIcon)`
 const ResourceFormErrors = () => {
   const { t } = useTranslation();
   return (
-    <StyledPanel>
+    <StyledPanel data-testid="form-errors-panel">
       <StyledSchemaPartColored color={Colors.DangerLight}>
         <StyledContentWrapper>
           <Typography variant={'h5'} component="h2">

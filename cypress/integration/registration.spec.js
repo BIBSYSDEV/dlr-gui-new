@@ -1,5 +1,4 @@
 import { mockDefaultResource, mockMyResources } from '../../src/api/mockdata';
-import { licenses } from '../../src/utils/testfiles/licenses';
 import 'cypress-file-upload';
 
 context('Actions', () => {
@@ -53,6 +52,23 @@ context('Actions', () => {
     cy.get('[data-testid=resource-description]').contains(mockDescription);
     cy.get('[data-testid=publish-button]').click();
     cy.url().should('include', `/resource/${mockDefaultResource.identifier}`);
+  });
+
+  it('runs a minimal registration with errors', () => {
+    const testLink = 'http://www.test.com';
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-link]').click();
+    cy.get('[data-testid=new-resource-link-input]').type(testLink);
+    cy.get('[data-testid=new-resource-link-submit-button]').click();
+    cy.get('[data-testid=dlr-title-input]').clear();
+    //preview
+    cy.get('[data-testid=step-navigation-4]').click();
+    cy.get('[data-testid=publish-button]').should('be.disabled');
+    cy.get('[data-testid=form-errors-panel]').should('exist');
+    cy.get('[data-testid=step-navigation-0] .Mui-error').should('exist');
+    cy.get('[data-testid=step-navigation-1] .Mui-error').should('not.exist');
+    cy.get('[data-testid=step-navigation-2] .Mui-error').should('not.exist');
+    cy.get('[data-testid=step-navigation-3] .Mui-error').should('exist');
   });
 
   it('registers institution when selecting private access', () => {
