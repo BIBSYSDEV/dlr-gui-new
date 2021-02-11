@@ -8,7 +8,7 @@ import {
   createMockCreator,
   mockCalculatedResource,
   mockCompleteUpload,
-  mockContent,
+  mockContents,
   mockContributors,
   mockCourses,
   mockCreatedResourceWithContents,
@@ -63,7 +63,7 @@ export const interceptRequestsOnMock = () => {
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/licenses.*`)).reply(202);
 
   //RESOURCE CONTENTS
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents`)).reply(200, mockResourceContents);
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents`)).reply(200, mockContents);
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents/.*/titles`)).reply(200);
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents/.*`)).reply(202);
 

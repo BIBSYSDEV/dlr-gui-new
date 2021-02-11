@@ -1,4 +1,4 @@
-import { Contributor, Creator, emptyResource, Resource } from '../types/resource.types';
+import { Contributor, Creator, emptyResource, Resource, ResourceContents } from '../types/resource.types';
 import deepmerge from 'deepmerge';
 import { User } from '../types/user.types';
 import { License } from '../types/license.types';
@@ -23,15 +23,24 @@ export const mockResource: Resource = deepmerge(emptyResource, {
       'maximus ligula. Sed auctor elit non sapien sagittis molestie. Pellentesque habitant morbi tristique senectus ' +
       'et netus et malesuada fames.',
   },
-  contents: [
-    {
+  contents: {
+    masterContent: {
       features: {
         dlr_content: '',
         dlr_content_title: '',
       },
-      identifier: '456',
+      identifier: '45456',
     },
-  ],
+    additionalContent: [
+      {
+        features: {
+          dlr_content: '',
+          dlr_content_title: '',
+        },
+        identifier: '456',
+      },
+    ],
+  },
 });
 
 export const mockMyResources: Resource[] = [
@@ -158,9 +167,9 @@ export const createMockCreator = (): Creator => {
   };
 };
 
-export const mockContent: Content[] = [
-  {
-    identifier: '1231242',
+export const mockContents: ResourceContents = {
+  masterContent: {
+    identifier: '123452',
     features: {
       dlr_content: 'adfasdf',
       dlr_content_identifier: 'adfasdf',
@@ -168,19 +177,30 @@ export const mockContent: Content[] = [
       dlr_content_title: '',
     },
   },
-  {
-    identifier: '437829',
-    features: {
-      dlr_content: 'metadata_external.json',
-      dlr_content_identifier: 'adfasdf',
-      dlr_content_content_type: 'image',
-      dlr_content_title: 'metadata_external.json',
+  additionalContent: [
+    {
+      identifier: '1231242',
+      features: {
+        dlr_content: 'adffdsfasdf',
+        dlr_content_identifier: 'adfaffsdsdf',
+        dlr_content_content_type: 'image',
+        dlr_content_title: '',
+      },
     },
-  },
-];
+    {
+      identifier: '437829',
+      features: {
+        dlr_content: 'metadata_external.json',
+        dlr_content_identifier: 'adfaffsdfsdsdf',
+        dlr_content_content_type: 'image',
+        dlr_content_title: 'metadata_external.json',
+      },
+    },
+  ],
+};
 
 export const mockCreatedResourceWithContents = {
-  contents: mockContent,
+  contents: mockContents,
   identifier: 'resource-345',
   features: {
     dlr_content: 'content mock',
