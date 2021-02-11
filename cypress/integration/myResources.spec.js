@@ -1,6 +1,22 @@
+import { mockMyResources } from '../../src/api/mockdata';
+
 context('Actions', () => {
   beforeEach(() => {
     cy.visit('/');
+  });
+
+  it('can se a list of published and unpublished resources', () => {
+    cy.get('[data-testid=my-resources-link]').click();
+    const publishedTestPost = mockMyResources[0];
+    const unpublishedTestPost = mockMyResources[1];
+    cy.get(`[data-testid=list-item-resources-${unpublishedTestPost.identifier}]`).should('exist');
+    cy.get(`[data-testid=list-item-resources-${unpublishedTestPost.identifier}]`).contains(
+      unpublishedTestPost.features.dlr_title
+    );
+    cy.get(`[data-testid=list-item-resources-${publishedTestPost.identifier}]`).should('exist');
+    cy.get(`[data-testid=list-item-resources-${publishedTestPost.identifier}]`).contains(
+      publishedTestPost.features.dlr_title
+    );
   });
 
   it('can delete a resource', () => {

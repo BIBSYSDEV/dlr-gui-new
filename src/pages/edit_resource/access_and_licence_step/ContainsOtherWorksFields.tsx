@@ -157,14 +157,17 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
                   {...field}
                   aria-label={t('license.questions.examples')}
                   value={field.value}
+                  data-testid="contains_other_peoples_work_radio_group"
                   onChange={(event) => handleChangeInContainsOtherPeoplesWork(event)}>
                   <FormControlLabel
                     value={ContainsOtherPeoplesWorkOptions.No}
+                    data-testid="contains_other_peoples_work_option_no"
                     control={<Radio color="primary" />}
                     label={t('common.no')}
                   />
                   <FormControlLabel
                     value={ContainsOtherPeoplesWorkOptions.Yes}
+                    data-testid="contains_other_peoples_work_option_yes"
                     control={<Radio color="primary" />}
                     label={t('common.yes')}
                   />

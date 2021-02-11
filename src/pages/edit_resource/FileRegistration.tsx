@@ -17,7 +17,7 @@ const FileRegistration: FC<FileRegistrationProps> = ({ uppy, expanded, onChange 
 
   return (
     <PublicationAccordion
-      dataTestId="new-registration-file"
+      dataTestId="new-resource-file"
       headerLabel={t('resource.start_with_uploading_file')}
       icon={<PublishIcon />}
       expanded={expanded}

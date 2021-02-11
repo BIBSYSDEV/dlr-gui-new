@@ -1,3 +1,7 @@
+import { mockDefaultResource, mockMyResources } from '../../src/api/mockdata';
+import { licenses } from '../../src/utils/testfiles/licenses';
+import 'cypress-file-upload';
+
 context('Actions', () => {
   beforeEach(() => {
     cy.visit('/');
@@ -8,8 +12,8 @@ context('Actions', () => {
     cy.get('[data-testid=new-registration-link]').click();
     cy.get('[data-testid=new-resource-link]').click();
     cy.get('[data-testid=new-resource-link-input]').type(testLink);
-    cy.get('[data-testid=new-resource-link-submit-button]').click({ force: true });
-    cy.get('[data-testid=dlr_title-input]').should('have.value', 'This is a mocked generated title');
+    cy.get('[data-testid=new-resource-link-submit-button]').click();
+    cy.get('[data-testid=dlr-title-input]').should('have.value', mockDefaultResource.features.dlr_title);
     cy.get('[data-testid=step-navigation-2').click();
     cy.get('[data-testid=content-step-link]').contains(testLink);
   });
@@ -21,6 +25,34 @@ context('Actions', () => {
     cy.get('[data-testid=new-resource-link-submit-button]').click({ force: true });
     cy.get('[data-testid=new-resource-link-submit-button]').should('be.disabled');
     cy.get('[data-testid=new-resource-link-input-wrapper] p.Mui-error').should('be.visible'); //får ikke lagt inn  data-testid på <errormessage>
+  });
+
+  it('runs a minimal registration and publishes', () => {
+    const testLink = 'http://www.test.com';
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-link]').click();
+    cy.get('[data-testid=new-resource-link-input]').type(testLink);
+    cy.get('[data-testid=new-resource-link-submit-button]').click();
+
+    const mockTitle = 'mocktitle';
+    const mockDescription = 'mockDescription';
+    cy.get('[data-testid=dlr-title-input]').clear().type(mockTitle);
+    cy.get('[data-testid=dlr-description-input]').type(mockDescription);
+    //contributors
+    cy.get('[data-testid=next-step-button]').click();
+    //contents
+    cy.get('[data-testid=next-step-button]').click();
+    //licenses
+    cy.get('[data-testid=next-step-button]').click();
+    cy.get('[data-testid=contains_other_peoples_work_option_no]').click();
+    cy.get('[data-testid=licence-field]').click();
+    cy.get(`[data-testid=license_option_${licenses[0].identifier}`).click();
+    //preview
+    cy.get('[data-testid=next-step-button]').click();
+    cy.get('[data-testid=resource-title]').contains(mockTitle);
+    cy.get('[data-testid=resource-description]').contains(mockDescription);
+    cy.get('[data-testid=publish-button]').click();
+    cy.url().should('include', `/resource/${mockDefaultResource.identifier}`);
   });
 
   it('registers institution when selecting private access', () => {
@@ -124,7 +156,9 @@ context('Actions', () => {
   });
 
   it('uses licenseWizard', () => {
-    cy.visit('/editresource/123');
+    const unpublishedTestPost = mockMyResources[1];
+    cy.visit(`/editresource/${unpublishedTestPost.identifier}]`);
+
     cy.get('[data-testid=step-navigation-3]').click();
     cy.get('[data-testid=licence-field]').contains('CC BY 4.0');
 
@@ -160,5 +194,63 @@ context('Actions', () => {
     cy.get('[data-testid=modify_and_build_radio_group]').should('exist');
     cy.get('[data-testid=commercial_use_radio_group]').should('exist');
     cy.get('[data-testid=commercial_use_radio_group] .Mui-checked').should('not.exist');
+  });
+
+  it('adds and removes contributors', () => {
+    const unpublishedTestPost = mockMyResources[1];
+    cy.visit(`/editresource/${unpublishedTestPost.identifier}]`);
+    const mockContributor1 = 'Mock Contributor1';
+    const mockContributor2 = 'Mock Contributor2';
+    cy.get('[data-testid=step-navigation-1]').click();
+    //add
+    cy.get('[data-testid=contributor-add-button]').click();
+    cy.get('[data-testid=contributor-type-field-1]').click();
+    cy.get('[data-testid=contributor-type-options-4]').click();
+    cy.get('[data-testid=contributor-name-field-1]').type(mockContributor1).type('{enter}');
+    //add and delete
+    cy.get('[data-testid=contributor-add-button]').click();
+    cy.get('[data-testid=contributor-type-field-2]').click();
+    cy.get('[data-testid=contributor-type-options-2]').click();
+    cy.get('[data-testid=contributor-name-field-2]').type(mockContributor2).type('{enter}');
+    cy.get('[data-testid=contributor-delete-button-2]').click();
+    //test preview
+    cy.get('[data-testid=step-navigation-4]').click();
+    cy.get('[data-testid=resource-contributors]').should('contain', mockContributor1);
+    cy.get('[data-testid=resource-contributors]').should('not.contain', mockContributor2);
+  });
+
+  it('adds and removes creators', () => {
+    const unpublishedTestPost = mockMyResources[1];
+    cy.visit(`/editresource/${unpublishedTestPost.identifier}]`);
+    const mockCreator1 = 'Mock Creator1';
+    const mockCreator2 = 'Mock Creator2';
+    cy.get('[data-testid=step-navigation-1]').click();
+    //add
+    cy.get('[data-testid=creator-add-button]').click();
+    cy.get('[data-testid=creator-name-field-2]').type(mockCreator1).type('{enter}');
+    //add and delete
+    cy.get('[data-testid=creator-add-button]').click();
+    cy.get('[data-testid=creator-name-field-3]').type(mockCreator2).type('{enter}');
+    cy.get('[data-testid=creator-delete-button-3]').click();
+    //test preview
+    cy.get('[data-testid=step-navigation-4]').click();
+    cy.get('[data-testid=resource-creators]').should('contain', mockCreator1);
+    cy.get('[data-testid=resource-creators]').should('not.contain', mockCreator2);
+  });
+
+  it('starts a registration with a file', () => {
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-file]').click();
+    cy.get('input[type="file"]');
+    cy.fixture('testPicture.png').then((fileContent) => {
+      cy.get('input[type="file"]').attachFile({
+        fileContent: fileContent.toString(),
+        fileName: 'testPicture.png',
+        mimeType: 'image/png',
+      });
+    });
+    cy.get('[data-testid=step-navigation-2').click();
+    cy.get(`[data-testid=thumbnail-${mockDefaultResource.identifier}]`).should('exist');
+    cy.get('Button.uppy-StatusBar-actionBtn--retry').should('exist'); //because it is failing with mock
   });
 });

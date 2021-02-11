@@ -53,7 +53,12 @@ const Thumbnail: FC<thumbnailProps> = ({ resourceOrContentIdentifier, alt, needs
 
   return (
     <>
-      <StyledImage onError={(event) => addDefaultImage(event)} src={url} alt={alt} />
+      <StyledImage
+        onError={(event) => addDefaultImage(event)}
+        src={url}
+        alt={alt}
+        data-testid={`thumbnail-${resourceOrContentIdentifier}`}
+      />
     </>
   );
 };
