@@ -30,6 +30,7 @@ export enum Colors {
   Panel = '#A9D8B8',
   Disabled = '#bbb',
   Danger = '#ff5555',
+  Error = '#d32f2f',
   Warning = 'rgba(147, 10, 10, 1)',
   DangerLight = '#ffbbbb',
   Indicator = '#FFB546',
@@ -84,6 +85,7 @@ export default createMuiTheme({
       main: Colors.Box,
     },
     danger: { main: Colors.Danger, light: Colors.DangerLight },
+    error: { main: Colors.Warning },
     text: {
       primary: Colors.PrimaryText,
       secondary: Colors.SecondaryText,

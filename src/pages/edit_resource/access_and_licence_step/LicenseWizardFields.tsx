@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { FormControlLabel, FormLabel, Radio, Typography } from '@material-ui/core';
+import { FormControl, FormControlLabel, FormLabel, Radio, Typography } from '@material-ui/core';
 import { StyledContentWrapper, StyledRadioGroup, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import { useTranslation } from 'react-i18next';
@@ -156,43 +156,44 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           ariaDescription={extraRestrictionRadio}
           title={t('license.extra_restrictions')}
           expanded={true}>
-          <FormLabel component="legend" id={`${extraRestrictionRadio}-label`}>
-            <Typography variant="overline">{t('license.questions.special_needs')}</Typography>
-          </FormLabel>
           <Field name={'resourceRestriction'}>
             {({ field }: FieldProps) => (
-              <StyledRadioGroup
-                {...field}
-                data-testid="extra_restriction_radio_group"
-                aria-label={t('license.questions.special_needs')}
-                value={field.value}
-                onChange={(event) => handleChangeInExtraRestriction(event)}>
-                {licenseRestrictions.map((element, index) => (
-                  <FormControlLabel
-                    key={element}
-                    data-testid={`resource_restriction_option_${element.replace(/[.\s]/g, '_')}`}
-                    value={element}
-                    control={<Radio color="primary" />}
-                    label={t(`license.restriction_options.${element.replace(/[.\s]/g, '_')}`)}
-                  />
-                ))}
-                {containsOtherWorksFieldsSelectedCC && (
-                  <>
+              <FormControl component="fieldset">
+                <FormLabel component="legend" id={`${extraRestrictionRadio}-label`}>
+                  <Typography variant="overline">{t('license.questions.special_needs')}</Typography>
+                </FormLabel>
+                <StyledRadioGroup
+                  {...field}
+                  data-testid="extra_restriction_radio_group"
+                  value={field.value}
+                  onChange={(event) => handleChangeInExtraRestriction(event)}>
+                  {licenseRestrictions.map((element, index) => (
                     <FormControlLabel
-                      value={Licenses.CC_BY_SA}
-                      data-testid={`resource_restriction_option_${Licenses.CC_BY_SA}`}
+                      key={element}
+                      data-testid={`resource_restriction_option_${element.replace(/[.\s]/g, '_')}`}
+                      value={element}
                       control={<Radio color="primary" />}
-                      label={t(`license.restriction_options.CC_BY-SA_4_0`)}
+                      label={t(`license.restriction_options.${element.replace(/[.\s]/g, '_')}`)}
                     />
-                    <FormControlLabel
-                      value={Licenses.CC_BY_NC_SA}
-                      data-testid={`resource_restriction_option_${Licenses.CC_BY_NC_SA}`}
-                      control={<Radio color="primary" />}
-                      label={t(`license.restriction_options.CC_BY-NC-SA_4_0`)}
-                    />
-                  </>
-                )}
-              </StyledRadioGroup>
+                  ))}
+                  {containsOtherWorksFieldsSelectedCC && (
+                    <>
+                      <FormControlLabel
+                        value={Licenses.CC_BY_SA}
+                        data-testid={`resource_restriction_option_${Licenses.CC_BY_SA}`}
+                        control={<Radio color="primary" />}
+                        label={t(`license.restriction_options.CC_BY-SA_4_0`)}
+                      />
+                      <FormControlLabel
+                        value={Licenses.CC_BY_NC_SA}
+                        data-testid={`resource_restriction_option_${Licenses.CC_BY_NC_SA}`}
+                        control={<Radio color="primary" />}
+                        label={t(`license.restriction_options.CC_BY-NC-SA_4_0`)}
+                      />
+                    </>
+                  )}
+                </StyledRadioGroup>
+              </FormControl>
             )}
           </Field>
         </AccordionRadioGroup>
