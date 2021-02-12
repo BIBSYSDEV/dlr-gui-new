@@ -303,5 +303,26 @@ context('Actions', () => {
     cy.get('Button.uppy-StatusBar-actionBtn--retry').should('exist'); //because it is failing with mock
   });
 
-  //todo: keywords
+  it('register keyword tags', () => {
+    const testLink = 'http://www.test.com';
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-link]').click();
+    cy.get('[data-testid=new-resource-link-input]').type(testLink);
+    cy.get('[data-testid=new-resource-link-submit-button]').click();
+    const testTag1 = 'tag1';
+    const testTag2 = 'one more tag';
+    const testTag3 = 'tag3';
+    cy.get('[data-testid=resource-tags-input]').type(`${testTag1}{enter}`);
+    cy.get('[data-testid=resource-tags-input]').type(`${testTag2}{enter}`);
+    cy.get('[data-testid=resource-tags-input]').type(`${testTag3}{enter}`);
+    cy.get('[data-testid=tag-chip-0]').contains(testTag1);
+    cy.get('[data-testid=tag-chip-0] .MuiChip-deleteIcon').click();
+    cy.get('[data-testid=tag-chip-0]').should('not.contain', testTag1);
+    cy.get('[data-testid=tag-chip-4]').should('not.exist');
+
+    //tag exist on preview
+    cy.get('[data-testid=step-navigation-4]').click();
+    cy.get('[data-testid=resource-tags]').should('contain', testTag2);
+    cy.get('[data-testid=resource-tags]').should('contain', testTag3);
+  });
 });

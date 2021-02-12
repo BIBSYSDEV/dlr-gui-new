@@ -79,7 +79,12 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
               }}
               renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
-                  <StyledChip deleteIcon={<StyledCancelIcon />} label={option} {...getTagProps({ index })} />
+                  <StyledChip
+                    deleteIcon={<StyledCancelIcon />}
+                    data-testid={`tag-chip-${index}`}
+                    label={option}
+                    {...getTagProps({ index })}
+                  />
                 ))
               }
               renderInput={(params) => (
@@ -89,6 +94,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                   helperText={t('resource.add_tags')}
                   variant="filled"
                   fullWidth
+                  data-testid="resource-tags-input"
                   onBlur={(event) => {
                     const value = event.target.value;
                     const tags = value
