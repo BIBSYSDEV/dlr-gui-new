@@ -13,6 +13,7 @@ const StyledDashboard = styled.div`
   display: flex;
   justify-items: center;
   flex-direction: column;
+  visibility: hidden;
 `;
 
 const SearchFieldWrapper = styled.div`
