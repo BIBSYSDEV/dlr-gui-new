@@ -195,7 +195,7 @@ export const mockCreatedResourceWithContents = {
 export const mockToken = 'mockToken';
 
 export const mockCreateUpload = { uploadId: 'asd', key: 'sfd' };
-export const mockPrepareUpload = { url: `${API_PATHS.guiBackendResourcesContentPath}/xxx` };
+export const mockPrepareUpload = { url: 'https://file-upload.com/files/' };
 export const mockCompleteUpload = {};
 
 export const mockTags: string[] = ['mock tag1', 'mock tag2'];

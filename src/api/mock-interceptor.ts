@@ -37,7 +37,7 @@ export const interceptRequestsOnMock = () => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve([200, mockCreateUpload]);
-      }, 3000);
+      }, 1000);
     });
   });
   mock
