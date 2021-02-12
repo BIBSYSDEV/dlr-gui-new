@@ -44,6 +44,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
                 {...field}
                 variant="filled"
                 id="resource-title"
+                required
                 fullWidth
                 label={t('resource.metadata.title')}
                 error={touched && !!error}
@@ -66,6 +67,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
               <TextField
                 {...field}
                 id="resource-description"
+                required
                 variant="filled"
                 fullWidth
                 multiline

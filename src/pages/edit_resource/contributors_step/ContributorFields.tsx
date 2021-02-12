@@ -196,6 +196,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                           id={`contributor-name-${index}`}
                           variant="filled"
                           label={t('name')}
+                          required
                           error={touched && !!error}
                           helperText={<ErrorMessage name={field.name} />}
                           onBlur={(event) => {

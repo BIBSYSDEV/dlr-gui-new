@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Step, StepButton, StepContent, StepLabel, Stepper, Typography } from '@material-ui/core';
+import { Step, StepButton, StepLabel, Stepper } from '@material-ui/core';
 import { getStepLabel, Resource, ResourceFormStep, ResourceFormSteps } from '../../types/resource.types';
 import { useFormikContext } from 'formik';
 import { StyledContentWrapperMedium } from '../../components/styled/Wrappers';
@@ -15,7 +15,6 @@ import {
 } from '../../utils/formik-helpers';
 import CircularFileUploadProgress from '../../components/CircularFileUploadProgress';
 import { Uppy } from '../../types/file.types';
-import styled from 'styled-components';
 
 interface ResourceFormNavigationHeaderProps {
   activeStep: ResourceFormStep;

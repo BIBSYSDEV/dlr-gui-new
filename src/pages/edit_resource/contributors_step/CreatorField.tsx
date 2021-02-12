@@ -132,6 +132,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                           {...field}
                           id={`creator-name-input-field-${index}`}
                           variant="filled"
+                          required
                           label={t('common.name')}
                           error={touched && !!error}
                           helperText={<ErrorMessage name={field.name} />}
