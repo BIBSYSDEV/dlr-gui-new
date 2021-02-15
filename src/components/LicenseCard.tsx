@@ -29,9 +29,6 @@ const StyledLink = styled(Link)`
   display: flex;
   align-items: flex-start;
 `;
-const StyledTypography = styled(Typography)`
-  padding-left: 0.2rem;
-`;
 
 const LicenseCard: FC<LicenseProps> = ({ license }) => {
   const language = i18next.language;
@@ -70,12 +67,8 @@ const LicenseCard: FC<LicenseProps> = ({ license }) => {
             <Typography variant="body1">{license.features?.dlr_license_description}</Typography>
           )}
           <StyledLink target="_blank" href={license.features?.dlr_license_url_en ?? ''}>
+            {`${t('license.read_more')}: `}
             {license.features?.dlr_license_code && <CClogoImage licenseCode={license.features.dlr_license_code} />}
-            <StyledTypography>
-              {`${t('license.read_more')}: ${license.features?.dlr_license_code} (${t(
-                'license.external_page'
-              ).toLowerCase()})`}
-            </StyledTypography>
           </StyledLink>
         </div>
       )}
