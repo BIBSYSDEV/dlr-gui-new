@@ -157,17 +157,17 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
                   {...field}
                   aria-label={t('license.questions.examples')}
                   value={field.value}
-                  data-testid="contains_other_peoples_work_radio_group"
+                  data-testid="contains-other-peoples-work-radio-group"
                   onChange={(event) => handleChangeInContainsOtherPeoplesWork(event)}>
                   <FormControlLabel
                     value={ContainsOtherPeoplesWorkOptions.No}
-                    data-testid="contains_other_peoples_work_option_no"
+                    data-testid="contains-other-peoples-work-option-no"
                     control={<Radio color="primary" />}
                     label={t('common.no')}
                   />
                   <FormControlLabel
                     value={ContainsOtherPeoplesWorkOptions.Yes}
-                    data-testid="contains_other_peoples_work_option_yes"
+                    data-testid="contains-other-peoples-work-option-yes"
                     control={<Radio color="primary" />}
                     label={t('common.yes')}
                   />
@@ -189,11 +189,13 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
                     {...field}
                     aria-label={t('license.questions.usage_cleared_with_owner')}
                     value={field.value}
+                    data-testid="usage-cleared-with-owner-radio-group"
                     onChange={(event) => handleLicenseAgreementChange(event)}>
                     {LicenseAgreements.map((element, index) => (
                       <FormControlLabel
                         value={element}
                         key={index}
+                        data-testid={`usage-cleared-with-owner-option-${element}`}
                         label={t(`license.limitation.${element}.title`)}
                         control={<Radio color="primary" />}
                       />
@@ -209,7 +211,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
         {values.usageClearedWithOwner !== LicenseAgreementsOptions.YesOther &&
           values.usageClearedWithOwner !== '' &&
           values.containsOtherPeoplesWork && (
-            <StyledOutLinedBox>
+            <StyledOutLinedBox data-testid={'usage-cleared-with-owner-info'}>
               <ErrorOutlineIcon color="primary" />
               <StyledTypography>
                 {t(`license.limitation.${values.usageClearedWithOwner}.important_notice`)}

@@ -1,6 +1,7 @@
 import { mockDefaultResource, mockMyResources } from '../../src/api/mockdata';
 import { licenses } from '../../src/utils/testfiles/licenses';
 import 'cypress-file-upload';
+import { ResourceFeatureTypes } from '../../src/types/resource.types';
 
 context('Actions', () => {
   beforeEach(() => {
@@ -38,21 +39,42 @@ context('Actions', () => {
     const mockDescription = 'mockDescription';
     cy.get('[data-testid=dlr-title-input]').clear().type(mockTitle);
     cy.get('[data-testid=dlr-description-input]').type(mockDescription);
+    cy.get('[data-testid=resource-type-input]').click();
+    cy.get('[data-testid=resource-type-option-simulation]').click();
+    cy.get('[data-testid=resource-type-input] input').should('have.value', ResourceFeatureTypes.simulation);
+
     //contributors
     cy.get('[data-testid=next-step-button]').click();
     //contents
     cy.get('[data-testid=next-step-button]').click();
     //licenses
     cy.get('[data-testid=next-step-button]').click();
-    cy.get('[data-testid=contains_other_peoples_work_option_no]').click();
+    cy.get('[data-testid=contains-other-peoples-work-option-no]').click();
     cy.get('[data-testid=licence-field]').click();
-    cy.get(`[data-testid=license_option_${licenses[0].identifier}`).click();
+    cy.get(`[data-testid=license-option-${licenses[0].identifier}`).click();
     //preview
     cy.get('[data-testid=next-step-button]').click();
     cy.get('[data-testid=resource-title]').contains(mockTitle);
     cy.get('[data-testid=resource-description]').contains(mockDescription);
     cy.get('[data-testid=publish-button]').click();
     cy.url().should('include', `/resource/${mockDefaultResource.identifier}`);
+  });
+
+  it('runs a minimal registration with errors', () => {
+    const testLink = 'http://www.test.com';
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-link]').click();
+    cy.get('[data-testid=new-resource-link-input]').type(testLink);
+    cy.get('[data-testid=new-resource-link-submit-button]').click();
+    cy.get('[data-testid=dlr-title-input]').clear();
+    //preview
+    cy.get('[data-testid=step-navigation-4]').click();
+    cy.get('[data-testid=publish-button]').should('be.disabled');
+    cy.get('[data-testid=form-errors-panel]').should('exist');
+    cy.get('[data-testid=step-navigation-0] .Mui-error').should('exist');
+    cy.get('[data-testid=step-navigation-1] .Mui-error').should('not.exist');
+    cy.get('[data-testid=step-navigation-2] .Mui-error').should('not.exist');
+    cy.get('[data-testid=step-navigation-3] .Mui-error').should('exist');
   });
 
   it('registers institution when selecting private access', () => {
@@ -156,44 +178,73 @@ context('Actions', () => {
   });
 
   it('uses licenseWizard', () => {
-    const unpublishedTestPost = mockMyResources[1];
-    cy.visit(`/editresource/${unpublishedTestPost.identifier}]`);
+    const testLink = 'http://www.test.com';
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-link]').click();
+    cy.get('[data-testid=new-resource-link-input]').type(testLink);
+    cy.get('[data-testid=new-resource-link-submit-button]').click();
 
     cy.get('[data-testid=step-navigation-3]').click();
-    cy.get('[data-testid=licence-field]').contains('CC BY 4.0');
+    cy.get('[data-testid=licence-field] input').should('have.value', '');
 
-    cy.get('[data-testid=resource_restriction_option_ntnu-internt]').click();
+    cy.get('[data-testid=resource-restriction-option-ntnu-internt]').click();
+    cy.get('[data-testid=licence-field] input').should('have.value', 'd56b161e-05d0-45c9-b96b-5c0b37b952b4');
     cy.get('[data-testid=licence-field]').contains('ntnu-internt');
-    cy.get('[data-testid=resource_restriction_option_yes]').click();
+    cy.get('[data-testid=access-dropdown-menu] input').should('have.value', 'private');
+
+    cy.get('[data-testid=resource-restriction-option-yes]').click();
     cy.get('[data-testid=licence-field]').contains('CC BY-NC-ND 4.0');
-    cy.get('[data-testid=resource_restriction_option_CC_BY_4_0]').click();
+    cy.get('[data-testid=resource-restriction-option-CC_BY_4_0]').click();
     cy.get('[data-testid=licence-field]').contains('CC BY 4.0');
-    cy.get('[data-testid=resource_restriction_option_yes]').click();
+    cy.get('[data-testid=resource-restriction-option-yes]').click();
     cy.get('[data-testid=licence-field]').contains('CC BY-NC-ND 4.0');
 
-    cy.get('[data-testid=commercial_use_option_yes]').click();
+    cy.get('[data-testid=commercial-use-option-yes]').click();
     cy.get('[data-testid=licence-field]').contains('CC BY 4.0');
-    cy.get('[data-testid=commercial_use_option_NC]').click();
-    cy.get('[data-testid=licence-field]').contains('CC BY-NC 4.0');
-    cy.get('[data-testid=commercial_use_radio_group] .Mui-checked').should('exist');
+    cy.get('[data-testid=commercial-use-option-NC]').click();
+    cy.get('[data-testid=licence-field]').contains('NC');
+    cy.get('[data-testid=commercial-use-radio-group] .Mui-checked').should('exist');
 
-    cy.get('[data-testid=modify_and_build_option_primary_yes]').click();
-    cy.get('[data-testid=licence-field]').contains('CC BY-NC 4.0');
-    cy.get('[data-testid=modify_and_build_option_share_alike]').click();
-    cy.get('[data-testid=licence-field]').contains('CC BY-NC-SA 4.0');
-    cy.get('[data-testid=modify_and_build_option_ND]').click();
-    cy.get('[data-testid=licence-field]').contains('CC BY-NC-ND 4.0');
+    cy.get('[data-testid=modify-and-build-option-primary_yes]').click();
+    cy.get('[data-testid=licence-field]').should('not.contain', 'ND');
+    cy.get('[data-testid=modify-and-build-option-share_alike]').click();
+    cy.get('[data-testid=licence-field]').contains('SA');
+    cy.get('[data-testid=modify-and-build-option-ND]').click();
+    cy.get('[data-testid=licence-field]').contains('ND');
 
     //hide commercial and modifyAndBuild when selecting no restriction
-    cy.get('[data-testid=resource_restriction_option_CC_BY_4_0]').click();
-    cy.get('[data-testid=modify_and_build_radio_group]').should('not.exist');
-    cy.get('[data-testid=commercial_use_radio_group]').should('not.exist');
+    cy.get('[data-testid=resource-restriction-option-CC_BY_4_0]').click();
+    cy.get('[data-testid=modify-and-build-radio-group]').should('not.exist');
+    cy.get('[data-testid=commercial-use-radio-group]').should('not.exist');
 
     //reopen commercial and modifyAndBuild but empty checkboxes when reselecting restrictions
-    cy.get('[data-testid=resource_restriction_option_yes]').click();
-    cy.get('[data-testid=modify_and_build_radio_group]').should('exist');
-    cy.get('[data-testid=commercial_use_radio_group]').should('exist');
-    cy.get('[data-testid=commercial_use_radio_group] .Mui-checked').should('not.exist');
+    cy.get('[data-testid=resource-restriction-option-yes]').click();
+    cy.get('[data-testid=modify-and-build-radio-group]').should('exist');
+    cy.get('[data-testid=commercial-use-radio-group]').should('exist');
+    cy.get('[data-testid=commercial-use-radio-group] .Mui-checked').should('not.exist');
+  });
+
+  it('uses otherPeoplesWorkWizard', () => {
+    const testLink = 'http://www.test.com';
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-link]').click();
+    cy.get('[data-testid=new-resource-link-input]').type(testLink);
+    cy.get('[data-testid=new-resource-link-submit-button]').click();
+    cy.get('[data-testid=step-navigation-3]').click();
+
+    cy.get('[data-testid=contains-other-peoples-work-radio-group] .Mui-checked').should('not.exist');
+    cy.get('[data-testid=usage-cleared-with-owner-option-radio-group]').should('not.exist');
+    cy.get('[data-testid=usage-cleared-with-owner-info]').should('not.exist');
+
+    cy.get('[data-testid=contains-other-peoples-work-option-yes]').click();
+    cy.get('[data-testid=usage-cleared-with-owner-radio-group]').should('exist');
+
+    cy.get('[data-testid=usage-cleared-with-owner-option-creative_commons]').click();
+    cy.get('[data-testid=usage-cleared-with-owner-info]').should('exist');
+    cy.get('[data-testid=access-dropdown-menu] input').should('have.value', 'open');
+    cy.get('[data-testid=usage-cleared-with-owner-option-no_clearance]').click();
+    cy.get('[data-testid=usage-cleared-with-owner-info]').should('exist');
+    cy.get('[data-testid=access-dropdown-menu] input').should('have.value', 'private');
   });
 
   it('adds and removes contributors', () => {
@@ -252,5 +303,28 @@ context('Actions', () => {
     cy.get('[data-testid=step-navigation-2').click();
     cy.get(`[data-testid=thumbnail-${mockDefaultResource.identifier}]`).should('exist');
     cy.get('Button.uppy-StatusBar-actionBtn--retry').should('exist'); //because it is failing with mock
+  });
+
+  it('register keyword tags', () => {
+    const testLink = 'http://www.test.com';
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-link]').click();
+    cy.get('[data-testid=new-resource-link-input]').type(testLink);
+    cy.get('[data-testid=new-resource-link-submit-button]').click();
+    const testTag1 = 'tag1';
+    const testTag2 = 'one more tag';
+    const testTag3 = 'tag3';
+    cy.get('[data-testid=resource-tags-input]').type(`${testTag1}{enter}`);
+    cy.get('[data-testid=resource-tags-input]').type(`${testTag2}{enter}`);
+    cy.get('[data-testid=resource-tags-input]').type(`${testTag3}{enter}`);
+    cy.get('[data-testid=tag-chip-0]').contains(testTag1);
+    cy.get('[data-testid=tag-chip-0] .MuiChip-deleteIcon').click();
+    cy.get('[data-testid=tag-chip-0]').should('not.contain', testTag1);
+    cy.get('[data-testid=tag-chip-4]').should('not.exist');
+
+    //tag exist on preview
+    cy.get('[data-testid=step-navigation-4]').click();
+    cy.get('[data-testid=resource-tags]').should('contain', testTag2);
+    cy.get('[data-testid=resource-tags]').should('contain', testTag3);
   });
 });
