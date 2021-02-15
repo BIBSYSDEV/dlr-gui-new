@@ -6,6 +6,7 @@ phases:
       nodejs: latest
     commands:
       - env
+      - npm i -g npm
       - npm -v
       - node -v
       - npm install
