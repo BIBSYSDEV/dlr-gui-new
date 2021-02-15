@@ -1,6 +1,5 @@
-import { mockDefaultResource, mockMyResources } from '../../src/api/mockdata';
+import { mockContents, mockDefaultResource, mockMyResources } from '../../src/api/mockdata';
 import { licenses } from '../../src/utils/testfiles/licenses';
-import 'cypress-file-upload';
 import { ResourceFeatureTypes } from '../../src/types/resource.types';
 
 context('Actions', () => {
@@ -293,7 +292,6 @@ context('Actions', () => {
   it('starts a registration with a file', () => {
     cy.get('[data-testid=new-registration-link]').click();
     cy.get('[data-testid=new-resource-file]').click();
-
     cy.route({
       method: 'PUT',
       url: 'https://file-upload.com/files/', // Must match URL set in mock-interceptor, which cannot be imported into a test
@@ -301,10 +299,10 @@ context('Actions', () => {
       headers: { ETag: 'etag' },
     });
     cy.get('input[type=file]:first-of-type').uploadFile('testPicture.png');
-
     cy.get('[data-testid=step-navigation-2').click();
     cy.get(`[data-testid=thumbnail-${mockDefaultResource.identifier}]`).should('exist');
-    cy.get('.uppy-StatusBar.is-complete').should('exist'); //because it is failing with mock
+    cy.get(`[data-testid=master-content-title]`).should('have.value', mockContents[0].features.dlr_content);
+    cy.get('.uppy-StatusBar.is-complete').should('exist');
   });
 
   it('register keyword tags', () => {
