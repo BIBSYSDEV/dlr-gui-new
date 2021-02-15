@@ -203,6 +203,7 @@ const EditResourcePage: FC = () => {
       const responseWithCalculatedDefaults = (await getResourceDefaults(startingResource.identifier)).data;
       await saveCalculatedFields(responseWithCalculatedDefaults);
       const tempResource = deepmerge(emptyResource, startingResource);
+      const tempContents = startingResource.contents;
       const resource: Resource = {
         ...deepmerge(tempResource, responseWithCalculatedDefaults),
         contributors: [
@@ -216,6 +217,7 @@ const EditResourcePage: FC = () => {
           },
         ],
         licenses: [emptyLicense],
+        contents: tempContents,
       };
       await setDLRType(resourceCreationType, responseWithCalculatedDefaults, resource, startingResource);
       await setCreator(resource, startingResource.identifier, user.name);

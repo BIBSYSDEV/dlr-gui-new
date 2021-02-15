@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { FormControl, FormControlLabel, FormLabel, Radio, Typography } from '@material-ui/core';
+import { FormControlLabel, FormLabel, Radio, Typography } from '@material-ui/core';
 import { StyledContentWrapper, StyledRadioGroup, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import { useTranslation } from 'react-i18next';
@@ -156,44 +156,43 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           ariaDescription={extraRestrictionRadio}
           title={t('license.extra_restrictions')}
           expanded={true}>
+          <FormLabel component="legend" id={`${extraRestrictionRadio}-label`}>
+            <Typography variant="overline">{t('license.questions.special_needs')}</Typography>
+          </FormLabel>
           <Field name={'resourceRestriction'}>
             {({ field }: FieldProps) => (
-              <FormControl component="fieldset">
-                <FormLabel component="legend" id={`${extraRestrictionRadio}-label`}>
-                  <Typography variant="overline">{t('license.questions.special_needs')}</Typography>
-                </FormLabel>
-                <StyledRadioGroup
-                  {...field}
-                  data-testid="extra_restriction_radio_group"
-                  value={field.value}
-                  onChange={(event) => handleChangeInExtraRestriction(event)}>
-                  {licenseRestrictions.map((element, index) => (
+              <StyledRadioGroup
+                {...field}
+                data-testid="extra_restriction_radio_group"
+                aria-label={t('license.questions.special_needs')}
+                value={field.value}
+                onChange={(event) => handleChangeInExtraRestriction(event)}>
+                {licenseRestrictions.map((element, index) => (
+                  <FormControlLabel
+                    key={element}
+                    data-testid={`resource-restriction-option-${element.replace(/[.\s]/g, '_')}`}
+                    value={element}
+                    control={<Radio color="primary" />}
+                    label={t(`license.restriction_options.${element.replace(/[.\s]/g, '_')}`)}
+                  />
+                ))}
+                {containsOtherWorksFieldsSelectedCC && (
+                  <>
                     <FormControlLabel
-                      key={element}
-                      data-testid={`resource_restriction_option_${element.replace(/[.\s]/g, '_')}`}
-                      value={element}
+                      value={Licenses.CC_BY_SA}
+                      data-testid={`resource-restriction-option-${Licenses.CC_BY_SA}`}
                       control={<Radio color="primary" />}
-                      label={t(`license.restriction_options.${element.replace(/[.\s]/g, '_')}`)}
+                      label={t(`license.restriction_options.CC_BY-SA_4_0`)}
                     />
-                  ))}
-                  {containsOtherWorksFieldsSelectedCC && (
-                    <>
-                      <FormControlLabel
-                        value={Licenses.CC_BY_SA}
-                        data-testid={`resource_restriction_option_${Licenses.CC_BY_SA}`}
-                        control={<Radio color="primary" />}
-                        label={t(`license.restriction_options.CC_BY-SA_4_0`)}
-                      />
-                      <FormControlLabel
-                        value={Licenses.CC_BY_NC_SA}
-                        data-testid={`resource_restriction_option_${Licenses.CC_BY_NC_SA}`}
-                        control={<Radio color="primary" />}
-                        label={t(`license.restriction_options.CC_BY-NC-SA_4_0`)}
-                      />
-                    </>
-                  )}
-                </StyledRadioGroup>
-              </FormControl>
+                    <FormControlLabel
+                      value={Licenses.CC_BY_NC_SA}
+                      data-testid={`resource-restriction-option-${Licenses.CC_BY_NC_SA}`}
+                      control={<Radio color="primary" />}
+                      label={t(`license.restriction_options.CC_BY-NC-SA_4_0`)}
+                    />
+                  </>
+                )}
+              </StyledRadioGroup>
             )}
           </Field>
         </AccordionRadioGroup>
@@ -211,7 +210,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                 <>
                   <StyledRadioGroup
                     {...field}
-                    data-testid="commercial_use_radio_group"
+                    data-testid="commercial-use-radio-group"
                     aria-label={t('license.questions.commercial')}
                     value={field.value}
                     onChange={(event) => handleChangeInCommercialOption(event)}>
@@ -219,7 +218,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                       <FormControlLabel
                         key={index}
                         value={element}
-                        data-testid={`commercial_use_option_${element}`}
+                        data-testid={`commercial-use-option-${element}`}
                         control={<Radio color="primary" />}
                         label={t(`license.commercial_options.${element}`)}
                       />
@@ -244,19 +243,19 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                 <>
                   <StyledRadioGroup
                     {...field}
-                    data-testid="modify_and_build_radio_group"
+                    data-testid="modify-and-build-radio-group"
                     value={field.value}
                     aria-label={t('license.questions.modify_and_build')}
                     onChange={(event) => handleChangeInModifyAndBuildOption(event)}>
                     <FormControlLabel
                       value={ModifyAndBuildOptions.primaryYes}
-                      data-testid={`modify_and_build_option_${ModifyAndBuildOptions.primaryYes}`}
+                      data-testid={`modify-and-build-option-${ModifyAndBuildOptions.primaryYes}`}
                       control={<Radio color="primary" />}
                       label={t(`license.modify_and_build_options.yes`)}
                     />
                     <FormControlLabel
                       value={ModifyAndBuildOptions.SA}
-                      data-testid={`modify_and_build_option_${ModifyAndBuildOptions.SA}`}
+                      data-testid={`modify-and-build-option-${ModifyAndBuildOptions.SA}`}
                       control={<Radio color="primary" />}
                       label={
                         <>
@@ -269,7 +268,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                     />
                     <FormControlLabel
                       value={ModifyAndBuildOptions.ND}
-                      data-testid={`modify_and_build_option_${ModifyAndBuildOptions.ND}`}
+                      data-testid={`modify-and-build-option-${ModifyAndBuildOptions.ND}`}
                       control={<Radio color="primary" />}
                       label={t(`license.modify_and_build_options.non_destructive`)}
                     />

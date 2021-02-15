@@ -162,6 +162,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                           variant="filled"
                           select
                           required
+                          data-testid={`contributor-type-field-${index}`}
                           label={t('type')}
                           value={field.value}
                           error={touched && !!error}
@@ -180,7 +181,10 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                           }}>
                           {contributorTypesTranslated.map((contributorType, index) => {
                             return (
-                              <MenuItem key={index} value={contributorType.key}>
+                              <MenuItem
+                                data-testid={`contributor-type-options-${index}`}
+                                key={index}
+                                value={contributorType.key}>
                                 <Typography variant="inherit">{contributorType.description}</Typography>
                               </MenuItem>
                             );
@@ -199,6 +203,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                           required
                           error={touched && !!error}
                           helperText={<ErrorMessage name={field.name} />}
+                          data-testid={`contributor-name-field-${index}`}
                           onBlur={(event) => {
                             handleBlur(event);
                             !error && saveContributorField(event, contributor.identifier, index);
@@ -210,6 +215,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                       color="secondary"
                       startIcon={<DeleteIcon fontSize="large" />}
                       size="large"
+                      data-testid={`contributor-delete-button-${index}`}
                       onClick={() => {
                         removeContributor(contributor.features.dlr_contributor_identifier, arrayHelpers, index);
                       }}>
@@ -223,6 +229,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                 type="button"
                 variant="outlined"
                 color="primary"
+                data-testid="contributor-add-button"
                 startIcon={<AddIcon />}
                 onClick={() => {
                   addContributor(arrayHelpers);

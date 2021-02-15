@@ -75,7 +75,10 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
                     saveField(event);
                   }}>
                   {licenses.map((license) => (
-                    <MenuItem key={license.identifier} value={license.identifier}>
+                    <MenuItem
+                      key={license.identifier}
+                      value={license.identifier}
+                      data-testid={`license-option-${license.identifier}`}>
                       {license.features?.dlr_license_code}
                     </MenuItem>
                   ))}

@@ -86,7 +86,7 @@ const ResourcePage = () => {
     <ErrorBanner />
   ) : (
     <StyledPageContent>
-      {isUnpublished && isAuthor && (
+      {isUnpublished() && isAuthor() && (
         <StyledResourceActionBar>
           <Button
             size="large"

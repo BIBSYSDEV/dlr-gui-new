@@ -179,14 +179,17 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
                 {...field}
                 aria-label={t('license.questions.contains_other_peoples_work')}
                 value={field.value}
+                data-testid="contains-other-peoples-work-radio-group"
                 onChange={(event) => handleChangeInContainsOtherPeoplesWork(event)}>
                 <FormControlLabel
                   value={ContainsOtherPeoplesWorkOptions.No}
+                  data-testid="contains-other-peoples-work-option-no"
                   control={<Radio required={true} color="primary" />}
                   label={t('common.no')}
                 />
                 <FormControlLabel
                   value={ContainsOtherPeoplesWorkOptions.Yes}
+                  data-testid="contains-other-peoples-work-option-yes"
                   control={<Radio color="primary" />}
                   label={t('common.yes')}
                 />
@@ -209,11 +212,13 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
                     {...field}
                     aria-label={t('license.questions.usage_cleared_with_owner')}
                     value={field.value}
+                    data-testid="usage-cleared-with-owner-radio-group"
                     onChange={(event) => handleLicenseAgreementChange(event)}>
                     {LicenseAgreements.map((element, index) => (
                       <FormControlLabel
                         value={element}
                         key={index}
+                        data-testid={`usage-cleared-with-owner-option-${element}`}
                         label={t(`license.limitation.${element}.title`)}
                         control={<Radio required={true} color="primary" />}
                       />
@@ -229,7 +234,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
         {values.usageClearedWithOwner !== LicenseAgreementsOptions.YesOther &&
           values.usageClearedWithOwner !== '' &&
           values.containsOtherPeoplesWork && (
-            <StyledOutLinedBox>
+            <StyledOutLinedBox data-testid={'usage-cleared-with-owner-info'}>
               <ErrorOutlineIcon color="primary" />
               <StyledTypography>
                 {t(`license.limitation.${values.usageClearedWithOwner}.important_notice`)}

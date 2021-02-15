@@ -136,6 +136,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                           label={t('common.name')}
                           error={touched && !!error}
                           helperText={<ErrorMessage name={field.name} />}
+                          data-testid={`creator-name-field-${index}`}
                           onBlur={(event) => {
                             handleBlur(event);
                             !error && saveCreatorField(event, creator.identifier, index);
@@ -148,6 +149,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                         color="secondary"
                         startIcon={<DeleteIcon fontSize="large" />}
                         size="large"
+                        data-testid={`creator-delete-button-${index}`}
                         onClick={() => {
                           removeCreator(creator.identifier, arrayHelpers, index);
                         }}>
@@ -162,6 +164,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                 type="button"
                 variant="outlined"
                 color="primary"
+                data-testid="creator-add-button"
                 startIcon={<AddIcon />}
                 onClick={() => {
                   addCreator(arrayHelpers);
