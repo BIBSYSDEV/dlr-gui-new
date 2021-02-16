@@ -349,5 +349,7 @@ context('Actions', () => {
       mockContent.features.dlr_content
     );
     cy.get(`[data-testid=thumbnail-${mockContent.identifier}]`).should('exist');
+    cy.get(`[data-testid=additional-file-${mockContent.identifier}-delete-button]`).click();
+    cy.get(`[data-testid=thumbnail-${mockContent.identifier}]`).should('not.exist');
   });
 });
