@@ -27,7 +27,7 @@ export const createResource = async (type: string, content: string): Promise<Res
     if (content.features.dlr_content_master === 'true') {
       resource.contents.masterContent = content;
       resource.contents.masterContent.features.dlr_content_title = content.features.dlr_content;
-    } else {
+    } else if (content.features.dlr_content !== LinkMetadataFilename) {
       resource.contents.additionalContent.push(content);
     }
   });

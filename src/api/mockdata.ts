@@ -180,9 +180,22 @@ export const mockContents: Content[] = [
       dlr_content_identifier: 'adfasf1sdfsdfdf',
       dlr_content_content_type: 'image',
       dlr_content_title: 'metadata_external.json',
+      dlr_content_type: 'file',
+      dlr_thumbnail_default: 'false',
     },
   },
 ];
+
+export const mockContent: Content = {
+  identifier: '48239057834',
+  features: {
+    dlr_content: 'mockimage.jpg',
+    dlr_content_identifier: '32342',
+    dlr_content_content_type: 'image',
+    dlr_content_title: 'mock title',
+    dlr_content_type: 'file',
+  },
+};
 
 export const mockCreatedResourceWithContents = {
   contents: mockContents,

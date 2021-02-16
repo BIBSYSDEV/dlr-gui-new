@@ -61,7 +61,7 @@ const filterAdditionalFiles = (contents: undefined | Content[]) => {
   if (contents) {
     return (
       contents.filter((content) => {
-        return content.features.dlr_content_type === 'file' && content.features.dlr_thumbnail_default === 'false';
+        return content.features.dlr_content_type === 'file' && content.features.dlr_thumbnail_default !== 'true';
       }) ?? []
     );
   } else {
@@ -211,14 +211,19 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
               )}
             </UploadImageProgressCard>
             <SmallParagraphSpace>
-              <Typography variant="body1">{content.features.dlr_content}</Typography>
-              <Typography variant="body2">{displayContent(content.features.dlr_content)?.fileType}</Typography>
+              <Typography variant="body1" data-testid={`additional-file-content-${content.identifier}`}>
+                {content.features.dlr_content}
+              </Typography>
+              <Typography variant="body2" data-testid={`additional-file-type-${content.identifier}`}>
+                {displayContent(content.features.dlr_content)?.fileType}
+              </Typography>
               <Typography variant="overline">{displayContent(content.features.dlr_content)?.fileSize}</Typography>
             </SmallParagraphSpace>
             <Button
               color="secondary"
               startIcon={<DeleteIcon fontSize="large" />}
               size="large"
+              data-testid={`additional-file-${content.identifier}-delete-button`}
               onClick={() => {
                 deleteContent(content, index);
               }}>
@@ -227,7 +232,7 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
             {errorIndex === index && <ErrorBanner userNeedsToBeLoggedIn={true} />}
           </LargeParagraphSpace>
         ))}
-        <LargeParagraphSpace>
+        <LargeParagraphSpace data-testid={`additional-files-uppy-dashboard`}>
           <UppyDashboard hideCancelButton={false} uppy={additionalFileUploadUppy} />
         </LargeParagraphSpace>
       </StyledContentWrapper>

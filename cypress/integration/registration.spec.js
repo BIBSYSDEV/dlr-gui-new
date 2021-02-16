@@ -1,4 +1,4 @@
-import { mockContents, mockDefaultResource, mockMyResources } from '../../src/api/mockdata';
+import { mockContent, mockContents, mockDefaultResource, mockMyResources } from '../../src/api/mockdata';
 import { licenses } from '../../src/utils/testfiles/licenses';
 import { ResourceFeatureTypes } from '../../src/types/resource.types';
 
@@ -326,5 +326,28 @@ context('Actions', () => {
     cy.get('[data-testid=step-navigation-4]').click();
     cy.get('[data-testid=resource-tags]').should('contain', testTag2);
     cy.get('[data-testid=resource-tags]').should('contain', testTag3);
+  });
+
+  it('register additional files', () => {
+    const testLink = 'http://www.test.com';
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-link]').click();
+    cy.get('[data-testid=new-resource-link-input]').type(testLink);
+    cy.get('[data-testid=new-resource-link-submit-button]').click();
+
+    cy.get('[data-testid=step-navigation-2]').click();
+    cy.route({
+      method: 'PUT',
+      url: 'https://file-upload.com/files/', // Must match URL set in mock-interceptor, which cannot be imported into a test
+      response: '',
+      headers: { ETag: 'etag' },
+    });
+    cy.get('[data-testid=additional-files-uppy-dashboard] input[type=file]:first-of-type').uploadFile(
+      'testPicture.png'
+    );
+    cy.get(`[data-testid=additional-file-content-${mockContent.identifier}]`).contains(
+      mockContent.features.dlr_content
+    );
+    cy.get(`[data-testid=thumbnail-${mockContent.identifier}]`).should('exist');
   });
 });
