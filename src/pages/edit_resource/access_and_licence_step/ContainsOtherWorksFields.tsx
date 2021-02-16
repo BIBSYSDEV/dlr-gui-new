@@ -22,7 +22,6 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import {
   AccessTypes,
   ContainsOtherPeoplesWorkOptions,
-  emptyLicense,
   InstitutionLicenseProviders,
   License,
   LicenseAgreementsOptions,
