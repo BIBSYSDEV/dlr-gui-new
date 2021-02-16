@@ -78,11 +78,8 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   const handleChangeInContainsOtherPeoplesWork = async (event: React.ChangeEvent<HTMLInputElement>) => {
     handleChange(event);
     forceResetInLicenseWizard();
-    if (values.licenses) {
-      await replaceOldLicense(emptyLicense);
-      resetFormButKeepTouched(touched, resetForm, values, setTouched);
-      setFieldValue('containsOtherPeoplesWork', event.target.value);
-    }
+    resetFormButKeepTouched(touched, resetForm, values, setTouched);
+    setFieldValue('containsOtherPeoplesWork', event.target.value);
     if (event.target.value === ContainsOtherPeoplesWorkOptions.No) {
       setHasSelectedCC(false);
       setFieldValue('usageClearedWithOwner', '');
@@ -121,8 +118,6 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
           await replaceOldLicense(license);
           await setResourceLicense(values.identifier, license.identifier);
         }
-      } else {
-        await replaceOldLicense(emptyLicense);
       }
       if (values.features.dlr_access !== accessType) {
         setFieldValue('features.dlr_access', accessType);

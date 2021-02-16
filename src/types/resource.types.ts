@@ -239,6 +239,8 @@ export enum FieldNames {
   Tags = 'tags',
   MasterContent = 'masterContent',
   AdditionalContent = 'additionalContent',
+  ContainsOtherPeoplesWork = 'containsOtherPeoplesWork',
+  UsageClearedWithOwner = 'usageClearedWithOwner',
 }
 
 export enum ResourceFormStep {
