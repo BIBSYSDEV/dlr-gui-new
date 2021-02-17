@@ -164,6 +164,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
         variant="outlined"
         color="primary"
         disabled={fileInputIsBusy}
+        data-testid="change-master-content-thumbnail-button"
         onClick={(event) => {
           handleThumbnailClick(event);
         }}>
@@ -188,6 +189,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
         <List aria-label={t('thumbnail.thumbnail_options')}>
           <ListItem
             button
+            data-testid="upload-new-thumbnail-button"
             onClick={() => {
               setAnchorEl(null);
               setShowPopover(false);
@@ -197,6 +199,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
           </ListItem>
           <ListItem
             button
+            data-testid="revert-thumbnail-button"
             onClick={() => {
               setAnchorEl(null);
               setShowPopover(false);

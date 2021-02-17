@@ -352,4 +352,24 @@ context('Actions', () => {
     cy.get(`[data-testid=additional-file-${mockContent.identifier}-delete-button]`).click();
     cy.get(`[data-testid=thumbnail-${mockContent.identifier}]`).should('not.exist');
   });
+
+  it('register thumbnail', () => {
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-file]').click();
+    cy.route({
+      method: 'PUT',
+      url: 'https://file-upload.com/files/', // Must match URL set in mock-interceptor, which cannot be imported into a test
+      response: '',
+      headers: { ETag: 'etag' },
+    });
+    cy.get('input[type=file]:first-of-type').uploadFile('testPicture.png');
+    cy.get('[data-testid=step-navigation-2').click();
+    cy.get('[data-testid=step-navigation-2]').click();
+    cy.get(`[data-testid=change-master-content-thumbnail-button]`).click();
+    cy.get(`[data-testid=upload-new-thumbnail-button]`).click();
+    cy.get('input[type=file]:first-of-type').uploadFile('testPicture.png');
+
+    cy.get(`[data-testid=change-master-content-thumbnail-button]`).click();
+    cy.get(`[data-testid=revert-thumbnail-button]`).click();
+  });
 });
