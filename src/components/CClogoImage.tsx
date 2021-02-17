@@ -1,12 +1,11 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import CC from '../resources/images/creative_commons_logos/cc.xlarge.png';
-import BY from '../resources/images/creative_commons_logos/by.xlarge.png';
-import NC from '../resources/images/creative_commons_logos/nc.xlarge.png';
-import SA from '../resources/images/creative_commons_logos/sa.xlarge.png';
-import ND from '../resources/images/creative_commons_logos/nd.xlarge.png';
-import Zero from '../resources/images/creative_commons_logos/zero.xlarge.png';
-
+import NC from '../resources/images/creative_commons_logos/nc.svg';
+import SA from '../resources/images/creative_commons_logos/sa.svg';
+import ND from '../resources/images/creative_commons_logos/nd.svg';
+import Zero from '../resources/images/creative_commons_logos/zero.svg';
+import CCLogo from '../resources/images/creative_commons_logos/cc.svg';
+import BY from '../resources/images/creative_commons_logos/by.svg';
 const StyledLogoWrapper = styled.span`
   display: flex;
   align-items: flex-start;
@@ -36,7 +35,7 @@ const CClogoImage: FC<CClogoImageProps> = ({ licenseCode }) => {
     <StyledLogoWrapper>
       {licenseCode}
       <StyledImageWrapper>
-        {licenseCode.toLowerCase().includes('cc') && <StyledImage src={CC} alt="" />}
+        {licenseCode.toLowerCase().includes('cc') && <StyledImage src={CCLogo} alt="" />}
         {licenseCode.toLowerCase().includes('by') && <StyledImage src={BY} alt="" />}
         {licenseCode.toLowerCase().includes('nc') && <StyledImage src={NC} alt="" />}
         {licenseCode.toLowerCase().includes('nd') && <StyledImage src={ND} alt="" />}
