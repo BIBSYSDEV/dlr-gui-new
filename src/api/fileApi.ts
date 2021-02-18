@@ -103,8 +103,8 @@ export const createAdditionalFileUpload = async (
   file: UppyFile,
   onCreateContent: (newContent: Content) => void
 ) => {
-  const responseContent = await postResourceContent(resourceIdentifier, 'file', file.name);
-  onCreateContent(responseContent.data);
+  const responseContent = (await postResourceContent(resourceIdentifier, 'file', file.name)).data;
+  onCreateContent(responseContent);
   const data = encodeURI(
     `filename=${file.name}&size=${file.data.size}&lastmodified=${(file.data as File).lastModified}&mimetype=${
       file.data.type
@@ -112,9 +112,7 @@ export const createAdditionalFileUpload = async (
   );
 
   const createMultipartUploadResponse = await authenticatedApiRequest({
-    url: encodeURI(
-      `${API_PATHS.guiBackendResourcesContentPath}/${responseContent.data.identifier}${FileApiPaths.CREATE}`
-    ),
+    url: encodeURI(`${API_PATHS.guiBackendResourcesContentPath}/${responseContent.identifier}${FileApiPaths.CREATE}`),
     method: 'POST',
     data: data,
   });

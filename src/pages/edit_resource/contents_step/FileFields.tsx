@@ -101,6 +101,7 @@ const FileFields: FC<FileFieldsProps> = ({
                       variant="filled"
                       required
                       fullWidth
+                      inputProps={{ 'data-testid': 'master-content-title' }}
                       label={t('resource.metadata.file_title')}
                       error={touched && !!error}
                       helperText={<ErrorMessage name={field.name} />}

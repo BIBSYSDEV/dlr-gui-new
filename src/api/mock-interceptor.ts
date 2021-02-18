@@ -24,6 +24,7 @@ import {
   mockTags,
   mockToken,
   mockUser,
+  mockContent,
 } from './mockdata';
 
 // AXIOS INTERCEPTOR
@@ -37,7 +38,7 @@ export const interceptRequestsOnMock = () => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve([200, mockCreateUpload]);
-      }, 3000);
+      }, 1000);
     });
   });
   mock
@@ -65,6 +66,7 @@ export const interceptRequestsOnMock = () => {
   //RESOURCE CONTENTS
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents`)).reply(200, mockContents);
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents/.*/titles`)).reply(200);
+  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents.*`)).reply(200, mockContent);
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents/.*`)).reply(202);
 
   //RESOURCE CREATORS

@@ -1,11 +1,11 @@
-import { mockDefaultResource, mockMyResources } from '../../src/api/mockdata';
+import { mockContent, mockContents, mockDefaultResource, mockMyResources } from '../../src/api/mockdata';
 import { licenses } from '../../src/utils/testfiles/licenses';
-import 'cypress-file-upload';
 import { ResourceFeatureTypes } from '../../src/types/resource.types';
 
 context('Actions', () => {
   beforeEach(() => {
     cy.visit('/');
+    cy.server();
   });
 
   it('starts a registration with a link', () => {
@@ -292,17 +292,17 @@ context('Actions', () => {
   it('starts a registration with a file', () => {
     cy.get('[data-testid=new-registration-link]').click();
     cy.get('[data-testid=new-resource-file]').click();
-    cy.get('input[type="file"]');
-    cy.fixture('testPicture.png').then((fileContent) => {
-      cy.get('input[type="file"]').attachFile({
-        fileContent: fileContent.toString(),
-        fileName: 'testPicture.png',
-        mimeType: 'image/png',
-      });
+    cy.route({
+      method: 'PUT',
+      url: 'https://file-upload.com/files/', // Must match URL set in mock-interceptor, which cannot be imported into a test
+      response: '',
+      headers: { ETag: 'etag' },
     });
+    cy.get('input[type=file]:first-of-type').uploadFile('testPicture.png');
     cy.get('[data-testid=step-navigation-2').click();
     cy.get(`[data-testid=thumbnail-${mockDefaultResource.identifier}]`).should('exist');
-    cy.get('Button.uppy-StatusBar-actionBtn--retry').should('exist'); //because it is failing with mock
+    cy.get(`[data-testid=master-content-title]`).should('have.value', mockContents[0].features.dlr_content);
+    cy.get('.uppy-StatusBar.is-complete').should('exist');
   });
 
   it('register keyword tags', () => {
@@ -326,5 +326,52 @@ context('Actions', () => {
     cy.get('[data-testid=step-navigation-4]').click();
     cy.get('[data-testid=resource-tags]').should('contain', testTag2);
     cy.get('[data-testid=resource-tags]').should('contain', testTag3);
+  });
+
+  it('register additional files', () => {
+    const testLink = 'http://www.test.com';
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-link]').click();
+    cy.get('[data-testid=new-resource-link-input]').type(testLink);
+    cy.get('[data-testid=new-resource-link-submit-button]').click();
+
+    cy.get('[data-testid=step-navigation-2]').click();
+    cy.route({
+      method: 'PUT',
+      url: 'https://file-upload.com/files/', // Must match URL set in mock-interceptor, which cannot be imported into a test
+      response: '',
+      headers: { ETag: 'etag' },
+    });
+    cy.get('[data-testid=additional-files-uppy-dashboard] input[type=file]:first-of-type').uploadFile(
+      'testPicture.png'
+    );
+    cy.get(`[data-testid=additional-file-content-${mockContent.identifier}]`).contains(
+      mockContent.features.dlr_content
+    );
+    cy.get(`[data-testid=thumbnail-${mockContent.identifier}]`).should('exist');
+    cy.get(`[data-testid=additional-file-${mockContent.identifier}-delete-button]`).click();
+    cy.get(`[data-testid=thumbnail-${mockContent.identifier}]`).should('not.exist');
+  });
+
+  it('register thumbnail', () => {
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-file]').click();
+    cy.route({
+      method: 'PUT',
+      url: 'https://file-upload.com/files/', // Must match URL set in mock-interceptor, which cannot be imported into a test
+      response: '',
+      headers: { ETag: 'etag' },
+    });
+    cy.get('input[type=file]:first-of-type').uploadFile('testPicture.png');
+    cy.get('[data-testid=step-navigation-2').click();
+    cy.get('[data-testid=step-navigation-2]').click();
+    cy.get(`[data-testid=change-master-content-thumbnail-button]`).click();
+    cy.get(`[data-testid=upload-new-thumbnail-button]`).click();
+    cy.get('input[type=file]:first-of-type').uploadFile('textFile.txt'); //uploading not-images file should fail
+    cy.get('input[type=file]:first-of-type').should('exist');
+    cy.get('input[type=file]:first-of-type').uploadFile('testPicture.png');
+
+    cy.get(`[data-testid=change-master-content-thumbnail-button]`).click();
+    cy.get(`[data-testid=revert-thumbnail-button]`).click();
   });
 });

@@ -3,7 +3,6 @@ import deepmerge from 'deepmerge';
 import { User } from '../types/user.types';
 import { License } from '../types/license.types';
 import { v4 as uuidv4 } from 'uuid';
-import { API_PATHS } from '../utils/constants';
 import { Course, CourseSeason, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
 import { Content } from '../types/content.types';
 
@@ -167,6 +166,7 @@ export const mockContents: Content[] = [
     identifier: 'mockMasterContentID',
     features: {
       dlr_content: 'mockMasterContent',
+      dlr_content_type: 'file',
       dlr_content_master: 'true',
       dlr_content_identifier: 'mockMasterContentID',
       dlr_content_content_type: 'image',
@@ -180,9 +180,22 @@ export const mockContents: Content[] = [
       dlr_content_identifier: 'adfasf1sdfsdfdf',
       dlr_content_content_type: 'image',
       dlr_content_title: 'metadata_external.json',
+      dlr_content_type: 'file',
+      dlr_thumbnail_default: 'false',
     },
   },
 ];
+
+export const mockContent: Content = {
+  identifier: '48239057834',
+  features: {
+    dlr_content: 'mockimage.jpg',
+    dlr_content_identifier: '32342',
+    dlr_content_content_type: 'image',
+    dlr_content_title: 'mock title',
+    dlr_content_type: 'file',
+  },
+};
 
 export const mockCreatedResourceWithContents = {
   contents: mockContents,
@@ -195,8 +208,8 @@ export const mockCreatedResourceWithContents = {
 export const mockToken = 'mockToken';
 
 export const mockCreateUpload = { uploadId: 'asd', key: 'sfd' };
-export const mockPrepareUpload = { url: `${API_PATHS.guiBackendResourcesContentPath}/xxx` };
-export const mockCompleteUpload = {};
+export const mockPrepareUpload = { url: 'https://file-upload.com/files/' };
+export const mockCompleteUpload = { location: '16e96cc9-1884-41ac-8448-1e0a3c3838e1' };
 
 export const mockTags: string[] = ['mock tag1', 'mock tag2'];
 
