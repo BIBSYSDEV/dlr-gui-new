@@ -79,7 +79,7 @@ const EditResourcePage: FC = () => {
   const [isLoadingResource, setIsLoadingResource] = useState(false);
   const [showForm, setShowForm] = useState(!!identifier);
   const [resourceType, setResourceType] = useState<ResourceCreationType>(ResourceCreationType.FILE);
-  const [resourceInitError, setResourceInitError] = useState(false);
+  const [resourceInitError, setResourceInitError] = useState<Error>();
 
   const user = useSelector((state: RootState) => state.user);
 
@@ -97,7 +97,7 @@ const EditResourcePage: FC = () => {
       const createResourceResponse = await createResource(ResourceCreationType.LINK, url);
       await getResourceInit(createResourceResponse, ResourceCreationType.LINK);
     } catch (error) {
-      setResourceInitError(true);
+      setResourceInitError(error);
       setIsLoadingResource(false);
     }
   };
@@ -129,7 +129,7 @@ const EditResourcePage: FC = () => {
       await postResourceFeature(resourceIdentifier, ResourceFeatureNames.Type, dlrType);
       tempResouce.features.dlr_type = dlrType;
     } catch (error) {
-      setResourceInitError(true);
+      setResourceInitError(error);
     }
   };
 
@@ -239,9 +239,9 @@ const EditResourcePage: FC = () => {
       }
 
       setFormikInitResource(resource);
-      setResourceInitError(false);
+      setResourceInitError(undefined);
     } catch (error) {
-      setResourceInitError(true);
+      setResourceInitError(error);
     } finally {
       setResourceType(resourceCreationType);
       setIsLoadingResource(false);
@@ -322,7 +322,7 @@ const EditResourcePage: FC = () => {
   ) : isLoadingResource ? (
     <CircularProgress />
   ) : resourceInitError ? (
-    <ErrorBanner userNeedsToBeLoggedIn={true} />
+    <ErrorBanner userNeedsToBeLoggedIn={true} error={resourceInitError} />
   ) : formikInitResource ? (
     <ResourceForm resource={formikInitResource} uppy={mainFileHandler} resourceType={resourceType} />
   ) : null;

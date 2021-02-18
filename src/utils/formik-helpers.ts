@@ -137,6 +137,7 @@ export const touchedContributorsFields = (
   contributors: contributors.map(() => ({
     features: {
       dlr_contributor_name: true,
+      dlr_contributor_type: true,
     },
   })),
   creators: creators.map(() => ({

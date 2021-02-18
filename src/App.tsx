@@ -13,7 +13,6 @@ import { RootState } from './state/rootReducer';
 import { CircularProgress } from '@material-ui/core';
 import { USE_MOCK_DATA } from './utils/constants';
 import { mockUser } from './api/mockdata';
-import { I18nContext } from 'react-i18next';
 import i18next from 'i18next';
 
 const StyledApp = styled.div`

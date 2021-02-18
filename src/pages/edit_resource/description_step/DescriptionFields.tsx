@@ -5,7 +5,7 @@ import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import TagsField from './TagsField';
 import { postResourceFeature } from '../../../api/resourceApi';
-import { ResourceFeatureNamesFullPath, Resource } from '../../../types/resource.types';
+import { Resource, ResourceFeatureNamesFullPath } from '../../../types/resource.types';
 import ErrorBanner from '../../../components/ErrorBanner';
 import ResourceTypeField from './ResourceTypeField';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
