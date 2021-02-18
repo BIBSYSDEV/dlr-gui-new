@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Course,
@@ -95,6 +95,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
   const [courses, setCourses] = useState<Course[]>([]);
   const [waitingForCourses, setWaitingForCourses] = useState(false);
   const [showCourseAutoComplete, setShowCourseAutocomplete] = useState(false);
+  const mountedRef = useRef(true);
 
   const addInstitutionPrivateConsumerAccess = async () => {
     await postCurrentUserInstitutionConsumerAccess(values.identifier);
@@ -112,6 +113,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
   useEffect(() => {
     const getPrivateAccessList = async () => {
       const resourceReadAccessListResponse = await getResourceReaders(values.identifier);
+      if (!mountedRef.current) return null;
       setPrivateAccessList(resourceReadAccessListResponse.data);
     };
     getPrivateAccessList();
@@ -220,6 +222,12 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
       privateAccessList.findIndex((access) => access.profiles[0].name === ResourceReadAccessNames.Institution) > -1
     );
   };
+
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
 
   return (
     <StyledPrivateAccessFields>
