@@ -43,6 +43,15 @@ const StyledProgressWrapper = styled.div`
   justify-content: center;
 `;
 
+const StyledMainContentLink = styled.a`
+  position: absolute !important;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  width: 1px;
+  height: 1px;
+  color: #fff;
+`;
+
 const isTokenExpired = () => {
   if (localStorage.tokenExpiry) {
     return parseInt(localStorage.tokenExpiry, 10) < ((Date.now() / 1000) | 0) + 3600;
@@ -107,9 +116,12 @@ const App: FC = () => {
     <BrowserRouter>
       {!isLoadingUser ? (
         <StyledApp>
+          <StyledMainContentLink href="#content">
+            <span>{i18next.t('skip_to_main_content')}</span>
+          </StyledMainContentLink>
           <ToastContainer autoClose={3000} hideProgressBar />
           <Header />
-          <StyledContent role="main">
+          <StyledContent role="main" id="content">
             <AppRoutes />
           </StyledContent>
           <Footer />
