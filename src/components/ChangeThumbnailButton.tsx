@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { Content } from '../types/content.types';
 import { useTranslation } from 'react-i18next';
 import { useFormikContext } from 'formik';
@@ -47,17 +47,21 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
   const [showPopover, setShowPopover] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const [thumbnailUpdateError, setThumbnailUpdateError] = useState(false);
+  const mountedRef = useRef(true);
 
   useEffect(() => {
     if (thumbnailUppy) {
       thumbnailUppy.on('upload-success', () => {
         thumbnailUppy.reset();
+        if (!mountedRef.current) return null;
         setShowThumbnailDashboardModal(false);
       });
       thumbnailUppy.on('file-added', () => {
+        if (!mountedRef.current) return null;
         setFileInputIsBusy(true);
       });
       thumbnailUppy.on('upload-error', () => {
+        if (!mountedRef.current) return null;
         setFileInputIsBusy(false);
       });
     }
@@ -69,6 +73,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
         setFileInputIsBusy(true);
         if (newThumbnailContent) {
           let responseEvents = await getResourceContentEvent(newThumbnailContent.identifier);
+          if (!mountedRef.current) return null;
           let thumbnailReady = responseEvents.data.resource_events.find(
             (event) => event.event === ResourceThumbnailUploaded
           );
@@ -76,12 +81,14 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
           while (!thumbnailReady && numberOfTries < MaxNumberOfAPICallsAttemps) {
             await new Promise((r) => setTimeout(r, 1000));
             responseEvents = await getResourceContentEvent(newThumbnailContent.identifier);
+            if (!mountedRef.current) return null;
             thumbnailReady = responseEvents.data.resource_events.find(
               (event) => event.event === ResourceThumbnailUploaded
             );
             numberOfTries++;
           }
           await setContentAsDefaultThumbnail(values.identifier, newThumbnailContent.identifier);
+          if (!mountedRef.current) return null;
           let tobeDeletedIdentifier = '';
           for (let i = 0; i < values.contents.additionalContent.length; i++) {
             if (values.contents.additionalContent[i].identifier === newThumbnailContent.identifier) {
@@ -99,6 +106,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
 
           pollNewThumbnail(true);
           await new Promise((r) => setTimeout(r, 1000));
+          if (!mountedRef.current) return null;
           pollNewThumbnail(false);
           setFileInputIsBusy(false);
           if (tobeDeletedIdentifier.length > 0) {
@@ -108,6 +116,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
             await deleteResourceContent(values.identifier, tobeDeletedIdentifier);
           }
         }
+        if (!mountedRef.current) return null;
         setThumbnailUpdateError(false);
       } catch (error) {
         setThumbnailUpdateError(true);
@@ -120,6 +129,12 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
       setNewThumbnailAPICallAndFormikChange();
     }
   }, [newThumbnailContent, pollNewThumbnail, newThumbnailIsReady, values]);
+
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
 
   const returnToDefaultThumbnail = async () => {
     setFileInputIsBusy(true);
@@ -164,6 +179,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
         variant="outlined"
         color="primary"
         disabled={fileInputIsBusy}
+        data-testid="change-master-content-thumbnail-button"
         onClick={(event) => {
           handleThumbnailClick(event);
         }}>
@@ -188,6 +204,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
         <List aria-label={t('thumbnail.thumbnail_options')}>
           <ListItem
             button
+            data-testid="upload-new-thumbnail-button"
             onClick={() => {
               setAnchorEl(null);
               setShowPopover(false);
@@ -197,6 +214,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
           </ListItem>
           <ListItem
             button
+            data-testid="revert-thumbnail-button"
             onClick={() => {
               setAnchorEl(null);
               setShowPopover(false);

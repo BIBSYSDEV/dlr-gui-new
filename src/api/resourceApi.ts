@@ -1,6 +1,13 @@
 import { API_PATHS } from '../utils/constants';
 import { AxiosResponse } from 'axios';
-import { Contributor, Creator, Resource, ResourceContents, ResourceEvent } from '../types/resource.types';
+import {
+  Contributor,
+  Creator,
+  Resource,
+  ResourceContents,
+  ResourceCreationType,
+  ResourceEvent,
+} from '../types/resource.types';
 import { AccessTypes, License } from '../types/license.types';
 import { Content, emptyResourceContent, LinkMetadataFilename } from '../types/content.types';
 import { authenticatedApiRequest } from './api';
@@ -27,7 +34,7 @@ export const createResource = async (type: string, content: string): Promise<Res
     if (content.features.dlr_content_master === 'true') {
       resource.contents.masterContent = content;
       resource.contents.masterContent.features.dlr_content_title = content.features.dlr_content;
-    } else {
+    } else if (content.features.dlr_content !== LinkMetadataFilename) {
       resource.contents.additionalContent.push(content);
     }
   });
@@ -204,6 +211,13 @@ export const getResourceContents = async (identifier: string): Promise<ResourceC
   contentResponse.data.forEach((content: Content) => {
     if (content.features.dlr_content_master === 'true') {
       resourceContent.masterContent = content;
+      if (
+        !content.features.dlr_content_title &&
+        content.features.dlr_content &&
+        content.features.dlr_content_type === ResourceCreationType.LINK
+      ) {
+        resourceContent.masterContent.features.dlr_content_title = content.features.dlr_content;
+      }
     } else if (content.features.dlr_content !== LinkMetadataFilename) {
       resourceContent.additionalContent.push(content);
     }

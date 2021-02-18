@@ -1,6 +1,6 @@
-import React, { FC, useState } from 'react';
+import React, { createRef, FC, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextField, Typography } from '@material-ui/core';
+import { Input, TextField, Typography } from '@material-ui/core';
 import { CreatorFeatureAttributes, FieldNames, Resource } from '../../../types/resource.types';
 import { ErrorMessage, Field, FieldArray, FieldArrayRenderProps, FieldProps, useFormikContext } from 'formik';
 import Button from '@material-ui/core/Button';
@@ -42,6 +42,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
   const [updateCreatorError, setUpdateCreatorError] = useState(false);
   const [addCreatorError, setAddCreatorError] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const inputElements = useRef<any>({});
 
   const addCreator = async (arrayHelpers: FieldArrayRenderProps) => {
     setAllChangesSaved(false);
@@ -58,6 +59,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
       setAddCreatorError(true);
     } finally {
       setAllChangesSaved(true);
+      inputElements.current[values.creators.length].focus();
     }
   };
 
@@ -132,6 +134,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                           {...field}
                           id={`creator-name-input-field-${index}`}
                           variant="filled"
+                          inputRef={(element) => (inputElements.current[index] = element)}
                           required
                           label={t('common.name')}
                           error={touched && !!error}

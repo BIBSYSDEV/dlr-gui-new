@@ -39,6 +39,7 @@
     "home": "Hjem",
     "login": "Logg inn",
     "logout": "Logg ut",
+    "must_be_logged_in": "Krever pålogging",
     "name": "Navn",
     "next": "Neste",
     "no": "Nei",
@@ -257,6 +258,11 @@
       "video": "Video"
     },
     "unpublished_resources": "Upubliserte ressurser"
+  },
+  "sitemap": {
+    "contents": "Innhold",
+    "sitemap": "Nettstedskart",
+    "usage_tip": "Scroll nedover på siden, eller bruk nettleserens innebygde søk for å finne det du leter etter"
   },
   "skip_to_main_content": "Hopp til hovedinnhold",
   "thumbnail": {
