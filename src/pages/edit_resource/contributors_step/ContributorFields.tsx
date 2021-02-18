@@ -166,7 +166,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                           required
                           inputRef={(element) => (inputElements.current[index] = element)}
                           data-testid={`contributor-type-field-${index}`}
-                          label={t('type')}
+                          label={t('common.type')}
                           value={field.value}
                           error={touched && !!error}
                           helperText={<ErrorMessage name={field.name} />}
@@ -202,7 +202,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                           {...field}
                           id={`contributor-name-${index}`}
                           variant="filled"
-                          label={t('name')}
+                          label={t('common.name')}
                           required
                           error={touched && !!error}
                           helperText={<ErrorMessage name={field.name} />}
