@@ -9,10 +9,12 @@ import {
   FieldNames,
   Resource,
   ResourceContents,
+  ResourceCreationType,
   ResourceFeatureNamesFullPath,
   ResourceFormStep,
 } from '../types/resource.types';
 import deepmerge, { Options } from 'deepmerge';
+import { ContainsOtherPeoplesWorkOptions } from '../types/license.types';
 
 export const hasTouchedError = (
   errors: FormikErrors<unknown>,
@@ -61,7 +63,11 @@ const getAllDescriptionStepFieldNames = () => {
   ];
 };
 const getAllAccessAndLicenseStepFieldNames = () => {
-  return [`${FieldNames.LicensesBase}[0]`];
+  return [
+    `${FieldNames.LicensesBase}[0]`,
+    `${FieldNames.ContainsOtherPeoplesWork}`,
+    `${FieldNames.UsageClearedWithOwner}`,
+  ];
 };
 
 const getAllFieldsFromContributorsPanel = (values: FormikValues): string[] => {
@@ -72,11 +78,12 @@ const getAllFieldsFromContributorsPanel = (values: FormikValues): string[] => {
 const getAllContentsFields = (values: FormikValues): string[] => {
   const fieldNames: string[] = [];
   const contents: Content[] = values.contents.additionalContent;
+  fieldNames.push(`${FieldNames.ContentsBase}.masterContent.${FieldNames.Features}.${ContentFeatureAttributes.Title}`);
   if (!contents || contents.length === 0) {
-    fieldNames.push(FieldNames.ContentsBase);
+    fieldNames.push(`${FieldNames.ContentsBase}.additionalContent`);
   } else {
     contents.forEach((content, index) => {
-      const baseFieldName = `${FieldNames.ContentsBase}[${index}].${FieldNames.Features}`;
+      const baseFieldName = `${FieldNames.ContentsBase}.additionalContent[${index}].${FieldNames.Features}`;
       fieldNames.push(`${baseFieldName}.${ContentFeatureAttributes.Title}`);
     });
   }
@@ -140,17 +147,17 @@ export const touchedContributorsFields = (
   })),
 });
 
-export const touchedContentsFields = (contents: ResourceContents): FormikTouched<Resource> => ({
+export const touchedContentsFields = (contents: ResourceContents, resourceType: string): FormikTouched<Resource> => ({
   contents: {
     additionalContent: contents.additionalContent.map(() => ({ features: { dlr_content_title: true } })),
-    masterContent: { features: { dlr_content_title: true } },
+    masterContent: { features: { dlr_content_title: resourceType === ResourceCreationType.FILE } },
   },
 });
 
-export const touchedAccessAndLicenseFields: FormikTouched<Resource> = {
+export const touchedAccessAndLicenseFields = (containsOtherPeoplesWork: string): FormikTouched<Resource> => ({
   containsOtherPeoplesWork: true,
-  usageClearedWithOwner: true,
+  usageClearedWithOwner: containsOtherPeoplesWork === ContainsOtherPeoplesWorkOptions.Yes,
   licenses: [{ identifier: true }],
-};
+});
 
 export const touchedPreviewFields: FormikTouched<Resource> = {};

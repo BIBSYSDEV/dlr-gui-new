@@ -57,8 +57,10 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
     const stepFields = {
       [ResourceFormStep.Preview]: () => touchedPreviewFields, //todo: find a way to remove this. should not be needed
       [ResourceFormStep.Description]: () => touchedDescriptionFields,
-      [ResourceFormStep.AccessAndLicense]: () => touchedAccessAndLicenseFields,
-      [ResourceFormStep.Contents]: () => touchedContentsFields(valuesRef.current.contents),
+      [ResourceFormStep.AccessAndLicense]: () =>
+        touchedAccessAndLicenseFields(valuesRef.current.containsOtherPeoplesWork),
+      [ResourceFormStep.Contents]: () =>
+        touchedContentsFields(valuesRef.current.contents, valuesRef.current.features.dlr_content_type),
       [ResourceFormStep.Contributors]: () =>
         touchedContributorsFields(valuesRef.current.contributors, valuesRef.current.creators),
       //These are functions because the form is dynamic

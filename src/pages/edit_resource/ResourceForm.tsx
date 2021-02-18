@@ -127,7 +127,6 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
 
     getAllLicences();
   }, []);
-
   return (
     <>
       <StyledContentWrapperMedium>
