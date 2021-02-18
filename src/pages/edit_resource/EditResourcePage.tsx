@@ -255,7 +255,7 @@ const EditResourcePage: FC = () => {
   //triggers on uppy-events
   useEffect(() => {
     if (mainFileHandler) {
-      mainFileHandler.on('upload-success', () => {
+      mainFileHandler.on('upload', () => {
         setResourceType(ResourceCreationType.FILE);
       });
       mainFileHandler.on('upload-error', () => {
