@@ -6,8 +6,8 @@ import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
 import { StyledContentWrapper } from '../../components/styled/Wrappers';
 import { API_PATHS, API_URL } from '../../utils/constants';
-import { logout } from '../../api/userApi';
 import { List, ListItem } from '@material-ui/core';
+import { handleLogout } from '../../layout/header/Logout';
 
 const StyledTypography = styled(Typography)`
   margin-top: 2rem;
@@ -24,15 +24,6 @@ const Sitemap = () => {
   const currentUrl = encodeURIComponent(
     `${window.location.protocol}//${window.location.hostname}${window.location.port ? ':' + window.location.port : ''}`
   );
-
-  const handleLogout = () => {
-    logout().then(() => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('tokenExpiry');
-      localStorage.removeItem('anonymousToken');
-      window.location.href = `${API_URL}${API_PATHS.guiBackendLoginPath}/dataportenLogout`;
-    });
-  };
 
   const links: LinkAndDescription[] = [
     {
