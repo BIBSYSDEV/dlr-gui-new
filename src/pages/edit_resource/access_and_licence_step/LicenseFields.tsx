@@ -58,6 +58,7 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
             {({ field, meta: { error, touched } }: FieldProps) => (
               <>
                 <TextField
+                  id="license-picker"
                   select
                   required
                   label={t('resource.metadata.license')}

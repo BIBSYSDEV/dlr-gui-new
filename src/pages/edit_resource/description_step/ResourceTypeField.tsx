@@ -62,6 +62,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
             <>
               <TextField
                 {...field}
+                id="resource-feature-type"
                 variant="filled"
                 select
                 required

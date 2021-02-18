@@ -24,6 +24,7 @@ import ContentsStep from './contents_step/ContentsStep';
 import ResourceFormNavigationHeader from './ResourceFormNavigationHeader';
 import ResourceFormErrors from './ResourceFormErrors';
 import ResourceFormActions from './ResourceFormActions';
+import RequiredFieldInformation from '../../components/RequiredFieldInformation';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -163,6 +164,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                       setAllChangesSaved(status);
                     }}
                   />
+                  <RequiredFieldInformation />
                 </StyledPanel>
               )}
               {activeStep === ResourceFormStep.AccessAndLicense && (
