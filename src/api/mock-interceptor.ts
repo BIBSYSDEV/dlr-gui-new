@@ -1,12 +1,12 @@
-import Axios from 'axios';
+import Axios, { AxiosRequestConfig } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { mockSearchResults } from '../utils/testfiles/search_results';
 import { licenses as allLicenses } from '../utils/testfiles/licenses';
 import { API_PATHS } from '../utils/constants';
 import { FileApiPaths } from './fileApi';
 import {
+  createMockContributor,
   createMockCreator,
-  mockDefaultResource,
   mockCompleteUpload,
   mockContents,
   mockContributors,
@@ -14,7 +14,7 @@ import {
   mockCreatedResourceWithContents,
   mockCreateUpload,
   mockCreators,
-  mockEmptyContributor,
+  mockDefaultResource,
   mockLicenses,
   mockMyResources,
   mockPrepareUpload,
@@ -29,8 +29,16 @@ import {
 // AXIOS INTERCEPTOR
 export const interceptRequestsOnMock = () => {
   const mock = new MockAdapter(Axios);
+
+  const loggedReply = (config: AxiosRequestConfig, statusCode: number, mockedResult: unknown) => {
+    console.log('MOCKED API-CALL: ', config, statusCode, mockedResult);
+    return [statusCode, mockedResult];
+  };
+
   // SEARCH
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesSearchPath}/resources/search.*`)).reply(200, mockSearchResults);
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendResourcesSearchPath}/resources/search.*`))
+    .reply((config) => loggedReply(config, 200, mockSearchResults));
 
   //FILE UPLOAD | CONTENTS
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesContentPath}.*${FileApiPaths.CREATE}`)).reply(() => {
@@ -69,7 +77,7 @@ export const interceptRequestsOnMock = () => {
 
   //RESOURCE CREATORS
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators`)).reply(200, mockCreators);
-  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators`)).reply(202, createMockCreator);
+  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators`)).reply(202, createMockCreator());
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*`)).reply(202, {});
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*`)).reply(202, {});
 
@@ -82,10 +90,12 @@ export const interceptRequestsOnMock = () => {
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contributors`)).reply(200, mockContributors);
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contributors/.*`)).reply(202, {});
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contributors/.*/features`)).reply(200);
-  mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contributors/.*`)).reply(202, {});
+  mock
+    .onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contributors/.*`))
+    .reply((config) => loggedReply(config, 202, {}));
   mock
     .onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contributors`))
-    .reply(202, mockEmptyContributor);
+    .reply((config) => loggedReply(config, 202, createMockContributor()));
 
   // RESOURCE
   mock

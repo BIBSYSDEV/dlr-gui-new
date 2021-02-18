@@ -100,12 +100,15 @@ export const mockContributors: Contributor[] = [
   },
 ];
 
-export const mockEmptyContributor: Contributor = {
-  identifier: '07047aa4-ad55-4fb3-9747-f8d64ee69e12',
-  features: {
-    dlr_contributor_identifier: '07047aa4-ad55-4fb3-9747-f8d64ee69e12',
-    dlr_contributor_time_created: '2020-11-05T12:47:18.635Z',
-  },
+export const createMockContributor = (): Contributor => {
+  const generatedId = uuidv4();
+  return {
+    identifier: `contributor-${generatedId}`,
+    features: {
+      dlr_contributor_identifier: `contributor-${generatedId}`,
+      dlr_contributor_time_created: '2020-11-05T12:47:18.635Z',
+    },
+  };
 };
 
 export const mockLicenses: License[] = [

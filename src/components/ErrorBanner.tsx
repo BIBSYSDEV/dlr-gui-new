@@ -11,12 +11,16 @@ const StyledErrorDiv = styled.div`
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 `;
+const StyledTypographyForErrorDetail = styled(Typography)`
+  display: none;
+`;
 
 interface ErrorBannerProps {
   userNeedsToBeLoggedIn?: boolean;
+  error?: Error;
 }
 
-const ErrorBanner: FC<ErrorBannerProps> = ({ userNeedsToBeLoggedIn = false }) => {
+const ErrorBanner: FC<ErrorBannerProps> = ({ userNeedsToBeLoggedIn = false, error }) => {
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.user);
 
@@ -31,6 +35,7 @@ const ErrorBanner: FC<ErrorBannerProps> = ({ userNeedsToBeLoggedIn = false }) =>
   return (
     <StyledErrorDiv>
       <Typography>{getErrorMessage()}</Typography>
+      {error && <StyledTypographyForErrorDetail>{error.message}</StyledTypographyForErrorDetail>}
     </StyledErrorDiv>
   );
 };

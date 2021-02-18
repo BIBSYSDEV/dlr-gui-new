@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MenuItem, TextField, Typography } from '@material-ui/core';
 import { Contributor, ContributorFeatureNames, FieldNames, Resource } from '../../../types/resource.types';
@@ -70,6 +70,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
   const [contributorTypesTranslated, setContributorTypesTranslated] = useState<contributorTypesTranslated[]>(
     generateContributorTypesTranslated(t)
   );
+  const inputElements = useRef<any>({});
 
   useEffect(() => {
     setContributorTypesTranslated(generateContributorTypesTranslated(t));
@@ -92,6 +93,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
       setAddContributorError(true);
     } finally {
       setAllChangesSaved(true);
+      inputElements.current[values.contributors.length].focus();
     }
   };
 
@@ -162,6 +164,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                           variant="filled"
                           select
                           required
+                          inputRef={(element) => (inputElements.current[index] = element)}
                           data-testid={`contributor-type-field-${index}`}
                           label={t('type')}
                           value={field.value}
