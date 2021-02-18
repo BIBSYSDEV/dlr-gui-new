@@ -31,7 +31,7 @@
     "react-toastify": "^7.0.3",
     "styled-components": "^5.2.1",
     "uuid": "^8.3.2",
-    "yup": "^0.32.8"
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@types/history": "^4.7.8",
