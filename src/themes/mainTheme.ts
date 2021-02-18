@@ -84,6 +84,7 @@ export default createMuiTheme({
       main: Colors.Box,
     },
     danger: { main: Colors.Danger, light: Colors.DangerLight },
+    error: { main: Colors.Warning },
     text: {
       primary: Colors.PrimaryText,
       secondary: Colors.SecondaryText,

@@ -64,6 +64,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
               <>
                 <TextField
                   {...field}
+                  id="access-dropdown-menu"
                   data-testid="access-dropdown-menu"
                   variant="filled"
                   select

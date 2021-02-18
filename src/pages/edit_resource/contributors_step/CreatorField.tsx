@@ -132,8 +132,10 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                       {({ field, meta: { touched, error } }: FieldProps) => (
                         <StyledTextField
                           {...field}
+                          id={`creator-name-input-field-${index}`}
                           variant="filled"
                           inputRef={(element) => (inputElements.current[index] = element)}
+                          required
                           label={t('common.name')}
                           error={touched && !!error}
                           helperText={<ErrorMessage name={field.name} />}

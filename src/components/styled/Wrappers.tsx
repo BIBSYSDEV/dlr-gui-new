@@ -55,6 +55,7 @@ export const StyledContentWrapperMedium = styled.div`
 `;
 
 export const StyledRadioBoxWrapper = styled.div`
+  margin-top: 2rem;
   display: block;
   padding-bottom: 2rem;
 `;

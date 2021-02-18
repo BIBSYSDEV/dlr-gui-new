@@ -97,7 +97,9 @@ const FileFields: FC<FileFieldsProps> = ({
                   {({ field, meta: { touched, error } }: FieldProps) => (
                     <TextField
                       {...field}
+                      id="filename"
                       variant="filled"
+                      required
                       fullWidth
                       label={t('resource.metadata.file_title')}
                       error={touched && !!error}

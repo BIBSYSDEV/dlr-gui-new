@@ -10,6 +10,7 @@ import ErrorBanner from '../../../components/ErrorBanner';
 import ResourceTypeField from './ResourceTypeField';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import { Colors } from '../../../themes/mainTheme';
+import RequiredFieldInformation from '../../../components/RequiredFieldInformation';
 
 interface DescriptionFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -43,6 +44,8 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
               <TextField
                 {...field}
                 variant="filled"
+                id="resource-title"
+                required
                 fullWidth
                 label={t('resource.metadata.title')}
                 error={touched && !!error}
@@ -64,6 +67,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
             {({ field, meta: { error } }: FieldProps) => (
               <TextField
                 {...field}
+                id="resource-description"
                 variant="filled"
                 fullWidth
                 multiline
@@ -84,6 +88,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
       </StyledSchemaPartColored>
       <ResourceTypeField setAllChangesSaved={setAllChangesSaved} />
       <TagsField setAllChangesSaved={setAllChangesSaved} />
+      <RequiredFieldInformation />
     </>
   );
 };

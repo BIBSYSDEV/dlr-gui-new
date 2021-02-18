@@ -56,7 +56,7 @@ const Header: FC = () => {
   };
 
   return (
-    <StyledPageHeader>
+    <StyledPageHeader role="navigation">
       <StyledBurgerMenu>
         <IconButton onClick={handleBurgerMenuClick}>
           <MenuIcon />

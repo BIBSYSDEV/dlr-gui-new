@@ -34,6 +34,7 @@
     "clear": "Clear",
     "delete": "Delete",
     "edit": "Edit",
+    "error": "Error",
     "finish": "Finish",
     "home": "Home",
     "login": "Login",
@@ -49,6 +50,7 @@
     "remove": "Remove",
     "search": "Search",
     "save": "Save",
+    "step": "Step",
     "type": "Type",
     "yes": "Yes"
   },
