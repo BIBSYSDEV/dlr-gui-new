@@ -7,7 +7,7 @@ context('Actions', () => {
     cy.visit('/');
     cy.server();
   });
-  /*
+
   it('starts a registration with a link', () => {
     const testLink = 'http://www.test.com';
     cy.get('[data-testid=new-registration-link]').click();
@@ -352,7 +352,7 @@ context('Actions', () => {
     cy.get(`[data-testid=additional-file-${mockContent.identifier}-delete-button]`).click();
     cy.get(`[data-testid=thumbnail-${mockContent.identifier}]`).should('not.exist');
   });
-*/
+
   it('register thumbnail', () => {
     cy.get('[data-testid=new-registration-link]').click();
     cy.get('[data-testid=new-resource-file]').click();
