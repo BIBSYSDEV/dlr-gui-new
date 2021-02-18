@@ -39,6 +39,7 @@
     "home": "Home",
     "login": "Login",
     "logout": "Logout",
+    "must_be_logged_in": "Require login",
     "name": "Name",
     "next": "Next",
     "no": "No",
@@ -257,6 +258,11 @@
       "video": "Video"
     },
     "unpublished_resources": "Unpublished resources"
+  },
+  "sitemap": {
+    "contents": "Contents",
+    "sitemap": "Sitemap",
+    "usage_tip": "Scroll down the page, or use the browser's built in search to find what you are looking for"
   },
   "thumbnail": {
     "busy_changing": "Changing thumbnail",
