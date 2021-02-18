@@ -193,7 +193,7 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
         {contents.map((content, index) => (
           <LargeParagraphSpace key={content.identifier}>
             <UploadImageProgressCard>
-              <Thumbnail alt="resource" resourceOrContentIdentifier={content.identifier} />
+              <Thumbnail alt={content.features.dlr_content} resourceOrContentIdentifier={content.identifier} />
               {displayContent(content.features.dlr_content)?.percentage !== 0 && (
                 <>
                   <Typography align="right" variant="body1">

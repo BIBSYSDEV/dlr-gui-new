@@ -34,6 +34,7 @@
     "clear": "Tøm",
     "delete": "Slett",
     "edit": "Rediger",
+    "error": "Feil",
     "finish": "Avslutt",
     "home": "Hjem",
     "login": "Logg inn",
@@ -49,6 +50,7 @@
     "remove": "Fjern",
     "search": "Søk",
     "save": "Lagre",
+    "step": "Trinn",
     "Type": "Type",
     "yes": "Ja"
   },

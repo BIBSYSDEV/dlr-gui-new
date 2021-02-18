@@ -13,6 +13,8 @@ import { RootState } from './state/rootReducer';
 import { CircularProgress } from '@material-ui/core';
 import { USE_MOCK_DATA } from './utils/constants';
 import { mockUser } from './api/mockdata';
+import { I18nContext } from 'react-i18next';
+import i18next from 'i18next';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -96,6 +98,9 @@ const App: FC = () => {
           });
       }
     }
+    if (i18next.language.includes('en')) {
+      document.documentElement.lang = 'en';
+    }
   }, []);
 
   return (
@@ -104,7 +109,7 @@ const App: FC = () => {
         <StyledApp>
           <ToastContainer autoClose={3000} hideProgressBar />
           <Header />
-          <StyledContent>
+          <StyledContent role="main">
             <AppRoutes />
           </StyledContent>
           <Footer />

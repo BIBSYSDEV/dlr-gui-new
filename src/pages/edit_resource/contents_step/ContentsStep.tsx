@@ -5,6 +5,7 @@ import { Content } from '../../../types/content.types';
 import { ResourceCreationType } from '../../../types/resource.types';
 import FileFields from './FileFields';
 import LinkFields from './LinkFields';
+import RequiredFieldInformation from '../../../components/RequiredFieldInformation';
 
 interface ContentsStepProps {
   uppy: Uppy;
@@ -40,6 +41,7 @@ const ContentsStep: FC<ContentsStepProps> = ({
       )}
       {resourceType === ResourceCreationType.LINK && <LinkFields />}
       <AdditionalFilesUpload additionalFileUploadUppy={additionalFileUploadUppy} newContent={newContent} />
+      {resourceType === ResourceCreationType.FILE && <RequiredFieldInformation />}
     </>
   );
 };
