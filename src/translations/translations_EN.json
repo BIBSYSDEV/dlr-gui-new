@@ -260,7 +260,7 @@
   "sitemap": {
     "contents": "Contents",
     "sitemap": "Sitemap",
-    "usage_tip": "Scroll down the page, or use the browser's built in search (CTRL+F) to find what you are looking for"
+    "usage_tip": "Scroll down the page, or use the browser's built in search to find what you are looking for"
   },
   "thumbnail": {
     "busy_changing": "Changing thumbnail",
