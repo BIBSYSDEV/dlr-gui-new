@@ -38,7 +38,7 @@
     "home": "Hjem",
     "login": "Logg inn",
     "logout": "Logg ut",
-    "must_be_logged_in": "Må være logget på",
+    "must_be_logged_in": "Krever pålogging",
     "name": "Navn",
     "next": "Neste",
     "no": "Nei",

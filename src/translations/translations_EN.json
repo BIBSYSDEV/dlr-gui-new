@@ -38,7 +38,7 @@
     "home": "Home",
     "login": "Login",
     "logout": "Logout",
-    "must_be_logged_in": "Must be logged in",
+    "must_be_logged_in": "Require login",
     "name": "Name",
     "next": "Next",
     "no": "No",

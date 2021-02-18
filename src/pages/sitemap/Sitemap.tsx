@@ -13,16 +13,6 @@ const StyledTypography = styled(Typography)`
   margin-top: 2rem;
 `;
 
-const ListLink = (href: string, description: string, onClickFunction: () => void | undefined) => {
-  return (
-    <ListItem>
-      <Link href={href} onClick={onClickFunction}>
-        {description}
-      </Link>
-    </ListItem>
-  );
-};
-
 interface LinkAndDescription {
   href: string;
   description: string;

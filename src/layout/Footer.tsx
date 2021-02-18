@@ -6,10 +6,16 @@ import { Link } from 'react-router-dom';
 import { Link as MuiLink } from '@material-ui/core';
 import NormalText from '../components/NormalText';
 
-const StyledFooter = styled.div`
+const StyledFooter = styled.footer`
   display: grid;
-  grid-template-areas: '. logo privacy';
-  grid-template-columns: 1fr 1fr 1fr;
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    grid-template-areas: '. logo privacy';
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    grid-template-areas: ' logo privacy';
+    grid-template-columns: 1fr 1fr;
+  }
   min-height: 3rem;
   align-items: center;
   border-top: 2px solid ${({ theme }) => theme.palette.separator.main};
@@ -26,6 +32,10 @@ const StyledPrivacyPolicyContainer = styled.div`
   padding-right: 0.5rem;
 `;
 
+const StyledMuiLink: any = styled(MuiLink)`
+  display: block;
+`;
+
 const Footer: FC = () => {
   const { t } = useTranslation();
 
@@ -36,14 +46,17 @@ const Footer: FC = () => {
         <img src={logo} alt="UNIT logo" />
       </StyledLogoContainer>
       <StyledPrivacyPolicyContainer>
-        <MuiLink
+        <StyledMuiLink
           aria-label={t('privacy_policy.heading')}
           color="primary"
           component={Link}
           to="/privacy-policy"
           data-testid="privacy_policy_link">
           {t('privacy_policy.heading')}
-        </MuiLink>
+        </StyledMuiLink>
+        <StyledMuiLink aria-label={t('sitemap.sitemap')} color="primary" component={Link} to="/sitemap">
+          {t('sitemap.sitemap')}
+        </StyledMuiLink>
       </StyledPrivacyPolicyContainer>
     </StyledFooter>
   );
