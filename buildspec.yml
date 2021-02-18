@@ -3,9 +3,10 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 10
+      nodejs: latest
     commands:
       - env
+      - npm i -g npm
       - npm install
   build:
     commands:

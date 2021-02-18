@@ -88,6 +88,7 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
       {courses.length > 0 && (
         <StyledFieldsWrapper>
           <StyledCourseAutocomplete
+            id="course-input"
             data-testid="course-input"
             renderInput={(params: AutocompleteRenderInputParams) => (
               <TextField {...params} label={t('access.course')} variant="filled" />

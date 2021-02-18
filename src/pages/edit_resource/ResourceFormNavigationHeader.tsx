@@ -15,6 +15,8 @@ import {
 } from '../../utils/formik-helpers';
 import CircularFileUploadProgress from '../../components/CircularFileUploadProgress';
 import { Uppy } from '../../types/file.types';
+import Typography from '@material-ui/core/Typography';
+import styled from 'styled-components';
 
 interface ResourceFormNavigationHeaderProps {
   activeStep: ResourceFormStep;
@@ -40,6 +42,12 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
   useEffect(() => {
     touchedRef.current = touched;
   }, [touched]);
+
+  const StyledStepTypography = styled(Typography)`
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+  `;
 
   const handleStep = (step: number) => () => {
     setActiveStep(step);
@@ -81,9 +89,21 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
         {ResourceFormSteps.map((step, index) => {
           return (
             <Step key={step} completed={false}>
-              <StepButton onClick={handleStep(index)} data-testid={`step-navigation-${index}`}>
+              <StepButton
+                onClick={handleStep(index)}
+                data-testid={`step-navigation-${index}`}
+                title={
+                  hasTouchedError(errors, touched, values, index)
+                    ? `${t(getStepLabel(step))} ${t('common.error')}`
+                    : `${t(getStepLabel(step))}`
+                }>
                 <StepLabel error={hasTouchedError(errors, touched, values, index)}>
-                  {t(getStepLabel(step))}
+                  <StyledStepTypography>{t(getStepLabel(step))}</StyledStepTypography>
+                  {hasTouchedError(errors, touched, values, index) && (
+                    <Typography color="error" variant="caption">
+                      {t('common.error')}
+                    </Typography>
+                  )}
                   {step === ResourceFormStep.Contents && (
                     <CircularFileUploadProgress
                       uppy={uppy}

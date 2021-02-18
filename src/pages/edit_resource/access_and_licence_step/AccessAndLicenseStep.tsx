@@ -8,6 +8,7 @@ import { StyledContentWrapper, StyledSchemaPart } from '../../../components/styl
 import { Typography } from '@material-ui/core';
 import { useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
+import RequiredFieldInformation from '../../../components/RequiredFieldInformation';
 
 interface AccessAndLicenseStepProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -54,6 +55,7 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSave
           licenses={licenses}
         />
       )}
+      <RequiredFieldInformation />
     </>
   );
 };

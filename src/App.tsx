@@ -109,7 +109,7 @@ const App: FC = () => {
         <StyledApp>
           <ToastContainer autoClose={3000} hideProgressBar />
           <Header />
-          <StyledContent>
+          <StyledContent role="main">
             <AppRoutes />
           </StyledContent>
           <Footer />

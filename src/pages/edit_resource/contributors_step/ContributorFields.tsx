@@ -158,6 +158,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                       {({ field, meta: { touched, error } }: FieldProps<string>) => (
                         <StyledTextField
                           {...field}
+                          id={`contributor-feature-type-${index}`}
                           variant="filled"
                           select
                           required
@@ -196,8 +197,10 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                       {({ field, meta: { touched, error } }: FieldProps<string>) => (
                         <StyledTextField
                           {...field}
+                          id={`contributor-name-${index}`}
                           variant="filled"
                           label={t('name')}
+                          required
                           error={touched && !!error}
                           helperText={<ErrorMessage name={field.name} />}
                           data-testid={`contributor-name-field-${index}`}
