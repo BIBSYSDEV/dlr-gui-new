@@ -7,7 +7,7 @@ context('Actions', () => {
     cy.visit('/');
     cy.server();
   });
-
+  /*
   it('starts a registration with a link', () => {
     const testLink = 'http://www.test.com';
     cy.get('[data-testid=new-registration-link]').click();
@@ -352,7 +352,7 @@ context('Actions', () => {
     cy.get(`[data-testid=additional-file-${mockContent.identifier}-delete-button]`).click();
     cy.get(`[data-testid=thumbnail-${mockContent.identifier}]`).should('not.exist');
   });
-
+*/
   it('register thumbnail', () => {
     cy.get('[data-testid=new-registration-link]').click();
     cy.get('[data-testid=new-resource-file]').click();
@@ -367,6 +367,8 @@ context('Actions', () => {
     cy.get('[data-testid=step-navigation-2]').click();
     cy.get(`[data-testid=change-master-content-thumbnail-button]`).click();
     cy.get(`[data-testid=upload-new-thumbnail-button]`).click();
+    cy.get('input[type=file]:first-of-type').uploadFile('textFile.txt'); //uploading not-images file should fail
+    cy.get('input[type=file]:first-of-type').should('exist');
     cy.get('input[type=file]:first-of-type').uploadFile('testPicture.png');
 
     cy.get(`[data-testid=change-master-content-thumbnail-button]`).click();
