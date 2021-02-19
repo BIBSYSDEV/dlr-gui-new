@@ -14,6 +14,7 @@ import { CircularProgress } from '@material-ui/core';
 import { USE_MOCK_DATA } from './utils/constants';
 import { mockUser } from './api/mockdata';
 import i18next from 'i18next';
+import MainContentLink from './components/MainContentLink';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -40,15 +41,6 @@ const StyledProgressWrapper = styled.div`
   margin: 0;
   align-items: center;
   justify-content: center;
-`;
-
-const StyledMainContentLink = styled.a`
-  position: absolute !important;
-  overflow: hidden;
-  clip: rect(1px, 1px, 1px, 1px);
-  width: 1px;
-  height: 1px;
-  color: #fff;
 `;
 
 const isTokenExpired = () => {
@@ -115,9 +107,7 @@ const App: FC = () => {
     <BrowserRouter>
       {!isLoadingUser ? (
         <StyledApp>
-          <StyledMainContentLink href="#content">
-            <span>{i18next.t('skip_to_main_content')}</span>
-          </StyledMainContentLink>
+          <MainContentLink />
           <ToastContainer autoClose={3000} hideProgressBar />
           <Header />
           <StyledContent role="main" id="content">
