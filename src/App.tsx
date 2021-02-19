@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Footer from './layout/Footer';
 import Header from './layout/header/Header';
@@ -14,7 +14,7 @@ import { CircularProgress } from '@material-ui/core';
 import { USE_MOCK_DATA } from './utils/constants';
 import { mockUser } from './api/mockdata';
 import i18next from 'i18next';
-import MainContentLink from './components/MainContentLink';
+import ScrollToMainContentButton from './components/ScrollToMainContentButton';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -61,6 +61,7 @@ const App: FC = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
   const [isLoadingUser, setIsLoadingUser] = useState<boolean>(false); //TODO: put in redux-store (loginredirect-page should use this as well)
+  const mainContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (localStorage.token && !isTokenAnonymous() && !isTokenExpired() && !user.id) {
@@ -107,10 +108,10 @@ const App: FC = () => {
     <BrowserRouter>
       {!isLoadingUser ? (
         <StyledApp>
-          <MainContentLink />
+          <ScrollToMainContentButton mainContentRef={mainContentRef} />
           <ToastContainer autoClose={3000} hideProgressBar />
           <Header />
-          <StyledContent role="main" id="content">
+          <StyledContent ref={mainContentRef} role="main" id="content">
             <AppRoutes />
           </StyledContent>
           <Footer />

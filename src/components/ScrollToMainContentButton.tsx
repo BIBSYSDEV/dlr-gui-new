@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
+import { Button } from '@material-ui/core';
 
-const StyledMainContentLink = styled.a`
+const StyledMainContentButton = styled(Button)`
   position: absolute !important;
   overflow: hidden;
   clip: rect(1px, 1px, 1px, 1px);
@@ -35,16 +36,26 @@ const StyledImportantNavigationText = styled.span`
   text-decoration: none !important;
 `;
 
-const MainContentId = '#content';
+interface ScrollToMainContentButtonProps {
+  mainContentRef: any;
+}
 
-const MainContentLink = () => {
+const ScrollToMainContentButton: FC<ScrollToMainContentButtonProps> = ({ mainContentRef }) => {
   const { t } = useTranslation();
 
+  const scrollToRef = () => {
+    mainContentRef?.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'center',
+    });
+  };
+
   return (
-    <StyledMainContentLink href={MainContentId}>
+    <StyledMainContentButton onClick={scrollToRef}>
       <StyledImportantNavigationText>{t('skip_to_main_content')}</StyledImportantNavigationText>
-    </StyledMainContentLink>
+    </StyledMainContentButton>
   );
 };
 
-export default MainContentLink;
+export default ScrollToMainContentButton;
