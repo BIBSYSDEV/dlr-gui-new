@@ -53,7 +53,7 @@ const Dashboard: FC = () => {
       <Typography variant="h1">{t('resource.search_for_resources')}</Typography>
 
       <SearchFieldWrapper>
-        <form onSubmit={triggerSearch}>
+        <form onSubmit={triggerSearch} role="form">
           <TextField id="standard-basic" onChange={updateSearchTermValue} value={searchTerm} />
           <Button disabled={!searchTerm && searchTerm.length < 4} color="primary" variant="contained" type="submit">
             {t('common.search')}
