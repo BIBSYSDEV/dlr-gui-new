@@ -23,6 +23,11 @@ interface ResourceFormNavigationHeaderProps {
   setActiveStep: (step: number) => void;
   uppy: Uppy;
 }
+const StyledStepTypography = styled(Typography)`
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+`;
 
 const fileUploadPanelId = 'file-upload-panel';
 
@@ -42,12 +47,6 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
   useEffect(() => {
     touchedRef.current = touched;
   }, [touched]);
-
-  const StyledStepTypography = styled(Typography)`
-    font-size: inherit;
-    font-weight: inherit;
-    color: inherit;
-  `;
 
   const handleStep = (step: number) => () => {
     setActiveStep(step);
@@ -100,7 +99,7 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
                     : `${t(getStepLabel(step))}`
                 }>
                 <StepLabel error={hasTouchedError(errors, touched, values, index)}>
-                  <StyledStepTypography>{t(getStepLabel(step))}</StyledStepTypography>
+                  <StyledStepTypography id={`typography-step-${index}`}>{t(getStepLabel(step))}</StyledStepTypography>
                   {hasTouchedError(errors, touched, values, index) && (
                     <Typography color="error" variant="caption">
                       {t('common.error')}
