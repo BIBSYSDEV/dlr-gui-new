@@ -49,7 +49,6 @@ const SearchInput = () => {
   const setURLParams = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const searchParams = new URLSearchParams(location.search);
-    //Todo: erstatt med query-string bibliotek
     searchParams.set('query', searchTerm);
     const url = searchParams.toString();
     history.push(`?${url}`);

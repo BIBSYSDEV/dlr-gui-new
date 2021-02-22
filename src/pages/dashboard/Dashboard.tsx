@@ -35,7 +35,6 @@ const Dashboard: FC = () => {
 
   useEffect(() => {
     const searchTerm = new URLSearchParams(location.search);
-    //TODO: erstatt dette med query-string bibliotek fra npm
     const query = searchTerm.get('query');
     if (query !== null) {
       triggerSearch(query);
