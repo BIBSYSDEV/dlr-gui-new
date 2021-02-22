@@ -14,7 +14,8 @@ import { CircularProgress } from '@material-ui/core';
 import { USE_MOCK_DATA } from './utils/constants';
 import { mockUser } from './api/mockdata';
 import i18next from 'i18next';
-import ScrollToMainContentButton from './components/ScrollToMainContentButton';
+import ScrollToContentButton from './components/ScrollToContentButton';
+import { useTranslation } from 'react-i18next';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -62,6 +63,7 @@ const App: FC = () => {
   const user = useSelector((state: RootState) => state.user);
   const [isLoadingUser, setIsLoadingUser] = useState<boolean>(false); //TODO: put in redux-store (loginredirect-page should use this as well)
   const mainContentRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (localStorage.token && !isTokenAnonymous() && !isTokenExpired() && !user.id) {
@@ -108,7 +110,7 @@ const App: FC = () => {
     <BrowserRouter>
       {!isLoadingUser ? (
         <StyledApp>
-          <ScrollToMainContentButton mainContentRef={mainContentRef} />
+          <ScrollToContentButton contentRef={mainContentRef} text={t('skip_to_main_content')} />
           <ToastContainer autoClose={3000} hideProgressBar />
           <Header />
           <StyledContent ref={mainContentRef} role="main" id="content">
