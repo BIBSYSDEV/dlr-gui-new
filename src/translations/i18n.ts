@@ -4,29 +4,33 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import { LanguageCodes } from '../types/language.types';
 import translationsEn from './translations_EN.json';
 import translationsNb from './translations_NO.json';
+import { initReactI18next } from 'react-i18next';
 
 export const fallbackLanguage = LanguageCodes.NORWEGIAN_BOKMAL;
 
-i18n.use(LanguageDetector).init({
-  resources: {
-    eng: {
-      translations: translationsEn,
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    resources: {
+      eng: {
+        translations: translationsEn,
+      },
+      nob: {
+        translations: translationsNb,
+      },
     },
-    nob: {
-      translations: translationsNb,
+    fallbackLng: fallbackLanguage,
+    debug: false,
+    ns: ['translations'],
+    defaultNS: 'translations',
+    interpolation: {
+      formatSeparator: ',',
     },
-  },
-  fallbackLng: fallbackLanguage,
-  debug: false,
-  ns: ['translations'],
-  defaultNS: 'translations',
-  interpolation: {
-    formatSeparator: ',',
-  },
-  react: {
-    wait: true,
-  },
-});
+    react: {
+      useSuspense: true,
+    },
+  });
 
 // Seems like i18next require 4-letter languages for pluralization to work out of box, so we must add our own rules
 // https://github.com/i18next/i18next/issues/1061#issuecomment-395528467
