@@ -71,6 +71,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   const thumbnailUppy = useUppy(createThumbnailFileUppy(resource.identifier, setNewContentAndThumbnail));
   const [activeStep, setActiveStep] = useState(ResourceFormStep.Description);
   const contentRef = useRef<HTMLDivElement>(null);
+  const beforeResourceFormNavigationRef = useRef<HTMLDivElement>(null);
 
   const resourceValidationSchema = Yup.object().shape({
     features: Yup.object().shape({
@@ -114,7 +115,8 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   });
 
   const scrollToTop = () => {
-    contentRef?.current?.scrollIntoView({
+    beforeResourceFormNavigationRef?.current?.focus({ preventScroll: true });
+    beforeResourceFormNavigationRef?.current?.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
       inline: 'center',
@@ -152,8 +154,9 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
           {(formikProps: FormikProps<FormikValues>) => (
             <StyledForm>
               <ScrollToContentButton contentRef={contentRef} text={t('skip_to_form_content')} />
+              <div tabIndex={0} ref={beforeResourceFormNavigationRef} />
               <ResourceFormNavigationHeader activeStep={activeStep} setActiveStep={setActiveStep} uppy={uppy} />
-              <StyledPanel ref={contentRef}>
+              <StyledPanel tabIndex={0} ref={contentRef}>
                 {activeStep === ResourceFormStep.Description && (
                   <DescriptionFields
                     setAllChangesSaved={(status: boolean) => {
