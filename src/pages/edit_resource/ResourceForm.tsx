@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
@@ -69,6 +69,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   const [newThumbnailContent, setNewThumbnailContent] = useState<Content>();
   const thumbnailUppy = useUppy(createThumbnailFileUppy(resource.identifier, setNewContentAndThumbnail));
   const [activeStep, setActiveStep] = useState(ResourceFormStep.Description);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const resourceValidationSchema = Yup.object().shape({
     features: Yup.object().shape({
@@ -111,6 +112,14 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
       }),
   });
 
+  const scrollToTop = () => {
+    contentRef?.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'center',
+    });
+  };
+
   useEffect(() => {
     async function getAllLicences() {
       setIsLoadingLicenses(true);
@@ -152,7 +161,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                 </StyledPanel>
               )}
               {activeStep === ResourceFormStep.Contributors && (
-                <StyledPanel>
+                <StyledPanel ref={contentRef}>
                   <StyledSchemaPart>
                     <StyledContentWrapper>
                       <Typography variant="h2">{formikProps.values.features.dlr_title}</Typography>
@@ -202,13 +211,13 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                   <PreviewPanel formikProps={formikProps} />
                 </StyledPanel>
               )}
-
               {activeStep === ResourceFormStep.Preview && !formikProps.isValid && <ResourceFormErrors />}
               <StyledPanel>
                 <ResourceFormActions
                   activeStep={activeStep}
                   allChangesSaved={allChangesSaved}
                   setActiveStep={setActiveStep}
+                  scrollToTop={scrollToTop}
                 />
               </StyledPanel>
             </StyledForm>

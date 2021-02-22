@@ -66,9 +66,10 @@ interface ResourceFormActionProps {
   activeStep: ResourceFormStep;
   allChangesSaved: boolean;
   setActiveStep: (step: ResourceFormStep) => void;
+  scrollToTop: () => void;
 }
 
-const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActiveStep }) => {
+const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActiveStep, scrollToTop }) => {
   const { t } = useTranslation();
   const history = useHistory();
   const [publishResourceError, setPublishResourceError] = useState(false);
@@ -76,10 +77,12 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
+    scrollToTop();
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
+    scrollToTop();
   };
 
   const handlePublishResource = async () => {
