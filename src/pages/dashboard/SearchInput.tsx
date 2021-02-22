@@ -51,11 +51,10 @@ const SearchInput = () => {
   const updateSearchTermValue = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
-
-  console.log(searchTerm);
   return (
     <StyledForm onSubmit={setURLParams}>
       <StyledTextField
+        data-testid="search-for-resource-input"
         variant="filled"
         fullWidth
         id="search-textfield"
@@ -64,6 +63,7 @@ const SearchInput = () => {
         label={t('søk')}
       />
       <StyledButton
+        data-testid="search-for-resource-submit"
         startIcon={<SearchIcon />}
         disabled={!searchTerm && searchTerm.length < 4}
         color="primary"
