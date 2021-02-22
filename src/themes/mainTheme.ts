@@ -41,6 +41,7 @@ export enum Colors {
   DescriptionPageGradientColor3 = 'rgba(66,127,140,0.30)',
   ContributorsPageGradientColor1 = 'rgba(242,229,189,0.25)',
   ContributorsPageGradientColor2 = 'rgba(242,229,189,0.50)',
+  ExploreResourcesPageOptionFiler = 'rgba(242,229,189,0.1)',
   ContentsPageGradientColor1 = 'rgba(42,191,164,0.10)',
   ContentsPageGradientColor2 = 'rgba(42,191,164,0.25)',
   LicenseAccessPageGradientColor1 = 'rgba(68,242,193,0.10)',

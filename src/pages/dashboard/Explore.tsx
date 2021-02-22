@@ -10,6 +10,7 @@ import { PageHeader } from '../../components/PageHeader';
 import { StyledContentWrapperMedium } from '../../components/styled/Wrappers';
 import SearchInput from './SearchInput';
 import { useLocation } from 'react-router-dom';
+import FilterSearchOptions from './FilterSearchOptions';
 
 const Explore: FC = () => {
   const location = useLocation();
@@ -17,6 +18,9 @@ const Explore: FC = () => {
   const [resources, setResources] = useState<Resource[]>([]);
   const { t } = useTranslation();
   const [searchError, setSearchError] = useState(false);
+
+  console.log('resources', resources);
+  console.log('searchResults', searchResult);
 
   const triggerSearch = async (query: string) => {
     try {
@@ -46,6 +50,7 @@ const Explore: FC = () => {
       <PageHeader>{t('dashboard.explore')}</PageHeader>
 
       <SearchInput />
+      <FilterSearchOptions />
 
       {searchError && <ErrorBanner />}
 
