@@ -7,10 +7,6 @@ import { useTranslation } from 'react-i18next';
 import CClogoImage from './CClogoImage';
 import { Colors } from '../themes/mainTheme';
 
-interface LicenseProps {
-  license: License;
-}
-
 const StyledWrapper = styled.div`
   padding-top: 1rem;
 `;
@@ -29,6 +25,10 @@ const StyledLink = styled(Link)`
   display: flex;
   align-items: flex-start;
 `;
+
+interface LicenseProps {
+  license: License;
+}
 
 const LicenseCard: FC<LicenseProps> = ({ license }) => {
   const language = i18next.language;
