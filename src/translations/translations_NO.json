@@ -55,6 +55,9 @@
     "Type": "Type",
     "yes": "Ja"
   },
+  "dashboard": {
+    "explore": "Utforsk"
+  },
   "delivered_by": "Levert av",
   "error": {
     "401_page": "Du er ikke autorisert for dette",
