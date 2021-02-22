@@ -145,18 +145,16 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
             <StyledForm>
               <ScrollToContentButton contentRef={contentRef} text={t('skip_to_form_content')} />
               <ResourceFormNavigationHeader activeStep={activeStep} setActiveStep={setActiveStep} uppy={uppy} />
-              <div ref={contentRef}>
+              <StyledPanel ref={contentRef}>
                 {activeStep === ResourceFormStep.Description && (
-                  <StyledPanel>
-                    <DescriptionFields
-                      setAllChangesSaved={(status: boolean) => {
-                        setAllChangesSaved(status);
-                      }}
-                    />
-                  </StyledPanel>
+                  <DescriptionFields
+                    setAllChangesSaved={(status: boolean) => {
+                      setAllChangesSaved(status);
+                    }}
+                  />
                 )}
                 {activeStep === ResourceFormStep.Contributors && (
-                  <StyledPanel>
+                  <>
                     <StyledSchemaPart>
                       <StyledContentWrapper>
                         <Typography variant="h2">{formikProps.values.features.dlr_title}</Typography>
@@ -169,21 +167,20 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                       }}
                     />
                     <RequiredFieldInformation />
-                  </StyledPanel>
+                  </>
                 )}
                 {activeStep === ResourceFormStep.AccessAndLicense && (
-                  <StyledPanel>
+                  <>
                     {isLoadingLicenses && <CircularProgress />}
                     {loadingLicensesErrorStatus !== StatusCode.ACCEPTED && <ErrorBanner userNeedsToBeLoggedIn={true} />}
-
                     <AccessAndLicenseStep
                       setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
                       licenses={licenses}
                     />
-                  </StyledPanel>
+                  </>
                 )}
                 {activeStep === ResourceFormStep.Contents && (
-                  <StyledPanel id={fileUploadPanelId}>
+                  <div id={fileUploadPanelId}>
                     <StyledSchemaPart>
                       <StyledContentWrapper>
                         <Typography variant="h2">{formikProps.values.features.dlr_title}</Typography>
@@ -199,14 +196,10 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                       newThumbnailContent={newThumbnailContent}
                       newThumbnailIsReady={() => setNewThumbnailContent(undefined)}
                     />
-                  </StyledPanel>
+                  </div>
                 )}
-                {activeStep === ResourceFormStep.Preview && (
-                  <StyledPanel>
-                    <PreviewPanel formikProps={formikProps} />
-                  </StyledPanel>
-                )}
-              </div>
+                {activeStep === ResourceFormStep.Preview && <PreviewPanel formikProps={formikProps} />}
+              </StyledPanel>
               {activeStep === ResourceFormStep.Preview && !formikProps.isValid && <ResourceFormErrors />}
               <StyledPanel>
                 <ResourceFormActions
