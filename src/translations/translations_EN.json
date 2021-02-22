@@ -55,6 +55,9 @@
     "type": "Type",
     "yes": "Yes"
   },
+  "dashboard": {
+    "explore": "Explore"
+  },
   "delivered_by": "Delivered by",
   "error": {
     "401_page": "You are not authorized for this",

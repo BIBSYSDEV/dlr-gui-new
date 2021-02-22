@@ -1,37 +1,26 @@
-import React, { ChangeEvent, FC, FormEvent, useState } from 'react';
-import styled from 'styled-components';
-import { Button, List, TextField } from '@material-ui/core';
+import React, { FC, useEffect, useState } from 'react';
+import { List } from '@material-ui/core';
 import { searchResources } from '../../api/resourceApi';
 import { useTranslation } from 'react-i18next';
 import { SearchResult } from '../../types/search.types';
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import ResourceListItem from '../../components/ResourceListItem';
-import Typography from '@material-ui/core/Typography';
+import { PageHeader } from '../../components/PageHeader';
+import { StyledContentWrapperMedium } from '../../components/styled/Wrappers';
+import SearchInput from './SearchInput';
+import { useLocation } from 'react-router-dom';
 
-const StyledDashboard = styled.div`
-  display: flex;
-  justify-items: center;
-  flex-direction: column;
-`;
-
-const SearchFieldWrapper = styled.div`
-  display: flex;
-  gap: 1rem;
-  justify-items: center;
-`;
-
-const Dashboard: FC = () => {
+const Explore: FC = () => {
+  const location = useLocation();
   const [searchResult, setSearchResult] = useState<SearchResult>();
   const [resources, setResources] = useState<Resource[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
   const { t } = useTranslation();
   const [searchError, setSearchError] = useState(false);
 
-  const triggerSearch = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const triggerSearch = async (query: string) => {
     try {
-      const response = await searchResources(searchTerm);
+      const response = await searchResources(query);
       if (response.data) {
         setSearchError(false);
         setSearchResult(response.data);
@@ -44,22 +33,20 @@ const Dashboard: FC = () => {
     }
   };
 
-  const updateSearchTermValue = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-  };
+  useEffect(() => {
+    const searchTerm = new URLSearchParams(location.search);
+    const query = searchTerm.get('query');
+    if (query !== null) {
+      triggerSearch(query);
+    }
+  }, [location]);
 
   return (
-    <StyledDashboard>
-      <Typography variant="h1">{t('resource.search_for_resources')}</Typography>
+    <StyledContentWrapperMedium>
+      <PageHeader>{t('dashboard.explore')}</PageHeader>
 
-      <SearchFieldWrapper>
-        <form onSubmit={triggerSearch}>
-          <TextField id="standard-basic" onChange={updateSearchTermValue} value={searchTerm} />
-          <Button disabled={!searchTerm && searchTerm.length < 4} color="primary" variant="contained" type="submit">
-            {t('common.search')}
-          </Button>
-        </form>
-      </SearchFieldWrapper>
+      <SearchInput />
+
       {searchError && <ErrorBanner />}
 
       <div>
@@ -77,8 +64,8 @@ const Dashboard: FC = () => {
             <ResourceListItem resource={resource} key={index} showHandle={true} showSubmitter={true} />
           ))}
       </List>
-    </StyledDashboard>
+    </StyledContentWrapperMedium>
   );
 };
 
-export default Dashboard;
+export default Explore;

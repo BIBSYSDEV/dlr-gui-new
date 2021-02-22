@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Forbidden from './pages/errorpages/Forbidden';
 import Sitemap from './pages/sitemap/Sitemap';
 
-const Dashboard = lazy(() => import('./pages/dashboard/Dashboard'));
+const Explore = lazy(() => import('./pages/dashboard/Explore'));
 const EditResourcePage = lazy(() => import('./pages/edit_resource/EditResourcePage'));
 const NotFound = lazy(() => import('./pages/errorpages/NotFound'));
 
@@ -22,7 +22,7 @@ const AppRoutes: FC = () => {
   return (
     <Suspense fallback={<DelayedFallback />}>
       <Switch>
-        <Route exact path="/" component={Dashboard} />
+        <Route exact path="/" component={Explore} />
         <Route exact path="/resource/:identifier" component={ResourcePage} />
         <Route exact path="/resources/user/current" component={MyResources} />
         <Route exact path="/privacy-policy" component={PrivacyPolicy} />
