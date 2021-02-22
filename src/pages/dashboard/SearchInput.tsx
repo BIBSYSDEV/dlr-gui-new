@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
-import { Button, Grid, TextField } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
@@ -17,20 +17,14 @@ const StyledForm = styled.form`
   }
 `;
 
-const StyledGrid = styled(Grid)`
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-bottom: 1rem;
+const StyledTextField = styled(TextField)`
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     width: 100%;
   }
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     width: ${StyleWidths.width3};
+    margin-right: 1rem;
   }
-`;
-
-const StyledTextField = styled(TextField)`
-  width: 100%;
 `;
 
 const StyledButton = styled(Button)`
@@ -51,29 +45,24 @@ const SearchInput = () => {
     const searchParams = new URLSearchParams(location.search);
     searchParams.set('query', searchTerm);
     const url = searchParams.toString();
-    history.push(`?${url}`);
+    history.replace(`?${url}`);
   };
 
   const updateSearchTermValue = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
+
+  console.log(searchTerm);
   return (
     <StyledForm onSubmit={setURLParams}>
-      <StyledGrid container spacing={1} alignItems="flex-end">
-        <Grid item xs={1}>
-          <SearchIcon />
-        </Grid>
-        <Grid item xs={11}>
-          <StyledTextField
-            variant="filled"
-            fullWidth
-            id="search-textfield"
-            onChange={updateSearchTermValue}
-            value={searchTerm}
-            label={t('søk')}
-          />
-        </Grid>
-      </StyledGrid>
+      <StyledTextField
+        variant="filled"
+        fullWidth
+        id="search-textfield"
+        onChange={updateSearchTermValue}
+        value={searchTerm}
+        label={t('søk')}
+      />
       <StyledButton
         startIcon={<SearchIcon />}
         disabled={!searchTerm && searchTerm.length < 4}

@@ -11,7 +11,7 @@ import { StyledContentWrapperMedium } from '../../components/styled/Wrappers';
 import SearchInput from './SearchInput';
 import { useLocation } from 'react-router-dom';
 
-const Dashboard: FC = () => {
+const Explore: FC = () => {
   const location = useLocation();
   const [searchResult, setSearchResult] = useState<SearchResult>();
   const [resources, setResources] = useState<Resource[]>([]);
@@ -68,4 +68,4 @@ const Dashboard: FC = () => {
   );
 };
 
-export default Dashboard;
+export default Explore;
