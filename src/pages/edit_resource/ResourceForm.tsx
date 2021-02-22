@@ -145,16 +145,16 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
             <StyledForm>
               <ScrollToContentButton contentRef={contentRef} text={t('skip_to_form_content')} />
               <ResourceFormNavigationHeader activeStep={activeStep} setActiveStep={setActiveStep} uppy={uppy} />
-              {activeStep === ResourceFormStep.Description && (
-                <StyledPanel>
-                  <DescriptionFields
-                    setAllChangesSaved={(status: boolean) => {
-                      setAllChangesSaved(status);
-                    }}
-                  />
-                </StyledPanel>
-              )}
               <div ref={contentRef}>
+                {activeStep === ResourceFormStep.Description && (
+                  <StyledPanel>
+                    <DescriptionFields
+                      setAllChangesSaved={(status: boolean) => {
+                        setAllChangesSaved(status);
+                      }}
+                    />
+                  </StyledPanel>
+                )}
                 {activeStep === ResourceFormStep.Contributors && (
                   <StyledPanel>
                     <StyledSchemaPart>
