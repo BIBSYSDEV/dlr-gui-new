@@ -267,6 +267,8 @@
     "sitemap": "Nettstedskart",
     "usage_tip": "Scroll nedover på siden, eller bruk nettleserens innebygde søk for å finne det du leter etter"
   },
+  "skip_to_form_content": "Hopp til skjema",
+  "skip_to_main_content": "Hopp til hovedinnhold",
   "thumbnail": {
     "busy_changing": "Bytter ut miniatyrbilde",
     "change_thumbnail": "Bytt miniatyrbilde",

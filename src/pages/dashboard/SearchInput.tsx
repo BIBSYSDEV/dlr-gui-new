@@ -60,7 +60,7 @@ const SearchInput = () => {
         id="search-textfield"
         onChange={updateSearchTermValue}
         value={searchTerm}
-        label={t('søk')}
+        label={t('common.search')}
       />
       <StyledButton
         data-testid="search-for-resource-submit"
