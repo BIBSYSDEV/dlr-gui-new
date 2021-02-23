@@ -113,7 +113,7 @@ const App: FC = () => {
           <ScrollToContentButton contentRef={mainContentRef} text={t('skip_to_main_content')} />
           <ToastContainer autoClose={3000} hideProgressBar />
           <Header />
-          <StyledContent ref={mainContentRef} role="main" id="content">
+          <StyledContent tabIndex={-1} ref={mainContentRef} role="main" id="content">
             <AppRoutes />
           </StyledContent>
           <Footer />
