@@ -154,9 +154,9 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
           {(formikProps: FormikProps<FormikValues>) => (
             <StyledForm>
               <ScrollToContentButton contentRef={contentRef} text={t('skip_to_form_content')} />
-              <div tabIndex={0} ref={beforeResourceFormNavigationRef} />
+              <div tabIndex={-1} ref={beforeResourceFormNavigationRef} />
               <ResourceFormNavigationHeader activeStep={activeStep} setActiveStep={setActiveStep} uppy={uppy} />
-              <StyledPanel tabIndex={0} ref={contentRef}>
+              <StyledPanel tabIndex={-1} ref={contentRef}>
                 {activeStep === ResourceFormStep.Description && (
                   <DescriptionFields
                     setAllChangesSaved={(status: boolean) => {
