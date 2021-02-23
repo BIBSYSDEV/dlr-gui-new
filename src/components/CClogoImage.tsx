@@ -6,6 +6,7 @@ import ND from '../resources/images/creative_commons_logos/nd.svg';
 import Zero from '../resources/images/creative_commons_logos/zero.svg';
 import CCLogo from '../resources/images/creative_commons_logos/cc.svg';
 import BY from '../resources/images/creative_commons_logos/by.svg';
+
 const StyledLogoWrapper = styled.span`
   display: flex;
   align-items: flex-start;
@@ -15,6 +16,7 @@ const StyledLogoWrapper = styled.span`
 const StyledImage = styled.img`
   width: 1.2rem;
   height: 1.2rem;
+  margin-left: 0.1rem;
 `;
 
 const StyledImageWrapper = styled.span`

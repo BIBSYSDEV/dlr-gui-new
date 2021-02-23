@@ -3,16 +3,13 @@ import styled from 'styled-components';
 import placeholderImage from '../resources/images/placeholder.png';
 import { API_PATHS, API_URL } from '../utils/constants';
 import useInterval from '../utils/useInterval';
+import { Colors } from '../themes/mainTheme';
 
 const StyledImage = styled.img`
-  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    width: 7rem;
-    max-height: 7rem;
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
-    width: 5rem;
-    max-height: 5rem;
-  }
+  min-width: 11rem;
+  max-width: 11rem;
+  max-height: 7rem;
+  border: 1px solid ${Colors.DescriptionPageGradientColor1};
 `;
 
 const pollingDelayMilliseconds = 500;

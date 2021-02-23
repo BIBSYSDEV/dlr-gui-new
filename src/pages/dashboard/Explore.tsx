@@ -13,7 +13,7 @@ import SearchInput from './SearchInput';
 import { useLocation } from 'react-router-dom';
 import ResultListItem from '../../components/ResultListItem';
 
-const StyledResultListWrapper = styled.li`
+const StyledResultListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${Colors.ResultListBackground};
@@ -24,7 +24,7 @@ const StyledResultListWrapper = styled.li`
   align-items: center;
 `;
 
-const StyledListHeader = styled(Typography)`
+const StyledListHeader = styled.div`
   width: 100%;
   max-width: ${StyleWidths.width4};
 `;
