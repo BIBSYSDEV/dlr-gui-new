@@ -57,11 +57,9 @@ export const StyledContentWrapperMedium = styled.div`
 export const StyledContentWrapperLarge = styled.div`
   width: 100%;
   max-width: ${StyleWidths.width5};
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding: 0 2rem;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    margin-left: 0;
-    margin-right: 0;
+    padding: 0 0;
   }
 `;
 

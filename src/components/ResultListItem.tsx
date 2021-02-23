@@ -7,24 +7,22 @@ import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
-import { StyleWidths } from '../themes/mainTheme';
+import { Colors, StyleWidths } from '../themes/mainTheme';
 
 const StyledListItem: any = styled.li`
-  display: flex;
-  display: block;
   width: 100%;
   max-width: ${StyleWidths.width4};
-  background-color: white;
-  margin-bottom: 1rem;
+  background-color: ${Colors.Background};
+  margin-bottom: 0.5rem;
 `;
 
 const StyledLinkButton: any = styled(Button)`
   flex-grow: 1;
   justify-content: space-between;
-  display: block;
+  display: flex;
   max-width: ${StyleWidths.width4};
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
-    margin: 0 1rem;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    display: block;
   }
 `;
 

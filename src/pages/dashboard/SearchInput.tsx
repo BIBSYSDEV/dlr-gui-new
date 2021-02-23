@@ -28,7 +28,7 @@ const StyledTextField = styled(TextField)`
 `;
 
 const StyledButton = styled(Button)`
-  min-width: 5rem;
+  min-width: 7rem;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     margin-top: 1rem;
   }

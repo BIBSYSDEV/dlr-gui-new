@@ -16,22 +16,26 @@ import ResultListItem from '../../components/ResultListItem';
 const StyledResultListWrapper = styled.li`
   display: flex;
   flex-direction: column;
-  background-color: ${Colors.LicenseAccessPageGradientColor3}; //todo: 1
+  background-color: ${Colors.ResultListBackground};
   margin-top: 2rem;
-  padding-top: 1.5rem;
+  padding: 1.5rem 0.5rem 0 0.5rem;
   width: 100%;
   max-width: ${StyleWidths.width5};
+  align-items: center;
 `;
 
-const StyledResultListSize = styled(Typography)`
-  display: block;
-  margin-left: 2rem;
+const StyledListHeader = styled(Typography)`
+  width: 100%;
+  max-width: ${StyleWidths.width4};
 `;
+
+const StyledResultListSize = styled(Typography)``;
 
 const StyledList = styled(List)`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 `;
 
 const Explore: FC = () => {
@@ -71,9 +75,11 @@ const Explore: FC = () => {
       {searchError && <ErrorBanner />}
       {searchResult && (
         <StyledResultListWrapper>
-          <StyledResultListSize variant="h2">
-            {t('hits')}: {searchResult.numFound}
-          </StyledResultListSize>
+          <StyledListHeader>
+            <StyledResultListSize variant="h2">
+              {t('common.result')} ({searchResult.numFound})
+            </StyledResultListSize>
+          </StyledListHeader>
           <StyledList>
             {resources &&
               resources.length > 0 &&
