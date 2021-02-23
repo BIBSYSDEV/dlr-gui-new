@@ -13,9 +13,45 @@ import { Content, emptyResourceContent, LinkMetadataFilename } from '../types/co
 import { authenticatedApiRequest } from './api';
 import { SearchResult } from '../types/search.types';
 
-export const searchResources = (query: string): Promise<AxiosResponse<SearchResult>> => {
+export const searchResources = (
+  query: string,
+  institutions: string[],
+  resourceType: string[],
+  licenses: string[],
+  keywords: string[]
+): Promise<AxiosResponse<SearchResult>> => {
+  let url = `${API_PATHS.guiBackendResourcesSearchPath}/resources/search?query=${query}`;
+  if (institutions.length > 0 || resourceType.length > 0 || licenses.length > 0 || keywords.length > 0) {
+    url += '&filter=';
+
+    const filters: string[] = [];
+    if (institutions.length > 1) {
+      filters.push(`facet_institution::(${institutions.join(' OR ')})`);
+    } else if (institutions.length === 1) {
+      filters.push(`facet_institution::${institutions[0]}`);
+    }
+    if (resourceType.length > 1) {
+      filters.push(`facet_filetype::(${resourceType.join(' OR ')})`);
+    } else if (resourceType.length === 1) {
+      filters.push(`facet_filetype::${resourceType[0]}`);
+    }
+    if (licenses.length > 1) {
+      filters.push(`facet_license::(${licenses.join(' OR ')})`);
+    } else if (licenses.length === 1) {
+      filters.push(`facet_license::${licenses[0]}`);
+    }
+    if (keywords.length > 1) {
+      filters.push(`facet_keyword::(${keywords.join(' OR ')})`);
+    } else if (keywords.length === 1) {
+      filters.push(`facet_keyword::${keywords[0]}`);
+    }
+
+    if (filters.length > 0) {
+      url += filters.join('|');
+    }
+  }
   return authenticatedApiRequest({
-    url: encodeURI(`${API_PATHS.guiBackendResourcesSearchPath}/resources/search?query=${query}`),
+    url: encodeURI(url),
     method: 'GET',
   });
 };

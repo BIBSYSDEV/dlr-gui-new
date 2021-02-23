@@ -11,6 +11,7 @@ import { StyledContentWrapperMedium } from '../../components/styled/Wrappers';
 import SearchInput from './SearchInput';
 import { useLocation } from 'react-router-dom';
 import FilterSearchOptions from './FilterSearchOptions';
+import { InstitutionParameterName } from './InstitutionFiltering';
 
 const Explore: FC = () => {
   const location = useLocation();
@@ -19,12 +20,9 @@ const Explore: FC = () => {
   const { t } = useTranslation();
   const [searchError, setSearchError] = useState(false);
 
-  console.log('resources', resources);
-  console.log('searchResults', searchResult);
-
-  const triggerSearch = async (query: string) => {
+  const triggerSearch = async (query: string, institutions: string[]) => {
     try {
-      const response = await searchResources(query);
+      const response = await searchResources(query, institutions, [], [], []);
       if (response.data) {
         setSearchError(false);
         setSearchResult(response.data);
@@ -40,8 +38,9 @@ const Explore: FC = () => {
   useEffect(() => {
     const searchTerm = new URLSearchParams(location.search);
     const query = searchTerm.get('query');
+    const institutions = searchTerm.getAll(InstitutionParameterName);
     if (query !== null) {
-      triggerSearch(query);
+      triggerSearch(query, institutions);
     }
   }, [location]);
 

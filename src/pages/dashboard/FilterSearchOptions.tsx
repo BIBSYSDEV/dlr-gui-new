@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
 import Accordion from '@material-ui/core/Accordion';
@@ -7,7 +7,6 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import InstitutionFiltering from './InstitutionFiltering';
-import { Resource } from '../../types/resource.types';
 
 const StyledFilterBox = styled.div`
   margin-top: 2rem;
