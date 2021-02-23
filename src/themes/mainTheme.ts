@@ -56,10 +56,11 @@ export enum Colors {
 }
 
 export enum StyleWidths {
-  width1 = '21rem',
-  width2 = '29rem',
-  width3 = '37rem',
-  width4 = '52rem',
+  width1 = '21rem', // 336px
+  width2 = '29rem', // 464px
+  width3 = '37rem', // 592px
+  width4 = '52rem', // 832px
+  width5 = '75rem', //1200px
 }
 
 export default createMuiTheme({

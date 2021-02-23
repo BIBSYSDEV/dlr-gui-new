@@ -1,15 +1,38 @@
 import React, { FC, useEffect, useState } from 'react';
-import { List } from '@material-ui/core';
+import styled from 'styled-components';
+import { Colors, StyleWidths } from '../../themes/mainTheme';
+import { List, Typography } from '@material-ui/core';
 import { searchResources } from '../../api/resourceApi';
 import { useTranslation } from 'react-i18next';
 import { SearchResult } from '../../types/search.types';
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
-import ResourceListItem from '../../components/ResourceListItem';
 import { PageHeader } from '../../components/PageHeader';
-import { StyledContentWrapperMedium } from '../../components/styled/Wrappers';
+import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
 import SearchInput from './SearchInput';
 import { useLocation } from 'react-router-dom';
+import ResultListItem from '../../components/ResultListItem';
+
+const StyledResultListWrapper = styled.li`
+  display: flex;
+  flex-direction: column;
+  background-color: ${Colors.LicenseAccessPageGradientColor3}; //todo: 1
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  width: 100%;
+  max-width: ${StyleWidths.width5};
+`;
+
+const StyledResultListSize = styled(Typography)`
+  display: block;
+  margin-left: 2rem;
+`;
+
+const StyledList = styled(List)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const Explore: FC = () => {
   const location = useLocation();
@@ -42,29 +65,23 @@ const Explore: FC = () => {
   }, [location]);
 
   return (
-    <StyledContentWrapperMedium>
+    <StyledContentWrapperLarge>
       <PageHeader>{t('dashboard.explore')}</PageHeader>
-
       <SearchInput />
-
       {searchError && <ErrorBanner />}
-
-      <div>
-        {searchResult && (
-          <span>
+      {searchResult && (
+        <StyledResultListWrapper>
+          <StyledResultListSize variant="h2">
             {t('hits')}: {searchResult.numFound}
-          </span>
-        )}
-      </div>
-
-      <List>
-        {resources &&
-          resources.length > 0 &&
-          resources.map((resource: Resource, index: number) => (
-            <ResourceListItem resource={resource} key={index} showHandle={true} showSubmitter={true} />
-          ))}
-      </List>
-    </StyledContentWrapperMedium>
+          </StyledResultListSize>
+          <StyledList>
+            {resources &&
+              resources.length > 0 &&
+              resources.map((resource: Resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
+          </StyledList>
+        </StyledResultListWrapper>
+      )}
+    </StyledContentWrapperLarge>
   );
 };
 
