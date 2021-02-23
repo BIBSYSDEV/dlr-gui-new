@@ -267,6 +267,8 @@
     "sitemap": "Sitemap",
     "usage_tip": "Scroll down the page, or use the browser's built in search to find what you are looking for"
   },
+  "skip_to_form_content": "Skip to form",
+  "skip_to_main_content": "Skip to main content",
   "thumbnail": {
     "busy_changing": "Changing thumbnail",
     "change_thumbnail": "Change thumbnail",
