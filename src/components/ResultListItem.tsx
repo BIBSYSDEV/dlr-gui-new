@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { Resource, ResourceFeatureTypes } from '../types/resource.types';
-import { ListItemText } from '@material-ui/core';
 import Thumbnail from './Thumbnail';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
@@ -24,6 +23,9 @@ const StyledListItem: any = styled.li`
 const StyledLinkButton: any = styled(Button)`
   padding: 1rem;
   display: flex;
+  justify-content: left;
+  flex-direction: row;
+  align-items: start;
   max-width: ${StyleWidths.width4};
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     display: block;
@@ -33,6 +35,7 @@ const StyledLinkButton: any = styled(Button)`
 const StyledFirstColumn = styled.div`
   display: flex;
   flex-direction: column;
+  max-width: 11rem;
 `;
 
 const StyledThumbnailWrapper = styled.div`
@@ -60,12 +63,23 @@ const StyledFileName = styled(Typography)`
   white-space: nowrap;
 `;
 
-const StyledListItemText = styled(ListItemText)`
+const StyledSecondColumn = styled.div`
   padding-left: 1rem;
+  width: 100%;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    padding-left: 0;
+    padding-top: 1rem;
+  }
 `;
 
-const StyledTypography = styled(Typography)`
-  margin-top: 1rem;
+const StyledHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    flex-direction: column;
+  }
 `;
 
 interface ResultListItemProps {
@@ -116,24 +130,28 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
             <CClogoImage licenseCode={'CC BY 4.0'} />
           </StyledLicense>
         </StyledFirstColumn>
-        <StyledListItemText
-          primary={`${resource.features.dlr_title} (${resource.features.dlr_content_type})`}
-          secondary={
-            <>
-              {resource.features.dlr_submitter_email && (
-                <StyledTypography variant="body2">{resource.features.dlr_submitter_email}</StyledTypography>
-              )}
-              {resource.features.dlr_time_created && (
-                <StyledTypography variant="body2">{resource.features.dlr_time_created}</StyledTypography>
-              )}
-              {resource.features.dlr_identifier_handle && (
-                <span>
-                  {t('handle')}: {resource.features.dlr_identifier_handle}
-                </span>
-              )}
-            </>
-          }
-        />
+        <StyledSecondColumn>
+          <StyledHeader>
+            <Typography variant="h4">{resource.features.dlr_title}</Typography>
+            <Typography variant="body1">{resource.features.dlr_time_created}</Typography>
+          </StyledHeader>
+
+          {resource.creators && resource.creators.length !== 0 && (
+            <Typography variant="body1">
+              {resource.creators.map((creator) => creator.features.dlr_creator_name).join(', ')}
+            </Typography>
+          )}
+
+          {resource.contributors && resource.contributors.length !== 0 && (
+            <Typography variant="body1">
+              {resource.contributors.map((creator) => creator.features.dlr_contributor_name).join(', ')}
+            </Typography>
+          )}
+
+          {resource.features.dlr_description && (
+            <Typography variant="body1">{resource.features.dlr_description}</Typography>
+          )}
+        </StyledSecondColumn>
       </StyledLinkButton>
     </StyledListItem>
   );
