@@ -101,6 +101,7 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
             <StyledThumbnailMetadata>
               {resource.features.dlr_type && (
                 <StyledFileTypeIcon>
+                  {/*todo:trekke ut*/}
                   {resource.features.dlr_type.toUpperCase() === ResourceFeatureTypes.audio.toUpperCase() && (
                     <VolumeUpIcon />
                   )}
@@ -127,6 +128,7 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
             </StyledThumbnailMetadata>
           </StyledThumbnailWrapper>
           <StyledLicense>
+            {/*todo:ekte data*/}
             <CClogoImage licenseCode={'CC BY 4.0'} />
           </StyledLicense>
         </StyledFirstColumn>
@@ -134,23 +136,27 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
           <StyledHeader>
             <Typography variant="h4">{resource.features.dlr_title}</Typography>
             <Typography variant="body1">{resource.features.dlr_time_created}</Typography>
+            {/*todo:kun dato*/}
           </StyledHeader>
 
           {resource.creators && resource.creators.length !== 0 && (
             <Typography variant="body1">
               {resource.creators.map((creator) => creator.features.dlr_creator_name).join(', ')}
+              {/*todo:max lengde*/}
             </Typography>
           )}
 
           {resource.contributors && resource.contributors.length !== 0 && (
             <Typography variant="body1">
               {resource.contributors.map((creator) => creator.features.dlr_contributor_name).join(', ')}
+              {/*todo:max lengde*/}
             </Typography>
           )}
 
           {resource.features.dlr_description && (
             <Typography variant="body1">{resource.features.dlr_description}</Typography>
           )}
+          {/*todo:keywords*/}
         </StyledSecondColumn>
       </StyledLinkButton>
     </StyledListItem>
