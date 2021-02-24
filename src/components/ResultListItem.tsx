@@ -22,6 +22,7 @@ const StyledListItem: any = styled.li`
   margin-bottom: 0.5rem;
 `;
 
+//TODO: skal vi ha knapp. hva med skjermleserer ?
 const StyledLinkButton: any = styled(Button)`
   padding: 1rem;
   display: flex;
@@ -92,10 +93,11 @@ const StyledSecondColumn = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
+  min-height: 9rem; //TODO: +1rem when license
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     padding-left: 0;
     padding-top: 1rem;
+    min-height: inherit;
   }
 `;
 

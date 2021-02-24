@@ -5,11 +5,19 @@ import { API_PATHS, API_URL } from '../utils/constants';
 import useInterval from '../utils/useInterval';
 import { Colors } from '../themes/mainTheme';
 
-const StyledImage = styled.img`
-  min-width: 11rem;
-  max-width: 11rem;
-  max-height: 7rem;
+const StyledImageWrapper = styled.div`
+  width: 11rem;
+  height: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
   border: 1px solid ${Colors.DescriptionPageGradientColor1};
+`;
+
+const StyledImage = styled.img`
+  max-height: 7rem;
+  max-width: 11rem;
 `;
 
 const pollingDelayMilliseconds = 500;
@@ -49,14 +57,14 @@ const Thumbnail: FC<thumbnailProps> = ({ resourceOrContentIdentifier, alt, needs
   }, [resourceOrContentIdentifier]);
 
   return (
-    <>
+    <StyledImageWrapper>
       <StyledImage
         onError={(event) => addDefaultImage(event)}
         src={url}
         alt={alt}
         data-testid={`thumbnail-${resourceOrContentIdentifier}`}
       />
-    </>
+    </StyledImageWrapper>
   );
 };
 
