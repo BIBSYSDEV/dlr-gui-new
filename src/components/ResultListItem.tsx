@@ -12,6 +12,7 @@ import SlideshowIcon from '@material-ui/icons/Slideshow';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 import PhotoOutlinedIcon from '@material-ui/icons/PhotoOutlined';
 import CClogoImage from './CClogoImage';
+import { format } from 'date-fns';
 
 const StyledListItem: any = styled.li`
   width: 100%;
@@ -89,6 +90,17 @@ interface ResultListItemProps {
 const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
   const { t } = useTranslation();
 
+  const getStyledFileTypeIcon = (type: string) => (
+    <>
+      {type.toUpperCase() === ResourceFeatureTypes.audio.toUpperCase() && <VolumeUpIcon />}
+      {type.toUpperCase() === ResourceFeatureTypes.image.toUpperCase() && <PhotoOutlinedIcon />}
+      {type.toUpperCase() === ResourceFeatureTypes.presentation.toUpperCase() && <SlideshowIcon />}
+      {type.toUpperCase() === ResourceFeatureTypes.simulation.toUpperCase() && <SlideshowIcon />}
+      {type.toUpperCase() === ResourceFeatureTypes.video.toUpperCase() && <VideocamIcon />}
+      {type.toUpperCase() === ResourceFeatureTypes.document.toUpperCase() && <DescriptionOutlinedIcon />}
+    </>
+  );
+
   return (
     <StyledListItem data-testid={`list-item-resources-${resource.identifier}`}>
       <StyledLinkButton component="a" href={`/resource/${resource.identifier}`}>
@@ -100,27 +112,7 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
             />
             <StyledThumbnailMetadata>
               {resource.features.dlr_type && (
-                <StyledFileTypeIcon>
-                  {/*todo:trekke ut*/}
-                  {resource.features.dlr_type.toUpperCase() === ResourceFeatureTypes.audio.toUpperCase() && (
-                    <VolumeUpIcon />
-                  )}
-                  {resource.features.dlr_type.toUpperCase() === ResourceFeatureTypes.image.toUpperCase() && (
-                    <PhotoOutlinedIcon />
-                  )}
-                  {resource.features.dlr_type.toUpperCase() === ResourceFeatureTypes.presentation.toUpperCase() && (
-                    <SlideshowIcon />
-                  )}
-                  {resource.features.dlr_type.toUpperCase() === ResourceFeatureTypes.simulation.toUpperCase() && (
-                    <SlideshowIcon />
-                  )}
-                  {resource.features.dlr_type.toUpperCase() === ResourceFeatureTypes.video.toUpperCase() && (
-                    <VideocamIcon />
-                  )}
-                  {resource.features.dlr_type.toUpperCase() === ResourceFeatureTypes.document.toUpperCase() && (
-                    <DescriptionOutlinedIcon />
-                  )}
-                </StyledFileTypeIcon>
+                <StyledFileTypeIcon>{getStyledFileTypeIcon(resource.features.dlr_type)}</StyledFileTypeIcon>
               )}
               <StyledFileName display="inline" variant="body2">
                 {resource.features.dlr_title}
@@ -135,8 +127,7 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
         <StyledSecondColumn>
           <StyledHeader>
             <Typography variant="h4">{resource.features.dlr_title}</Typography>
-            <Typography variant="body1">{resource.features.dlr_time_created}</Typography>
-            {/*todo:kun dato*/}
+            <Typography variant="body1">{format(resource.features.dlr_time_created, 'DD.MM.YYYY')}</Typography>
           </StyledHeader>
 
           {resource.creators && resource.creators.length !== 0 && (
