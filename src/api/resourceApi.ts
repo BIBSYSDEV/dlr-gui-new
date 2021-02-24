@@ -12,12 +12,13 @@ import { AccessTypes, License } from '../types/license.types';
 import { Content, emptyResourceContent, LinkMetadataFilename } from '../types/content.types';
 import { authenticatedApiRequest } from './api';
 import { SearchResult } from '../types/search.types';
+import { QueryObject } from '../pages/dashboard/Explore';
 
-export const searchResources = (query: string, limit: number, offset: number): Promise<AxiosResponse<SearchResult>> => {
+export const searchResources = (query: QueryObject): Promise<AxiosResponse<SearchResult>> => {
+  let url = `${API_PATHS.guiBackendResourcesSearchPath}/resources/search?query=${query.query}&limit=${query.limit}`;
+  if (query.offset > 0) url += `&offset=${query.offset}`;
   return authenticatedApiRequest({
-    url: encodeURI(
-      `${API_PATHS.guiBackendResourcesSearchPath}/resources/search?query=${query}&limit=${limit}&offset=${offset}`
-    ),
+    url: encodeURI(url),
     method: 'GET',
   });
 };

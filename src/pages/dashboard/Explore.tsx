@@ -9,36 +9,52 @@ import ResourceListItem from '../../components/ResourceListItem';
 import { PageHeader } from '../../components/PageHeader';
 import { StyledContentWrapperMedium } from '../../components/styled/Wrappers';
 import SearchInput from './SearchInput';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Pagination } from '@material-ui/lab';
 
 const NumberOfHitsPrPage = 5;
 
+export interface QueryObject {
+  query: string;
+  offset: number;
+  limit: number;
+}
+
 const Explore: FC = () => {
   const location = useLocation();
-  const [query, setQuery] = useState<string | null>(null);
+  const [query, setQuery] = useState<null | QueryObject>(null);
   const [searchResult, setSearchResult] = useState<SearchResult>();
   const [resources, setResources] = useState<Resource[]>([]);
   const { t } = useTranslation();
   const [searchError, setSearchError] = useState(false);
   const [page, setPage] = useState(0);
+  const history = useHistory();
 
   const handlePaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
+    const searchParams = new URLSearchParams(location.search);
+    const offset = NumberOfHitsPrPage * (value - 1);
+    searchParams.set('offset', '' + offset);
+    const url = searchParams.toString();
+    history.replace(`?${url}`);
   };
 
   useEffect(() => {
     const searchTerm = new URLSearchParams(location.search);
-    setQuery(searchTerm.get('query'));
+    const queryString = searchTerm.get('query') ?? '';
+    const offsetString = +(searchTerm.get('offset') ?? '0');
+    setQuery({
+      query: queryString,
+      offset: offsetString,
+      limit: NumberOfHitsPrPage,
+    });
   }, [location]);
 
   useEffect(() => {
     const triggerSearch = async () => {
       if (query) {
         try {
-          const offset = NumberOfHitsPrPage * (page - 1);
-          const limit = NumberOfHitsPrPage;
-          const response = await searchResources(query, limit, offset);
+          const response = await searchResources(query);
           if (response.data) {
             setSearchError(false);
             setSearchResult(response.data);
@@ -52,7 +68,7 @@ const Explore: FC = () => {
       }
     };
     triggerSearch();
-  }, [query, page]);
+  }, [query]);
 
   return (
     <StyledContentWrapperMedium>
@@ -68,13 +84,6 @@ const Explore: FC = () => {
         )}
       </div>
       {searchResult?.numFound && searchResult.numFound > NumberOfHitsPrPage && <Typography>Page: {page}</Typography>}
-      <List>
-        {resources &&
-          resources.length > 0 &&
-          resources.map((resource: Resource, index: number) => (
-            <ResourceListItem resource={resource} key={index} showHandle={true} showSubmitter={true} />
-          ))}
-      </List>
       {searchResult?.numFound && searchResult.numFound > NumberOfHitsPrPage && (
         <Pagination
           count={Math.ceil(searchResult.numFound / NumberOfHitsPrPage)}
@@ -83,6 +92,13 @@ const Explore: FC = () => {
           onChange={handlePaginationChange}
         />
       )}
+      <List>
+        {resources &&
+          resources.length > 0 &&
+          resources.map((resource: Resource, index: number) => (
+            <ResourceListItem resource={resource} key={index} showHandle={true} showSubmitter={true} />
+          ))}
+      </List>
     </StyledContentWrapperMedium>
   );
 };
