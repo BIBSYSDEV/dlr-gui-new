@@ -18,7 +18,7 @@ declare module '@material-ui/core/styles/createPalette' {
 export enum Colors {
   Primary = 'rgba(99, 34, 107, 1)',
   Secondary = 'rgba(147, 10, 10, 1)',
-  Background = '#fff',
+  Background = '#ffffff',
   Box = '#f5f5f5',
   HoverTextFieldFilled = '#F5F5F5',
   Link = '#06f',
@@ -28,7 +28,7 @@ export enum Colors {
   SecondaryText = '#44515d',
   LightHeaderText = 'rgba(0,0,0,0.29)',
   Panel = '#A9D8B8',
-  Disabled = '#bbb',
+  Disabled = '#bbbbbb',
   Danger = '#ff5555',
   Warning = 'rgba(147, 10, 10, 1)',
   DangerLight = '#ffbbbb',
