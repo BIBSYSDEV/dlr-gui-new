@@ -13,9 +13,11 @@ import { Content, emptyResourceContent, LinkMetadataFilename } from '../types/co
 import { authenticatedApiRequest } from './api';
 import { SearchResult } from '../types/search.types';
 
-export const searchResources = (query: string): Promise<AxiosResponse<SearchResult>> => {
+export const searchResources = (query: string, limit: number, offset: number): Promise<AxiosResponse<SearchResult>> => {
   return authenticatedApiRequest({
-    url: encodeURI(`${API_PATHS.guiBackendResourcesSearchPath}/resources/search?query=${query}`),
+    url: encodeURI(
+      `${API_PATHS.guiBackendResourcesSearchPath}/resources/search?query=${query}&limit=${limit}&offset=${offset}`
+    ),
     method: 'GET',
   });
 };

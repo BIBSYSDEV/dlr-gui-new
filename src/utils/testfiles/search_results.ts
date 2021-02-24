@@ -1,6 +1,6 @@
 export const mockSearchResults: any = {
   offset: '0',
-  limit: '50',
+  limit: '10',
   numFound: 8,
   queryTime: 17,
   resourcesAsJson: [
