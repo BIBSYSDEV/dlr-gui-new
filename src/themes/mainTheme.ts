@@ -193,6 +193,9 @@ export default createMuiTheme({
       root: {
         textTransform: 'none',
       },
+      label: {
+        height: '100%',
+      },
     },
     MuiCard: {
       root: {

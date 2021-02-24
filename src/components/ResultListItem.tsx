@@ -11,8 +11,9 @@ import VideocamIcon from '@material-ui/icons/Videocam';
 import SlideshowIcon from '@material-ui/icons/Slideshow';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 import PhotoOutlinedIcon from '@material-ui/icons/PhotoOutlined';
-import CClogoImage from './CClogoImage';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import { format } from 'date-fns';
+import { Chip } from '@material-ui/core';
 
 const StyledListItem: any = styled.li`
   width: 100%;
@@ -28,6 +29,7 @@ const StyledLinkButton: any = styled(Button)`
   flex-direction: row;
   align-items: start;
   max-width: ${StyleWidths.width4};
+  min-height: 10rem;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     display: block;
   }
@@ -50,12 +52,32 @@ const StyledThumbnailMetadata = styled.div`
 `;
 
 const StyledFileTypeIcon = styled.span`
-  margin: 0 0.3rem;
+  margin: 0.5rem 0.3rem 0.5rem 0.5rem;
 `;
 
-const StyledLicense = styled.div`
-  margin-top: 1rem;
+const StyledTimeCreatedTypography = styled(Typography)`
+  min-width: 6rem;
 `;
+
+const StyledMaxTwoLinesTypography = styled(Typography)`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* number of lines to show. Not IE */
+  -webkit-box-orient: vertical;
+`;
+
+const StyledMaxOneLineTypography = styled(Typography)`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines to show. Not IE */
+  -webkit-box-orient: vertical;
+`;
+
+// const StyledLicense = styled.div`
+//   margin-top: 1rem;
+// `;
 
 const StyledFileName = styled(Typography)`
   max-width: 6rem;
@@ -67,6 +89,10 @@ const StyledFileName = styled(Typography)`
 const StyledSecondColumn = styled.div`
   padding-left: 1rem;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     padding-left: 0;
     padding-top: 1rem;
@@ -83,6 +109,11 @@ const StyledHeader = styled.div`
   }
 `;
 
+const StyledChip = styled(Chip)`
+  margin-right: 0.5rem;
+  margin-top: 0.5rem;
+`;
+
 interface ResultListItemProps {
   resource: Resource;
 }
@@ -90,16 +121,15 @@ interface ResultListItemProps {
 const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
   const { t } = useTranslation();
 
-  const getStyledFileTypeIcon = (type: string) => (
-    <>
-      {type.toUpperCase() === ResourceFeatureTypes.audio.toUpperCase() && <VolumeUpIcon />}
-      {type.toUpperCase() === ResourceFeatureTypes.image.toUpperCase() && <PhotoOutlinedIcon />}
-      {type.toUpperCase() === ResourceFeatureTypes.presentation.toUpperCase() && <SlideshowIcon />}
-      {type.toUpperCase() === ResourceFeatureTypes.simulation.toUpperCase() && <SlideshowIcon />}
-      {type.toUpperCase() === ResourceFeatureTypes.video.toUpperCase() && <VideocamIcon />}
-      {type.toUpperCase() === ResourceFeatureTypes.document.toUpperCase() && <DescriptionOutlinedIcon />}
-    </>
-  );
+  const getStyledFileTypeIcon = (type: string) => {
+    if (type.toUpperCase() === ResourceFeatureTypes.audio.toUpperCase()) return <VolumeUpIcon />;
+    if (type.toUpperCase() === ResourceFeatureTypes.image.toUpperCase()) return <PhotoOutlinedIcon />;
+    if (type.toUpperCase() === ResourceFeatureTypes.presentation.toUpperCase()) return <SlideshowIcon />;
+    if (type.toUpperCase() === ResourceFeatureTypes.simulation.toUpperCase()) return <SlideshowIcon />;
+    if (type.toUpperCase() === ResourceFeatureTypes.video.toUpperCase()) return <VideocamIcon />;
+    if (type.toUpperCase() === ResourceFeatureTypes.document.toUpperCase()) return <DescriptionOutlinedIcon />;
+    return <InsertDriveFileIcon />; //default //TODO: "audiovisual" ?
+  };
 
   return (
     <StyledListItem data-testid={`list-item-resources-${resource.identifier}`}>
@@ -119,35 +149,51 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
               </StyledFileName>
             </StyledThumbnailMetadata>
           </StyledThumbnailWrapper>
-          <StyledLicense>
-            {/*todo:ekte data*/}
-            <CClogoImage licenseCode={'CC BY 4.0'} />
-          </StyledLicense>
+
+          {/*TODO: Få Lisenser fra backend*/}
+          {/*<StyledLicense>*/}
+          {/*  {resource.licenses && resource.licenses[0].features?.dlr_license_code && (*/}
+          {/*    <CClogoImage licenseCode={resource.licenses[0].features.dlr_license_code} />*/}
+          {/*  )}*/}
+          {/*</StyledLicense>*/}
         </StyledFirstColumn>
+
         <StyledSecondColumn>
-          <StyledHeader>
-            <Typography variant="h4">{resource.features.dlr_title}</Typography>
-            <Typography variant="body1">{format(resource.features.dlr_time_created, 'DD.MM.YYYY')}</Typography>
-          </StyledHeader>
+          <div>
+            <StyledHeader>
+              <StyledMaxTwoLinesTypography variant="h4">{resource.features.dlr_title}</StyledMaxTwoLinesTypography>
+              <StyledTimeCreatedTypography variant="body1">
+                {format(resource.features.dlr_time_created, 'DD.MM.YYYY')}
+              </StyledTimeCreatedTypography>
+            </StyledHeader>
 
-          {resource.creators && resource.creators.length !== 0 && (
-            <Typography variant="body1">
-              {resource.creators.map((creator) => creator.features.dlr_creator_name).join(', ')}
-              {/*todo:max lengde*/}
-            </Typography>
-          )}
+            {resource.creators && resource.creators.length !== 0 && (
+              <StyledMaxOneLineTypography variant="body1">
+                {resource.creators.map((creator) => creator.features.dlr_creator_name).join(', ')}
+              </StyledMaxOneLineTypography>
+            )}
 
-          {resource.contributors && resource.contributors.length !== 0 && (
-            <Typography variant="body1">
-              {resource.contributors.map((creator) => creator.features.dlr_contributor_name).join(', ')}
-              {/*todo:max lengde*/}
-            </Typography>
-          )}
+            {resource.contributors && resource.contributors.length !== 0 && (
+              <StyledMaxOneLineTypography variant="body1">
+                {resource.contributors.map((creator) => creator.features.dlr_contributor_name).join(', ')}
+              </StyledMaxOneLineTypography>
+            )}
 
-          {resource.features.dlr_description && (
-            <Typography variant="body1">{resource.features.dlr_description}</Typography>
-          )}
-          {/*todo:keywords*/}
+            {resource.features.dlr_description && (
+              <StyledMaxTwoLinesTypography variant="body1">
+                {resource.features.dlr_description}
+              </StyledMaxTwoLinesTypography>
+            )}
+          </div>
+          <div>
+            {resource.tags && resource.tags.length !== 0 && (
+              <div data-testid="resource-tags">
+                {resource.tags.map((tag, index) => (
+                  <StyledChip key={index} size="medium" label={tag} />
+                ))}
+              </div>
+            )}
+          </div>
         </StyledSecondColumn>
       </StyledLinkButton>
     </StyledListItem>
