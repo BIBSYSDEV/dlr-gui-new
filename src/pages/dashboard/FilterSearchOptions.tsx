@@ -44,6 +44,7 @@ const FilterSearchOptions = () => {
       {window.innerWidth < 1920 && (
         <StyledAccordion component={'aside'}>
           <AccordionSummary
+            data-testid="expand-filtering-options"
             expandIcon={<ExpandMoreIcon />}
             aria-controls="filter-box-options"
             id="filter-box-options-header">

@@ -111,8 +111,16 @@ const InstitutionFiltering = () => {
       <FormGroup>
         {institutionList.map((institution, index) => (
           <FormControlLabel
+            data-testid={`institution-filtering-checkbox-label-${institution.name.toLowerCase()}`}
             key={index}
-            control={<Checkbox color="default" checked={institution.isSelected} name={institution.name} />}
+            control={
+              <Checkbox
+                data-testid={`institution-filtering-checkbox-${institution.name.toLowerCase()}`}
+                color="default"
+                checked={institution.isSelected}
+                name={institution.name}
+              />
+            }
             label={institution.name}
             onChange={(event) => {
               changeSelected(index, event);
