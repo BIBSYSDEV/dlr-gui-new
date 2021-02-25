@@ -23,7 +23,6 @@ const StyledListItem: any = styled.li`
   margin-bottom: 0.5rem;
 `;
 
-//TODO: skal vi ha knapp. hva med skjermleserer ?
 const StyledLinkButton: any = styled(Button)`
   padding: 1rem;
   display: flex;
@@ -94,7 +93,7 @@ const StyledSecondColumn = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 9rem; //TODO: +1rem when license
+  min-height: 10rem; 
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     padding-left: 0;
     padding-top: 1rem;
@@ -131,7 +130,7 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
     if (type.toUpperCase() === ResourceFeatureTypes.simulation.toUpperCase()) return <SlideshowIcon />;
     if (type.toUpperCase() === ResourceFeatureTypes.video.toUpperCase()) return <VideocamIcon />;
     if (type.toUpperCase() === ResourceFeatureTypes.document.toUpperCase()) return <DescriptionOutlinedIcon />;
-    return <InsertDriveFileIcon />; //default //TODO: "audiovisual" ?
+    return <DescriptionOutlinedIcon />; //default
   };
 
   return (
