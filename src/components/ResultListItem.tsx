@@ -14,6 +14,7 @@ import PhotoOutlinedIcon from '@material-ui/icons/PhotoOutlined';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import { format } from 'date-fns';
 import { Chip } from '@material-ui/core';
+import CClogoImage from './CClogoImage';
 
 const StyledListItem: any = styled.li`
   width: 100%;
@@ -76,9 +77,9 @@ const StyledMaxOneLineTypography = styled(Typography)`
   -webkit-box-orient: vertical;
 `;
 
-// const StyledLicense = styled.div`
-//   margin-top: 1rem;
-// `;
+const StyledLicense = styled.div`
+  margin-top: 1rem;
+`;
 
 const StyledFileName = styled(Typography)`
   max-width: 6rem;
@@ -152,12 +153,11 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
             </StyledThumbnailMetadata>
           </StyledThumbnailWrapper>
 
-          {/*TODO: Få Lisenser fra backend*/}
-          {/*<StyledLicense>*/}
-          {/*  {resource.licenses && resource.licenses[0].features?.dlr_license_code && (*/}
-          {/*    <CClogoImage licenseCode={resource.licenses[0].features.dlr_license_code} />*/}
-          {/*  )}*/}
-          {/*</StyledLicense>*/}
+          <StyledLicense>
+            {resource.features.dlr_rights_license_name && (
+              <CClogoImage licenseCode={resource.features.dlr_rights_license_name} />
+            )}
+          </StyledLicense>
         </StyledFirstColumn>
 
         <StyledSecondColumn>
