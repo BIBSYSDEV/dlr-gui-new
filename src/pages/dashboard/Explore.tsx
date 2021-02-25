@@ -20,7 +20,7 @@ const Explore: FC = () => {
   const { t } = useTranslation();
   const [searchError, setSearchError] = useState(false);
 
-  const triggerSearch = async (query: string, institutions: string[]) => {
+  const triggerSearch = async (query: string, institutions: string | null) => {
     try {
       const response = await searchResources(query, institutions, [], [], []);
       if (response.data) {
@@ -38,7 +38,7 @@ const Explore: FC = () => {
   useEffect(() => {
     const searchTerm = new URLSearchParams(location.search);
     const query = searchTerm.get('query');
-    const institutions = searchTerm.getAll(InstitutionParameterName);
+    const institutions = searchTerm.get(InstitutionParameterName);
     if (query !== null) {
       triggerSearch(query, institutions);
     }

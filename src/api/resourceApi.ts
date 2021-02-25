@@ -15,20 +15,23 @@ import { SearchResult } from '../types/search.types';
 
 export const searchResources = (
   query: string,
-  institutions: string[],
+  institutions: string | null | undefined,
   resourceType: string[],
   licenses: string[],
   keywords: string[]
 ): Promise<AxiosResponse<SearchResult>> => {
   let url = `${API_PATHS.guiBackendResourcesSearchPath}/resources/search?query=${query}`;
-  if (institutions.length > 0 || resourceType.length > 0 || licenses.length > 0 || keywords.length > 0) {
+  if (
+    (institutions && institutions.length > 0) ||
+    resourceType.length > 0 ||
+    licenses.length > 0 ||
+    keywords.length > 0
+  ) {
     url += '&filter=';
 
     const filters: string[] = [];
-    if (institutions.length > 1) {
-      filters.push(`facet_institution::(${institutions.join(' OR ')})`);
-    } else if (institutions.length === 1) {
-      filters.push(`facet_institution::${institutions[0]}`);
+    if (institutions && institutions.length > 0) {
+      filters.push(`facet_institution::${institutions}`);
     }
     if (resourceType.length > 1) {
       filters.push(`facet_filetype::(${resourceType.join(' OR ')})`);
