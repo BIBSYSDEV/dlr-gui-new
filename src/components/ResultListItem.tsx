@@ -11,7 +11,6 @@ import VideocamIcon from '@material-ui/icons/Videocam';
 import SlideshowIcon from '@material-ui/icons/Slideshow';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 import PhotoOutlinedIcon from '@material-ui/icons/PhotoOutlined';
-import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import { format } from 'date-fns';
 import { Chip } from '@material-ui/core';
 import CClogoImage from './CClogoImage';
@@ -93,7 +92,7 @@ const StyledSecondColumn = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 10rem; 
+  min-height: 10rem;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     padding-left: 0;
     padding-top: 1rem;
