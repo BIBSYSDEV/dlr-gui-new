@@ -7,6 +7,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import InstitutionFiltering from './InstitutionFiltering';
+import { useTranslation } from 'react-i18next';
 
 const StyledFilterBox = styled.div`
   margin-top: 2rem;
@@ -37,6 +38,7 @@ const StyledAccordionDetails = styled(AccordionDetails)`
 `;
 
 const FilterSearchOptions = () => {
+  const { t } = useTranslation();
   return (
     <StyledFilterBox>
       {window.innerWidth < 1920 && (
@@ -45,7 +47,7 @@ const FilterSearchOptions = () => {
             expandIcon={<ExpandMoreIcon />}
             aria-controls="filter-box-options"
             id="filter-box-options-header">
-            <Typography variant="h2">Filter</Typography>{' '}
+            <Typography variant="h2">{t('dashboard.filter')}</Typography>{' '}
           </AccordionSummary>
           <StyledAccordionDetails>
             <InstitutionFiltering />
@@ -53,7 +55,13 @@ const FilterSearchOptions = () => {
           </StyledAccordionDetails>
         </StyledAccordion>
       )}
-      {window.innerWidth > 1920 && <Typography variant="h2">Filter</Typography>}
+      {window.innerWidth > 1920 && (
+        <div>
+          <Typography variant="h2">{t('dashboard.filter')}</Typography>
+          <InstitutionFiltering />
+          <Typography>Incomming filter boxes</Typography>
+        </div>
+      )}
     </StyledFilterBox>
   );
 };

@@ -56,7 +56,9 @@
     "yes": "Ja"
   },
   "dashboard": {
-    "explore": "Utforsk"
+    "explore": "Utforsk",
+    "filter": "Filter",
+    "institution": "Institution"
   },
   "delivered_by": "Levert av",
   "error": {
@@ -167,6 +169,7 @@
     "delete_resource_confirmation": "Vil du virkelig slette",
     "delete_resource_description": "Slettingen vil være permament og ressursen kan ikke gjenopprettes",
     "edit_resource": "Rediger ressurs",
+    "fields_required": "Felter markert med * er påkrevd",
     "files_and_license": {
       "additional_files": {
         "additional_files": "Tilleggsfiler",

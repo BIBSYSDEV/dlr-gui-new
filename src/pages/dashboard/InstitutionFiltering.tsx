@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import { useHistory, useLocation } from 'react-router-dom';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import { useTranslation } from 'react-i18next';
 
 const StyledFormControl: any = styled(FormControl)`
   margin-left: 1rem;
@@ -47,6 +48,7 @@ const generateInstitutionList = (
 };
 
 const InstitutionFiltering = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const [institutionList, setInstitutionList] = useState(
     generateInstitutionList(InstitutionListInitial, new URLSearchParams(location.search).get(InstitutionParameterName))
@@ -103,7 +105,7 @@ const InstitutionFiltering = () => {
   return (
     <StyledFormControl component="fieldset">
       <FormLabel>
-        <Typography variant="h3">Institutions</Typography>{' '}
+        <Typography variant="h3">{t('dashboard.institutions')}</Typography>{' '}
       </FormLabel>
       <FormHelperText error>Currently only accepting one institution at a time</FormHelperText>
       <FormGroup>
