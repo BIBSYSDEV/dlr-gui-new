@@ -55,4 +55,20 @@ context('Actions', () => {
       expect(loc.search).to.eq(`?query=${search}`);
     });
   });
+  it('can detect institution filters in the url', () => {
+    cy.visit(`/?query=${search}&inst=%28${ntnu}+OR+${oslomet}%29`);
+    cy.get('[data-testid=expand-filtering-options]').click();
+    cy.get(`[data-testid=institution-filtering-checkbox-${ntnu}]`)
+      .children('span')
+      .children('input')
+      .should('be.checked');
+    cy.get(`[data-testid=institution-filtering-checkbox-${oslomet}]`)
+      .children('span')
+      .children('input')
+      .should('be.checked');
+    cy.get(`[data-testid=institution-filtering-checkbox-${bi}]`)
+      .children('span')
+      .children('input')
+      .should('not.be.checked');
+  });
 });
