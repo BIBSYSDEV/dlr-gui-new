@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { useTranslation } from 'react-i18next';
 import { Button } from '@material-ui/core';
 
 const StyledContentButton = styled(Button)`
@@ -42,9 +41,8 @@ interface ScrollToContentButtonProps {
 }
 
 const ScrollToContentButton: FC<ScrollToContentButtonProps> = ({ contentRef, text }) => {
-  const { t } = useTranslation();
-
   const scrollToRef = () => {
+    contentRef?.current?.focus({ preventScroll: true });
     contentRef?.current?.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
