@@ -39,8 +39,14 @@ const StyledListHeader = styled.div`
   max-width: ${StyleWidths.width4};
 `;
 
-const StyledPagination = styled(Pagination)`
+const StyledPaginationWrapper = styled.div`
   margin: 1rem 0 2rem 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  & .MuiPaginationItem-root {
+    border-radius: 0;
+  }
 `;
 
 const StyledList = styled(List)`
@@ -57,14 +63,14 @@ const Explore: FC = () => {
   const [resources, setResources] = useState<Resource[]>([]);
   const { t } = useTranslation();
   const [searchError, setSearchError] = useState(false);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const history = useHistory();
 
   const handlePaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
     const searchParams = new URLSearchParams(location.search);
     const offset = NumberOfHitsPrPage * (value - 1);
-    searchParams.set('offset', '' + offset);
+    offset === 0 ? searchParams.delete('offset') : searchParams.set('offset', '' + offset);
     const url = searchParams.toString();
     history.replace(`?${url}`);
   };
@@ -119,12 +125,15 @@ const Explore: FC = () => {
               resources.map((resource: Resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
           </StyledList>
           {searchResult.numFound > NumberOfHitsPrPage && (
-            <StyledPagination
-              count={Math.ceil(searchResult.numFound / NumberOfHitsPrPage)}
-              page={page}
-              color="primary"
-              onChange={handlePaginationChange}
-            />
+            <StyledPaginationWrapper>
+              <Typography>{t('common.page')}</Typography>
+              <Pagination
+                count={Math.ceil(searchResult.numFound / NumberOfHitsPrPage)}
+                page={page}
+                color="primary"
+                onChange={handlePaginationChange}
+              />
+            </StyledPaginationWrapper>
           )}
         </StyledResultListWrapper>
       )}
