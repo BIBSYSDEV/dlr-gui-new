@@ -14,7 +14,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { Pagination } from '@material-ui/lab';
 import ResultListItem from '../../components/ResultListItem';
 
-const NumberOfHitsPrPage = 5;
+const NumberOfHitsPrPage = 10;
 
 export interface QueryObject {
   query: string;
@@ -28,6 +28,7 @@ const StyledResultListWrapper = styled.div`
   background-color: ${Colors.ResultListBackground};
   margin-top: 2rem;
   padding: 1.5rem 0.5rem 0 0.5rem;
+  margin-bottom: 2rem;
   width: 100%;
   max-width: ${StyleWidths.width5};
   align-items: center;
@@ -38,7 +39,9 @@ const StyledListHeader = styled.div`
   max-width: ${StyleWidths.width4};
 `;
 
-const StyledResultListSize = styled(Typography)``;
+const StyledPagination = styled(Pagination)`
+  margin: 1rem 0 2rem 0;
+`;
 
 const StyledList = styled(List)`
   display: flex;
@@ -106,9 +109,9 @@ const Explore: FC = () => {
       {searchResult && (
         <StyledResultListWrapper>
           <StyledListHeader>
-            <StyledResultListSize variant="h2">
+            <Typography variant="h2">
               {t('common.result')} ({searchResult.numFound})
-            </StyledResultListSize>
+            </Typography>
           </StyledListHeader>
           <StyledList>
             {resources &&
@@ -116,7 +119,7 @@ const Explore: FC = () => {
               resources.map((resource: Resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
           </StyledList>
           {searchResult.numFound > NumberOfHitsPrPage && (
-            <Pagination
+            <StyledPagination
               count={Math.ceil(searchResult.numFound / NumberOfHitsPrPage)}
               page={page}
               color="primary"
