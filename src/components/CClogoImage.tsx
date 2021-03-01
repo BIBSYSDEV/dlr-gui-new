@@ -6,19 +6,30 @@ import ND from '../resources/images/creative_commons_logos/nd.svg';
 import Zero from '../resources/images/creative_commons_logos/zero.svg';
 import CCLogo from '../resources/images/creative_commons_logos/cc.svg';
 import BY from '../resources/images/creative_commons_logos/by.svg';
+import { Typography } from '@material-ui/core';
+
 const StyledLogoWrapper = styled.span`
   display: flex;
   align-items: flex-start;
-  margin-left: 0.3rem;
 `;
 
 const StyledImage = styled.img`
   width: 1.2rem;
   height: 1.2rem;
+  margin-left: 0.1rem;
 `;
 
-const StyledImageWrapper = styled.span`
+const StyledImageWrapper = styled.div`
   margin-left: 0.3rem;
+  white-space: nowrap;
+`;
+
+const StyledLicenseCode = styled(Typography)`
+  margin-left: 0.3rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2rem;
 `;
 
 export enum CCLogoImageRole {
@@ -33,7 +44,6 @@ interface CClogoImageProps {
 const CClogoImage: FC<CClogoImageProps> = ({ licenseCode }) => {
   return (
     <StyledLogoWrapper>
-      {licenseCode}
       <StyledImageWrapper>
         {licenseCode.toLowerCase().includes('cc') && <StyledImage src={CCLogo} alt="" />}
         {licenseCode.toLowerCase().includes('by') && <StyledImage src={BY} alt="" />}
@@ -42,6 +52,7 @@ const CClogoImage: FC<CClogoImageProps> = ({ licenseCode }) => {
         {licenseCode.toLowerCase().includes('sa') && <StyledImage src={SA} alt="" />}
         {licenseCode.toLowerCase().includes('1') && <StyledImage src={Zero} alt="" />}
       </StyledImageWrapper>
+      <StyledLicenseCode>{licenseCode}</StyledLicenseCode>
     </StyledLogoWrapper>
   );
 };

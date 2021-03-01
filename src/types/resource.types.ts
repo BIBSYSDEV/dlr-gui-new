@@ -34,6 +34,7 @@ export const emptyResource: Resource = {
   features: {
     dlr_title: '',
     dlr_content: '',
+    dlr_time_created: '',
     dlr_content_type: '',
   },
   contents: {
@@ -86,7 +87,7 @@ interface ResourceFeatures {
   dlr_subject_nsi_id?: string;
   dlr_subject_nsi_name?: string;
   dlr_submitter_email?: string;
-  dlr_time_created?: string;
+  dlr_time_created: string;
   dlr_time_published?: string;
   dlr_title: string;
   dlr_title_alternative?: string;

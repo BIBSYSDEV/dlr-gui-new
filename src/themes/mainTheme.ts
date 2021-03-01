@@ -18,7 +18,7 @@ declare module '@material-ui/core/styles/createPalette' {
 export enum Colors {
   Primary = 'rgba(99, 34, 107, 1)',
   Secondary = 'rgba(147, 10, 10, 1)',
-  Background = '#fff',
+  Background = '#ffffff',
   Box = '#f5f5f5',
   HoverTextFieldFilled = '#F5F5F5',
   Link = '#06f',
@@ -28,7 +28,7 @@ export enum Colors {
   SecondaryText = '#44515d',
   LightHeaderText = 'rgba(0,0,0,0.29)',
   Panel = '#A9D8B8',
-  Disabled = '#bbb',
+  Disabled = '#bbbbbb',
   Danger = '#ff5555',
   Warning = 'rgba(147, 10, 10, 1)',
   DangerLight = '#ffbbbb',
@@ -46,6 +46,7 @@ export enum Colors {
   LicenseAccessPageGradientColor1 = 'rgba(68,242,193,0.10)',
   LicenseAccessPageGradientColor2 = 'rgba(68,242,193,0.25)',
   LicenseAccessPageGradientColor3 = 'rgba(68,242,193,0.50)',
+  ResultListBackground = 'rgba(121,203,220,0.2)',
   ChipBackground = 'rgba(66, 127, 140, 1)',
   ChipBackgroundFocus = 'hsl(191, 37%, 80%)',
   ChipIconBackground = 'hsl(191, 37%, 60%)',
@@ -56,10 +57,11 @@ export enum Colors {
 }
 
 export enum StyleWidths {
-  width1 = '21rem',
-  width2 = '29rem',
-  width3 = '37rem',
-  width4 = '52rem',
+  width1 = '21rem', // 336px
+  width2 = '29rem', // 464px
+  width3 = '37rem', // 592px
+  width4 = '52rem', // 832px
+  width5 = '75rem', //1200px
 }
 
 export default createMuiTheme({
@@ -190,6 +192,9 @@ export default createMuiTheme({
     MuiButton: {
       root: {
         textTransform: 'none',
+      },
+      label: {
+        height: '100%',
       },
     },
     MuiCard: {
