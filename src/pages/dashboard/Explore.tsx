@@ -46,6 +46,11 @@ const StyledPaginationWrapper = styled.div`
   align-items: center;
   & .MuiPaginationItem-root {
     border-radius: 0;
+    color: ${Colors.Primary};
+    font-weight: 700;
+  }
+  & .Mui-selected {
+    color: ${Colors.Background};
   }
 `;
 
@@ -126,7 +131,7 @@ const Explore: FC = () => {
           </StyledList>
           {searchResult.numFound > NumberOfHitsPrPage && (
             <StyledPaginationWrapper>
-              <Typography>{t('common.page')}</Typography>
+              <Typography variant="subtitle2">{t('common.page')}</Typography>
               <Pagination
                 count={Math.ceil(searchResult.numFound / NumberOfHitsPrPage)}
                 page={page}
