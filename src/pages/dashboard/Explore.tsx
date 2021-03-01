@@ -2,7 +2,6 @@ import React, { FC, useEffect, useState } from 'react';
 import { List, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
-import { List, Typography } from '@material-ui/core';
 import { searchResources } from '../../api/resourceApi';
 import { useTranslation } from 'react-i18next';
 import { SearchResult } from '../../types/search.types';
@@ -13,6 +12,7 @@ import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
 import SearchInput from './SearchInput';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Pagination } from '@material-ui/lab';
+import ResultListItem from '../../components/ResultListItem';
 
 const NumberOfHitsPrPage = 5;
 
@@ -21,8 +21,6 @@ export interface QueryObject {
   offset: number;
   limit: number;
 }
-import { useLocation } from 'react-router-dom';
-import ResultListItem from '../../components/ResultListItem';
 
 const StyledResultListWrapper = styled.div`
   display: flex;
@@ -105,30 +103,6 @@ const Explore: FC = () => {
       <SearchInput />
       {searchError && <ErrorBanner />}
 
-      <div>
-        {searchResult && (
-          <span>
-            {t('hits')}: {searchResult.numFound}
-          </span>
-        )}
-      </div>
-      {searchResult?.numFound && searchResult.numFound > NumberOfHitsPrPage && <Typography>Page: {page}</Typography>}
-      {searchResult?.numFound && searchResult.numFound > NumberOfHitsPrPage && (
-        <Pagination
-          count={Math.ceil(searchResult.numFound / NumberOfHitsPrPage)}
-          page={page}
-          color="primary"
-          onChange={handlePaginationChange}
-        />
-      )}
-      <List>
-        {resources &&
-          resources.length > 0 &&
-          resources.map((resource: Resource, index: number) => (
-            <ResourceListItem resource={resource} key={index} showHandle={true} showSubmitter={true} />
-          ))}
-      </List>
-    </StyledContentWrapperMedium>
       {searchResult && (
         <StyledResultListWrapper>
           <StyledListHeader>
@@ -141,6 +115,14 @@ const Explore: FC = () => {
               resources.length > 0 &&
               resources.map((resource: Resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
           </StyledList>
+          {searchResult.numFound > NumberOfHitsPrPage && (
+            <Pagination
+              count={Math.ceil(searchResult.numFound / NumberOfHitsPrPage)}
+              page={page}
+              color="primary"
+              onChange={handlePaginationChange}
+            />
+          )}
         </StyledResultListWrapper>
       )}
     </StyledContentWrapperLarge>
