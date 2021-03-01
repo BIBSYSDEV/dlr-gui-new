@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
 import { searchResources } from '../../api/resourceApi';
 import { useTranslation } from 'react-i18next';
-import { SearchResult } from '../../types/search.types';
+import { NumberOfResultsPrPage, QueryObject, SearchResult } from '../../types/search.types';
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
@@ -13,14 +13,6 @@ import SearchInput from './SearchInput';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Pagination } from '@material-ui/lab';
 import ResultListItem from '../../components/ResultListItem';
-
-const NumberOfHitsPrPage = 10;
-
-export interface QueryObject {
-  query: string;
-  offset: number;
-  limit: number;
-}
 
 const StyledResultListWrapper = styled.div`
   display: flex;
@@ -74,7 +66,7 @@ const Explore: FC = () => {
   const handlePaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
     const searchParams = new URLSearchParams(location.search);
-    const offset = NumberOfHitsPrPage * (value - 1);
+    const offset = NumberOfResultsPrPage * (value - 1);
     offset === 0 ? searchParams.delete('offset') : searchParams.set('offset', '' + offset);
     const url = searchParams.toString();
     history.replace(`?${url}`);
@@ -87,7 +79,7 @@ const Explore: FC = () => {
     setQuery({
       query: queryString,
       offset: offsetString,
-      limit: NumberOfHitsPrPage,
+      limit: NumberOfResultsPrPage,
     });
   }, [location]);
 
@@ -129,11 +121,11 @@ const Explore: FC = () => {
               resources.length > 0 &&
               resources.map((resource: Resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
           </StyledList>
-          {searchResult.numFound > NumberOfHitsPrPage && (
+          {searchResult.numFound > NumberOfResultsPrPage && (
             <StyledPaginationWrapper>
               <Typography variant="subtitle2">{t('common.page')}</Typography>
               <Pagination
-                count={Math.ceil(searchResult.numFound / NumberOfHitsPrPage)}
+                count={Math.ceil(searchResult.numFound / NumberOfResultsPrPage)}
                 page={page}
                 color="primary"
                 onChange={handlePaginationChange}
