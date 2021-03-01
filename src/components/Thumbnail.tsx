@@ -3,16 +3,21 @@ import styled from 'styled-components';
 import placeholderImage from '../resources/images/placeholder.png';
 import { API_PATHS, API_URL } from '../utils/constants';
 import useInterval from '../utils/useInterval';
+import { Colors } from '../themes/mainTheme';
+
+const StyledImageWrapper = styled.div`
+  width: 11rem;
+  height: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${Colors.Background};
+  border: 1px solid ${Colors.DescriptionPageGradientColor1};
+`;
 
 const StyledImage = styled.img`
-  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    width: 7rem;
-    max-height: 7rem;
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
-    width: 5rem;
-    max-height: 5rem;
-  }
+  max-height: 7rem;
+  max-width: 11rem;
 `;
 
 const pollingDelayMilliseconds = 500;
@@ -52,14 +57,15 @@ const Thumbnail: FC<thumbnailProps> = ({ resourceOrContentIdentifier, alt, needs
   }, [resourceOrContentIdentifier]);
 
   return (
-    <>
+    <StyledImageWrapper>
       <StyledImage
         onError={(event) => addDefaultImage(event)}
         src={url}
         alt={alt}
+        aria-hidden="true"
         data-testid={`thumbnail-${resourceOrContentIdentifier}`}
       />
-    </>
+    </StyledImageWrapper>
   );
 };
 

@@ -1,13 +1,15 @@
 import React, { FC, useEffect, useState } from 'react';
 import { List, Typography } from '@material-ui/core';
+import styled from 'styled-components';
+import { Colors, StyleWidths } from '../../themes/mainTheme';
+import { List, Typography } from '@material-ui/core';
 import { searchResources } from '../../api/resourceApi';
 import { useTranslation } from 'react-i18next';
 import { SearchResult } from '../../types/search.types';
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
-import ResourceListItem from '../../components/ResourceListItem';
 import { PageHeader } from '../../components/PageHeader';
-import { StyledContentWrapperMedium } from '../../components/styled/Wrappers';
+import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
 import SearchInput from './SearchInput';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Pagination } from '@material-ui/lab';
@@ -19,6 +21,33 @@ export interface QueryObject {
   offset: number;
   limit: number;
 }
+import { useLocation } from 'react-router-dom';
+import ResultListItem from '../../components/ResultListItem';
+
+const StyledResultListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: ${Colors.ResultListBackground};
+  margin-top: 2rem;
+  padding: 1.5rem 0.5rem 0 0.5rem;
+  width: 100%;
+  max-width: ${StyleWidths.width5};
+  align-items: center;
+`;
+
+const StyledListHeader = styled.div`
+  width: 100%;
+  max-width: ${StyleWidths.width4};
+`;
+
+const StyledResultListSize = styled(Typography)``;
+
+const StyledList = styled(List)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`;
 
 const Explore: FC = () => {
   const location = useLocation();
@@ -71,7 +100,7 @@ const Explore: FC = () => {
   }, [query]);
 
   return (
-    <StyledContentWrapperMedium>
+    <StyledContentWrapperLarge>
       <PageHeader>{t('dashboard.explore')}</PageHeader>
       <SearchInput />
       {searchError && <ErrorBanner />}
@@ -100,6 +129,21 @@ const Explore: FC = () => {
           ))}
       </List>
     </StyledContentWrapperMedium>
+      {searchResult && (
+        <StyledResultListWrapper>
+          <StyledListHeader>
+            <StyledResultListSize variant="h2">
+              {t('common.result')} ({searchResult.numFound})
+            </StyledResultListSize>
+          </StyledListHeader>
+          <StyledList>
+            {resources &&
+              resources.length > 0 &&
+              resources.map((resource: Resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
+          </StyledList>
+        </StyledResultListWrapper>
+      )}
+    </StyledContentWrapperLarge>
   );
 };
 
