@@ -62,6 +62,7 @@ const Thumbnail: FC<thumbnailProps> = ({ resourceOrContentIdentifier, alt, needs
         onError={(event) => addDefaultImage(event)}
         src={url}
         alt={alt}
+        aria-hidden="true"
         data-testid={`thumbnail-${resourceOrContentIdentifier}`}
       />
     </StyledImageWrapper>
