@@ -41,6 +41,7 @@ import { emptyLicense } from '../../types/license.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import { createUppy } from '../../utils/uppy-config';
 import { useUppy } from '@uppy/react';
+import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -53,10 +54,6 @@ const StyledEditPublication = styled.div`
 interface EditResourcePageParamTypes {
   identifier: string;
 }
-
-const StyledContentWrapper = styled.div`
-  max-width: ${({ theme }) => theme.breakpoints.values.lg + 'px'};
-`;
 
 const potentialDLRTypes = [
   ResourceFeatureTypes.audio,
@@ -303,7 +300,7 @@ const EditResourcePage: FC = () => {
   }, [identifier]);
 
   return !showForm ? (
-    <StyledContentWrapper>
+    <StyledContentWrapperLarge>
       <PageHeader>{t('resource.new_registration')}</PageHeader>
       <StyledEditPublication>
         <FileRegistration
@@ -318,7 +315,7 @@ const EditResourcePage: FC = () => {
           onSubmit={onSubmitLink}
         />
       </StyledEditPublication>
-    </StyledContentWrapper>
+    </StyledContentWrapperLarge>
   ) : isLoadingResource ? (
     <CircularProgress />
   ) : resourceInitError ? (

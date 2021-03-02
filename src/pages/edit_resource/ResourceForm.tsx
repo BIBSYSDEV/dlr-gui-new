@@ -11,7 +11,7 @@ import DescriptionFields from './description_step/DescriptionFields';
 import { Uppy } from '../../types/file.types';
 import ContributorFields from './contributors_step/ContributorFields';
 import CreatorField from './contributors_step/CreatorField';
-import { StyledContentWrapper, StyledContentWrapperMedium, StyledSchemaPart } from '../../components/styled/Wrappers';
+import { StyledContentWrapper, StyledContentWrapperLarge, StyledSchemaPart } from '../../components/styled/Wrappers';
 import PreviewPanel from './preview_step/PreviewPanel';
 import { StatusCode } from '../../utils/constants';
 import { ContainsOtherPeoplesWorkOptions, License } from '../../types/license.types';
@@ -26,23 +26,30 @@ import ResourceFormErrors from './ResourceFormErrors';
 import ResourceFormActions from './ResourceFormActions';
 import RequiredFieldInformation from '../../components/RequiredFieldInformation';
 import ScrollToContentButton from '../../components/ScrollToContentButton';
+import { StyleWidths } from '../../themes/mainTheme';
 
 const StyledForm = styled(Form)`
   display: flex;
   flex-direction: column;
   width: 100%;
   align-items: center;
-  justify-items: center;
-  margin-left: 1rem;
-  margin-right: 1rem;
+`;
+
+const StyledPanelWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
 `;
 
 const StyledPanel = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  min-height: 10rem;
-  padding-top: 2rem;
+  max-width: ${StyleWidths.width5};
+  flex-grow: 1;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    margin: 0;
+  }
 `;
 
 interface ResourceFormProps {
@@ -140,10 +147,8 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
     getAllLicences();
   }, []);
   return (
-    <>
-      <StyledContentWrapperMedium>
-        <PageHeader>{t('resource.edit_resource')}</PageHeader>
-      </StyledContentWrapperMedium>
+    <StyledContentWrapperLarge>
+      <PageHeader>{t('resource.edit_resource')}</PageHeader>
       {resource && (
         <Formik
           initialValues={resource}
@@ -156,75 +161,81 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
               <ScrollToContentButton contentRef={contentRef} text={t('skip_to_form_content')} />
               <div tabIndex={-1} ref={beforeResourceFormNavigationRef} />
               <ResourceFormNavigationHeader activeStep={activeStep} setActiveStep={setActiveStep} uppy={uppy} />
-              <StyledPanel tabIndex={-1} ref={contentRef}>
-                {activeStep === ResourceFormStep.Description && (
-                  <DescriptionFields
-                    setAllChangesSaved={(status: boolean) => {
-                      setAllChangesSaved(status);
-                    }}
-                  />
-                )}
-                {activeStep === ResourceFormStep.Contributors && (
-                  <>
-                    <StyledSchemaPart>
-                      <StyledContentWrapper>
-                        <Typography variant="h2">{formikProps.values.features.dlr_title}</Typography>
-                      </StyledContentWrapper>
-                    </StyledSchemaPart>
-                    <CreatorField setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)} />
-                    <ContributorFields
+              <StyledPanelWrapper>
+                <StyledPanel tabIndex={-1} ref={contentRef}>
+                  {activeStep === ResourceFormStep.Description && (
+                    <DescriptionFields
                       setAllChangesSaved={(status: boolean) => {
                         setAllChangesSaved(status);
                       }}
                     />
-                    <RequiredFieldInformation />
-                  </>
-                )}
-                {activeStep === ResourceFormStep.AccessAndLicense && (
-                  <>
-                    {isLoadingLicenses && <CircularProgress />}
-                    {loadingLicensesErrorStatus !== StatusCode.ACCEPTED && <ErrorBanner userNeedsToBeLoggedIn={true} />}
-                    <AccessAndLicenseStep
-                      setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
-                      licenses={licenses}
-                    />
-                  </>
-                )}
-                {activeStep === ResourceFormStep.Contents && (
-                  <div id={fileUploadPanelId}>
-                    <StyledSchemaPart>
-                      <StyledContentWrapper>
-                        <Typography variant="h2">{formikProps.values.features.dlr_title}</Typography>
-                      </StyledContentWrapper>
-                    </StyledSchemaPart>
-                    <ContentsStep
-                      uppy={uppy}
-                      setAllChangesSaved={setAllChangesSaved}
-                      newContent={newContent}
-                      additionalFileUploadUppy={additionalFilesUppy}
-                      thumbnailUppy={thumbnailUppy}
-                      resourceType={resourceType}
-                      newThumbnailContent={newThumbnailContent}
-                      newThumbnailIsReady={() => setNewThumbnailContent(undefined)}
-                    />
-                  </div>
-                )}
-                {activeStep === ResourceFormStep.Preview && <PreviewPanel formikProps={formikProps} />}
-              </StyledPanel>
-              {activeStep === ResourceFormStep.Preview && !formikProps.isValid && <ResourceFormErrors />}
-              <StyledPanel>
-                <ResourceFormActions
-                  activeStep={activeStep}
-                  allChangesSaved={allChangesSaved}
-                  setActiveStep={setActiveStep}
-                  scrollToTop={scrollToTop}
-                />
-              </StyledPanel>
+                  )}
+                  {activeStep === ResourceFormStep.Contributors && (
+                    <>
+                      <StyledSchemaPart>
+                        <StyledContentWrapper>
+                          <Typography variant="h3" component="h2">
+                            {formikProps.values.features.dlr_title}
+                          </Typography>
+                        </StyledContentWrapper>
+                      </StyledSchemaPart>
+                      <CreatorField setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)} />
+                      <ContributorFields
+                        setAllChangesSaved={(status: boolean) => {
+                          setAllChangesSaved(status);
+                        }}
+                      />
+                      <RequiredFieldInformation />
+                    </>
+                  )}
+                  {activeStep === ResourceFormStep.AccessAndLicense && (
+                    <>
+                      {isLoadingLicenses && <CircularProgress />}
+                      {loadingLicensesErrorStatus !== StatusCode.ACCEPTED && (
+                        <ErrorBanner userNeedsToBeLoggedIn={true} />
+                      )}
+                      <AccessAndLicenseStep
+                        setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
+                        licenses={licenses}
+                      />
+                    </>
+                  )}
+                  {activeStep === ResourceFormStep.Contents && (
+                    <div id={fileUploadPanelId}>
+                      <StyledSchemaPart>
+                        <StyledContentWrapper>
+                          <Typography variant="h3" component="h2">
+                            {formikProps.values.features.dlr_title}
+                          </Typography>
+                        </StyledContentWrapper>
+                      </StyledSchemaPart>
+                      <ContentsStep
+                        uppy={uppy}
+                        setAllChangesSaved={setAllChangesSaved}
+                        newContent={newContent}
+                        additionalFileUploadUppy={additionalFilesUppy}
+                        thumbnailUppy={thumbnailUppy}
+                        resourceType={resourceType}
+                        newThumbnailContent={newThumbnailContent}
+                        newThumbnailIsReady={() => setNewThumbnailContent(undefined)}
+                      />
+                    </div>
+                  )}
+                  {activeStep === ResourceFormStep.Preview && <PreviewPanel formikProps={formikProps} />}
+                  {activeStep === ResourceFormStep.Preview && !formikProps.isValid && <ResourceFormErrors />}
+                  <ResourceFormActions
+                    activeStep={activeStep}
+                    allChangesSaved={allChangesSaved}
+                    setActiveStep={setActiveStep}
+                    scrollToTop={scrollToTop}
+                  />
+                </StyledPanel>
+              </StyledPanelWrapper>
             </StyledForm>
           )}
         </Formik>
       )}
-    </>
+    </StyledContentWrapperLarge>
   );
 };
 
