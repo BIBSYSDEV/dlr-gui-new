@@ -21,14 +21,8 @@ const StyledResultListWrapper = styled.div`
   margin-top: 2rem;
   padding: 1.5rem 0.5rem 1rem 0.5rem;
   margin-bottom: 2rem;
-  //width: 100%;
   max-width: ${StyleWidths.width5};
   align-items: center;
-`;
-
-const StyledListHeader = styled.div`
-  width: 100%;
-  max-width: ${StyleWidths.width4};
 `;
 
 const StyledPaginationWrapper = styled.div`
@@ -124,11 +118,9 @@ const Explore = () => {
       ) : (
         searchResult && (
           <StyledResultListWrapper>
-            <StyledListHeader>
-              <Typography variant="h2">
-                {t('common.result')} ({searchResult.numFound})
-              </Typography>
-            </StyledListHeader>
+            <Typography variant="h2">
+              {t('common.result')} ({searchResult.numFound})
+            </Typography>
             <StyledList>
               {resources &&
                 resources.length > 0 &&
