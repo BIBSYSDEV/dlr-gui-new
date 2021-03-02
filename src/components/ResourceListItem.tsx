@@ -94,7 +94,7 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
               )}
               {showTimeCreated && resource.features.dlr_time_created && (
                 <StyledTypography style={{ display: 'block' }} component="span" variant="body2" color="textPrimary">
-                  {format(resource.features.dlr_time_created, 'DD.MM.YYYY')}
+                  {format(new Date(resource.features.dlr_time_created), 'dd.MM.yyyy')}
                 </StyledTypography>
               )}
               {resource.features.dlr_identifier_handle && showHandle && (
