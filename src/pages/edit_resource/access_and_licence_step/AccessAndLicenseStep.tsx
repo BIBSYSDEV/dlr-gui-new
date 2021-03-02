@@ -24,7 +24,9 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSave
     <>
       <StyledSchemaPart>
         <StyledContentWrapper>
-          <Typography variant="h2">{values.features.dlr_title}</Typography>
+          <Typography variant="h3" component="h2">
+            {values.features.dlr_title}
+          </Typography>
         </StyledContentWrapper>
       </StyledSchemaPart>
 

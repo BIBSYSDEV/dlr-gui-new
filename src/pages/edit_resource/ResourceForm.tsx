@@ -11,7 +11,7 @@ import DescriptionFields from './description_step/DescriptionFields';
 import { Uppy } from '../../types/file.types';
 import ContributorFields from './contributors_step/ContributorFields';
 import CreatorField from './contributors_step/CreatorField';
-import { StyledContentWrapper, StyledContentWrapperMedium, StyledSchemaPart } from '../../components/styled/Wrappers';
+import { StyledContentWrapper, StyledContentWrapperLarge, StyledSchemaPart } from '../../components/styled/Wrappers';
 import PreviewPanel from './preview_step/PreviewPanel';
 import { StatusCode } from '../../utils/constants';
 import { ContainsOtherPeoplesWorkOptions, License } from '../../types/license.types';
@@ -45,10 +45,7 @@ const StyledPanelWrapper = styled.div`
 const StyledPanel = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 1.5rem;
   max-width: ${StyleWidths.width5};
-  min-height: 10rem;
-  padding-top: 2rem;
   flex-grow: 1;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     margin: 0;
@@ -150,10 +147,8 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
     getAllLicences();
   }, []);
   return (
-    <>
-      <StyledContentWrapperMedium>
-        <PageHeader>{t('resource.edit_resource')}</PageHeader>
-      </StyledContentWrapperMedium>
+    <StyledContentWrapperLarge>
+      <PageHeader>{t('resource.edit_resource')}</PageHeader>
       {resource && (
         <Formik
           initialValues={resource}
@@ -179,7 +174,9 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                     <>
                       <StyledSchemaPart>
                         <StyledContentWrapper>
-                          <Typography variant="h2">{formikProps.values.features.dlr_title}</Typography>
+                          <Typography variant="h3" component="h2">
+                            {formikProps.values.features.dlr_title}
+                          </Typography>
                         </StyledContentWrapper>
                       </StyledSchemaPart>
                       <CreatorField setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)} />
@@ -207,7 +204,9 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                     <div id={fileUploadPanelId}>
                       <StyledSchemaPart>
                         <StyledContentWrapper>
-                          <Typography variant="h2">{formikProps.values.features.dlr_title}</Typography>
+                          <Typography variant="h3" component="h2">
+                            {formikProps.values.features.dlr_title}
+                          </Typography>
                         </StyledContentWrapper>
                       </StyledSchemaPart>
                       <ContentsStep
@@ -236,7 +235,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
           )}
         </Formik>
       )}
-    </>
+    </StyledContentWrapperLarge>
   );
 };
 
