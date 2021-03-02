@@ -7,15 +7,7 @@ import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import ResourceListItem from '../../components/ResourceListItem';
 import { PageHeader } from '../../components/PageHeader';
-
-const StyledPageContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  max-width: ${({ theme }) => theme.breakpoints.values.lg + 'px'};
-`;
+import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
 
 const StyledListWrapper = styled.div`
   margin-top: 40px;
@@ -64,18 +56,14 @@ const MyResources: FC = () => {
   };
 
   return (
-    <StyledPageContent>
+    <StyledContentWrapperLarge>
       {loadingError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
       {isLoadingMyResources && <CircularProgress />}
       <ListMarginAlign>
+        <PageHeader>{t('resource.my_resources')}</PageHeader>
         <StyledListWrapper>
+          <Typography variant="h2">{t('resource.unpublished_resources')}</Typography>
           <List>
-            <ListItem>
-              <PageHeader>{t('resource.my_resources')}</PageHeader>
-            </ListItem>
-            <ListItem>
-              <Typography variant="h2">{t('resource.unpublished_resources')}</Typography>
-            </ListItem>
             {!isLoadingMyResources &&
               resourcesUnpublished.length > 0 &&
               resourcesUnpublished.map((resource: Resource, index: number) => (
@@ -91,16 +79,12 @@ const MyResources: FC = () => {
               ))}
           </List>
           {!isLoadingMyResources && resourcesUnpublished.length === 0 && (
-            <ListItem>
-              <Typography>{t('resource.no_unpublished_resources')}</Typography>
-            </ListItem>
+            <Typography>{t('resource.no_unpublished_resources')}</Typography>
           )}
         </StyledListWrapper>
         <StyledListWrapper>
+          <Typography variant="h2">{t('resource.published_resources')}</Typography>
           <List>
-            <ListItem>
-              <Typography variant="h2">{t('resource.published_resources')}</Typography>
-            </ListItem>
             {!isLoadingMyResources &&
               resourcesPublished.length > 0 &&
               resourcesPublished.map((resource: Resource, index: number) => (
@@ -114,15 +98,13 @@ const MyResources: FC = () => {
                   }}
                 />
               ))}
-            {!isLoadingMyResources && resourcesPublished.length === 0 && (
-              <ListItem>
-                <Typography>{t('resource.no_published_resources')}</Typography>
-              </ListItem>
-            )}
           </List>
+          {!isLoadingMyResources && resourcesPublished.length === 0 && (
+            <Typography>{t('resource.no_published_resources')}</Typography>
+          )}
         </StyledListWrapper>
       </ListMarginAlign>
-    </StyledPageContent>
+    </StyledContentWrapperLarge>
   );
 };
 
