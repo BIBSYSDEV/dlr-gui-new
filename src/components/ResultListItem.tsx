@@ -163,7 +163,7 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
             <StyledHeader>
               <StyledMaxTwoLinesTypography variant="h4">{resource.features.dlr_title}</StyledMaxTwoLinesTypography>
               <StyledTimeCreatedTypography variant="body1">
-                {format(resource.features.dlr_time_created, 'DD.MM.YYYY')}
+                {format(new Date(resource.features.dlr_time_created), 'dd.MM.yyyy')}
               </StyledTimeCreatedTypography>
             </StyledHeader>
 
