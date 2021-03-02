@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getMyResources } from '../../api/resourceApi';
-import { CircularProgress, List, ListItem, Typography } from '@material-ui/core';
+import { CircularProgress, List, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';

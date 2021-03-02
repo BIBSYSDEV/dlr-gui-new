@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { List, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
@@ -53,7 +53,7 @@ const StyledList = styled(List)`
   width: 100%;
 `;
 
-const Explore: FC = () => {
+const Explore = () => {
   const location = useLocation();
   const [query, setQuery] = useState<null | QueryObject>(null);
   const [searchResult, setSearchResult] = useState<SearchResult>();
@@ -68,17 +68,14 @@ const Explore: FC = () => {
     const searchParams = new URLSearchParams(location.search);
     const offset = NumberOfResultsPrPage * (value - 1);
     offset === 0 ? searchParams.delete('offset') : searchParams.set('offset', '' + offset);
-    const url = searchParams.toString();
-    history.replace(`?${url}`);
+    history.replace(`?${searchParams.toString()}`);
   };
 
   useEffect(() => {
     const searchTerm = new URLSearchParams(location.search);
-    const queryString = searchTerm.get('query') ?? '';
-    const offsetString = +(searchTerm.get('offset') ?? '0');
     setQuery({
-      query: queryString,
-      offset: offsetString,
+      query: searchTerm.get('query') ?? '',
+      offset: +(searchTerm.get('offset') ?? '0'),
       limit: NumberOfResultsPrPage,
     });
   }, [location]);
