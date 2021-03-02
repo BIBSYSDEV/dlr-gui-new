@@ -92,7 +92,9 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
         {resource.features.dlr_time_published && (
           <StyledFeatureWrapper data-testid="resource-time-published">
             <StyledCaption variant="caption">{t('resource.metadata.published')}</StyledCaption>
-            <Typography variant="body1">{resource.features.dlr_time_published}</Typography>
+            <Typography variant="body1">
+              {format(new Date(resource.features.dlr_time_published), 'dd.MM.yyyy')}
+            </Typography>
           </StyledFeatureWrapper>
         )}
 
