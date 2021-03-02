@@ -54,6 +54,7 @@ interface EditResourcePageParamTypes {
   identifier: string;
 }
 
+//todo : bytt ut med wrapperen fra resourceform
 const StyledContentWrapper = styled.div`
   max-width: ${({ theme }) => theme.breakpoints.values.lg + 'px'};
 `;
