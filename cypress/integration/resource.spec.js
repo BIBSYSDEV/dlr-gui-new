@@ -17,11 +17,11 @@ context('Actions', () => {
     cy.get('[data-testid=resource-contributors]').contains(mockContributors[0].features.dlr_contributor_name);
     cy.get('[data-testid=resource-creators]').contains(mockCreators[0].features.dlr_creator_name);
     cy.get('[data-testid=resource-description]').contains(mockResource.features.dlr_description);
-    cy.get('[data-testid=resource-time-created]').contains(mockResource.features.dlr_time_created);
-    cy.get('[data-testid=resource-time-published]').contains(mockResource.features.dlr_time_published);
+    cy.get('[data-testid=resource-time-created]').contains('01.11.2020');
+    cy.get('[data-testid=resource-time-published]').contains('06.11.2020');
     cy.get('[data-testid=resource-submitter]').contains(mockResource.features.dlr_submitter_email);
     cy.get('[data-testid=resource-tags]').contains(mockTags[0]);
-    cy.get('[data-testid=resource-license]').contains(mockLicenses[0].features.dlr_license_name_en); //todo: språk
+    cy.get('[data-testid=resource-license]').contains(mockLicenses[0].features.dlr_license_code);
   });
 
   it('shows edit-button', () => {
