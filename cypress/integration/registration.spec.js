@@ -49,7 +49,7 @@ context('Actions', () => {
     cy.get('[data-testid=next-step-button]').click();
     //licenses
     cy.get('[data-testid=next-step-button]').click();
-    cy.get('[data-testid=contains-other-peoples-work-option-no]').click();
+    cy.get('[data-testid=contains-other-peoples-work-option-no] input').click();
     cy.get('[data-testid=licence-field]').click();
     cy.get(`[data-testid=license-option-${licenses[0].identifier}`).click();
     //preview
@@ -187,38 +187,38 @@ context('Actions', () => {
     cy.get('[data-testid=step-navigation-3]').click();
     cy.get('[data-testid=licence-field] input').should('have.value', '');
 
-    cy.get('[data-testid=resource-restriction-option-ntnu-internt]').click();
+    cy.get('[data-testid=resource-restriction-option-ntnu-internt] input').click();
     cy.get('[data-testid=licence-field] input').should('have.value', 'd56b161e-05d0-45c9-b96b-5c0b37b952b4');
     cy.get('[data-testid=licence-field]').contains('ntnu-internt');
     cy.get('[data-testid=access-dropdown-menu] input').should('have.value', 'private');
 
-    cy.get('[data-testid=resource-restriction-option-yes]').click();
+    cy.get('[data-testid=resource-restriction-option-yes] input').click();
     cy.get('[data-testid=licence-field]').contains('CC BY-NC-ND 4.0');
-    cy.get('[data-testid=resource-restriction-option-CC_BY_4_0]').click();
+    cy.get('[data-testid=resource-restriction-option-CC_BY_4_0] input').click();
     cy.get('[data-testid=licence-field]').contains('CC BY 4.0');
-    cy.get('[data-testid=resource-restriction-option-yes]').click();
+    cy.get('[data-testid=resource-restriction-option-yes] input').click();
     cy.get('[data-testid=licence-field]').contains('CC BY-NC-ND 4.0');
 
-    cy.get('[data-testid=commercial-use-option-yes]').click();
+    cy.get('[data-testid=commercial-use-option-yes] input').click();
     cy.get('[data-testid=licence-field]').contains('CC BY 4.0');
-    cy.get('[data-testid=commercial-use-option-NC]').click();
+    cy.get('[data-testid=commercial-use-option-NC] input').click();
     cy.get('[data-testid=licence-field]').contains('NC');
     cy.get('[data-testid=commercial-use-radio-group] .Mui-checked').should('exist');
 
-    cy.get('[data-testid=modify-and-build-option-primary_yes]').click();
+    cy.get('[data-testid=modify-and-build-option-primary_yes] input').click();
     cy.get('[data-testid=licence-field]').should('not.contain', 'ND');
-    cy.get('[data-testid=modify-and-build-option-share_alike]').click();
+    cy.get('[data-testid=modify-and-build-option-share_alike] input').click();
     cy.get('[data-testid=licence-field]').contains('SA');
-    cy.get('[data-testid=modify-and-build-option-ND]').click();
+    cy.get('[data-testid=modify-and-build-option-ND] input').click();
     cy.get('[data-testid=licence-field]').contains('ND');
 
     //hide commercial and modifyAndBuild when selecting no restriction
-    cy.get('[data-testid=resource-restriction-option-CC_BY_4_0]').click();
+    cy.get('[data-testid=resource-restriction-option-CC_BY_4_0] input').click();
     cy.get('[data-testid=modify-and-build-radio-group]').should('not.exist');
     cy.get('[data-testid=commercial-use-radio-group]').should('not.exist');
 
     //reopen commercial and modifyAndBuild but empty checkboxes when reselecting restrictions
-    cy.get('[data-testid=resource-restriction-option-yes]').click();
+    cy.get('[data-testid=resource-restriction-option-yes] input').click();
     cy.get('[data-testid=modify-and-build-radio-group]').should('exist');
     cy.get('[data-testid=commercial-use-radio-group]').should('exist');
     cy.get('[data-testid=commercial-use-radio-group] .Mui-checked').should('not.exist');
@@ -236,10 +236,10 @@ context('Actions', () => {
     cy.get('[data-testid=usage-cleared-with-owner-option-radio-group]').should('not.exist');
     cy.get('[data-testid=usage-cleared-with-owner-info]').should('not.exist');
 
-    cy.get('[data-testid=contains-other-peoples-work-option-yes]').click();
+    cy.get('[data-testid=contains-other-peoples-work-option-yes] input').click();
     cy.get('[data-testid=usage-cleared-with-owner-radio-group]').should('exist');
 
-    cy.get('[data-testid=usage-cleared-with-owner-option-creative_commons]').click();
+    cy.get('[data-testid=usage-cleared-with-owner-option-creative_commons] input').click();
     cy.get('[data-testid=usage-cleared-with-owner-info]').should('exist');
     cy.get('[data-testid=access-dropdown-menu] input').should('have.value', 'open');
     cy.get('[data-testid=usage-cleared-with-owner-option-no_clearance]').click();

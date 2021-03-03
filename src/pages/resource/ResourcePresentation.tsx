@@ -9,6 +9,7 @@ import LicenseCard from '../../components/LicenseCard';
 import { API_PATHS, API_URL } from '../../utils/constants';
 import { emptyPreview } from '../../types/content.types';
 import { StyleWidths } from '../../themes/mainTheme';
+import { format } from 'date-fns';
 
 const PreviewComponentWrapper = styled.div`
   margin: 1rem 0;
@@ -91,14 +92,18 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
         {resource.features.dlr_time_published && (
           <StyledFeatureWrapper data-testid="resource-time-published">
             <StyledCaption variant="caption">{t('resource.metadata.published')}</StyledCaption>
-            <Typography variant="body1">{resource.features.dlr_time_published}</Typography>
+            <Typography variant="body1">
+              {format(new Date(resource.features.dlr_time_published), 'dd.MM.yyyy')}
+            </Typography>
           </StyledFeatureWrapper>
         )}
 
         {resource.features.dlr_time_created && (
           <StyledFeatureWrapper data-testid="resource-time-created">
             <StyledCaption variant="caption">{t('resource.metadata.created')}</StyledCaption>
-            <Typography variant="body1">{resource.features.dlr_time_created}</Typography>
+            <Typography variant="body1">
+              {format(new Date(resource.features.dlr_time_created), 'dd.MM.yyyy')}
+            </Typography>
           </StyledFeatureWrapper>
         )}
 

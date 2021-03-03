@@ -54,6 +54,15 @@ export const StyledContentWrapperMedium = styled.div`
   max-width: ${StyleWidths.width4};
 `;
 
+export const StyledContentWrapperLarge = styled.div`
+  width: 100%;
+  max-width: ${StyleWidths.width5};
+  padding: 0 2rem;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    padding: 0 0;
+  }
+`;
+
 export const StyledRadioBoxWrapper = styled.div`
   margin-top: 2rem;
   display: block;

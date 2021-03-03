@@ -12,3 +12,11 @@ interface Facet {
   value: string;
   count: string;
 }
+
+export const NumberOfResultsPrPage = 10;
+
+export interface QueryObject {
+  query: string;
+  offset: number;
+  limit: number;
+}

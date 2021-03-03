@@ -11,6 +11,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { useHistory } from 'react-router-dom';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import { StyleWidths } from '../themes/mainTheme';
+import { format } from 'date-fns';
 
 const StyledListItem: any = styled.li`
   display: flex;
@@ -93,7 +94,7 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
               )}
               {showTimeCreated && resource.features.dlr_time_created && (
                 <StyledTypography style={{ display: 'block' }} component="span" variant="body2" color="textPrimary">
-                  {resource.features.dlr_time_created}
+                  {format(new Date(resource.features.dlr_time_created), 'dd.MM.yyyy')}
                 </StyledTypography>
               )}
               {resource.features.dlr_identifier_handle && showHandle && (

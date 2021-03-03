@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -28,7 +28,7 @@ const StyledTextField = styled(TextField)`
 `;
 
 const StyledButton = styled(Button)`
-  min-width: 5rem;
+  min-width: 7rem;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     margin-top: 1rem;
   }
@@ -42,15 +42,22 @@ const SearchInput = () => {
 
   const setURLParams = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const searchParams = new URLSearchParams(location.search);
+    const searchParams = new URLSearchParams();
     searchParams.set('query', searchTerm);
-    const url = searchParams.toString();
-    history.replace(`?${url}`);
+    history.replace(`?${searchParams.toString()}`);
   };
+
+  useEffect(() => {
+    const searchTerm = new URLSearchParams(location.search);
+    if (!searchTerm.get('query')) {
+      setSearchTerm('');
+    }
+  }, [location]);
 
   const updateSearchTermValue = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
+
   return (
     <StyledForm onSubmit={setURLParams}>
       <StyledTextField
