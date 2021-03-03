@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
 import { searchResources } from '../../api/resourceApi';
 import { useTranslation } from 'react-i18next';
-import { NumberOfResultsPrPage, QueryObject, SearchResult } from '../../types/search.types';
+import { NumberOfResultsPrPage, QueryObject, SearchParameters, SearchResult } from '../../types/search.types';
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
@@ -13,20 +13,28 @@ import SearchInput from './SearchInput';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Pagination } from '@material-ui/lab';
 import ResultListItem from '../../components/ResultListItem';
+import FilterSearchOptions from './FilterSearchOptions';
+
+const SearchResultWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 3rem;
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.lg + 'px'}) {
+    flex-direction: row;
+  }
+`;
 
 const StyledResultListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${Colors.ResultListBackground};
-  margin-top: 2rem;
   padding: 1.5rem 0.5rem 1rem 0.5rem;
   margin-bottom: 2rem;
   max-width: ${StyleWidths.width5};
   align-items: center;
+  flex: 1;
 `;
-import { useLocation } from 'react-router-dom';
-import FilterSearchOptions from './FilterSearchOptions';
-import { InstitutionParameterName } from './InstitutionFiltering';
 
 const StyledPaginationWrapper = styled.div`
   margin: 1rem 0 1rem 0;
@@ -65,23 +73,27 @@ const Explore = () => {
   const handlePaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
     const searchParams = new URLSearchParams(location.search);
-    value === firstPage ? searchParams.delete('page') : searchParams.set('page', '' + value);
+    value === firstPage
+      ? searchParams.delete(SearchParameters.page)
+      : searchParams.set(SearchParameters.page, value.toString());
     history.replace(`?${searchParams.toString()}`);
   };
 
   useEffect(() => {
     const searchTerm = new URLSearchParams(location.search);
-    const pageTerm = searchTerm.get('page');
+    const pageTerm = searchTerm.get(SearchParameters.page);
+    const institutions = searchTerm.get(SearchParameters.institution);
     let offset = 0;
     if (pageTerm) {
-      setPage(+pageTerm);
-      offset = (+pageTerm - 1) * NumberOfResultsPrPage;
+      setPage(Number(pageTerm));
+      offset = (Number(pageTerm) - 1) * NumberOfResultsPrPage;
     } else {
       setPage(firstPage);
     }
     setQuery({
-      query: searchTerm.get('query') ?? '',
+      query: searchTerm.get(SearchParameters.query) ?? '',
       offset: offset,
+      institutions: institutions,
       limit: NumberOfResultsPrPage,
     });
   }, [location]);
@@ -108,36 +120,11 @@ const Explore = () => {
     };
     triggerSearch();
   }, [query]);
-  const triggerSearch = async (query: string, institutions: string | null) => {
-    try {
-      const response = await searchResources(query, institutions, [], [], []);
-      if (response.data) {
-        setSearchError(false);
-        setSearchResult(response.data);
-        setResources(response.data.resourcesAsJson.map((resourceAsString: string) => JSON.parse(resourceAsString)));
-      } else {
-        setSearchError(true);
-      }
-    } catch (error) {
-      setSearchError(true);
-    }
-  };
-
-  useEffect(() => {
-    const searchTerm = new URLSearchParams(location.search);
-    const query = searchTerm.get('query');
-    const institutions = searchTerm.get(InstitutionParameterName);
-    if (query !== null) {
-      triggerSearch(query, institutions);
-    }
-  }, [location]);
 
   return (
     <StyledContentWrapperLarge>
       <PageHeader>{t('dashboard.explore')}</PageHeader>
       <SearchInput />
-      <FilterSearchOptions />
-
       {searchError && <ErrorBanner />}
       {isSearching ? (
         <StyledResultListWrapper>
@@ -145,27 +132,32 @@ const Explore = () => {
         </StyledResultListWrapper>
       ) : (
         searchResult && (
-          <StyledResultListWrapper>
-            <Typography variant="h2">
-              {t('common.result')} ({searchResult.numFound})
-            </Typography>
-            <StyledList>
-              {resources &&
-                resources.length > 0 &&
-                resources.map((resource: Resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
-            </StyledList>
-            {searchResult.numFound > NumberOfResultsPrPage && (
-              <StyledPaginationWrapper>
-                <Typography variant="subtitle2">{t('common.page')}</Typography>
-                <Pagination
-                  count={Math.ceil(searchResult.numFound / NumberOfResultsPrPage)}
-                  page={page}
-                  color="primary"
-                  onChange={handlePaginationChange}
-                />
-              </StyledPaginationWrapper>
-            )}
-          </StyledResultListWrapper>
+          <SearchResultWrapper>
+            <FilterSearchOptions />
+            <StyledResultListWrapper>
+              <Typography variant="h2">
+                {t('common.result')} ({searchResult.numFound})
+              </Typography>
+              <StyledList>
+                {resources &&
+                  resources.length > 0 &&
+                  resources.map((resource: Resource) => (
+                    <ResultListItem resource={resource} key={resource.identifier} />
+                  ))}
+              </StyledList>
+              {searchResult.numFound > NumberOfResultsPrPage && (
+                <StyledPaginationWrapper>
+                  <Typography variant="subtitle2">{t('common.page')}</Typography>
+                  <Pagination
+                    count={Math.ceil(searchResult.numFound / NumberOfResultsPrPage)}
+                    page={page}
+                    color="primary"
+                    onChange={handlePaginationChange}
+                  />
+                </StyledPaginationWrapper>
+              )}
+            </StyledResultListWrapper>
+          </SearchResultWrapper>
         )
       )}
     </StyledContentWrapperLarge>

@@ -65,14 +65,22 @@ export enum StyleWidths {
   width5 = '75rem', //1200px
 }
 
+export enum DeviceWidths {
+  xs = 0,
+  sm = 600,
+  md = 960,
+  lg = 1280,
+  xl = 1920,
+}
+
 export default createMuiTheme({
   breakpoints: {
     values: {
-      xs: 0,
-      sm: 600,
-      md: 960,
-      lg: 1280,
-      xl: 1920,
+      xs: DeviceWidths.xs,
+      sm: DeviceWidths.sm,
+      md: DeviceWidths.md,
+      lg: DeviceWidths.lg,
+      xl: DeviceWidths.xl,
     },
   },
   palette: {
@@ -188,6 +196,7 @@ export default createMuiTheme({
     MuiAccordion: {
       root: {
         border: '3px solid #427F8C',
+        boxShadow: 'none',
       },
     },
     MuiButton: {

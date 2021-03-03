@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { useHistory, useLocation } from 'react-router-dom';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { useTranslation } from 'react-i18next';
+import { SearchParameters } from '../../types/search.types';
 
 const StyledFormControl: any = styled(FormControl)`
   margin-left: 1rem;
@@ -16,8 +17,6 @@ interface InstitutionList {
   name: string;
   isSelected: boolean;
 }
-
-export const InstitutionParameterName = 'inst';
 
 const InstitutionListInitial: InstitutionList[] = [
   { name: 'NTNU', isSelected: false },
@@ -51,25 +50,28 @@ const InstitutionFiltering = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const [institutionList, setInstitutionList] = useState(
-    generateInstitutionList(InstitutionListInitial, new URLSearchParams(location.search).get(InstitutionParameterName))
+    generateInstitutionList(
+      InstitutionListInitial,
+      new URLSearchParams(location.search).get(SearchParameters.institution)
+    )
   );
   const history = useHistory();
 
   const changeSelected = (index: number, event: any) => {
     const locationSearch = new URLSearchParams(location.search);
-    const activeInstitutions = locationSearch.get(InstitutionParameterName) ?? '';
+    const activeInstitutions = locationSearch.get(SearchParameters.institution) ?? '';
     if (event.target.checked) {
       if (!activeInstitutions.includes(institutionList[index].name.toLowerCase())) {
         if (activeInstitutions.length === 0) {
-          locationSearch.set(InstitutionParameterName, institutionList[index].name.toLowerCase());
+          locationSearch.set(SearchParameters.institution, institutionList[index].name.toLowerCase());
         } else if (activeInstitutions.includes('(')) {
           locationSearch.set(
-            InstitutionParameterName,
+            SearchParameters.institution,
             `${activeInstitutions.replace(')', '')} OR ${institutionList[index].name.toLowerCase()})`
           );
         } else {
           locationSearch.set(
-            InstitutionParameterName,
+            SearchParameters.institution,
             `(${activeInstitutions} OR ${institutionList[index].name.toLowerCase()})`
           );
         }
@@ -77,7 +79,7 @@ const InstitutionFiltering = () => {
     } else {
       if (activeInstitutions.includes(institutionList[index].name.toLowerCase())) {
         if (!activeInstitutions.includes('(')) {
-          locationSearch.delete(InstitutionParameterName);
+          locationSearch.delete(SearchParameters.institution);
         } else {
           const institutionArray = activeInstitutions
             .replace('(', '')
@@ -85,11 +87,11 @@ const InstitutionFiltering = () => {
             .split(' OR ')
             .filter((institution) => institution !== institutionList[index].name.toLowerCase());
           if (institutionArray.length > 1) {
-            locationSearch.set(InstitutionParameterName, `(${institutionArray.join(' OR ')})`);
+            locationSearch.set(SearchParameters.institution, `(${institutionArray.join(' OR ')})`);
           } else if (institutionArray.length === 0) {
-            locationSearch.delete(InstitutionParameterName);
+            locationSearch.delete(SearchParameters.institution);
           } else {
-            locationSearch.set(InstitutionParameterName, institutionArray[0]);
+            locationSearch.set(SearchParameters.institution, institutionArray[0]);
           }
         }
       }
