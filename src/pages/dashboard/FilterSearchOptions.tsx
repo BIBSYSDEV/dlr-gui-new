@@ -1,4 +1,4 @@
-import React, { FC, useLayoutEffect, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useEffect, useLayoutEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Colors, DeviceWidths } from '../../themes/mainTheme';
 import Accordion from '@material-ui/core/Accordion';
@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import InstitutionFiltering from './InstitutionFiltering';
+import { QueryObject } from '../../types/search.types';
 
 function useWindowWidth() {
   const [width, setWidth] = useState(0);
@@ -40,12 +41,22 @@ const StyledAccordionDetails = styled(AccordionDetails)`
 `;
 
 interface FilterSearchOptionsProps {
-  numberOfFilters: number;
+  queryObject: QueryObject;
+  setQueryObject: Dispatch<SetStateAction<QueryObject>>;
 }
 
-const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ numberOfFilters }) => {
+const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQueryObject }) => {
   const { t } = useTranslation();
   const width = useWindowWidth();
+  const [numberOfFilters, setNumberOfFilters] = useState(0);
+
+  useEffect(() => {
+    const calculateNumberOfFilters = () => {
+      return queryObject.institutions.length;
+      //TODO calculate the rest
+    };
+    setNumberOfFilters(calculateNumberOfFilters());
+  }, [queryObject]);
 
   const filterHeader = () => (
     <Typography variant="h2">
@@ -59,7 +70,7 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ numberOfFilters }) 
       {width > DeviceWidths.lg ? (
         <StyledSideBar>
           {filterHeader()}
-          <InstitutionFiltering />
+          <InstitutionFiltering setQueryObject={setQueryObject} />
         </StyledSideBar>
       ) : (
         <StyledAccordion>
@@ -71,7 +82,7 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ numberOfFilters }) 
             {filterHeader()}
           </AccordionSummary>
           <StyledAccordionDetails>
-            <InstitutionFiltering />
+            <InstitutionFiltering setQueryObject={setQueryObject} />
           </StyledAccordionDetails>
         </StyledAccordion>
       )}

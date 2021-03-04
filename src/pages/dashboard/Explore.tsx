@@ -72,7 +72,7 @@ const Explore = () => {
   const location = useLocation();
   const createQueryObjectFromURL = (): QueryObject => {
     const searchTerms = new URLSearchParams(location.search);
-    //const institutions = searchTerms.get(SearchParameters.institution);
+    const institutions = searchTerms.getAll(SearchParameters.institution);
     const pageTerm = searchTerms.get(SearchParameters.page);
     let offset = 0;
     if (page && page !== firstPage) offset = (Number(pageTerm) - 1) * NumberOfResultsPrPage;
@@ -80,14 +80,13 @@ const Explore = () => {
       query: searchTerms.get(SearchParameters.query) ?? '',
       offset: offset,
       limit: NumberOfResultsPrPage,
-      institutions: [],
+      institutions: institutions,
       key: uuidv4(),
     };
   };
   const [queryObject, setQueryObject] = useState(createQueryObjectFromURL());
   const [isSearching, setIsSearching] = useState(false);
   const [searchResult, setSearchResult] = useState<SearchResult>();
-  const [numberOfFilters, setNumberOfFilters] = useState(0);
   const [resources, setResources] = useState<Resource[]>([]);
   const { t } = useTranslation();
   const [searchError, setSearchError] = useState(false);
@@ -101,16 +100,18 @@ const Explore = () => {
     }));
   };
 
-  const calculateNumberOfFilters = () => {
-    return queryObject.institutions.length;
-    //TODO the rest
-  };
-
   useEffect(() => {
+    const reWriteUrl = () => {
+      let url = `?`;
+      if (queryObject.query.length > 0) url += `${SearchParameters.query}=${queryObject.query}`;
+      if (queryObject.institutions.length > 0) url += `&${SearchParameters.institution}=${queryObject.institutions}`;
+      history.replace(url);
+    };
+
     const triggerSearch = async () => {
       reWriteUrl();
-      setNumberOfFilters(calculateNumberOfFilters());
       if (queryObject) {
+        console.log('institutions', queryObject.institutions);
         try {
           setIsSearching(true);
           const response = await searchResources(queryObject);
@@ -129,13 +130,7 @@ const Explore = () => {
       }
     };
     triggerSearch();
-  }, [queryObject]);
-
-  const reWriteUrl = () => {
-    let url = `?`;
-    if (queryObject.query.length > 0) url += `${SearchParameters.query}=${queryObject.query}`;
-    history.replace(url);
-  };
+  }, [queryObject, history]);
 
   return (
     <StyledContentWrapperLarge>
@@ -149,7 +144,7 @@ const Explore = () => {
       ) : (
         searchResult && (
           <SearchResultWrapper>
-            <FilterSearchOptions numberOfFilters={numberOfFilters} />
+            <FilterSearchOptions queryObject={queryObject} setQueryObject={setQueryObject} />
             <StyledResultListWrapper>
               <Typography variant="h2">
                 {t('common.result')} ({searchResult.numFound})

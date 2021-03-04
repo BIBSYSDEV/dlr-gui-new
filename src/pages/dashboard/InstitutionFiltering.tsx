@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useState } from 'react';
 import { Checkbox, FormControl, FormControlLabel, FormGroup } from '@material-ui/core';
 import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
-import { useHistory, useLocation } from 'react-router-dom';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { useTranslation } from 'react-i18next';
-import { SearchParameters } from '../../types/search.types';
+import { QueryObject } from '../../types/search.types';
 
 const StyledFormControl: any = styled(FormControl)`
   margin-left: 1rem;
@@ -26,16 +25,20 @@ const initialInstitutionList: InstitutionListItem[] = [
   { name: 'HVL', isSelected: false },
 ];
 
-const InstitutionFiltering = () => {
+interface InstitutionFilteringProps {
+  setQueryObject: Dispatch<SetStateAction<QueryObject>>;
+}
+
+const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ setQueryObject }) => {
   const { t } = useTranslation();
-  const location = useLocation();
+  //const location = useLocation();
   const [institutionList, setInstitutionList] = useState(initialInstitutionList);
-  const history = useHistory();
 
-  const parseInstitutionParameter = (institutions: string): string[] => {
-    return institutions.replace('(', '').replace(')', '').split(' OR ');
-  };
+  // const parseInstitutionParameter = (institutions: string): string[] => {
+  //   return institutions.replace('(', '').replace(')', '').split(' OR ');
+  // };
 
+  //  todo : move out
   // useEffect(() => {
   //   const activeInstitutions = new URLSearchParams(location.search).get(SearchParameters.institution);
   //   if (activeInstitutions) {
@@ -56,48 +59,66 @@ const InstitutionFiltering = () => {
   // }, [location]);
 
   const changeSelected = (index: number, event: any) => {
-    const locationSearch = new URLSearchParams(location.search);
-    const activeInstitutions = locationSearch.get(SearchParameters.institution) ?? '';
-    if (event.target.checked) {
-      if (!activeInstitutions.includes(institutionList[index].name.toLowerCase())) {
-        if (activeInstitutions.length === 0) {
-          locationSearch.set(SearchParameters.institution, institutionList[index].name.toLowerCase());
-        } else if (activeInstitutions.includes('(')) {
-          locationSearch.set(
-            SearchParameters.institution,
-            `${activeInstitutions.replace(')', '')} OR ${institutionList[index].name.toLowerCase()})`
-          );
-        } else {
-          locationSearch.set(
-            SearchParameters.institution,
-            `(${activeInstitutions} OR ${institutionList[index].name.toLowerCase()})`
-          );
-        }
-      }
-    } else {
-      if (activeInstitutions.includes(institutionList[index].name.toLowerCase())) {
-        if (!activeInstitutions.includes('(')) {
-          locationSearch.delete(SearchParameters.institution);
-        } else {
-          const institutionArray = activeInstitutions
-            .replace('(', '')
-            .replace(')', '')
-            .split(' OR ')
-            .filter((institution) => institution !== institutionList[index].name.toLowerCase());
-          if (institutionArray.length > 1) {
-            locationSearch.set(SearchParameters.institution, `(${institutionArray.join(' OR ')})`);
-          } else if (institutionArray.length === 0) {
-            locationSearch.delete(SearchParameters.institution);
-          } else {
-            locationSearch.set(SearchParameters.institution, institutionArray[0]);
-          }
-        }
-      }
-    }
+    // TODO: move url-handling
+    //const locationSearch = new URLSearchParams(location.search);
+    //    const activeInstitutions = locationSearch.get(SearchParameters.institution) ?? '';
+    // if (event.target.checked) {
+    //   if (!activeInstitutions.includes(institutionList[index].name.toLowerCase())) {
+    //     if (activeInstitutions.length === 0) {
+    //       locationSearch.set(SearchParameters.institution, institutionList[index].name.toLowerCase());
+    //     } else if (activeInstitutions.includes('(')) {
+    //       locationSearch.set(
+    //         SearchParameters.institution,
+    //         `${activeInstitutions.replace(')', '')} OR ${institutionList[index].name.toLowerCase()})`
+    //       );
+    //     } else {
+    //       locationSearch.set(
+    //         SearchParameters.institution,
+    //         `(${activeInstitutions} OR ${institutionList[index].name.toLowerCase()})`
+    //       );
+    //     }
+    //   }
+    // } else {
+    //   if (activeInstitutions.includes(institutionList[index].name.toLowerCase())) {
+    //     if (!activeInstitutions.includes('(')) {
+    //       locationSearch.delete(SearchParameters.institution);
+    //     } else {
+    //       const institutionArray = activeInstitutions
+    //         .replace('(', '')
+    //         .replace(')', '')
+    //         .split(' OR ')
+    //         .filter((institution) => institution !== institutionList[index].name.toLowerCase());
+    //       if (institutionArray.length > 1) {
+    //         locationSearch.set(SearchParameters.institution, `(${institutionArray.join(' OR ')})`);
+    //       } else if (institutionArray.length === 0) {
+    //         locationSearch.delete(SearchParameters.institution);
+    //       } else {
+    //         locationSearch.set(SearchParameters.institution, institutionArray[0]);
+    //       }
+    //     }
+    //   }
+    // }
     setInstitutionList((prevState) => {
       prevState[index].isSelected = event.target.checked;
       return [...prevState];
     });
+
+    if (event.target.checked) {
+      setQueryObject((prevState) => ({
+        ...prevState,
+        institutions: [...prevState.institutions, institutionList[index].name],
+        offset: 0,
+      }));
+    } else {
+      setQueryObject((prevState) => {
+        const newInstitutions = prevState.institutions.filter((instName) => instName !== institutionList[index].name);
+        return {
+          ...prevState,
+          institutions: newInstitutions,
+          offset: 0,
+        };
+      });
+    }
   };
 
   return (
