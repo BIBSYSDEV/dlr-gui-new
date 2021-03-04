@@ -58,6 +58,7 @@
     "yes": "Ja"
   },
   "dashboard": {
+    "enabled": "aktive",
     "explore": "Utforsk",
     "filter": "Filter",
     "institutions": "Institusjoner"

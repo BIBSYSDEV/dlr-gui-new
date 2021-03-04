@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Checkbox, FormControl, FormControlLabel, FormGroup } from '@material-ui/core';
 import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
@@ -13,12 +13,12 @@ const StyledFormControl: any = styled(FormControl)`
   margin-right: 1rem;
 `;
 
-interface InstitutionList {
+interface InstitutionListItem {
   name: string;
   isSelected: boolean;
 }
 
-const InstitutionListInitial: InstitutionList[] = [
+const initialInstitutionList: InstitutionListItem[] = [
   { name: 'NTNU', isSelected: false },
   { name: 'BI', isSelected: false },
   { name: 'OsloMet', isSelected: false },
@@ -26,36 +26,34 @@ const InstitutionListInitial: InstitutionList[] = [
   { name: 'HVL', isSelected: false },
 ];
 
-const generateInstitutionList = (
-  initalInstitutionList: InstitutionList[],
-  activeInstitution: string | null
-): InstitutionList[] => {
-  if (activeInstitution === null) {
-    return initalInstitutionList;
-  } else {
-    const activeInstitutionList = activeInstitution.replace('(', '').replace(')', '').split(' OR ');
-    activeInstitutionList.forEach((institution) => {
-      const initalInstitutionListIndex = initalInstitutionList.findIndex((initalInstitutionListItem) =>
-        institution.includes(initalInstitutionListItem.name.toLowerCase())
-      );
-      if (initalInstitutionListIndex > -1) {
-        initalInstitutionList[initalInstitutionListIndex].isSelected = true;
-      }
-    });
-    return initalInstitutionList;
-  }
-};
-
 const InstitutionFiltering = () => {
   const { t } = useTranslation();
   const location = useLocation();
-  const [institutionList, setInstitutionList] = useState(
-    generateInstitutionList(
-      InstitutionListInitial,
-      new URLSearchParams(location.search).get(SearchParameters.institution)
-    )
-  );
+  const [institutionList, setInstitutionList] = useState(initialInstitutionList);
   const history = useHistory();
+
+  const parseInstitutionParameter = (institutions: string): string[] => {
+    return institutions.replace('(', '').replace(')', '').split(' OR ');
+  };
+
+  useEffect(() => {
+    const activeInstitutions = new URLSearchParams(location.search).get(SearchParameters.institution);
+    if (activeInstitutions) {
+      const activeInstitutionList = parseInstitutionParameter(activeInstitutions);
+      const nextState = initialInstitutionList.map((institutionListItem) => {
+        return {
+          name: institutionListItem.name,
+          isSelected:
+            activeInstitutionList.findIndex(
+              (activeInstName) => activeInstName === institutionListItem.name.toLowerCase()
+            ) !== -1,
+        };
+      });
+      setInstitutionList(nextState);
+    } else {
+      setInstitutionList(initialInstitutionList);
+    }
+  }, [location]);
 
   const changeSelected = (index: number, event: any) => {
     const locationSearch = new URLSearchParams(location.search);

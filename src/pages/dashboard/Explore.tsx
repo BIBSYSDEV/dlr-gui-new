@@ -36,6 +36,13 @@ const StyledResultListWrapper = styled.div`
   flex: 1;
 `;
 
+const StyledProgressWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 3rem;
+`;
+
 const StyledPaginationWrapper = styled.div`
   margin: 1rem 0 1rem 0;
   display: flex;
@@ -64,6 +71,7 @@ const Explore = () => {
   const [query, setQuery] = useState<null | QueryObject>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [searchResult, setSearchResult] = useState<SearchResult>();
+  const [numberOfFilters, setNumberOfFilters] = useState(0);
   const [resources, setResources] = useState<Resource[]>([]);
   const { t } = useTranslation();
   const [searchError, setSearchError] = useState(false);
@@ -89,6 +97,12 @@ const Explore = () => {
       offset = (Number(pageTerm) - 1) * NumberOfResultsPrPage;
     } else {
       setPage(firstPage);
+    }
+    if (institutions) {
+      const res = institutions.split('OR');
+      setNumberOfFilters(res.length);
+    } else {
+      setNumberOfFilters(0);
     }
     setQuery({
       query: searchTerm.get(SearchParameters.query) ?? '',
@@ -127,13 +141,13 @@ const Explore = () => {
       <SearchInput />
       {searchError && <ErrorBanner />}
       {isSearching ? (
-        <StyledResultListWrapper>
+        <StyledProgressWrapper>
           <CircularProgress />
-        </StyledResultListWrapper>
+        </StyledProgressWrapper>
       ) : (
         searchResult && (
           <SearchResultWrapper>
-            <FilterSearchOptions />
+            <FilterSearchOptions numberOfFilters={numberOfFilters} />
             <StyledResultListWrapper>
               <Typography variant="h2">
                 {t('common.result')} ({searchResult.numFound})

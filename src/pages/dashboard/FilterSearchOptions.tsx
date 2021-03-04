@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { FC, useLayoutEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Colors, DeviceWidths } from '../../themes/mainTheme';
 import Accordion from '@material-ui/core/Accordion';
@@ -25,6 +25,7 @@ function useWindowWidth() {
 const StyledAccordion = styled(Accordion)`
   background-color: ${Colors.ExploreResourcesPageOptionFiler};
   border: none;
+
   & .MuiPaper-elevation1 {
     box-shadow: none;
   }
@@ -38,15 +39,26 @@ const StyledAccordionDetails = styled(AccordionDetails)`
   display: flex;
 `;
 
-const FilterSearchOptions = () => {
+interface FilterSearchOptionsProps {
+  numberOfFilters: number;
+}
+
+const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ numberOfFilters }) => {
   const { t } = useTranslation();
   const width = useWindowWidth();
+
+  const filterHeader = () => (
+    <Typography variant="h2">
+      {t('dashboard.filter')}
+      {numberOfFilters > 0 && ` (${numberOfFilters} ${t('dashboard.enabled')})`}
+    </Typography>
+  );
 
   return (
     <div>
       {width > DeviceWidths.lg ? (
         <StyledSideBar>
-          <Typography variant="h2">{t('dashboard.filter')}</Typography>
+          {filterHeader()}
           <InstitutionFiltering />
         </StyledSideBar>
       ) : (
@@ -56,7 +68,7 @@ const FilterSearchOptions = () => {
             expandIcon={<ExpandMoreIcon />}
             aria-controls="filter-box-options"
             id="filter-box-options-header">
-            <Typography variant="h2">{t('dashboard.filter')}</Typography>
+            {filterHeader()}
           </AccordionSummary>
           <StyledAccordionDetails>
             <InstitutionFiltering />

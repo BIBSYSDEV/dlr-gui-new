@@ -58,6 +58,7 @@
     "yes": "Yes"
   },
   "dashboard": {
+    "enabled": "enabled",
     "explore": "Explore",
     "filter": "Filter",
     "institutions": "Institutions"
