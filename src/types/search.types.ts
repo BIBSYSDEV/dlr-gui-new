@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export interface SearchResult {
   offset: number;
   numFound: number;
@@ -19,15 +21,28 @@ export interface QueryObject {
   query: string;
   offset: number;
   limit: number;
-  institutions: string | null;
+  key: string;
+  institutions: string[];
   // TODO: Enable when Tasks for resourceType, Licenses,  keywords is done
   // resourceType: string[];
   // licenses: string[];
   // keywords: string[];
 }
 
+export const firstResultPage = 1;
+
+export const emptyQueryObject: QueryObject = {
+  query: '',
+  offset: 0,
+  limit: 0,
+  institutions: [],
+  key: uuidv4(),
+};
+
 export enum SearchParameters {
   institution = 'inst',
   query = 'query',
   page = 'page',
+  limit = 'limit',
+  offset = 'offset',
 }

@@ -5,6 +5,7 @@ import { Colors, StyleWidths } from '../../themes/mainTheme';
 import { searchResources } from '../../api/resourceApi';
 import { useTranslation } from 'react-i18next';
 import { NumberOfResultsPrPage, QueryObject, SearchParameters, SearchResult } from '../../types/search.types';
+import { v4 as uuidv4 } from 'uuid';
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
@@ -67,57 +68,52 @@ const StyledList = styled(List)`
 
 const Explore = () => {
   const firstPage = 1;
+  const [page, setPage] = useState(firstPage);
   const location = useLocation();
-  const [query, setQuery] = useState<null | QueryObject>(null);
+  const createQueryObjectFromURL = (): QueryObject => {
+    const searchTerms = new URLSearchParams(location.search);
+    //const institutions = searchTerms.get(SearchParameters.institution);
+    const pageTerm = searchTerms.get(SearchParameters.page);
+    let offset = 0;
+    if (page && page !== firstPage) offset = (Number(pageTerm) - 1) * NumberOfResultsPrPage;
+    return {
+      query: searchTerms.get(SearchParameters.query) ?? '',
+      offset: offset,
+      limit: NumberOfResultsPrPage,
+      institutions: [],
+      key: uuidv4(),
+    };
+  };
+  const [queryObject, setQueryObject] = useState(createQueryObjectFromURL());
   const [isSearching, setIsSearching] = useState(false);
   const [searchResult, setSearchResult] = useState<SearchResult>();
   const [numberOfFilters, setNumberOfFilters] = useState(0);
   const [resources, setResources] = useState<Resource[]>([]);
   const { t } = useTranslation();
   const [searchError, setSearchError] = useState(false);
-  const [page, setPage] = useState(firstPage);
   const history = useHistory();
 
   const handlePaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
-    const searchParams = new URLSearchParams(location.search);
-    value === firstPage
-      ? searchParams.delete(SearchParameters.page)
-      : searchParams.set(SearchParameters.page, value.toString());
-    history.replace(`?${searchParams.toString()}`);
+    setQueryObject((prevState) => ({
+      ...prevState,
+      offset: (Number(value) - 1) * NumberOfResultsPrPage,
+    }));
+  };
+
+  const calculateNumberOfFilters = () => {
+    return queryObject.institutions.length;
+    //TODO the rest
   };
 
   useEffect(() => {
-    const searchTerm = new URLSearchParams(location.search);
-    const pageTerm = searchTerm.get(SearchParameters.page);
-    const institutions = searchTerm.get(SearchParameters.institution);
-    let offset = 0;
-    if (pageTerm) {
-      setPage(Number(pageTerm));
-      offset = (Number(pageTerm) - 1) * NumberOfResultsPrPage;
-    } else {
-      setPage(firstPage);
-    }
-    if (institutions) {
-      const res = institutions.split('OR');
-      setNumberOfFilters(res.length);
-    } else {
-      setNumberOfFilters(0);
-    }
-    setQuery({
-      query: searchTerm.get(SearchParameters.query) ?? '',
-      offset: offset,
-      institutions: institutions,
-      limit: NumberOfResultsPrPage,
-    });
-  }, [location]);
-
-  useEffect(() => {
     const triggerSearch = async () => {
-      if (query) {
+      reWriteUrl();
+      setNumberOfFilters(calculateNumberOfFilters());
+      if (queryObject) {
         try {
           setIsSearching(true);
-          const response = await searchResources(query);
+          const response = await searchResources(queryObject);
           if (response.data) {
             setSearchError(false);
             setSearchResult(response.data);
@@ -133,12 +129,18 @@ const Explore = () => {
       }
     };
     triggerSearch();
-  }, [query]);
+  }, [queryObject]);
+
+  const reWriteUrl = () => {
+    let url = `?`;
+    if (queryObject.query.length > 0) url += `${SearchParameters.query}=${queryObject.query}`;
+    history.replace(url);
+  };
 
   return (
     <StyledContentWrapperLarge>
       <PageHeader>{t('dashboard.explore')}</PageHeader>
-      <SearchInput />
+      <SearchInput setQueryObject={setQueryObject} />
       {searchError && <ErrorBanner />}
       {isSearching ? (
         <StyledProgressWrapper>

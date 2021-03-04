@@ -36,24 +36,24 @@ const InstitutionFiltering = () => {
     return institutions.replace('(', '').replace(')', '').split(' OR ');
   };
 
-  useEffect(() => {
-    const activeInstitutions = new URLSearchParams(location.search).get(SearchParameters.institution);
-    if (activeInstitutions) {
-      const activeInstitutionList = parseInstitutionParameter(activeInstitutions);
-      const nextState = initialInstitutionList.map((institutionListItem) => {
-        return {
-          name: institutionListItem.name,
-          isSelected:
-            activeInstitutionList.findIndex(
-              (activeInstName) => activeInstName === institutionListItem.name.toLowerCase()
-            ) !== -1,
-        };
-      });
-      setInstitutionList(nextState);
-    } else {
-      setInstitutionList(initialInstitutionList);
-    }
-  }, [location]);
+  // useEffect(() => {
+  //   const activeInstitutions = new URLSearchParams(location.search).get(SearchParameters.institution);
+  //   if (activeInstitutions) {
+  //     const activeInstitutionList = parseInstitutionParameter(activeInstitutions);
+  //     const nextState = initialInstitutionList.map((institutionListItem) => {
+  //       return {
+  //         name: institutionListItem.name,
+  //         isSelected:
+  //           activeInstitutionList.findIndex(
+  //             (activeInstName) => activeInstName === institutionListItem.name.toLowerCase()
+  //           ) !== -1,
+  //       };
+  //     });
+  //     setInstitutionList(nextState);
+  //   } else {
+  //     setInstitutionList(initialInstitutionList);
+  //   }
+  // }, [location]);
 
   const changeSelected = (index: number, event: any) => {
     const locationSearch = new URLSearchParams(location.search);
@@ -94,8 +94,6 @@ const InstitutionFiltering = () => {
         }
       }
     }
-    const url = locationSearch.toString();
-    history.replace(`?${url}`);
     setInstitutionList((prevState) => {
       prevState[index].isSelected = event.target.checked;
       return [...prevState];
