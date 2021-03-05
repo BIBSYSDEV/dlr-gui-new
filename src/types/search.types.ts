@@ -13,7 +13,7 @@ interface Facet {
   count: string;
 }
 
-export const NumberOfResultsPrPage = 3;
+export const NumberOfResultsPrPage = 10;
 
 export interface QueryObject {
   query: string;
