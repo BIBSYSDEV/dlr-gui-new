@@ -17,45 +17,44 @@ export const searchResources = ({
   query,
   limit,
   institutions,
-  // TODO: Enable when Tasks for resourceType, Licenses,  keywords is done
-  // resourceType,
-  // licenses,
-  // keywords,
+  resourceType,
+  licenses,
+  keywords,
   offset,
 }: QueryObject): Promise<AxiosResponse<SearchResult>> => {
   let url = `${API_PATHS.guiBackendResourcesSearchPath}/resources/search?query=${query}`;
-  // if (
-  //   institutions &&
-  //   institutions.length > 0 //||
-  //   // resourceType.length > 0 ||
-  //   // licenses.length > 0 ||
-  //   // keywords.length > 0
-  // ) {
-  //   url += '&filter=';
-  //   const filters: string[] = [];
-  //   if (institutions && institutions.length > 0) {
-  //     filters.push(`facet_institution::${institutions}`);
-  //   }
-  //   // TODO: Enable when Tasks for resourceType, Licenses,  keywords is done
-  //   // if (resourceType.length > 1) {
-  //   //   filters.push(`facet_filetype::(${resourceType.join(' OR ')})`);
-  //   // } else if (resourceType.length === 1) {
-  //   //   filters.push(`facet_filetype::${resourceType[0]}`);
-  //   // }
-  //   // if (licenses.length > 1) {
-  //   //   filters.push(`facet_license::(${licenses.join(' OR ')})`);
-  //   // } else if (licenses.length === 1) {
-  //   //   filters.push(`facet_license::${licenses[0]}`);
-  //   // }
-  //   // if (keywords.length > 1) {
-  //   //   filters.push(`facet_keyword::(${keywords.join(' OR ')})`);
-  //   // } else if (keywords.length === 1) {
-  //   //   filters.push(`facet_keyword::${keywords[0]}`);
-  //   // }
-  //   if (filters.length > 0) {
-  //     url += filters.join('|');
-  //   }
-  // }
+  if (
+    (institutions && institutions.length > 0) ||
+    resourceType.length > 0 ||
+    licenses.length > 0 ||
+    keywords.length > 0
+  ) {
+    url += '&filter=';
+    const filters: string[] = [];
+    if (institutions.length > 1) {
+      filters.push(`facet_institution::(${institutions.join(' OR ')})`);
+    } else if (institutions.length === 1) {
+      filters.push(`facet_institution::${institutions[0]}`);
+    }
+    if (resourceType.length > 1) {
+      filters.push(`facet_filetype::(${resourceType.join(' OR ')})`);
+    } else if (resourceType.length === 1) {
+      filters.push(`facet_filetype::${resourceType[0]}`);
+    }
+    if (licenses.length > 1) {
+      filters.push(`facet_license::(${licenses.join(' OR ')})`);
+    } else if (licenses.length === 1) {
+      filters.push(`facet_license::${licenses[0]}`);
+    }
+    if (keywords.length > 1) {
+      filters.push(`facet_keyword::(${keywords.join(' OR ')})`);
+    } else if (keywords.length === 1) {
+      filters.push(`facet_keyword::${keywords[0]}`);
+    }
+    if (filters.length > 0) {
+      url += filters.join('|');
+    }
+  }
   if (offset > 0) url += `&${SearchParameters.offset}=${offset}`;
   if (limit > 0) url += `&${SearchParameters.limit}=${limit}`;
   return authenticatedApiRequest({

@@ -4,8 +4,7 @@ import styled from 'styled-components';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
 import { searchResources } from '../../api/resourceApi';
 import { useTranslation } from 'react-i18next';
-import { NumberOfResultsPrPage, QueryObject, SearchParameters, SearchResult } from '../../types/search.types';
-import { v4 as uuidv4 } from 'uuid';
+import { emptyQueryObject, NumberOfResultsPrPage, SearchParameters, SearchResult } from '../../types/search.types';
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
@@ -70,21 +69,8 @@ const Explore = () => {
   const firstPage = 1;
   const [page, setPage] = useState(firstPage);
   const location = useLocation();
-  const createQueryObjectFromURL = (): QueryObject => {
-    const searchTerms = new URLSearchParams(location.search);
-    const institutions = searchTerms.getAll(SearchParameters.institution);
-    const pageTerm = searchTerms.get(SearchParameters.page);
-    let offset = 0;
-    if (page && page !== firstPage) offset = (Number(pageTerm) - 1) * NumberOfResultsPrPage;
-    return {
-      query: searchTerms.get(SearchParameters.query) ?? '',
-      offset: offset,
-      limit: NumberOfResultsPrPage,
-      institutions: institutions,
-      key: uuidv4(),
-    };
-  };
-  const [queryObject, setQueryObject] = useState(createQueryObjectFromURL());
+
+  const [queryObject, setQueryObject] = useState(emptyQueryObject);
   const [isSearching, setIsSearching] = useState(false);
   const [searchResult, setSearchResult] = useState<SearchResult>();
   const [resources, setResources] = useState<Resource[]>([]);
@@ -97,8 +83,36 @@ const Explore = () => {
     setQueryObject((prevState) => ({
       ...prevState,
       offset: (Number(value) - 1) * NumberOfResultsPrPage,
+      queryFromURL: false,
     }));
   };
+
+  useEffect(() => {
+    const createQueryFromUrl = () => {
+      const searchTerms = new URLSearchParams(location.search);
+      const institutions = searchTerms.getAll(SearchParameters.institution);
+      const pageTerm = searchTerms.get(SearchParameters.page);
+      let offset = 0;
+      if (pageTerm && Number(pageTerm) !== firstPage) offset = (Number(pageTerm) - 1) * NumberOfResultsPrPage;
+      return {
+        ...emptyQueryObject,
+        query: searchTerms.get(SearchParameters.query) ?? '',
+        offset: offset,
+        limit: NumberOfResultsPrPage,
+        institutions: institutions,
+        queryFromURL: true,
+        allowSearch: true,
+      };
+    };
+    if (!queryObject.queryFromURL && !queryObject.allowSearch) {
+      setQueryObject(createQueryFromUrl());
+    }
+    // if (location.search === '' && searchResult) {
+    //   //TODO : start-page - doesn't work with pagination
+    //   console.log('hepp');
+    //   setQueryObject(createQueryFromUrl());
+    // }
+  }, [location, queryObject.allowSearch, queryObject.queryFromURL]);
 
   useEffect(() => {
     const reWriteUrl = () => {
@@ -109,9 +123,11 @@ const Explore = () => {
     };
 
     const triggerSearch = async () => {
-      reWriteUrl();
+      //debugger;
+      if (!queryObject.queryFromURL) {
+        reWriteUrl();
+      }
       if (queryObject) {
-        console.log('institutions', queryObject.institutions);
         try {
           setIsSearching(true);
           const response = await searchResources(queryObject);
@@ -129,7 +145,7 @@ const Explore = () => {
         }
       }
     };
-    triggerSearch();
+    if (queryObject.allowSearch) triggerSearch();
   }, [queryObject, history]);
 
   return (

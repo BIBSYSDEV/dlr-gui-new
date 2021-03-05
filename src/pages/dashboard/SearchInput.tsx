@@ -51,6 +51,7 @@ const SearchInput: FC<SearchInputProps> = ({ setQueryObject }) => {
       query: searchTerm,
       limit: NumberOfResultsPrPage,
       offset: 0,
+      queryFromURL: false,
     }));
   };
 

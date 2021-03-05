@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
-
 export interface SearchResult {
   offset: number;
   numFound: number;
@@ -15,18 +13,18 @@ interface Facet {
   count: string;
 }
 
-export const NumberOfResultsPrPage = 10;
+export const NumberOfResultsPrPage = 3;
 
 export interface QueryObject {
   query: string;
   offset: number;
   limit: number;
-  key: string;
   institutions: string[];
-  // TODO: Enable when Tasks for resourceType, Licenses,  keywords is done
-  // resourceType: string[];
-  // licenses: string[];
-  // keywords: string[];
+  resourceType: string[];
+  licenses: string[];
+  keywords: string[];
+  queryFromURL: boolean;
+  allowSearch: boolean; //instead of setting queryobject null at initiation
 }
 
 export const firstResultPage = 1;
@@ -36,7 +34,11 @@ export const emptyQueryObject: QueryObject = {
   offset: 0,
   limit: 0,
   institutions: [],
-  key: uuidv4(),
+  resourceType: [],
+  licenses: [],
+  keywords: [],
+  queryFromURL: false,
+  allowSearch: false,
 };
 
 export enum SearchParameters {
@@ -46,3 +48,5 @@ export enum SearchParameters {
   limit = 'limit',
   offset = 'offset',
 }
+
+export const AllDLRInstitutionNames = ['NTNU', 'BI', 'OsloMet', 'UiB', 'HVL'];

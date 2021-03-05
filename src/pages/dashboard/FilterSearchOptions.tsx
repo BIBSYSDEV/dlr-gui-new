@@ -51,11 +51,12 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
   const [numberOfFilters, setNumberOfFilters] = useState(0);
 
   useEffect(() => {
-    const calculateNumberOfFilters = () => {
-      return queryObject.institutions.length;
-      //TODO calculate the rest
-    };
-    setNumberOfFilters(calculateNumberOfFilters());
+    setNumberOfFilters(
+      queryObject.institutions.length +
+        queryObject.keywords.length +
+        queryObject.licenses.length +
+        queryObject.keywords.length
+    );
   }, [queryObject]);
 
   const filterHeader = () => (
@@ -70,7 +71,7 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
       {width > DeviceWidths.lg ? (
         <StyledSideBar>
           {filterHeader()}
-          <InstitutionFiltering setQueryObject={setQueryObject} />
+          <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
         </StyledSideBar>
       ) : (
         <StyledAccordion>
@@ -82,7 +83,7 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
             {filterHeader()}
           </AccordionSummary>
           <StyledAccordionDetails>
-            <InstitutionFiltering setQueryObject={setQueryObject} />
+            <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           </StyledAccordionDetails>
         </StyledAccordion>
       )}
