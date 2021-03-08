@@ -107,11 +107,6 @@ const Explore = () => {
     if (!queryObject.queryFromURL && !queryObject.allowSearch) {
       setQueryObject(createQueryFromUrl());
     }
-    // if (location.search === '' && searchResult) {
-    //   //TODO : start-page - doesn't work with pagination
-    //   console.log('hepp');
-    //   setQueryObject(createQueryFromUrl());
-    // }
   }, [location, queryObject.allowSearch, queryObject.queryFromURL]);
 
   useEffect(() => {
