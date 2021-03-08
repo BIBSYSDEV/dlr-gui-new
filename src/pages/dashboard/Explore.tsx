@@ -53,6 +53,7 @@ const StyledPaginationWrapper = styled.div`
     color: ${Colors.Primary};
     font-weight: 700;
   }
+
   & .Mui-selected {
     color: ${Colors.Background};
   }
@@ -62,6 +63,20 @@ const StyledList = styled(List)`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+`;
+
+const StyledResultListHeaderWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  max-width: ${StyleWidths.width4};
+  justify-content: center;
+`;
+
+const StyledResultListHeader = styled(Typography)`
   width: 100%;
 `;
 
@@ -150,18 +165,20 @@ const Explore = () => {
       <PageHeader>{t('dashboard.explore')}</PageHeader>
       <SearchInput setQueryObject={setQueryObject} />
       {searchError && <ErrorBanner />}
-      {isSearching ? (
-        <StyledProgressWrapper>
-          <CircularProgress />
-        </StyledProgressWrapper>
-      ) : (
-        searchResult && (
-          <SearchResultWrapper>
-            <FilterSearchOptions queryObject={queryObject} setQueryObject={setQueryObject} />
+      {searchResult && (
+        <SearchResultWrapper>
+          <FilterSearchOptions queryObject={queryObject} setQueryObject={setQueryObject} />
+          {isSearching ? (
+            <StyledProgressWrapper>
+              <CircularProgress />
+            </StyledProgressWrapper>
+          ) : (
             <StyledResultListWrapper>
-              <Typography variant="h2">
-                {t('common.result')} ({searchResult.numFound})
-              </Typography>
+              <StyledResultListHeaderWrapper>
+                <StyledResultListHeader variant="h2">
+                  {t('common.result')} ({searchResult.numFound})
+                </StyledResultListHeader>
+              </StyledResultListHeaderWrapper>
               <StyledList>
                 {resources &&
                   resources.length > 0 &&
@@ -179,8 +196,8 @@ const Explore = () => {
                 </StyledPaginationWrapper>
               )}
             </StyledResultListWrapper>
-          </SearchResultWrapper>
-        )
+          )}
+        </SearchResultWrapper>
       )}
     </StyledContentWrapperLarge>
   );

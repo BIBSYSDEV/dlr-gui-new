@@ -34,6 +34,7 @@ const StyledAccordion = styled(Accordion)`
 
 const StyledSideBar = styled.div`
   background-color: ${Colors.ExploreResourcesPageOptionFiler};
+  min-width: 17rem;
 `;
 
 const StyledAccordionDetails = styled(AccordionDetails)`
@@ -49,14 +50,16 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
   const { t } = useTranslation();
   const width = useWindowWidth();
   const [numberOfFilters, setNumberOfFilters] = useState(0);
+  const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
 
   useEffect(() => {
-    setNumberOfFilters(
+    const numFilters =
       queryObject.institutions.length +
-        queryObject.keywords.length +
-        queryObject.licenses.length +
-        queryObject.keywords.length
-    );
+      queryObject.keywords.length +
+      queryObject.licenses.length +
+      queryObject.keywords.length;
+    setNumberOfFilters(numFilters);
+    setIsFiltersExpanded(numFilters > 0);
   }, [queryObject]);
 
   const filterHeader = () => (
@@ -66,6 +69,10 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
     </Typography>
   );
 
+  const handleChange = () => {
+    setIsFiltersExpanded(!isFiltersExpanded);
+  };
+
   return (
     <div>
       {width > DeviceWidths.lg ? (
@@ -74,7 +81,7 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
           <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
         </StyledSideBar>
       ) : (
-        <StyledAccordion>
+        <StyledAccordion expanded={isFiltersExpanded} onChange={handleChange}>
           <AccordionSummary
             data-testid="expand-filtering-options"
             expandIcon={<ExpandMoreIcon />}
