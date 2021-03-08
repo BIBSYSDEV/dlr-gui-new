@@ -113,7 +113,10 @@ const Explore = () => {
     const reWriteUrl = () => {
       let url = `?`;
       if (queryObject.query.length > 0) url += `${SearchParameters.query}=${queryObject.query}`;
-      if (queryObject.institutions.length > 0) url += `&${SearchParameters.institution}=${queryObject.institutions}`;
+      if (queryObject.institutions.length > 0)
+        url += queryObject.institutions
+          .map((institution) => `&${SearchParameters.institution}=${institution}`)
+          .join('');
       history.replace(url);
     };
 
