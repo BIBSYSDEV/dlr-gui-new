@@ -35,8 +35,7 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
       const nextState = AllDLRInstitutionNames.map((institutionName) => ({
         name: institutionName,
         isSelected:
-          queryObject.institutions.findIndex((instName) => instName.toLowerCase() === institutionName.toLowerCase()) !==
-          -1,
+          !!queryObject.institutions.find((instName) => instName.toLowerCase() === institutionName.toLowerCase())
       }));
       setInstitutionCheckedList(nextState);
     } else {

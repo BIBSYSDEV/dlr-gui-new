@@ -65,8 +65,9 @@ const StyledList = styled(List)`
   width: 100%;
 `;
 
+const firstPage = 1;
+
 const Explore = () => {
-  const firstPage = 1;
   const [page, setPage] = useState(firstPage);
   const location = useLocation();
 
@@ -92,8 +93,7 @@ const Explore = () => {
       const searchTerms = new URLSearchParams(location.search);
       const institutions = searchTerms.getAll(SearchParameters.institution);
       const pageTerm = searchTerms.get(SearchParameters.page);
-      let offset = 0;
-      if (pageTerm && Number(pageTerm) !== firstPage) offset = (Number(pageTerm) - 1) * NumberOfResultsPrPage;
+      const offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
       return {
         ...emptyQueryObject,
         query: searchTerms.get(SearchParameters.query) ?? '',
@@ -123,7 +123,6 @@ const Explore = () => {
     };
 
     const triggerSearch = async () => {
-      //debugger;
       if (!queryObject.queryFromURL) {
         reWriteUrl();
       }
@@ -168,9 +167,7 @@ const Explore = () => {
               <StyledList>
                 {resources &&
                   resources.length > 0 &&
-                  resources.map((resource: Resource) => (
-                    <ResultListItem resource={resource} key={resource.identifier} />
-                  ))}
+                  resources.map((resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
               </StyledList>
               {searchResult.numFound > NumberOfResultsPrPage && (
                 <StyledPaginationWrapper>
