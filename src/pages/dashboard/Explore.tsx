@@ -71,7 +71,6 @@ const StyledResultListHeaderWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 1.5rem;
   max-width: ${StyleWidths.width4};
   justify-content: center;
 `;
@@ -165,38 +164,45 @@ const Explore = () => {
       <PageHeader>{t('dashboard.explore')}</PageHeader>
       <SearchInput setQueryObject={setQueryObject} />
       {searchError && <ErrorBanner />}
+      {!searchResult && isSearching && (
+        <StyledProgressWrapper>
+          <CircularProgress />
+        </StyledProgressWrapper>
+      )}
       {searchResult && (
         <SearchResultWrapper>
           <FilterSearchOptions queryObject={queryObject} setQueryObject={setQueryObject} />
-          {isSearching ? (
-            <StyledProgressWrapper>
-              <CircularProgress />
-            </StyledProgressWrapper>
-          ) : (
-            <StyledResultListWrapper>
-              <StyledResultListHeaderWrapper>
-                <StyledResultListHeader variant="h2">
-                  {t('common.result')} ({searchResult.numFound})
-                </StyledResultListHeader>
-              </StyledResultListHeaderWrapper>
-              <StyledList>
-                {resources &&
-                  resources.length > 0 &&
-                  resources.map((resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
-              </StyledList>
-              {searchResult.numFound > NumberOfResultsPrPage && (
-                <StyledPaginationWrapper>
-                  <Typography variant="subtitle2">{t('common.page')}</Typography>
-                  <Pagination
-                    count={Math.ceil(searchResult.numFound / NumberOfResultsPrPage)}
-                    page={page}
-                    color="primary"
-                    onChange={handlePaginationChange}
-                  />
-                </StyledPaginationWrapper>
-              )}
-            </StyledResultListWrapper>
-          )}
+          <StyledResultListWrapper>
+            {isSearching ? (
+              <StyledProgressWrapper>
+                <CircularProgress />
+              </StyledProgressWrapper>
+            ) : (
+              <>
+                <StyledResultListHeaderWrapper>
+                  <StyledResultListHeader variant="h2">
+                    {t('common.result')} ({searchResult.numFound})
+                  </StyledResultListHeader>
+                </StyledResultListHeaderWrapper>
+                <StyledList>
+                  {resources &&
+                    resources.length > 0 &&
+                    resources.map((resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
+                </StyledList>
+                {searchResult.numFound > NumberOfResultsPrPage && (
+                  <StyledPaginationWrapper>
+                    <Typography variant="subtitle2">{t('common.page')}</Typography>
+                    <Pagination
+                      count={Math.ceil(searchResult.numFound / NumberOfResultsPrPage)}
+                      page={page}
+                      color="primary"
+                      onChange={handlePaginationChange}
+                    />
+                  </StyledPaginationWrapper>
+                )}
+              </>
+            )}
+          </StyledResultListWrapper>
         </SearchResultWrapper>
       )}
     </StyledContentWrapperLarge>
