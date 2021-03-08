@@ -45,10 +45,6 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
   }, [queryObject]);
 
   const changeSelected = (index: number, event: any) => {
-    setInstitutionCheckedList((prevState) => {
-      prevState[index].isSelected = event.target.checked;
-      return [...prevState];
-    });
     if (event.target.checked) {
       setQueryObject((prevState) => ({
         ...prevState,
