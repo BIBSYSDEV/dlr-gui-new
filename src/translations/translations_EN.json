@@ -76,6 +76,13 @@
     "required_field": "Required field",
     "valid_url": "Input must be a valid URL"
   },
+  "institutions": {
+    "bi": "BI",
+    "hvl": "HVL",
+    "ntnu": "NTNU",
+    "oslomet": "OsloMet",
+    "uib": "UiB"
+  },
   "license": {
     "commercial_options": {
       "yes": "Yes, the material can be used for commercial purposes",

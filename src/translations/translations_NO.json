@@ -76,6 +76,13 @@
     "required_field": "Påkrevd felt",
     "valid_url": "Input må være gyldig URL"
   },
+  "institutions": {
+    "bi": "BI",
+    "hvl": "HVL",
+    "ntnu": "NTNU",
+    "oslomet": "OsloMet",
+    "uib": "UiB"
+  },
   "license": {
     "commercial_options": {
       "yes": "Ja, materialet kan brukes for kommersielle formål",

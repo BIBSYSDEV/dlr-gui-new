@@ -85,7 +85,7 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
                 name={institution.name}
               />
             }
-            label={institution.name}
+            label={t(`institutions.${institution.name}`)}
             onChange={(event) => {
               changeSelected(index, event);
             }}
