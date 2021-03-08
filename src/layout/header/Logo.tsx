@@ -18,7 +18,7 @@ const StyledDivider = styled(Divider)`
 
 const Logo: FC = () => (
   <StyledLogo data-testid="logo">
-    <Link href="/">
+    <Link href="/" underline="none">
       <Typography variant="h3" component="div">
         DLR
       </Typography>

@@ -31,20 +31,25 @@ export const searchResources = ({
   ) {
     url += '&filter=';
     const filters: string[] = [];
-    if (institutions.length > 0) {
+    if (institutions.length > 1) {
       filters.push(`facet_institution::(${institutions.join(' OR ')})`);
+    } else if (institutions.length === 1) {
+      filters.push(`facet_institution::${institutions[0]}`);
     }
-    if (resourceType.length > 0) {
+    if (resourceType.length > 1) {
       filters.push(`facet_filetype::(${resourceType.join(' OR ')})`);
-    }
-    if (institutions.length > 0) {
-      filters.push(`facet_institution::(${institutions.join(' OR ')})`);
+    } else if (resourceType.length === 1) {
+      filters.push(`facet_filetype::${resourceType[0]}`);
     }
     if (licenses.length > 1) {
       filters.push(`facet_license::(${licenses.join(' OR ')})`);
+    } else if (licenses.length === 1) {
+      filters.push(`facet_license::${licenses[0]}`);
     }
     if (keywords.length > 1) {
       filters.push(`facet_keyword::(${keywords.join(' OR ')})`);
+    } else if (keywords.length === 1) {
+      filters.push(`facet_keyword::${keywords[0]}`);
     }
     if (filters.length > 0) {
       url += filters.join('|');
