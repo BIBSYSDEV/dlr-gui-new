@@ -129,7 +129,7 @@ const Explore = () => {
       if (queryObject.query.length > 0) url += `${SearchParameters.query}=${queryObject.query}`;
       if (queryObject.institutions.length > 0)
         url += queryObject.institutions
-          .map((institution) => `&${SearchParameters.institution}=${institution}`)
+          .map((institution) => `&${SearchParameters.institution}=${institution.toLowerCase()}`)
           .join('');
       history.replace(url);
     };

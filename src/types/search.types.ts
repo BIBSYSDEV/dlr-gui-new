@@ -49,4 +49,4 @@ export enum SearchParameters {
   offset = 'offset',
 }
 
-export const AllDLRInstitutionNames = ['NTNU', 'BI', 'OsloMet', 'UiB', 'HVL'];
+export const AllDLRInstitutionNames = ['ntnu', 'bi', 'oslomet', 'uib', 'hvl'];

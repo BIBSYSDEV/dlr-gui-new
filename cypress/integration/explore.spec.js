@@ -33,7 +33,7 @@ context('Actions', () => {
     cy.get(`[data-testid=institution-filtering-checkbox-label-${bi}]`).click();
     cy.get(`[data-testid=institution-filtering-checkbox-label-${oslomet}]`).click();
     cy.location().should((loc) => {
-      expect(loc.search).to.eq(`?query=${search}&inst=%28${ntnu}+OR+${bi}+OR+${oslomet}%29`);
+      expect(loc.search).to.eq(`?query=${search}&inst=${ntnu}&inst=${bi}&inst=${oslomet}`);
     });
   });
 
@@ -47,7 +47,7 @@ context('Actions', () => {
     cy.get(`[data-testid=institution-filtering-checkbox-label-${oslomet}]`).click();
     cy.get(`[data-testid=institution-filtering-checkbox-label-${ntnu}]`).click();
     cy.location().should((loc) => {
-      expect(loc.search).to.eq(`?query=${search}&inst=%28${bi}+OR+${oslomet}%29`);
+      expect(loc.search).to.eq(`?query=${search}&inst=${bi}&inst=${oslomet}`);
     });
     cy.get(`[data-testid=institution-filtering-checkbox-label-${bi}]`).click();
     cy.location().should((loc) => {
@@ -60,7 +60,7 @@ context('Actions', () => {
   });
 
   it('can detect institution filters in the url', () => {
-    cy.visit(`/?query=${search}&inst=%28${ntnu}+OR+${oslomet}%29`);
+    cy.visit(`/?query=${search}&inst=${ntnu}&inst=${oslomet}`);
     cy.get('[data-testid=expand-filtering-options]').click();
     cy.get(`[data-testid=institution-filtering-checkbox-${ntnu}]`)
       .children('span')
