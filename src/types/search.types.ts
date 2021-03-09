@@ -20,7 +20,7 @@ export interface QueryObject {
   offset: number;
   limit: number;
   institutions: string[];
-  resourceType: string[];
+  resourceTypes: string[];
   licenses: string[];
   keywords: string[];
   queryFromURL: boolean;
@@ -34,7 +34,7 @@ export const emptyQueryObject: QueryObject = {
   offset: 0,
   limit: 0,
   institutions: [],
-  resourceType: [],
+  resourceTypes: [],
   licenses: [],
   keywords: [],
   queryFromURL: false,
@@ -47,6 +47,7 @@ export enum SearchParameters {
   page = 'page',
   limit = 'limit',
   offset = 'offset',
+  resourceType = 'type',
 }
 
 export const AllDLRInstitutionNames = ['ntnu', 'bi', 'oslomet', 'uib', 'hvl'];

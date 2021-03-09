@@ -17,7 +17,7 @@ export const searchResources = ({
   query,
   limit,
   institutions,
-  resourceType,
+  resourceTypes,
   licenses,
   keywords,
   offset,
@@ -25,7 +25,7 @@ export const searchResources = ({
   let url = `${API_PATHS.guiBackendResourcesSearchPath}/resources/search?query=${query}`;
   if (
     (institutions && institutions.length > 0) ||
-    resourceType.length > 0 ||
+    resourceTypes.length > 0 ||
     licenses.length > 0 ||
     keywords.length > 0
   ) {
@@ -36,10 +36,10 @@ export const searchResources = ({
     } else if (institutions.length === 1) {
       filters.push(`facet_institution::${institutions[0]}`);
     }
-    if (resourceType.length > 1) {
-      filters.push(`facet_filetype::(${resourceType.join(' OR ')})`);
-    } else if (resourceType.length === 1) {
-      filters.push(`facet_filetype::${resourceType[0]}`);
+    if (resourceTypes.length > 1) {
+      filters.push(`facet_filetype::(${resourceTypes.join(' OR ')})`);
+    } else if (resourceTypes.length === 1) {
+      filters.push(`facet_filetype::${resourceTypes[0]}`);
     }
     if (licenses.length > 1) {
       filters.push(`facet_license::(${licenses.join(' OR ')})`);
