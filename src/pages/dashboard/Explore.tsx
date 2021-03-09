@@ -171,7 +171,9 @@ const Explore = () => {
       )}
       {searchResult && (
         <SearchResultWrapper>
-          <FilterSearchOptions queryObject={queryObject} setQueryObject={setQueryObject} />
+          <div style={{ display: 'none' }}>
+            <FilterSearchOptions queryObject={queryObject} setQueryObject={setQueryObject} />
+          </div>
           <StyledResultListWrapper>
             {isSearching ? (
               <StyledProgressWrapper>
