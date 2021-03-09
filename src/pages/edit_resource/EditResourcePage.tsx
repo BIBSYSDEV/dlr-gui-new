@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -68,7 +68,7 @@ const potentialDLRTypes = [
 // This to prevent error: "Material-UI: You have provided an out-of-range value..."
 const StartingContributorType = 'HostingInstitution';
 
-const EditResourcePage: FC = () => {
+const EditResourcePage = () => {
   const { t } = useTranslation();
   const { identifier } = useParams<EditResourcePageParamTypes>();
   const [formikInitResource, setFormikInitResource] = useState<Resource>();

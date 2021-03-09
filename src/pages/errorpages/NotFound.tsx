@@ -9,7 +9,7 @@ const StyledNotFoundWrapper = styled.div`
   padding-top: 4rem;
 `;
 
-const NotFound: React.FC = () => {
+const NotFound = () => {
   const { t } = useTranslation();
 
   return (

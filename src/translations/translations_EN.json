@@ -58,7 +58,10 @@
     "yes": "Yes"
   },
   "dashboard": {
-    "explore": "Explore"
+    "enabled": "enabled",
+    "explore": "Explore",
+    "filter": "Filter",
+    "institutions": "Institutions"
   },
   "delivered_by": "Delivered by",
   "error": {
@@ -72,6 +75,13 @@
     "form_errors": "There are errors in the form. They have to be corrected before the resource can be published",
     "required_field": "Required field",
     "valid_url": "Input must be a valid URL"
+  },
+  "institutions": {
+    "bi": "BI",
+    "hvl": "HVL",
+    "ntnu": "NTNU",
+    "oslomet": "OsloMet",
+    "uib": "UiB"
   },
   "license": {
     "commercial_options": {
@@ -169,6 +179,7 @@
     "delete_resource_confirmation": "Are you really sure you want to delete",
     "delete_resource_description": "This will permanently delete the resource and the resource cannot be restored",
     "edit_resource": "Edit resource",
+    "fields_required": "Fields marked with * are required",
     "files_and_license": {
       "additional_files": {
         "additional_files": "Additional files",

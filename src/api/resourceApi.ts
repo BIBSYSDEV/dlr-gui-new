@@ -11,11 +11,52 @@ import {
 import { AccessTypes, License } from '../types/license.types';
 import { Content, emptyResourceContent, LinkMetadataFilename } from '../types/content.types';
 import { authenticatedApiRequest } from './api';
-import { QueryObject, SearchResult } from '../types/search.types';
+import { QueryObject, SearchParameters, SearchResult } from '../types/search.types';
 
-export const searchResources = (query: QueryObject): Promise<AxiosResponse<SearchResult>> => {
-  let url = `${API_PATHS.guiBackendResourcesSearchPath}/resources/search?query=${query.query}&limit=${query.limit}`;
-  if (query.offset > 0) url += `&offset=${query.offset}`;
+export const searchResources = ({
+  query,
+  limit,
+  institutions,
+  resourceType,
+  licenses,
+  keywords,
+  offset,
+}: QueryObject): Promise<AxiosResponse<SearchResult>> => {
+  let url = `${API_PATHS.guiBackendResourcesSearchPath}/resources/search?query=${query}`;
+  if (
+    (institutions && institutions.length > 0) ||
+    resourceType.length > 0 ||
+    licenses.length > 0 ||
+    keywords.length > 0
+  ) {
+    url += '&filter=';
+    const filters: string[] = [];
+    if (institutions.length > 1) {
+      filters.push(`facet_institution::(${institutions.join(' OR ')})`);
+    } else if (institutions.length === 1) {
+      filters.push(`facet_institution::${institutions[0]}`);
+    }
+    if (resourceType.length > 1) {
+      filters.push(`facet_filetype::(${resourceType.join(' OR ')})`);
+    } else if (resourceType.length === 1) {
+      filters.push(`facet_filetype::${resourceType[0]}`);
+    }
+    if (licenses.length > 1) {
+      filters.push(`facet_license::(${licenses.join(' OR ')})`);
+    } else if (licenses.length === 1) {
+      filters.push(`facet_license::${licenses[0]}`);
+    }
+    if (keywords.length > 1) {
+      filters.push(`facet_keyword::(${keywords.join(' OR ')})`);
+    } else if (keywords.length === 1) {
+      filters.push(`facet_keyword::${keywords[0]}`);
+    }
+    if (filters.length > 0) {
+      url += filters.join('|');
+    }
+  }
+  if (offset > 0) url += `&${SearchParameters.offset}=${offset}`;
+  if (limit > 0) url += `&${SearchParameters.limit}=${limit}`;
   return authenticatedApiRequest({
     url: encodeURI(url),
     method: 'GET',

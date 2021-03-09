@@ -18,11 +18,6 @@ import { Uppy } from '../../types/file.types';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 
-interface ResourceFormNavigationHeaderProps {
-  activeStep: ResourceFormStep;
-  setActiveStep: (step: number) => void;
-  uppy: Uppy;
-}
 const StyledStepTypography = styled(Typography)`
   font-size: inherit;
   font-weight: inherit;
@@ -31,6 +26,11 @@ const StyledStepTypography = styled(Typography)`
 
 const fileUploadPanelId = 'file-upload-panel';
 
+interface ResourceFormNavigationHeaderProps {
+  activeStep: ResourceFormStep;
+  setActiveStep: (step: number) => void;
+  uppy: Uppy;
+}
 const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ activeStep, setActiveStep, uppy }) => {
   const { t } = useTranslation();
   const { values, touched, setTouched, errors } = useFormikContext<Resource>();

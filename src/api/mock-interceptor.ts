@@ -33,7 +33,8 @@ export const interceptRequestsOnMock = () => {
 
   const loggedReply = (config: AxiosRequestConfig, statusCode: number, mockedResult: unknown) => {
     /* eslint-disable no-console */
-    console.log('MOCKED API-CALL: ', config, statusCode, mockedResult);
+    console.log('MOCKED API-CALL: ', config.url);
+    //console.log('MOCKED API-CALL: ', config, statusCode, mockedResult);
     return [statusCode, mockedResult];
   };
 

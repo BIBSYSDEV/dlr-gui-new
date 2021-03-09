@@ -9,7 +9,7 @@ const StyledForbiddenWrapper = styled.div`
   padding-top: 4rem;
 `;
 
-const Forbidden: React.FC = () => {
+const Forbidden = () => {
   const { t } = useTranslation();
 
   return (

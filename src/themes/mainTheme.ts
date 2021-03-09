@@ -41,6 +41,7 @@ export enum Colors {
   DescriptionPageGradientColor3 = 'rgba(66,127,140,0.30)',
   ContributorsPageGradientColor1 = 'rgba(242,229,189,0.25)',
   ContributorsPageGradientColor2 = 'rgba(242,229,189,0.50)',
+  ExploreResourcesPageOptionFiler = 'rgba(242,229,189,0.1)',
   ContentsPageGradientColor1 = 'rgba(42,191,164,0.10)',
   ContentsPageGradientColor2 = 'rgba(42,191,164,0.25)',
   LicenseAccessPageGradientColor1 = 'rgba(68,242,193,0.10)',
@@ -64,14 +65,22 @@ export enum StyleWidths {
   width5 = '75rem', //1200px
 }
 
+export enum DeviceWidths {
+  xs = 0,
+  sm = 600,
+  md = 960,
+  lg = 1280,
+  xl = 1920,
+}
+
 export default createMuiTheme({
   breakpoints: {
     values: {
-      xs: 0,
-      sm: 600,
-      md: 960,
-      lg: 1280,
-      xl: 1920,
+      xs: DeviceWidths.xs,
+      sm: DeviceWidths.sm,
+      md: DeviceWidths.md,
+      lg: DeviceWidths.lg,
+      xl: DeviceWidths.xl,
     },
   },
   palette: {
@@ -187,6 +196,7 @@ export default createMuiTheme({
     MuiAccordion: {
       root: {
         border: '3px solid #427F8C',
+        boxShadow: 'none',
       },
     },
     MuiButton: {

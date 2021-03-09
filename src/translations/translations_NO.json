@@ -58,7 +58,10 @@
     "yes": "Ja"
   },
   "dashboard": {
-    "explore": "Utforsk"
+    "enabled": "aktive",
+    "explore": "Utforsk",
+    "filter": "Filter",
+    "institutions": "Institusjoner"
   },
   "delivered_by": "Levert av",
   "error": {
@@ -72,6 +75,13 @@
     "form_errors": "Det er feil i skjema. Disse må rettes før ressursen kan publiseres",
     "required_field": "Påkrevd felt",
     "valid_url": "Input må være gyldig URL"
+  },
+  "institutions": {
+    "bi": "BI",
+    "hvl": "HVL",
+    "ntnu": "NTNU",
+    "oslomet": "OsloMet",
+    "uib": "UiB"
   },
   "license": {
     "commercial_options": {
@@ -169,6 +179,7 @@
     "delete_resource_confirmation": "Vil du virkelig slette",
     "delete_resource_description": "Slettingen vil være permament og ressursen kan ikke gjenopprettes",
     "edit_resource": "Rediger ressurs",
+    "fields_required": "Felter markert med * er påkrevd",
     "files_and_license": {
       "additional_files": {
         "additional_files": "Tilleggsfiler",

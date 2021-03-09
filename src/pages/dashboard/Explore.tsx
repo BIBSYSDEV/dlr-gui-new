@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
 import { searchResources } from '../../api/resourceApi';
 import { useTranslation } from 'react-i18next';
-import { NumberOfResultsPrPage, QueryObject, SearchResult } from '../../types/search.types';
+import { emptyQueryObject, NumberOfResultsPrPage, SearchParameters, SearchResult } from '../../types/search.types';
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
@@ -13,16 +13,34 @@ import SearchInput from './SearchInput';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Pagination } from '@material-ui/lab';
 import ResultListItem from '../../components/ResultListItem';
+import FilterSearchOptions from './FilterSearchOptions';
+
+const SearchResultWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 3rem;
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.lg + 'px'}) {
+    flex-direction: row;
+  }
+`;
 
 const StyledResultListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${Colors.ResultListBackground};
-  margin-top: 2rem;
   padding: 1.5rem 0.5rem 1rem 0.5rem;
   margin-bottom: 2rem;
   max-width: ${StyleWidths.width5};
   align-items: center;
+  flex: 1;
+`;
+
+const StyledProgressWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 3rem;
 `;
 
 const StyledPaginationWrapper = styled.div`
@@ -35,6 +53,7 @@ const StyledPaginationWrapper = styled.div`
     color: ${Colors.Primary};
     font-weight: 700;
   }
+
   & .Mui-selected {
     color: ${Colors.Background};
   }
@@ -47,48 +66,82 @@ const StyledList = styled(List)`
   width: 100%;
 `;
 
+const StyledResultListHeaderWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: ${StyleWidths.width4};
+  justify-content: center;
+`;
+
+const StyledResultListHeader = styled(Typography)`
+  width: 100%;
+`;
+
+const firstPage = 1;
+
 const Explore = () => {
-  const firstPage = 1;
+  const [page, setPage] = useState(firstPage);
   const location = useLocation();
-  const [query, setQuery] = useState<null | QueryObject>(null);
+
+  const [queryObject, setQueryObject] = useState(emptyQueryObject);
   const [isSearching, setIsSearching] = useState(false);
   const [searchResult, setSearchResult] = useState<SearchResult>();
   const [resources, setResources] = useState<Resource[]>([]);
   const { t } = useTranslation();
   const [searchError, setSearchError] = useState(false);
-  const [page, setPage] = useState(firstPage);
   const history = useHistory();
 
   const handlePaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
-    const searchParams = new URLSearchParams(location.search);
-    value === firstPage ? searchParams.delete('page') : searchParams.set('page', '' + value);
-    history.replace(`?${searchParams.toString()}`);
+    setQueryObject((prevState) => ({
+      ...prevState,
+      offset: (Number(value) - 1) * NumberOfResultsPrPage,
+      queryFromURL: false,
+    }));
   };
 
   useEffect(() => {
-    const searchTerm = new URLSearchParams(location.search);
-    const pageTerm = searchTerm.get('page');
-    let offset = 0;
-    if (pageTerm) {
-      setPage(+pageTerm);
-      offset = (+pageTerm - 1) * NumberOfResultsPrPage;
-    } else {
-      setPage(firstPage);
+    const createQueryFromUrl = () => {
+      const searchTerms = new URLSearchParams(location.search);
+      const institutions = searchTerms.getAll(SearchParameters.institution);
+      const pageTerm = searchTerms.get(SearchParameters.page);
+      const offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
+      return {
+        ...emptyQueryObject,
+        query: searchTerms.get(SearchParameters.query) ?? '',
+        offset: offset,
+        limit: NumberOfResultsPrPage,
+        institutions: institutions,
+        queryFromURL: true,
+        allowSearch: true,
+      };
+    };
+    if (!queryObject.queryFromURL && !queryObject.allowSearch) {
+      setQueryObject(createQueryFromUrl());
     }
-    setQuery({
-      query: searchTerm.get('query') ?? '',
-      offset: offset,
-      limit: NumberOfResultsPrPage,
-    });
-  }, [location]);
+  }, [location, queryObject.allowSearch, queryObject.queryFromURL]);
 
   useEffect(() => {
+    const reWriteUrl = () => {
+      let url = `?`;
+      if (queryObject.query.length > 0) url += `${SearchParameters.query}=${queryObject.query}`;
+      if (queryObject.institutions.length > 0)
+        url += queryObject.institutions
+          .map((institution) => `&${SearchParameters.institution}=${institution.toLowerCase()}`)
+          .join('');
+      history.replace(url);
+    };
+
     const triggerSearch = async () => {
-      if (query) {
+      if (!queryObject.queryFromURL) {
+        reWriteUrl();
+      }
+      if (queryObject) {
         try {
           setIsSearching(true);
-          const response = await searchResources(query);
+          const response = await searchResources(queryObject);
           if (response.data) {
             setSearchError(false);
             setSearchResult(response.data);
@@ -103,42 +156,54 @@ const Explore = () => {
         }
       }
     };
-    triggerSearch();
-  }, [query]);
+    if (queryObject.allowSearch) triggerSearch();
+  }, [queryObject, history]);
 
   return (
     <StyledContentWrapperLarge>
       <PageHeader>{t('dashboard.explore')}</PageHeader>
-      <SearchInput />
+      <SearchInput setQueryObject={setQueryObject} />
       {searchError && <ErrorBanner />}
-      {isSearching ? (
-        <StyledResultListWrapper>
+      {!searchResult && isSearching && (
+        <StyledProgressWrapper>
           <CircularProgress />
-        </StyledResultListWrapper>
-      ) : (
-        searchResult && (
+        </StyledProgressWrapper>
+      )}
+      {searchResult && (
+        <SearchResultWrapper>
+          <FilterSearchOptions queryObject={queryObject} setQueryObject={setQueryObject} />
           <StyledResultListWrapper>
-            <Typography variant="h2">
-              {t('common.result')} ({searchResult.numFound})
-            </Typography>
-            <StyledList>
-              {resources &&
-                resources.length > 0 &&
-                resources.map((resource: Resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
-            </StyledList>
-            {searchResult.numFound > NumberOfResultsPrPage && (
-              <StyledPaginationWrapper>
-                <Typography variant="subtitle2">{t('common.page')}</Typography>
-                <Pagination
-                  count={Math.ceil(searchResult.numFound / NumberOfResultsPrPage)}
-                  page={page}
-                  color="primary"
-                  onChange={handlePaginationChange}
-                />
-              </StyledPaginationWrapper>
+            {isSearching ? (
+              <StyledProgressWrapper>
+                <CircularProgress />
+              </StyledProgressWrapper>
+            ) : (
+              <>
+                <StyledResultListHeaderWrapper>
+                  <StyledResultListHeader variant="h2">
+                    {t('common.result')} ({searchResult.numFound})
+                  </StyledResultListHeader>
+                </StyledResultListHeaderWrapper>
+                <StyledList>
+                  {resources &&
+                    resources.length > 0 &&
+                    resources.map((resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
+                </StyledList>
+                {searchResult.numFound > NumberOfResultsPrPage && (
+                  <StyledPaginationWrapper>
+                    <Typography variant="subtitle2">{t('common.page')}</Typography>
+                    <Pagination
+                      count={Math.ceil(searchResult.numFound / NumberOfResultsPrPage)}
+                      page={page}
+                      color="primary"
+                      onChange={handlePaginationChange}
+                    />
+                  </StyledPaginationWrapper>
+                )}
+              </>
             )}
           </StyledResultListWrapper>
-        )
+        </SearchResultWrapper>
       )}
     </StyledContentWrapperLarge>
   );

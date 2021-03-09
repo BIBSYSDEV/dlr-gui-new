@@ -1,10 +1,11 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, Dispatch, FC, FormEvent, SetStateAction, useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import SearchIcon from '@material-ui/icons/Search';
 import { StyleWidths } from '../../themes/mainTheme';
+import { NumberOfResultsPrPage, QueryObject } from '../../types/search.types';
 
 const StyledForm = styled.form`
   margin-top: 2rem;
@@ -34,32 +35,32 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const SearchInput = () => {
+interface SearchInputProps {
+  setQueryObject: Dispatch<SetStateAction<QueryObject>>;
+}
+
+const SearchInput: FC<SearchInputProps> = ({ setQueryObject }) => {
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState(new URLSearchParams(location.search).get('query') || '');
-  const history = useHistory();
   const { t } = useTranslation();
 
-  const setURLParams = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const searchParams = new URLSearchParams();
-    searchParams.set('query', searchTerm);
-    history.replace(`?${searchParams.toString()}`);
+    setQueryObject((prevState) => ({
+      ...prevState,
+      query: searchTerm,
+      limit: NumberOfResultsPrPage,
+      offset: 0,
+      queryFromURL: false,
+    }));
   };
-
-  useEffect(() => {
-    const searchTerm = new URLSearchParams(location.search);
-    if (!searchTerm.get('query')) {
-      setSearchTerm('');
-    }
-  }, [location]);
 
   const updateSearchTermValue = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
   return (
-    <StyledForm onSubmit={setURLParams}>
+    <StyledForm onSubmit={handleSubmit}>
       <StyledTextField
         data-testid="search-for-resource-input"
         variant="filled"
