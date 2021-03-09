@@ -47,10 +47,10 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
   const handleInput = (event: any) => {
     //TODO: no duplicates
     const value = event.target.value;
-    console.log('adding tag!', value);
     setQueryObject((prevState) => ({
       ...prevState,
       tags: [...prevState.tags, value],
+      offset: 0,
     }));
   };
 
@@ -58,12 +58,13 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
     setTagValue(event.target.value);
   };
 
-  const handleDelete = (tag: string) => {
-    console.info('Delete ' + tag);
-    // setQueryObject((prevState) => ({
-    //   ...prevState,
-    //   tags: [...prevState.tags, value],
-    // }));
+  const handleDelete = (tagToDelete: string) => {
+    console.info('Delete ' + tagToDelete);
+    setQueryObject((prevState) => ({
+      ...prevState,
+      tags: prevState.tags.filter((tag) => tag !== tagToDelete),
+      offset: 0,
+    }));
   };
 
   return (
