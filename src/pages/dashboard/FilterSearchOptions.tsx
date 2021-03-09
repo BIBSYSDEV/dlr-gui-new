@@ -27,7 +27,6 @@ function useWindowWidth() {
 const StyledAccordion = styled(Accordion)`
   background-color: ${Colors.ExploreResourcesPageOptionFiler};
   border: none;
-
   & .MuiPaper-elevation1 {
     box-shadow: none;
   }
@@ -35,11 +34,18 @@ const StyledAccordion = styled(Accordion)`
 
 const StyledSideBar = styled.div`
   background-color: ${Colors.ExploreResourcesPageOptionFiler};
-  min-width: 17rem;
+  width: 17rem;
+  display: flex;
+  flex-direction: column;
 `;
 
 const StyledAccordionDetails = styled(AccordionDetails)`
   display: flex;
+  flex-direction: column;
+`;
+
+const StyledSpacer = styled.div`
+  height: 2rem;
 `;
 
 interface FilterSearchOptionsProps {
@@ -79,7 +85,10 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
       {width > DeviceWidths.lg ? (
         <StyledSideBar>
           {filterHeader()}
+          <StyledSpacer />
           <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+          <StyledSpacer />
+          <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
         </StyledSideBar>
       ) : (
         <StyledAccordion expanded={isFiltersExpanded} onChange={handleChange}>
@@ -92,6 +101,7 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
           </AccordionSummary>
           <StyledAccordionDetails>
             <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+            <StyledSpacer />
             <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           </StyledAccordionDetails>
         </StyledAccordion>

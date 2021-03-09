@@ -35,6 +35,7 @@ const StyledCancelIcon = styled(CancelIcon)`
 
 const StyledChipContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
 `;
 
 interface TagsFilteringProps {
@@ -79,7 +80,6 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
         <Typography variant="h3">{t('dashboard.tags')}</Typography>{' '}
       </FormLabel>
       <FormGroup>
-        {/*TODO: styling*/}
         {/*TODO: Autocomplete*/}
         <TextField
           id="filter-tags-input"
