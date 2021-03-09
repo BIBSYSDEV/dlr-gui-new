@@ -43,6 +43,7 @@ export const emptyQueryObject: QueryObject = {
 
 export enum SearchParameters {
   institution = 'inst',
+  tag = 'tag',
   query = 'query',
   page = 'page',
   limit = 'limit',

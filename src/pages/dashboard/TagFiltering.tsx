@@ -20,11 +20,11 @@ const StyledChip = styled(Chip)`
     margin-top: 1rem;
     margin-bottom: 1rem;
     margin-right: 0.5rem;
-    //background-color: ${Colors.ChipBackground};
-    //color: ${Colors.Background};
+    background-color: ${Colors.ChipBackground};
+    color: ${Colors.Background};
     &:focus {
-      //color: ${Colors.PrimaryText};
-      //background-color: ${Colors.ChipBackgroundFocus};
+      color: ${Colors.PrimaryText};
+      background-color: ${Colors.ChipBackgroundFocus};
     }
   }
 `;
@@ -53,6 +53,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
         ...prevState,
         tags: [...prevState.tags, newTagValue],
         offset: 0,
+        queryFromURL: false,
       }));
     }
     setTagValue('');
@@ -68,6 +69,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
       ...prevState,
       tags: prevState.tags.filter((tag) => tag !== tagToDelete),
       offset: 0,
+      queryFromURL: false,
     }));
   };
 

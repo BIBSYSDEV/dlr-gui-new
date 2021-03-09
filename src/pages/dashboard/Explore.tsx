@@ -106,6 +106,7 @@ const Explore = () => {
     const createQueryFromUrl = () => {
       const searchTerms = new URLSearchParams(location.search);
       const institutions = searchTerms.getAll(SearchParameters.institution);
+      const tags = searchTerms.getAll(SearchParameters.tag);
       const pageTerm = searchTerms.get(SearchParameters.page);
       const offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
       return {
@@ -114,6 +115,7 @@ const Explore = () => {
         offset: offset,
         limit: NumberOfResultsPrPage,
         institutions: institutions,
+        tags: tags,
         queryFromURL: true,
         allowSearch: true,
       };
@@ -131,6 +133,9 @@ const Explore = () => {
         url += queryObject.institutions
           .map((institution) => `&${SearchParameters.institution}=${institution.toLowerCase()}`)
           .join('');
+      if (queryObject.tags.length > 0)
+        url += queryObject.tags.map((tag) => `&${SearchParameters.tag}=${tag.toLowerCase()}`).join('');
+      console.log(url);
       history.replace(url);
     };
 
