@@ -45,13 +45,14 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
   const [tagValue, setTagValue] = useState('');
 
   const handleInput = (event: any) => {
-    //TODO: no duplicates
-    const value = event.target.value;
-    setQueryObject((prevState) => ({
-      ...prevState,
-      tags: [...prevState.tags, value],
-      offset: 0,
-    }));
+    const newTagValue = event.target.value.trim();
+    if (!queryObject.tags.includes(newTagValue)) {
+      setQueryObject((prevState) => ({
+        ...prevState,
+        tags: [...prevState.tags, newTagValue],
+        offset: 0,
+      }));
+    }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,6 +74,8 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
         <Typography variant="h3">{t('dashboard.tags')}</Typography>{' '}
       </FormLabel>
       <FormGroup>
+        {/*TODO: styling*/}
+        {/*TODO: Autocomplete*/}
         <TextField
           id="filter-tags-input"
           label={t('resource.metadata.tags')}
