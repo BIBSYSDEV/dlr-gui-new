@@ -8,6 +8,8 @@ import { QueryObject } from '../../types/search.types';
 import { Colors } from '../../themes/mainTheme';
 import CancelIcon from '@material-ui/icons/Cancel';
 
+const minimumTagLength = 1;
+
 const StyledFormControl: any = styled(FormControl)`
   margin-left: 1rem;
   margin-right: 1rem;
@@ -44,15 +46,16 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
   const { t } = useTranslation();
   const [tagValue, setTagValue] = useState('');
 
-  const handleInput = (event: any) => {
-    const newTagValue = event.target.value.trim();
-    if (!queryObject.tags.includes(newTagValue)) {
+  const submitTag = () => {
+    const newTagValue = tagValue.trim();
+    if (!queryObject.tags.includes(newTagValue) && newTagValue.length > minimumTagLength) {
       setQueryObject((prevState) => ({
         ...prevState,
         tags: [...prevState.tags, newTagValue],
         offset: 0,
       }));
     }
+    setTagValue('');
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,11 +82,17 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
         <TextField
           id="filter-tags-input"
           label={t('resource.metadata.tags')}
-          helperText={t('resource.add_tags')}
+          helperText={t('dashboard.enter_tags')}
           variant="outlined"
           fullWidth
           data-testid="filter-tags-input"
-          onBlur={handleInput}
+          onBlur={submitTag}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              event.preventDefault();
+              submitTag();
+            }
+          }}
           value={tagValue}
           onChange={handleChange}
         />
