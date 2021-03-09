@@ -53,17 +53,12 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
         queryFromURL: false,
       }));
     } else {
-      setQueryObject((prevState) => {
-        const newInstitutions = prevState.institutions.filter(
-          (instName) => instName !== institutionCheckedList[index].name
-        );
-        return {
-          ...prevState,
-          institutions: newInstitutions,
-          offset: 0,
-          queryFromURL: false,
-        };
-      });
+      setQueryObject((prevState) => ({
+        ...prevState,
+        institutions: prevState.institutions.filter((instName) => instName !== institutionCheckedList[index].name),
+        offset: 0,
+        queryFromURL: false,
+      }));
     }
   };
 
