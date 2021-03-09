@@ -22,7 +22,7 @@ export interface QueryObject {
   institutions: string[];
   resourceType: string[];
   licenses: string[];
-  keywords: string[];
+  tags: string[];
   queryFromURL: boolean;
   allowSearch: boolean; //instead of setting queryobject null at initiation
 }
@@ -36,7 +36,7 @@ export const emptyQueryObject: QueryObject = {
   institutions: [],
   resourceType: [],
   licenses: [],
-  keywords: [],
+  tags: [],
   queryFromURL: false,
   allowSearch: false,
 };

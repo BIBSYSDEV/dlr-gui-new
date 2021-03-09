@@ -19,16 +19,11 @@ export const searchResources = ({
   institutions,
   resourceType,
   licenses,
-  keywords,
+  tags,
   offset,
 }: QueryObject): Promise<AxiosResponse<SearchResult>> => {
   let url = `${API_PATHS.guiBackendResourcesSearchPath}/resources/search?query=${query}`;
-  if (
-    (institutions && institutions.length > 0) ||
-    resourceType.length > 0 ||
-    licenses.length > 0 ||
-    keywords.length > 0
-  ) {
+  if ((institutions && institutions.length > 0) || resourceType.length > 0 || licenses.length > 0 || tags.length > 0) {
     url += '&filter=';
     const filters: string[] = [];
     if (institutions.length > 1) {
@@ -46,10 +41,10 @@ export const searchResources = ({
     } else if (licenses.length === 1) {
       filters.push(`facet_license::${licenses[0]}`);
     }
-    if (keywords.length > 1) {
-      filters.push(`facet_keyword::(${keywords.join(' OR ')})`);
-    } else if (keywords.length === 1) {
-      filters.push(`facet_keyword::${keywords[0]}`);
+    if (tags.length > 1) {
+      filters.push(`facet_keyword::(${tags.join(' OR ')})`);
+    } else if (tags.length === 1) {
+      filters.push(`facet_keyword::${tags[0]}`);
     }
     if (filters.length > 0) {
       url += filters.join('|');

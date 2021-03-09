@@ -9,6 +9,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import InstitutionFiltering from './InstitutionFiltering';
 import { QueryObject } from '../../types/search.types';
+import TagFiltering from './TagFiltering';
 
 function useWindowWidth() {
   const [width, setWidth] = useState(0);
@@ -55,9 +56,9 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
   useEffect(() => {
     const numFilters =
       queryObject.institutions.length +
-      queryObject.keywords.length +
+      queryObject.resourceType.length +
       queryObject.licenses.length +
-      queryObject.keywords.length;
+      queryObject.tags.length;
     setNumberOfFilters(numFilters);
     setIsFiltersExpanded(numFilters > 0);
   }, [queryObject]);
@@ -91,6 +92,7 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
           </AccordionSummary>
           <StyledAccordionDetails>
             <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+            <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           </StyledAccordionDetails>
         </StyledAccordion>
       )}

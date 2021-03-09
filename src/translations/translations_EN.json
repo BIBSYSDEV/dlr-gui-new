@@ -61,7 +61,8 @@
     "enabled": "enabled",
     "explore": "Explore",
     "filter": "Filter",
-    "institutions": "Institutions"
+    "institutions": "Institutions",
+    "tags": "Tags"
   },
   "delivered_by": "Delivered by",
   "error": {

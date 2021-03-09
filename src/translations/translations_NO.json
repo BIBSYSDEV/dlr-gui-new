@@ -61,7 +61,8 @@
     "enabled": "aktive",
     "explore": "Utforsk",
     "filter": "Filter",
-    "institutions": "Institusjoner"
+    "institutions": "Institusjoner",
+    "tags": "Emneord"
   },
   "delivered_by": "Levert av",
   "error": {
