@@ -50,13 +50,13 @@ const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({ queryObject, se
     if (queryObject.resourceTypes.length > 0) {
       const nextState = defaultResourceTypes.map((resourceType) => ({
         name: resourceType,
-        isSelected: !!queryObject.resourceTypes.find((type) => type.toLowerCase() === resourceType.toLowerCase()),
+        isSelected: !!queryObject.resourceTypes.find((type) => type === resourceType),
       }));
       setResourceCheckList(nextState);
     } else {
       setResourceCheckList(initialResourceTypeCheckList(t));
     }
-  }, [queryObject]);
+  }, [queryObject, t]);
 
   const changeSelected = (index: number, event: any) => {
     if (event.target.checked) {

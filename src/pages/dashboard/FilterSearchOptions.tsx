@@ -43,7 +43,11 @@ const StyledSideBar = styled.div`
 
 const StyledAccordionDetails = styled(AccordionDetails)`
   display: flex;
-  flex-direction: column;
+  justify-content: space-around safe;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
 `;
 
 interface FilterSearchOptionsProps {
@@ -98,8 +102,6 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
           </AccordionSummary>
           <StyledAccordionDetails>
             <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
-
-            <ResourceTypeFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
             <ResourceTypeFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           </StyledAccordionDetails>
         </StyledAccordion>

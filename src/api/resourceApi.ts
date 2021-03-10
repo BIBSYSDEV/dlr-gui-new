@@ -21,40 +21,29 @@ export const searchResources = ({
   licenses,
   keywords,
   offset,
+  order,
+  orderBy,
+  showInaccessible,
+  mine,
 }: QueryObject): Promise<AxiosResponse<SearchResult>> => {
-  let url = `${API_PATHS.guiBackendResourcesSearchPath}/resources/search?query=${query}`;
+  let url = `${API_PATHS.guiBackendResourcesSearchPath}/resources/search/advanced?query=${query}`;
   if (
     (institutions && institutions.length > 0) ||
     resourceTypes.length > 0 ||
     licenses.length > 0 ||
     keywords.length > 0
   ) {
-    url += '&filter=';
+    url += `&filter=`;
     const filters: string[] = [];
-    if (institutions.length > 1) {
-      filters.push(`facet_institution::(${institutions.join(' OR ')})`);
-    } else if (institutions.length === 1) {
-      filters.push(`facet_institution::${institutions[0]}`);
-    }
-    if (resourceTypes.length > 1) {
-      filters.push(`facet_filetype::(${resourceTypes.join(' OR ')})`);
-    } else if (resourceTypes.length === 1) {
-      filters.push(`facet_filetype::${resourceTypes[0]}`);
-    }
-    if (licenses.length > 1) {
-      filters.push(`facet_license::(${licenses.join(' OR ')})`);
-    } else if (licenses.length === 1) {
-      filters.push(`facet_license::${licenses[0]}`);
-    }
-    if (keywords.length > 1) {
-      filters.push(`facet_keyword::(${keywords.join(' OR ')})`);
-    } else if (keywords.length === 1) {
-      filters.push(`facet_keyword::${keywords[0]}`);
-    }
+    institutions.map((institution) => filters.push(`facet_institution::${institution}`));
+    resourceTypes.map((resourceType) => filters.push(`facet_filetype::${resourceType}`));
+    licenses.map((license) => filters.push(`facet_license::${license}`));
+    keywords.map((keyword) => filters.push(`facet_keyword::${keyword}`));
     if (filters.length > 0) {
       url += filters.join('|');
     }
   }
+  url += `&mine=${mine}&showInaccessible=${showInaccessible}&order_by=${orderBy}&order=${order}`;
   if (offset > 0) url += `&${SearchParameters.offset}=${offset}`;
   if (limit > 0) url += `&${SearchParameters.limit}=${limit}`;
   return authenticatedApiRequest({

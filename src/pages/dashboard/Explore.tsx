@@ -131,12 +131,10 @@ const Explore = () => {
       if (queryObject.query.length > 0) url += `${SearchParameters.query}=${queryObject.query}`;
       if (queryObject.institutions.length > 0)
         url += queryObject.institutions
-          .map((institution) => `&${SearchParameters.institution}=${institution.toLowerCase()}`)
+          .map((institution) => `&${SearchParameters.institution}=${institution}`)
           .join('');
       if (queryObject.resourceTypes.length > 0)
-        url += queryObject.resourceTypes
-          .map((type) => `&${SearchParameters.resourceType}=${type.toLowerCase()}`)
-          .join('');
+        url += queryObject.resourceTypes.map((type) => `&${SearchParameters.resourceType}=${type}`).join('');
       history.replace(url);
     };
 

@@ -25,6 +25,15 @@ export interface QueryObject {
   keywords: string[];
   queryFromURL: boolean;
   allowSearch: boolean; //instead of setting queryobject null at initiation
+  showInaccessible?: boolean;
+  orderBy: string;
+  order: Order;
+  mine: boolean;
+}
+
+export enum Order {
+  Asc = 'asc',
+  Desc = 'desc',
 }
 
 export const firstResultPage = 1;
@@ -39,6 +48,9 @@ export const emptyQueryObject: QueryObject = {
   keywords: [],
   queryFromURL: false,
   allowSearch: false,
+  orderBy: 'created',
+  order: Order.Desc,
+  mine: false,
 };
 
 export enum SearchParameters {
