@@ -135,7 +135,6 @@ const Explore = () => {
           .join('');
       if (queryObject.tags.length > 0)
         url += queryObject.tags.map((tag) => `&${SearchParameters.tag}=${tag.toLowerCase()}`).join('');
-      console.log(url);
       history.replace(url);
     };
 

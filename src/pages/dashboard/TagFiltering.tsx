@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import React, { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
 import { Chip, FormControl, FormGroup, TextField } from '@material-ui/core';
 import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { QueryObject } from '../../types/search.types';
 import { Colors } from '../../themes/mainTheme';
 import CancelIcon from '@material-ui/icons/Cancel';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const minimumTagLength = 1;
 
@@ -80,14 +81,11 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
         <Typography variant="h3">{t('dashboard.tags')}</Typography>{' '}
       </FormLabel>
       <FormGroup>
-        {/*TODO: Autocomplete*/}
-        <TextField
+        <Autocomplete
+          freeSolo
+          options={[]}
           id="filter-tags-input"
-          label={t('resource.metadata.tags')}
-          helperText={t('dashboard.enter_tags')}
-          variant="outlined"
-          fullWidth
-          data-testid="filter-tags-input"
+          value={tagValue}
           onBlur={submitTag}
           onKeyDown={(event) => {
             if (event.key === 'Enter') {
@@ -95,8 +93,17 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
               submitTag();
             }
           }}
-          value={tagValue}
-          onChange={handleChange}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="outlined"
+              helperText={t('dashboard.enter_tags')}
+              label={t('resource.metadata.tags')}
+              fullWidth
+              data-testid="filter-tags-input"
+              onChange={handleChange}
+            />
+          )}
         />
         <StyledChipContainer>
           {queryObject.tags.map((tag, index) => (
