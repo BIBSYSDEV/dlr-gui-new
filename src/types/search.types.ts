@@ -25,7 +25,7 @@ export interface QueryObject {
   keywords: string[];
   queryFromURL: boolean;
   allowSearch: boolean; //instead of setting queryobject null at initiation
-  showInaccessible?: boolean;
+  showInaccessible: boolean;
   orderBy: string;
   order: Order;
   mine: boolean;
@@ -48,6 +48,7 @@ export const emptyQueryObject: QueryObject = {
   keywords: [],
   queryFromURL: false,
   allowSearch: false,
+  showInaccessible: false,
   orderBy: 'created',
   order: Order.Desc,
   mine: false,
@@ -70,7 +71,7 @@ export enum APISearchParameters {
   Filter = 'filter',
   FilterSeparator = '|',
   Order = 'order',
-  OrderBy = 'orderBy',
+  OrderBy = 'order_by',
   Mine = 'mine',
   ShowInaccessible = 'showInaccessible',
 }
