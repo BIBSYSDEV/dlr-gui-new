@@ -81,7 +81,7 @@ const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({ queryObject, se
   return (
     <StyledFormControl component="fieldset">
       <FormLabel>
-        <Typography variant="h3">{t('resource.metadata.type')}</Typography>{' '}
+        <Typography variant="h3">{t('resource.metadata.type')}</Typography>
       </FormLabel>
       <FormGroup>
         {resourceTypeCheckList.map((resourceType, index) => (

@@ -11,7 +11,7 @@ import {
 import { AccessTypes, License } from '../types/license.types';
 import { Content, emptyResourceContent, LinkMetadataFilename } from '../types/content.types';
 import { authenticatedApiRequest } from './api';
-import { QueryObject, SearchParameters, SearchResult } from '../types/search.types';
+import { APISearchParameters, QueryObject, SearchParameters, SearchResult } from '../types/search.types';
 
 export const searchResources = ({
   query,
@@ -33,17 +33,17 @@ export const searchResources = ({
     licenses.length > 0 ||
     keywords.length > 0
   ) {
-    url += `&filter=`;
+    url += `&${APISearchParameters.Filter}=`;
     const filters: string[] = [];
-    institutions.map((institution) => filters.push(`facet_institution::${institution}`));
-    resourceTypes.map((resourceType) => filters.push(`facet_filetype::${resourceType}`));
-    licenses.map((license) => filters.push(`facet_license::${license}`));
-    keywords.map((keyword) => filters.push(`facet_keyword::${keyword}`));
+    institutions.map((institution) => filters.push(APISearchParameters.FacetInstitution + institution));
+    resourceTypes.map((resourceType) => filters.push(APISearchParameters.FacetFileType + resourceType));
+    licenses.map((license) => filters.push(APISearchParameters.FacetLicense + license));
+    keywords.map((keyword) => filters.push(APISearchParameters.FacetKeyWords + keyword));
     if (filters.length > 0) {
-      url += filters.join('|');
+      url += filters.join(APISearchParameters.FilterSeparator);
     }
   }
-  url += `&mine=${mine}&showInaccessible=${showInaccessible}&order_by=${orderBy}&order=${order}`;
+  url += `&${APISearchParameters.Mine}=${mine}&${APISearchParameters.ShowInaccessible}=${showInaccessible}&${APISearchParameters.OrderBy}=${orderBy}&${APISearchParameters.Order}=${order}`;
   if (offset > 0) url += `&${SearchParameters.offset}=${offset}`;
   if (limit > 0) url += `&${SearchParameters.limit}=${limit}`;
   return authenticatedApiRequest({
