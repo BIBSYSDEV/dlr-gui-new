@@ -108,7 +108,10 @@ const Explore = () => {
       const institutions = searchTerms.getAll(SearchParameters.institution);
       const resourceTypes = searchTerms.getAll(SearchParameters.resourceType);
       const pageTerm = searchTerms.get(SearchParameters.page);
-      const offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
+      let offset = 0;
+      if (searchTerms.get(SearchParameters.query) === queryObject.query) {
+        offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
+      }
       return {
         ...emptyQueryObject,
         query: searchTerms.get(SearchParameters.query) ?? '',
@@ -175,9 +178,7 @@ const Explore = () => {
       )}
       {searchResult && (
         <SearchResultWrapper>
-          <div>
-            <FilterSearchOptions queryObject={queryObject} setQueryObject={setQueryObject} />
-          </div>
+          <FilterSearchOptions queryObject={queryObject} setQueryObject={setQueryObject} />
           <StyledResultListWrapper>
             {isSearching ? (
               <StyledProgressWrapper>

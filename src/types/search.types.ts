@@ -63,17 +63,4 @@ export enum SearchParameters {
   resourceType = 'type',
 }
 
-export enum APISearchParameters {
-  FacetInstitution = 'facet_institution::',
-  FacetFileType = 'facet_filetype::',
-  FacetKeyWords = 'facet_keyword::',
-  FacetLicense = 'facet_license::',
-  Filter = 'filter',
-  FilterSeparator = '|',
-  Order = 'order',
-  OrderBy = 'order_by',
-  Mine = 'mine',
-  ShowInaccessible = 'showInaccessible',
-}
-
 export const AllDLRInstitutionNames = ['ntnu', 'bi', 'oslomet', 'uib', 'hvl'];

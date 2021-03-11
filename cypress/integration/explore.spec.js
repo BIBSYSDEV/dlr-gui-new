@@ -7,8 +7,11 @@ context('Actions', () => {
   const bi = 'bi';
   const oslomet = 'oslomet';
 
-  it('adds search term to url', () => {
+  beforeEach(() => {
     cy.visit('/');
+  });
+
+  it('adds search term to url', () => {
     cy.get('[data-testid=search-for-resource-input]').type(search);
     cy.get('[data-testid=search-for-resource-submit]').click();
     cy.location().should((loc) => {
@@ -17,7 +20,6 @@ context('Actions', () => {
   });
 
   it('adds an institution as a filter', () => {
-    cy.visit('/');
     cy.get('[data-testid=search-for-resource-input]').type(search);
     cy.get('[data-testid=search-for-resource-submit]').click();
     cy.get('[data-testid=expand-filtering-options]').click();
@@ -28,7 +30,6 @@ context('Actions', () => {
   });
 
   it('adds several institution as a filter', () => {
-    cy.visit('/');
     cy.get('[data-testid=search-for-resource-input]').type(search);
     cy.get('[data-testid=search-for-resource-submit]').click();
     cy.get('[data-testid=expand-filtering-options]').click();
@@ -43,7 +44,6 @@ context('Actions', () => {
   });
 
   it('can remove one or all institutions filters', () => {
-    cy.visit('/');
     cy.get('[data-testid=search-for-resource-input]').type(search);
     cy.get('[data-testid=search-for-resource-submit]').click();
     cy.get('[data-testid=expand-filtering-options]').click();
@@ -70,7 +70,6 @@ context('Actions', () => {
     cy.visit(
       `/?${SearchParameters.query}=${search}&${SearchParameters.institution}=${ntnu}&${SearchParameters.institution}=${oslomet}`
     );
-    cy.get('[data-testid=expand-filtering-options]').click();
     cy.get(`[data-testid=institution-filtering-checkbox-${ntnu}]`)
       .children('span')
       .children('input')
@@ -86,7 +85,6 @@ context('Actions', () => {
   });
 
   it('adds file types as a filter', () => {
-    cy.visit('/');
     cy.get('[data-testid=search-for-resource-input]').type(search);
     cy.get('[data-testid=search-for-resource-submit]').click();
     cy.get('[data-testid=expand-filtering-options]').click();
@@ -107,7 +105,6 @@ context('Actions', () => {
   });
 
   it('can remove one or all resource types filters', () => {
-    cy.visit('/');
     cy.get('[data-testid=search-for-resource-input]').type(search);
     cy.get('[data-testid=search-for-resource-submit]').click();
     cy.get('[data-testid=expand-filtering-options]').click();
@@ -142,7 +139,6 @@ context('Actions', () => {
     cy.visit(
       `/?${SearchParameters.query}=${search}&${SearchParameters.resourceType}=${ResourceFeatureTypes.audio}&${SearchParameters.resourceType}=${ResourceFeatureTypes.video}`
     );
-    cy.get('[data-testid=expand-filtering-options]').click();
     cy.get(`[data-testid=resource-type-filtering-checkbox-${ResourceFeatureTypes.audio.toString().toLowerCase()}]`)
       .children('span')
       .children('input')

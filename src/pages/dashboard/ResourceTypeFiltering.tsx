@@ -1,7 +1,7 @@
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { QueryObject } from '../../types/search.types';
 import { ResourceFeatureTypes } from '../../types/resource.types';
-import { TFunction, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Checkbox, FormControl, FormControlLabel, FormGroup } from '@material-ui/core';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -25,15 +25,6 @@ const defaultResourceTypes: string[] = [
   ResourceFeatureTypes.video,
 ];
 
-const initialResourceTypeCheckList = (t: TFunction<string>): ResourceTypeListItem[] => {
-  return defaultResourceTypes.map<ResourceTypeListItem>((resourceType) => ({
-    name: t(resourceType),
-    isSelected: false,
-  }));
-};
-
-//TODO: cypress tester.
-
 interface ResourceTypeFilteringProps {
   queryObject: QueryObject;
   setQueryObject: Dispatch<SetStateAction<QueryObject>>;
@@ -41,7 +32,13 @@ interface ResourceTypeFilteringProps {
 
 const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({ queryObject, setQueryObject }) => {
   const { t } = useTranslation();
-  const [resourceTypeCheckList, setResourceCheckList] = useState(initialResourceTypeCheckList(t));
+  const initialResourceTypeCheckList = (): ResourceTypeListItem[] => {
+    return defaultResourceTypes.map<ResourceTypeListItem>((resourceType) => ({
+      name: t(resourceType),
+      isSelected: false,
+    }));
+  };
+  const [resourceTypeCheckList, setResourceCheckList] = useState(initialResourceTypeCheckList());
 
   useEffect(() => {
     if (queryObject.resourceTypes.length > 0) {
@@ -51,7 +48,7 @@ const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({ queryObject, se
       }));
       setResourceCheckList(nextState);
     } else {
-      setResourceCheckList(initialResourceTypeCheckList(t));
+      setResourceCheckList(initialResourceTypeCheckList());
     }
   }, [queryObject, t]);
 

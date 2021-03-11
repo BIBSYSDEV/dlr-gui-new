@@ -11,7 +11,20 @@ import {
 import { AccessTypes, License } from '../types/license.types';
 import { Content, emptyResourceContent, LinkMetadataFilename } from '../types/content.types';
 import { authenticatedApiRequest } from './api';
-import { APISearchParameters, QueryObject, SearchParameters, SearchResult } from '../types/search.types';
+import { QueryObject, SearchParameters, SearchResult } from '../types/search.types';
+
+enum APISearchParameters {
+  FacetInstitution = 'facet_institution::',
+  FacetFileType = 'facet_filetype::',
+  FacetKeyWords = 'facet_keyword::',
+  FacetLicense = 'facet_license::',
+  Filter = 'filter',
+  FilterSeparator = '|',
+  Order = 'order',
+  OrderBy = 'order_by',
+  Mine = 'mine',
+  ShowInaccessible = 'showInaccessible',
+}
 
 export const searchResources = ({
   query,
