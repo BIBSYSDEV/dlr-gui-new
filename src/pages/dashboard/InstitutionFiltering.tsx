@@ -8,7 +8,6 @@ import { AllDLRInstitutionNames, QueryObject } from '../../types/search.types';
 
 const StyledFormControl: any = styled(FormControl)`
   padding-top: 2rem;
-  min-width: 8rem;
 `;
 
 interface InstitutionListItem {

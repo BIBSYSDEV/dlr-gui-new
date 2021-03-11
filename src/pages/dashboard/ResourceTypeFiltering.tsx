@@ -9,7 +9,6 @@ import Typography from '@material-ui/core/Typography';
 
 const StyledFormControl: any = styled(FormControl)`
   padding-top: 2rem;
-  min-width: 9rem;
 `;
 
 interface ResourceTypeListItem {
@@ -33,8 +32,6 @@ const initialResourceTypeCheckList = (t: TFunction<string>): ResourceTypeListIte
   }));
 };
 
-//TODO: marger i accordion.
-//TODO: mobilskjermer.
 //TODO: cypress tester.
 
 interface ResourceTypeFilteringProps {
