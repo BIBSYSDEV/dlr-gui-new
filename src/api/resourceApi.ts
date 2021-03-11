@@ -23,7 +23,7 @@ export const searchResources = ({
   offset,
 }: QueryObject): Promise<AxiosResponse<SearchResult>> => {
   let url = `${API_PATHS.guiBackendResourcesSearchPath}/resources/search?query=${query}`;
-  if ((institutions && institutions.length > 0) || resourceType.length > 0 || licenses.length > 0 || tags.length > 0) {
+  if (institutions.length > 0 || resourceType.length > 0 || licenses.length > 0 || tags.length > 0) {
     url += '&filter=';
     const filters: string[] = [];
     if (institutions.length > 1) {

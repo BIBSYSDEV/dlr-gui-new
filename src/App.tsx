@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Footer from './layout/Footer';
 import Header from './layout/header/Header';
@@ -58,7 +58,7 @@ const isTokenAnonymous = () => {
   } else return false;
 };
 
-const App: FC = () => {
+const App = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
   const [isLoadingUser, setIsLoadingUser] = useState<boolean>(false); //TODO: put in redux-store (loginredirect-page should use this as well)
