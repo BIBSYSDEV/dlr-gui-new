@@ -75,4 +75,15 @@ context('Actions', () => {
       .children('input')
       .should('not.be.checked');
   });
+
+  it('adds an tag as a filter', () => {
+    cy.visit('/');
+    cy.get('[data-testid=search-for-resource-input]').type(search);
+    cy.get('[data-testid=search-for-resource-submit]').click();
+    cy.get('[data-testid=expand-filtering-options]').click();
+    cy.get(`[data-testid=]`).click();
+    cy.location().should((loc) => {
+      expect(loc.search).to.eq(`?query=${search}&inst=${ntnu}`);
+    });
+  });
 });

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useState } from 'react';
 import { Chip, FormControl, FormGroup, TextField } from '@material-ui/core';
 import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
@@ -66,7 +66,6 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
   };
 
   const handleDelete = (tagToDelete: string) => {
-    console.info('Delete ' + tagToDelete);
     setQueryObject((prevState) => ({
       ...prevState,
       tags: prevState.tags.filter((tag) => tag !== tagToDelete),
