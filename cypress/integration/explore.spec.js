@@ -76,14 +76,47 @@ context('Actions', () => {
       .should('not.be.checked');
   });
 
-  it('adds an tag as a filter', () => {
+  //TODO use constants for parameters frmo other PR
+  it('adds and remove tags as a filters', () => {
     cy.visit('/');
+    const tag1 = 'tag1';
+    const tag2 = 'tag2';
+    const tag3 = 'fjksf dlfsd';
+    const tag3_encoded = 'fjksf%20dlfsd';
     cy.get('[data-testid=search-for-resource-input]').type(search);
     cy.get('[data-testid=search-for-resource-submit]').click();
     cy.get('[data-testid=expand-filtering-options]').click();
-    cy.get(`[data-testid=]`).click();
+    cy.get(`[data-testid=filter-tags-input] input`).type(tag1 + '{enter}');
+    cy.get(`[data-testid=filter-tags-input] input`).should('have.value', '');
+    cy.get(`[data-testid=filter-tags-input] input`).type(tag2 + '{enter}');
+    cy.get(`[data-testid=filter-tags-input] input`).type(tag3 + '{enter}');
+    cy.get(`[data-testid=filter-tag-chip-0]`).contains(tag1);
+    cy.get(`[data-testid=filter-tag-chip-1]`).contains(tag2);
+    cy.get(`[data-testid=filter-tag-container]`).contains(tag3);
     cy.location().should((loc) => {
-      expect(loc.search).to.eq(`?query=${search}&inst=${ntnu}`);
+      expect(loc.search).to.eq(`?query=${search}&tag=${tag1}&tag=${tag2}&tag=${tag3_encoded}`);
     });
+    cy.get(`[data-testid=filter-tag-chip-0] .MuiChip-deleteIcon`).click();
+    cy.location().should((loc) => {
+      expect(loc.search).to.eq(`?query=${search}&tag=${tag2}&tag=${tag3_encoded}`);
+    });
+    cy.get(`[data-testid=filter-tag-chip-0]`).contains(tag2);
+    cy.get(`[data-testid=filter-tag-chip-0] .MuiChip-deleteIcon`).click();
+    cy.get(`[data-testid=filter-tag-chip-0] .MuiChip-deleteIcon`).click();
+    cy.location().should((loc) => {
+      expect(loc.search).to.eq(`?query=${search}`);
+    });
+  });
+
+  it('can detect tag filters in the url', () => {
+    const tag1 = 'tag1';
+    const tag2 = 'tag2';
+    const tag3 = 'fjksf dlfsd';
+    const tag3_encoded = 'fjksf%20dlfsd';
+    cy.visit(`/?query=${search}&tag=${tag1}&tag=${tag2}&tag=${tag3_encoded}`);
+    cy.get('[data-testid=expand-filtering-options]').click();
+    cy.get(`[data-testid=filter-tag-container]`).contains(tag1);
+    cy.get(`[data-testid=filter-tag-chip-1]`).contains(tag2);
+    cy.get(`[data-testid=filter-tag-chip-2]`).contains(tag3);
   });
 });

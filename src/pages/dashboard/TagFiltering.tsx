@@ -104,7 +104,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
             />
           )}
         />
-        <StyledChipContainer>
+        <StyledChipContainer data-testid="filter-tag-container">
           {queryObject.tags.map((tag, index) => (
             <StyledChip
               key={index}
