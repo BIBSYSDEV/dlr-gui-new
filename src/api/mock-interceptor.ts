@@ -8,6 +8,7 @@ import {
   createMockContributor,
   createMockCreator,
   mockCompleteUpload,
+  mockContent,
   mockContents,
   mockContributors,
   mockCourses,
@@ -15,6 +16,7 @@ import {
   mockCreateUpload,
   mockCreators,
   mockDefaultResource,
+  mockFacets,
   mockLicenses,
   mockMyResources,
   mockPrepareUpload,
@@ -24,7 +26,6 @@ import {
   mockTags,
   mockToken,
   mockUser,
-  mockContent,
 } from './mockdata';
 
 // AXIOS INTERCEPTOR
@@ -84,6 +85,9 @@ export const interceptRequestsOnMock = () => {
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators`)).reply(202, createMockCreator());
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*`)).reply(202, {});
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*`)).reply(202, {});
+
+  //FACETS
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.facets`)).reply(200, mockFacets);
 
   //RESOURCE TAGS
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/tags/types/tag`)).reply(200, mockTags);

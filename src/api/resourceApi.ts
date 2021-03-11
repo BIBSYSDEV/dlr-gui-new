@@ -354,3 +354,10 @@ export const getResourceContentEvent = (contentIdentifier: string): Promise<Axio
     method: 'GET',
   });
 };
+
+export const getAllFacets = (): Promise<AxiosResponse<ResourceEvent>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesSearchPath}/resources/facets`),
+    method: 'GET',
+  });
+};
