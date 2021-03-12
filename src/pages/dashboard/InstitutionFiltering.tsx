@@ -2,13 +2,8 @@ import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
 import { Checkbox, FormControl, FormControlLabel, FormGroup } from '@material-ui/core';
 import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
-import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { AllDLRInstitutionNames, QueryObject } from '../../types/search.types';
-
-const StyledFormControl: any = styled(FormControl)`
-  padding-top: 2rem;
-`;
 
 interface InstitutionListItem {
   name: string;
@@ -62,7 +57,7 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
   };
 
   return (
-    <StyledFormControl component="fieldset">
+    <FormControl component="fieldset">
       <FormLabel>
         <Typography variant="h3">{t('dashboard.institutions')}</Typography>{' '}
       </FormLabel>
@@ -86,7 +81,7 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
           />
         ))}
       </FormGroup>
-    </StyledFormControl>
+    </FormControl>
   );
 };
 

@@ -2,14 +2,9 @@ import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
 import { QueryObject } from '../../types/search.types';
 import { DefaultResourceTypes } from '../../types/resource.types';
 import { TFunction, useTranslation } from 'react-i18next';
-import styled from 'styled-components';
 import { Checkbox, FormControl, FormControlLabel, FormGroup } from '@material-ui/core';
 import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
-
-const StyledFormControl: any = styled(FormControl)`
-  padding-top: 2rem;
-`;
 
 interface ResourceTypeListItem {
   name: string;
@@ -69,7 +64,7 @@ const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({ queryObject, se
   };
 
   return (
-    <StyledFormControl component="fieldset">
+    <FormControl component="fieldset">
       <FormLabel>
         <Typography variant="h3">{t('resource.metadata.type')}</Typography>
       </FormLabel>
@@ -93,7 +88,7 @@ const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({ queryObject, se
           />
         ))}
       </FormGroup>
-    </StyledFormControl>
+    </FormControl>
   );
 };
 

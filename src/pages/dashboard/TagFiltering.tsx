@@ -5,15 +5,15 @@ import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { QueryObject } from '../../types/search.types';
-import { Colors } from '../../themes/mainTheme';
+import { Colors, StyleWidths } from '../../themes/mainTheme';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const minimumTagLength = 1;
 
 const StyledFormControl: any = styled(FormControl)`
-  margin-left: 1rem;
   margin-right: 1rem;
+  max-width: ${StyleWidths.width3};
 `;
 
 const StyledChip = styled(Chip)`
@@ -98,7 +98,6 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
               variant="outlined"
               helperText={t('dashboard.enter_tags')}
               label={t('resource.metadata.tags')}
-              fullWidth
               data-testid="filter-tags-input"
               onChange={handleChange}
             />

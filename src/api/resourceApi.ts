@@ -40,12 +40,7 @@ export const searchResources = ({
   mine,
 }: QueryObject): Promise<AxiosResponse<SearchResult>> => {
   let url = `${API_PATHS.guiBackendResourcesSearchPath}/resources/search/advanced?query=${query}`;
-  if (
-    (institutions && institutions.length > 0) ||
-    resourceTypes.length > 0 ||
-    licenses.length > 0 ||
-    tags.length > 0
-  ) {
+  if (institutions.length > 0 || resourceTypes.length > 0 || licenses.length > 0 || tags.length > 0) {
     url += `&${APISearchParameters.Filter}=`;
     const filters: string[] = [];
     institutions.map((institution) => filters.push(APISearchParameters.FacetInstitution + institution));
