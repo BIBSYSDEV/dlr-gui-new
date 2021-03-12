@@ -9,6 +9,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import InstitutionFiltering from './InstitutionFiltering';
 import { QueryObject } from '../../types/search.types';
+import ResourceTypeFiltering from './ResourceTypeFiltering';
 
 function useWindowWidth() {
   const [width, setWidth] = useState(0);
@@ -26,19 +27,36 @@ function useWindowWidth() {
 const StyledAccordion = styled(Accordion)`
   background-color: ${Colors.ExploreResourcesPageOptionFiler};
   border: none;
-
   & .MuiPaper-elevation1 {
     box-shadow: none;
   }
 `;
 
 const StyledSideBar = styled.div`
+  padding-top: 1.5rem;
+  padding-left: 1rem;
   background-color: ${Colors.ExploreResourcesPageOptionFiler};
   min-width: 17rem;
+  display: flex;
+  flex-direction: column;
 `;
 
 const StyledAccordionDetails = styled(AccordionDetails)`
   display: flex;
+`;
+
+const StyledAccordionFilterBoxesWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  fieldset {
+    margin-right: 6rem;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    flex-direction: column;
+    fieldset {
+      margin-right: 0rem;
+    }
+  }
 `;
 
 interface FilterSearchOptionsProps {
@@ -55,6 +73,7 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
   useEffect(() => {
     const numFilters =
       queryObject.institutions.length +
+      queryObject.resourceTypes.length +
       queryObject.keywords.length +
       queryObject.licenses.length +
       queryObject.keywords.length;
@@ -79,6 +98,7 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
         <StyledSideBar>
           {filterHeader()}
           <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+          <ResourceTypeFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
         </StyledSideBar>
       ) : (
         <StyledAccordion expanded={isFiltersExpanded} onChange={handleChange}>
@@ -90,7 +110,10 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
             {filterHeader()}
           </AccordionSummary>
           <StyledAccordionDetails>
-            <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+            <StyledAccordionFilterBoxesWrapper>
+              <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+              <ResourceTypeFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+            </StyledAccordionFilterBoxesWrapper>
           </StyledAccordionDetails>
         </StyledAccordion>
       )}
