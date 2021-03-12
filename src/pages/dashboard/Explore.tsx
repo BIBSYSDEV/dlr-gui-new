@@ -137,8 +137,7 @@ const Explore = () => {
           .join('');
       if (queryObject.resourceTypes.length > 0)
         url += queryObject.resourceTypes.map((type) => `&${SearchParameters.resourceType}=${type}`).join('');
-      if (queryObject.tags.length > 0)
-        url += queryObject.tags.map((tag) => `&${SearchParameters.tag}=${tag.toLowerCase()}`).join('');
+      if (queryObject.tags.length > 0) url += queryObject.tags.map((tag) => `&${SearchParameters.tag}=${tag}`).join('');
       history.replace(url);
     };
 
