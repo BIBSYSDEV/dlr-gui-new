@@ -11,6 +11,7 @@ import PrivateRoute from '../../utils/routes/PrivateRoute';
 import {
   ContributorFeatureNames,
   CreatorFeatureAttributes,
+  DefaultResourceTypes,
   emptyResource,
   Resource,
   ResourceCreationType,
@@ -54,15 +55,6 @@ const StyledEditPublication = styled.div`
 interface EditResourcePageParamTypes {
   identifier: string;
 }
-
-const potentialDLRTypes = [
-  ResourceFeatureTypes.audio,
-  ResourceFeatureTypes.image,
-  ResourceFeatureTypes.presentation,
-  ResourceFeatureTypes.simulation,
-  ResourceFeatureTypes.video,
-  ResourceFeatureTypes.document,
-];
 
 // StartingContributorType must match one of the elements in resources/assets/contributorTypeList.json.
 // This to prevent error: "Material-UI: You have provided an out-of-range value..."
@@ -164,11 +156,11 @@ const EditResourcePage = () => {
     if (resourceCreationType === ResourceCreationType.FILE) {
       const filetype = mainFileHandler.getFiles()[0].type;
       if (filetype) {
-        const suggestion = potentialDLRTypes.findIndex((type) => {
+        const suggestion = DefaultResourceTypes.findIndex((type) => {
           return filetype.toLowerCase().includes(type.toLowerCase());
         });
         if (suggestion >= 0) {
-          resourceDLRType = potentialDLRTypes[suggestion];
+          resourceDLRType = DefaultResourceTypes[suggestion];
         } else {
           resourceDLRType = resourceDLRTypeFromDefaults(responseWithCalculatedDefaults);
         }

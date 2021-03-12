@@ -7,8 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { AllDLRInstitutionNames, QueryObject } from '../../types/search.types';
 
 const StyledFormControl: any = styled(FormControl)`
-  margin-left: 1rem;
-  margin-right: 1rem;
+  padding-top: 2rem;
 `;
 
 interface InstitutionListItem {

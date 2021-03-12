@@ -106,6 +106,7 @@ const Explore = () => {
     const createQueryFromUrl = () => {
       const searchTerms = new URLSearchParams(location.search);
       const institutions = searchTerms.getAll(SearchParameters.institution);
+      const resourceTypes = searchTerms.getAll(SearchParameters.resourceType);
       const tags = searchTerms.getAll(SearchParameters.tag);
       const pageTerm = searchTerms.get(SearchParameters.page);
       const offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
@@ -114,6 +115,7 @@ const Explore = () => {
         query: searchTerms.get(SearchParameters.query) ?? '',
         offset: offset,
         limit: NumberOfResultsPrPage,
+        resourceTypes: resourceTypes,
         institutions: institutions,
         tags: tags,
         queryFromURL: true,
@@ -131,8 +133,10 @@ const Explore = () => {
       if (queryObject.query.length > 0) url += `${SearchParameters.query}=${queryObject.query}`;
       if (queryObject.institutions.length > 0)
         url += queryObject.institutions
-          .map((institution) => `&${SearchParameters.institution}=${institution.toLowerCase()}`)
+          .map((institution) => `&${SearchParameters.institution}=${institution}`)
           .join('');
+      if (queryObject.resourceTypes.length > 0)
+        url += queryObject.resourceTypes.map((type) => `&${SearchParameters.resourceType}=${type}`).join('');
       if (queryObject.tags.length > 0)
         url += queryObject.tags.map((tag) => `&${SearchParameters.tag}=${tag.toLowerCase()}`).join('');
       history.replace(url);
@@ -175,9 +179,7 @@ const Explore = () => {
       )}
       {searchResult && (
         <SearchResultWrapper>
-          {/*<div style={{ display: 'none' }}>*/}
           <FilterSearchOptions queryObject={queryObject} setQueryObject={setQueryObject} />
-          {/*</div>*/}
           <StyledResultListWrapper>
             {isSearching ? (
               <StyledProgressWrapper>

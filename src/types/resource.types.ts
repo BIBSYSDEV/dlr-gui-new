@@ -200,6 +200,15 @@ export enum ResourceFeatureTypes {
   video = 'Video',
 }
 
+export const DefaultResourceTypes: ResourceFeatureTypes[] = [
+  ResourceFeatureTypes.audio,
+  ResourceFeatureTypes.document,
+  ResourceFeatureTypes.image,
+  ResourceFeatureTypes.presentation,
+  ResourceFeatureTypes.simulation,
+  ResourceFeatureTypes.video,
+];
+
 export enum ResourceFeatureNames {
   Type = 'dlr_type',
   Title = 'dlr_title',

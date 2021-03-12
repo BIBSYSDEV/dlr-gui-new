@@ -13,43 +13,50 @@ import { Content, emptyResourceContent, LinkMetadataFilename } from '../types/co
 import { authenticatedApiRequest } from './api';
 import { QueryObject, SearchParameters, SearchResult } from '../types/search.types';
 
+enum APISearchParameters {
+  FacetInstitution = 'facet_institution::',
+  FacetFileType = 'facet_filetype::',
+  FacetKeyWords = 'facet_keyword::',
+  FacetLicense = 'facet_license::',
+  Filter = 'filter',
+  FilterSeparator = '|',
+  Order = 'order',
+  OrderBy = 'order_by',
+  Mine = 'mine',
+  ShowInaccessible = 'showInaccessible',
+}
+
 export const searchResources = ({
   query,
   limit,
   institutions,
-  resourceType,
+  resourceTypes,
   licenses,
   tags,
   offset,
+  order,
+  orderBy,
+  showInaccessible,
+  mine,
 }: QueryObject): Promise<AxiosResponse<SearchResult>> => {
-  let url = `${API_PATHS.guiBackendResourcesSearchPath}/resources/search?query=${query}`;
-  if (institutions.length > 0 || resourceType.length > 0 || licenses.length > 0 || tags.length > 0) {
-    url += '&filter=';
+  let url = `${API_PATHS.guiBackendResourcesSearchPath}/resources/search/advanced?query=${query}`;
+  if (
+    (institutions && institutions.length > 0) ||
+    resourceTypes.length > 0 ||
+    licenses.length > 0 ||
+    tags.length > 0
+  ) {
+    url += `&${APISearchParameters.Filter}=`;
     const filters: string[] = [];
-    if (institutions.length > 1) {
-      filters.push(`facet_institution::(${institutions.join(' OR ')})`);
-    } else if (institutions.length === 1) {
-      filters.push(`facet_institution::${institutions[0]}`);
-    }
-    if (resourceType.length > 1) {
-      filters.push(`facet_filetype::(${resourceType.join(' OR ')})`);
-    } else if (resourceType.length === 1) {
-      filters.push(`facet_filetype::${resourceType[0]}`);
-    }
-    if (licenses.length > 1) {
-      filters.push(`facet_license::(${licenses.join(' OR ')})`);
-    } else if (licenses.length === 1) {
-      filters.push(`facet_license::${licenses[0]}`);
-    }
-    if (tags.length > 1) {
-      filters.push(`facet_keyword::(${tags.join(' OR ')})`);
-    } else if (tags.length === 1) {
-      filters.push(`facet_keyword::${tags[0]}`);
-    }
+    institutions.map((institution) => filters.push(APISearchParameters.FacetInstitution + institution));
+    resourceTypes.map((resourceType) => filters.push(APISearchParameters.FacetFileType + resourceType));
+    licenses.map((license) => filters.push(APISearchParameters.FacetLicense + license));
+    tags.map((tag) => filters.push(APISearchParameters.FacetKeyWords + tag));
     if (filters.length > 0) {
-      url += filters.join('|');
+      url += filters.join(APISearchParameters.FilterSeparator);
     }
   }
+  url += `&${APISearchParameters.Mine}=${mine}&${APISearchParameters.ShowInaccessible}=${showInaccessible}&${APISearchParameters.OrderBy}=${orderBy}&${APISearchParameters.Order}=${order}`;
   if (offset > 0) url += `&${SearchParameters.offset}=${offset}`;
   if (limit > 0) url += `&${SearchParameters.limit}=${limit}`;
   return authenticatedApiRequest({
@@ -346,6 +353,13 @@ export const putAccessType = (resourceIdentifier: string, accessType: AccessType
 export const getResourceContentEvent = (contentIdentifier: string): Promise<AxiosResponse<ResourceEvent>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesEventsPath}/resources/${contentIdentifier}/events`),
+    method: 'GET',
+  });
+};
+
+export const getAllFacets = (): Promise<AxiosResponse<ResourceEvent>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesSearchPath}/resources/facets`),
     method: 'GET',
   });
 };

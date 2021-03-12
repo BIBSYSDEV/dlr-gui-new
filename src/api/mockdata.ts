@@ -271,3 +271,160 @@ export const mockCourses: Course[] = [
     },
   },
 ];
+
+export const mockFacets = {
+  numFound: 0,
+  queryTime: 0,
+  facet_counts: [
+    {
+      count: '1',
+      type: 'dlr_filetype',
+      value: 'Audiovisual',
+    },
+    {
+      count: '9',
+      type: 'dlr_filetype',
+      value: 'Document',
+    },
+    {
+      count: '6',
+      type: 'dlr_filetype',
+      value: 'Image',
+    },
+    {
+      count: '5',
+      type: 'dlr_filetype',
+      value: 'Video',
+    },
+    {
+      count: '20',
+      type: 'dlr_institution_id',
+      value: 'unit',
+    },
+    {
+      count: '8',
+      type: 'dlr_rights_license_name',
+      value: 'CC BY 4.0',
+    },
+    {
+      count: '3',
+      type: 'dlr_rights_license_name',
+      value: 'CC BY-NC 4.0',
+    },
+    {
+      count: '2',
+      type: 'dlr_rights_license_name',
+      value: 'CC BY-NC-ND 4.0',
+    },
+    {
+      count: '2',
+      type: 'dlr_rights_license_name',
+      value: 'CC BY-NC-SA 4.0',
+    },
+    {
+      count: '2',
+      type: 'dlr_rights_license_name',
+      value: 'CC BY-ND 4.0',
+    },
+    {
+      count: '3',
+      type: 'dlr_rights_license_name',
+      value: 'CC BY-SA 4.0',
+    },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: ' høst',
+    },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'Creative Commons',
+    },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'Joseph Strauss',
+    },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'Lisens',
+    },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'Unit',
+    },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'blad',
+    },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'brostein',
+    },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'dele',
+    },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'fagverksbro',
+    },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'gjennbruk',
+    },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'jernbanebro',
+    },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'klaffebro',
+    },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'koronaavstand',
+    },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'logo',
+    },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'opphavsrett',
+    },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'skøyter',
+    },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'smittevern',
+    },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'tema smile',
+    },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'trondheim',
+    },
+  ],
+};

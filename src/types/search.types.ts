@@ -20,11 +20,20 @@ export interface QueryObject {
   offset: number;
   limit: number;
   institutions: string[];
-  resourceType: string[];
+  resourceTypes: string[];
   licenses: string[];
   tags: string[];
   queryFromURL: boolean;
   allowSearch: boolean; //instead of setting queryobject null at initiation
+  showInaccessible: boolean;
+  orderBy: string;
+  order: Order;
+  mine: boolean;
+}
+
+export enum Order {
+  Asc = 'asc',
+  Desc = 'desc',
 }
 
 export const firstResultPage = 1;
@@ -34,11 +43,15 @@ export const emptyQueryObject: QueryObject = {
   offset: 0,
   limit: 0,
   institutions: [],
-  resourceType: [],
+  resourceTypes: [],
   licenses: [],
   tags: [],
   queryFromURL: false,
   allowSearch: false,
+  showInaccessible: false,
+  orderBy: 'created',
+  order: Order.Desc,
+  mine: false,
 };
 
 export enum SearchParameters {
@@ -48,6 +61,7 @@ export enum SearchParameters {
   page = 'page',
   limit = 'limit',
   offset = 'offset',
+  resourceType = 'type',
 }
 
 export const AllDLRInstitutionNames = ['ntnu', 'bi', 'oslomet', 'uib', 'hvl'];
