@@ -1,7 +1,7 @@
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { QueryObject } from '../../types/search.types';
-import { ResourceFeatureTypes } from '../../types/resource.types';
-import { useTranslation } from 'react-i18next';
+import { DefaultResourceTypes } from '../../types/resource.types';
+import { TFunction, useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Checkbox, FormControl, FormControlLabel, FormGroup } from '@material-ui/core';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -16,39 +16,32 @@ interface ResourceTypeListItem {
   isSelected: boolean;
 }
 
-const defaultResourceTypes: string[] = [
-  ResourceFeatureTypes.audio,
-  ResourceFeatureTypes.document,
-  ResourceFeatureTypes.image,
-  ResourceFeatureTypes.presentation,
-  ResourceFeatureTypes.simulation,
-  ResourceFeatureTypes.video,
-];
-
 interface ResourceTypeFilteringProps {
   queryObject: QueryObject;
   setQueryObject: Dispatch<SetStateAction<QueryObject>>;
 }
 
+const initialResourceTypeCheckList = (t: TFunction<string>): ResourceTypeListItem[] => {
+  return DefaultResourceTypes.map<ResourceTypeListItem>((resourceType) => ({
+    name: t(resourceType),
+    isSelected: false,
+  }));
+};
+
 const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({ queryObject, setQueryObject }) => {
   const { t } = useTranslation();
-  const initialResourceTypeCheckList = (): ResourceTypeListItem[] => {
-    return defaultResourceTypes.map<ResourceTypeListItem>((resourceType) => ({
-      name: t(resourceType),
-      isSelected: false,
-    }));
-  };
-  const [resourceTypeCheckList, setResourceCheckList] = useState(initialResourceTypeCheckList());
+
+  const [resourceTypeCheckList, setResourceCheckList] = useState(initialResourceTypeCheckList(t));
 
   useEffect(() => {
     if (queryObject.resourceTypes.length > 0) {
-      const nextState = defaultResourceTypes.map((resourceType) => ({
+      const nextState = DefaultResourceTypes.map((resourceType) => ({
         name: resourceType,
         isSelected: !!queryObject.resourceTypes.find((type) => type === resourceType),
       }));
       setResourceCheckList(nextState);
     } else {
-      setResourceCheckList(initialResourceTypeCheckList());
+      setResourceCheckList(initialResourceTypeCheckList(t));
     }
   }, [queryObject, t]);
 

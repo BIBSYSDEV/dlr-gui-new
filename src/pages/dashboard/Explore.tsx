@@ -108,10 +108,7 @@ const Explore = () => {
       const institutions = searchTerms.getAll(SearchParameters.institution);
       const resourceTypes = searchTerms.getAll(SearchParameters.resourceType);
       const pageTerm = searchTerms.get(SearchParameters.page);
-      let offset = 0;
-      if (searchTerms.get(SearchParameters.query) === queryObject.query) {
-        offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
-      }
+      const offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
       return {
         ...emptyQueryObject,
         query: searchTerms.get(SearchParameters.query) ?? '',

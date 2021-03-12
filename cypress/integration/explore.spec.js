@@ -70,18 +70,9 @@ context('Actions', () => {
     cy.visit(
       `/?${SearchParameters.query}=${search}&${SearchParameters.institution}=${ntnu}&${SearchParameters.institution}=${oslomet}`
     );
-    cy.get(`[data-testid=institution-filtering-checkbox-${ntnu}]`)
-      .children('span')
-      .children('input')
-      .should('be.checked');
-    cy.get(`[data-testid=institution-filtering-checkbox-${oslomet}]`)
-      .children('span')
-      .children('input')
-      .should('be.checked');
-    cy.get(`[data-testid=institution-filtering-checkbox-${bi}]`)
-      .children('span')
-      .children('input')
-      .should('not.be.checked');
+    cy.get(`[data-testid=institution-filtering-checkbox-${ntnu}] input`).should('be.checked');
+    cy.get(`[data-testid=institution-filtering-checkbox-${oslomet}] input`).should('be.checked');
+    cy.get(`[data-testid=institution-filtering-checkbox-${bi}] input`).should('not.be.checked');
   });
 
   it('adds file types as a filter', () => {
@@ -139,13 +130,12 @@ context('Actions', () => {
     cy.visit(
       `/?${SearchParameters.query}=${search}&${SearchParameters.resourceType}=${ResourceFeatureTypes.audio}&${SearchParameters.resourceType}=${ResourceFeatureTypes.video}`
     );
-    cy.get(`[data-testid=resource-type-filtering-checkbox-${ResourceFeatureTypes.audio.toString().toLowerCase()}]`)
-      .children('span')
-      .children('input')
-      .should('be.checked');
-    cy.get(`[data-testid=resource-type-filtering-checkbox-${ResourceFeatureTypes.video.toString().toLowerCase()}]`)
-      .children('span')
-      .children('input')
-      .should('be.checked');
+    cy.get('[data-testid=expand-filtering-options]').click();
+    cy.get(
+      `[data-testid=resource-type-filtering-checkbox-${ResourceFeatureTypes.audio.toString().toLowerCase()}] input`
+    ).should('be.checked');
+    cy.get(
+      `[data-testid=resource-type-filtering-checkbox-${ResourceFeatureTypes.video.toString().toLowerCase()}] input`
+    ).should('be.checked');
   });
 });
