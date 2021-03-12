@@ -14,6 +14,8 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { Pagination } from '@material-ui/lab';
 import ResultListItem from '../../components/ResultListItem';
 import FilterSearchOptions from './FilterSearchOptions';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../state/rootReducer';
 
 const SearchResultWrapper = styled.div`
   display: flex;
@@ -43,11 +45,17 @@ const StyledProgressWrapper = styled.div`
   margin-top: 3rem;
 `;
 
+const StyledLoginReminder = styled.div`
+  background-color: ${Colors.ResultListBackground};
+  flex: 1;
+`;
+
 const StyledPaginationWrapper = styled.div`
   margin: 1rem 0 1rem 0;
   display: flex;
   flex-direction: row;
   align-items: center;
+
   & .MuiPaginationItem-root {
     border-radius: 0;
     color: ${Colors.Primary};
@@ -84,7 +92,7 @@ const firstPage = 1;
 const Explore = () => {
   const [page, setPage] = useState(firstPage);
   const location = useLocation();
-
+  const user = useSelector((state: RootState) => state.user);
   const [queryObject, setQueryObject] = useState(emptyQueryObject);
   const [isSearching, setIsSearching] = useState(false);
   const [searchResult, setSearchResult] = useState<SearchResult>();
@@ -165,6 +173,11 @@ const Explore = () => {
 
   return (
     <StyledContentWrapperLarge>
+      {user && (
+        <StyledLoginReminder>
+          <Typography>Logg inn for å få tilgang til flere ressurser ved din institusjon</Typography>
+        </StyledLoginReminder>
+      )}
       <PageHeader>{t('dashboard.explore')}</PageHeader>
       <SearchInput setQueryObject={setQueryObject} />
       {searchError && <ErrorBanner />}
