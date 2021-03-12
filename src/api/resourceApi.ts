@@ -16,7 +16,7 @@ import { QueryObject, SearchParameters, SearchResult } from '../types/search.typ
 enum APISearchParameters {
   FacetInstitution = 'facet_institution::',
   FacetFileType = 'facet_filetype::',
-  FacetKeyWords = 'facet_keyword::',
+  FacetTag = 'facet_tag::',
   FacetLicense = 'facet_license::',
   Filter = 'filter',
   FilterSeparator = '|',
@@ -46,7 +46,7 @@ export const searchResources = ({
     institutions.map((institution) => filters.push(APISearchParameters.FacetInstitution + institution));
     resourceTypes.map((resourceType) => filters.push(APISearchParameters.FacetFileType + resourceType));
     licenses.map((license) => filters.push(APISearchParameters.FacetLicense + license));
-    tags.map((tag) => filters.push(APISearchParameters.FacetKeyWords + tag));
+    tags.map((tag) => filters.push(APISearchParameters.FacetTag + tag));
     if (filters.length > 0) {
       url += filters.join(APISearchParameters.FilterSeparator);
     }
