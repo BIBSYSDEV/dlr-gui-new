@@ -16,7 +16,7 @@ import { QueryObject, SearchParameters, SearchResult } from '../types/search.typ
 enum APISearchParameters {
   FacetInstitution = 'facet_institution::',
   FacetFileType = 'facet_filetype::',
-  FacetKeyWords = 'facet_keyword::',
+  FacetTag = 'facet_tag::',
   FacetLicense = 'facet_license::',
   Filter = 'filter',
   FilterSeparator = '|',
@@ -32,7 +32,7 @@ export const searchResources = ({
   institutions,
   resourceTypes,
   licenses,
-  keywords,
+  tags,
   offset,
   order,
   orderBy,
@@ -40,18 +40,13 @@ export const searchResources = ({
   mine,
 }: QueryObject): Promise<AxiosResponse<SearchResult>> => {
   let url = `${API_PATHS.guiBackendResourcesSearchPath}/resources/search/advanced?query=${query}`;
-  if (
-    (institutions && institutions.length > 0) ||
-    resourceTypes.length > 0 ||
-    licenses.length > 0 ||
-    keywords.length > 0
-  ) {
+  if (institutions.length > 0 || resourceTypes.length > 0 || licenses.length > 0 || tags.length > 0) {
     url += `&${APISearchParameters.Filter}=`;
     const filters: string[] = [];
     institutions.map((institution) => filters.push(APISearchParameters.FacetInstitution + institution));
     resourceTypes.map((resourceType) => filters.push(APISearchParameters.FacetFileType + resourceType));
     licenses.map((license) => filters.push(APISearchParameters.FacetLicense + license));
-    keywords.map((keyword) => filters.push(APISearchParameters.FacetKeyWords + keyword));
+    tags.map((tag) => filters.push(APISearchParameters.FacetTag + tag));
     if (filters.length > 0) {
       url += filters.join(APISearchParameters.FilterSeparator);
     }

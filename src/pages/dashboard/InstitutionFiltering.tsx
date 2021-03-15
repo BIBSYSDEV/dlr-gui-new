@@ -2,12 +2,12 @@ import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
 import { Checkbox, FormControl, FormControlLabel, FormGroup } from '@material-ui/core';
 import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
-import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { AllDLRInstitutionNames, QueryObject } from '../../types/search.types';
+import styled from 'styled-components';
 
 const StyledFormControl: any = styled(FormControl)`
-  padding-top: 2rem;
+  margin-top: 2rem;
 `;
 
 interface InstitutionListItem {
@@ -52,17 +52,12 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
         queryFromURL: false,
       }));
     } else {
-      setQueryObject((prevState) => {
-        const newInstitutions = prevState.institutions.filter(
-          (instName) => instName !== institutionCheckedList[index].name
-        );
-        return {
-          ...prevState,
-          institutions: newInstitutions,
-          offset: 0,
-          queryFromURL: false,
-        };
-      });
+      setQueryObject((prevState) => ({
+        ...prevState,
+        institutions: prevState.institutions.filter((instName) => instName !== institutionCheckedList[index].name),
+        offset: 0,
+        queryFromURL: false,
+      }));
     }
   };
 
