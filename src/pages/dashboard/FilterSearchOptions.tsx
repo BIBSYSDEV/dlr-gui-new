@@ -40,9 +40,6 @@ const StyledSideBar = styled.div`
   width: 17rem;
   display: flex;
   flex-direction: column;
-  fieldset {
-    margin-top: 2rem;
-  }
 `;
 
 const StyledAccordionDetails = styled(AccordionDetails)`
@@ -55,11 +52,16 @@ const StyledAccordionFilterBoxesWrapper = styled.div`
   width: 100%;
   fieldset {
     margin-right: 6rem;
+    margin-top: 0;
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     flex-direction: column;
     fieldset {
       margin-right: 0;
+      margin-top: 2rem;
+    }
+    fieldset:first-of-type {
+      margin-top: 0;
     }
   }
 `;

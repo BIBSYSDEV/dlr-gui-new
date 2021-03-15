@@ -13,6 +13,7 @@ const minimumTagLength = 1;
 
 const StyledFormControl: any = styled(FormControl)`
   margin-right: 1rem;
+  margin-top: 2rem;
   max-width: ${StyleWidths.width3};
 `;
 

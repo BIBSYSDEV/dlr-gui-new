@@ -4,6 +4,11 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
 import { AllDLRInstitutionNames, QueryObject } from '../../types/search.types';
+import styled from 'styled-components';
+
+const StyledFormControl: any = styled(FormControl)`
+  margin-top: 2rem;
+`;
 
 interface InstitutionListItem {
   name: string;
@@ -57,7 +62,7 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
   };
 
   return (
-    <FormControl component="fieldset">
+    <StyledFormControl component="fieldset">
       <FormLabel>
         <Typography variant="h3">{t('dashboard.institutions')}</Typography>{' '}
       </FormLabel>
@@ -81,7 +86,7 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
           />
         ))}
       </FormGroup>
-    </FormControl>
+    </StyledFormControl>
   );
 };
 
