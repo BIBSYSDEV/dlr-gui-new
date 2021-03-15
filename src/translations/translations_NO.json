@@ -37,7 +37,7 @@
     "error": "Feil",
     "finish": "Avslutt",
     "home": "Hjem",
-    "login": "Logg inn",
+    "login": "LOGG INN",
     "logout": "Logg ut",
     "must_be_logged_in": "Krever pålogging",
     "name": "Navn",
@@ -61,6 +61,7 @@
     "enabled": "aktive",
     "enter_tags": "Trykk enter or tab for å velge emneord",
     "explore": "Utforsk",
+    "login-reminder": "Logg inn for å få tilgang til flere ressurser ved din institusjon",
     "filter": "Filter",
     "institutions": "Institusjoner",
     "tags": "Emneord"

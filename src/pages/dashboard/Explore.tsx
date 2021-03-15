@@ -16,6 +16,7 @@ import ResultListItem from '../../components/ResultListItem';
 import FilterSearchOptions from './FilterSearchOptions';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
+import LoginReminder from '../../components/LoginReminder';
 
 const SearchResultWrapper = styled.div`
   display: flex;
@@ -43,11 +44,6 @@ const StyledProgressWrapper = styled.div`
   justify-content: center;
   width: 100%;
   margin-top: 3rem;
-`;
-
-const StyledLoginReminder = styled.div`
-  background-color: ${Colors.ResultListBackground};
-  flex: 1;
 `;
 
 const StyledPaginationWrapper = styled.div`
@@ -176,11 +172,7 @@ const Explore = () => {
 
   return (
     <StyledContentWrapperLarge>
-      {user && (
-        <StyledLoginReminder>
-          <Typography>Logg inn for å få tilgang til flere ressurser ved din institusjon</Typography>
-        </StyledLoginReminder>
-      )}
+      {!user.id && <LoginReminder />}
       <PageHeader>{t('dashboard.explore')}</PageHeader>
       <SearchInput setQueryObject={setQueryObject} />
       {searchError && <ErrorBanner />}

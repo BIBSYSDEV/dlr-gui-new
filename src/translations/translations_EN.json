@@ -37,7 +37,7 @@
     "error": "Error",
     "finish": "Finish",
     "home": "Home",
-    "login": "Login",
+    "login": "LOGIN",
     "logout": "Logout",
     "must_be_logged_in": "Require login",
     "name": "Name",
@@ -61,6 +61,7 @@
     "enabled": "enabled",
     "enter_tags": "Press enter or tab for adding keyword",
     "explore": "Explore",
+    "login_reminder": "Log in to have access to more resources from your institution.",
     "filter": "Filter",
     "institutions": "Institutions",
     "tags": "Tags"

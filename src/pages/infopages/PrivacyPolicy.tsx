@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import Heading from '../../components/Heading';
@@ -11,7 +11,7 @@ const StyledHeading = styled(Heading)`
   padding-bottom: 1rem;
 `;
 
-const PrivacyPolicy: FC = () => {
+const PrivacyPolicy = () => {
   const { t } = useTranslation();
 
   return (
