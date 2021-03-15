@@ -12,9 +12,6 @@ import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import styled from 'styled-components';
 import CancelIcon from '@material-ui/icons/Cancel';
 
-interface TagsFieldProps {
-  setAllChangesSaved: (status: boolean) => void;
-}
 const StyledChip = styled(Chip)`
   && {
     margin-top: 1rem;
@@ -32,6 +29,10 @@ const StyledChip = styled(Chip)`
 const StyledCancelIcon = styled(CancelIcon)`
   color: ${Colors.ChipIconBackground};
 `;
+
+interface TagsFieldProps {
+  setAllChangesSaved: (status: boolean) => void;
+}
 
 const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();

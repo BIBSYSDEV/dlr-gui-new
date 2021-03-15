@@ -59,9 +59,11 @@
   },
   "dashboard": {
     "enabled": "aktive",
+    "enter_tags": "Trykk enter or tab for å velge emneord",
     "explore": "Utforsk",
     "filter": "Filter",
-    "institutions": "Institusjoner"
+    "institutions": "Institusjoner",
+    "tags": "Emneord"
   },
   "delivered_by": "Levert av",
   "error": {

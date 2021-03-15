@@ -115,6 +115,7 @@ const Explore = () => {
       const searchTerms = new URLSearchParams(location.search);
       const institutions = searchTerms.getAll(SearchParameters.institution);
       const resourceTypes = searchTerms.getAll(SearchParameters.resourceType);
+      const tags = searchTerms.getAll(SearchParameters.tag);
       const pageTerm = searchTerms.get(SearchParameters.page);
       const offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
       return {
@@ -124,6 +125,7 @@ const Explore = () => {
         limit: NumberOfResultsPrPage,
         resourceTypes: resourceTypes,
         institutions: institutions,
+        tags: tags,
         queryFromURL: true,
         allowSearch: true,
       };
@@ -143,6 +145,7 @@ const Explore = () => {
           .join('');
       if (queryObject.resourceTypes.length > 0)
         url += queryObject.resourceTypes.map((type) => `&${SearchParameters.resourceType}=${type}`).join('');
+      if (queryObject.tags.length > 0) url += queryObject.tags.map((tag) => `&${SearchParameters.tag}=${tag}`).join('');
       history.replace(url);
     };
 

@@ -22,7 +22,7 @@ export interface QueryObject {
   institutions: string[];
   resourceTypes: string[];
   licenses: string[];
-  keywords: string[];
+  tags: string[];
   queryFromURL: boolean;
   allowSearch: boolean; //instead of setting queryobject null at initiation
   showInaccessible: boolean;
@@ -45,7 +45,7 @@ export const emptyQueryObject: QueryObject = {
   institutions: [],
   resourceTypes: [],
   licenses: [],
-  keywords: [],
+  tags: [],
   queryFromURL: false,
   allowSearch: false,
   showInaccessible: false,
@@ -56,6 +56,7 @@ export const emptyQueryObject: QueryObject = {
 
 export enum SearchParameters {
   institution = 'inst',
+  tag = 'tag',
   query = 'query',
   page = 'page',
   limit = 'limit',
