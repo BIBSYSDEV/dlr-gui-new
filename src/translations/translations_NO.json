@@ -61,7 +61,8 @@
     "enabled": "aktive",
     "explore": "Utforsk",
     "filter": "Filter",
-    "institutions": "Institusjoner"
+    "institutions": "Institusjoner",
+    "licenses": "Lisenser"
   },
   "delivered_by": "Levert av",
   "error": {
@@ -98,6 +99,15 @@
       "yes": "Ja, andre kan endre og bygge videre på materialet",
       "share_alike": "Ja, men det må distribueres under samme lisens som originalen min",
       "share_alike_warning": " Vær obs på at dette valget kan gjøre det komplisert for andre å bruke ressursen"
+    },
+    "part_description": {
+      "bi": "Kun for intern bruk hos BI",
+      "by": "Krediter opphaver",
+      "nc": "Kun ikke-kommersiell bruk",
+      "nd": "Ingen bearbeidelser eller derivater er tillatt",
+      "ntnu": "Kun for intern bruk hos NTNU",
+      "sa": "Bearbeidelser må deles på samme vilkår",
+      "zero": "Dette verket markert som dedikert til public domain (offentlig eie)"
     },
     "published_with": "Published with",
     "questions": {

@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import InstitutionFiltering from './InstitutionFiltering';
 import { QueryObject } from '../../types/search.types';
 import ResourceTypeFiltering from './ResourceTypeFiltering';
+import LicenseFiltering from './LicenseFiltering';
 
 function useWindowWidth() {
   const [width, setWidth] = useState(0);
@@ -99,6 +100,7 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
           {filterHeader()}
           <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           <ResourceTypeFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+          <LicenseFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
         </StyledSideBar>
       ) : (
         <StyledAccordion expanded={isFiltersExpanded} onChange={handleChange}>
@@ -113,6 +115,7 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
             <StyledAccordionFilterBoxesWrapper>
               <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
               <ResourceTypeFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+              <LicenseFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
             </StyledAccordionFilterBoxesWrapper>
           </StyledAccordionDetails>
         </StyledAccordion>

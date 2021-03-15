@@ -86,7 +86,7 @@ const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({ queryObject, se
                 name={resourceType.name}
               />
             }
-            label={t(resourceType.name)}
+            label={t(`resource.type.${resourceType.name.toLowerCase()}`)}
             onChange={(event) => {
               changeSelected(index, event);
             }}

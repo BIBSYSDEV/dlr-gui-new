@@ -135,6 +135,8 @@ const Explore = () => {
           .join('');
       if (queryObject.resourceTypes.length > 0)
         url += queryObject.resourceTypes.map((type) => `&${SearchParameters.resourceType}=${type}`).join('');
+      if (queryObject.licenses.length > 0)
+        url += queryObject.licenses.map((licenseCode) => `&${SearchParameters.license}=${licenseCode}`).join('');
       history.replace(url);
     };
 

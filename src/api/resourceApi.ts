@@ -11,7 +11,7 @@ import {
 import { AccessTypes, License } from '../types/license.types';
 import { Content, emptyResourceContent, LinkMetadataFilename } from '../types/content.types';
 import { authenticatedApiRequest } from './api';
-import { QueryObject, SearchParameters, SearchResult } from '../types/search.types';
+import { facetResponse, QueryObject, SearchParameters, SearchResult } from '../types/search.types';
 
 enum APISearchParameters {
   FacetInstitution = 'facet_institution::',
@@ -357,7 +357,7 @@ export const getResourceContentEvent = (contentIdentifier: string): Promise<Axio
   });
 };
 
-export const getAllFacets = (): Promise<AxiosResponse<ResourceEvent>> => {
+export const getAllFacets = (): Promise<AxiosResponse<facetResponse>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesSearchPath}/resources/facets`),
     method: 'GET',

@@ -61,7 +61,8 @@
     "enabled": "enabled",
     "explore": "Explore",
     "filter": "Filter",
-    "institutions": "Institutions"
+    "institutions": "Institutions",
+    "licenses": "Licenses"
   },
   "delivered_by": "Delivered by",
   "error": {
@@ -98,6 +99,15 @@
       "yes": "Yes, others can modify and build upon your material",
       "share_alike": "Yes, but they have to use the same license as this resource",
       "share_alike_warning": "Be aware that this might cause complications for usage of your resource"
+    },
+    "part_description": {
+      "bi": "For internal uses at BI only",
+      "by": "Credit the creator",
+      "nc": "Noncommercial uses only",
+      "nd": "No derivatives or adaptations permitted",
+      "ntnu": "for internal uses at NTNU only",
+      "sa": "Share adaptations under the same terms",
+      "zero": "This work has been marked as dedicated to the public domain"
     },
     "published_with": "Published with",
     "questions": {
