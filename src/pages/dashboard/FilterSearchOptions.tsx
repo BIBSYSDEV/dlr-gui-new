@@ -40,15 +40,14 @@ const StyledSideBar = styled.div`
   width: 17rem;
   display: flex;
   flex-direction: column;
+  fieldset {
+    margin-top: 2rem;
+  }
 `;
 
 const StyledAccordionDetails = styled(AccordionDetails)`
   display: flex;
   flex-direction: column;
-`;
-
-const StyledSpacer = styled.div`
-  height: 2rem;
 `;
 
 const StyledAccordionFilterBoxesWrapper = styled.div`
@@ -60,7 +59,7 @@ const StyledAccordionFilterBoxesWrapper = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     flex-direction: column;
     fieldset {
-      margin-right: 0rem;
+      margin-right: 0;
     }
   }
 `;
@@ -102,11 +101,8 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
       {width > DeviceWidths.lg ? (
         <StyledSideBar>
           {filterHeader()}
-          <StyledSpacer />
           <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
-          <StyledSpacer />
           <ResourceTypeFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
-          <StyledSpacer />
           <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
         </StyledSideBar>
       ) : (
@@ -123,7 +119,6 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
               <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
               <ResourceTypeFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
             </StyledAccordionFilterBoxesWrapper>
-            <StyledSpacer />
             <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           </StyledAccordionDetails>
         </StyledAccordion>
