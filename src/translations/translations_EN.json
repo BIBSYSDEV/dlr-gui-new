@@ -59,10 +59,12 @@
   },
   "dashboard": {
     "enabled": "enabled",
+    "enter_tags": "Press enter or tab for adding keyword",
     "explore": "Explore",
     "filter": "Filter",
     "institutions": "Institutions",
-    "licenses": "Licenses"
+    "licenses": "Licenses",
+    "tags": "Tags"
   },
   "delivered_by": "Delivered by",
   "error": {
