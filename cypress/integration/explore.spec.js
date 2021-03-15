@@ -187,4 +187,57 @@ context('Actions', () => {
     cy.get(`[data-testid=filter-tag-chip-1]`).contains(tag2);
     cy.get(`[data-testid=filter-tag-chip-2]`).contains(tag3);
   });
+
+  it('adds and remove license as a filters', () => {
+    const license1 = 'CC BY 4.0';
+    const license2 = 'bi-opphaver-bi';
+    const license3 = 'CC BY-SA 4.0';
+    cy.get('[data-testid=search-for-resource-input]').type(search);
+    cy.get('[data-testid=search-for-resource-submit]').click();
+    cy.get('[data-testid=expand-filtering-options]').click();
+    cy.get(`[data-testid=license-filtering-checkbox-label-${license1.replaceAll(' ', '').replace('.', '')}]`).click();
+    cy.get(`[data-testid=license-filtering-checkbox-label-${license2.replaceAll(' ', '').replace('.', '')}]`).click();
+    cy.get(`[data-testid=license-filtering-checkbox-label-${license3.replaceAll(' ', '').replace('.', '')}]`).click();
+    cy.location().should((loc) => {
+      expect(loc.search).to.eq(
+        `?${SearchParameters.query}=${search}&${SearchParameters.license}=${encodeURI(license1)}&${
+          SearchParameters.license
+        }=${encodeURI(license2)}&${SearchParameters.license}=${encodeURI(license3)}`
+      );
+    });
+    cy.get(`[data-testid=license-filtering-checkbox-label-${license1.replaceAll(' ', '').replace('.', '')}]`).click();
+    cy.location().should((loc) => {
+      expect(loc.search).to.eq(
+        `?${SearchParameters.query}=${search}&${SearchParameters.license}=${encodeURI(license2)}&${
+          SearchParameters.license
+        }=${encodeURI(license3)}`
+      );
+    });
+    cy.get(`[data-testid=license-filtering-checkbox-label-${license2.replaceAll(' ', '').replace('.', '')}]`).click();
+    cy.get(`[data-testid=license-filtering-checkbox-label-${license3.replaceAll(' ', '').replace('.', '')}]`).click();
+    cy.location().should((loc) => {
+      expect(loc.search).to.eq(`?${SearchParameters.query}=${search}`);
+    });
+  });
+
+  it('can detect license filters in the url', () => {
+    const license1 = 'CC BY 4.0';
+    const license2 = 'bi-opphaver-bi';
+    const license3 = 'CC BY-SA 4.0';
+    cy.visit(
+      `/?${SearchParameters.query}=${search}&${SearchParameters.license}=${encodeURI(license1)}&${
+        SearchParameters.license
+      }=${encodeURI(license2)}`
+    );
+    cy.get('[data-testid=expand-filtering-options]').click();
+    cy.get(`[data-testid=license-filtering-checkbox-${license1.replaceAll(' ', '').replace('.', '')}] input`).should(
+      'be.checked'
+    );
+    cy.get(`[data-testid=license-filtering-checkbox-${license2.replaceAll(' ', '').replace('.', '')}] input`).should(
+      'be.checked'
+    );
+    cy.get(`[data-testid=license-filtering-checkbox-${license3.replaceAll(' ', '').replace('.', '')}] input`).should(
+      'not.be.checked'
+    );
+  });
 });

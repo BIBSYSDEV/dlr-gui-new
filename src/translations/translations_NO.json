@@ -104,12 +104,12 @@
     },
     "part_description": {
       "bi": "Kun for intern bruk hos BI",
-      "by": "Krediter opphaver",
-      "nc": "Kun ikke-kommersiell bruk",
-      "nd": "Ingen bearbeidelser eller derivater er tillatt",
+      "by": "BY - Krediter opphaver",
+      "nc": "NC - Kun ikke-kommersiell bruk",
+      "nd": "ND - Ingen bearbeidelser eller derivater er tillatt",
       "ntnu": "Kun for intern bruk hos NTNU",
-      "sa": "Bearbeidelser må deles på samme vilkår",
-      "zero": "Dette verket markert som dedikert til public domain (offentlig eie)"
+      "sa": "SA - Bearbeidelser må deles på samme vilkår",
+      "zero": "Zero - Dette verket er markert som dedikert til public domain (offentlig eie)"
     },
     "published_with": "Published with",
     "questions": {

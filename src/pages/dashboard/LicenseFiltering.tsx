@@ -17,6 +17,10 @@ const StyledCheckboxLabelWrapper = styled.div`
   width: 100%;
 `;
 
+const StyledFormControl: any = styled(FormControl)`
+  margin-top: 2rem;
+`;
+
 interface LicenseListItem {
   licenseCode: string;
   isSelected: boolean;
@@ -47,7 +51,7 @@ interface LicenseFilteringProps {
 }
 
 const LicenseFiltering: FC<LicenseFilteringProps> = ({ queryObject, setQueryObject }) => {
-  const [licensesCheckList, setlicensesCheckList] = useState<LicenseListItem[]>(initLicenseList());
+  const [licensesCheckList, setLicensesCheckList] = useState<LicenseListItem[]>(initLicenseList());
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -56,9 +60,9 @@ const LicenseFiltering: FC<LicenseFilteringProps> = ({ queryObject, setQueryObje
         licenseCode: licenseCode,
         isSelected: !!queryObject.licenses.find((queryLicenseCode) => queryLicenseCode === licenseCode),
       }));
-      setlicensesCheckList(nextState);
+      setLicensesCheckList(nextState);
     } else {
-      setlicensesCheckList(initLicenseList());
+      setLicensesCheckList(initLicenseList());
     }
   }, [queryObject]);
 
@@ -86,18 +90,18 @@ const LicenseFiltering: FC<LicenseFilteringProps> = ({ queryObject, setQueryObje
   };
 
   return (
-    <FormControl component="fieldset">
+    <StyledFormControl component="fieldset">
       <FormLabel>
         <Typography variant="h3">{t('dashboard.licenses')}</Typography>
       </FormLabel>
       <FormGroup>
         {licensesCheckList.map((license, index) => (
           <FormControlLabel
-            data-testid={`license-filtering-checkbox-label-${license.licenseCode}`}
+            data-testid={`license-filtering-checkbox-label-${license.licenseCode.replaceAll(' ', '').replace('.', '')}`}
             key={index}
             control={
               <Checkbox
-                data-testid={`license-filtering-checkbox-${license.licenseCode}`}
+                data-testid={`license-filtering-checkbox-${license.licenseCode.replaceAll(' ', '').replace('.', '')}`}
                 color="default"
                 checked={license.isSelected}
                 name={license.licenseCode.replace('4.0', '')}
@@ -118,7 +122,7 @@ const LicenseFiltering: FC<LicenseFilteringProps> = ({ queryObject, setQueryObje
           />
         ))}
       </FormGroup>
-    </FormControl>
+    </StyledFormControl>
   );
 };
 

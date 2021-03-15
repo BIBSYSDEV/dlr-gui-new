@@ -109,6 +109,7 @@ const Explore = () => {
       const resourceTypes = searchTerms.getAll(SearchParameters.resourceType);
       const tags = searchTerms.getAll(SearchParameters.tag);
       const pageTerm = searchTerms.get(SearchParameters.page);
+      const licenses = searchTerms.getAll(SearchParameters.license);
       const offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
       return {
         ...emptyQueryObject,
@@ -117,6 +118,7 @@ const Explore = () => {
         limit: NumberOfResultsPrPage,
         resourceTypes: resourceTypes,
         institutions: institutions,
+        licenses: licenses,
         tags: tags,
         queryFromURL: true,
         allowSearch: true,

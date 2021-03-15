@@ -104,12 +104,12 @@
     },
     "part_description": {
       "bi": "For internal uses at BI only",
-      "by": "Credit the creator",
-      "nc": "Noncommercial uses only",
-      "nd": "No derivatives or adaptations permitted",
+      "by": "BY - Credit the creator",
+      "nc": "NC - Noncommercial uses only",
+      "nd": "ND - No derivatives or adaptations permitted",
       "ntnu": "for internal uses at NTNU only",
-      "sa": "Share adaptations under the same terms",
-      "zero": "This work has been marked as dedicated to the public domain"
+      "sa": "SA - Share adaptations under the same terms",
+      "zero": "Zero - This work has been marked as dedicated to the public domain"
     },
     "published_with": "Published with",
     "questions": {
