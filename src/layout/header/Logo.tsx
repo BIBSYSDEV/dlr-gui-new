@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Link, Typography, Divider } from '@material-ui/core';
+import { Divider, Link, Typography } from '@material-ui/core';
 
 const StyledLogo = styled.div`
   display: flex;
@@ -16,7 +16,7 @@ const StyledDivider = styled(Divider)`
   }
 `;
 
-const Logo: FC = () => (
+const Logo = () => (
   <StyledLogo data-testid="logo">
     <Link href="/" underline="none">
       <Typography variant="h3" component="div">

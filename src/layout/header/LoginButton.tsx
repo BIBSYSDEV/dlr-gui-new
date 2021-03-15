@@ -1,9 +1,13 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@material-ui/core';
-import { API_URL, API_PATHS } from '../../utils/constants';
+import { API_PATHS, API_URL } from '../../utils/constants';
 
-const Login: FC = () => {
+interface LoginButtonProps {
+  variant?: 'text' | 'outlined' | 'contained';
+}
+
+const LoginButton: FC<LoginButtonProps> = ({ variant }) => {
   const { t } = useTranslation();
 
   function handleLogin() {
@@ -16,10 +20,10 @@ const Login: FC = () => {
   }
 
   return (
-    <Button color="primary" variant="contained" data-testid="menu-login-button" onClick={handleLogin}>
+    <Button color="primary" variant={variant} data-testid="menu-login-button" onClick={handleLogin}>
       {t('common.login')}
     </Button>
   );
 };
 
-export default Login;
+export default LoginButton;
