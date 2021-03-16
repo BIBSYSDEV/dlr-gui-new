@@ -77,6 +77,12 @@
     "500_page": "Ups, noe gikk galt. Prøv igjen senere",
     "generic": "Ups, noe gikk galt. Prøv igjen senere"
   },
+  "explanation_text": {
+    "tags_helper_aria_label": "Vis emneord forklaring",
+    "tags_helper_text": "Emneord benyttes for å beskrive innholdet i en ressurs",
+    "tags_helper_text_edit_resource": "Gode valg av emneord sørger for at det er lettere for andre å finne ressursen din. Gjerne legg inn flere emneord samtidig. Man kan legge til og slette emneord etter at en ressurs er publisert",
+    "tags_helper_text_example": "Eksempelvis kan fagemne, tema, studieretning benyttes som tags"
+  },
   "feedback": {
     "form_errors": "Det er feil i skjema. Disse må rettes før ressursen kan publiseres",
     "required_field": "Påkrevd felt",
@@ -167,7 +173,7 @@
     },
     "add_contributor": "Legg til bidragsyter",
     "add_creator": "Legg til opphaver",
-    "add_tags": "Legg inn 4-6 nøkkelord. Trykk enter eller tab for å legge inn flere",
+    "add_tags": "Legg inn 4-6 emneord. Trykk enter eller tab for å legge inn flere",
     "contributor_type": {
       "ContactPerson": "Kontakt person",
       "DataCollector": "Datasamler",
@@ -264,7 +270,7 @@
       "owner": "Eier",
       "published": "Publisert",
       "resource": "Ressurs",
-      "tags": "Nøkkelord",
+      "tags": "Emneord",
       "title": "Tittel",
       "type": "Ressurstype",
       "submitter_email": "Registrators epost"

@@ -11,6 +11,9 @@ import ErrorBanner from '../../../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import styled from 'styled-components';
 import CancelIcon from '@material-ui/icons/Cancel';
+import HelperTextPopover from '../../../components/HelperTextPopover';
+import { AutocompleteRenderInputParams } from '@material-ui/lab';
+import Typography from '@material-ui/core/Typography';
 
 const StyledChip = styled(Chip)`
   && {
@@ -24,6 +27,15 @@ const StyledChip = styled(Chip)`
       background-color: ${Colors.ChipBackgroundFocus};
     }
   }
+`;
+
+const StyledInlineContentWrapper = styled(StyledContentWrapper)`
+  display: flex;
+  align-content: stretch;
+`;
+
+const StyledAutoComplete: any = styled(Autocomplete)`
+  flex-grow: 4;
 `;
 
 const StyledCancelIcon = styled(CancelIcon)`
@@ -67,10 +79,10 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
 
   return (
     <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor3}>
-      <StyledContentWrapper>
+      <StyledInlineContentWrapper>
         <Field name={'tags'}>
           {({ field }: FieldProps) => (
-            <Autocomplete
+            <StyledAutoComplete
               {...field}
               freeSolo
               multiple
@@ -78,8 +90,8 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
               onChange={(_: ChangeEvent<unknown>, value: string[]) => {
                 saveTagsChanging(field.name, value);
               }}
-              renderTags={(value, getTagProps) =>
-                value.map((option, index) => (
+              renderTags={(value: any, getTagProps: any) =>
+                value.map((option: any, index: number) => (
                   <StyledChip
                     deleteIcon={<StyledCancelIcon />}
                     data-testid={`tag-chip-${index}`}
@@ -88,7 +100,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                   />
                 ))
               }
-              renderInput={(params) => (
+              renderInput={(params: AutocompleteRenderInputParams) => (
                 <TextField
                   {...params}
                   id="resource-feature-tags"
@@ -111,7 +123,15 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
           )}
         </Field>
         {saveError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
-      </StyledContentWrapper>
+        <HelperTextPopover popoverId="tags-explanation" ariaButtonLabel={t('explanation_text.tags_helper_aria_label')}>
+          <Typography variant="body1">
+            {t('explanation_text.tags_helper_text')}
+            {'. '}
+            {t('explanation_text.tags_helper_text_edit_resource')}.
+          </Typography>
+          <Typography variant="caption">{t('explanation_text.tags_helper_text_example')}.</Typography>
+        </HelperTextPopover>
+      </StyledInlineContentWrapper>
     </StyledSchemaPartColored>
   );
 };

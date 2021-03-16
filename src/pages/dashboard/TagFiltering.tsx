@@ -8,6 +8,7 @@ import { QueryObject } from '../../types/search.types';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import HelperTextPopover from '../../components/HelperTextPopover';
 
 const minimumTagLength = 1;
 
@@ -38,6 +39,11 @@ const StyledCancelIcon = styled(CancelIcon)`
 const StyledChipContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+`;
+
+const StyledFormLabel = styled(FormLabel)`
+  display: flex;
+  align-items: center;
 `;
 
 interface TagsFilteringProps {
@@ -77,9 +83,13 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
 
   return (
     <StyledFormControl component="fieldset">
-      <FormLabel>
-        <Typography variant="h3">{t('dashboard.tags')}</Typography>{' '}
-      </FormLabel>
+      <StyledFormLabel>
+        <Typography variant="h3">{t('dashboard.tags')}</Typography>
+        <HelperTextPopover ariaButtonLabel={t('explanation_text.tags_helper_aria_label')} popoverId="tags-explanation">
+          <Typography variant="body1">{t('explanation_text.tags_helper_text')}.</Typography>
+          <Typography variant="caption">{t('explanation_text.tags_helper_text_example')}.</Typography>
+        </HelperTextPopover>
+      </StyledFormLabel>
       <FormGroup>
         <Autocomplete
           freeSolo
