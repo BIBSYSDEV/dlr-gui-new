@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Footer from './layout/Footer';
 import Header from './layout/header/Header';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from './state/userSlice';
 import { getAnonymousWebToken, getUserData } from './api/userApi';
@@ -15,6 +15,7 @@ import i18next from 'i18next';
 import ScrollToContentButton from './components/ScrollToContentButton';
 import { useTranslation } from 'react-i18next';
 import ErrorBanner from './components/ErrorBanner';
+import LoginRedirectPage from './pages/LoginRedirectPage';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -61,7 +62,6 @@ const App = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
-  const [isTestingURLRedirect, setIsTestingURLRedirect] = useState(true);
   const mainContentRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
   const [userError, setUserError] = useState<Error>();
@@ -72,7 +72,6 @@ const App = () => {
     if (localStorage.token) {
       setUserError(undefined);
       if (localStorage.token && !isTokenAnonymous() && !isLoggedInTokenExpired() && !user.id) {
-        setIsLoadingUser(true);
         getUserData()
           .then((response) => {
             dispatch(setUser(response.data));
@@ -123,22 +122,27 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      {tokenError && <ErrorBanner error={tokenError} />}
-      {!isLoadingUser && hasValidToken ? (
-        <StyledApp>
-          <ScrollToContentButton contentRef={mainContentRef} text={t('skip_to_main_content')} />
-          <Header />
-          {userError && <ErrorBanner error={userError} />}
-          <StyledContent tabIndex={-1} ref={mainContentRef} role="main" id="content">
-            <AppRoutes />
-          </StyledContent>
-          <Footer />
-        </StyledApp>
-      ) : (
-        <StyledProgressWrapper>
-          <CircularProgress />
-        </StyledProgressWrapper>
-      )}
+      <Switch>
+        <Route exact path="/loginRedirect" component={LoginRedirectPage} />
+        <Route path="*">
+          {tokenError && <ErrorBanner error={tokenError} />}
+          {!isLoadingUser && hasValidToken ? (
+            <StyledApp>
+              <ScrollToContentButton contentRef={mainContentRef} text={t('skip_to_main_content')} />
+              <Header />
+              {userError && <ErrorBanner error={userError} />}
+              <StyledContent tabIndex={-1} ref={mainContentRef} role="main" id="content">
+                <AppRoutes />
+              </StyledContent>
+              <Footer />
+            </StyledApp>
+          ) : (
+            <StyledProgressWrapper>
+              <CircularProgress />
+            </StyledProgressWrapper>
+          )}
+        </Route>
+      </Switch>
     </BrowserRouter>
   );
 };

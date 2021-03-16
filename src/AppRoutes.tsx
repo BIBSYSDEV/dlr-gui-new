@@ -4,7 +4,6 @@ import PrivacyPolicy from './pages/infopages/PrivacyPolicy';
 import { useSelector } from 'react-redux';
 import ResourcePage from './pages/resource/ResourcePage';
 import MyResources from './pages/my_resources/MyResources';
-import LoginRedirectPage from './pages/LoginRedirectPage';
 import { RootState } from './state/rootReducer';
 import DelayedFallback from './components/DelayedFallback';
 import { v4 as uuidv4 } from 'uuid';
@@ -25,7 +24,6 @@ const AppRoutes = () => {
         <Route exact path="/resource/:identifier" component={ResourcePage} />
         <Route exact path="/resources/user/current" component={MyResources} />
         <Route exact path="/privacy-policy" component={PrivacyPolicy} />
-        <Route exact path="/loginRedirect" component={LoginRedirectPage} />
         {/* CreatorRoutes */}
         <Route
           exact
