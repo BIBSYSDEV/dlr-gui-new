@@ -27,6 +27,13 @@ const PopoverContent = styled.div`
   padding: 1rem;
 `;
 
+const ScreenReaderOnlyP = styled.p`
+  position: absolute;
+  height: 1px;
+  width: 1px;
+  overflow: hidden !important;
+`;
+
 interface ExplanationProps {
   icon: any;
   explanation: string;
@@ -47,7 +54,6 @@ interface CCExplanationProps {
 const CCExplanation: FC<CCExplanationProps> = ({ licenseCode }) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
-  const id = open ? 'explain-license' : undefined;
   const { t } = useTranslation();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -59,11 +65,11 @@ const CCExplanation: FC<CCExplanationProps> = ({ licenseCode }) => {
   };
   return (
     <div>
-      <IconButton aria-describedby={id} color="default" onClick={handleClick}>
+      <IconButton aria-label={t('dashboard.explain_license')} color="default" onClick={handleClick}>
         <HelpIcon />
       </IconButton>
       <Popover
-        id={id}
+        id={`explain-license-${licenseCode.replaceAll(' ', '').replace('.', '')}`}
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
@@ -113,6 +119,7 @@ const CCExplanation: FC<CCExplanationProps> = ({ licenseCode }) => {
               {`${t('license.read_more')} ${licenseCode} (${t('license.external_page').toLowerCase()})`}
             </Link>
           )}
+          <ScreenReaderOnlyP>{t('dashboard.close_popover')}</ScreenReaderOnlyP>
         </PopoverContent>
       </Popover>
     </div>

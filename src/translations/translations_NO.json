@@ -58,8 +58,10 @@
     "yes": "Ja"
   },
   "dashboard": {
+    "close_popover": "Trykk escape for å lukke denne boksen",
     "enabled": "aktive",
     "enter_tags": "Trykk enter or tab for å velge emneord",
+    "explain_license": "Forklar lisens",
     "explore": "Utforsk",
     "filter": "Filter",
     "institutions": "Institusjoner",

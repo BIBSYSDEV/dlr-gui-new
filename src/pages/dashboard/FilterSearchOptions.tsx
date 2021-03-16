@@ -55,7 +55,7 @@ const StyledAccordionFilterBoxesWrapper = styled.div`
     margin-right: 6rem;
     margin-top: 0;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
     flex-direction: column;
     fieldset {
       margin-right: 0;
@@ -101,7 +101,7 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
 
   return (
     <div>
-      {width > DeviceWidths.lg ? (
+      {width >= DeviceWidths.lg ? (
         <StyledSideBar>
           {filterHeader()}
           <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />

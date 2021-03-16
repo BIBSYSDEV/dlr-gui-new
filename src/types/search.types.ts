@@ -64,7 +64,7 @@ export enum SearchParameters {
   offset = 'offset',
   resourceType = 'type',
 }
-export interface facetResponse {
+export interface FacetResponse {
   numFound: number;
   queryTime: number;
   facet_counts: FacetCount[];

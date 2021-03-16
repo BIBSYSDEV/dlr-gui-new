@@ -44,6 +44,18 @@ export enum Licenses {
   CC_ZERO = 'CC0 1.0',
 }
 
+export const LicenseCodes: string[] = [
+  Licenses.CC_BY,
+  Licenses.CC_BY_SA,
+  Licenses.CC_BY_NC,
+  Licenses.CC_BY_ND,
+  Licenses.CC_BY_NC_SA,
+  Licenses.CC_BY_NC_ND,
+  Licenses.CC_ZERO,
+  Licenses.BI,
+  Licenses.NTNU,
+];
+
 export enum InstitutionLicenseProviders {
   NTNU = 'ntnu',
   BI = 'bi',

@@ -39,14 +39,14 @@ export enum CCLogoImageRole {
 
 interface CClogoImageProps {
   licenseCode: string;
-  showCCSVG?: boolean;
+  showCCImage?: boolean;
 }
 
-const CClogoImage: FC<CClogoImageProps> = ({ licenseCode, showCCSVG = true }) => {
+const CClogoImage: FC<CClogoImageProps> = ({ licenseCode, showCCImage = true }) => {
   return (
     <StyledLogoWrapper>
       <StyledImageWrapper>
-        {licenseCode.toLowerCase().includes('cc') && showCCSVG && <StyledImage src={CCLogo} alt="" />}
+        {licenseCode.toLowerCase().includes('cc') && showCCImage && <StyledImage src={CCLogo} alt="" />}
         {licenseCode.toLowerCase().includes('by') && <StyledImage src={BY} alt="" />}
         {licenseCode.toLowerCase().includes('nc') && <StyledImage src={NC} alt="" />}
         {licenseCode.toLowerCase().includes('nd') && <StyledImage src={ND} alt="" />}

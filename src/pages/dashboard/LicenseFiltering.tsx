@@ -1,5 +1,5 @@
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
-import { Licenses } from '../../types/license.types';
+import { LicenseCodes } from '../../types/license.types';
 import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
 import { Checkbox, FormControl, FormControlLabel, FormGroup } from '@material-ui/core';
@@ -26,20 +26,8 @@ interface LicenseListItem {
   isSelected: boolean;
 }
 
-const licenseCodes: string[] = [
-  Licenses.CC_BY,
-  Licenses.CC_BY_SA,
-  Licenses.CC_BY_NC,
-  Licenses.CC_BY_ND,
-  Licenses.CC_BY_NC_SA,
-  Licenses.CC_BY_NC_ND,
-  Licenses.CC_ZERO,
-  Licenses.BI,
-  Licenses.NTNU,
-];
-
 const initLicenseList = (): LicenseListItem[] => {
-  return licenseCodes.map((license) => ({
+  return LicenseCodes.map((license) => ({
     licenseCode: license,
     isSelected: false,
   }));
@@ -56,7 +44,7 @@ const LicenseFiltering: FC<LicenseFilteringProps> = ({ queryObject, setQueryObje
 
   useEffect(() => {
     if (queryObject.licenses.length > 0) {
-      const nextState = licenseCodes.map((licenseCode) => ({
+      const nextState = LicenseCodes.map((licenseCode) => ({
         licenseCode: licenseCode,
         isSelected: !!queryObject.licenses.find((queryLicenseCode) => queryLicenseCode === licenseCode),
       }));
@@ -110,7 +98,7 @@ const LicenseFiltering: FC<LicenseFilteringProps> = ({ queryObject, setQueryObje
             label={
               <StyledCheckboxLabelWrapper>
                 <CClogoImage
-                  showCCSVG={false}
+                  showCCImage={false}
                   licenseCode={license.licenseCode.replace('CC ', '').replace(' 4.0', '')}
                 />
                 <CCExplanation licenseCode={license.licenseCode} />
