@@ -113,6 +113,7 @@ const Explore = () => {
       const resourceTypes = searchTerms.getAll(SearchParameters.resourceType);
       const tags = searchTerms.getAll(SearchParameters.tag);
       const pageTerm = searchTerms.get(SearchParameters.page);
+      const licenses = searchTerms.getAll(SearchParameters.license);
       const offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
       return {
         ...emptyQueryObject,
@@ -121,6 +122,7 @@ const Explore = () => {
         limit: NumberOfResultsPrPage,
         resourceTypes: resourceTypes,
         institutions: institutions,
+        licenses: licenses,
         tags: tags,
         queryFromURL: true,
         allowSearch: true,
@@ -141,6 +143,8 @@ const Explore = () => {
           .join('');
       if (queryObject.resourceTypes.length > 0)
         url += queryObject.resourceTypes.map((type) => `&${SearchParameters.resourceType}=${type}`).join('');
+      if (queryObject.licenses.length > 0)
+        url += queryObject.licenses.map((licenseCode) => `&${SearchParameters.license}=${licenseCode}`).join('');
       if (queryObject.tags.length > 0) url += queryObject.tags.map((tag) => `&${SearchParameters.tag}=${tag}`).join('');
       history.replace(url);
     };

@@ -58,12 +58,15 @@
     "yes": "Ja"
   },
   "dashboard": {
+    "close_popover": "Trykk escape for å lukke denne boksen",
     "enabled": "aktive",
     "enter_tags": "Trykk enter or tab for å velge emneord",
+    "explain_license": "Forklar lisens",
     "explore": "Utforsk",
     "login-reminder": "Logg inn for å få tilgang til flere ressurser ved din institusjon",
     "filter": "Filter",
     "institutions": "Institusjoner",
+    "licenses": "Lisenser",
     "tags": "Emneord"
   },
   "delivered_by": "Levert av",
@@ -101,6 +104,15 @@
       "yes": "Ja, andre kan endre og bygge videre på materialet",
       "share_alike": "Ja, men det må distribueres under samme lisens som originalen min",
       "share_alike_warning": " Vær obs på at dette valget kan gjøre det komplisert for andre å bruke ressursen"
+    },
+    "part_description": {
+      "bi": "Kun for intern bruk hos BI",
+      "by": "BY - Krediter opphaver",
+      "nc": "NC - Kun ikke-kommersiell bruk",
+      "nd": "ND - Ingen bearbeidelser eller derivater er tillatt",
+      "ntnu": "Kun for intern bruk hos NTNU",
+      "sa": "SA - Bearbeidelser må deles på samme vilkår",
+      "zero": "Zero - Dette verket er markert som dedikert til public domain (offentlig eie)"
     },
     "published_with": "Published with",
     "questions": {

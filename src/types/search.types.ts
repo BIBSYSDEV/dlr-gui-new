@@ -60,8 +60,26 @@ export enum SearchParameters {
   query = 'query',
   page = 'page',
   limit = 'limit',
+  license = 'license',
   offset = 'offset',
   resourceType = 'type',
+}
+export interface FacetResponse {
+  numFound: number;
+  queryTime: number;
+  facet_counts: FacetCount[];
+}
+
+interface FacetCount {
+  count: string;
+  value: string;
+  type: FacetType;
+}
+
+enum FacetType {
+  dlrFiletype = 'dlr_filetype',
+  dlrInstitutionId = 'dlr_institution_id',
+  dlrRightsLicenseName = 'dlr_rights_license_name',
 }
 
 export const AllDLRInstitutionNames = ['ntnu', 'bi', 'oslomet', 'uib', 'hvl'];

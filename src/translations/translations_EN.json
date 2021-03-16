@@ -58,12 +58,15 @@
     "yes": "Yes"
   },
   "dashboard": {
+    "close_popover": "Press escape to close this box",
     "enabled": "enabled",
     "enter_tags": "Press enter or tab for adding keyword",
+    "explain_license": "Explain license",
     "explore": "Explore",
     "login_reminder": "Log in to have access to more resources from your institution.",
     "filter": "Filter",
     "institutions": "Institutions",
+    "licenses": "Licenses",
     "tags": "Tags"
   },
   "delivered_by": "Delivered by",
@@ -101,6 +104,15 @@
       "yes": "Yes, others can modify and build upon your material",
       "share_alike": "Yes, but they have to use the same license as this resource",
       "share_alike_warning": "Be aware that this might cause complications for usage of your resource"
+    },
+    "part_description": {
+      "bi": "For internal uses at BI only",
+      "by": "BY - Credit the creator",
+      "nc": "NC - Noncommercial uses only",
+      "nd": "ND - No derivatives or adaptations permitted",
+      "ntnu": "for internal uses at NTNU only",
+      "sa": "SA - Share adaptations under the same terms",
+      "zero": "Zero - This work has been marked as dedicated to the public domain"
     },
     "published_with": "Published with",
     "questions": {

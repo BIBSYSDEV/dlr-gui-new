@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import InstitutionFiltering from './InstitutionFiltering';
 import { QueryObject } from '../../types/search.types';
 import ResourceTypeFiltering from './ResourceTypeFiltering';
+import LicenseFiltering from './LicenseFiltering';
 import TagFiltering from './TagFiltering';
 
 function useWindowWidth() {
@@ -54,7 +55,7 @@ const StyledAccordionFilterBoxesWrapper = styled.div`
     margin-right: 6rem;
     margin-top: 0;
   }
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
     flex-direction: column;
     fieldset {
       margin-right: 0;
@@ -100,11 +101,12 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
 
   return (
     <div>
-      {width > DeviceWidths.lg ? (
+      {width >= DeviceWidths.lg ? (
         <StyledSideBar>
           {filterHeader()}
           <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           <ResourceTypeFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+          <LicenseFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
         </StyledSideBar>
       ) : (
@@ -120,6 +122,7 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
             <StyledAccordionFilterBoxesWrapper>
               <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
               <ResourceTypeFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+              <LicenseFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
             </StyledAccordionFilterBoxesWrapper>
             <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           </StyledAccordionDetails>
