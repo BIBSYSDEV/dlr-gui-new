@@ -61,7 +61,7 @@
     "enabled": "aktive",
     "enter_tags": "Trykk enter or tab for å velge emneord",
     "explore": "Utforsk",
-    "login-reminder": "Logg inn for å få tilgang til flere ressurser ved din institusjon",
+    "login_reminder": "Logg inn for å få tilgang til flere ressurser ved din institusjon",
     "filter": "Filter",
     "institutions": "Institusjoner",
     "tags": "Emneord"

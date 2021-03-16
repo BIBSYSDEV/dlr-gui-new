@@ -168,6 +168,7 @@ const Explore = () => {
       }
     };
     if (queryObject.allowSearch) triggerSearch();
+    if (queryObject.offset === 0) setPage(firstPage);
   }, [queryObject, history]);
 
   return (
