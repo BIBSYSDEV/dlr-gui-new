@@ -10,9 +10,7 @@ const StyledErrorDiv = styled.div`
   background-color: ${({ theme }) => theme.palette.danger.light};
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
-`;
-const StyledTypographyForErrorDetail = styled(Typography)`
-  display: none;
+  text-align: center;
 `;
 
 interface ErrorBannerProps {
@@ -35,7 +33,7 @@ const ErrorBanner: FC<ErrorBannerProps> = ({ userNeedsToBeLoggedIn = false, erro
   return (
     <StyledErrorDiv>
       <Typography>{getErrorMessage()}</Typography>
-      {error && <StyledTypographyForErrorDetail>{error.message}</StyledTypographyForErrorDetail>}
+      {error && <Typography variant="caption">(Feilmelding: {error.message})</Typography>}
     </StyledErrorDiv>
   );
 };
