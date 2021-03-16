@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@material-ui/core';
 import { API_PATHS, API_URL } from '../../utils/constants';
@@ -13,7 +13,7 @@ export function handleLogout() {
   });
 }
 
-const Logout: FC = () => {
+const Logout = () => {
   const { t } = useTranslation();
 
   return (

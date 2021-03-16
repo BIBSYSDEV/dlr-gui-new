@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import logo from '../resources/images/unit_logo.png';
@@ -36,7 +36,7 @@ const StyledMuiLink: any = styled(MuiLink)`
   display: block;
 `;
 
-const Footer: FC = () => {
+const Footer = () => {
   const { t } = useTranslation();
 
   return (

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getMyResources } from '../../api/resourceApi';
 import { CircularProgress, List, Typography } from '@material-ui/core';
@@ -18,7 +18,7 @@ const ListMarginAlign = styled.div`
   align-items: start;
 `;
 
-const MyResources: FC = () => {
+const MyResources = () => {
   const { t } = useTranslation();
   const [isLoadingMyResources, setIsLoadingMyResources] = useState(false);
   const [resourcesUnpublished, setMyUnpublishedResources] = useState<Resource[]>([]);

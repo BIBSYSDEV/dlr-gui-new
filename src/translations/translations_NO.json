@@ -37,7 +37,7 @@
     "error": "Feil",
     "finish": "Avslutt",
     "home": "Hjem",
-    "login": "Logg inn",
+    "login": "LOGG INN",
     "logout": "Logg ut",
     "must_be_logged_in": "Krever pålogging",
     "name": "Navn",
@@ -63,6 +63,7 @@
     "enter_tags": "Trykk enter or tab for å velge emneord",
     "explain_license": "Forklar lisens",
     "explore": "Utforsk",
+    "login-reminder": "Logg inn for å få tilgang til flere ressurser ved din institusjon",
     "filter": "Filter",
     "institutions": "Institusjoner",
     "licenses": "Lisenser",
@@ -120,7 +121,7 @@
       "examples": "F.eks bilder eller illustrasjoner",
       "modify_and_build": "Kan andre endre og bygge videre på ressursen din?",
       "special_needs": "Har du spesielle behov for å begrense bruken av ressursen?",
-      "usage_cleared_with_owner": "Er arbeided rettighetsklarert?"
+      "usage_cleared_with_owner": "Er arbeidet rettighetsklarert?"
     },
     "limitation": {
       "bi-opphaver-bi": {

@@ -1,4 +1,4 @@
-import React, { FC, lazy } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import PrivacyPolicy from './pages/infopages/PrivacyPolicy';
 import { useSelector } from 'react-redux';
@@ -6,7 +6,6 @@ import ResourcePage from './pages/resource/ResourcePage';
 import MyResources from './pages/my_resources/MyResources';
 import LoginRedirectPage from './pages/LoginRedirectPage';
 import { RootState } from './state/rootReducer';
-import { Suspense } from 'react';
 import DelayedFallback from './components/DelayedFallback';
 import { v4 as uuidv4 } from 'uuid';
 import Forbidden from './pages/errorpages/Forbidden';
@@ -16,7 +15,7 @@ const Explore = lazy(() => import('./pages/dashboard/Explore'));
 const EditResourcePage = lazy(() => import('./pages/edit_resource/EditResourcePage'));
 const NotFound = lazy(() => import('./pages/errorpages/NotFound'));
 
-const AppRoutes: FC = () => {
+const AppRoutes = () => {
   const user = useSelector((state: RootState) => state.user);
 
   return (
