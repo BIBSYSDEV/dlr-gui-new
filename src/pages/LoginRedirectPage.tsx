@@ -24,6 +24,7 @@ const LoginRedirectPage = () => {
               dispatch(setUser(response.data));
             });
             history.push('/');
+            history.go(0);
           }
         })
         .catch((error) => {
