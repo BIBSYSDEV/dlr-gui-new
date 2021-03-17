@@ -12,6 +12,8 @@
     "hide_list": "Skjul liste",
     "no_courses_available": "Det finnes ingen emner tilgjengelig",
     "no_one_has_read_access": "Ingen har lesetilgang",
+    "no_clearance_no_public_access": "Hvis arbeidet ikke er rettighetsklarert, kan ikke arbeidet være offentlig tilgjengelig",
+    "only_private_is_available": "Med internlisens må tilgangen være begrenset",
     "save_personal_access_error": {
       "duplicate_email": "En eller flere av epostene du skrev har allerede tilgang",
       "invalid_email": "En eller flere eposter er feilstavet",

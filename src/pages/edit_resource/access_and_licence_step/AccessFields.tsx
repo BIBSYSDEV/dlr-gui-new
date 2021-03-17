@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Colors, StyleWidths } from '../../../themes/mainTheme';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { MenuItem, TextField, Typography } from '@material-ui/core';
@@ -27,6 +27,8 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
   const { values, setFieldTouched, setFieldValue, handleChange, resetForm } = useFormikContext<Resource>();
   const [savingAccessTypeError, setSavingAccessTypeError] = useState(false);
   const [forceRefreshInPrivateConsumerAccessFields, setForceRefreshInPrivateConsumerAccessFields] = useState(false);
+  const [disabledUserInput, setDisabledUserInput] = useState(false);
+  const [disabledHelperText, setDisabledHelperText] = useState('');
 
   const saveResourceAccessType = async (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (event.target.value.length > 0) {
@@ -54,6 +56,38 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
     }
   };
 
+  useEffect(() => {
+    const setPrivateAccess = async () => {
+      setAllChangesSaved(false);
+      try {
+        await putAccessType(values.identifier, AccessTypes.private);
+        values.features.dlr_access = AccessTypes.private;
+      } catch (error) {
+        setSavingAccessTypeError(true);
+      } finally {
+        setAllChangesSaved(true);
+      }
+    };
+
+    if (
+      (values.licenses[0]?.features?.dlr_license_code &&
+        !values.licenses[0].features.dlr_license_code.toLowerCase().includes('cc')) ||
+      (values.usageClearedWithOwner && values.usageClearedWithOwner === 'no_clearance')
+    ) {
+      if (values.features.dlr_access !== AccessTypes.private) {
+        setPrivateAccess();
+      }
+      if (values.usageClearedWithOwner && values.usageClearedWithOwner === 'no_clearance') {
+        setDisabledHelperText(t('access.no_clearance_no_public_access'));
+      } else {
+        setDisabledHelperText(t('access.only_private_is_available'));
+      }
+      setDisabledUserInput(true);
+    } else {
+      setDisabledUserInput(false);
+    }
+  }, [values, setAllChangesSaved, setFieldValue, resetForm, t]);
+
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor2}>
       <StyledContentWrapper>
@@ -68,12 +102,14 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
                   data-testid="access-dropdown-menu"
                   variant="filled"
                   select
+                  disabled={disabledUserInput}
                   required
                   error={touched && !!error}
                   fullWidth
+                  helperText={disabledUserInput ? <Typography variant="caption">{disabledHelperText} </Typography> : ''}
                   value={field.value}
                   label={t('resource.metadata.access')}
-                  onBlur={(event) => {
+                  onBlur={() => {
                     setFieldTouched(ResourceFeatureNamesFullPath.Access, true, true);
                   }}
                   onChange={(event) => {
