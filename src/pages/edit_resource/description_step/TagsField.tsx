@@ -31,7 +31,7 @@ const StyledChip = styled(Chip)`
 
 const StyledInlineContentWrapper = styled(StyledContentWrapper)`
   display: flex;
-  align-content: stretch;
+  align-items: center;
 `;
 
 const StyledAutoComplete: any = styled(Autocomplete)`
@@ -40,6 +40,10 @@ const StyledAutoComplete: any = styled(Autocomplete)`
 
 const StyledCancelIcon = styled(CancelIcon)`
   color: ${Colors.ChipIconBackground};
+`;
+
+const StyledTypography = styled(Typography)`
+  margin-bottom: 1rem;
 `;
 
 interface TagsFieldProps {
@@ -124,11 +128,8 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
         </Field>
         {saveError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
         <HelperTextPopover popoverId="tags-explanation" ariaButtonLabel={t('explanation_text.tags_helper_aria_label')}>
-          <Typography variant="body1">
-            {t('explanation_text.tags_helper_text')}
-            {'. '}
-            {t('explanation_text.tags_helper_text_edit_resource')}.
-          </Typography>
+          <StyledTypography variant="body1">{t('explanation_text.tags_helper_text')}.</StyledTypography>
+          <StyledTypography> {t('explanation_text.tags_helper_text_edit_resource')}. </StyledTypography>
           <Typography variant="caption">{t('explanation_text.tags_helper_text_example')}.</Typography>
         </HelperTextPopover>
       </StyledInlineContentWrapper>

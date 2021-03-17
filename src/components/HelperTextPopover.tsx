@@ -3,17 +3,13 @@ import HelpIcon from '@material-ui/icons/Help';
 import { IconButton, Popover } from '@material-ui/core';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { Colors, StyleWidths } from '../themes/mainTheme';
+import { StyleWidths } from '../themes/mainTheme';
 
 const ScreenReaderOnlyP = styled.p`
   position: absolute;
   height: 1px;
   width: 1px;
   overflow: hidden !important;
-`;
-
-const StyledIconButton = styled(IconButton)`
-  color: ${Colors.InitialText};
 `;
 
 const PopoverContent = styled.div`
@@ -40,9 +36,9 @@ const HelperTextPopover: FC<HelperTextPopoverProps> = ({ ariaButtonLabel, popove
 
   return (
     <>
-      <StyledIconButton aria-label={ariaButtonLabel} onClick={handleClick}>
+      <IconButton aria-label={ariaButtonLabel} onClick={handleClick} color="primary">
         <HelpIcon />
-      </StyledIconButton>
+      </IconButton>
       <Popover
         id={popoverId}
         open={open}

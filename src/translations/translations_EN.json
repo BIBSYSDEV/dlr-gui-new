@@ -80,7 +80,7 @@
   "explanation_text": {
     "tags_helper_aria_label": "Show tags explanation",
     "tags_helper_text": "Tags describes the contents of a resource",
-    "tags_helper_text_edit_resource": "Quality tags increases the chance that others will find and use your resource. You can readily add more than one tag if desired. It is possible to add or remove tags after publication of your resource",
+    "tags_helper_text_edit_resource": "Quality tags increases the chance that others will find and use your resource. You can add more than one tag if desired. It is possible to add or remove tags after publication of your resource",
     "tags_helper_text_example": "For instance can subjects, themes, and field of study be used."
   },
   "feedback": {

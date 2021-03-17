@@ -10,7 +10,6 @@ import { IconButton, Popover } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
 import { useTranslation } from 'react-i18next';
 import Link from '@material-ui/core/Link';
-import { Colors } from '../themes/mainTheme';
 
 const StyledImage = styled.img`
   width: 1.2rem;
@@ -33,10 +32,6 @@ const ScreenReaderOnlyP = styled.p`
   height: 1px;
   width: 1px;
   overflow: hidden !important;
-`;
-
-const StyledIconButton = styled(IconButton)`
-  color: ${Colors.InitialText};
 `;
 
 interface ExplanationProps {
@@ -70,9 +65,9 @@ const CCExplanation: FC<CCExplanationProps> = ({ licenseCode }) => {
   };
   return (
     <div>
-      <StyledIconButton aria-label={t('dashboard.explain_license')} color="default" onClick={handleClick}>
+      <IconButton aria-label={t('dashboard.explain_license')} color="primary" onClick={handleClick}>
         <HelpIcon />
-      </StyledIconButton>
+      </IconButton>
       <Popover
         id={`explain-license-${licenseCode.replaceAll(' ', '').replace('.', '')}`}
         open={open}
