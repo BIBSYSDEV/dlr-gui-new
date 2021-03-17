@@ -129,7 +129,8 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
         {saveError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
         <HelperTextPopover popoverId="tags-explanation" ariaButtonLabel={t('explanation_text.tags_helper_aria_label')}>
           <StyledTypography variant="body1">{t('explanation_text.tags_helper_text')}.</StyledTypography>
-          <StyledTypography> {t('explanation_text.tags_helper_text_edit_resource')}. </StyledTypography>
+          <StyledTypography> {t('explanation_text.tags_helper_text_edit_resource1')}. </StyledTypography>
+          <StyledTypography> {t('explanation_text.tags_helper_text_edit_resource2')}. </StyledTypography>
           <Typography variant="caption">{t('explanation_text.tags_helper_text_example')}.</Typography>
         </HelperTextPopover>
       </StyledInlineContentWrapper>
