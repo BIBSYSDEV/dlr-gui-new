@@ -81,7 +81,7 @@
     "tags_helper_aria_label": "Vis emneord forklaring",
     "tags_helper_text": "Emneord benyttes for å beskrive innholdet i en ressurs",
     "tags_helper_text_edit_resource": "Gode valg av emneord sørger for at det er lettere for andre å finne ressursen din. Gjerne legg inn flere emneord samtidig. Man kan legge til og slette emneord etter at en ressurs er publisert",
-    "tags_helper_text_example": "Eksempelvis kan fagemne, tema, studieretning benyttes som tags"
+    "tags_helper_text_example": "For eksempel kan ressurs med tittel: \"Det sympatiske nervesystemet\" kan for eksempel ha emneord \"syk130\", \"sykepleie\", \"helsefag\", \"nervesystemet\" og \"helse\""
   },
   "feedback": {
     "form_errors": "Det er feil i skjema. Disse må rettes før ressursen kan publiseres",
