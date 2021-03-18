@@ -60,7 +60,7 @@
   "dashboard": {
     "close_popover": "Press escape to close this box",
     "enabled": "enabled",
-    "enter_tags": "Press enter or tab for adding keyword",
+    "enter_tags": "Press enter or tab for adding tag",
     "explain_license": "Explain license",
     "explore": "Explore",
     "login_reminder": "Log in to have access to more resources from your institution.",
@@ -76,6 +76,13 @@
     "404_page": "Got lost? (404-page)",
     "500_page": "Whoops, something went wrong. Try again later",
     "generic": "Whoops, something went wrong. Try again later"
+  },
+  "explanation_text": {
+    "tags_helper_aria_label": "Show tags explanation",
+    "tags_helper_text": "Tags describes the contents of a resource. A single tag may consist of multiple words, for example \"optical illusion\"",
+    "tags_helper_text_edit_resource1": "Quality tags increases the chance that others will find and use your resource",
+    "tags_helper_text_edit_resource2": "You can add more than one tag if desired. Write your first tag and then press enter or tab, and then type your next tag followed by enter or tab. It is possible to add or remove tags after publication of your resource",
+    "tags_helper_text_example": "For instance can a resource with title \"The Sympathetic Nervous System\" have \"syk130\", \"nursery\", \"healthcare subject\", \"nervous system\", and \"health\" as tags"
   },
   "feedback": {
     "form_errors": "There are errors in the form. They have to be corrected before the resource can be published",
@@ -167,7 +174,7 @@
     },
     "add_contributor": "Add contributor",
     "add_creator": "Add creator",
-    "add_tags": "Add 4-6 keywords. Press enter or tab for adding more keywords.",
+    "add_tags": "Add 4-6 tags. Press enter or tab for adding more tags.",
     "contributor_type": {
       "ContactPerson": "Contact person",
       "DataCollector": "Data collector",
@@ -264,7 +271,7 @@
       "owner": "Owner",
       "published": "Published",
       "resource": "Resource",
-      "tags": "Keywords",
+      "tags": "Tags",
       "title": "Title",
       "type": "Resource type",
       "submitter_email": "Submitter email"
