@@ -110,6 +110,14 @@ export const createMockContributor = (): Contributor => {
   };
 };
 
+export const createRandomMockedTags = (): string[] => {
+  const randomStrings: string[] = [];
+  for (let i = 0; i < Math.random() * 10 + 1; i++) {
+    randomStrings.push(Math.random().toString(36).substring(7));
+  }
+  return randomStrings;
+};
+
 export const mockLicenses: License[] = [
   {
     identifier: '5d498312-7b5d-40af-a346-3e39df43ca77',

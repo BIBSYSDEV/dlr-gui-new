@@ -131,19 +131,18 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   };
 
   useEffect(() => {
-    async function getAllLicences() {
+    const getAllLicences = async () => {
       setIsLoadingLicenses(true);
       setLoadingLicensesErrorStatus(StatusCode.ACCEPTED);
       try {
         const response = await getLicenses(); //todo: Async method
         setLicenses(response.data);
-      } catch (err) {
-        err?.response && setLoadingLicensesErrorStatus(err.response.status);
+      } catch (error) {
+        error.response && setLoadingLicensesErrorStatus(error.response.status);
       } finally {
         setIsLoadingLicenses(false);
       }
-    }
-
+    };
     getAllLicences();
   }, []);
   return (
