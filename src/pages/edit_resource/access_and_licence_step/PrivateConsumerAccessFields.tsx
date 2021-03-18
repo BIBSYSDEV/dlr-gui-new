@@ -260,7 +260,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
             }}
           />
         ))}
-        {updatingPrivateAccessList && <CircularProgress size="small" />}
+        {updatingPrivateAccessList && <CircularProgress />}
       </StyledChipWrapper>
       {savePrivateAccessNetworkError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
       <StyledAccessButtonWrapper>
