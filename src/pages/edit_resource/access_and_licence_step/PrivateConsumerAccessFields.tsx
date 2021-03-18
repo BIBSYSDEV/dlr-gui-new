@@ -166,6 +166,9 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
     } catch (error) {
       try {
         const resourceReadAccessListResponse = await getResourceReaders(values.identifier);
+        if (resourceReadAccessListResponse.data.length === privateAccessList.length) {
+          setSavePrivateAccessNetworkError(true);
+        }
         setPrivateAccessList(resourceReadAccessListResponse.data);
       } catch (error) {
         setSavePrivateAccessNetworkError(true);
