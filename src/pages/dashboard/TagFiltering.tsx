@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { Chip, FormControl, FormGroup, TextField } from '@material-ui/core';
 import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
@@ -8,6 +8,7 @@ import { QueryObject } from '../../types/search.types';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { searchTags } from '../../api/resourceApi';
 
 const minimumTagLength = 1;
 
@@ -48,6 +49,31 @@ interface TagsFilteringProps {
 const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) => {
   const { t } = useTranslation();
   const [tagValue, setTagValue] = useState('');
+  const [open, setOpen] = useState(false);
+  const [options, setOptions] = useState<string[]>([]);
+  const loading = open && options.length === 0;
+
+  useEffect(() => {
+    let active = true;
+    if (!loading) {
+      return undefined;
+    }
+    (async () => {
+      const response = await searchTags('t');
+      if (active) {
+        setOptions(response.data);
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [loading]);
+
+  useEffect(() => {
+    if (!open) {
+      setOptions([]);
+    }
+  }, [open]);
 
   const submitTag = () => {
     const newTagValue = tagValue.trim();
@@ -83,10 +109,17 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
       <FormGroup>
         <Autocomplete
           freeSolo
-          options={[]}
           id="filter-tags-input"
+          open={open}
+          onOpen={() => {
+            setOpen(true);
+          }}
+          onClose={() => {
+            setOpen(false);
+          }}
           value={tagValue}
           onBlur={submitTag}
+          options={options}
           onKeyDown={(event) => {
             if (event.key === 'Enter') {
               event.preventDefault();
