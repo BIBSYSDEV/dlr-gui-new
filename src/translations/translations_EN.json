@@ -79,7 +79,7 @@
   },
   "explanation_text": {
     "tags_helper_aria_label": "Show tags explanation",
-    "tags_helper_text": "Tags describes the contents of a resource. A single tag may consist of several words",
+    "tags_helper_text": "Tags describes the contents of a resource. A single tag may consist of multiple words, for example \"optical illusion\"",
     "tags_helper_text_edit_resource1": "Quality tags increases the chance that others will find and use your resource",
     "tags_helper_text_edit_resource2": "You can add more than one tag if desired. Write your first tag and then press enter or tab, and then type your next tag followed by enter or tab. It is possible to add or remove tags after publication of your resource",
     "tags_helper_text_example": "For instance can a resource with title \"The Sympathetic Nervous System\" have \"syk130\", \"nursery\", \"healthcare subject\", \"nervous system\", and \"health\" as tags"
