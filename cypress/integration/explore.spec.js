@@ -139,6 +139,21 @@ context('Actions', () => {
     ).should('be.checked');
   });
 
+  it('can search for tags and select from dropdown(popover)', () => {
+    cy.visit('/');
+    const singleCharacter = 'A';
+    const tag1 = 'tag1';
+    cy.get('[data-testid=search-for-resource-input]').type(search);
+    cy.get('[data-testid=search-for-resource-submit]').click();
+    cy.get('[data-testid=expand-filtering-options]').click();
+    cy.get(`[data-testid=filter-tags-input] input`).type(singleCharacter);
+    cy.get(`#filter-tags-input-popup`).should('not.exist');
+    cy.get(`[data-testid=filter-tags-input] input`).type(tag1);
+    cy.get(`#filter-tags-input-popup`).should('exist');
+    cy.get(`#filter-tags-input-popup li:first-of-type`).click();
+    cy.get(`[data-testid=filter-tag-chip-0]`).should('exist');
+  });
+
   it('adds and remove tags as a filters', () => {
     cy.visit('/');
     const tag1 = 'tag1';

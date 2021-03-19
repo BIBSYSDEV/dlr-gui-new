@@ -85,18 +85,20 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
   }, [debouncedTagInputValue, cancelSearch]);
 
   useEffect(() => {
-    const newTagValue = tagValue.trim();
-    if (!queryObject.tags.includes(newTagValue) && newTagValue.length > minimumTagLength) {
-      setQueryObject((prevState) => ({
-        ...prevState,
-        tags: [...prevState.tags, newTagValue],
-        offset: 0,
-        queryFromURL: false,
-      }));
+    if (tagValue.length > 0) {
+      const newTagValue = tagValue.trim();
+      if (!queryObject.tags.includes(newTagValue) && newTagValue.length > minimumTagLength) {
+        setQueryObject((prevState) => ({
+          ...prevState,
+          tags: [...prevState.tags, newTagValue],
+          offset: 0,
+          queryFromURL: false,
+        }));
+      }
+      setTagInputFieldValue('');
+      setCancelSearch(false);
+      setOptions([]);
     }
-    setTagInputFieldValue('');
-    setCancelSearch(false);
-    setOptions([]);
   }, [tagValue, queryObject, setQueryObject]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -138,6 +140,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
               setTagValue(tagInputFieldValue);
             }
           }}
+          renderOption={(option) => <span data-testid={'tag-option'}>NISSE! {option}</span>}
           renderInput={(params) => (
             <TextField
               {...params}
