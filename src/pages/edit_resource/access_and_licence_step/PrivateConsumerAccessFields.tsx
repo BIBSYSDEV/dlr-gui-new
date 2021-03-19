@@ -120,7 +120,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
   }, [values.identifier, forceRefresh]);
 
   const parseCourse = (subject: string): Course | null => {
-    const courseString = subject.split(':: ');
+    const courseString = subject.split('::');
     //subject[0]: courseCode, subject[1]: institution, subject[2]: year, subject[3]: Season
     if (
       courseString[0]?.trim().length > 0 &&
@@ -164,7 +164,15 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
         setSavePrivateAccessNetworkError(false);
       }
     } catch (error) {
-      setSavePrivateAccessNetworkError(true);
+      try {
+        const resourceReadAccessListResponse = await getResourceReaders(values.identifier);
+        if (resourceReadAccessListResponse.data.length === privateAccessList.length) {
+          setSavePrivateAccessNetworkError(true);
+        }
+        setPrivateAccessList(resourceReadAccessListResponse.data);
+      } catch (error) {
+        setSavePrivateAccessNetworkError(true);
+      }
     } finally {
       setUpdatingPrivateAccessList(false);
     }
@@ -252,7 +260,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
             }}
           />
         ))}
-        {updatingPrivateAccessList && <CircularProgress size="small" />}
+        {updatingPrivateAccessList && <CircularProgress />}
       </StyledChipWrapper>
       {savePrivateAccessNetworkError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
       <StyledAccessButtonWrapper>
