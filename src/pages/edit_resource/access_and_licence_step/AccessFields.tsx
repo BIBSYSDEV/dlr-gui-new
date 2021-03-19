@@ -16,6 +16,12 @@ const StyledFieldWrapper = styled.div`
   max-width: ${StyleWidths.width1};
 `;
 
+const StyledTextField = styled(TextField)`
+  & .Mui-disabled .MuiTypography-body1 {
+    color: grey;
+  }
+`;
+
 const accessTypeArray = [AccessTypes.open, AccessTypes.private];
 
 interface AccessFieldsProps {
@@ -96,7 +102,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
           <Field name={ResourceFeatureNamesFullPath.Access}>
             {({ field, meta: { error, touched } }: FieldProps) => (
               <>
-                <TextField
+                <StyledTextField
                   {...field}
                   id="access-dropdown-menu"
                   data-testid="access-dropdown-menu"
@@ -121,7 +127,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
                       <Typography>{t(`resource.access_types.${accessType}`)}</Typography>
                     </MenuItem>
                   ))}
-                </TextField>
+                </StyledTextField>
                 {savingAccessTypeError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
               </>
             )}
