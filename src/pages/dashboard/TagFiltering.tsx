@@ -23,9 +23,7 @@ const StyledFormControl: any = styled(FormControl)`
 
 const StyledChip = styled(Chip)`
   && {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    margin-right: 0.5rem;
+    margin: 1rem 0.5rem 0 0;
     background-color: ${Colors.ChipBackground};
     color: ${Colors.Background};
     &:focus {
@@ -42,6 +40,7 @@ const StyledCancelIcon = styled(CancelIcon)`
 const StyledChipContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 1rem;
 `;
 
 const StyledFormLabel = styled(FormLabel)`
@@ -61,30 +60,31 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
   const debouncedTagInputValue = useDebounce(tagInputFieldValue);
   const [options, setOptions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [cancelSearch, setCancelSearch] = useState(false);
   const [tagSearchError, setTagSearchError] = useState<Error>();
 
   useEffect(() => {
-    //TODO: lag egen debounce for å kunne bruke freesolo (skrive og trykke tab før det søkes)
     const searchForTags = async () => {
-      setLoading(true);
-      try {
-        const response = await searchTags(debouncedTagInputValue);
-        setOptions(response.data);
-      } catch (error) {
-        setTagSearchError(error);
-      } finally {
-        setLoading(false);
+      if (!cancelSearch) {
+        setLoading(true);
+        try {
+          const response = await searchTags(debouncedTagInputValue);
+          setOptions(response.data);
+        } catch (error) {
+          setTagSearchError(error);
+        } finally {
+          setLoading(false);
+          setCancelSearch(false);
+        }
       }
     };
     setOptions([]);
-    if (debouncedTagInputValue.length > 1 && tagInputFieldValue.length > 1) {
+    if (debouncedTagInputValue.length > 1) {
       searchForTags();
     }
-  }, [debouncedTagInputValue]);
+  }, [debouncedTagInputValue, cancelSearch]);
 
   useEffect(() => {
-    setTagInputFieldValue('');
-    setOptions([]);
     const newTagValue = tagValue.trim();
     if (!queryObject.tags.includes(newTagValue) && newTagValue.length > minimumTagLength) {
       setQueryObject((prevState) => ({
@@ -94,6 +94,9 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
         queryFromURL: false,
       }));
     }
+    setTagInputFieldValue('');
+    setCancelSearch(false);
+    setOptions([]);
   }, [tagValue, queryObject, setQueryObject]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -131,7 +134,8 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           onKeyDown={(event) => {
             if (event.key === 'Enter' || event.key === 'Tab') {
               event.preventDefault();
-              setTagValue(debouncedTagInputValue);
+              setCancelSearch(true);
+              setTagValue(tagInputFieldValue);
             }
           }}
           renderInput={(params) => (
