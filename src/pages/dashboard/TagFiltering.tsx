@@ -69,8 +69,11 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
         setLoading(true);
         try {
           const response = await searchTags(debouncedTagInputValue);
-          setOptions([]);
-          setOptions(response.data.facet_counts.map((facetCount) => facetCount.value));
+          const optionsResult =
+            response.data.facet_counts.length === 0
+              ? [t('common.no_options')]
+              : response.data.facet_counts.map((facetCount) => facetCount.value);
+          setOptions(optionsResult);
         } catch (error) {
           setTagSearchError(error);
         } finally {
@@ -83,7 +86,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
     if (debouncedTagInputValue.length > 1) {
       searchForTags();
     }
-  }, [debouncedTagInputValue, cancelSearch]);
+  }, [debouncedTagInputValue, cancelSearch, t]);
 
   useEffect(() => {
     if (tagValue?.length > 0) {
@@ -133,6 +136,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           onChange={(event: ChangeEvent<unknown>, value: any) => {
             setTagValue(value);
           }}
+          getOptionDisabled={(option) => option.includes(t('common.no_options'))}
           loading={loading}
           onKeyDown={(event) => {
             if (event.key === 'Enter' || event.key === 'Tab') {

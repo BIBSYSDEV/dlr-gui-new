@@ -43,6 +43,7 @@
     "name": "Name",
     "next": "Next",
     "no": "No",
+    "no_options": "No tags found",
     "none": "No",
     "or": "Or",
     "other_options": "Other licenses",
