@@ -13,6 +13,11 @@ import { Colors } from '../../../themes/mainTheme';
 import RequiredFieldInformation from '../../../components/RequiredFieldInformation';
 import HelperTextPopover from '../../../components/HelperTextPopover';
 import Typography from '@material-ui/core/Typography';
+import styled from 'styled-components';
+
+const StyledTypography = styled(Typography)`
+  margin-bottom: 0.5rem;
+`;
 
 interface DescriptionFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -95,19 +100,21 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
                 </Grid>
                 <Grid item xs={2}>
                   <HelperTextPopover ariaButtonLabel={'read more about title'} popoverId={'helper-text-title'}>
-                    <Typography variant="body1">Gi en kort beskrivelse av hva ressursen inneholder.</Typography>
-                    <Typography variant="body1">Eksempler på beskrivelse:</Typography>
-                    <Typography variant="body2">
+                    <StyledTypography variant="body1">
+                      Gi en kort beskrivelse av hva ressursen inneholder.
+                    </StyledTypography>
+                    <StyledTypography variant="body1">Eksempler på beskrivelser:</StyledTypography>
+                    <StyledTypography variant="body2">
                       Kort video om hvordan det sympatiske nervesystemet er bygget opp og fungerer.
-                    </Typography>
-                    <Typography variant="body2">
+                    </StyledTypography>
+                    <StyledTypography variant="body2">
                       Forelesning om tastaturnavigering og universell utforming. Forelesningen er beregnet for
                       frontendutviklere og tar for seg WCAG 2.1
-                    </Typography>
-                    <Typography variant="body2">
+                    </StyledTypography>
+                    <StyledTypography variant="body2">
                       Illustrasjonstegning av kroppens indre organer. Ilustrasjonen viser posisjonen til organene i
                       forhold til hverandre.
-                    </Typography>
+                    </StyledTypography>
                   </HelperTextPopover>
                 </Grid>
               </Grid>

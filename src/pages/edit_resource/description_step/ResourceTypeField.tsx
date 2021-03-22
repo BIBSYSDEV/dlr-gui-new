@@ -17,6 +17,10 @@ import ErrorBanner from '../../../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import HelperTextPopover from '../../../components/HelperTextPopover';
 
+const StyledTypography = styled(Typography)`
+  margin-bottom: 0.5rem;
+`;
+
 const StyledMenuItem = styled(MenuItem)`
   padding: 1rem;
   margin: 0.3rem;
@@ -122,12 +126,16 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
               </Grid>
               <Grid item xs={2}>
                 <HelperTextPopover ariaButtonLabel={'more info about resource type'} popoverId={'helper-resource-type'}>
-                  <Typography variant="body1">Ressurstype er forsøkt utfylt ved opplasting av fil.</Typography>
-                  <Typography variant="body1">Velg type som stemmer best overens med innholdet</Typography>
-                  <Typography variant="body2">
+                  <StyledTypography variant="body1">
+                    Ressurstype er forsøkt utfylt ved opplasting av fil.
+                  </StyledTypography>
+                  <StyledTypography variant="body1">Velg type som stemmer best overens med innholdet</StyledTypography>
+                  <StyledTypography variant="body2">
                     Eksempelvis: Har du et videopptak av en forelesning, så velger du "video" som type
-                  </Typography>
-                  <Typography variant="body2">Passer ingen av ressurstypene overhodet, så velg "dokument"</Typography>
+                  </StyledTypography>
+                  <StyledTypography variant="body2">
+                    Passer ingen av ressurstypene overhodet, så velg "dokument"
+                  </StyledTypography>
                 </HelperTextPopover>
               </Grid>
             </Grid>
