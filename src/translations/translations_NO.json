@@ -61,7 +61,7 @@
   "dashboard": {
     "close_popover": "Trykk escape for å lukke denne boksen",
     "enabled": "aktive",
-    "enter_tags": "Trykk enter or tab for å velge emneord",
+    "enter_tags": "Søk og velg emneord fra listen for å filtrere",
     "explain_license": "Forklar lisens",
     "explore": "Utforsk",
     "login_reminder": "Logg inn for å få tilgang til flere ressurser ved din institusjon",

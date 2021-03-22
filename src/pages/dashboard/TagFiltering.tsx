@@ -69,10 +69,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
         setLoading(true);
         try {
           const response = await searchTags(debouncedTagInputValue);
-          const optionsResult =
-            response.data.facet_counts.length === 0
-              ? [t('common.no_options')]
-              : response.data.facet_counts.map((facetCount) => facetCount.value);
+          const optionsResult = response.data.facet_counts.map((facetCount) => facetCount.value);
           setOptions(optionsResult);
         } catch (error) {
           setTagSearchError(error);
@@ -129,23 +126,14 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
       </StyledFormLabel>
       <FormGroup>
         <Autocomplete
-          freeSolo
           id="filter-tags-input"
           value={tagInputFieldValue}
           options={options}
+          noOptionsText={t('common.no_options')}
           onChange={(event: ChangeEvent<unknown>, value: any) => {
             setTagValue(value);
           }}
-          getOptionDisabled={(option) => option.includes(t('common.no_options'))}
           loading={loading}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter' || event.key === 'Tab') {
-              event.preventDefault();
-              setCancelSearch(true);
-              setTagValue(tagInputFieldValue);
-              setTagInputFieldValue('');
-            }
-          }}
           renderOption={(option) => <span data-testid={'tag-option'}>{option}</span>}
           renderInput={(params) => (
             <TextField

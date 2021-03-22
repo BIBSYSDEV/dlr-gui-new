@@ -61,7 +61,7 @@
   "dashboard": {
     "close_popover": "Press escape to close this box",
     "enabled": "enabled",
-    "enter_tags": "Press enter or tab for adding tag",
+    "enter_tags": "Search and select tag for filtering",
     "explain_license": "Explain license",
     "explore": "Explore",
     "login_reminder": "Log in to have access to more resources from your institution.",
