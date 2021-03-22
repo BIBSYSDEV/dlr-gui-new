@@ -59,7 +59,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
   const [tagValue, setTagValue] = useState('');
   const debouncedTagInputValue = useDebounce(tagInputFieldValue);
   const [options, setOptions] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [cancelSearch, setCancelSearch] = useState(false);
   const [tagSearchError, setTagSearchError] = useState<Error>();
 
@@ -86,12 +86,12 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
   }, [debouncedTagInputValue, cancelSearch]);
 
   useEffect(() => {
-    if (tagValue.length > 0) {
+    if (tagValue?.length > 0) {
       const newTagValue = tagValue.trim();
-      if (!queryObject.tags.includes(newTagValue) && newTagValue.length > minimumTagLength) {
+      if (newTagValue.length > minimumTagLength) {
         setQueryObject((prevState) => ({
           ...prevState,
-          tags: [...prevState.tags, newTagValue],
+          tags: !prevState.tags.includes(newTagValue) ? [...prevState.tags, newTagValue] : prevState.tags,
           offset: 0,
           queryFromURL: false,
         }));
@@ -100,7 +100,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
       setCancelSearch(false);
       setOptions([]);
     }
-  }, [tagValue, queryObject, setQueryObject]);
+  }, [tagValue, setQueryObject]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTagInputFieldValue(event.target.value);
@@ -139,6 +139,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
               event.preventDefault();
               setCancelSearch(true);
               setTagValue(tagInputFieldValue);
+              setTagInputFieldValue('');
             }
           }}
           renderOption={(option) => <span data-testid={'tag-option'}>{option}</span>}
