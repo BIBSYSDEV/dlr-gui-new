@@ -67,8 +67,10 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
                   />
                 </Grid>
                 <Grid item xs={2}>
-                  <HelperTextPopover ariaButtonLabel={'read more about title'} popoverId={'helper-text-title'}>
-                    <Typography variant="body1">Fyll inn en tittel som hjelper andre å finne ressursen din</Typography>
+                  <HelperTextPopover
+                    ariaButtonLabel={t('explanation_text.title_helper_aria_label')}
+                    popoverId="helper-text-title">
+                    <Typography variant="body1">{t('explanation_text.title_helper_text')}</Typography>
                   </HelperTextPopover>
                 </Grid>
               </Grid>
@@ -99,21 +101,23 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
                   />
                 </Grid>
                 <Grid item xs={2}>
-                  <HelperTextPopover ariaButtonLabel={'read more about title'} popoverId={'helper-text-title'}>
+                  <HelperTextPopover
+                    ariaButtonLabel={t('explanation_text.description_helper_aria_label')}
+                    popoverId={'helper-text-description'}>
                     <StyledTypography variant="body1">
-                      Gi en kort beskrivelse av hva ressursen inneholder.
+                      {t('explanation_text.description_helper_text1')}.
                     </StyledTypography>
-                    <StyledTypography variant="body1">Eksempler på beskrivelser:</StyledTypography>
-                    <StyledTypography variant="body2">
-                      Kort video om hvordan det sympatiske nervesystemet er bygget opp og fungerer.
-                    </StyledTypography>
-                    <StyledTypography variant="body2">
-                      Forelesning om tastaturnavigering og universell utforming. Forelesningen er beregnet for
-                      frontendutviklere og tar for seg WCAG 2.1
+                    <StyledTypography variant="body1">
+                      {t('explanation_text.description_helper_text2')}:
                     </StyledTypography>
                     <StyledTypography variant="body2">
-                      Illustrasjonstegning av kroppens indre organer. Ilustrasjonen viser posisjonen til organene i
-                      forhold til hverandre.
+                      {t('explanation_text.description_helper_example1')}.
+                    </StyledTypography>
+                    <StyledTypography variant="body2">
+                      {t('explanation_text.description_helper_example2')}.
+                    </StyledTypography>
+                    <StyledTypography variant="body2">
+                      {t('explanation_text.description_helper_example3')}.
                     </StyledTypography>
                   </HelperTextPopover>
                 </Grid>

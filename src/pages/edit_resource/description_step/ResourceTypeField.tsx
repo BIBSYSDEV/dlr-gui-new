@@ -125,17 +125,17 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                 {savingResourceTypeError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
               </Grid>
               <Grid item xs={2}>
-                <HelperTextPopover ariaButtonLabel={'more info about resource type'} popoverId={'helper-resource-type'}>
+                <HelperTextPopover
+                  ariaButtonLabel={t('explanation_text.resource_type_helper_aria_label')}
+                  popoverId={'helper-resource-type'}>
                   <StyledTypography variant="body1">
-                    Ressurstype er forsøkt utfylt ved opplasting av fil.
+                    {t('explanation_text.resource_type_helper_text1')}.
                   </StyledTypography>
-                  <StyledTypography variant="body1">Velg type som stemmer best overens med innholdet</StyledTypography>
-                  <StyledTypography variant="body2">
-                    Eksempelvis: Har du et videopptak av en forelesning, så velger du "video" som type
+                  <StyledTypography variant="body1">
+                    {t('explanation_text.resource_type_helper_text2')}
                   </StyledTypography>
-                  <StyledTypography variant="body2">
-                    Passer ingen av ressurstypene overhodet, så velg "dokument"
-                  </StyledTypography>
+                  <StyledTypography variant="body2">{t('explanation_text.resource_type_example1')}</StyledTypography>
+                  <StyledTypography variant="body2">{t('explanation_text.resource_type_example2')}</StyledTypography>
                 </HelperTextPopover>
               </Grid>
             </Grid>
