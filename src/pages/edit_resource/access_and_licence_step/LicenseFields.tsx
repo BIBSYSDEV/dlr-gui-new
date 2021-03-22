@@ -4,7 +4,7 @@ import { FormHelperText, MenuItem, TextField } from '@material-ui/core';
 import { FieldNames, Resource } from '../../../types/resource.types';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { deleteResourceLicense, setResourceLicense } from '../../../api/resourceApi';
-import { License } from '../../../types/license.types';
+import { InstitutionLicenseProviders, License } from '../../../types/license.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import ErrorBanner from '../../../components/ErrorBanner';
@@ -58,6 +58,16 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
     }
   };
 
+  const showInternalLicenseExplanation = (): boolean => {
+    return (
+      licenses.findIndex(
+        (license) =>
+          license.features?.dlr_license_code?.toLowerCase().includes(InstitutionLicenseProviders.BI) ||
+          license.features?.dlr_license_code?.toLowerCase().includes(InstitutionLicenseProviders.NTNU)
+      ) > -1
+    );
+  };
+
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor3}>
       <StyledContentWrapper>
@@ -105,7 +115,7 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
               licenseCode={'CC BY SA ND NC CD 1'}
               showLink={false}
               showIntroduction={true}
-              showInternalLicenseExplanation={true}
+              showInternalLicenseExplanation={showInternalLicenseExplanation()}
             />
           </StyledInlineWrapper>
         )}
