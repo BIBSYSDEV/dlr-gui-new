@@ -115,9 +115,15 @@
     "part_description": {
       "bi": "For internal uses at BI only",
       "by": "BY - Credit the creator",
+      "cannot_change_license": "You cannot change the license after publication",
+      "cc_introduction": "Essential Creative Commons licenses",
+      "internal_license_introduction": "Essential Internal Lisenses",
+      "more_information": "You can read more about individual licenses by selecting them",
       "nc": "NC - Noncommercial uses only",
       "nd": "ND - No derivatives or adaptations permitted",
+      "need_to_select_license": "You must choose a license so that others knows your usage restrictions.",
       "ntnu": "for internal uses at NTNU only",
+      "only_for_internal_usage": "Can only be used at your institution",
       "sa": "SA - Share adaptations under the same terms",
       "zero": "Zero - This work has been marked as dedicated to the public domain"
     },

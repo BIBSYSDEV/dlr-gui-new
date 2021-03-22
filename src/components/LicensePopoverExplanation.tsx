@@ -106,13 +106,19 @@ const LicensePopoverExplanation: FC<CCExplanationProps> = ({
           {showIntroduction && (
             <>
               <StyledTypography variant="subtitle2">
-                Du må velge lisens slik at andre vet hvordan de kan bruke verket ditt
+                {t('license.part_description.need_to_select_license')}
               </StyledTypography>
-              <StyledTypography variant="body2">Etter publisering kan du ikke endre lisens.</StyledTypography>
+              <StyledTypography variant="body2">
+                {t('license.part_description.cannot_change_license')}.
+              </StyledTypography>
               <StyledLastTypography variant="body2">
-                Mer informasjon om den enkelte lisens dukker opp når du velger lisens.
+                {t('license.part_description.more_information')}
               </StyledLastTypography>
-              <Explanation icon={CC} explanation={t('license.part_description.by')} fontVariant="subtitle2" />
+              <Explanation
+                icon={CC}
+                explanation={`${t('license.part_description.cc_introduction')}:`}
+                fontVariant="subtitle2"
+              />
             </>
           )}
           {licenseCode.toLowerCase().includes('by') && (
@@ -154,8 +160,12 @@ const LicensePopoverExplanation: FC<CCExplanationProps> = ({
           )}
           {showInternalLicenseExplanation && (
             <>
-              <StyledFirstTypography variant="subtitle2">Interne lisenser i grove trekk:</StyledFirstTypography>
-              <StyledTypography variant="body2">Kan kun brukes internt hos din institusjon.</StyledTypography>
+              <StyledFirstTypography variant="subtitle2">
+                {t('license.part_description.internal_license_introduction')}:
+              </StyledFirstTypography>
+              <StyledTypography variant="body2">
+                {t('license.part_description.only_for_internal_usage')}.
+              </StyledTypography>
             </>
           )}
           <ScreenReaderOnlyP>{t('dashboard.close_popover')}</ScreenReaderOnlyP>

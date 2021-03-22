@@ -115,9 +115,15 @@
     "part_description": {
       "bi": "Kun for intern bruk hos BI",
       "by": "BY - Krediter opphaver",
+      "cannot_change_license": "Etter publisering kan du ikke endre lisens",
+      "cc_introduction": "Creative Commons lisenser i grove trekk",
+      "internal_license_introduction": "Interne lisenser i grove trekk",
+      "more_information": "Du kan lese med om den enkelte lisens ved å velge den",
       "nc": "NC - Kun ikke-kommersiell bruk",
       "nd": "ND - Ingen bearbeidelser eller derivater er tillatt",
+      "need_to_select_license": "Du må velge lisens slik at andre vet hvordan de kan bruke verket ditt",
       "ntnu": "Kun for intern bruk hos NTNU",
+      "only_for_internal_usage": "Kan kun brukes internt hos din institusjon",
       "sa": "SA - Bearbeidelser må deles på samme vilkår",
       "zero": "Zero - Dette verket er markert som dedikert til public domain (offentlig eie)"
     },
