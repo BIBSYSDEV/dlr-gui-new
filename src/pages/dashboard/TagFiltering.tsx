@@ -59,7 +59,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
   const [tagValue, setTagValue] = useState('');
   const debouncedTagInputValue = useDebounce(tagInputFieldValue);
   const [options, setOptions] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [cancelSearch, setCancelSearch] = useState(false);
   const [tagSearchError, setTagSearchError] = useState<Error>();
 
@@ -69,7 +69,8 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
         setLoading(true);
         try {
           const response = await searchTags(debouncedTagInputValue);
-          setOptions(response.data);
+          setOptions([]);
+          setOptions(response.data.facet_counts.map((facetCount) => facetCount.value));
         } catch (error) {
           setTagSearchError(error);
         } finally {
@@ -140,7 +141,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
               setTagValue(tagInputFieldValue);
             }
           }}
-          renderOption={(option) => <span data-testid={'tag-option'}>NISSE! {option}</span>}
+          renderOption={(option) => <span data-testid={'tag-option'}>{option}</span>}
           renderInput={(params) => (
             <TextField
               {...params}

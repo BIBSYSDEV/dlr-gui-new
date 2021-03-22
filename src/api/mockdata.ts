@@ -110,12 +110,23 @@ export const createMockContributor = (): Contributor => {
   };
 };
 
-export const createRandomMockedTags = (): string[] => {
-  const randomStrings: string[] = [];
-  for (let i = 0; i < Math.random() * 10 + 1; i++) {
-    randomStrings.push(Math.random().toString(36).substring(7));
-  }
-  return randomStrings;
+export const mockTagSuggestions = {
+  numFound: 4,
+  queryTime: 0,
+  facet_counts: [
+    { count: '1', type: 'dlr_tag', value: 'digital ' },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'digital læring',
+    },
+    { count: '1', type: 'dlr_tag', value: 'digital læringsressurs' },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'digital undervisning: NTNU Drive',
+    },
+  ],
 };
 
 export const mockLicenses: License[] = [

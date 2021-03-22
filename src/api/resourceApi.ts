@@ -359,7 +359,7 @@ export const getAllFacets = (): Promise<AxiosResponse<FacetResponse>> => {
   });
 };
 
-export const searchTags = (query: string): Promise<AxiosResponse<string[]>> => {
+export const searchTags = (query: string): Promise<AxiosResponse<FacetResponse>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesSearchPath}/suggestions/tags?prefix=${query}`),
     method: 'GET',

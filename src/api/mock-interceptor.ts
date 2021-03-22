@@ -7,7 +7,6 @@ import { FileApiPaths } from './fileApi';
 import {
   createMockContributor,
   createMockCreator,
-  createRandomMockedTags,
   mockCompleteUpload,
   mockContent,
   mockContents,
@@ -17,6 +16,7 @@ import {
   mockCreateUpload,
   mockCreators,
   mockDefaultResource,
+  mockTagSuggestions,
   mockFacets,
   mockLicenses,
   mockMyResources,
@@ -49,7 +49,7 @@ export const interceptRequestsOnMock = () => {
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesSearchPath}/suggestions/tags.*`)).reply((config) => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(loggedReply(config, 200, createRandomMockedTags()));
+        resolve(loggedReply(config, 200, mockTagSuggestions));
       }, 1000);
     });
   });
