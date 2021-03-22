@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
+import CC from '../resources/images/creative_commons_logos/cc.svg';
 import NC from '../resources/images/creative_commons_logos/nc.svg';
 import SA from '../resources/images/creative_commons_logos/sa.svg';
 import ND from '../resources/images/creative_commons_logos/nd.svg';
@@ -34,24 +35,44 @@ const ScreenReaderOnlyP = styled.p`
   overflow: hidden !important;
 `;
 
+const StyledTypography = styled(Typography)`
+  margin-bottom: 0.5rem;
+`;
+const StyledLastTypography = styled(Typography)`
+  margin-bottom: 1.5rem;
+`;
+const StyledFirstTypography = styled(Typography)`
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+`;
+
 interface ExplanationProps {
   icon: any;
   explanation: string;
+  fontVariant?: any;
 }
-const Explanation: FC<ExplanationProps> = ({ icon, explanation }) => {
+const Explanation: FC<ExplanationProps> = ({ icon, explanation, fontVariant }) => {
   return (
     <ExplanationWrapper>
       <StyledImage src={icon} alt="" />
-      <Typography>{explanation}</Typography>
+      <Typography variant={fontVariant ?? 'body2'}>{explanation}</Typography>
     </ExplanationWrapper>
   );
 };
 
 interface CCExplanationProps {
   licenseCode: string;
+  showLink?: boolean;
+  showIntroduction?: boolean;
+  showInternalLicenseExplanation?: boolean;
 }
 
-const CCExplanation: FC<CCExplanationProps> = ({ licenseCode }) => {
+const LicensePopoverExplanation: FC<CCExplanationProps> = ({
+  licenseCode,
+  showLink = true,
+  showIntroduction = false,
+  showInternalLicenseExplanation = false,
+}) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
   const { t } = useTranslation();
@@ -82,6 +103,18 @@ const CCExplanation: FC<CCExplanationProps> = ({ licenseCode }) => {
           horizontal: 'center',
         }}>
         <PopoverContent>
+          {showIntroduction && (
+            <>
+              <StyledTypography variant="subtitle2">
+                Du må velge lisens slik at andre vet hvordan de kan bruke verket ditt
+              </StyledTypography>
+              <StyledTypography variant="body2">Etter publisering kan du ikke endre lisens.</StyledTypography>
+              <StyledLastTypography variant="body2">
+                Mer informasjon om den enkelte lisens dukker opp når du velger lisens.
+              </StyledLastTypography>
+              <Explanation icon={CC} explanation={t('license.part_description.by')} fontVariant="subtitle2" />
+            </>
+          )}
           {licenseCode.toLowerCase().includes('by') && (
             <Explanation icon={BY} explanation={t('license.part_description.by')} />
           )}
@@ -99,7 +132,7 @@ const CCExplanation: FC<CCExplanationProps> = ({ licenseCode }) => {
           )}
           {licenseCode.toLowerCase().includes('bi') && <Typography>{t('license.part_description.bi')}</Typography>}
           {licenseCode.toLowerCase().includes('ntnu') && <Typography>{t('license.part_description.ntnu')}</Typography>}
-          {licenseCode.toLowerCase().includes('cc') && !licenseCode.toLowerCase().includes('1') && (
+          {licenseCode.toLowerCase().includes('cc') && !licenseCode.toLowerCase().includes('1') && showLink && (
             <Link
               href={`https://creativecommons.org/licenses/${licenseCode
                 .replace('CC', '')
@@ -111,13 +144,19 @@ const CCExplanation: FC<CCExplanationProps> = ({ licenseCode }) => {
               {`${t('license.read_more')} ${licenseCode} (${t('license.external_page').toLowerCase()})`}
             </Link>
           )}
-          {licenseCode.toLowerCase().includes('1') && (
+          {licenseCode.toLowerCase().includes('1') && showLink && (
             <Link
               href={`https://creativecommons.org/publicdomain/zero/1.0/deed.no`}
               target="_blank"
               rel="noopener noreferrer">
               {`${t('license.read_more')} ${licenseCode} (${t('license.external_page').toLowerCase()})`}
             </Link>
+          )}
+          {showInternalLicenseExplanation && (
+            <>
+              <StyledFirstTypography variant="subtitle2">Interne lisenser i grove trekk:</StyledFirstTypography>
+              <StyledTypography variant="body2">Kan kun brukes internt hos din institusjon.</StyledTypography>
+            </>
           )}
           <ScreenReaderOnlyP>{t('dashboard.close_popover')}</ScreenReaderOnlyP>
         </PopoverContent>
@@ -126,4 +165,4 @@ const CCExplanation: FC<CCExplanationProps> = ({ licenseCode }) => {
   );
 };
 
-export default CCExplanation;
+export default LicensePopoverExplanation;
