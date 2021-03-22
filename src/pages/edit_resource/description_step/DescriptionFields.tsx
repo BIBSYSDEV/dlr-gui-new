@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextField } from '@material-ui/core';
+import { Grid, TextField } from '@material-ui/core';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import TagsField from './TagsField';
@@ -11,6 +11,8 @@ import ResourceTypeField from './ResourceTypeField';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import { Colors } from '../../../themes/mainTheme';
 import RequiredFieldInformation from '../../../components/RequiredFieldInformation';
+import HelperTextPopover from '../../../components/HelperTextPopover';
+import Typography from '@material-ui/core/Typography';
 
 interface DescriptionFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -41,21 +43,30 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
         <StyledContentWrapper>
           <Field name={ResourceFeatureNamesFullPath.Title}>
             {({ field, meta: { touched, error } }: FieldProps) => (
-              <TextField
-                {...field}
-                variant="filled"
-                id="resource-title"
-                required
-                fullWidth
-                label={t('resource.metadata.title')}
-                error={touched && !!error}
-                helperText={<ErrorMessage name={field.name} />}
-                inputProps={{ 'data-testid': 'dlr-title-input' }}
-                onBlur={(event) => {
-                  handleBlur(event);
-                  !error && saveField(event, ResourceFeatureNamesFullPath.Title);
-                }}
-              />
+              <Grid container alignItems="flex-start">
+                <Grid item xs={10}>
+                  <TextField
+                    {...field}
+                    variant="filled"
+                    id="resource-title"
+                    required
+                    fullWidth
+                    label={t('resource.metadata.title')}
+                    error={touched && !!error}
+                    helperText={<ErrorMessage name={field.name} />}
+                    inputProps={{ 'data-testid': 'dlr-title-input' }}
+                    onBlur={(event) => {
+                      handleBlur(event);
+                      !error && saveField(event, ResourceFeatureNamesFullPath.Title);
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={2}>
+                  <HelperTextPopover ariaButtonLabel={'read more about title'} popoverId={'helper-text-title'}>
+                    <Typography variant="body1">Fyll inn en tittel som hjelper andre å finne ressursen din</Typography>
+                  </HelperTextPopover>
+                </Grid>
+              </Grid>
             )}
           </Field>
         </StyledContentWrapper>
@@ -65,20 +76,41 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
         <StyledContentWrapper>
           <Field name={ResourceFeatureNamesFullPath.Description}>
             {({ field, meta: { error } }: FieldProps) => (
-              <TextField
-                {...field}
-                id="resource-description"
-                variant="filled"
-                fullWidth
-                multiline
-                rows="4"
-                inputProps={{ 'data-testid': 'dlr-description-input' }}
-                label={t('resource.metadata.description')}
-                onBlur={(event) => {
-                  handleBlur(event);
-                  !error && saveField(event, ResourceFeatureNamesFullPath.Description);
-                }}
-              />
+              <Grid container alignItems="flex-start">
+                <Grid item xs={10}>
+                  <TextField
+                    {...field}
+                    id="resource-description"
+                    variant="filled"
+                    fullWidth
+                    multiline
+                    rows="4"
+                    inputProps={{ 'data-testid': 'dlr-description-input' }}
+                    label={t('resource.metadata.description')}
+                    onBlur={(event) => {
+                      handleBlur(event);
+                      !error && saveField(event, ResourceFeatureNamesFullPath.Description);
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={2}>
+                  <HelperTextPopover ariaButtonLabel={'read more about title'} popoverId={'helper-text-title'}>
+                    <Typography variant="body1">Gi en kort beskrivelse av hva ressursen inneholder.</Typography>
+                    <Typography variant="body1">Eksempler på beskrivelse:</Typography>
+                    <Typography variant="body2">
+                      Kort video om hvordan det sympatiske nervesystemet er bygget opp og fungerer.
+                    </Typography>
+                    <Typography variant="body2">
+                      Forelesning om tastaturnavigering og universell utforming. Forelesningen er beregnet for
+                      frontendutviklere og tar for seg WCAG 2.1
+                    </Typography>
+                    <Typography variant="body2">
+                      Illustrasjonstegning av kroppens indre organer. Ilustrasjonen viser posisjonen til organene i
+                      forhold til hverandre.
+                    </Typography>
+                  </HelperTextPopover>
+                </Grid>
+              </Grid>
             )}
           </Field>
         </StyledContentWrapper>
