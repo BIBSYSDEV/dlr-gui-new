@@ -81,7 +81,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
       <StyledContentWrapper>
         <Field name={'tags'}>
           {({ field }: FieldProps) => (
-            <Grid container alignItems="flex-start">
+            <Grid container alignItems="center" spacing={2}>
               <Grid item xs={10}>
                 <StyledAutoComplete
                   {...field}

@@ -64,7 +64,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
       <StyledContentWrapper>
         <Field name={ResourceFeatureNamesFullPath.Type}>
           {({ field, meta: { error, touched } }: FieldProps) => (
-            <Grid container alignItems="flex-start">
+            <Grid container alignItems="center" spacing={2}>
               <Grid item xs={10}>
                 <TextField
                   {...field}

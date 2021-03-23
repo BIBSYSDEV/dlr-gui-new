@@ -48,7 +48,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
         <StyledContentWrapper>
           <Field name={ResourceFeatureNamesFullPath.Title}>
             {({ field, meta: { touched, error } }: FieldProps) => (
-              <Grid container alignItems="flex-start">
+              <Grid container alignItems="center" spacing={2}>
                 <Grid item xs={10}>
                   <TextField
                     {...field}
@@ -83,7 +83,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
         <StyledContentWrapper>
           <Field name={ResourceFeatureNamesFullPath.Description}>
             {({ field, meta: { error } }: FieldProps) => (
-              <Grid container alignItems="flex-start">
+              <Grid container alignItems="center" spacing={2}>
                 <Grid item xs={10}>
                   <TextField
                     {...field}
