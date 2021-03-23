@@ -78,6 +78,9 @@
     "generic": "Whoops, something went wrong. Try again later"
   },
   "explanation_text": {
+    "creator_helper_aria_label": "Show creator explanation",
+    "creator_helper_example": "Examples: lecturers, teachers, authors og creators of the resource can be submitted here",
+    "creator_helper_text": "The persons, companies, organizations who are the rights holders",
     "description_helper_aria_label": "Show description explanation",
     "description_helper_example1": "A short video about the sympathetic nervous system's components and how it acts",
     "description_helper_example2": "Presentation about keyboard navigation and universal access. The lecture is aimed at frontend developers and addresses WCAG 2.1",

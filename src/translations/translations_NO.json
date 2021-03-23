@@ -78,6 +78,9 @@
     "generic": "Ups, noe gikk galt. Prøv igjen senere"
   },
   "explanation_text": {
+    "creator_helper_aria_label": "Vis opphaver forklaring",
+    "creator_helper_example": "Eksempelvis: forelesere, undervisere, forfattere og skaperne av ressursen kan føres opp her",
+    "creator_helper_text": "Personen, firmaet eller orginasjonen som eier rettighetene til ressursen",
     "description_helper_aria_label": "Vis beskrivelse forklaring",
     "description_helper_example1": "Kort video om hvordan det sympatiske nervesystemet er bygget opp og fungerer",
     "description_helper_example2": "Forelesning om tastaturnavigering og universell utforming. Forelesningen er beregnet for frontendutviklere og tar for seg WCAG 2.1",
