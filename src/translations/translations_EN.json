@@ -78,6 +78,8 @@
     "generic": "Whoops, something went wrong. Try again later"
   },
   "explanation_text": {
+    "contributor_helper_aria_label" : "Show contributor explanation",
+    "contributor_helper_text" : "Others who have contributed to the resource but does not need to be credited in future usage of the resource",
     "creator_helper_aria_label": "Show creator explanation",
     "creator_helper_example": "Examples: lecturers, teachers, authors og creators of the resource can be submitted here",
     "creator_helper_text": "The persons, companies, organizations who are the rights holders",

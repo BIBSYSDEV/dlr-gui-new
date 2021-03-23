@@ -78,6 +78,8 @@
     "generic": "Ups, noe gikk galt. Prøv igjen senere"
   },
   "explanation_text": {
+    "contributor_helper_aria_label" : "Vis bigradsyter forklaring",
+    "contributor_helper_text" : "Andre som har bidratt med ressursen, men som ikke trengs å krediteres av de som tar i bruk ressursen",
     "creator_helper_aria_label": "Vis opphaver forklaring",
     "creator_helper_example": "Eksempelvis: forelesere, undervisere, forfattere og skaperne av ressursen kan føres opp her",
     "creator_helper_text": "Personen, firmaet eller orginasjonen som eier rettighetene til ressursen",
