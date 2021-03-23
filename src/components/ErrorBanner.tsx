@@ -4,21 +4,20 @@ import styled from 'styled-components';
 import { Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { RootState } from '../state/rootReducer';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
-const StyledErrorDiv = styled.div`
-  padding: 0.5rem;
-  background-color: ${({ theme }) => theme.palette.danger.light};
+const StyledAlert = styled(Alert)`
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
-  text-align: center;
 `;
 
 interface ErrorBannerProps {
   userNeedsToBeLoggedIn?: boolean;
   error?: Error;
+  customErrorMessage?: string;
 }
 
-const ErrorBanner: FC<ErrorBannerProps> = ({ userNeedsToBeLoggedIn = false, error }) => {
+const ErrorBanner: FC<ErrorBannerProps> = ({ userNeedsToBeLoggedIn = false, error, customErrorMessage }) => {
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.user);
 
@@ -31,10 +30,10 @@ const ErrorBanner: FC<ErrorBannerProps> = ({ userNeedsToBeLoggedIn = false, erro
   };
 
   return (
-    <StyledErrorDiv>
-      <Typography>{getErrorMessage()}</Typography>
+    <StyledAlert severity="error">
+      <AlertTitle>{customErrorMessage ?? getErrorMessage()}</AlertTitle>
       {error && <Typography variant="caption">(Feilmelding: {error.message})</Typography>}
-    </StyledErrorDiv>
+    </StyledAlert>
   );
 };
 

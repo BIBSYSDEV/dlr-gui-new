@@ -25,7 +25,7 @@ interface AccessFieldsProps {
 const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, setFieldTouched, setFieldValue, handleChange, resetForm } = useFormikContext<Resource>();
-  const [savingAccessTypeError, setSavingAccessTypeError] = useState(false);
+  const [savingAccessTypeError, setSavingAccessTypeError] = useState<Error>();
   const [forceRefreshInPrivateConsumerAccessFields, setForceRefreshInPrivateConsumerAccessFields] = useState(false);
 
   const saveResourceAccessType = async (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -35,7 +35,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
         if (event.target.value in AccessTypes) {
           await putAccessType(values.identifier, event.target.value as AccessTypes);
           setFieldValue(ResourceFeatureNamesFullPath.Access, event.target.value);
-          setSavingAccessTypeError(false);
+          setSavingAccessTypeError(undefined);
           values.features.dlr_access = event.target.value;
           resetForm({ values });
           if (
@@ -47,7 +47,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
           }
         }
       } catch (error) {
-        setSavingAccessTypeError(true);
+        setSavingAccessTypeError(error);
       } finally {
         setAllChangesSaved(true);
       }
@@ -86,7 +86,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
                     </MenuItem>
                   ))}
                 </TextField>
-                {savingAccessTypeError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
+                {savingAccessTypeError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingAccessTypeError} />}
               </>
             )}
           </Field>

@@ -50,7 +50,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   const { t } = useTranslation();
   const { institution } = useSelector((state: RootState) => state.user);
   const { values, resetForm, setFieldValue, handleChange } = useFormikContext<Resource>();
-  const [saveRestrictionError, setSaveRestrictionError] = useState(false);
+  const [saveRestrictionError, setSaveRestrictionError] = useState<Error>();
   const [expandModifyAndBuildOption, setExpandModifyAndBuildOption] = useState(false);
 
   const licenseRestrictions = [
@@ -64,7 +64,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     setFieldValue('resourceRestriction', '');
     setFieldValue('canBeUsedCommercially', '');
     setFieldValue('othersCanModifyAndBuildUpon', '');
-    setSaveRestrictionError(false);
+    setSaveRestrictionError(undefined);
   }, [forceResetInLicenseWizard, setFieldValue]);
 
   const calculatePreferredLicense = async (
@@ -109,14 +109,14 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           values.licenses[0] = license;
         }
         resetForm({ values });
-        setSaveRestrictionError(false);
+        setSaveRestrictionError(undefined);
       } else if (license && values.licenses && values.licenses[0].identifier === license.identifier) {
-        setSaveRestrictionError(false);
+        setSaveRestrictionError(undefined);
       } else {
-        setSaveRestrictionError(true);
+        setSaveRestrictionError(new Error('internal error'));
       }
     } catch (error) {
-      setSaveRestrictionError(true);
+      setSaveRestrictionError(error);
     } finally {
       setAllChangesSaved(true);
     }
@@ -279,7 +279,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           </AccordionRadioGroup>
         )}
 
-        {saveRestrictionError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
+        {saveRestrictionError && <ErrorBanner userNeedsToBeLoggedIn={true} error={saveRestrictionError} />}
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );

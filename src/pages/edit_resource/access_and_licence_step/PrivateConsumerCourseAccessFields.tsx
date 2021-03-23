@@ -24,7 +24,7 @@ const StyledCourseAutocomplete: any = styled(Autocomplete)`
 
 interface PrivateConsumerCourseAccessFieldsProps {
   setShowCourseAutocomplete: (showCourseAutocomplete: boolean) => void;
-  setSavePrivateAccessNetworkError: (savePrivateAccessNetworkError: boolean) => void;
+  setSavePrivateAccessNetworkError: (savePrivateAccessNetworkError: Error | undefined) => void;
   setUpdatingPrivateAccessList: (updatingPrivateAccessList: boolean) => void;
   privateAccessList: ResourceReadAccess[];
   addPrivateAccess: (newPrivateAccess: ResourceReadAccess) => void;
@@ -60,11 +60,11 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
           subject: generateCourseSubjectTag(course),
           profiles: [{ name: ResourceReadAccessNames.Course }],
         });
-        setSavePrivateAccessNetworkError(false);
+        setSavePrivateAccessNetworkError(undefined);
         setCourseAutocompleteValue(null);
         setCourseAutocompleteTypedValue('');
       } catch (error) {
-        setSavePrivateAccessNetworkError(true);
+        setSavePrivateAccessNetworkError(error);
       } finally {
         setUpdatingPrivateAccessList(false);
       }

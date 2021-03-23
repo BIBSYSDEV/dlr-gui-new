@@ -44,7 +44,7 @@ const ResourcePage = () => {
   const { identifier } = useParams<resourcePageParamTypes>();
   const [resource, setResource] = useState(emptyResource);
   const [isLoadingResource, setIsLoadingResource] = useState(true);
-  const [resourceLoadingError, setResourceLoadingError] = useState(false);
+  const [resourceLoadingError, setResourceLoadingError] = useState<Error>();
   const { t } = useTranslation();
   const history = useHistory();
   const user = useSelector((state: RootState) => state.user);
@@ -57,6 +57,7 @@ const ResourcePage = () => {
     const fetchData = async (identifier: string) => {
       try {
         setIsLoadingResource(true);
+        setResourceLoadingError(undefined);
         const tempResource = (await getResource(identifier)).data;
         tempResource.contributors = (await getResourceContributors(identifier)).data;
         tempResource.creators = (await getResourceCreators(identifier)).data;
@@ -64,9 +65,8 @@ const ResourcePage = () => {
         tempResource.licenses = (await getResourceLicenses(identifier)).data;
         setResource(tempResource);
         tempResource.contents = await getResourceContents(identifier);
-        setResourceLoadingError(false);
       } catch (error) {
-        setResourceLoadingError(true);
+        setResourceLoadingError(error);
       } finally {
         setIsLoadingResource(false);
       }
@@ -83,7 +83,7 @@ const ResourcePage = () => {
   return isLoadingResource ? (
     <CircularProgress />
   ) : resourceLoadingError ? (
-    <ErrorBanner />
+    <ErrorBanner error={resourceLoadingError} />
   ) : (
     <StyledPageContent>
       {isUnpublished() && isAuthor() && (

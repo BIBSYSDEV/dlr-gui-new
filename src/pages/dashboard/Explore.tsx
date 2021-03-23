@@ -94,7 +94,7 @@ const Explore = () => {
   const [searchResult, setSearchResult] = useState<SearchResult>();
   const [resources, setResources] = useState<Resource[]>([]);
   const { t } = useTranslation();
-  const [searchError, setSearchError] = useState(false);
+  const [searchError, setSearchError] = useState<Error>();
   const history = useHistory();
 
   const handlePaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -157,15 +157,11 @@ const Explore = () => {
         try {
           setIsSearching(true);
           const response = await searchResources(queryObject);
-          if (response.data) {
-            setSearchError(false);
-            setSearchResult(response.data);
-            setResources(response.data.resourcesAsJson.map((resourceAsString: string) => JSON.parse(resourceAsString)));
-          } else {
-            setSearchError(true);
-          }
+          setSearchError(undefined);
+          setSearchResult(response.data);
+          setResources(response.data.resourcesAsJson.map((resourceAsString: string) => JSON.parse(resourceAsString)));
         } catch (error) {
-          setSearchError(true);
+          setSearchError(error);
         } finally {
           setIsSearching(false);
         }
@@ -180,7 +176,7 @@ const Explore = () => {
       {!user.id && <LoginReminder />}
       <PageHeader>{t('dashboard.explore')}</PageHeader>
       <SearchInput setQueryObject={setQueryObject} />
-      {searchError && <ErrorBanner />}
+      {searchError && <ErrorBanner error={searchError} />}
       {!searchResult && isSearching && (
         <StyledProgressWrapper>
           <CircularProgress />

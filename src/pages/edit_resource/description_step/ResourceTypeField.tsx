@@ -26,7 +26,7 @@ interface ResourceTypeFieldProps {
 }
 
 const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) => {
-  const [savingResourceTypeError, setSavingResourceTypeError] = useState(false);
+  const [savingResourceTypeError, setSavingResourceTypeError] = useState<Error>();
   const {
     values,
     setFieldTouched,
@@ -44,11 +44,11 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
       try {
         await postResourceFeature(values.identifier, 'dlr_type', event.target.value);
         setFieldValue(ResourceFeatureNamesFullPath.Type, event.target.value);
-        setSavingResourceTypeError(false);
+        setSavingResourceTypeError(undefined);
         values.features.dlr_type = event.target.value;
         resetFormButKeepTouched(touched, resetForm, values, setTouched);
       } catch (error) {
-        setSavingResourceTypeError(true);
+        setSavingResourceTypeError(error);
       } finally {
         setAllChangesSaved(true);
       }
@@ -116,7 +116,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                 </StyledMenuItem>
               </TextField>
               {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
-              {savingResourceTypeError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
+              {savingResourceTypeError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingResourceTypeError} />}
             </>
           )}
         </Field>
