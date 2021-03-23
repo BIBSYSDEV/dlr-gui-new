@@ -33,7 +33,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
       setSaveErrorFields([]);
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
       //todo: remove from array
-    } catch (err) {
+    } catch (error) {
       setSaveErrorFields([...saveErrorFields, name]);
     }
   };

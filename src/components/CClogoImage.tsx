@@ -32,6 +32,14 @@ const StyledLicenseCode = styled(Typography)`
   line-height: 1.2rem;
 `;
 
+const StyledFirstLicenseCode = styled(Typography)`
+  margin-left: 0.3rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2rem;
+  min-width: 8rem;
+`;
 export enum CCLogoImageRole {
   Link = 'link',
   Option = 'option',
@@ -40,11 +48,13 @@ export enum CCLogoImageRole {
 interface CClogoImageProps {
   licenseCode: string;
   showCCImage?: boolean;
+  textFirst?: boolean;
 }
 
-const CClogoImage: FC<CClogoImageProps> = ({ licenseCode, showCCImage = true }) => {
+const CClogoImage: FC<CClogoImageProps> = ({ licenseCode, showCCImage = true, textFirst = false }) => {
   return (
     <StyledLogoWrapper>
+      {textFirst && <StyledFirstLicenseCode>{licenseCode}</StyledFirstLicenseCode>}
       <StyledImageWrapper>
         {licenseCode.toLowerCase().includes('cc') && showCCImage && <StyledImage src={CCLogo} alt="" />}
         {licenseCode.toLowerCase().includes('by') && <StyledImage src={BY} alt="" />}
@@ -53,7 +63,7 @@ const CClogoImage: FC<CClogoImageProps> = ({ licenseCode, showCCImage = true }) 
         {licenseCode.toLowerCase().includes('sa') && <StyledImage src={SA} alt="" />}
         {licenseCode.toLowerCase().includes('1') && <StyledImage src={Zero} alt="" />}
       </StyledImageWrapper>
-      <StyledLicenseCode>{licenseCode}</StyledLicenseCode>
+      {!textFirst && <StyledLicenseCode>{licenseCode}</StyledLicenseCode>}
     </StyledLogoWrapper>
   );
 };

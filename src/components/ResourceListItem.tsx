@@ -59,6 +59,7 @@ interface ResourceListItemProps {
   showHandle?: boolean;
   showTimeCreated?: boolean;
   handleDelete?: () => void;
+  fallbackInstitution?: string;
 }
 
 const ResourceListItem: FC<ResourceListItemProps> = ({
@@ -67,6 +68,7 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
   showHandle = false,
   showTimeCreated = false,
   handleDelete,
+  fallbackInstitution = '',
 }) => {
   const { t } = useTranslation();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
@@ -80,6 +82,7 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
     <StyledListItem data-testid={`list-item-resources-${resource.identifier}`}>
       <StyledLinkButton component="a" href={`/resource/${resource.identifier}`}>
         <Thumbnail
+          institution={resource.features.dlr_storage_id ?? fallbackInstitution}
           resourceOrContentIdentifier={resource.identifier}
           alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
         />

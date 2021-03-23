@@ -1,5 +1,5 @@
-import React, { Dispatch, FC, SetStateAction, useState } from 'react';
-import { Chip, FormControl, FormGroup, TextField } from '@material-ui/core';
+import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+import { Chip, CircularProgress, FormControl, FormGroup, TextField } from '@material-ui/core';
 import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
@@ -9,6 +9,9 @@ import { Colors, StyleWidths } from '../../themes/mainTheme';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import HelperTextPopover from '../../components/HelperTextPopover';
+import { searchTags } from '../../api/resourceApi';
+import useDebounce from '../../utils/useDebounce';
+import ErrorBanner from '../../components/ErrorBanner';
 
 const minimumTagLength = 1;
 
@@ -20,9 +23,7 @@ const StyledFormControl: any = styled(FormControl)`
 
 const StyledChip = styled(Chip)`
   && {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    margin-right: 0.5rem;
+    margin: 1rem 0.5rem 0 0;
     background-color: ${Colors.ChipBackground};
     color: ${Colors.Background};
     &:focus {
@@ -39,6 +40,7 @@ const StyledCancelIcon = styled(CancelIcon)`
 const StyledChipContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 1rem;
 `;
 
 const StyledFormLabel = styled(FormLabel)`
@@ -53,23 +55,55 @@ interface TagsFilteringProps {
 
 const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) => {
   const { t } = useTranslation();
+  const [tagInputFieldValue, setTagInputFieldValue] = useState('');
   const [tagValue, setTagValue] = useState('');
+  const debouncedTagInputValue = useDebounce(tagInputFieldValue);
+  const [options, setOptions] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [cancelSearch, setCancelSearch] = useState(false);
+  const [tagSearchError, setTagSearchError] = useState<Error>();
 
-  const submitTag = () => {
-    const newTagValue = tagValue.trim();
-    if (!queryObject.tags.includes(newTagValue) && newTagValue.length > minimumTagLength) {
-      setQueryObject((prevState) => ({
-        ...prevState,
-        tags: [...prevState.tags, newTagValue],
-        offset: 0,
-        queryFromURL: false,
-      }));
+  useEffect(() => {
+    const searchForTags = async () => {
+      if (!cancelSearch) {
+        setLoading(true);
+        try {
+          const response = await searchTags(debouncedTagInputValue);
+          const optionsResult = response.data.facet_counts.map((facetCount) => facetCount.value);
+          setOptions(optionsResult);
+        } catch (error) {
+          setTagSearchError(error);
+        } finally {
+          setLoading(false);
+          setCancelSearch(false);
+        }
+      }
+    };
+    setOptions([]);
+    if (debouncedTagInputValue.length > 1) {
+      searchForTags();
     }
-    setTagValue('');
-  };
+  }, [debouncedTagInputValue, cancelSearch, t]);
+
+  useEffect(() => {
+    if (tagValue?.length > 0) {
+      const newTagValue = tagValue.trim();
+      if (newTagValue.length > minimumTagLength) {
+        setQueryObject((prevState) => ({
+          ...prevState,
+          tags: !prevState.tags.includes(newTagValue) ? [...prevState.tags, newTagValue] : prevState.tags,
+          offset: 0,
+          queryFromURL: false,
+        }));
+      }
+      setTagInputFieldValue('');
+      setCancelSearch(false);
+      setOptions([]);
+    }
+  }, [tagValue, setQueryObject]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTagValue(event.target.value);
+    setTagInputFieldValue(event.target.value);
   };
 
   const handleDelete = (tagToDelete: string) => {
@@ -92,17 +126,15 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
       </StyledFormLabel>
       <FormGroup>
         <Autocomplete
-          freeSolo
-          options={[]}
           id="filter-tags-input"
-          value={tagValue}
-          onBlur={submitTag}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              event.preventDefault();
-              submitTag();
-            }
+          value={tagInputFieldValue}
+          options={options}
+          noOptionsText={t('common.no_options')}
+          onChange={(event: ChangeEvent<unknown>, value: any) => {
+            setTagValue(value);
           }}
+          loading={loading}
+          renderOption={(option) => <span data-testid={'tag-option'}>{option}</span>}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -111,9 +143,19 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
               label={t('resource.metadata.tags')}
               data-testid="filter-tags-input"
               onChange={handleChange}
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                  <>
+                    {loading ? <CircularProgress color="inherit" size={'1rem'} /> : null}
+                    {params.InputProps.endAdornment}
+                  </>
+                ),
+              }}
             />
           )}
         />
+        {tagSearchError && <ErrorBanner error={tagSearchError}></ErrorBanner>}
         <StyledChipContainer data-testid="filter-tag-container">
           {queryObject.tags.map((tag, index) => (
             <StyledChip

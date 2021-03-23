@@ -19,6 +19,8 @@ import ChangeThumbnailButton from '../../../components/ChangeThumbnailButton';
 import { uppyLocale } from '../../../utils/uppy-config';
 import HelperTextPopover from '../../../components/HelperTextPopover';
 import { StylePopoverTypography } from '../../../components/styled/StyledTypographies';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../state/rootReducer';
 
 const StatusBarWrapper = styled.div`
   width: 100%;
@@ -73,6 +75,7 @@ const FileFields: FC<FileFieldsProps> = ({
   const { values, handleBlur, resetForm, setTouched, touched } = useFormikContext<Resource>();
   const [saveTitleError, setSaveTitleError] = useState(false);
   const [shouldPollNewThumbnail, setShouldPollNewThumbnail] = useState(false);
+  const { institution } = useSelector((state: RootState) => state.user);
 
   const saveMainContentsFileName = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setAllChangesSaved(false);
@@ -84,7 +87,7 @@ const FileFields: FC<FileFieldsProps> = ({
         await updateContentTitle(resourceId, contentId, event.target.value);
         setAllChangesSaved(true);
         resetFormButKeepTouched(touched, resetForm, values, setTouched);
-      } catch (err) {
+      } catch (error) {
         setSaveTitleError(true);
       }
     }
@@ -97,6 +100,7 @@ const FileFields: FC<FileFieldsProps> = ({
         <MainFileWrapper>
           <MainFileImageWrapper>
             <Thumbnail
+              institution={values.features.dlr_storage_id ?? institution}
               needsToStartToPoll={shouldPollNewThumbnail}
               resourceOrContentIdentifier={values.identifier}
               alt={t('resource.metadata.resource')}
