@@ -17,6 +17,7 @@ import Thumbnail from '../../../components/Thumbnail';
 import { Content } from '../../../types/content.types';
 import ChangeThumbnailButton from '../../../components/ChangeThumbnailButton';
 import { uppyLocale } from '../../../utils/uppy-config';
+import HelperTextPopover from '../../../components/HelperTextPopover';
 
 const StatusBarWrapper = styled.div`
   width: 100%;
@@ -26,6 +27,17 @@ const MainFileWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
+`;
+
+const FileTitleWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const StyledTypography = styled(Typography)`
+  margin-bottom: 0.5rem;
 `;
 
 const StyledFieldWrapper = styled.div`
@@ -39,6 +51,10 @@ const MainFileImageWrapper = styled.div`
 
 const MainFileMetadata = styled.div`
   flex-grow: 1;
+`;
+
+const StyledSpacer = styled.div`
+  padding-left: 1rem;
 `;
 
 interface FileFieldsProps {
@@ -92,26 +108,41 @@ const FileFields: FC<FileFieldsProps> = ({
           <MainFileMetadata>
             <StyledFieldWrapper>
               {values.contents.masterContent.features.dlr_content_type === 'file' && (
-                <Field
-                  name={`${FieldNames.ContentsBase}.${FieldNames.MasterContent}.${FieldNames.Features}.${ContentFeatureNames.Title}`}>
-                  {({ field, meta: { touched, error } }: FieldProps) => (
-                    <TextField
-                      {...field}
-                      id="filename"
-                      variant="filled"
-                      required
-                      fullWidth
-                      inputProps={{ 'data-testid': 'master-content-title' }}
-                      label={t('resource.metadata.file_title')}
-                      error={touched && !!error}
-                      helperText={<ErrorMessage name={field.name} />}
-                      onBlur={(event) => {
-                        handleBlur(event);
-                        !error && saveMainContentsFileName(event);
-                      }}
-                    />
-                  )}
-                </Field>
+                <FileTitleWrapper>
+                  <Field
+                    name={`${FieldNames.ContentsBase}.${FieldNames.MasterContent}.${FieldNames.Features}.${ContentFeatureNames.Title}`}>
+                    {({ field, meta: { touched, error } }: FieldProps) => (
+                      <TextField
+                        {...field}
+                        id="filename"
+                        variant="filled"
+                        required
+                        fullWidth
+                        inputProps={{ 'data-testid': 'master-content-title' }}
+                        label={t('resource.metadata.file_title')}
+                        error={touched && !!error}
+                        helperText={<ErrorMessage name={field.name} />}
+                        onBlur={(event) => {
+                          handleBlur(event);
+                          !error && saveMainContentsFileName(event);
+                        }}
+                      />
+                    )}
+                  </Field>
+                  <StyledSpacer>
+                    <HelperTextPopover
+                      ariaButtonLabel={t('explanation_text.file_title_helper_aria_label')}
+                      popoverId={'file_title_field_popover'}>
+                      <StyledTypography variant="body1">
+                        {t('explanation_text.file_title_helper_text')}.
+                      </StyledTypography>
+                      <StyledTypography variant="body2">
+                        {t('explanation_text.file_title_helper_example1')}.
+                      </StyledTypography>
+                      <Typography variant="body2">{t('explanation_text.file_title_helper_example2')}.</Typography>
+                    </HelperTextPopover>
+                  </StyledSpacer>
+                </FileTitleWrapper>
               )}
             </StyledFieldWrapper>
             {saveTitleError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
