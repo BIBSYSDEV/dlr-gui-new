@@ -142,7 +142,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
             <>
               {sortCreatorArray()?.map((creator, index) => {
                 return (
-                  <StyledSpacer>
+                  <StyledSpacer key={index}>
                     <Grid container alignItems="center" key={index} spacing={2}>
                       <Grid item xs={calculateNumXSColumns(index)} sm={calculateNumSMColumns(index)}>
                         <Field

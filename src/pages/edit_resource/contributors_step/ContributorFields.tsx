@@ -180,7 +180,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
             <>
               {values.contributors?.map((contributor: Contributor, index: number) => {
                 return (
-                  <StyledSpacer>
+                  <StyledSpacer key={contributor.identifier}>
                     <Grid container alignItems="center" key={contributor.identifier} spacing={2}>
                       <Grid
                         item

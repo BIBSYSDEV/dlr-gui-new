@@ -18,6 +18,7 @@ import { Content } from '../../../types/content.types';
 import ChangeThumbnailButton from '../../../components/ChangeThumbnailButton';
 import { uppyLocale } from '../../../utils/uppy-config';
 import HelperTextPopover from '../../../components/HelperTextPopover';
+import { StylePopoverTypography } from '../../../components/styled/StyledTypographies';
 
 const StatusBarWrapper = styled.div`
   width: 100%;
@@ -34,10 +35,6 @@ const FileTitleWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-`;
-
-const StyledTypography = styled(Typography)`
-  margin-bottom: 0.5rem;
 `;
 
 const StyledFieldWrapper = styled.div`
@@ -133,12 +130,12 @@ const FileFields: FC<FileFieldsProps> = ({
                     <HelperTextPopover
                       ariaButtonLabel={t('explanation_text.file_title_helper_aria_label')}
                       popoverId={'file_title_field_popover'}>
-                      <StyledTypography variant="body1">
+                      <StylePopoverTypography variant="body1">
                         {t('explanation_text.file_title_helper_text')}.
-                      </StyledTypography>
-                      <StyledTypography variant="body2">
+                      </StylePopoverTypography>
+                      <StylePopoverTypography variant="body2">
                         {t('explanation_text.file_title_helper_example1')}.
-                      </StyledTypography>
+                      </StylePopoverTypography>
                       <Typography variant="body2">{t('explanation_text.file_title_helper_example2')}.</Typography>
                     </HelperTextPopover>
                   </StyledSpacer>

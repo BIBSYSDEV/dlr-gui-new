@@ -16,10 +16,7 @@ import PhotoOutlinedIcon from '@material-ui/icons/PhotoOutlined';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import HelperTextPopover from '../../../components/HelperTextPopover';
-
-const StyledTypography = styled(Typography)`
-  margin-bottom: 0.5rem;
-`;
+import { StylePopoverTypography } from '../../../components/styled/StyledTypographies';
 
 const StyledMenuItem = styled(MenuItem)`
   padding: 1rem;
@@ -128,14 +125,18 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                 <HelperTextPopover
                   ariaButtonLabel={t('explanation_text.resource_type_helper_aria_label')}
                   popoverId={'helper-resource-type'}>
-                  <StyledTypography variant="body1">
+                  <StylePopoverTypography variant="body1">
                     {t('explanation_text.resource_type_helper_text1')}.
-                  </StyledTypography>
-                  <StyledTypography variant="body1">
+                  </StylePopoverTypography>
+                  <StylePopoverTypography variant="body1">
                     {t('explanation_text.resource_type_helper_text2')}
-                  </StyledTypography>
-                  <StyledTypography variant="body2">{t('explanation_text.resource_type_example1')}</StyledTypography>
-                  <StyledTypography variant="body2">{t('explanation_text.resource_type_example2')}</StyledTypography>
+                  </StylePopoverTypography>
+                  <StylePopoverTypography variant="body2">
+                    {t('explanation_text.resource_type_example1')}
+                  </StylePopoverTypography>
+                  <StylePopoverTypography variant="body2">
+                    {t('explanation_text.resource_type_example2')}
+                  </StylePopoverTypography>
                 </HelperTextPopover>
               </Grid>
             </Grid>

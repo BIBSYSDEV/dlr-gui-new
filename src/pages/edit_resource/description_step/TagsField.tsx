@@ -14,6 +14,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import HelperTextPopover from '../../../components/HelperTextPopover';
 import { AutocompleteRenderInputParams } from '@material-ui/lab';
 import Typography from '@material-ui/core/Typography';
+import { StylePopoverTypography } from '../../../components/styled/StyledTypographies';
 
 const StyledChip = styled(Chip)`
   && {
@@ -35,10 +36,6 @@ const StyledAutoComplete: any = styled(Autocomplete)`
 
 const StyledCancelIcon = styled(CancelIcon)`
   color: ${Colors.ChipIconBackground};
-`;
-
-const StyledTypography = styled(Typography)`
-  margin-bottom: 1rem;
 `;
 
 interface TagsFieldProps {
@@ -126,9 +123,17 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                 <HelperTextPopover
                   popoverId="tags-explanation"
                   ariaButtonLabel={t('explanation_text.tags_helper_aria_label')}>
-                  <StyledTypography variant="body1">{t('explanation_text.tags_helper_text')}.</StyledTypography>
-                  <StyledTypography> {t('explanation_text.tags_helper_text_edit_resource1')}. </StyledTypography>
-                  <StyledTypography> {t('explanation_text.tags_helper_text_edit_resource2')}. </StyledTypography>
+                  <StylePopoverTypography variant="body1">
+                    {t('explanation_text.tags_helper_text')}.
+                  </StylePopoverTypography>
+                  <StylePopoverTypography>
+                    {' '}
+                    {t('explanation_text.tags_helper_text_edit_resource1')}.{' '}
+                  </StylePopoverTypography>
+                  <StylePopoverTypography>
+                    {' '}
+                    {t('explanation_text.tags_helper_text_edit_resource2')}.{' '}
+                  </StylePopoverTypography>
                   <Typography variant="caption">{t('explanation_text.tags_helper_text_example')}.</Typography>
                 </HelperTextPopover>
               </Grid>

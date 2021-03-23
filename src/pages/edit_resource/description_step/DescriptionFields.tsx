@@ -13,11 +13,7 @@ import { Colors } from '../../../themes/mainTheme';
 import RequiredFieldInformation from '../../../components/RequiredFieldInformation';
 import HelperTextPopover from '../../../components/HelperTextPopover';
 import Typography from '@material-ui/core/Typography';
-import styled from 'styled-components';
-
-const StyledTypography = styled(Typography)`
-  margin-bottom: 0.5rem;
-`;
+import { StylePopoverTypography } from '../../../components/styled/StyledTypographies';
 
 interface DescriptionFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -104,21 +100,21 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
                   <HelperTextPopover
                     ariaButtonLabel={t('explanation_text.description_helper_aria_label')}
                     popoverId={'helper-text-description'}>
-                    <StyledTypography variant="body1">
+                    <StylePopoverTypography variant="body1">
                       {t('explanation_text.description_helper_text1')}.
-                    </StyledTypography>
-                    <StyledTypography variant="body1">
+                    </StylePopoverTypography>
+                    <StylePopoverTypography variant="body1">
                       {t('explanation_text.description_helper_text2')}:
-                    </StyledTypography>
-                    <StyledTypography variant="body2">
+                    </StylePopoverTypography>
+                    <StylePopoverTypography variant="body2">
                       {t('explanation_text.description_helper_example1')}.
-                    </StyledTypography>
-                    <StyledTypography variant="body2">
+                    </StylePopoverTypography>
+                    <StylePopoverTypography variant="body2">
                       {t('explanation_text.description_helper_example2')}.
-                    </StyledTypography>
-                    <StyledTypography variant="body2">
+                    </StylePopoverTypography>
+                    <StylePopoverTypography variant="body2">
                       {t('explanation_text.description_helper_example3')}.
-                    </StyledTypography>
+                    </StylePopoverTypography>
                   </HelperTextPopover>
                 </Grid>
               </Grid>
