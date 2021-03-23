@@ -12,8 +12,6 @@ import { useHistory } from 'react-router-dom';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import { StyleWidths } from '../themes/mainTheme';
 import { format } from 'date-fns';
-import { useSelector } from 'react-redux';
-import { RootState } from '../state/rootReducer';
 
 const StyledListItem: any = styled.li`
   display: flex;
@@ -61,6 +59,7 @@ interface ResourceListItemProps {
   showHandle?: boolean;
   showTimeCreated?: boolean;
   handleDelete?: () => void;
+  fallbackInstitution?: string;
 }
 
 const ResourceListItem: FC<ResourceListItemProps> = ({
@@ -69,11 +68,11 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
   showHandle = false,
   showTimeCreated = false,
   handleDelete,
+  fallbackInstitution = '',
 }) => {
   const { t } = useTranslation();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const history = useHistory();
-  const { institution } = useSelector((state: RootState) => state.user);
 
   const handleClickEditButton = () => {
     history.push(`/editresource/${resource.identifier}`);
@@ -83,7 +82,7 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
     <StyledListItem data-testid={`list-item-resources-${resource.identifier}`}>
       <StyledLinkButton component="a" href={`/resource/${resource.identifier}`}>
         <Thumbnail
-          institution={resource.features.dlr_storage_id ?? institution}
+          institution={resource.features.dlr_storage_id ?? fallbackInstitution}
           resourceOrContentIdentifier={resource.identifier}
           alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
         />

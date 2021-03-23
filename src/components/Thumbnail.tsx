@@ -27,7 +27,7 @@ const StyledImage = styled.img`
   max-width: 11rem;
 `;
 
-const unitBanner = '#405363';
+const UnitBanner = '#405363';
 const UiBBanner = '#cf3c3a';
 
 const pollingDelayMilliseconds = 500;
@@ -74,7 +74,7 @@ const Thumbnail: FC<thumbnailProps> = ({
         break;
       case UserInstitution.Unit.toLowerCase():
         event.target.src = UnitImage;
-        setBackgroundColor(unitBanner);
+        setBackgroundColor(UnitBanner);
         break;
       default:
         event.target.src = placeholderImage;
