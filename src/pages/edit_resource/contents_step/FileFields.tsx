@@ -71,7 +71,7 @@ const FileFields: FC<FileFieldsProps> = ({
         await updateContentTitle(resourceId, contentId, event.target.value);
         setAllChangesSaved(true);
         resetFormButKeepTouched(touched, resetForm, values, setTouched);
-      } catch (err) {
+      } catch (error) {
         setSaveTitleError(true);
       }
     }

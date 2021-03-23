@@ -110,6 +110,25 @@ export const createMockContributor = (): Contributor => {
   };
 };
 
+export const mockTagSuggestions = {
+  numFound: 4,
+  queryTime: 0,
+  facet_counts: [
+    { count: '1', type: 'dlr_tag', value: 'digital ' },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'digital læring',
+    },
+    { count: '1', type: 'dlr_tag', value: 'digital læringsressurs' },
+    {
+      count: '1',
+      type: 'dlr_tag',
+      value: 'digital undervisning: NTNU Drive',
+    },
+  ],
+};
+
 export const mockLicenses: License[] = [
   {
     identifier: '5d498312-7b5d-40af-a346-3e39df43ca77',

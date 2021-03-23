@@ -16,6 +16,7 @@ import {
   mockCreateUpload,
   mockCreators,
   mockDefaultResource,
+  mockTagSuggestions,
   mockFacets,
   mockLicenses,
   mockMyResources,
@@ -43,6 +44,15 @@ export const interceptRequestsOnMock = () => {
   mock
     .onGet(new RegExp(`${API_PATHS.guiBackendResourcesSearchPath}/resources/search.*`))
     .reply((config) => loggedReply(config, 200, mockSearchResults));
+
+  //TAG-SEARCH
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesSearchPath}/suggestions/tags.*`)).reply((config) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(loggedReply(config, 200, mockTagSuggestions));
+      }, 1000);
+    });
+  });
 
   //FILE UPLOAD | CONTENTS
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesContentPath}.*${FileApiPaths.CREATE}`)).reply(() => {
