@@ -55,12 +55,12 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
     if (course) {
       try {
         setUpdatingPrivateAccessList(true);
+        setSavePrivateAccessNetworkError(undefined);
         await postCourseConsumerAccess(values.identifier, course);
         addPrivateAccess({
           subject: generateCourseSubjectTag(course),
           profiles: [{ name: ResourceReadAccessNames.Course }],
         });
-        setSavePrivateAccessNetworkError(undefined);
         setCourseAutocompleteValue(null);
         setCourseAutocompleteTypedValue('');
       } catch (error) {

@@ -33,9 +33,9 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
       setAllChangesSaved(false);
       try {
         if (event.target.value in AccessTypes) {
+          setSavingAccessTypeError(undefined);
           await putAccessType(values.identifier, event.target.value as AccessTypes);
           setFieldValue(ResourceFeatureNamesFullPath.Access, event.target.value);
-          setSavingAccessTypeError(undefined);
           values.features.dlr_access = event.target.value;
           resetForm({ values });
           if (

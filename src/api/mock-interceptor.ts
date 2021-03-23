@@ -49,7 +49,7 @@ export const interceptRequestsOnMock = () => {
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesSearchPath}/suggestions/tags.*`)).reply((config) => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(loggedReply(config, 200, mockTagSuggestions));
+        resolve(loggedReply(config, 500, mockTagSuggestions));
       }, 1000);
     });
   });

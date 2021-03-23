@@ -101,6 +101,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
       setAllChangesSaved(false);
       const license = licenses.find((license) => license.features?.dlr_license_code === licenseCode);
       if (license && values.licenses && values.licenses[0].identifier !== license.identifier) {
+        setSaveRestrictionError(undefined);
         await setResourceLicense(values.identifier, license.identifier);
         if (values.licenses) {
           if (values.licenses[0].identifier.length > 0) {
@@ -109,7 +110,6 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           values.licenses[0] = license;
         }
         resetForm({ values });
-        setSaveRestrictionError(undefined);
       } else if (license && values.licenses && values.licenses[0].identifier === license.identifier) {
         setSaveRestrictionError(undefined);
       } else {

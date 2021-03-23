@@ -36,8 +36,8 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
     setAllChangesSaved(false);
     if (selectedLicense) {
       try {
-        await setResourceLicense(values.identifier, selectedLicense.identifier);
         setSavingLicensesError(undefined);
+        await setResourceLicense(values.identifier, selectedLicense.identifier);
         setFieldValue(LicenceFieldName, selectedLicense);
         if (values.licenses?.length === 1) {
           if (

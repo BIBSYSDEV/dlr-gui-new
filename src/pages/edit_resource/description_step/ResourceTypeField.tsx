@@ -42,9 +42,9 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
     if (event.target.value.length > 0) {
       setAllChangesSaved(false);
       try {
+        setSavingResourceTypeError(undefined);
         await postResourceFeature(values.identifier, 'dlr_type', event.target.value);
         setFieldValue(ResourceFeatureNamesFullPath.Type, event.target.value);
-        setSavingResourceTypeError(undefined);
         values.features.dlr_type = event.target.value;
         resetFormButKeepTouched(touched, resetForm, values, setTouched);
       } catch (error) {
