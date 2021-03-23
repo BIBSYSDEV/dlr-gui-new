@@ -138,6 +138,7 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
         <StyledFirstColumn>
           <StyledThumbnailWrapper>
             <Thumbnail
+              institution={resource.features.dlr_storage_id}
               resourceOrContentIdentifier={resource.identifier}
               alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
             />

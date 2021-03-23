@@ -8,6 +8,8 @@ import ErrorBanner from '../../components/ErrorBanner';
 import ResourceListItem from '../../components/ResourceListItem';
 import { PageHeader } from '../../components/PageHeader';
 import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../state/rootReducer';
 
 const StyledListWrapper = styled.div`
   margin-top: 40px;
@@ -24,6 +26,7 @@ const MyResources = () => {
   const [resourcesUnpublished, setMyUnpublishedResources] = useState<Resource[]>([]);
   const [resourcesPublished, setMyPublishedResources] = useState<Resource[]>([]);
   const [loadingError, setLoadingError] = useState<Error>();
+  const { institution } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,6 +75,7 @@ const MyResources = () => {
                   key={index}
                   resource={resource}
                   showTimeCreated={true}
+                  fallbackInstitution={institution}
                   handleDelete={() => {
                     deleteResource(resource.identifier, false);
                   }}
@@ -93,6 +97,7 @@ const MyResources = () => {
                   key={index}
                   resource={resource}
                   showTimeCreated={true}
+                  fallbackInstitution={institution}
                   handleDelete={() => {
                     deleteResource(resource.identifier, true);
                   }}

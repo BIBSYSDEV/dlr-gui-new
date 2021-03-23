@@ -6,7 +6,7 @@ import { Checkbox, FormControl, FormControlLabel, FormGroup } from '@material-ui
 import { QueryObject } from '../../types/search.types';
 import { useTranslation } from 'react-i18next';
 import CClogoImage from '../../components/CClogoImage';
-import CCExplanation from '../../components/CCExplanation';
+import LicensePopoverExplanation from '../../components/LicensePopoverExplanation';
 import styled from 'styled-components';
 
 const StyledCheckboxLabelWrapper = styled.div`
@@ -101,7 +101,7 @@ const LicenseFiltering: FC<LicenseFilteringProps> = ({ queryObject, setQueryObje
                   showCCImage={false}
                   licenseCode={license.licenseCode.replace('CC ', '').replace(' 4.0', '')}
                 />
-                <CCExplanation licenseCode={license.licenseCode} />
+                <LicensePopoverExplanation licenseCode={license.licenseCode} />
               </StyledCheckboxLabelWrapper>
             }
             onChange={(event) => {

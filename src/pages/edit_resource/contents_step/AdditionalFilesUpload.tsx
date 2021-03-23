@@ -16,6 +16,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { deleteResourceContent } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import Thumbnail from '../../../components/Thumbnail';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../state/rootReducer';
 
 interface AdditionalFilesUploadProps {
   additionalFileUploadUppy: Uppy;
@@ -109,6 +111,7 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
   const [uploadPercentageArray, setUploadPercentageArray] = useState<UploadPerFile[]>(
     getIndividualProgress(values.contents.additionalContent, additionalFileUploadUppy)
   );
+  const { institution } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     additionalFileUploadUppy.on('upload-progress', (file: UppyFile, progress) => {
@@ -193,7 +196,11 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
         {contents.map((content, index) => (
           <LargeParagraphSpace key={content.identifier}>
             <UploadImageProgressCard>
-              <Thumbnail alt={content.features.dlr_content} resourceOrContentIdentifier={content.identifier} />
+              <Thumbnail
+                institution={values.features.dlr_storage_id ?? institution}
+                alt={content.features.dlr_content}
+                resourceOrContentIdentifier={content.identifier}
+              />
               {displayContent(content.features.dlr_content)?.percentage !== 0 && (
                 <>
                   <Typography align="right" variant="body1">

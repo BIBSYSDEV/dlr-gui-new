@@ -4,12 +4,20 @@ import { FormHelperText, MenuItem, TextField } from '@material-ui/core';
 import { FieldNames, Resource } from '../../../types/resource.types';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { deleteResourceLicense, setResourceLicense } from '../../../api/resourceApi';
-import { License } from '../../../types/license.types';
+import { InstitutionLicenseProviders, License } from '../../../types/license.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import ErrorBanner from '../../../components/ErrorBanner';
 import LicenseCard from '../../../components/LicenseCard';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
+import CClogoImage from '../../../components/CClogoImage';
+import styled from 'styled-components';
+import LicensePopoverExplanation from '../../../components/LicensePopoverExplanation';
+
+const StyledInlineWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 interface LicenseAndAccessFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -49,44 +57,66 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
     }
   };
 
+  const showInternalLicenseExplanation = (): boolean => {
+    return (
+      licenses.findIndex(
+        (license) =>
+          license.features?.dlr_license_code?.toLowerCase().includes(InstitutionLicenseProviders.BI) ||
+          license.features?.dlr_license_code?.toLowerCase().includes(InstitutionLicenseProviders.NTNU)
+      ) > -1
+    );
+  };
+
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor3}>
       <StyledContentWrapper>
         {licenses && (
-          <Field name={LicenceFieldName}>
-            {({ field, meta: { error, touched } }: FieldProps) => (
-              <>
-                <TextField
-                  id="license-picker"
-                  select
-                  required
-                  label={t('resource.metadata.license')}
-                  variant="filled"
-                  value={field.value.identifier}
-                  error={touched && !!error}
-                  fullWidth
-                  data-testid="licence-field"
-                  onClick={(event) => {
-                    //OnBlur does not work until clicked twice outside selector. Using onClick instead
-                    setFieldTouched(LicenceFieldName, true, true);
-                  }}
-                  onChange={(event) => {
-                    saveField(event);
-                  }}>
-                  {licenses.map((license) => (
-                    <MenuItem
-                      key={license.identifier}
-                      value={license.identifier}
-                      data-testid={`license-option-${license.identifier}`}>
-                      {license.features?.dlr_license_code}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
-                {savingLicenseError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingLicenseError} />}
-              </>
-            )}
-          </Field>
+          <StyledInlineWrapper>
+            <Field name={LicenceFieldName}>
+              {({ field, meta: { error, touched } }: FieldProps) => (
+                <>
+                  <TextField
+                    id="license-picker"
+                    select
+                    required
+                    label={t('resource.metadata.license')}
+                    variant="filled"
+                    value={field.value.identifier}
+                    error={touched && !!error}
+                    fullWidth
+                    data-testid="licence-field"
+                    onClick={() => {
+                      //OnBlur does not work until clicked twice outside selector. Using onClick instead
+                      setFieldTouched(LicenceFieldName, true, true);
+                    }}
+                    onChange={(event) => {
+                      saveField(event);
+                    }}>
+                    {licenses.map((license) => (
+                      <MenuItem
+                        key={license.identifier}
+                        value={license.identifier}
+                        data-testid={`license-option-${license.identifier}`}>
+                        <CClogoImage
+                          textFirst={true}
+                          licenseCode={license.features?.dlr_license_code ?? ''}
+                          showCCImage={true}
+                        />
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
+                  {savingLicenseError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingLicenseError} />}
+                </>
+              )}
+            </Field>
+            <LicensePopoverExplanation
+              licenseCode={'CC BY SA ND NC CD 1'}
+              showLink={false}
+              showIntroduction={true}
+              showInternalLicenseExplanation={showInternalLicenseExplanation()}
+            />
+          </StyledInlineWrapper>
         )}
         {values.licenses?.[0] && values.licenses?.[0].identifier.length > 1 && (
           <LicenseCard license={values.licenses[0]} />
