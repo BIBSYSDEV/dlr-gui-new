@@ -114,7 +114,7 @@ const Explore = () => {
       const tags = searchTerms.getAll(SearchParameters.tag);
       const pageTerm = searchTerms.get(SearchParameters.page);
       const showInaccessibleParameter = searchTerms.get(SearchParameters.showInaccessible);
-      const showInaccessible = showInaccessibleParameter ? showInaccessibleParameter.includes('true') : false;
+      const showInaccessible = showInaccessibleParameter ? showInaccessibleParameter.toLowerCase() === 'true' : false;
       const licenses = searchTerms.getAll(SearchParameters.license);
       const offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
       return {

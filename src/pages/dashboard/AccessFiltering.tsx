@@ -18,23 +18,21 @@ const AccessFiltering: FC<AccoessFilteringProps> = ({ queryObject, setQueryObjec
   };
 
   return (
-    <div>
-      <FormControlLabel
-        data-testid="access-checkbox-label"
-        control={
-          <Checkbox
-            data-testid={`access-filtering-checkbox`}
-            color="default"
-            checked={queryObject.showInaccessible}
-            name={'access'}
-          />
-        }
-        label={'Vis også ressurser jeg ikke har tilgang til'}
-        onChange={(event) => {
-          changeSelected(event);
-        }}
-      />
-    </div>
+    <FormControlLabel
+      data-testid="access-checkbox-label"
+      control={
+        <Checkbox
+          data-testid={`access-filtering-checkbox`}
+          color="default"
+          checked={queryObject.showInaccessible}
+          name={'access'}
+        />
+      }
+      label={'Vis også ressurser jeg ikke har tilgang til'}
+      onChange={(event) => {
+        changeSelected(event);
+      }}
+    />
   );
 };
 

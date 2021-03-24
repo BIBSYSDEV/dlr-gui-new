@@ -259,7 +259,7 @@ context('Actions', () => {
     cy.get(`[data-testid=access-filtering-checkbox] input`).should('be.checked');
   });
 
-  it('can add showInAccessible filter in the url', () => {
+  it('can add showInaccessible filter in the url', () => {
     cy.visit(`/?${SearchParameters.query}=${search}`);
     cy.get(`[data-testid=access-checkbox-label] input`).click();
     cy.location().should((loc) => {
