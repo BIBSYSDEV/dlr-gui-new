@@ -69,7 +69,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
         await putAccessType(values.identifier, AccessTypes.private);
         values.features.dlr_access = AccessTypes.private;
       } catch (error) {
-        setSavingAccessTypeError(true);
+        setSavingAccessTypeError(error);
       } finally {
         setAllChangesSaved(true);
       }
