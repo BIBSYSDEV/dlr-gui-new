@@ -12,6 +12,8 @@
     "hide_list": "Hide list",
     "no_courses_available": "No courses available",
     "no_one_has_read_access": "No one has read access",
+    "no_clearance_no_public_access": "If you do not have clearance from the creator, the work cannot be made public available",
+    "only_private_is_available": "Only private access is possible due to internal license",
     "save_personal_access_error": {
       "duplicate_email": "One or more emails already have access",
       "invalid_email": "One or more emails are incorrectly typed",
