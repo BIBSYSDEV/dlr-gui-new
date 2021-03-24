@@ -64,8 +64,8 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
     setTouched,
     touched,
   } = useFormikContext<Resource>();
-  const [addContributorError, setAddContributorError] = useState(false);
-  const [updateContributorError, setUpdateContributorError] = useState(false);
+  const [addContributorError, setAddContributorError] = useState<Error>();
+  const [updateContributorError, setUpdateContributorError] = useState<Error>();
   const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
   const [contributorTypesTranslated, setContributorTypesTranslated] = useState<contributorTypesTranslated[]>(
     generateContributorTypesTranslated(t)
@@ -79,6 +79,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
   const addContributor = async (arrayHelpers: FieldArrayRenderProps) => {
     setAllChangesSaved(false);
     try {
+      setAddContributorError(undefined);
       const contributorResponse = await createContributor(values.identifier);
       arrayHelpers.push({
         identifier: contributorResponse.data.identifier,
@@ -88,9 +89,8 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
           dlr_contributor_identifier: contributorResponse.data.identifier,
         },
       });
-      setAddContributorError(false);
     } catch (error) {
-      setAddContributorError(true);
+      setAddContributorError(error);
     } finally {
       setAllChangesSaved(true);
       inputElements.current[values.contributors.length].focus();
@@ -104,12 +104,12 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
   ) => {
     try {
       setAllChangesSaved(false);
+      setUpdateContributorError(undefined);
+      setErrorIndex(ErrorIndex.NO_ERRORS);
       const name = '' + event.target.name.split('.').pop();
       if (event.target.value.length > 0) {
         await putContributorFeature(values.identifier, contributorIdentifier, name, event.target.value);
       }
-      setUpdateContributorError(false);
-      setErrorIndex(ErrorIndex.NO_ERRORS);
       if (
         values?.contributors[contributorIndex].identifier === contributorIdentifier &&
         name === ContributorFeatureNames.Type
@@ -117,8 +117,8 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
         values.contributors[contributorIndex].features.dlr_contributor_type = event.target.value;
       }
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
-    } catch (saveContributorError: any) {
-      setUpdateContributorError(true);
+    } catch (error) {
+      setUpdateContributorError(error);
       setErrorIndex(contributorIndex);
     } finally {
       setAllChangesSaved(true);
@@ -134,10 +134,10 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
       setAllChangesSaved(false);
       await deleteContributor(values.identifier, contributorIdentifier);
       arrayHelpers.remove(contributorIndex);
-      setUpdateContributorError(false);
+      setUpdateContributorError(undefined);
       setErrorIndex(ErrorIndex.NO_ERRORS);
-    } catch (deleteContributorError: any) {
-      setUpdateContributorError(true);
+    } catch (error) {
+      setUpdateContributorError(error);
       setErrorIndex(contributorIndex);
     } finally {
       setAllChangesSaved(true);
@@ -224,7 +224,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                       }}>
                       {t('common.remove').toUpperCase()}
                     </StyledDeleteButton>
-                    {updateContributorError && errorIndex === index && <ErrorBanner />}
+                    {updateContributorError && errorIndex === index && <ErrorBanner error={updateContributorError} />}
                   </StyledFieldsWrapper>
                 );
               })}
@@ -239,7 +239,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                 }}>
                 {t('resource.add_contributor').toUpperCase()}
               </Button>
-              {addContributorError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
+              {addContributorError && <ErrorBanner userNeedsToBeLoggedIn={true} error={addContributorError} />}
             </>
           )}
         />

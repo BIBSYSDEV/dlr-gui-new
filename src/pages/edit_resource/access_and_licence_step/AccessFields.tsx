@@ -31,7 +31,7 @@ interface AccessFieldsProps {
 const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, setFieldTouched, setFieldValue, handleChange, resetForm } = useFormikContext<Resource>();
-  const [savingAccessTypeError, setSavingAccessTypeError] = useState(false);
+  const [savingAccessTypeError, setSavingAccessTypeError] = useState<Error>();
   const [forceRefreshInPrivateConsumerAccessFields, setForceRefreshInPrivateConsumerAccessFields] = useState(false);
   const [disabledUserInput, setDisabledUserInput] = useState(false);
   const [disabledHelperText, setDisabledHelperText] = useState('');
@@ -41,9 +41,9 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
       setAllChangesSaved(false);
       try {
         if (event.target.value in AccessTypes) {
+          setSavingAccessTypeError(undefined);
           await putAccessType(values.identifier, event.target.value as AccessTypes);
           setFieldValue(ResourceFeatureNamesFullPath.Access, event.target.value);
-          setSavingAccessTypeError(false);
           values.features.dlr_access = event.target.value;
           resetForm({ values });
           if (
@@ -55,7 +55,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
           }
         }
       } catch (error) {
-        setSavingAccessTypeError(true);
+        setSavingAccessTypeError(error);
       } finally {
         setAllChangesSaved(true);
       }
@@ -69,7 +69,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
         await putAccessType(values.identifier, AccessTypes.private);
         values.features.dlr_access = AccessTypes.private;
       } catch (error) {
-        setSavingAccessTypeError(true);
+        setSavingAccessTypeError(error);
       } finally {
         setAllChangesSaved(true);
       }
@@ -128,7 +128,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
                     </MenuItem>
                   ))}
                 </StyledTextField>
-                {savingAccessTypeError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
+                {savingAccessTypeError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingAccessTypeError} />}
               </>
             )}
           </Field>

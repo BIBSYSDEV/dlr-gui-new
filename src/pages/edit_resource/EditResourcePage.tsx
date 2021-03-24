@@ -18,7 +18,6 @@ import {
   ResourceFeatureNames,
   ResourceFeatureTypes,
 } from '../../types/resource.types';
-import { toast } from 'react-toastify';
 import {
   createContributor,
   createResource,
@@ -69,6 +68,7 @@ const EditResourcePage = () => {
   const [showForm, setShowForm] = useState(!!identifier);
   const [resourceType, setResourceType] = useState<ResourceCreationType>(ResourceCreationType.FILE);
   const [resourceInitError, setResourceInitError] = useState<Error>();
+  const [fileUploadError, setFileUploadError] = useState<Error>();
 
   const user = useSelector((state: RootState) => state.user);
 
@@ -243,12 +243,13 @@ const EditResourcePage = () => {
 
   //triggers on uppy-events
   useEffect(() => {
+    setFileUploadError(undefined);
     if (mainFileHandler) {
       mainFileHandler.on('upload', () => {
         setResourceType(ResourceCreationType.FILE);
       });
       mainFileHandler.on('upload-error', () => {
-        toast.error('File upload error');
+        setFileUploadError(new Error('File upload error'));
       });
     }
   }, [mainFileHandler]);
@@ -300,6 +301,7 @@ const EditResourcePage = () => {
           onChange={handleChange('load-panel')}
           uppy={mainFileHandler}
         />
+        {fileUploadError && <ErrorBanner userNeedsToBeLoggedIn={true} error={fileUploadError} />}
         <Typography style={{ margin: '2rem 2rem' }}>{t('common.or')}</Typography>
         <LinkRegistration
           expanded={expanded === 'link-panel'}

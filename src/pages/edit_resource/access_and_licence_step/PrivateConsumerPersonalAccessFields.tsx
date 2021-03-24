@@ -25,7 +25,7 @@ interface PrivateConsumerPersonalAccessFieldsProps {
   privateAccessList: ResourceReadAccess[];
   setShowPersonAccessField: (showPersonAccessField: boolean) => void;
   setUpdatingPrivateAccessList: (updatingPrivateAccessList: boolean) => void;
-  setSavePrivateAccessNetworkError: (savePrivateAccessNetworkError: boolean) => void;
+  setSavePrivateAccessNetworkError: (savePrivateAccessNetworkError: Error | undefined) => void;
   addPrivateAccess: (newPrivateAccess: ResourceReadAccess) => void;
 }
 
@@ -39,7 +39,7 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
   const { t } = useTranslation();
   const { values } = useFormikContext<Resource>();
   const [personAccessTextFieldValue, setPersonAccessFieldTextValue] = useState('');
-  const [personAccessTextFieldValueError, setPersonAccessTextFieldValueError] = useState(false);
+  const [personAccessTextFieldValueError, setPersonAccessTextFieldValueError] = useState<Error>();
   const [hasDuplicateEmail, setHasDuplicateEmail] = useState(false);
   const [networkErrorOccured, setNetworkErrorOccured] = useState(false);
   const [containsInvalidEmail, setContainsInvalidEmail] = useState(false);
@@ -49,7 +49,7 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
     const accessUsers = personAccessTextFieldValue.split(/[,;\s]/g);
     let errorList = '';
     const alreadySavedEmails: string[] = [];
-    setSavePrivateAccessNetworkError(false);
+    setSavePrivateAccessNetworkError(undefined);
     setHasDuplicateEmail(false);
     setNetworkErrorOccured(false);
     setContainsInvalidEmail(false);
@@ -75,12 +75,12 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
         } catch (error) {
           errorList += accessUsers[i] + ' ';
           setNetworkErrorOccured(true);
-          setSavePrivateAccessNetworkError(true);
+          setSavePrivateAccessNetworkError(error);
         }
       }
     }
     setUpdatingPrivateAccessList(false);
-    setPersonAccessTextFieldValueError(errorList.length > 0);
+    errorList.length > 0 && setPersonAccessTextFieldValueError(new Error('internal error'));
     setPersonAccessFieldTextValue(errorList);
   };
 
@@ -112,7 +112,7 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
                     aria-label={t('common.clear')}
                     title={t('common.cancel')}
                     onClick={() => {
-                      setPersonAccessTextFieldValueError(false);
+                      setPersonAccessTextFieldValueError(undefined);
                       setHasDuplicateEmail(false);
                       setNetworkErrorOccured(false);
                       setContainsInvalidEmail(false);

@@ -60,13 +60,13 @@ const FileFields: FC<FileFieldsProps> = ({
 }) => {
   const { t } = useTranslation();
   const { values, handleBlur, resetForm, setTouched, touched } = useFormikContext<Resource>();
-  const [saveTitleError, setSaveTitleError] = useState(false);
+  const [saveTitleError, setSaveTitleError] = useState<Error>();
   const [shouldPollNewThumbnail, setShouldPollNewThumbnail] = useState(false);
   const { institution } = useSelector((state: RootState) => state.user);
 
   const saveMainContentsFileName = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setAllChangesSaved(false);
-    setSaveTitleError(false);
+    setSaveTitleError(undefined);
     const contentId = values?.contents?.masterContent.identifier;
     const resourceId = values?.identifier;
     if (resourceId && contentId) {
@@ -75,7 +75,7 @@ const FileFields: FC<FileFieldsProps> = ({
         setAllChangesSaved(true);
         resetFormButKeepTouched(touched, resetForm, values, setTouched);
       } catch (error) {
-        setSaveTitleError(true);
+        setSaveTitleError(error);
       }
     }
   };
@@ -118,7 +118,7 @@ const FileFields: FC<FileFieldsProps> = ({
                 </Field>
               )}
             </StyledFieldWrapper>
-            {saveTitleError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
+            {saveTitleError && <ErrorBanner userNeedsToBeLoggedIn={true} error={saveTitleError} />}
             <Paper>
               <StatusBarWrapper>
                 <StatusBarComponent

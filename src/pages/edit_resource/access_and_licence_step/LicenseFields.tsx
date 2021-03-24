@@ -29,15 +29,15 @@ const LicenceFieldName = `${FieldNames.LicensesBase}[0]`; //While we are dealing
 const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, licenses }) => {
   const { t } = useTranslation();
   const { values, setFieldValue, setFieldTouched, resetForm, setTouched, touched } = useFormikContext<Resource>();
-  const [savingLicenseError, setSavingLicensesError] = useState(false);
+  const [savingLicenseError, setSavingLicensesError] = useState<Error>();
 
   const saveField = async (event: any) => {
     const selectedLicense = licenses?.find((license) => license.identifier === event.target.value);
     setAllChangesSaved(false);
     if (selectedLicense) {
       try {
+        setSavingLicensesError(undefined);
         await setResourceLicense(values.identifier, selectedLicense.identifier);
-        setSavingLicensesError(false);
         setFieldValue(LicenceFieldName, selectedLicense);
         if (values.licenses?.length === 1) {
           if (
@@ -49,9 +49,8 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
           values.licenses[0] = selectedLicense;
           resetFormButKeepTouched(touched, resetForm, values, setTouched);
         }
-      } catch (err) {
-        err?.response && setSavingLicensesError(err.response.status);
-        setSavingLicensesError(true);
+      } catch (error) {
+        error?.response ? setSavingLicensesError(new Error(error.response.status)) : setSavingLicensesError(error);
       } finally {
         setAllChangesSaved(true);
       }
@@ -107,7 +106,7 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
                     ))}
                   </TextField>
                   {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
-                  {savingLicenseError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
+                  {savingLicenseError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingLicenseError} />}
                 </>
               )}
             </Field>

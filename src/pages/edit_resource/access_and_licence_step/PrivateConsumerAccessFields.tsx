@@ -91,7 +91,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
   const [showAddAccessPopover, setShowAddAccessPopover] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [showPersonAccessField, setShowPersonAccessField] = useState(false);
-  const [savePrivateAccessNetworkError, setSavePrivateAccessNetworkError] = useState(false);
+  const [savePrivateAccessNetworkError, setSavePrivateAccessNetworkError] = useState<Error | undefined>();
   const [courses, setCourses] = useState<Course[]>([]);
   const [waitingForCourses, setWaitingForCourses] = useState(false);
   const [showCourseAutoComplete, setShowCourseAutocomplete] = useState(false);
@@ -161,17 +161,17 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
       }
       if (deleteAPISuccessful) {
         setPrivateAccessList((prevState) => prevState.filter((accessState) => accessState !== access));
-        setSavePrivateAccessNetworkError(false);
+        setSavePrivateAccessNetworkError(undefined);
       }
     } catch (error) {
       try {
         const resourceReadAccessListResponse = await getResourceReaders(values.identifier);
         if (resourceReadAccessListResponse.data.length === privateAccessList.length) {
-          setSavePrivateAccessNetworkError(true);
+          setSavePrivateAccessNetworkError(undefined);
         }
         setPrivateAccessList(resourceReadAccessListResponse.data);
       } catch (error) {
-        setSavePrivateAccessNetworkError(true);
+        setSavePrivateAccessNetworkError(error);
       }
     } finally {
       setUpdatingPrivateAccessList(false);
@@ -215,10 +215,10 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
       if (courses.length === 0) {
         const courseResponse = await getCoursesForInstitution(user.institution);
         setCourses(courseResponse);
-        setSavePrivateAccessNetworkError(false);
+        setSavePrivateAccessNetworkError(undefined);
       }
     } catch (error) {
-      setSavePrivateAccessNetworkError(true);
+      setSavePrivateAccessNetworkError(error);
     } finally {
       setWaitingForCourses(false);
       setShowCourseAutocomplete(true);
@@ -262,7 +262,9 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
         ))}
         {updatingPrivateAccessList && <CircularProgress />}
       </StyledChipWrapper>
-      {savePrivateAccessNetworkError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
+      {savePrivateAccessNetworkError && (
+        <ErrorBanner userNeedsToBeLoggedIn={true} error={savePrivateAccessNetworkError} />
+      )}
       <StyledAccessButtonWrapper>
         <StyledAddAccessButton
           data-testid="add-private-consumer-access-button"
@@ -292,7 +294,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
             data-testid="add-institution-consumer-access"
             disabled={hasInstitutionPrivateAccess()}
             onClick={() => {
-              setSavePrivateAccessNetworkError(false);
+              setSavePrivateAccessNetworkError(undefined);
               setShowCourseAutocomplete(false);
               setShowPersonAccessField(false);
               addInstitutionPrivateConsumerAccess();
@@ -306,7 +308,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
             data-testid="add-course-consumer-access"
             onClick={() => {
               setShowPersonAccessField(false);
-              setSavePrivateAccessNetworkError(false);
+              setSavePrivateAccessNetworkError(undefined);
               handlePopoverCourseClick();
             }}>
             <ListItemText primary={t('access.course_code')} />
@@ -315,7 +317,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
             button
             data-testid="add-person-consumer-access"
             onClick={() => {
-              setSavePrivateAccessNetworkError(false);
+              setSavePrivateAccessNetworkError(undefined);
               setShowCourseAutocomplete(false);
               setShowPersonAccessField(true);
               handlePopoverClose();
