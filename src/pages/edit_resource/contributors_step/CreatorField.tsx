@@ -176,7 +176,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                 }}>
                 {t('resource.add_creator').toUpperCase()}
               </Button>
-              {addCreatorError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
+              {addCreatorError && <ErrorBanner userNeedsToBeLoggedIn={true} error={addCreatorError} />}
             </>
           )}
         />

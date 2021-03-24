@@ -224,7 +224,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                       }}>
                       {t('common.remove').toUpperCase()}
                     </StyledDeleteButton>
-                    {updateContributorError && errorIndex === index && <ErrorBanner />}
+                    {updateContributorError && errorIndex === index && <ErrorBanner error={updateContributorError} />}
                   </StyledFieldsWrapper>
                 );
               })}
