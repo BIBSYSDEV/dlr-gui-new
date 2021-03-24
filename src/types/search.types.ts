@@ -63,6 +63,7 @@ export enum SearchParameters {
   license = 'license',
   offset = 'offset',
   resourceType = 'type',
+  showInaccessible = 'showinaccess',
 }
 export interface FacetResponse {
   numFound: number;
