@@ -10,7 +10,6 @@ import { API_PATHS, API_URL } from '../../utils/constants';
 import { emptyPreview } from '../../types/content.types';
 import { StyleWidths } from '../../themes/mainTheme';
 import { format } from 'date-fns';
-import { useHistory } from 'react-router-dom';
 import { SearchParameters } from '../../types/search.types';
 
 const PreviewComponentWrapper = styled.div`
@@ -48,7 +47,6 @@ interface ResourcePresentationProps {
 const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
   const { t } = useTranslation();
   const [preview, setPreview] = useState(emptyPreview);
-  const history = useHistory();
 
   useEffect(() => {
     if (resource.contents) {
@@ -129,6 +127,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
             <StyledCaption variant="caption">{t('resource.metadata.tags')}</StyledCaption>
             {resource.tags.map((tag, index) => (
               <StyledChip
+                clickable
                 component="a"
                 href={`/?${SearchParameters.tag}=${tag}`}
                 key={index}
