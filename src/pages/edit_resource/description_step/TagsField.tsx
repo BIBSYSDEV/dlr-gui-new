@@ -1,12 +1,12 @@
-import React, { ChangeEvent, FC, useState } from 'react';
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Chip, TextField } from '@material-ui/core';
+import { Chip, FormGroup, TextField } from '@material-ui/core';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { deleteTag, postTag } from '../../../api/resourceApi';
+import { deleteTag, postTag, searchTags } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import styled from 'styled-components';
@@ -14,6 +14,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import HelperTextPopover from '../../../components/HelperTextPopover';
 import { AutocompleteRenderInputParams } from '@material-ui/lab';
 import Typography from '@material-ui/core/Typography';
+import useDebounce from '../../../utils/useDebounce';
 
 const StyledChip = styled(Chip)`
   && {
@@ -53,11 +54,38 @@ interface TagsFieldProps {
 const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, setFieldValue, resetForm, setTouched, touched } = useFormikContext<Resource>();
+  const [tagInputFieldValue, setTagInputFieldValue] = useState('');
+  const debouncedTagInputValue = useDebounce(tagInputFieldValue);
+  const [options, setOptions] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [cancelSearch, setCancelSearch] = useState(false);
   const [saveError, setSaveError] = useState<Error>();
+  const [tagSearchError, setTagSearchError] = useState<Error>();
+
+  useEffect(() => {
+    const searchForTags = async () => {
+      if (!cancelSearch) {
+        setLoading(true);
+        try {
+          const response = await searchTags(debouncedTagInputValue);
+          const optionsResult = response.data.facet_counts.map((facetCount) => facetCount.value);
+          setOptions(optionsResult);
+        } catch (error) {
+          setTagSearchError(error);
+        } finally {
+          setLoading(false);
+          setCancelSearch(false);
+        }
+      }
+    };
+    setOptions([]);
+    if (debouncedTagInputValue.length > 1) {
+      searchForTags();
+    }
+  }, [debouncedTagInputValue, cancelSearch, t]);
 
   const saveTagsChanging = async (name: string, value: string[]) => {
     setAllChangesSaved(false);
-
     try {
       const promiseArray: Promise<any>[] = [];
       const newTags = value.filter((tag) => !values.tags?.includes(tag));
@@ -81,6 +109,10 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
     }
   };
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTagInputFieldValue(event.target.value);
+  };
+
   return (
     <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor3}>
       <StyledInlineContentWrapper>
@@ -90,7 +122,10 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
               {...field}
               freeSolo
               multiple
-              options={[]}
+              noOptionsText={t('common.no_options')}
+              options={options}
+              loading={loading}
+              getOptionSelected={(option: string, value: string) => option.toLowerCase() === value.toLowerCase()}
               onChange={(_: ChangeEvent<unknown>, value: string[]) => {
                 saveTagsChanging(field.name, value);
               }}
@@ -112,6 +147,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                   helperText={t('resource.add_tags')}
                   variant="filled"
                   fullWidth
+                  onChange={handleChange}
                   data-testid="resource-tags-input"
                   onBlur={(event) => {
                     const value = event.target.value;
@@ -126,6 +162,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
             />
           )}
         </Field>
+        {tagSearchError && <ErrorBanner error={tagSearchError}></ErrorBanner>}
         {saveError && <ErrorBanner userNeedsToBeLoggedIn={true} error={saveError} />}
         <HelperTextPopover popoverId="tags-explanation" ariaButtonLabel={t('explanation_text.tags_helper_aria_label')}>
           <StyledTypography variant="body1">{t('explanation_text.tags_helper_text')}.</StyledTypography>

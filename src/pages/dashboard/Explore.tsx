@@ -111,7 +111,7 @@ const Explore = () => {
       const searchTerms = new URLSearchParams(location.search);
       const institutions = searchTerms.getAll(SearchParameters.institution);
       const resourceTypes = searchTerms.getAll(SearchParameters.resourceType);
-      const tags = searchTerms.getAll(SearchParameters.tag);
+      const tags = searchTerms.getAll(SearchParameters.tag).map((tag) => tag.toLowerCase());
       const pageTerm = searchTerms.get(SearchParameters.page);
       const licenses = searchTerms.getAll(SearchParameters.license);
       const offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
