@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ListItemIcon, MenuItem, TextField, Typography } from '@material-ui/core';
+import { Grid, ListItemIcon, MenuItem, TextField, Typography } from '@material-ui/core';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import { Field, FieldProps, useFormikContext } from 'formik';
@@ -15,6 +15,8 @@ import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 import PhotoOutlinedIcon from '@material-ui/icons/PhotoOutlined';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
+import HelperTextPopover from '../../../components/HelperTextPopover';
+import { StylePopoverTypography } from '../../../components/styled/StyledTypographies';
 
 const StyledMenuItem = styled(MenuItem)`
   padding: 1rem;
@@ -59,65 +61,87 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
       <StyledContentWrapper>
         <Field name={ResourceFeatureNamesFullPath.Type}>
           {({ field, meta: { error, touched } }: FieldProps) => (
-            <>
-              <TextField
-                {...field}
-                id="resource-feature-type"
-                variant="filled"
-                select
-                required
-                error={touched && !!error}
-                fullWidth
-                value={field.value}
-                data-testid="resource-type-input"
-                label={t('resource.type.resource_type')}
-                onBlur={(event) => {
-                  setFieldTouched(ResourceFeatureNamesFullPath.Type, true, true);
-                }}
-                onChange={(event) => {
-                  handleChange(event);
-                  saveResourceType(event);
-                }}>
-                <StyledMenuItem value={ResourceFeatureTypes.audio}>
-                  <ListItemIcon>
-                    <VolumeUpIcon />
-                  </ListItemIcon>
-                  <Typography variant="inherit">{t('resource.type.audio')}</Typography>
-                </StyledMenuItem>
-                <StyledMenuItem value={ResourceFeatureTypes.video}>
-                  <ListItemIcon>
-                    <VideocamIcon />
-                  </ListItemIcon>
-                  <Typography variant="inherit">{t('resource.type.video')}</Typography>
-                </StyledMenuItem>
-                <StyledMenuItem value={ResourceFeatureTypes.presentation}>
-                  <ListItemIcon>
-                    <SlideshowIcon />
-                  </ListItemIcon>
-                  <Typography variant="inherit">{t('resource.type.presentation')}</Typography>
-                </StyledMenuItem>
-                <StyledMenuItem value={ResourceFeatureTypes.document}>
-                  <ListItemIcon>
-                    <DescriptionOutlinedIcon />
-                  </ListItemIcon>
-                  <Typography variant="inherit">{t('resource.type.document')}</Typography>
-                </StyledMenuItem>
-                <StyledMenuItem value={ResourceFeatureTypes.image}>
-                  <ListItemIcon>
-                    <PhotoOutlinedIcon />
-                  </ListItemIcon>
-                  <Typography variant="inherit">{t('resource.type.image')}</Typography>
-                </StyledMenuItem>
-                <StyledMenuItem value={ResourceFeatureTypes.simulation} data-testid="resource-type-option-simulation">
-                  <ListItemIcon>
-                    <SlideshowIcon />
-                  </ListItemIcon>
-                  <Typography variant="inherit">{t('resource.type.simulation')}</Typography>
-                </StyledMenuItem>
-              </TextField>
-              {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
-              {savingResourceTypeError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingResourceTypeError} />}
-            </>
+            <Grid container alignItems="center" spacing={2}>
+              <Grid item xs={10}>
+                <TextField
+                  {...field}
+                  id="resource-feature-type"
+                  variant="filled"
+                  select
+                  required
+                  error={touched && !!error}
+                  fullWidth
+                  value={field.value}
+                  data-testid="resource-type-input"
+                  label={t('resource.type.resource_type')}
+                  onBlur={() => {
+                    setFieldTouched(ResourceFeatureNamesFullPath.Type, true, true);
+                  }}
+                  onChange={(event) => {
+                    handleChange(event);
+                    saveResourceType(event);
+                  }}>
+                  <StyledMenuItem value={ResourceFeatureTypes.audio}>
+                    <ListItemIcon>
+                      <VolumeUpIcon />
+                    </ListItemIcon>
+                    <Typography variant="inherit">{t('resource.type.audio')}</Typography>
+                  </StyledMenuItem>
+                  <StyledMenuItem value={ResourceFeatureTypes.video}>
+                    <ListItemIcon>
+                      <VideocamIcon />
+                    </ListItemIcon>
+                    <Typography variant="inherit">{t('resource.type.video')}</Typography>
+                  </StyledMenuItem>
+                  <StyledMenuItem value={ResourceFeatureTypes.presentation}>
+                    <ListItemIcon>
+                      <SlideshowIcon />
+                    </ListItemIcon>
+                    <Typography variant="inherit">{t('resource.type.presentation')}</Typography>
+                  </StyledMenuItem>
+                  <StyledMenuItem value={ResourceFeatureTypes.document}>
+                    <ListItemIcon>
+                      <DescriptionOutlinedIcon />
+                    </ListItemIcon>
+                    <Typography variant="inherit">{t('resource.type.document')}</Typography>
+                  </StyledMenuItem>
+                  <StyledMenuItem value={ResourceFeatureTypes.image}>
+                    <ListItemIcon>
+                      <PhotoOutlinedIcon />
+                    </ListItemIcon>
+                    <Typography variant="inherit">{t('resource.type.image')}</Typography>
+                  </StyledMenuItem>
+                  <StyledMenuItem value={ResourceFeatureTypes.simulation} data-testid="resource-type-option-simulation">
+                    <ListItemIcon>
+                      <SlideshowIcon />
+                    </ListItemIcon>
+                    <Typography variant="inherit">{t('resource.type.simulation')}</Typography>
+                  </StyledMenuItem>
+                </TextField>
+                {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
+                {savingResourceTypeError && (
+                  <ErrorBanner userNeedsToBeLoggedIn={true} error={savingResourceTypeError} />
+                )}
+              </Grid>
+              <Grid item xs={2}>
+                <HelperTextPopover
+                  ariaButtonLabel={t('explanation_text.resource_type_helper_aria_label')}
+                  popoverId={'helper-resource-type'}>
+                  <StylePopoverTypography variant="body1">
+                    {t('explanation_text.resource_type_helper_text1')}.
+                  </StylePopoverTypography>
+                  <StylePopoverTypography variant="body1">
+                    {t('explanation_text.resource_type_helper_text2')}
+                  </StylePopoverTypography>
+                  <StylePopoverTypography variant="body2">
+                    {t('explanation_text.resource_type_example1')}
+                  </StylePopoverTypography>
+                  <StylePopoverTypography variant="body2">
+                    {t('explanation_text.resource_type_example2')}
+                  </StylePopoverTypography>
+                </HelperTextPopover>
+              </Grid>
+            </Grid>
           )}
         </Field>
       </StyledContentWrapper>

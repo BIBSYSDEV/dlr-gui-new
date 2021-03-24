@@ -1,6 +1,6 @@
 import React, { FC, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextField, Typography } from '@material-ui/core';
+import { Grid, TextField, Typography } from '@material-ui/core';
 import { CreatorFeatureAttributes, FieldNames, Resource } from '../../../types/resource.types';
 import { ErrorMessage, Field, FieldArray, FieldArrayRenderProps, FieldProps, useFormikContext } from 'formik';
 import Button from '@material-ui/core/Button';
@@ -13,16 +13,18 @@ import { StyledContentWrapper, StyledSchemaPartColored } from '../../../componen
 import { Colors } from '../../../themes/mainTheme';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import { StyledDeleteButton } from '../../../components/styled/StyledButtons';
+import HelperTextPopover from '../../../components/HelperTextPopover';
 
-const StyledFieldsWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+const StyledSpacer = styled.div`
   margin-bottom: 1rem;
 `;
 
+const StyledTypography = styled(Typography)`
+  margin-bottom: 0.5rem;
+`;
+
 const StyledTextField = styled(TextField)`
-  width: 52rem;
-  max-width: 80%;
+  width: 100%;
   margin-left: 0.5rem;
   margin-right: 0.5rem;
 `;
@@ -116,6 +118,20 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
     });
   };
 
+  const calculateNumSMColumns = (index: number) => {
+    if (index === 0 && values.creators?.length < 2) {
+      return 10;
+    } else if (index === 0 && values.creators?.length >= 2) {
+      return 8;
+    } else {
+      return 9;
+    }
+  };
+
+  const calculateNumXSColumns = (index: number) => {
+    return index === 0 ? 9 : 12;
+  };
+
   return (
     <StyledSchemaPartColored color={Colors.ContributorsPageGradientColor1}>
       <StyledContentWrapper>
@@ -126,43 +142,65 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
             <>
               {sortCreatorArray()?.map((creator, index) => {
                 return (
-                  <StyledFieldsWrapper key={index}>
-                    <Field
-                      name={`${FieldNames.CreatorsBase}[${index}].${FieldNames.Features}.${CreatorFeatureAttributes.Name}`}>
-                      {({ field, meta: { touched, error } }: FieldProps) => (
-                        <StyledTextField
-                          {...field}
-                          id={`creator-name-input-field-${index}`}
-                          variant="filled"
-                          inputRef={(element) => (inputElements.current[index] = element)}
-                          required
-                          label={t('common.name')}
-                          error={touched && !!error}
-                          helperText={<ErrorMessage name={field.name} />}
-                          data-testid={`creator-name-field-${index}`}
-                          onBlur={(event) => {
-                            handleBlur(event);
-                            !error && saveCreatorField(event, creator.identifier, index);
-                          }}
-                        />
+                  <StyledSpacer key={index}>
+                    <Grid container alignItems="center" key={index} spacing={2}>
+                      <Grid item xs={calculateNumXSColumns(index)} sm={calculateNumSMColumns(index)}>
+                        <Field
+                          name={`${FieldNames.CreatorsBase}[${index}].${FieldNames.Features}.${CreatorFeatureAttributes.Name}`}>
+                          {({ field, meta: { touched, error } }: FieldProps) => (
+                            <StyledTextField
+                              {...field}
+                              id={`creator-name-input-field-${index}`}
+                              variant="filled"
+                              inputRef={(element) => (inputElements.current[index] = element)}
+                              required
+                              fullWidth
+                              label={t('common.name')}
+                              error={touched && !!error}
+                              helperText={<ErrorMessage name={field.name} />}
+                              data-testid={`creator-name-field-${index}`}
+                              onBlur={(event) => {
+                                handleBlur(event);
+                                !error && saveCreatorField(event, creator.identifier, index);
+                              }}
+                            />
+                          )}
+                        </Field>
+                      </Grid>
+                      {index === 0 && (
+                        <Grid item xs={2} sm={1}>
+                          <HelperTextPopover
+                            ariaButtonLabel={t('explanation_text.creator_helper_aria_label')}
+                            popoverId={'creator-helper-popover'}>
+                            <StyledTypography variant="body1">
+                              {t('explanation_text.creator_helper_text')}.
+                            </StyledTypography>
+                            <Typography variant="body2">{t('explanation_text.creator_helper_example')}</Typography>
+                          </HelperTextPopover>
+                        </Grid>
                       )}
-                    </Field>
-                    {values.creators?.length > 1 && !isDeleting && (
-                      <StyledDeleteButton
-                        color="secondary"
-                        startIcon={<DeleteIcon fontSize="large" />}
-                        size="large"
-                        data-testid={`creator-delete-button-${index}`}
-                        onClick={() => {
-                          removeCreator(creator.identifier, arrayHelpers, index);
-                        }}>
-                        {t('common.remove').toUpperCase()}
-                      </StyledDeleteButton>
-                    )}
-                    {updateCreatorError && errorIndex === index && (
-                      <ErrorBanner userNeedsToBeLoggedIn={true} error={updateCreatorError} />
-                    )}
-                  </StyledFieldsWrapper>
+                      {values.creators?.length > 1 && !isDeleting && (
+                        <Grid item xs={6} sm={3}>
+                          <StyledDeleteButton
+                            color="secondary"
+                            startIcon={<DeleteIcon fontSize="large" />}
+                            size="large"
+                            data-testid={`creator-delete-button-${index}`}
+                            onClick={() => {
+                              removeCreator(creator.identifier, arrayHelpers, index);
+                            }}>
+                            {t('common.remove').toUpperCase()}
+                          </StyledDeleteButton>
+                        </Grid>
+                      )}
+
+                      {updateCreatorError && errorIndex === index && (
+                        <Grid item xs={12}>
+                          <ErrorBanner userNeedsToBeLoggedIn={true} error={updateCreatorError} />
+                        </Grid>
+                      )}
+                    </Grid>
+                  </StyledSpacer>
                 );
               })}
               <Button

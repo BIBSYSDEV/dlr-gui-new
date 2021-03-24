@@ -17,3 +17,7 @@ export const DLRMenuPointSelexted = styled(Typography)`
   font-size: 0.875rem;
   font-weight: bold;
 `;
+
+export const StylePopoverTypography = styled(Typography)`
+  margin-bottom: 0.5rem;
+`;

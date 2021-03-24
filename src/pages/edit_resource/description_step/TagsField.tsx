@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Chip, TextField } from '@material-ui/core';
+import { Chip, Grid, TextField } from '@material-ui/core';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
@@ -14,6 +14,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import HelperTextPopover from '../../../components/HelperTextPopover';
 import { AutocompleteRenderInputParams } from '@material-ui/lab';
 import Typography from '@material-ui/core/Typography';
+import { StylePopoverTypography } from '../../../components/styled/StyledTypographies';
 
 const StyledChip = styled(Chip)`
   && {
@@ -29,21 +30,12 @@ const StyledChip = styled(Chip)`
   }
 `;
 
-const StyledInlineContentWrapper = styled(StyledContentWrapper)`
-  display: flex;
-  align-items: center;
-`;
-
 const StyledAutoComplete: any = styled(Autocomplete)`
   flex-grow: 4;
 `;
 
 const StyledCancelIcon = styled(CancelIcon)`
   color: ${Colors.ChipIconBackground};
-`;
-
-const StyledTypography = styled(Typography)`
-  margin-bottom: 1rem;
 `;
 
 interface TagsFieldProps {
@@ -83,57 +75,73 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
 
   return (
     <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor3}>
-      <StyledInlineContentWrapper>
+      <StyledContentWrapper>
         <Field name={'tags'}>
           {({ field }: FieldProps) => (
-            <StyledAutoComplete
-              {...field}
-              freeSolo
-              multiple
-              options={[]}
-              onChange={(_: ChangeEvent<unknown>, value: string[]) => {
-                saveTagsChanging(field.name, value);
-              }}
-              renderTags={(value: any, getTagProps: any) =>
-                value.map((option: any, index: number) => (
-                  <StyledChip
-                    deleteIcon={<StyledCancelIcon />}
-                    data-testid={`tag-chip-${index}`}
-                    label={option}
-                    {...getTagProps({ index })}
-                  />
-                ))
-              }
-              renderInput={(params: AutocompleteRenderInputParams) => (
-                <TextField
-                  {...params}
-                  id="resource-feature-tags"
-                  label={t('resource.metadata.tags')}
-                  helperText={t('resource.add_tags')}
-                  variant="filled"
-                  fullWidth
-                  data-testid="resource-tags-input"
-                  onBlur={(event) => {
-                    const value = event.target.value;
-                    const tags = value
-                      .split(/[|,;]+/)
-                      .map((value: string) => value.trim())
-                      .filter((tag) => tag !== '');
-                    saveTagsChanging(field.name, [...field.value, ...tags]);
+            <Grid container alignItems="center" spacing={2}>
+              <Grid item xs={10}>
+                <StyledAutoComplete
+                  {...field}
+                  freeSolo
+                  multiple
+                  options={[]}
+                  onChange={(_: ChangeEvent<unknown>, value: string[]) => {
+                    saveTagsChanging(field.name, value);
                   }}
+                  renderTags={(value: any, getTagProps: any) =>
+                    value.map((option: any, index: number) => (
+                      <StyledChip
+                        deleteIcon={<StyledCancelIcon />}
+                        data-testid={`tag-chip-${index}`}
+                        label={option}
+                        {...getTagProps({ index })}
+                      />
+                    ))
+                  }
+                  renderInput={(params: AutocompleteRenderInputParams) => (
+                    <TextField
+                      {...params}
+                      id="resource-feature-tags"
+                      label={t('resource.metadata.tags')}
+                      helperText={t('resource.add_tags')}
+                      variant="filled"
+                      fullWidth
+                      data-testid="resource-tags-input"
+                      onBlur={(event) => {
+                        const value = event.target.value;
+                        const tags = value
+                          .split(/[|,;]+/)
+                          .map((value: string) => value.trim())
+                          .filter((tag) => tag !== '');
+                        saveTagsChanging(field.name, [...field.value, ...tags]);
+                      }}
+                    />
+                  )}
                 />
-              )}
-            />
+              </Grid>
+              <Grid item xs={2}>
+                <HelperTextPopover
+                  popoverId="tags-explanation"
+                  ariaButtonLabel={t('explanation_text.tags_helper_aria_label')}>
+                  <StylePopoverTypography variant="body1">
+                    {t('explanation_text.tags_helper_text')}.
+                  </StylePopoverTypography>
+                  <StylePopoverTypography>
+                    {' '}
+                    {t('explanation_text.tags_helper_text_edit_resource1')}.{' '}
+                  </StylePopoverTypography>
+                  <StylePopoverTypography>
+                    {' '}
+                    {t('explanation_text.tags_helper_text_edit_resource2')}.{' '}
+                  </StylePopoverTypography>
+                  <Typography variant="caption">{t('explanation_text.tags_helper_text_example')}.</Typography>
+                </HelperTextPopover>
+              </Grid>
+            </Grid>
           )}
         </Field>
         {saveError && <ErrorBanner userNeedsToBeLoggedIn={true} error={saveError} />}
-        <HelperTextPopover popoverId="tags-explanation" ariaButtonLabel={t('explanation_text.tags_helper_aria_label')}>
-          <StyledTypography variant="body1">{t('explanation_text.tags_helper_text')}.</StyledTypography>
-          <StyledTypography> {t('explanation_text.tags_helper_text_edit_resource1')}. </StyledTypography>
-          <StyledTypography> {t('explanation_text.tags_helper_text_edit_resource2')}. </StyledTypography>
-          <Typography variant="caption">{t('explanation_text.tags_helper_text_example')}.</Typography>
-        </HelperTextPopover>
-      </StyledInlineContentWrapper>
+      </StyledContentWrapper>
     </StyledSchemaPartColored>
   );
 };
