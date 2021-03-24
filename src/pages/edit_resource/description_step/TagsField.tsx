@@ -45,7 +45,7 @@ interface TagsFieldProps {
 const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, setFieldValue, resetForm, setTouched, touched } = useFormikContext<Resource>();
-  const [saveError, setSaveError] = useState(false);
+  const [saveError, setSaveError] = useState<Error>();
 
   const saveTagsChanging = async (name: string, value: string[]) => {
     setAllChangesSaved(false);
@@ -60,14 +60,14 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
       removeTags?.forEach((tag) => {
         promiseArray.push(deleteTag(values.identifier, tag));
       });
+      setSaveError(undefined);
       //Must wait for all the promises to finish or we will get race conditions for updating setAllChangesSaved.
       await Promise.all(promiseArray);
-      setSaveError(false);
       setFieldValue('tags', value);
       values.tags = value;
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
-    } catch (saveTagsError) {
-      setSaveError(true);
+    } catch (error) {
+      setSaveError(error);
     } finally {
       setAllChangesSaved(true);
     }
@@ -140,7 +140,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
             </Grid>
           )}
         </Field>
-        {saveError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
+        {saveError && <ErrorBanner userNeedsToBeLoggedIn={true} error={saveError} />}
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );

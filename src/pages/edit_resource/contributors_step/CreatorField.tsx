@@ -41,8 +41,8 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, handleBlur, resetForm, setTouched, touched } = useFormikContext<Resource>();
   const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
-  const [updateCreatorError, setUpdateCreatorError] = useState(false);
-  const [addCreatorError, setAddCreatorError] = useState(false);
+  const [updateCreatorError, setUpdateCreatorError] = useState<Error>();
+  const [addCreatorError, setAddCreatorError] = useState<Error>();
   const [isDeleting, setIsDeleting] = useState(false);
   const inputElements = useRef<any>({});
 
@@ -58,7 +58,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
         },
       });
     } catch (error) {
-      setAddCreatorError(true);
+      setAddCreatorError(error);
     } finally {
       setAllChangesSaved(true);
       inputElements.current[values.creators.length].focus();
@@ -74,13 +74,13 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
     try {
       const name = '' + event.target.name.split('.').pop();
       if (event.target.value.length > 0) {
-        await putResourceCreatorFeature(values.identifier, creatorIdentifier, name, event.target.value);
         setErrorIndex(ErrorIndex.NO_ERRORS);
-        setUpdateCreatorError(false);
+        setUpdateCreatorError(undefined);
+        await putResourceCreatorFeature(values.identifier, creatorIdentifier, name, event.target.value);
         resetFormButKeepTouched(touched, resetForm, values, setTouched);
       }
     } catch (error) {
-      setUpdateCreatorError(true);
+      setUpdateCreatorError(error);
       setErrorIndex(creatorIndex);
     } finally {
       setAllChangesSaved(true);
@@ -95,12 +95,12 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
     setIsDeleting(true);
     setAllChangesSaved(false);
     try {
+      setUpdateCreatorError(undefined);
+      setErrorIndex(ErrorIndex.NO_ERRORS);
       await deleteResourceCreator(values.identifier, creatorIdentifier);
       arrayHelpers.remove(creatorIndex);
-      setUpdateCreatorError(false);
-      setErrorIndex(ErrorIndex.NO_ERRORS);
     } catch (error) {
-      setUpdateCreatorError(true);
+      setUpdateCreatorError(error);
       setErrorIndex(creatorIndex);
     } finally {
       setAllChangesSaved(true);
@@ -196,7 +196,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
 
                       {updateCreatorError && errorIndex === index && (
                         <Grid item xs={12}>
-                          <ErrorBanner userNeedsToBeLoggedIn={true} />
+                          <ErrorBanner userNeedsToBeLoggedIn={true} error={updateCreatorError} />
                         </Grid>
                       )}
                     </Grid>
@@ -214,7 +214,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                 }}>
                 {t('resource.add_creator').toUpperCase()}
               </Button>
-              {addCreatorError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
+              {addCreatorError && <ErrorBanner userNeedsToBeLoggedIn={true} error={addCreatorError} />}
             </>
           )}
         />

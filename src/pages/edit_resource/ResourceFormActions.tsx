@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { publishResource } from '../../api/resourceApi';
-import { getStepLabel, ResourceFormStep, Resource } from '../../types/resource.types';
+import { getStepLabel, Resource, ResourceFormStep } from '../../types/resource.types';
 import { StyledContentWrapperMedium, StyledSchemaPart } from '../../components/styled/Wrappers';
 import ErrorBanner from '../../components/ErrorBanner';
 import { useHistory } from 'react-router-dom';
@@ -72,7 +72,7 @@ interface ResourceFormActionProps {
 const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActiveStep, scrollToTop }) => {
   const { t } = useTranslation();
   const history = useHistory();
-  const [publishResourceError, setPublishResourceError] = useState(false);
+  const [publishResourceError, setPublishResourceError] = useState<Error>();
   const { values, isValid } = useFormikContext<Resource>();
 
   const handleNext = () => {
@@ -86,12 +86,12 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
   };
 
   const handlePublishResource = async () => {
-    setPublishResourceError(false);
+    setPublishResourceError(undefined);
     try {
       await publishResource(values.identifier);
       history.push(`/resource/${values.identifier}`);
     } catch (error) {
-      setPublishResourceError(true);
+      setPublishResourceError(error);
     }
   };
 
@@ -139,7 +139,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
             )}
           </StyledRightSideButtonWrapper>
         </StyledButtonWrapper>
-        {publishResourceError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
+        {publishResourceError && <ErrorBanner userNeedsToBeLoggedIn={true} error={publishResourceError} />}
       </StyledContentWrapperMedium>
     </StyledSchemaPartWithoutTopPadding>
   );

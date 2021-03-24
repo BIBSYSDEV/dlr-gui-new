@@ -26,21 +26,21 @@ const ConfirmDeleteDialog: FC<ConfirmDeleteDialogProps> = ({
   resourceTitle,
 }) => {
   const { t } = useTranslation();
-  const [deleteErrorOccured, seDeleteErrorOccured] = useState(false);
+  const [deleteErrorOccured, seDeleteErrorOccured] = useState<Error>();
 
   const performDeletion = async () => {
     try {
+      seDeleteErrorOccured(undefined);
       await deleteResource(resourceIdentifier);
-      seDeleteErrorOccured(false);
       confirmedDelete();
     } catch (error) {
-      seDeleteErrorOccured(true);
+      seDeleteErrorOccured(error);
     }
   };
 
   const performAbort = () => {
     abortDelete();
-    seDeleteErrorOccured(false);
+    seDeleteErrorOccured(undefined);
   };
 
   return (
@@ -58,7 +58,7 @@ const ConfirmDeleteDialog: FC<ConfirmDeleteDialogProps> = ({
             {t('resource.delete_resource_description')}
           </DialogContentText>
         )}
-        {deleteErrorOccured && <ErrorBanner />}
+        {deleteErrorOccured && <ErrorBanner error={deleteErrorOccured} />}
       </DialogContent>
       <DialogActions>
         <Button
