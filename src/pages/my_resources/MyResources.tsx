@@ -1,19 +1,15 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getMyResources } from '../../api/resourceApi';
-import { CircularProgress, List, ListItem, Typography } from '@material-ui/core';
+import { CircularProgress, List, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
-import ResourceListItemButton from '../../components/ResourceListItemButton';
+import ResourceListItem from '../../components/ResourceListItem';
 import { PageHeader } from '../../components/PageHeader';
-
-const StyledPageContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-`;
+import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../state/rootReducer';
 
 const StyledListWrapper = styled.div`
   margin-top: 40px;
@@ -21,15 +17,16 @@ const StyledListWrapper = styled.div`
 
 const ListMarginAlign = styled.div`
   display: block;
-  align-items: left;
+  align-items: start;
 `;
 
-const MyResources: FC = () => {
+const MyResources = () => {
   const { t } = useTranslation();
   const [isLoadingMyResources, setIsLoadingMyResources] = useState(false);
   const [resourcesUnpublished, setMyUnpublishedResources] = useState<Resource[]>([]);
   const [resourcesPublished, setMyPublishedResources] = useState<Resource[]>([]);
   const [loadingError, setLoadingError] = useState(false);
+  const { institution } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,26 +59,23 @@ const MyResources: FC = () => {
   };
 
   return (
-    <StyledPageContent>
+    <StyledContentWrapperLarge>
       {loadingError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
       {isLoadingMyResources && <CircularProgress />}
       <ListMarginAlign>
+        <PageHeader>{t('resource.my_resources')}</PageHeader>
         <StyledListWrapper>
+          <Typography variant="h2">{t('resource.unpublished_resources')}</Typography>
           <List>
-            <ListItem>
-              <PageHeader>{t('resource.my_resources')}</PageHeader>
-            </ListItem>
-            <ListItem>
-              <Typography variant="h2">{t('resource.unpublished_resources')}</Typography>
-            </ListItem>
             {!isLoadingMyResources &&
               resourcesUnpublished.length > 0 &&
               resourcesUnpublished.map((resource: Resource, index: number) => (
-                <ResourceListItemButton
+                <ResourceListItem
                   data-testid={`my-unpublished-resources-${resource.identifier}`}
                   key={index}
                   resource={resource}
                   showTimeCreated={true}
+                  fallbackInstitution={institution}
                   handleDelete={() => {
                     deleteResource(resource.identifier, false);
                   }}
@@ -89,38 +83,33 @@ const MyResources: FC = () => {
               ))}
           </List>
           {!isLoadingMyResources && resourcesUnpublished.length === 0 && (
-            <ListItem>
-              <Typography>{t('resource.no_unpublished_resources')}</Typography>
-            </ListItem>
+            <Typography>{t('resource.no_unpublished_resources')}</Typography>
           )}
         </StyledListWrapper>
         <StyledListWrapper>
+          <Typography variant="h2">{t('resource.published_resources')}</Typography>
           <List>
-            <ListItem>
-              <Typography variant="h2">{t('resource.published_resources')}</Typography>
-            </ListItem>
             {!isLoadingMyResources &&
               resourcesPublished.length > 0 &&
               resourcesPublished.map((resource: Resource, index: number) => (
-                <ResourceListItemButton
+                <ResourceListItem
                   data-testid={`my-published-resources-${resource.identifier}`}
                   key={index}
                   resource={resource}
                   showTimeCreated={true}
+                  fallbackInstitution={institution}
                   handleDelete={() => {
                     deleteResource(resource.identifier, true);
                   }}
                 />
               ))}
-            {!isLoadingMyResources && resourcesPublished.length === 0 && (
-              <ListItem>
-                <Typography>{t('resource.no_published_resources')}</Typography>
-              </ListItem>
-            )}
           </List>
+          {!isLoadingMyResources && resourcesPublished.length === 0 && (
+            <Typography>{t('resource.no_published_resources')}</Typography>
+          )}
         </StyledListWrapper>
       </ListMarginAlign>
-    </StyledPageContent>
+    </StyledContentWrapperLarge>
   );
 };
 

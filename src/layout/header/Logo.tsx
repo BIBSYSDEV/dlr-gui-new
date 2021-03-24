@@ -1,7 +1,6 @@
-import React, { FC } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import styled from 'styled-components';
-import { Link as MuiLink, Typography, Divider } from '@material-ui/core';
+import { Divider, Link, Typography } from '@material-ui/core';
 
 const StyledLogo = styled.div`
   display: flex;
@@ -17,13 +16,13 @@ const StyledDivider = styled(Divider)`
   }
 `;
 
-const Logo: FC = () => (
+const Logo = () => (
   <StyledLogo data-testid="logo">
-    <MuiLink component={Link} to="/" underline="none">
-      <Typography variant="h3" component="abbr">
+    <Link href="/" underline="none">
+      <Typography variant="h3" component="div">
         DLR
       </Typography>
-    </MuiLink>
+    </Link>
     <StyledDivider orientation="vertical" flexItem />
   </StyledLogo>
 );

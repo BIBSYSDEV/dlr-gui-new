@@ -46,6 +46,7 @@ const LinkResourceForm: FC<LinkResourceFormProps> = ({ handleSubmit }) => {
                   variant="filled"
                   fullWidth
                   aria-label="link"
+                  label={t('resource.link_to_resource')}
                   inputProps={{ 'data-testid': 'new-resource-link-input' }}
                   {...field}
                   error={!!error && touched}

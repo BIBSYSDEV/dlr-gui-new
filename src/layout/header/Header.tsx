@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import Login from './Login';
+import React from 'react';
+import LoginButton from './LoginButton';
 import Logo from './Logo';
 import styled from 'styled-components';
 import { Button, IconButton, ListItemIcon, Typography } from '@material-ui/core';
@@ -43,7 +43,7 @@ const StyledSecondaryButtonBar = styled.div`
   }
 `;
 
-const Header: FC = () => {
+const Header = () => {
   const user = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -56,7 +56,7 @@ const Header: FC = () => {
   };
 
   return (
-    <StyledPageHeader>
+    <StyledPageHeader role="navigation">
       <StyledBurgerMenu>
         <IconButton onClick={handleBurgerMenuClick}>
           <MenuIcon />
@@ -72,7 +72,7 @@ const Header: FC = () => {
         <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/resources/user/current">
           <Typography variant="button">{t('resource.my_resources')}</Typography>
         </MenuItem>
-        <MenuItem onClick={handleBurgerMenuClose}>{user.id ? <Logout /> : <Login />}</MenuItem>
+        <MenuItem onClick={handleBurgerMenuClose}>{user.id ? <Logout /> : <LoginButton />}</MenuItem>
       </Menu>
       <Logo />
       <StyledSecondaryButtonBar>
@@ -91,7 +91,7 @@ const Header: FC = () => {
             {t('user.logged_in_as')} {user.name} <Logout />
           </Typography>
         ) : (
-          <Login />
+          <LoginButton variant="outlined" />
         )}
       </StyledSecondaryButtonBar>
     </StyledPageHeader>

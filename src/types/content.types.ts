@@ -1,3 +1,5 @@
+import { ResourceContents } from './resource.types';
+
 export interface Content {
   identifier: string;
   features: ContentFeature;
@@ -30,6 +32,11 @@ export const emptyContents: Content[] = [
   },
 ];
 
+export const emptyResourceContent: ResourceContents = {
+  masterContent: { identifier: '', features: { dlr_content_title: '', dlr_content: '' } },
+  additionalContent: [],
+};
+
 export enum resourceType {
   IMAGE = 'image',
   VIDEO = 'video',
@@ -44,3 +51,5 @@ export const emptyPreview: Preview = {
   type: '',
   url: '',
 };
+
+export const LinkMetadataFilename = 'metadata_external.json';

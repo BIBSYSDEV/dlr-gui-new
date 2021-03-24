@@ -8,6 +8,7 @@ import { StyledContentWrapper, StyledSchemaPart } from '../../../components/styl
 import { Typography } from '@material-ui/core';
 import { useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
+import RequiredFieldInformation from '../../../components/RequiredFieldInformation';
 
 interface AccessAndLicenseStepProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -23,7 +24,9 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSave
     <>
       <StyledSchemaPart>
         <StyledContentWrapper>
-          <Typography variant="h2">{values.features.dlr_title}</Typography>
+          <Typography variant="h3" component="h2">
+            {values.features.dlr_title}
+          </Typography>
         </StyledContentWrapper>
       </StyledSchemaPart>
 
@@ -54,6 +57,7 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSave
           licenses={licenses}
         />
       )}
+      <RequiredFieldInformation />
     </>
   );
 };

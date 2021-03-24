@@ -22,14 +22,13 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import {
   AccessTypes,
   ContainsOtherPeoplesWorkOptions,
-  emptyLicense,
   InstitutionLicenseProviders,
   License,
   LicenseAgreementsOptions,
   Licenses,
 } from '../../../types/license.types';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
-import { FormHelperText } from '@material-ui/core';
+import { FormControl, FormHelperText } from '@material-ui/core';
 
 const StyledOutLinedBox = styled.div`
   display: flex;
@@ -49,6 +48,10 @@ const otherPeopleWorkId = 'other-peoples-work';
 
 const usageClearedId = 'usage-is-cleared';
 
+const StyledFormLabel: any = styled(FormLabel)`
+  display: flex;
+`;
+
 interface ContainsOtherWorksFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
   licenses: License[] | undefined;
@@ -64,7 +67,15 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
 }) => {
   const { institution } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
-  const { values, resetForm, setFieldValue, setTouched, touched } = useFormikContext<Resource>();
+  const {
+    values,
+    resetForm,
+    setFieldValue,
+    setTouched,
+    touched,
+    handleChange,
+    setFieldTouched,
+  } = useFormikContext<Resource>();
   const [savingError, setSavingError] = useState(false);
 
   const LicenseAgreements: string[] = [
@@ -76,14 +87,13 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   ];
 
   const handleChangeInContainsOtherPeoplesWork = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleChange(event);
     forceResetInLicenseWizard();
-    if (values.licenses) {
-      await replaceOldLicense(emptyLicense);
-      resetFormButKeepTouched(touched, resetForm, values, setTouched);
-      setFieldValue('containsOtherPeoplesWork', event.target.value);
-    }
+    resetFormButKeepTouched(touched, resetForm, values, setTouched);
+    setFieldValue('containsOtherPeoplesWork', event.target.value);
     if (event.target.value === ContainsOtherPeoplesWorkOptions.No) {
       setHasSelectedCC(false);
+      setFieldTouched('usageClearedWithOwner', false);
       setFieldValue('usageClearedWithOwner', '');
     }
     if (event.target.value === ContainsOtherPeoplesWorkOptions.Yes && values.usageClearedWithOwner === Licenses.CC) {
@@ -101,6 +111,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   };
 
   const handleLicenseAgreementChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleChange(event);
     try {
       setAllChangesSaved(false);
       let accessType = AccessTypes.private;
@@ -119,15 +130,15 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
           await replaceOldLicense(license);
           await setResourceLicense(values.identifier, license.identifier);
         }
-      } else {
-        await replaceOldLicense(emptyLicense);
       }
       if (values.features.dlr_access !== accessType) {
-        await putAccessType(values.identifier, accessType);
         setFieldValue('features.dlr_access', accessType);
-        values.features.dlr_access = accessType;
+        await putAccessType(values.identifier, accessType);
       }
       resetForm({ values });
+      if (values.features.dlr_access !== accessType) {
+        setFieldValue('features.dlr_access', accessType);
+      }
       setFieldValue('usageClearedWithOwner', event.target.value);
       setSavingError(false);
     } catch (error) {
@@ -138,64 +149,77 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
     }
   };
 
+  const hasError = (error: string | undefined, touched: boolean): boolean => {
+    if (error) {
+      return error.length > 0 && touched;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor1}>
       <StyledContentWrapper>
-        <StyledRadioBoxWrapper>
-          <FormLabel component="legend" id={otherPeopleWorkId}>
-            <Typography variant="h3">{t('license.questions.contains_other_peoples_work')}</Typography>
-            <Typography variant="overline">{t('license.questions.examples')}</Typography>
-          </FormLabel>
-          <Field name={'containsOtherPeoplesWork'}>
-            {({ field, meta: { error, touched } }: FieldProps) => (
-              <>
-                <StyledRadioGroup
-                  {...field}
-                  aria-label={t('license.questions.examples')}
-                  value={field.value}
-                  onChange={(event) => {
-                    handleChangeInContainsOtherPeoplesWork(event);
-                  }}>
-                  <FormControlLabel
-                    value={ContainsOtherPeoplesWorkOptions.No}
-                    control={<Radio color="primary" />}
-                    label={t('common.no')}
-                  />
-                  <FormControlLabel
-                    value={ContainsOtherPeoplesWorkOptions.Yes}
-                    control={<Radio color="primary" />}
-                    label={t('common.yes')}
-                  />
-                </StyledRadioGroup>
-                {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
-              </>
-            )}
-          </Field>
-        </StyledRadioBoxWrapper>
+        <Field name={'containsOtherPeoplesWork'}>
+          {({ field, meta: { error, touched } }: FieldProps) => (
+            <FormControl component="fieldset" required error={hasError(error, touched)}>
+              <StyledFormLabel component="legend" id={otherPeopleWorkId}>
+                <Typography variant="h3" color={hasError(error, touched) ? 'error' : 'initial'}>
+                  {t('license.questions.contains_other_peoples_work')}
+                </Typography>
+              </StyledFormLabel>
+              <FormHelperText error={false}>{t('license.questions.examples')}</FormHelperText>
+              <StyledRadioGroup
+                {...field}
+                aria-label={t('license.questions.contains_other_peoples_work')}
+                value={field.value}
+                data-testid="contains-other-peoples-work-radio-group"
+                onChange={(event) => handleChangeInContainsOtherPeoplesWork(event)}>
+                <FormControlLabel
+                  value={ContainsOtherPeoplesWorkOptions.No}
+                  data-testid="contains-other-peoples-work-option-no"
+                  control={<Radio required={true} color="primary" />}
+                  label={t('common.no')}
+                />
+                <FormControlLabel
+                  value={ContainsOtherPeoplesWorkOptions.Yes}
+                  data-testid="contains-other-peoples-work-option-yes"
+                  control={<Radio color="primary" />}
+                  label={t('common.yes')}
+                />
+              </StyledRadioGroup>
+              {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
+            </FormControl>
+          )}
+        </Field>
         {values.containsOtherPeoplesWork === ContainsOtherPeoplesWorkOptions.Yes && (
           <StyledRadioBoxWrapper>
-            <FormLabel id={usageClearedId} component="legend">
-              <Typography variant="subtitle1"> {t('license.questions.usage_cleared_with_owner')}</Typography>
-            </FormLabel>
             <Field name={'usageClearedWithOwner'}>
               {({ field, meta: { error, touched } }: FieldProps) => (
-                <>
+                <FormControl component="fieldset" required error={hasError(error, touched)}>
+                  <StyledFormLabel id={usageClearedId} component="legend">
+                    <Typography variant="subtitle1" color={hasError(error, touched) ? 'error' : 'initial'}>
+                      {t('license.questions.usage_cleared_with_owner')}
+                    </Typography>
+                  </StyledFormLabel>
                   <StyledRadioGroup
                     {...field}
                     aria-label={t('license.questions.usage_cleared_with_owner')}
                     value={field.value}
+                    data-testid="usage-cleared-with-owner-radio-group"
                     onChange={(event) => handleLicenseAgreementChange(event)}>
                     {LicenseAgreements.map((element, index) => (
                       <FormControlLabel
                         value={element}
                         key={index}
+                        data-testid={`usage-cleared-with-owner-option-${element}`}
                         label={t(`license.limitation.${element}.title`)}
-                        control={<Radio color="primary" />}
+                        control={<Radio required={true} color="primary" />}
                       />
                     ))}
                   </StyledRadioGroup>
                   {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
-                </>
+                </FormControl>
               )}
             </Field>
           </StyledRadioBoxWrapper>
@@ -204,7 +228,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
         {values.usageClearedWithOwner !== LicenseAgreementsOptions.YesOther &&
           values.usageClearedWithOwner !== '' &&
           values.containsOtherPeoplesWork && (
-            <StyledOutLinedBox>
+            <StyledOutLinedBox data-testid={'usage-cleared-with-owner-info'}>
               <ErrorOutlineIcon color="primary" />
               <StyledTypography>
                 {t(`license.limitation.${values.usageClearedWithOwner}.important_notice`)}

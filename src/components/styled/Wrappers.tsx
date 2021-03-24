@@ -54,7 +54,17 @@ export const StyledContentWrapperMedium = styled.div`
   max-width: ${StyleWidths.width4};
 `;
 
+export const StyledContentWrapperLarge = styled.div`
+  width: 100%;
+  max-width: ${StyleWidths.width5};
+  padding: 0 2rem;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    padding: 0 0;
+  }
+`;
+
 export const StyledRadioBoxWrapper = styled.div`
+  margin-top: 2rem;
   display: block;
   padding-bottom: 2rem;
 `;
@@ -65,4 +75,15 @@ export const StyledRadioGroup = styled(RadioGroup)`
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     margin-left: 0;
   }
+`;
+
+export const StyledFieldsWrapper = styled.div`
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    display: flex;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    display: block;
+  }
+  align-items: flex-end;
+  margin-top: 2.5rem;
 `;

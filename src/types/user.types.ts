@@ -13,3 +13,12 @@ export const emptyUser: User = {
   institution: '',
   issuer: '',
 };
+
+export enum UserInstitution {
+  NTNU = 'NTNU',
+  HVL = 'HVL',
+  OsloMet = 'OsloMet',
+  UiB = 'Uib',
+  BI = 'BI',
+  Unit = 'unit',
+}

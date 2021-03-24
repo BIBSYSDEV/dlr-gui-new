@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import styled from 'styled-components';
 import { Typography } from '@material-ui/core';
 
@@ -9,4 +9,8 @@ const StyledHeader = styled(Typography)`
   padding-bottom: 0.5rem;
 `;
 
-export const PageHeader: FC = ({ children }) => <StyledHeader variant="h1">{children}</StyledHeader>;
+interface PageHeaderProps {
+  children: ReactNode;
+}
+
+export const PageHeader: FC<PageHeaderProps> = ({ children }) => <StyledHeader variant="h1">{children}</StyledHeader>;

@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Typography } from '@material-ui/core';
 import LinkIcon from '@material-ui/icons/Link';
 import LinkResourceForm, { LinkResourceFormValues } from './LinkResourceForm';
 import PublicationAccordion from './PublicationAccordion';
@@ -35,7 +34,6 @@ const LinkResource: FC<LinkRegistrationPanelProps> = ({ expanded, onChange, onSu
       ariaControls="resource-method-link"
       dataTestId="new-resource-link">
       <StyledBody>
-        <Typography>{t('resource.link_to_resource')}:</Typography>
         <LinkResourceForm handleSubmit={handleSubmit} />
       </StyledBody>
     </PublicationAccordion>

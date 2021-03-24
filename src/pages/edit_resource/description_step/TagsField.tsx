@@ -11,10 +11,10 @@ import ErrorBanner from '../../../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import styled from 'styled-components';
 import CancelIcon from '@material-ui/icons/Cancel';
+import HelperTextPopover from '../../../components/HelperTextPopover';
+import { AutocompleteRenderInputParams } from '@material-ui/lab';
+import Typography from '@material-ui/core/Typography';
 
-interface TagsFieldProps {
-  setAllChangesSaved: (status: boolean) => void;
-}
 const StyledChip = styled(Chip)`
   && {
     margin-top: 1rem;
@@ -29,9 +29,26 @@ const StyledChip = styled(Chip)`
   }
 `;
 
+const StyledInlineContentWrapper = styled(StyledContentWrapper)`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledAutoComplete: any = styled(Autocomplete)`
+  flex-grow: 4;
+`;
+
 const StyledCancelIcon = styled(CancelIcon)`
   color: ${Colors.ChipIconBackground};
 `;
+
+const StyledTypography = styled(Typography)`
+  margin-bottom: 1rem;
+`;
+
+interface TagsFieldProps {
+  setAllChangesSaved: (status: boolean) => void;
+}
 
 const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
@@ -66,10 +83,10 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
 
   return (
     <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor3}>
-      <StyledContentWrapper>
+      <StyledInlineContentWrapper>
         <Field name={'tags'}>
           {({ field }: FieldProps) => (
-            <Autocomplete
+            <StyledAutoComplete
               {...field}
               freeSolo
               multiple
@@ -77,18 +94,25 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
               onChange={(_: ChangeEvent<unknown>, value: string[]) => {
                 saveTagsChanging(field.name, value);
               }}
-              renderTags={(value, getTagProps) =>
-                value.map((option, index) => (
-                  <StyledChip deleteIcon={<StyledCancelIcon />} label={option} {...getTagProps({ index })} />
+              renderTags={(value: any, getTagProps: any) =>
+                value.map((option: any, index: number) => (
+                  <StyledChip
+                    deleteIcon={<StyledCancelIcon />}
+                    data-testid={`tag-chip-${index}`}
+                    label={option}
+                    {...getTagProps({ index })}
+                  />
                 ))
               }
-              renderInput={(params) => (
+              renderInput={(params: AutocompleteRenderInputParams) => (
                 <TextField
                   {...params}
+                  id="resource-feature-tags"
                   label={t('resource.metadata.tags')}
                   helperText={t('resource.add_tags')}
                   variant="filled"
                   fullWidth
+                  data-testid="resource-tags-input"
                   onBlur={(event) => {
                     const value = event.target.value;
                     const tags = value
@@ -103,7 +127,13 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
           )}
         </Field>
         {saveError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
-      </StyledContentWrapper>
+        <HelperTextPopover popoverId="tags-explanation" ariaButtonLabel={t('explanation_text.tags_helper_aria_label')}>
+          <StyledTypography variant="body1">{t('explanation_text.tags_helper_text')}.</StyledTypography>
+          <StyledTypography> {t('explanation_text.tags_helper_text_edit_resource1')}. </StyledTypography>
+          <StyledTypography> {t('explanation_text.tags_helper_text_edit_resource2')}. </StyledTypography>
+          <Typography variant="caption">{t('explanation_text.tags_helper_text_example')}.</Typography>
+        </HelperTextPopover>
+      </StyledInlineContentWrapper>
     </StyledSchemaPartColored>
   );
 };

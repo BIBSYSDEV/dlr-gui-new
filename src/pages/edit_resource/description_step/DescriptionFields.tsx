@@ -5,11 +5,12 @@ import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import TagsField from './TagsField';
 import { postResourceFeature } from '../../../api/resourceApi';
-import { ResourceFeatureNamesFullPath, Resource } from '../../../types/resource.types';
+import { Resource, ResourceFeatureNamesFullPath } from '../../../types/resource.types';
 import ErrorBanner from '../../../components/ErrorBanner';
 import ResourceTypeField from './ResourceTypeField';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import { Colors } from '../../../themes/mainTheme';
+import RequiredFieldInformation from '../../../components/RequiredFieldInformation';
 
 interface DescriptionFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -29,7 +30,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
       setSaveErrorFields([]);
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
       //todo: remove from array
-    } catch (err) {
+    } catch (error) {
       setSaveErrorFields([...saveErrorFields, name]);
     }
   };
@@ -43,11 +44,13 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
               <TextField
                 {...field}
                 variant="filled"
+                id="resource-title"
+                required
                 fullWidth
                 label={t('resource.metadata.title')}
                 error={touched && !!error}
                 helperText={<ErrorMessage name={field.name} />}
-                inputProps={{ 'data-testid': 'dlr_title-input' }}
+                inputProps={{ 'data-testid': 'dlr-title-input' }}
                 onBlur={(event) => {
                   handleBlur(event);
                   !error && saveField(event, ResourceFeatureNamesFullPath.Title);
@@ -64,10 +67,12 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
             {({ field, meta: { error } }: FieldProps) => (
               <TextField
                 {...field}
+                id="resource-description"
                 variant="filled"
                 fullWidth
                 multiline
                 rows="4"
+                inputProps={{ 'data-testid': 'dlr-description-input' }}
                 label={t('resource.metadata.description')}
                 onBlur={(event) => {
                   handleBlur(event);
@@ -83,6 +88,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
       </StyledSchemaPartColored>
       <ResourceTypeField setAllChangesSaved={setAllChangesSaved} />
       <TagsField setAllChangesSaved={setAllChangesSaved} />
+      <RequiredFieldInformation />
     </>
   );
 };

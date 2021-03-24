@@ -15,15 +15,22 @@ import {
 } from '../../utils/formik-helpers';
 import CircularFileUploadProgress from '../../components/CircularFileUploadProgress';
 import { Uppy } from '../../types/file.types';
+import Typography from '@material-ui/core/Typography';
+import styled from 'styled-components';
+
+const StyledStepTypography = styled(Typography)`
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+`;
+
+const fileUploadPanelId = 'file-upload-panel';
 
 interface ResourceFormNavigationHeaderProps {
   activeStep: ResourceFormStep;
   setActiveStep: (step: number) => void;
   uppy: Uppy;
 }
-
-const fileUploadPanelId = 'file-upload-panel';
-
 const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ activeStep, setActiveStep, uppy }) => {
   const { t } = useTranslation();
   const { values, touched, setTouched, errors } = useFormikContext<Resource>();
@@ -49,8 +56,10 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
     const stepFields = {
       [ResourceFormStep.Preview]: () => touchedPreviewFields, //todo: find a way to remove this. should not be needed
       [ResourceFormStep.Description]: () => touchedDescriptionFields,
-      [ResourceFormStep.AccessAndLicense]: () => touchedAccessAndLicenseFields,
-      [ResourceFormStep.Contents]: () => touchedContentsFields(valuesRef.current.contents),
+      [ResourceFormStep.AccessAndLicense]: () =>
+        touchedAccessAndLicenseFields(valuesRef.current.containsOtherPeoplesWork),
+      [ResourceFormStep.Contents]: () =>
+        touchedContentsFields(valuesRef.current.contents, valuesRef.current.features.dlr_content_type),
       [ResourceFormStep.Contributors]: () =>
         touchedContributorsFields(valuesRef.current.contributors, valuesRef.current.creators),
       //These are functions because the form is dynamic
@@ -81,9 +90,21 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
         {ResourceFormSteps.map((step, index) => {
           return (
             <Step key={step} completed={false}>
-              <StepButton onClick={handleStep(index)} data-testid={`step-navigation-${index}`}>
+              <StepButton
+                onClick={handleStep(index)}
+                data-testid={`step-navigation-${index}`}
+                title={
+                  hasTouchedError(errors, touched, values, index)
+                    ? `${t(getStepLabel(step))} ${t('common.error')}`
+                    : `${t(getStepLabel(step))}`
+                }>
                 <StepLabel error={hasTouchedError(errors, touched, values, index)}>
-                  {t(getStepLabel(step))}
+                  <StyledStepTypography id={`typography-step-${index}`}>{t(getStepLabel(step))}</StyledStepTypography>
+                  {hasTouchedError(errors, touched, values, index) && (
+                    <Typography color="error" variant="caption">
+                      {t('common.error')}
+                    </Typography>
+                  )}
                   {step === ResourceFormStep.Contents && (
                     <CircularFileUploadProgress
                       uppy={uppy}

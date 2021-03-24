@@ -20,10 +20,13 @@ export interface Resource {
   contributors: Contributor[];
   accessRead?: string[];
   accessWrite?: string[];
-  contents: Content[];
+  contents: ResourceContents;
   licenses: License[];
   containsOtherPeoplesWork: string;
   usageClearedWithOwner: string;
+  resourceRestriction: string;
+  othersCanModifyAndBuildUpon: string;
+  canBeUsedCommercially: string;
 }
 
 export const emptyResource: Resource = {
@@ -31,14 +34,28 @@ export const emptyResource: Resource = {
   features: {
     dlr_title: '',
     dlr_content: '',
+    dlr_time_created: '',
     dlr_content_type: '',
   },
-  contents: [],
+  contents: {
+    masterContent: {
+      identifier: '',
+      features: {
+        dlr_content_title: '',
+        dlr_content: '',
+      },
+    },
+    additionalContent: [],
+  },
   contributors: [],
   creators: [],
   licenses: [],
+  tags: [],
   containsOtherPeoplesWork: '',
   usageClearedWithOwner: '',
+  resourceRestriction: '',
+  othersCanModifyAndBuildUpon: '',
+  canBeUsedCommercially: '',
 };
 
 enum ResourceType {
@@ -70,12 +87,17 @@ interface ResourceFeatures {
   dlr_subject_nsi_id?: string;
   dlr_subject_nsi_name?: string;
   dlr_submitter_email?: string;
-  dlr_time_created?: string;
+  dlr_time_created: string;
   dlr_time_published?: string;
   dlr_title: string;
   dlr_title_alternative?: string;
   dlr_type?: string;
   dlr_thumbnail_url?: string;
+}
+
+export interface ResourceContents {
+  masterContent: Content;
+  additionalContent: Content[];
 }
 
 interface Course {
@@ -157,6 +179,18 @@ interface AuthorityFeatures {
   dlr_authority_time_created?: string;
 }
 
+export interface ResourceEvent {
+  limit: number;
+  offset: number;
+  resource_events: Event[];
+  total: number;
+}
+
+export interface Event {
+  event: string;
+  time: string;
+}
+
 export enum ResourceFeatureTypes {
   audio = 'Audio',
   document = 'Document',
@@ -165,6 +199,15 @@ export enum ResourceFeatureTypes {
   simulation = 'Simulation',
   video = 'Video',
 }
+
+export const DefaultResourceTypes: ResourceFeatureTypes[] = [
+  ResourceFeatureTypes.audio,
+  ResourceFeatureTypes.document,
+  ResourceFeatureTypes.image,
+  ResourceFeatureTypes.presentation,
+  ResourceFeatureTypes.simulation,
+  ResourceFeatureTypes.video,
+];
 
 export enum ResourceFeatureNames {
   Type = 'dlr_type',
@@ -178,6 +221,10 @@ export enum ResourceFeatureNamesFullPath {
   Title = 'features.dlr_title',
   Description = 'features.dlr_description',
   Access = 'features.dlr_access',
+}
+
+export enum ContentFeatureNames {
+  Title = 'dlr_content_title',
 }
 
 export enum ContributorFeatureNames {
@@ -200,6 +247,10 @@ export enum FieldNames {
   ContentsBase = 'contents',
   LicensesBase = 'licenses',
   Tags = 'tags',
+  MasterContent = 'masterContent',
+  AdditionalContent = 'additionalContent',
+  ContainsOtherPeoplesWork = 'containsOtherPeoplesWork',
+  UsageClearedWithOwner = 'usageClearedWithOwner',
 }
 
 export enum ResourceFormStep {

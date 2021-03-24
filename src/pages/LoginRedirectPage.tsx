@@ -1,11 +1,11 @@
-import React, { FC, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { getTokenExpiry, getUserData } from '../api/userApi';
 import { toast } from 'react-toastify';
 import { setUser } from '../state/userSlice';
 import { useDispatch } from 'react-redux';
 
-const LoginRedirectPage: FC = () => {
+const LoginRedirectPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -24,6 +24,7 @@ const LoginRedirectPage: FC = () => {
               dispatch(setUser(response.data));
             });
             history.push('/');
+            history.go(0);
           }
         })
         .catch((error) => {

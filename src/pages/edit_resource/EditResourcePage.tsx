@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -11,6 +11,8 @@ import PrivateRoute from '../../utils/routes/PrivateRoute';
 import {
   ContributorFeatureNames,
   CreatorFeatureAttributes,
+  DefaultResourceTypes,
+  emptyResource,
   Resource,
   ResourceCreationType,
   ResourceFeatureNames,
@@ -31,6 +33,7 @@ import {
   postResourceFeature,
   putContributorFeature,
   putResourceCreatorFeature,
+  updateContentTitle,
 } from '../../api/resourceApi';
 import deepmerge from 'deepmerge';
 import { useSelector } from 'react-redux';
@@ -39,6 +42,7 @@ import { emptyLicense } from '../../types/license.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import { createUppy } from '../../utils/uppy-config';
 import { useUppy } from '@uppy/react';
+import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -52,24 +56,11 @@ interface EditResourcePageParamTypes {
   identifier: string;
 }
 
-const StyledContentWrapper = styled.div`
-  max-width: ${({ theme }) => theme.breakpoints.values.lg + 'px'};
-`;
-
-const potentialDLRTypes = [
-  ResourceFeatureTypes.audio,
-  ResourceFeatureTypes.image,
-  ResourceFeatureTypes.presentation,
-  ResourceFeatureTypes.simulation,
-  ResourceFeatureTypes.video,
-  ResourceFeatureTypes.document,
-];
-
 // StartingContributorType must match one of the elements in resources/assets/contributorTypeList.json.
 // This to prevent error: "Material-UI: You have provided an out-of-range value..."
 const StartingContributorType = 'HostingInstitution';
 
-const EditResourcePage: FC = () => {
+const EditResourcePage = () => {
   const { t } = useTranslation();
   const { identifier } = useParams<EditResourcePageParamTypes>();
   const [formikInitResource, setFormikInitResource] = useState<Resource>();
@@ -77,7 +68,7 @@ const EditResourcePage: FC = () => {
   const [isLoadingResource, setIsLoadingResource] = useState(false);
   const [showForm, setShowForm] = useState(!!identifier);
   const [resourceType, setResourceType] = useState<ResourceCreationType>(ResourceCreationType.FILE);
-  const [resourceInitError, setResourceInitError] = useState(false);
+  const [resourceInitError, setResourceInitError] = useState<Error>();
 
   const user = useSelector((state: RootState) => state.user);
 
@@ -93,9 +84,9 @@ const EditResourcePage: FC = () => {
     try {
       setIsLoadingResource(true);
       const createResourceResponse = await createResource(ResourceCreationType.LINK, url);
-      await getResourceInit(createResourceResponse.data, ResourceCreationType.LINK);
+      await getResourceInit(createResourceResponse, ResourceCreationType.LINK);
     } catch (error) {
-      setResourceInitError(true);
+      setResourceInitError(error);
       setIsLoadingResource(false);
     }
   };
@@ -127,7 +118,7 @@ const EditResourcePage: FC = () => {
       await postResourceFeature(resourceIdentifier, ResourceFeatureNames.Type, dlrType);
       tempResouce.features.dlr_type = dlrType;
     } catch (error) {
-      setResourceInitError(true);
+      setResourceInitError(error);
     }
   };
 
@@ -165,11 +156,11 @@ const EditResourcePage: FC = () => {
     if (resourceCreationType === ResourceCreationType.FILE) {
       const filetype = mainFileHandler.getFiles()[0].type;
       if (filetype) {
-        const suggestion = potentialDLRTypes.findIndex((type) => {
+        const suggestion = DefaultResourceTypes.findIndex((type) => {
           return filetype.toLowerCase().includes(type.toLowerCase());
         });
         if (suggestion >= 0) {
-          resourceDLRType = potentialDLRTypes[suggestion];
+          resourceDLRType = DefaultResourceTypes[suggestion];
         } else {
           resourceDLRType = resourceDLRTypeFromDefaults(responseWithCalculatedDefaults);
         }
@@ -198,10 +189,12 @@ const EditResourcePage: FC = () => {
         user.institution
       );
 
-      const responseWithCalculatedDefaults = await getResourceDefaults(startingResource.identifier);
-      await saveCalculatedFields(responseWithCalculatedDefaults.data);
-      const tempResource: Resource = {
-        ...deepmerge(startingResource, responseWithCalculatedDefaults.data),
+      const responseWithCalculatedDefaults = (await getResourceDefaults(startingResource.identifier)).data;
+      await saveCalculatedFields(responseWithCalculatedDefaults);
+      const tempResource = deepmerge(emptyResource, startingResource);
+      const tempContents = startingResource.contents;
+      const resource: Resource = {
+        ...deepmerge(tempResource, responseWithCalculatedDefaults),
         contributors: [
           {
             identifier: contributorResponse.data.identifier,
@@ -213,20 +206,31 @@ const EditResourcePage: FC = () => {
           },
         ],
         licenses: [emptyLicense],
-        tags: [],
-        containsOtherPeoplesWork: '',
-        usageClearedWithOwner: '',
+        contents: tempContents,
       };
-      await setDLRType(resourceCreationType, responseWithCalculatedDefaults.data, tempResource, startingResource);
-      await setCreator(tempResource, startingResource.identifier, user.name);
+      await setDLRType(resourceCreationType, responseWithCalculatedDefaults, resource, startingResource);
+      await setCreator(resource, startingResource.identifier, user.name);
 
-      if (!tempResource.features.dlr_access) {
-        await setResourceAccessType(tempResource);
+      if (!resource.features.dlr_access) {
+        await setResourceAccessType(resource);
       }
-      setFormikInitResource(tempResource);
-      setResourceInitError(false);
+      if (!resource.contents) {
+        resource.contents = await getResourceContents(resource.identifier);
+      }
+      if (!resource.contents.masterContent.features.dlr_content_title) {
+        await updateContentTitle(
+          resource.identifier,
+          resource.contents.masterContent.identifier,
+          resource.contents.masterContent.features.dlr_content
+        );
+        resource.contents.masterContent.features.dlr_content_title =
+          resource.contents.masterContent.features.dlr_content;
+      }
+
+      setFormikInitResource(resource);
+      setResourceInitError(undefined);
     } catch (error) {
-      setResourceInitError(true);
+      setResourceInitError(error);
     } finally {
       setResourceType(resourceCreationType);
       setIsLoadingResource(false);
@@ -265,20 +269,20 @@ const EditResourcePage: FC = () => {
   useEffect(() => {
     const loadResource = async () => {
       setIsLoadingResource(true);
-      const tempResource = (await getResource(identifier)).data;
+      const resource = deepmerge(emptyResource, (await getResource(identifier)).data);
       setResourceType(
-        tempResource.features.dlr_content_type === ResourceCreationType.LINK
+        resource.features.dlr_content_type === ResourceCreationType.LINK
           ? ResourceCreationType.LINK
           : ResourceCreationType.FILE
       );
-      tempResource.contributors = (await getResourceContributors(identifier)).data;
-      tempResource.creators = (await getResourceCreators(identifier)).data;
-      tempResource.licenses = (await getResourceLicenses(identifier)).data;
-      tempResource.contents = (await getResourceContents(identifier)).data;
-      tempResource.tags = (await getResourceTags(identifier)).data;
-      if (!tempResource.features.dlr_type) tempResource.features.dlr_type = '';
-      if (!tempResource.licenses[0]) tempResource.licenses = [emptyLicense];
-      setFormikInitResource(tempResource);
+      resource.contributors = (await getResourceContributors(identifier)).data;
+      resource.creators = (await getResourceCreators(identifier)).data;
+      resource.licenses = (await getResourceLicenses(identifier)).data;
+      resource.contents = await getResourceContents(identifier);
+      resource.tags = (await getResourceTags(identifier)).data;
+      if (!resource.features.dlr_type) resource.features.dlr_type = '';
+      if (!resource.licenses[0]) resource.licenses = [emptyLicense];
+      setFormikInitResource(resource);
       setIsLoadingResource(false);
     };
     if (identifier) {
@@ -288,7 +292,7 @@ const EditResourcePage: FC = () => {
   }, [identifier]);
 
   return !showForm ? (
-    <StyledContentWrapper>
+    <StyledContentWrapperLarge>
       <PageHeader>{t('resource.new_registration')}</PageHeader>
       <StyledEditPublication>
         <FileRegistration
@@ -303,11 +307,11 @@ const EditResourcePage: FC = () => {
           onSubmit={onSubmitLink}
         />
       </StyledEditPublication>
-    </StyledContentWrapper>
+    </StyledContentWrapperLarge>
   ) : isLoadingResource ? (
     <CircularProgress />
   ) : resourceInitError ? (
-    <ErrorBanner userNeedsToBeLoggedIn={true} />
+    <ErrorBanner userNeedsToBeLoggedIn={true} error={resourceInitError} />
   ) : formikInitResource ? (
     <ResourceForm resource={formikInitResource} uppy={mainFileHandler} resourceType={resourceType} />
   ) : null;

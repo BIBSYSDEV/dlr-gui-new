@@ -36,9 +36,25 @@ export enum Licenses {
   BI = 'bi-opphaver-bi',
   NTNU = 'ntnu-internt',
   CC_BY = 'CC BY 4.0',
-  CC_BY_SA_4_0 = 'CC BY-SA 4.0',
+  CC_BY_ND = 'CC BY-ND 4.0',
+  CC_BY_SA = 'CC BY-SA 4.0',
+  CC_BY_NC = 'CC BY-NC 4.0',
   CC_BY_NC_SA = 'CC BY-NC-SA 4.0',
+  CC_BY_NC_ND = 'CC BY-NC-ND 4.0',
+  CC_ZERO = 'CC0 1.0',
 }
+
+export const LicenseCodes: string[] = [
+  Licenses.CC_BY,
+  Licenses.CC_BY_SA,
+  Licenses.CC_BY_NC,
+  Licenses.CC_BY_ND,
+  Licenses.CC_BY_NC_SA,
+  Licenses.CC_BY_NC_ND,
+  Licenses.CC_ZERO,
+  Licenses.BI,
+  Licenses.NTNU,
+];
 
 export enum InstitutionLicenseProviders {
   NTNU = 'ntnu',

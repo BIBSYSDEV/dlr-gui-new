@@ -66,9 +66,10 @@ interface ResourceFormActionProps {
   activeStep: ResourceFormStep;
   allChangesSaved: boolean;
   setActiveStep: (step: ResourceFormStep) => void;
+  scrollToTop: () => void;
 }
 
-const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActiveStep }) => {
+const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActiveStep, scrollToTop }) => {
   const { t } = useTranslation();
   const history = useHistory();
   const [publishResourceError, setPublishResourceError] = useState(false);
@@ -76,10 +77,12 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
+    scrollToTop();
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
+    scrollToTop();
   };
 
   const handlePublishResource = async () => {
@@ -93,7 +96,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
   };
 
   const handleLeaveForm = async () => {
-    history.push('resources/user/current');
+    history.push('/resources/user/current');
   };
 
   return (
@@ -102,7 +105,11 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
         <StyledButtonWrapper>
           <div>
             {activeStep > 0 ? (
-              <UpperCaseButton variant="outlined" disabled={activeStep === 0} onClick={handleBack}>
+              <UpperCaseButton
+                data-testid="previous-step-button"
+                variant="outlined"
+                disabled={activeStep === 0}
+                onClick={handleBack}>
                 <StyledArrowBackIcon /> <StyledButtonText>{t(getStepLabel(activeStep - 1))}</StyledButtonText>
               </UpperCaseButton>
             ) : (
@@ -111,16 +118,21 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
           </div>
           <StyledRightSideButtonWrapper>
             <StyledSaveButtonWrapper>
-              <UpperCaseButton variant="outlined" onClick={handleLeaveForm}>
+              <UpperCaseButton data-testid="leave-form-button" variant="outlined" onClick={handleLeaveForm}>
                 {t('resource.leave_form')}
               </UpperCaseButton>
             </StyledSaveButtonWrapper>
             {activeStep === ResourceFormStep.Preview ? (
-              <UpperCaseButton variant="contained" color="primary" onClick={handlePublishResource} disabled={!isValid}>
+              <UpperCaseButton
+                data-testid="publish-button"
+                variant="contained"
+                color="primary"
+                onClick={handlePublishResource}
+                disabled={!isValid}>
                 {t('common.publish')}
               </UpperCaseButton>
             ) : (
-              <UpperCaseButton variant="contained" color="primary" onClick={handleNext}>
+              <UpperCaseButton data-testid="next-step-button" variant="contained" color="primary" onClick={handleNext}>
                 <StyledButtonText>{t(getStepLabel(activeStep + 1))}</StyledButtonText>
                 <StyledArrowForwardIcon />
               </UpperCaseButton>

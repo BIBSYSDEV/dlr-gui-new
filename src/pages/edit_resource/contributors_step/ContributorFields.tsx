@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MenuItem, TextField, Typography } from '@material-ui/core';
 import { Contributor, ContributorFeatureNames, FieldNames, Resource } from '../../../types/resource.types';
@@ -13,7 +13,7 @@ import { Colors } from '../../../themes/mainTheme';
 import ErrorBanner from '../../../components/ErrorBanner';
 import contributorTypeList from '../../../resources/assets/contributorTypeList.json';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
-import { StyledDeleteButton } from '../../../components/styled/DeleteButton';
+import { StyledDeleteButton } from '../../../components/styled/StyledButtons';
 
 const StyledFieldsWrapper = styled.div`
   display: flex;
@@ -70,6 +70,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
   const [contributorTypesTranslated, setContributorTypesTranslated] = useState<contributorTypesTranslated[]>(
     generateContributorTypesTranslated(t)
   );
+  const inputElements = useRef<any>({});
 
   useEffect(() => {
     setContributorTypesTranslated(generateContributorTypesTranslated(t));
@@ -92,6 +93,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
       setAddContributorError(true);
     } finally {
       setAllChangesSaved(true);
+      inputElements.current[values.contributors.length].focus();
     }
   };
 
@@ -158,10 +160,13 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                       {({ field, meta: { touched, error } }: FieldProps<string>) => (
                         <StyledTextField
                           {...field}
+                          id={`contributor-feature-type-${index}`}
                           variant="filled"
                           select
                           required
-                          label={t('type')}
+                          inputRef={(element) => (inputElements.current[index] = element)}
+                          data-testid={`contributor-type-field-${index}`}
+                          label={t('common.type')}
                           value={field.value}
                           error={touched && !!error}
                           helperText={<ErrorMessage name={field.name} />}
@@ -179,7 +184,10 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                           }}>
                           {contributorTypesTranslated.map((contributorType, index) => {
                             return (
-                              <MenuItem key={index} value={contributorType.key}>
+                              <MenuItem
+                                data-testid={`contributor-type-options-${index}`}
+                                key={index}
+                                value={contributorType.key}>
                                 <Typography variant="inherit">{contributorType.description}</Typography>
                               </MenuItem>
                             );
@@ -192,10 +200,13 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                       {({ field, meta: { touched, error } }: FieldProps<string>) => (
                         <StyledTextField
                           {...field}
+                          id={`contributor-name-${index}`}
                           variant="filled"
-                          label={t('name')}
+                          label={t('common.name')}
+                          required
                           error={touched && !!error}
                           helperText={<ErrorMessage name={field.name} />}
+                          data-testid={`contributor-name-field-${index}`}
                           onBlur={(event) => {
                             handleBlur(event);
                             !error && saveContributorField(event, contributor.identifier, index);
@@ -207,6 +218,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                       color="secondary"
                       startIcon={<DeleteIcon fontSize="large" />}
                       size="large"
+                      data-testid={`contributor-delete-button-${index}`}
                       onClick={() => {
                         removeContributor(contributor.features.dlr_contributor_identifier, arrayHelpers, index);
                       }}>
@@ -220,6 +232,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                 type="button"
                 variant="outlined"
                 color="primary"
+                data-testid="contributor-add-button"
                 startIcon={<AddIcon />}
                 onClick={() => {
                   addContributor(arrayHelpers);

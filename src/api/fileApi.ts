@@ -51,13 +51,9 @@ export const createResourceAndMultipartUpload = async (
   file: UppyFile,
   onCreateFile: (newResource: Resource) => void
 ) => {
-  const createResourceResponse = await createResource(ResourceCreationType.FILE, file.name);
-  const newResource: Resource = createResourceResponse.data;
+  const newResource = await createResource(ResourceCreationType.FILE, file.name);
   newResource.features.dlr_title = newResource.features.dlr_content;
-  const contentId = createResourceResponse.data.contents[0].identifier;
-  if (newResource?.contents?.[0]) {
-    newResource.contents[0].features.dlr_content_title = newResource.contents[0].features.dlr_content;
-  }
+  const contentId = newResource.contents.masterContent.identifier;
   onCreateFile(newResource);
 
   const data = encodeURI(
@@ -96,9 +92,7 @@ export const prepareUploadPart = async (uploadId: string, key: string, body: Blo
 export const setContentAsDefaultThumbnail = (resourceIdentifier: string, contentIdentifier: string) => {
   const data = encodeURI(`identifierContent=${contentIdentifier}`);
   return authenticatedApiRequest({
-    url: encodeURI(
-      `${API_PATHS.guiBackendResourcesContentPath}/resources/${resourceIdentifier}/contents/defaults/thumbnail`
-    ),
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contents/defaults/thumbnail`),
     method: 'POST',
     data,
   });
@@ -109,8 +103,8 @@ export const createAdditionalFileUpload = async (
   file: UppyFile,
   onCreateContent: (newContent: Content) => void
 ) => {
-  const responseContent = await postResourceContent(resourceIdentifier, 'file', file.name);
-  onCreateContent(responseContent.data);
+  const responseContent = (await postResourceContent(resourceIdentifier, 'file', file.name)).data;
+  onCreateContent(responseContent);
   const data = encodeURI(
     `filename=${file.name}&size=${file.data.size}&lastmodified=${(file.data as File).lastModified}&mimetype=${
       file.data.type
@@ -118,9 +112,7 @@ export const createAdditionalFileUpload = async (
   );
 
   const createMultipartUploadResponse = await authenticatedApiRequest({
-    url: encodeURI(
-      `${API_PATHS.guiBackendResourcesContentPath}/${responseContent.data.identifier}${FileApiPaths.CREATE}`
-    ),
+    url: encodeURI(`${API_PATHS.guiBackendResourcesContentPath}/${responseContent.identifier}${FileApiPaths.CREATE}`),
     method: 'POST',
     data: data,
   });

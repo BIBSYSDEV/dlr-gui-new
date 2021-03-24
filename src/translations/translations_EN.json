@@ -1,26 +1,74 @@
 {
+  "access": {
+    "access_types": "Access types",
+    "add_access": "Add access",
+    "email_label": "Email(s) or Feide-id(s)",
+    "email_helper_text": "It is possible to fill in several emails as a list",
+    "course": "Course",
+    "course_code": "Course code",
+    "everyone_at": "Everyone at",
+    "everyone_participating_in": "Everyone participating in",
+    "grant_access": "Grant access",
+    "hide_list": "Hide list",
+    "no_courses_available": "No courses available",
+    "no_one_has_read_access": "No one has read access",
+    "save_personal_access_error": {
+      "duplicate_email": "One or more emails already have access",
+      "invalid_email": "One or more emails are incorrectly typed",
+      "network_error": "Problem contacting the server, try again later"
+    },
+    "season": {
+      "0": "Winter",
+      "1": "Spring",
+      "2": "Summer",
+      "3": "Autumn"
+    },
+    "single_persons": "Single persons",
+    "show_list": "Show list",
+    "who_got_access": "Who got access"
+  },
   "common": {
     "all_changes_saved": "All changes saved",
     "back": "Back",
     "cancel": "Cancel",
+    "clear": "Clear",
     "delete": "Delete",
+    "edit": "Edit",
+    "error": "Error",
     "finish": "Finish",
     "home": "Home",
-    "login": "Login",
+    "login": "LOGIN",
     "logout": "Logout",
+    "must_be_logged_in": "Require login",
     "name": "Name",
     "next": "Next",
     "no": "No",
+    "no_options": "No tags found",
     "none": "No",
     "or": "Or",
     "other_options": "Other licenses",
+    "page": "Page",
     "possible_options": "Possible licenses",
     "publish": "Publish",
     "remove": "Remove",
+    "result": "Result",
     "search": "Search",
     "save": "Save",
+    "step": "Step",
     "type": "Type",
     "yes": "Yes"
+  },
+  "dashboard": {
+    "close_popover": "Press escape to close this box",
+    "enabled": "enabled",
+    "enter_tags": "Search and select tag for filtering",
+    "explain_license": "Explain license",
+    "explore": "Explore",
+    "login_reminder": "Log in to have access to more resources from your institution.",
+    "filter": "Filter",
+    "institutions": "Institutions",
+    "licenses": "Licenses",
+    "tags": "Tags"
   },
   "delivered_by": "Delivered by",
   "error": {
@@ -30,10 +78,24 @@
     "500_page": "Whoops, something went wrong. Try again later",
     "generic": "Whoops, something went wrong. Try again later"
   },
+  "explanation_text": {
+    "tags_helper_aria_label": "Show tags explanation",
+    "tags_helper_text": "Tags describes the contents of a resource. A single tag may consist of multiple words, for example \"optical illusion\"",
+    "tags_helper_text_edit_resource1": "Quality tags increases the chance that others will find and use your resource",
+    "tags_helper_text_edit_resource2": "You can add more than one tag if desired. Write your first tag and then press enter or tab, and then type your next tag followed by enter or tab. It is possible to add or remove tags after publication of your resource",
+    "tags_helper_text_example": "For instance can a resource with title \"The Sympathetic Nervous System\" have \"syk130\", \"nursery\", \"healthcare subject\", \"nervous system\", and \"health\" as tags"
+  },
   "feedback": {
     "form_errors": "There are errors in the form. They have to be corrected before the resource can be published",
     "required_field": "Required field",
     "valid_url": "Input must be a valid URL"
+  },
+  "institutions": {
+    "bi": "BI",
+    "hvl": "HVL",
+    "ntnu": "NTNU",
+    "oslomet": "OsloMet",
+    "uib": "UiB"
   },
   "license": {
     "commercial_options": {
@@ -46,10 +108,25 @@
     "license_information": "License information",
     "modify_and_build": "Modify and build upon",
     "modify_and_build_options": {
-      "dont_care": "And, they may choose their own license",
-      "ND": "No, others can only use the material in it's original form",
-      "primary_yes": "Yes, others can modify and build upon your material",
-      "share_alike": "But, they have to use the same license as this resource (be aware that this might cause complications for usage of your resource)"
+      "non_destructive": "No, others can only use the material in it's original form",
+      "yes": "Yes, others can modify and build upon your material",
+      "share_alike": "Yes, but they have to use the same license as this resource",
+      "share_alike_warning": "Be aware that this might cause complications for usage of your resource"
+    },
+    "part_description": {
+      "bi": "For internal uses at BI only",
+      "by": "BY - Credit the creator",
+      "cannot_change_license": "You cannot change the license after publication",
+      "cc_introduction": "Essential Creative Commons licenses",
+      "internal_license_introduction": "Essential Internal Lisenses",
+      "more_information": "You can read more about individual licenses by selecting them",
+      "nc": "NC - Noncommercial uses only",
+      "nd": "ND - No derivatives or adaptations permitted",
+      "need_to_select_license": "You must choose a license so that others knows your usage restrictions.",
+      "ntnu": "for internal uses at NTNU only",
+      "only_for_internal_usage": "Can only be used at your institution",
+      "sa": "SA - Share adaptations under the same terms",
+      "zero": "Zero - This work has been marked as dedicated to the public domain"
     },
     "published_with": "Published with",
     "questions": {
@@ -89,7 +166,7 @@
       "CC_BY-NC-SA_4_0": "Yes, it contains material with license CC BY-NC-SA 4.0",
       "CC_BY-SA_4_0": "Yes, it contains material with license CC BY-SA 4.0",
       "ntnu-internt": "Yes, it can only be used internally at NTNU",
-      "yes": "Yes"
+      "yes": "Yes, I want to apply restrictions on the use of the resource"
     },
     "selected_license": "Selected license"
   },
@@ -104,7 +181,7 @@
     },
     "add_contributor": "Add contributor",
     "add_creator": "Add creator",
-    "add_tags": "Add 4-6 keywords. Press enter or tab for adding more keywords.",
+    "add_tags": "Add 4-6 tags. Press enter or tab for adding more tags.",
     "contributor_type": {
       "ContactPerson": "Contact person",
       "DataCollector": "Data collector",
@@ -131,6 +208,7 @@
     "delete_resource_confirmation": "Are you really sure you want to delete",
     "delete_resource_description": "This will permanently delete the resource and the resource cannot be restored",
     "edit_resource": "Edit resource",
+    "fields_required": "Fields marked with * are required",
     "files_and_license": {
       "additional_files": {
         "additional_files": "Additional files",
@@ -200,7 +278,7 @@
       "owner": "Owner",
       "published": "Published",
       "resource": "Resource",
-      "tags": "Keywords",
+      "tags": "Tags",
       "title": "Title",
       "type": "Resource type",
       "submitter_email": "Submitter email"
@@ -225,6 +303,20 @@
       "video": "Video"
     },
     "unpublished_resources": "Unpublished resources"
+  },
+  "sitemap": {
+    "contents": "Contents",
+    "sitemap": "Sitemap",
+    "usage_tip": "Scroll down the page, or use the browser's built in search to find what you are looking for"
+  },
+  "skip_to_form_content": "Skip to form",
+  "skip_to_main_content": "Skip to main content",
+  "thumbnail": {
+    "busy_changing": "Changing thumbnail",
+    "change_thumbnail": "Change thumbnail",
+    "revert_thumbnail": "Delete uploaded thumbnail and revert to suggested thumbnail",
+    "thumbnail_options": "Thumbnail options",
+    "upload_new_thumbnail": "Upload new thumbnail"
   },
   "user": {
     "logged_in_as": "Logged in as"

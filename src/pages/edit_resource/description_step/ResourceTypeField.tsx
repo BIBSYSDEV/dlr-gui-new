@@ -62,12 +62,14 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
             <>
               <TextField
                 {...field}
+                id="resource-feature-type"
                 variant="filled"
                 select
                 required
                 error={touched && !!error}
                 fullWidth
                 value={field.value}
+                data-testid="resource-type-input"
                 label={t('resource.type.resource_type')}
                 onBlur={(event) => {
                   setFieldTouched(ResourceFeatureNamesFullPath.Type, true, true);
@@ -106,7 +108,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                   </ListItemIcon>
                   <Typography variant="inherit">{t('resource.type.image')}</Typography>
                 </StyledMenuItem>
-                <StyledMenuItem value={ResourceFeatureTypes.simulation}>
+                <StyledMenuItem value={ResourceFeatureTypes.simulation} data-testid="resource-type-option-simulation">
                   <ListItemIcon>
                     <SlideshowIcon />
                   </ListItemIcon>
