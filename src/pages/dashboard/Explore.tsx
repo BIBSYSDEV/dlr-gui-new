@@ -13,10 +13,10 @@ import SearchInput from './SearchInput';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Pagination } from '@material-ui/lab';
 import ResultListItem from '../../components/ResultListItem';
-//import FilterSearchOptions from './FilterSearchOptions';
-// import { useSelector } from 'react-redux';
-// import { RootState } from '../../state/rootReducer';
-// import LoginReminder from '../../components/LoginReminder';
+import FilterSearchOptions from './FilterSearchOptions';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../state/rootReducer';
+import LoginReminder from '../../components/LoginReminder';
 
 const SearchResultWrapper = styled.div`
   display: flex;
@@ -88,7 +88,7 @@ const firstPage = 1;
 const Explore = () => {
   const [page, setPage] = useState(firstPage);
   const location = useLocation();
-  //const user = useSelector((state: RootState) => state.user);
+  const user = useSelector((state: RootState) => state.user);
   const [queryObject, setQueryObject] = useState(emptyQueryObject);
   const [isSearching, setIsSearching] = useState(false);
   const [searchResult, setSearchResult] = useState<SearchResult>();
@@ -177,7 +177,7 @@ const Explore = () => {
 
   return (
     <StyledContentWrapperLarge>
-      {/*{!user.id && <LoginReminder />}*/}
+      {!user.id && <LoginReminder />}
       <PageHeader>{t('dashboard.explore')}</PageHeader>
       <SearchInput setQueryObject={setQueryObject} />
       {searchError && <ErrorBanner />}
@@ -188,7 +188,7 @@ const Explore = () => {
       )}
       {searchResult && (
         <SearchResultWrapper>
-          {/*<FilterSearchOptions queryObject={queryObject} setQueryObject={setQueryObject} />*/}
+          <FilterSearchOptions queryObject={queryObject} setQueryObject={setQueryObject} />
           <StyledResultListWrapper>
             {isSearching ? (
               <StyledProgressWrapper>
