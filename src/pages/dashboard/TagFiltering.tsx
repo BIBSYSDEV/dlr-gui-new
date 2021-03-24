@@ -127,7 +127,6 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
       <FormGroup>
         <Autocomplete
           id="filter-tags-input"
-          value={tagInputFieldValue}
           options={options}
           noOptionsText={t('common.no_options')}
           onChange={(event: ChangeEvent<unknown>, value: any) => {
