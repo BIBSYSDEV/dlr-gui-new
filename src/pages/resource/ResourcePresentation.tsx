@@ -10,6 +10,7 @@ import { API_PATHS, API_URL } from '../../utils/constants';
 import { emptyPreview } from '../../types/content.types';
 import { StyleWidths } from '../../themes/mainTheme';
 import { format } from 'date-fns';
+import { SearchParameters } from '../../types/search.types';
 
 const PreviewComponentWrapper = styled.div`
   margin: 1rem 0;
@@ -34,7 +35,7 @@ const StyledCaption = styled(Typography)`
   display: block;
 `;
 
-const StyledChip = styled(Chip)`
+const StyledChip: any = styled(Chip)`
   margin-right: 0.5rem;
   margin-top: 0.5rem;
 `;
@@ -125,7 +126,14 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
           <StyledFeatureWrapper data-testid="resource-tags">
             <StyledCaption variant="caption">{t('resource.metadata.tags')}</StyledCaption>
             {resource.tags.map((tag, index) => (
-              <StyledChip key={index} size="medium" label={tag} />
+              <StyledChip
+                clickable
+                component="a"
+                href={`/?${SearchParameters.tag}=${tag}`}
+                key={index}
+                size="medium"
+                label={tag}
+              />
             ))}
           </StyledFeatureWrapper>
         )}
