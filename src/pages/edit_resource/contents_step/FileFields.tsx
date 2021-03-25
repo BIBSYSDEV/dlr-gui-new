@@ -17,6 +17,8 @@ import Thumbnail from '../../../components/Thumbnail';
 import { Content } from '../../../types/content.types';
 import ChangeThumbnailButton from '../../../components/ChangeThumbnailButton';
 import { uppyLocale } from '../../../utils/uppy-config';
+import HelperTextPopover from '../../../components/HelperTextPopover';
+import { StylePopoverTypography } from '../../../components/styled/StyledTypographies';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/rootReducer';
 
@@ -30,6 +32,13 @@ const MainFileWrapper = styled.div`
   flex-direction: row;
 `;
 
+const FileTitleWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
 const StyledFieldWrapper = styled.div`
   margin-bottom: 1rem;
 `;
@@ -41,6 +50,10 @@ const MainFileImageWrapper = styled.div`
 
 const MainFileMetadata = styled.div`
   flex-grow: 1;
+`;
+
+const StyledSpacer = styled.div`
+  padding-left: 1rem;
 `;
 
 interface FileFieldsProps {
@@ -96,26 +109,41 @@ const FileFields: FC<FileFieldsProps> = ({
           <MainFileMetadata>
             <StyledFieldWrapper>
               {values.contents.masterContent.features.dlr_content_type === 'file' && (
-                <Field
-                  name={`${FieldNames.ContentsBase}.${FieldNames.MasterContent}.${FieldNames.Features}.${ContentFeatureNames.Title}`}>
-                  {({ field, meta: { touched, error } }: FieldProps) => (
-                    <TextField
-                      {...field}
-                      id="filename"
-                      variant="filled"
-                      required
-                      fullWidth
-                      inputProps={{ 'data-testid': 'master-content-title' }}
-                      label={t('resource.metadata.file_title')}
-                      error={touched && !!error}
-                      helperText={<ErrorMessage name={field.name} />}
-                      onBlur={(event) => {
-                        handleBlur(event);
-                        !error && saveMainContentsFileName(event);
-                      }}
-                    />
-                  )}
-                </Field>
+                <FileTitleWrapper>
+                  <Field
+                    name={`${FieldNames.ContentsBase}.${FieldNames.MasterContent}.${FieldNames.Features}.${ContentFeatureNames.Title}`}>
+                    {({ field, meta: { touched, error } }: FieldProps) => (
+                      <TextField
+                        {...field}
+                        id="filename"
+                        variant="filled"
+                        required
+                        fullWidth
+                        inputProps={{ 'data-testid': 'master-content-title' }}
+                        label={t('resource.metadata.file_title')}
+                        error={touched && !!error}
+                        helperText={<ErrorMessage name={field.name} />}
+                        onBlur={(event) => {
+                          handleBlur(event);
+                          !error && saveMainContentsFileName(event);
+                        }}
+                      />
+                    )}
+                  </Field>
+                  <StyledSpacer>
+                    <HelperTextPopover
+                      ariaButtonLabel={t('explanation_text.file_title_helper_aria_label')}
+                      popoverId={'file_title_field_popover'}>
+                      <StylePopoverTypography variant="body1">
+                        {t('explanation_text.file_title_helper_text')}.
+                      </StylePopoverTypography>
+                      <StylePopoverTypography variant="body2">
+                        {t('explanation_text.file_title_helper_example1')}.
+                      </StylePopoverTypography>
+                      <Typography variant="body2">{t('explanation_text.file_title_helper_example2')}.</Typography>
+                    </HelperTextPopover>
+                  </StyledSpacer>
+                </FileTitleWrapper>
               )}
             </StyledFieldWrapper>
             {saveTitleError && <ErrorBanner userNeedsToBeLoggedIn={true} error={saveTitleError} />}

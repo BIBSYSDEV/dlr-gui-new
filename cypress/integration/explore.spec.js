@@ -253,4 +253,17 @@ context('Actions', () => {
     cy.get(`[data-testid=license-filtering-checkbox-${license2}] input`).should('be.checked');
     cy.get(`[data-testid=license-filtering-checkbox-${license3Short}] input`).should('not.be.checked');
   });
+
+  it('can detect showInaccessible filter in the url', () => {
+    cy.visit(`/?${SearchParameters.query}=${search}&${SearchParameters.showInaccessible}=true`);
+    cy.get(`[data-testid=access-filtering-checkbox] input`).should('be.checked');
+  });
+
+  it('can add showInaccessible filter in the url', () => {
+    cy.visit(`/?${SearchParameters.query}=${search}`);
+    cy.get(`[data-testid=access-checkbox-label] input`).click();
+    cy.location().should((loc) => {
+      expect(loc.search).to.eq(`?${SearchParameters.query}=${search}&${SearchParameters.showInaccessible}=true`);
+    });
+  });
 });
