@@ -76,23 +76,23 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
     }
   }, [debouncedTagInputValue, cancelSearch, t]);
 
-  const saveTagsChanging = async (name: string, value: string[]) => {
+  const saveTagsChanging = async (name: string, tagArray: string[]) => {
     setAllChangesSaved(false);
     try {
       const promiseArray: Promise<any>[] = [];
-      const newTags = value.filter((tag) => !values.tags?.includes(tag));
+      const newTags = tagArray.filter((tag) => !values.tags?.includes(tag));
       newTags.forEach((tag) => {
         promiseArray.push(postTag(values.identifier, tag));
       });
-      const removeTags = values.tags?.filter((tag) => !value.includes(tag));
+      const removeTags = values.tags?.filter((tag) => !tagArray.includes(tag));
       removeTags?.forEach((tag) => {
         promiseArray.push(deleteTag(values.identifier, tag));
       });
       setSaveError(undefined);
       //Must wait for all the promises to finish or we will get race conditions for updating setAllChangesSaved.
       await Promise.all(promiseArray);
-      setFieldValue('tags', value);
-      values.tags = value;
+      setFieldValue('tags', tagArray);
+      values.tags = tagArray;
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
     } catch (error) {
       setSaveError(error);
@@ -119,9 +119,10 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                   noOptionsText={t('common.no_options')}
                   options={options}
                   loading={loading}
+                  filterSelectedOptions
                   getOptionSelected={(option: string, value: string) => option.toLowerCase() === value.toLowerCase()}
-                  onChange={(_: ChangeEvent<unknown>, value: string[]) => {
-                    saveTagsChanging(field.name, value);
+                  onChange={(_: ChangeEvent<unknown>, valueArray: string[]) => {
+                    saveTagsChanging(field.name, valueArray);
                   }}
                   renderTags={(value: any, getTagProps: any) =>
                     value.map((option: any, index: number) => (
