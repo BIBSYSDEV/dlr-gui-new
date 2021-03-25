@@ -17,6 +17,7 @@ import FilterSearchOptions from './FilterSearchOptions';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import LoginReminder from '../../components/LoginReminder';
+import AccessFiltering from './AccessFiltering';
 
 const SearchResultWrapper = styled.div`
   display: flex;
@@ -72,15 +73,14 @@ const StyledList = styled(List)`
 
 const StyledResultListHeaderWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
   align-items: center;
   width: 100%;
   max-width: ${StyleWidths.width4};
-  justify-content: center;
-`;
-
-const StyledResultListHeader = styled(Typography)`
-  width: 100%;
+  justify-content: space-between;
 `;
 
 const firstPage = 1;
@@ -113,6 +113,8 @@ const Explore = () => {
       const resourceTypes = searchTerms.getAll(SearchParameters.resourceType);
       const tags = searchTerms.getAll(SearchParameters.tag);
       const pageTerm = searchTerms.get(SearchParameters.page);
+      const showInaccessibleParameter = searchTerms.get(SearchParameters.showInaccessible);
+      const showInaccessible = showInaccessibleParameter ? showInaccessibleParameter.toLowerCase() === 'true' : false;
       const licenses = searchTerms.getAll(SearchParameters.license);
       const offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
       return {
@@ -126,6 +128,7 @@ const Explore = () => {
         tags: tags,
         queryFromURL: true,
         allowSearch: true,
+        showInaccessible: showInaccessible,
       };
     };
     if (!queryObject.queryFromURL && !queryObject.allowSearch) {
@@ -146,6 +149,7 @@ const Explore = () => {
       if (queryObject.licenses.length > 0)
         url += queryObject.licenses.map((licenseCode) => `&${SearchParameters.license}=${licenseCode}`).join('');
       if (queryObject.tags.length > 0) url += queryObject.tags.map((tag) => `&${SearchParameters.tag}=${tag}`).join('');
+      if (queryObject.showInaccessible) url += `&${SearchParameters.showInaccessible}=true`;
       history.push(url);
     };
 
@@ -193,9 +197,10 @@ const Explore = () => {
             ) : (
               <>
                 <StyledResultListHeaderWrapper>
-                  <StyledResultListHeader variant="h2">
+                  <Typography variant="h2">
                     {t('common.result')} ({searchResult.numFound})
-                  </StyledResultListHeader>
+                  </Typography>
+                  <AccessFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
                 </StyledResultListHeaderWrapper>
                 <StyledList>
                   {resources &&
