@@ -5,7 +5,7 @@ import Header from './layout/header/Header';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from './state/userSlice';
-import { getAnonymousWebToken, getUserData } from './api/userApi';
+import { getAnonymousWebToken, getUserAuthorizationsInstitution, getUserData } from './api/userApi';
 import AppRoutes from './AppRoutes';
 import { RootState } from './state/rootReducer';
 import { CircularProgress } from '@material-ui/core';
@@ -74,7 +74,9 @@ const App = () => {
       if (localStorage.token && !isTokenAnonymous() && !isLoggedInTokenExpired() && !user.id) {
         getUserData()
           .then((response) => {
-            dispatch(setUser(response.data));
+            getUserAuthorizationsInstitution().then((autResponse) =>
+              dispatch(setUser({ ...response.data, institutionAuthorities: autResponse }))
+            );
           })
           .catch((error) => {
             setUserError(error);

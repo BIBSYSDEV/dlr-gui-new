@@ -1,6 +1,12 @@
 import { API_PATHS } from '../utils/constants';
 import Axios, { AxiosResponse } from 'axios';
-import { User } from '../types/user.types';
+import {
+  emptyInstitutionAuthorities,
+  InstitutionAuthorities,
+  InstitutionProfilesNames,
+  User,
+  UserRoleFromInstitution,
+} from '../types/user.types';
 import { AuthTokenClaims } from '../types/auth.types';
 import { authenticatedApiRequest } from './api';
 
@@ -30,4 +36,34 @@ export const logout = () => {
     url: encodeURI(`${API_PATHS.guiBackendLoginPath}/logout`),
     method: 'GET',
   });
+};
+
+export const getUserAuthorizationsInstitution = async (): Promise<InstitutionAuthorities> => {
+  const apiResponse: AxiosResponse<UserRoleFromInstitution> = await authenticatedApiRequest({
+    url: encodeURI(
+      `${API_PATHS.guiBackendUserAuthorizationsPath}/authorizations/users/authorized/institutions/current`
+    ),
+    method: 'GET',
+  });
+  const institutionAuthorities = emptyInstitutionAuthorities;
+  apiResponse.data.profiles.forEach((profile) => {
+    switch (profile.name) {
+      case InstitutionProfilesNames.curator:
+        institutionAuthorities.isCurator = true;
+        break;
+      case InstitutionProfilesNames.administrator:
+        institutionAuthorities.isAdministrator = true;
+        break;
+      case InstitutionProfilesNames.editor:
+        institutionAuthorities.isEditor = true;
+        break;
+      case InstitutionProfilesNames.publisher:
+        institutionAuthorities.isPublisher = true;
+        break;
+      default:
+        break;
+    }
+  });
+
+  return institutionAuthorities;
 };
