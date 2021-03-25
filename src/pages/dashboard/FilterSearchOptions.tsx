@@ -11,7 +11,7 @@ import InstitutionFiltering from './InstitutionFiltering';
 import { QueryObject } from '../../types/search.types';
 import ResourceTypeFiltering from './ResourceTypeFiltering';
 import LicenseFiltering from './LicenseFiltering';
-import TagFiltering from './TagFiltering';
+// import TagFiltering from './TagFiltering';
 
 function useWindowWidth() {
   const [width, setWidth] = useState(0);
@@ -107,7 +107,7 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
           <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           <ResourceTypeFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           <LicenseFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
-          <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+          {/*<TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />*/}
         </StyledSideBar>
       ) : (
         <StyledAccordion expanded={isFiltersExpanded} onChange={handleChange}>
@@ -124,7 +124,7 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
               <ResourceTypeFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
               <LicenseFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
             </StyledAccordionFilterBoxesWrapper>
-            <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+            {/*<TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />*/}
           </StyledAccordionDetails>
         </StyledAccordion>
       )}
