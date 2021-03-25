@@ -1,7 +1,6 @@
 import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Chip, Grid, TextField } from '@material-ui/core';
-import { Chip, FormGroup, TextField } from '@material-ui/core';
+import { Chip, CircularProgress, Grid, TextField } from '@material-ui/core';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
@@ -117,7 +116,10 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                   {...field}
                   freeSolo
                   multiple
-                  options={[]}
+                  noOptionsText={t('common.no_options')}
+                  options={options}
+                  loading={loading}
+                  getOptionSelected={(option: string, value: string) => option.toLowerCase() === value.toLowerCase()}
                   onChange={(_: ChangeEvent<unknown>, value: string[]) => {
                     saveTagsChanging(field.name, value);
                   }}
@@ -138,10 +140,8 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                       label={t('resource.metadata.tags')}
                       helperText={t('resource.add_tags')}
                       variant="filled"
+                      onChange={handleChange}
                       fullWidth
-                                            
-
-
                       data-testid="resource-tags-input"
                       onBlur={(event) => {
                         const value = event.target.value;
@@ -150,6 +150,15 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                           .map((value: string) => value.trim())
                           .filter((tag) => tag !== '');
                         saveTagsChanging(field.name, [...field.value, ...tags]);
+                      }}
+                      InputProps={{
+                        ...params.InputProps,
+                        endAdornment: (
+                          <>
+                            {loading ? <CircularProgress color="inherit" size={'1rem'} /> : null}
+                            {params.InputProps.endAdornment}
+                          </>
+                        ),
                       }}
                     />
                   )}
@@ -174,48 +183,6 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                 </HelperTextPopover>
               </Grid>
             </Grid>
-            <StyledAutoComplete
-              {...field}
-              freeSolo
-              multiple
-              noOptionsText={t('common.no_options')}
-              options={options}
-              loading={loading}
-              getOptionSelected={(option: string, value: string) => option.toLowerCase() === value.toLowerCase()}
-              onChange={(_: ChangeEvent<unknown>, value: string[]) => {
-                saveTagsChanging(field.name, value);
-              }}
-              renderTags={(value: any, getTagProps: any) =>
-                value.map((option: any, index: number) => (
-                  <StyledChip
-                    deleteIcon={<StyledCancelIcon />}
-                    data-testid={`tag-chip-${index}`}
-                    label={option}
-                    {...getTagProps({ index })}
-                  />
-                ))
-              }
-              renderInput={(params: AutocompleteRenderInputParams) => (
-                <TextField
-                  {...params}
-                  id="resource-feature-tags"
-                  label={t('resource.metadata.tags')}
-                  helperText={t('resource.add_tags')}
-                  variant="filled"
-                  fullWidth
-                  onChange={handleChange}
-                  data-testid="resource-tags-input"
-                  onBlur={(event) => {
-                    const value = event.target.value;
-                    const tags = value
-                      .split(/[|,;]+/)
-                      .map((value: string) => value.trim())
-                      .filter((tag) => tag !== '');
-                    saveTagsChanging(field.name, [...field.value, ...tags]);
-                  }}
-                />
-              )}
-            />
           )}
         </Field>
         {tagSearchError && <ErrorBanner error={tagSearchError}></ErrorBanner>}
