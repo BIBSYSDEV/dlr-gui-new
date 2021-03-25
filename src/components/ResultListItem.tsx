@@ -14,7 +14,6 @@ import { format } from 'date-fns';
 import { Chip } from '@material-ui/core';
 import CClogoImage from './CClogoImage';
 import Link from '@material-ui/core/Link';
-import { SearchParameters } from '../types/search.types';
 
 const StyledListItem: any = styled.li`
   width: 100%;
@@ -192,15 +191,11 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
         <div>
           {resource.tags && resource.tags.length !== 0 && (
             <div data-testid="resource-tags">
+              {/* clickable
+                      component="a"
+                      href={`/?${SearchParameters.tag}=${tag}`} */}
               {resource.tags.map((tag, index) => (
-                <StyledChip
-                  clickable
-                  component="a"
-                  href={`/?${SearchParameters.tag}=${tag}`}
-                  key={index}
-                  size="medium"
-                  label={tag}
-                />
+                <StyledChip key={index} size="medium" label={tag} />
               ))}
             </div>
           )}
