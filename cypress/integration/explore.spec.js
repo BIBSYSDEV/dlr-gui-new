@@ -254,7 +254,7 @@ context('Actions', () => {
     cy.get(`[data-testid=license-filtering-checkbox-${license3Short}] input`).should('not.be.checked');
   });
 
-  it('can detect showInAccessible filter in the url', () => {
+  it('can detect showInaccessible filter in the url', () => {
     cy.visit(`/?${SearchParameters.query}=${search}&${SearchParameters.showInaccessible}=true`);
     cy.get(`[data-testid=access-filtering-checkbox] input`).should('be.checked');
   });
