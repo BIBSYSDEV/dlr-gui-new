@@ -16,9 +16,9 @@ export const emptyUser: User = {
 };
 
 export interface UserRoleFromInstitution {
-  object: string;
-  time: string;
-  user: string;
+  object?: string;
+  time?: string;
+  user?: string;
   profiles: InstitutionProfiles[];
 }
 
