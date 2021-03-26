@@ -150,7 +150,7 @@ const Explore = () => {
         url += queryObject.licenses.map((licenseCode) => `&${SearchParameters.license}=${licenseCode}`).join('');
       if (queryObject.tags.length > 0) url += queryObject.tags.map((tag) => `&${SearchParameters.tag}=${tag}`).join('');
       if (queryObject.showInaccessible) url += `&${SearchParameters.showInaccessible}=true`;
-      history.replace(url);
+      history.push(url);
     };
 
     const triggerSearch = async () => {
