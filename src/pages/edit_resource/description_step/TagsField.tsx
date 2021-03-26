@@ -31,7 +31,7 @@ const StyledChip = styled(Chip)`
   }
 `;
 
-const StyledAutoComplete: any = styled(Autocomplete)`
+const StyledAutoCompleteWrapper = styled.div`
   flex-grow: 4;
 `;
 
@@ -112,58 +112,62 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
           {({ field }: FieldProps) => (
             <Grid container alignItems="center" spacing={2}>
               <Grid item xs={10}>
-                <StyledAutoComplete
-                  {...field}
-                  freeSolo
-                  multiple
-                  noOptionsText={t('common.no_options')}
-                  options={options}
-                  loading={loading}
-                  filterSelectedOptions
-                  getOptionSelected={(option: string, value: string) => option.toLowerCase() === value.toLowerCase()}
-                  onChange={(_: ChangeEvent<unknown>, valueArray: string[]) => {
-                    saveTagsChanging(field.name, valueArray);
-                  }}
-                  renderTags={(value: any, getTagProps: any) =>
-                    value.map((option: any, index: number) => (
-                      <StyledChip
-                        deleteIcon={<StyledCancelIcon />}
-                        data-testid={`tag-chip-${index}`}
-                        label={option}
-                        {...getTagProps({ index })}
+                <StyledAutoCompleteWrapper>
+                  <Autocomplete
+                    {...field}
+                    freeSolo
+                    multiple
+                    id="register-tags-input"
+                    noOptionsText={t('common.no_options')}
+                    options={options}
+                    loading={loading}
+                    filterSelectedOptions
+                    getOptionSelected={(option: string, value: string) => option.toLowerCase() === value.toLowerCase()}
+                    onChange={(_: ChangeEvent<unknown>, valueArray: string[]) => {
+                      saveTagsChanging(field.name, valueArray);
+                    }}
+                    renderOption={(option: string) => <span data-testid={'tag-option'}>{option}</span>}
+                    renderTags={(value: any, getTagProps: any) =>
+                      value.map((option: any, index: number) => (
+                        <StyledChip
+                          deleteIcon={<StyledCancelIcon />}
+                          data-testid={`tag-chip-${index}`}
+                          label={option}
+                          {...getTagProps({ index })}
+                        />
+                      ))
+                    }
+                    renderInput={(params: AutocompleteRenderInputParams) => (
+                      <TextField
+                        {...params}
+                        id="resource-feature-tags"
+                        label={t('resource.metadata.tags')}
+                        helperText={t('resource.add_tags')}
+                        variant="filled"
+                        onChange={handleChange}
+                        fullWidth
+                        data-testid="resource-tags-input"
+                        onBlur={(event) => {
+                          const value = event.target.value;
+                          const tags = value
+                            .split(/[|,;]+/)
+                            .map((value: string) => value.trim())
+                            .filter((tag) => tag !== '');
+                          saveTagsChanging(field.name, [...field.value, ...tags]);
+                        }}
+                        InputProps={{
+                          ...params.InputProps,
+                          endAdornment: (
+                            <>
+                              {loading ? <CircularProgress color="inherit" size={'1rem'} /> : null}
+                              {params.InputProps.endAdornment}
+                            </>
+                          ),
+                        }}
                       />
-                    ))
-                  }
-                  renderInput={(params: AutocompleteRenderInputParams) => (
-                    <TextField
-                      {...params}
-                      id="resource-feature-tags"
-                      label={t('resource.metadata.tags')}
-                      helperText={t('resource.add_tags')}
-                      variant="filled"
-                      onChange={handleChange}
-                      fullWidth
-                      data-testid="resource-tags-input"
-                      onBlur={(event) => {
-                        const value = event.target.value;
-                        const tags = value
-                          .split(/[|,;]+/)
-                          .map((value: string) => value.trim())
-                          .filter((tag) => tag !== '');
-                        saveTagsChanging(field.name, [...field.value, ...tags]);
-                      }}
-                      InputProps={{
-                        ...params.InputProps,
-                        endAdornment: (
-                          <>
-                            {loading ? <CircularProgress color="inherit" size={'1rem'} /> : null}
-                            {params.InputProps.endAdornment}
-                          </>
-                        ),
-                      }}
-                    />
-                  )}
-                />
+                    )}
+                  />
+                </StyledAutoCompleteWrapper>
               </Grid>
               <Grid item xs={2}>
                 <HelperTextPopover

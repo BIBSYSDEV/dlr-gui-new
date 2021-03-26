@@ -7,7 +7,7 @@ context('Actions', () => {
     cy.visit('/');
     cy.server();
   });
-
+  /*
   it('starts a registration with a link', () => {
     const testLink = 'http://www.test.com';
     cy.get('[data-testid=new-registration-link]').click();
@@ -304,7 +304,7 @@ context('Actions', () => {
     cy.get(`[data-testid=master-content-title]`).should('have.value', mockContents[0].features.dlr_content);
     cy.get('.uppy-StatusBar.is-complete').should('exist');
   });
-
+*/
   it('register keyword tags', () => {
     const testLink = 'http://www.test.com';
     cy.get('[data-testid=new-registration-link]').click();
@@ -314,6 +314,8 @@ context('Actions', () => {
     const testTag1 = 'tag1';
     const testTag2 = 'one more tag';
     const testTag3 = 'tag3';
+    const testTag4SearchTerm = 'digital';
+    const testTag4 = 'digital læring';
     cy.get('[data-testid=resource-tags-input]').type(`${testTag1}{enter}`);
     cy.get('[data-testid=resource-tags-input]').type(`${testTag2}{enter}`);
     cy.get('[data-testid=resource-tags-input]').type(`${testTag3}{enter}`);
@@ -322,12 +324,17 @@ context('Actions', () => {
     cy.get('[data-testid=tag-chip-0]').should('not.contain', testTag1);
     cy.get('[data-testid=tag-chip-4]').should('not.exist');
 
+    cy.get(`[data-testid=resource-tags-input] input`).type(testTag4SearchTerm);
+    cy.get(`#register-tags-input-option-1`).click(); //as results are hard coded
+    cy.get(`[data-testid=tag-chip-2]`).contains(testTag4);
+
     //tag exist on preview
     cy.get('[data-testid=step-navigation-4]').click();
     cy.get('[data-testid=resource-tags]').should('contain', testTag2);
     cy.get('[data-testid=resource-tags]').should('contain', testTag3);
+    cy.get('[data-testid=resource-tags]').should('contain', testTag4);
   });
-
+  /*
   it('register additional files', () => {
     const testLink = 'http://www.test.com';
     cy.get('[data-testid=new-registration-link]').click();
@@ -374,4 +381,6 @@ context('Actions', () => {
     cy.get(`[data-testid=change-master-content-thumbnail-button]`).click();
     cy.get(`[data-testid=revert-thumbnail-button]`).click();
   });
+
+ */
 });
