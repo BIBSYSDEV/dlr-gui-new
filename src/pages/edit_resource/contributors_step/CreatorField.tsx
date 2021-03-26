@@ -14,6 +14,7 @@ import { Colors } from '../../../themes/mainTheme';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import { StyledDeleteButton } from '../../../components/styled/StyledButtons';
 import HelperTextPopover from '../../../components/HelperTextPopover';
+import AuthoritySelector from './AuthoritySelector';
 
 const StyledSpacer = styled.div`
   margin-bottom: 1rem;
@@ -191,6 +192,10 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                             }}>
                             {t('common.remove').toUpperCase()}
                           </StyledDeleteButton>
+                          <AuthoritySelector
+                            type={'Creator'}
+                            initialNameValue={creator.features.dlr_creator_name ?? ''}
+                          />
                         </Grid>
                       )}
 
