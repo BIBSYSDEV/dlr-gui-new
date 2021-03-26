@@ -7,7 +7,7 @@ context('Actions', () => {
     cy.visit('/');
     cy.server();
   });
-  /*
+
   it('starts a registration with a link', () => {
     const testLink = 'http://www.test.com';
     cy.get('[data-testid=new-registration-link]').click();
@@ -304,7 +304,7 @@ context('Actions', () => {
     cy.get(`[data-testid=master-content-title]`).should('have.value', mockContents[0].features.dlr_content);
     cy.get('.uppy-StatusBar.is-complete').should('exist');
   });
-*/
+
   it('register keyword tags', () => {
     const testLink = 'http://www.test.com';
     cy.get('[data-testid=new-registration-link]').click();
@@ -334,7 +334,7 @@ context('Actions', () => {
     cy.get('[data-testid=resource-tags]').should('contain', testTag3);
     cy.get('[data-testid=resource-tags]').should('contain', testTag4);
   });
-  /*
+
   it('register additional files', () => {
     const testLink = 'http://www.test.com';
     cy.get('[data-testid=new-registration-link]').click();
@@ -381,6 +381,4 @@ context('Actions', () => {
     cy.get(`[data-testid=change-master-content-thumbnail-button]`).click();
     cy.get(`[data-testid=revert-thumbnail-button]`).click();
   });
-
- */
 });
