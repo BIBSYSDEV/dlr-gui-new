@@ -180,6 +180,15 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                           </HelperTextPopover>
                         </Grid>
                       )}
+                      {values.creators?.length === 1 && !isDeleting && (
+                        <Grid item xs={6} sm={3}>
+                          <AuthoritySelector
+                            resourceIdentifier={values.identifier}
+                            creatorOrContributorId={creator.identifier}
+                            initialNameValue={creator.features.dlr_creator_name ?? ''}
+                          />
+                        </Grid>
+                      )}
                       {values.creators?.length > 1 && !isDeleting && (
                         <Grid item xs={6} sm={3}>
                           <StyledDeleteButton
@@ -193,7 +202,8 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                             {t('common.remove').toUpperCase()}
                           </StyledDeleteButton>
                           <AuthoritySelector
-                            type={'Creator'}
+                            resourceIdentifier={values.identifier}
+                            creatorOrContributorId={creator.identifier}
                             initialNameValue={creator.features.dlr_creator_name ?? ''}
                           />
                         </Grid>

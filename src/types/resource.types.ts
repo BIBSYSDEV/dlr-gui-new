@@ -2,6 +2,7 @@
 
 import { Content } from './content.types';
 import { License } from './license.types';
+import { Authority } from './authority.types';
 
 export interface Resource {
   identifier: string;
@@ -131,7 +132,7 @@ interface PublisherFeatures {
 export interface Creator {
   identifier: string;
   features: CreatorFeatures;
-  Authority?: Authority;
+  authorities?: Authority[] | undefined;
 }
 
 export const emptyCreator = {
@@ -164,19 +165,6 @@ interface ContributorFeatures {
   dlr_contributor_name?: string;
   dlr_contributor_time_created?: string;
   dlr_contributor_type?: string;
-}
-
-interface Authority {
-  identifier: string;
-  features: AuthorityFeatures;
-}
-interface AuthorityFeatures {
-  dlr_authority?: boolean;
-  dlr_authority_entity_type?: string;
-  dlr_authority_id?: string;
-  dlr_authority_identifier?: string;
-  dlr_authority_name?: string;
-  dlr_authority_time_created?: string;
 }
 
 export interface ResourceEvent {

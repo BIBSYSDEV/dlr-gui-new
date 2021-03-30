@@ -1,33 +1,37 @@
 import { authenticatedApiRequest } from './api';
 import { API_PATHS } from '../utils/constants';
-import { Authority, AuthoritySearchResponse } from '../types/authority.types';
+import { Authority, AuthorityResponse, AuthoritySearchResponse } from '../types/authority.types';
 import { AxiosResponse } from 'axios';
 
-/*
-offset: 0
-limit: 10
-contributorType: enten contributorType som man velger i dropdownen eller "creator"
- */
 export const searchAuthorities = (
   query: string,
-  contributorType: string,
   offset = 0,
   limit = 10
 ): Promise<AxiosResponse<AuthoritySearchResponse>> => {
   return authenticatedApiRequest({
     url: encodeURI(
-      `${API_PATHS.guiBackendAuthoritiesPath}/authorities/search?q=${query}&offset=${offset}&limit=${limit}&contributorType=${contributorType}&searchField=textsearch`
+      `${API_PATHS.guiBackendAuthoritiesPath}/authorities/search?q=${query}&offset=${offset}&limit=${limit}&searchField=textsearch`
     ),
     method: 'GET',
   });
 };
 
-export const getAuthoritiesForResourceCreatorOrContributor = (resourceId: string, creatorOrContributorId: string) => {
-  return authenticatedApiRequest({
+export const getAuthoritiesForResourceCreatorOrContributor = async (
+  resourceId: string,
+  creatorOrContributorId: string
+): Promise<Authority[]> => {
+  const response: AxiosResponse<AuthorityResponse[]> = await authenticatedApiRequest({
     url: encodeURI(
       `${API_PATHS.guiBackendResourcesPath}/resources/${resourceId}/creators/${creatorOrContributorId}/authorities`
     ),
     method: 'GET',
+  });
+  return response.data.map((element: any) => {
+    return {
+      id: element.features.dlr_authority_id.replace('=', ''),
+      name: element.features.dlr_authority_name,
+      type: element.features.dlr_authority_entity_type,
+    };
   });
 };
 
