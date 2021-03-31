@@ -121,11 +121,11 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
 
   const calculateNumSMColumns = (index: number) => {
     if (index === 0 && values.creators?.length < 2) {
-      return 10;
+      return 7;
     } else if (index === 0 && values.creators?.length >= 2) {
-      return 8;
+      return 5;
     } else {
-      return 9;
+      return 6;
     }
   };
 
@@ -180,7 +180,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                           </HelperTextPopover>
                         </Grid>
                       )}
-                      {values.creators?.length === 1 && !isDeleting && (
+                      {!isDeleting && (
                         <Grid item xs={6} sm={3}>
                           <AuthoritySelector
                             resourceIdentifier={values.identifier}
@@ -201,11 +201,6 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                             }}>
                             {t('common.remove').toUpperCase()}
                           </StyledDeleteButton>
-                          <AuthoritySelector
-                            resourceIdentifier={values.identifier}
-                            creatorOrContributorId={creator.identifier}
-                            initialNameValue={creator.features.dlr_creator_name ?? ''}
-                          />
                         </Grid>
                       )}
 

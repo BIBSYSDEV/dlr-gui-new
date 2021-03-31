@@ -4,7 +4,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Link from '@material-ui/core/Link';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import { IconButton } from '@material-ui/core';
-import HowToRegIcon from '@material-ui/icons/HowToReg';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import { Authority } from '../../../types/authority.types';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
@@ -23,7 +23,7 @@ interface AuthorityListItemProps {
 const AuthorityListItem: FC<AuthorityListItemProps> = ({ authority, handleSelectedAuthorityChange, isSelected }) => {
   const { t } = useTranslation();
   return (
-    <ListItem selected={isSelected}>
+    <ListItem disableGutters selected={isSelected}>
       <ListItemText
         primary={isSelected ? `${authority.name} (${t('authority.selected').toLowerCase()})` : authority.name}
         secondary={
@@ -38,14 +38,14 @@ const AuthorityListItem: FC<AuthorityListItemProps> = ({ authority, handleSelect
             onClick={() => handleSelectedAuthorityChange(authority.id)}
             edge="end"
             aria-label={t('authority.add_authority')}>
-            <HowToRegIcon />
+            <VerifiedUserIcon />
           </IconButton>
         </ListItemSecondaryAction>
       )}
       {isSelected && (
         <ListItemSecondaryAction>
           <StyledIconButton edge="end" disabled={true} aria-label={t('authority.deselect_authority')}>
-            <HowToRegIcon />
+            <VerifiedUserIcon />
           </StyledIconButton>
         </ListItemSecondaryAction>
       )}

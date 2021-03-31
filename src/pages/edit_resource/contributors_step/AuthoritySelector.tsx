@@ -13,21 +13,32 @@ import {
 } from '../../../api/authoritiesApi';
 import { Authority, AuthoritySearchResponse } from '../../../types/authority.types';
 import List from '@material-ui/core/List';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import HowToRegIcon from '@material-ui/icons/HowToReg';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import Pagination from '@material-ui/lab/Pagination';
 import ErrorBanner from '../../../components/ErrorBanner';
 import styled from 'styled-components';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import AuthorityListItem from './AuthorityListItem';
 import { useTranslation } from 'react-i18next';
+import Typography from '@material-ui/core/Typography';
+import { DeviceWidths } from '../../../themes/mainTheme';
+import { IconButton } from '@material-ui/core';
 
 const StyledDialog = styled(Dialog)`
   min-width: 80vw;
 `;
 
-const StyledHowToRegIcon = styled(HowToRegIcon)`
+const StyledHowToRegIcon = styled(VerifiedUserIcon)`
   color: darkgreen;
+`;
+
+const StyledListWrapper = styled.div`
+  margin-top: 2rem;
+`;
+
+const StyledAuthorityInformation = styled.div`
+  display: flex;
 `;
 
 const nameConverter = (fullName: string) => {
@@ -72,6 +83,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   const [error, setError] = useState<Error | null>(null);
   const [page, setPage] = useState(1);
   const { t } = useTranslation();
+  const fullScreenDialog = window.screen.height < DeviceWidths.sm;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -149,16 +161,19 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   return (
     <>
       {selectedAuthorities.length > 0 && (
-        <Button variant="outlined" color="primary" onClick={handleClickOpen} startIcon={<StyledHowToRegIcon />}>
-          {t('authority.view_verified_authority')}
-        </Button>
+        <StyledAuthorityInformation>
+          <IconButton onClick={handleClickOpen}>
+            <StyledHowToRegIcon />
+          </IconButton>
+          {selectedAuthorities[0].name}
+        </StyledAuthorityInformation>
       )}
       {selectedAuthorities.length === 0 && (
-        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+        <Button variant="outlined" color="primary" onClick={handleClickOpen} startIcon={<AddCircleIcon />}>
           {t('authority.verify')}
         </Button>
       )}
-      <StyledDialog open={open} onClose={handleClose} aria-labelledby={FormDialogTitleId}>
+      <StyledDialog fullScreen={fullScreenDialog} open={open} onClose={handleClose} aria-labelledby={FormDialogTitleId}>
         <DialogTitle id={FormDialogTitleId}>
           {selectedAuthorities.length === 0 && t('authority.add_authority')}
           {selectedAuthorities.length > 0 && t('authority.authorities')}
@@ -187,47 +202,48 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
 
           {isLoading && <CircularProgress />}
           {authoritySearchResponse && !isLoading && (
-            <List
-              aria-labelledby={ListTitleId}
-              subheader={
-                <ListSubheader component="div" id={ListTitleId}>
-                  {t('authority.authorities')}
-                </ListSubheader>
-              }>
-              {selectedAuthorities.map((authority, index) => (
-                <AuthorityListItem
-                  isSelected={true}
-                  handleSelectedAuthorityChange={handleSelectedAuthorityChange}
-                  authority={authority}
-                  key={index}
-                />
-              ))}
-              {!isLoading &&
-                selectedAuthorities.length === 0 &&
-                authoritySearchResponse.results.map((authority, index) => (
+            <StyledListWrapper>
+              <Typography id={ListTitleId} variant="h3">
+                {t('authority.authorities')}:
+              </Typography>
+              <List aria-labelledby={ListTitleId}>
+                {selectedAuthorities.map((authority, index) => (
                   <AuthorityListItem
-                    isSelected={checkIfListItemIsSelectedAuthority(authority)}
+                    isSelected={true}
                     handleSelectedAuthorityChange={handleSelectedAuthorityChange}
                     authority={authority}
                     key={index}
                   />
                 ))}
-            </List>
+                {!isLoading &&
+                  selectedAuthorities.length === 0 &&
+                  authoritySearchResponse.results.map((authority, index) => (
+                    <AuthorityListItem
+                      isSelected={checkIfListItemIsSelectedAuthority(authority)}
+                      handleSelectedAuthorityChange={handleSelectedAuthorityChange}
+                      authority={authority}
+                      key={index}
+                    />
+                  ))}
+              </List>
+            </StyledListWrapper>
           )}
-          {authoritySearchResponse?.numFound && authoritySearchResponse.numFound >= AuthorityListLength && (
-            <Pagination
-              color="primary"
-              count={Math.ceil(authoritySearchResponse.numFound / AuthorityListLength)}
-              page={page}
-              onChange={(_event, value) => {
-                handlePageChange(value);
-              }}
-            />
-          )}
+          {selectedAuthorities.length === 0 &&
+            authoritySearchResponse?.numFound &&
+            authoritySearchResponse.numFound >= AuthorityListLength && (
+              <Pagination
+                color="primary"
+                count={Math.ceil(authoritySearchResponse.numFound / AuthorityListLength)}
+                page={page}
+                onChange={(_event, value) => {
+                  handlePageChange(value);
+                }}
+              />
+            )}
           {error && <ErrorBanner userNeedsToBeLoggedIn={true} />}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button variant="contained" onClick={handleClose} color="primary">
             {t('authority.close')}
           </Button>
         </DialogActions>
