@@ -29,6 +29,18 @@
     "show_list": "Vis liste",
     "who_got_access": "Hvem har tilgang"
   },
+  "authority": {
+    "add_authority": "Legg til autoritet",
+    "authorities": "Autoriteter",
+    "close": "Close",
+    "deselect_authority": "Fjern autoritet",
+    "empty_search_query": "Må inneholde minst en bokstav eller et tall",
+    "not_possible_to_remove_warning": "NB! Det er ikke mulig å slette en autoritet etter at den er valgt",
+    "search_for_authority": "Søk etter verifisert autoritet",
+    "selected": "Valgt",
+    "verify": "Verifiser",
+    "view_verified_authority": "Se verifisert autoritet"
+  },
   "common": {
     "all_changes_saved": "Alle endringer er lagret",
     "back": "Tilbake",

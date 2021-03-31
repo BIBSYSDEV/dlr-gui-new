@@ -29,6 +29,18 @@
     "show_list": "Show list",
     "who_got_access": "Who got access"
   },
+  "authority": {
+    "add_authority": "Add authority",
+    "authorities": "Authorities",
+    "close": "Close",
+    "deselect_authority": "Deselect authority",
+    "empty_search_query": "Must contain at least one letter or number",
+    "not_possible_to_remove_warning": "NB! It is not possible to remove an authority after it has been selected",
+    "search_for_authority": "Search for verified authority",
+    "selected": "Selected",
+    "verify": "Verify",
+    "view_verified_authority": "View verified authority"
+  },
   "common": {
     "all_changes_saved": "All changes saved",
     "back": "Back",

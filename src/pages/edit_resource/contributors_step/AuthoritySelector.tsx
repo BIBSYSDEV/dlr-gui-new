@@ -1,6 +1,11 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
-import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
 import {
   getAuthoritiesForResourceCreatorOrContributor,
   postAuthorityForResourceCreatorOrContributor,
@@ -10,11 +15,12 @@ import { Authority, AuthoritySearchResponse } from '../../../types/authority.typ
 import List from '@material-ui/core/List';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
-import { Pagination } from '@material-ui/lab';
+import Pagination from '@material-ui/lab/Pagination';
 import ErrorBanner from '../../../components/ErrorBanner';
 import styled from 'styled-components';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import AuthorityListItem from './AuthorityListItem';
+import { useTranslation } from 'react-i18next';
 
 const StyledDialog = styled(Dialog)`
   min-width: 80vw;
@@ -38,15 +44,18 @@ const nameConverter = (fullName: string) => {
   return names.join(' ');
 };
 
+const OffsetFirstPage = 0;
+const FirstPage = 1;
+const AuthorityListLength = 10;
+const FormDialogTitleId = 'form-dialog-title';
+const TextFieldId = 'name';
+const ListTitleId = 'nested-list-subheader';
+
 interface AuthoritySelectorProps {
   initialNameValue: string;
   resourceIdentifier: string;
   creatorOrContributorId: string;
 }
-
-//Behandle tekststreng.
-//1. med komma: kan kjøres rett inn.
-//2. uten komma: må behandles.
 
 const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   initialNameValue,
@@ -62,6 +71,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [page, setPage] = useState(1);
+  const { t } = useTranslation();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -73,7 +83,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
 
   const handlePageChange = (value: number) => {
     setPage(value);
-    searchForAuthorities((value - 1) * 10);
+    searchForAuthorities((value - FirstPage) * AuthorityListLength);
   };
 
   useEffect(() => {
@@ -131,32 +141,32 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   };
 
   useEffect(() => {
-    if (initialNameValue.length > 1 && selectedAuthorities.length === 0) {
-      searchForAuthorities(0);
+    if (authorityInputSearchValue.length > 1 && selectedAuthorities.length === 0) {
+      searchForAuthorities(OffsetFirstPage);
     }
-  }, [initialNameValue, searchForAuthorities, selectedAuthorities, open]);
+  }, [authorityInputSearchValue.length, searchForAuthorities, selectedAuthorities, open]);
 
   return (
     <>
       {selectedAuthorities.length > 0 && (
         <Button variant="outlined" color="primary" onClick={handleClickOpen} startIcon={<StyledHowToRegIcon />}>
-          Se verifisert autoritet
+          {t('authority.view_verified_authority')}
         </Button>
       )}
       {selectedAuthorities.length === 0 && (
         <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-          Verifiser
+          {t('authority.verify')}
         </Button>
       )}
-      <StyledDialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">
-          {selectedAuthorities.length === 0 && 'Legg til autoriteter'}
-          {selectedAuthorities.length > 0 && 'Autoriteter'}
+      <StyledDialog open={open} onClose={handleClose} aria-labelledby={FormDialogTitleId}>
+        <DialogTitle id={FormDialogTitleId}>
+          {selectedAuthorities.length === 0 && t('authority.add_authority')}
+          {selectedAuthorities.length > 0 && t('authority.authorities')}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>NB! Det er ikke mulig å slette en autoritet etter at den er valgt. </DialogContentText>
+          <DialogContentText>{t('authority.not_possible_to_remove_warning')}. </DialogContentText>
           {selectedAuthorities.length === 0 && (
-            <form onSubmit={() => searchForAuthorities(0)}>
+            <form onSubmit={() => searchForAuthorities(OffsetFirstPage)}>
               <TextField
                 value={authorityInputSearchValue}
                 onChange={(event) => {
@@ -166,9 +176,9 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
                 onBlur={() => setTextFieldTouched(true)}
                 autoFocus
                 error={invalidInput()}
-                helperText={invalidInput() && 'søkestreng er tom'}
-                id="name"
-                label="Finn verifisert autoritet"
+                helperText={invalidInput() && t('authority.empty_search_query')}
+                id={TextFieldId}
+                label={t('authority.search_for_authority')}
                 type="text"
                 fullWidth
               />
@@ -178,10 +188,10 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
           {isLoading && <CircularProgress />}
           {authoritySearchResponse && !isLoading && (
             <List
-              aria-labelledby="nested-list-subheader"
+              aria-labelledby={ListTitleId}
               subheader={
-                <ListSubheader component="div" id="nested-list-subheader">
-                  Autoriteter
+                <ListSubheader component="div" id={ListTitleId}>
+                  {t('authority.authorities')}
                 </ListSubheader>
               }>
               {selectedAuthorities.map((authority, index) => (
@@ -204,10 +214,10 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
                 ))}
             </List>
           )}
-          {authoritySearchResponse?.numFound && authoritySearchResponse.numFound >= 10 && (
+          {authoritySearchResponse?.numFound && authoritySearchResponse.numFound >= AuthorityListLength && (
             <Pagination
               color="primary"
-              count={Math.ceil(authoritySearchResponse.numFound / 10)}
+              count={Math.ceil(authoritySearchResponse.numFound / AuthorityListLength)}
               page={page}
               onChange={(_event, value) => {
                 handlePageChange(value);
@@ -218,7 +228,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Lukk
+            {t('authority.close')}
           </Button>
         </DialogActions>
       </StyledDialog>
