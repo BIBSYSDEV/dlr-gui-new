@@ -1,14 +1,6 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
-import {
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  TextField,
-} from '@material-ui/core';
+import { CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
 import {
   getAuthoritiesForResourceCreatorOrContributor,
   postAuthorityForResourceCreatorOrContributor,
@@ -16,16 +8,13 @@ import {
 } from '../../../api/authoritiesApi';
 import { Authority, AuthoritySearchResponse } from '../../../types/authority.types';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import ListItemText from '@material-ui/core/ListItemText';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
-import Link from '@material-ui/core/Link';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import { Pagination } from '@material-ui/lab';
 import ErrorBanner from '../../../components/ErrorBanner';
 import styled from 'styled-components';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import AuthorityListItem from './AuthorityListItem';
 
 const StyledDialog = styled(Dialog)`
   min-width: 80vw;
@@ -33,10 +22,6 @@ const StyledDialog = styled(Dialog)`
 
 const StyledHowToRegIcon = styled(HowToRegIcon)`
   color: darkgreen;
-`;
-
-const StyledIconButton = styled(IconButton)`
-  color: green !important;
 `;
 
 const nameConverter = (fullName: string) => {
@@ -199,44 +184,23 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
                   Autoriteter
                 </ListSubheader>
               }>
+              {selectedAuthorities.map((authority, index) => (
+                <AuthorityListItem
+                  isSelected={true}
+                  handleSelectedAuthorityChange={handleSelectedAuthorityChange}
+                  authority={authority}
+                  key={index}
+                />
+              ))}
               {!isLoading &&
+                selectedAuthorities.length === 0 &&
                 authoritySearchResponse.results.map((authority, index) => (
-                  <ListItem key={index} selected={checkIfListItemIsSelectedAuthority(authority)}>
-                    <ListItemText
-                      primary={
-                        checkIfListItemIsSelectedAuthority(authority) ? `${authority.name} (valgt)` : authority.name
-                      }
-                      secondary={
-                        <Link
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          href={`https://authority.bibsys.no/authority/rest/authorities/html/${authority.id}`}>
-                          les mer (ekstern side)
-                        </Link>
-                      }
-                    />
-                    {!checkIfListItemIsSelectedAuthority(authority) && (
-                      <ListItemSecondaryAction>
-                        <IconButton
-                          onClick={() => handleSelectedAuthorityChange(authority.id)}
-                          edge="end"
-                          aria-label="comments">
-                          <HowToRegIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    )}
-                    {checkIfListItemIsSelectedAuthority(authority) && (
-                      <ListItemSecondaryAction>
-                        <StyledIconButton
-                          onClick={() => handleSelectedAuthorityChange(authority.id)}
-                          edge="end"
-                          disabled={true}
-                          aria-label="deselect or select">
-                          <HowToRegIcon />
-                        </StyledIconButton>
-                      </ListItemSecondaryAction>
-                    )}
-                  </ListItem>
+                  <AuthorityListItem
+                    isSelected={checkIfListItemIsSelectedAuthority(authority)}
+                    handleSelectedAuthorityChange={handleSelectedAuthorityChange}
+                    authority={authority}
+                    key={index}
+                  />
                 ))}
             </List>
           )}
