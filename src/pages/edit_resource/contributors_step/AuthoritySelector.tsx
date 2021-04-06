@@ -24,6 +24,7 @@ import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
 import { DeviceWidths } from '../../../themes/mainTheme';
 import { IconButton } from '@material-ui/core';
+import useDebounce from '../../../utils/useDebounce';
 
 const StyledDialog = styled(Dialog)`
   min-width: 80vw;
@@ -74,7 +75,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   creatorOrContributorId,
 }) => {
   const [selectedAuthorities, setSelectedAuthorities] = useState<Authority[]>([]);
-  const [authorityInputSearchValue, setAuthorityInputSearchValue] = useState(nameConverter(initialNameValue));
+  const [authorityInputSearchValue, setAuthorityInputSearchValue] = useState('');
   const [textFieldDirty, setTextFieldDirty] = useState(false);
   const [textFieldTouched, setTextFieldTouched] = useState(false);
   const [open, setOpen] = useState(false);
@@ -84,8 +85,10 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   const [page, setPage] = useState(1);
   const { t } = useTranslation();
   const fullScreenDialog = window.screen.height < DeviceWidths.sm;
+  const debouncedSearchTerm = useDebounce(authorityInputSearchValue, 500);
 
   const handleClickOpen = () => {
+    setAuthorityInputSearchValue(nameConverter(initialNameValue));
     setOpen(true);
   };
 
@@ -117,7 +120,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
     (offset: number) => {
       setIsLoading(true);
       setError(null);
-      searchAuthorities(authorityInputSearchValue, offset)
+      searchAuthorities(debouncedSearchTerm, offset)
         .then((response) => {
           setAuthoritySearchResponse(response.data);
           setIsLoading(false);
@@ -127,7 +130,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
           setIsLoading(false);
         });
     },
-    [authorityInputSearchValue]
+    [debouncedSearchTerm]
   );
 
   const invalidInput = (): boolean => {
@@ -153,10 +156,10 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   };
 
   useEffect(() => {
-    if (authorityInputSearchValue.length > 1 && selectedAuthorities.length === 0) {
+    if (debouncedSearchTerm.length > 1 && selectedAuthorities.length === 0) {
       searchForAuthorities(OffsetFirstPage);
     }
-  }, [authorityInputSearchValue.length, searchForAuthorities, selectedAuthorities, open]);
+  }, [debouncedSearchTerm.length, searchForAuthorities, selectedAuthorities, open]);
 
   return (
     <>
