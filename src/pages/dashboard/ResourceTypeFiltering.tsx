@@ -21,7 +21,7 @@ interface ResourceTypeFilteringProps {
   setQueryObject: Dispatch<SetStateAction<QueryObject>>;
 }
 
-const initialResourceTypeCheckList = (t: TFunction<string>): ResourceTypeListItem[] => {
+const initialResourceTypeCheckList = (t: TFunction<'translation'>): ResourceTypeListItem[] => {
   return DefaultResourceTypes.map<ResourceTypeListItem>((resourceType) => ({
     name: t(resourceType),
     isSelected: false,
