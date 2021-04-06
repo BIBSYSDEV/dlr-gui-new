@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
@@ -88,6 +88,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   const { t } = useTranslation();
   const fullScreenDialog = window.screen.height < DeviceWidths.sm;
   const debouncedSearchTerm = useDebounce(authorityInputSearchValue, 500);
+  const mountedRef = useRef(true);
 
   const handleClickOpen = () => {
     setAuthorityInputSearchValue(nameConverter(initialNameValue));
@@ -110,6 +111,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
           resourceIdentifier,
           creatorOrContributorId
         );
+        if (!mountedRef.current) return null;
         setSelectedAuthorities(response);
         if (response.length > 0 && onAuthoritySelected) {
           onAuthoritySelected(response);
@@ -127,6 +129,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
       setError(null);
       searchAuthorities(debouncedSearchTerm, offset)
         .then((response) => {
+          if (!mountedRef.current) return null;
           setAuthoritySearchResponse(response.data);
           setIsLoading(false);
         })
@@ -165,9 +168,16 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
 
   useEffect(() => {
     if (debouncedSearchTerm.length > 1 && selectedAuthorities.length === 0) {
+      setPage(FirstPage);
       searchForAuthorities(OffsetFirstPage);
     }
-  }, [debouncedSearchTerm.length, searchForAuthorities, selectedAuthorities, open]);
+  }, [debouncedSearchTerm.length, debouncedSearchTerm, selectedAuthorities, open, searchForAuthorities]);
+
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
 
   return (
     <>

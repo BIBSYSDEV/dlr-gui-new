@@ -15,6 +15,8 @@ import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import { StyledDeleteButton } from '../../../components/styled/StyledButtons';
 import HelperTextPopover from '../../../components/HelperTextPopover';
 import AuthoritySelector from './AuthoritySelector';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../state/rootReducer';
 
 const StyledSpacer = styled.div`
   margin-bottom: 1rem;
@@ -46,6 +48,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
   const [addCreatorError, setAddCreatorError] = useState<Error>();
   const [isDeleting, setIsDeleting] = useState(false);
   const inputElements = useRef<any>({});
+  const user = useSelector((state: RootState) => state.user);
 
   const addCreator = async (arrayHelpers: FieldArrayRenderProps) => {
     setAllChangesSaved(false);
@@ -181,7 +184,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                           </HelperTextPopover>
                         </Grid>
                       )}
-                      {!isDeleting && (
+                      {!isDeleting && user.institutionAuthorities?.isCurator && (
                         <Grid item xs={6} sm={3}>
                           <AuthoritySelector
                             resourceIdentifier={values.identifier}
