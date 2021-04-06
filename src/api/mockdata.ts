@@ -1,6 +1,6 @@
 import { Contributor, Creator, emptyResource, Resource } from '../types/resource.types';
 import deepmerge from 'deepmerge';
-import { User } from '../types/user.types';
+import { InstitutionProfilesNames, User, UserRoleFromInstitution } from '../types/user.types';
 import { License } from '../types/license.types';
 import { v4 as uuidv4 } from 'uuid';
 import { Course, CourseSeason, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
@@ -75,6 +75,17 @@ export const mockUser: User = {
   institution: 'ntnu',
   email: 'test@test.com',
   name: 'Test User',
+};
+
+export const mockInstitutionAuthorities: UserRoleFromInstitution = {
+  profiles: [
+    { name: InstitutionProfilesNames.curator },
+    { name: InstitutionProfilesNames.administrator },
+    { name: InstitutionProfilesNames.publisher },
+    { name: InstitutionProfilesNames.editor },
+    { name: InstitutionProfilesNames.user },
+    { name: InstitutionProfilesNames.authenticated },
+  ],
 };
 
 export const mockDefaultResource: Resource = deepmerge(emptyResource, {

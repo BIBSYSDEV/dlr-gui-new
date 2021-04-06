@@ -27,6 +27,7 @@ import {
   mockTags,
   mockToken,
   mockUser,
+  mockInstitutionAuthorities,
 } from './mockdata';
 
 // AXIOS INTERCEPTOR
@@ -169,6 +170,11 @@ export const interceptRequestsOnMock = () => {
 
   // USER
   mock.onGet(new RegExp(`${API_PATHS.guiBackendUsersPath}/users/authorized`)).reply(200, mockUser);
+  mock
+    .onGet(
+      new RegExp(`${API_PATHS.guiBackendUserAuthorizationsPath}/authorizations/users/authorized/institutions/current`)
+    )
+    .reply(200, mockInstitutionAuthorities);
   mock.onGet(new RegExp(`${API_PATHS.guiBackendLoginPath}/logout`)).reply(200);
 
   //TOKEN
