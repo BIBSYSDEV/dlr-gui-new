@@ -51,6 +51,16 @@ const StyledEditPublication = styled.div`
   align-items: center;
 `;
 
+const StyledProgressWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
+`;
+
 interface EditResourcePageParamTypes {
   identifier: string;
 }
@@ -311,7 +321,9 @@ const EditResourcePage = () => {
       </StyledEditPublication>
     </StyledContentWrapperLarge>
   ) : isLoadingResource ? (
-    <CircularProgress />
+    <StyledProgressWrapper>
+      <CircularProgress />
+    </StyledProgressWrapper>
   ) : resourceInitError ? (
     <ErrorBanner userNeedsToBeLoggedIn={true} error={resourceInitError} />
   ) : formikInitResource ? (

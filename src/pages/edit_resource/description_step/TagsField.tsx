@@ -1,12 +1,12 @@
-import React, { ChangeEvent, FC, useState } from 'react';
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Chip, Grid, TextField } from '@material-ui/core';
+import { Chip, CircularProgress, Grid, TextField } from '@material-ui/core';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { deleteTag, postTag } from '../../../api/resourceApi';
+import { deleteTag, postTag, searchTags } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import styled from 'styled-components';
@@ -15,6 +15,7 @@ import HelperTextPopover from '../../../components/HelperTextPopover';
 import { AutocompleteRenderInputParams } from '@material-ui/lab';
 import Typography from '@material-ui/core/Typography';
 import { StylePopoverTypography } from '../../../components/styled/StyledTypographies';
+import useDebounce from '../../../utils/useDebounce';
 
 const StyledChip = styled(Chip)`
   && {
@@ -30,7 +31,7 @@ const StyledChip = styled(Chip)`
   }
 `;
 
-const StyledAutoComplete: any = styled(Autocomplete)`
+const StyledAutoCompleteWrapper = styled.div`
   flex-grow: 4;
 `;
 
@@ -45,32 +46,63 @@ interface TagsFieldProps {
 const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, setFieldValue, resetForm, setTouched, touched } = useFormikContext<Resource>();
+  const [tagInputFieldValue, setTagInputFieldValue] = useState('');
+  const debouncedTagInputValue = useDebounce(tagInputFieldValue);
+  const [options, setOptions] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [cancelSearch, setCancelSearch] = useState(false);
   const [saveError, setSaveError] = useState<Error>();
+  const [tagSearchError, setTagSearchError] = useState<Error>();
 
-  const saveTagsChanging = async (name: string, value: string[]) => {
+  useEffect(() => {
+    const searchForTags = async () => {
+      if (!cancelSearch) {
+        setLoading(true);
+        try {
+          const response = await searchTags(debouncedTagInputValue);
+          const optionsResult = response.data.facet_counts.map((facetCount) => facetCount.value);
+          setOptions(optionsResult);
+        } catch (error) {
+          setTagSearchError(error);
+        } finally {
+          setLoading(false);
+          setCancelSearch(false);
+        }
+      }
+    };
+    setOptions([]);
+    if (debouncedTagInputValue.length > 1) {
+      searchForTags();
+    }
+  }, [debouncedTagInputValue, cancelSearch, t]);
+
+  const saveTagsChanging = async (name: string, tagArray: string[]) => {
     setAllChangesSaved(false);
-
     try {
       const promiseArray: Promise<any>[] = [];
-      const newTags = value.filter((tag) => !values.tags?.includes(tag));
+      const newTags = tagArray.filter((tag) => !values.tags?.includes(tag));
       newTags.forEach((tag) => {
         promiseArray.push(postTag(values.identifier, tag));
       });
-      const removeTags = values.tags?.filter((tag) => !value.includes(tag));
+      const removeTags = values.tags?.filter((tag) => !tagArray.includes(tag));
       removeTags?.forEach((tag) => {
         promiseArray.push(deleteTag(values.identifier, tag));
       });
       setSaveError(undefined);
       //Must wait for all the promises to finish or we will get race conditions for updating setAllChangesSaved.
       await Promise.all(promiseArray);
-      setFieldValue('tags', value);
-      values.tags = value;
+      setFieldValue('tags', tagArray);
+      values.tags = tagArray;
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
     } catch (error) {
       setSaveError(error);
     } finally {
       setAllChangesSaved(true);
     }
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTagInputFieldValue(event.target.value);
   };
 
   return (
@@ -80,44 +112,54 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
           {({ field }: FieldProps) => (
             <Grid container alignItems="center" spacing={2}>
               <Grid item xs={10}>
-                <StyledAutoComplete
-                  {...field}
-                  freeSolo
-                  multiple
-                  options={[]}
-                  onChange={(_: ChangeEvent<unknown>, value: string[]) => {
-                    saveTagsChanging(field.name, value);
-                  }}
-                  renderTags={(value: any, getTagProps: any) =>
-                    value.map((option: any, index: number) => (
-                      <StyledChip
-                        deleteIcon={<StyledCancelIcon />}
-                        data-testid={`tag-chip-${index}`}
-                        label={option}
-                        {...getTagProps({ index })}
+                <StyledAutoCompleteWrapper>
+                  <Autocomplete
+                    {...field}
+                    freeSolo
+                    multiple
+                    id="register-tags-input"
+                    noOptionsText={t('common.no_options')}
+                    options={options}
+                    loading={loading}
+                    filterSelectedOptions
+                    getOptionSelected={(option: string, value: string) => option.toLowerCase() === value.toLowerCase()}
+                    onChange={(_: ChangeEvent<unknown>, valueArray: string[]) => {
+                      saveTagsChanging(field.name, valueArray);
+                    }}
+                    renderOption={(option: string) => <span data-testid={'tag-option'}>{option}</span>}
+                    renderTags={(value: any, getTagProps: any) =>
+                      value.map((option: any, index: number) => (
+                        <StyledChip
+                          deleteIcon={<StyledCancelIcon />}
+                          data-testid={`tag-chip-${index}`}
+                          label={option}
+                          {...getTagProps({ index })}
+                        />
+                      ))
+                    }
+                    renderInput={(params: AutocompleteRenderInputParams) => (
+                      <TextField
+                        {...params}
+                        id="resource-feature-tags"
+                        label={t('resource.metadata.tags')}
+                        helperText={t('resource.add_tags')}
+                        variant="filled"
+                        onChange={handleChange}
+                        fullWidth
+                        data-testid="resource-tags-input"
+                        InputProps={{
+                          ...params.InputProps,
+                          endAdornment: (
+                            <>
+                              {loading ? <CircularProgress color="inherit" size={'1rem'} /> : null}
+                              {params.InputProps.endAdornment}
+                            </>
+                          ),
+                        }}
                       />
-                    ))
-                  }
-                  renderInput={(params: AutocompleteRenderInputParams) => (
-                    <TextField
-                      {...params}
-                      id="resource-feature-tags"
-                      label={t('resource.metadata.tags')}
-                      helperText={t('resource.add_tags')}
-                      variant="filled"
-                      fullWidth
-                      data-testid="resource-tags-input"
-                      onBlur={(event) => {
-                        const value = event.target.value;
-                        const tags = value
-                          .split(/[|,;]+/)
-                          .map((value: string) => value.trim())
-                          .filter((tag) => tag !== '');
-                        saveTagsChanging(field.name, [...field.value, ...tags]);
-                      }}
-                    />
-                  )}
-                />
+                    )}
+                  />
+                </StyledAutoCompleteWrapper>
               </Grid>
               <Grid item xs={2}>
                 <HelperTextPopover
@@ -140,6 +182,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
             </Grid>
           )}
         </Field>
+        {tagSearchError && <ErrorBanner error={tagSearchError}></ErrorBanner>}
         {saveError && <ErrorBanner userNeedsToBeLoggedIn={true} error={saveError} />}
       </StyledContentWrapper>
     </StyledSchemaPartColored>

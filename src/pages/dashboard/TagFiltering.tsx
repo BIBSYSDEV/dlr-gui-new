@@ -132,6 +132,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           onChange={(event: ChangeEvent<unknown>, value: any) => {
             setTagValue(value);
           }}
+          getOptionSelected={(option, value) => option.toLowerCase() === value.toLowerCase()}
           loading={loading}
           renderOption={(option) => <span data-testid={'tag-option'}>{option}</span>}
           renderInput={(params) => (
