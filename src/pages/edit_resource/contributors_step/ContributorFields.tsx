@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MenuItem, TextField, Typography } from '@material-ui/core';
+import { Grid, GridSize, MenuItem, TextField, Typography } from '@material-ui/core';
 import { Contributor, ContributorFeatureNames, FieldNames, Resource } from '../../../types/resource.types';
 import { ErrorMessage, Field, FieldArray, FieldArrayRenderProps, FieldProps, useFormikContext } from 'formik';
 import Button from '@material-ui/core/Button';
@@ -14,17 +14,10 @@ import ErrorBanner from '../../../components/ErrorBanner';
 import contributorTypeList from '../../../resources/assets/contributorTypeList.json';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import { StyledDeleteButton } from '../../../components/styled/StyledButtons';
+import HelperTextPopover from '../../../components/HelperTextPopover';
 
-const StyledFieldsWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+const StyledSpacer = styled.div`
   margin-bottom: 1rem;
-`;
-
-const StyledTextField = styled(TextField)`
-  margin-right: 1rem;
-  flex-grow: 1;
-  min-width: 10rem;
 `;
 
 interface ContributorFieldsProps {
@@ -34,6 +27,11 @@ interface ContributorFieldsProps {
 enum ErrorIndex {
   NO_ERRORS = -1,
 }
+
+const MaxGridColumns = 12;
+const DefaultSmallColumns = 4;
+const DefaultLargeColumns = 5;
+const TextLengthOverflow = 14;
 
 interface contributorTypesTranslated {
   key: string;
@@ -64,8 +62,8 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
     setTouched,
     touched,
   } = useFormikContext<Resource>();
-  const [addContributorError, setAddContributorError] = useState(false);
-  const [updateContributorError, setUpdateContributorError] = useState(false);
+  const [addContributorError, setAddContributorError] = useState<Error>();
+  const [updateContributorError, setUpdateContributorError] = useState<Error>();
   const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
   const [contributorTypesTranslated, setContributorTypesTranslated] = useState<contributorTypesTranslated[]>(
     generateContributorTypesTranslated(t)
@@ -79,6 +77,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
   const addContributor = async (arrayHelpers: FieldArrayRenderProps) => {
     setAllChangesSaved(false);
     try {
+      setAddContributorError(undefined);
       const contributorResponse = await createContributor(values.identifier);
       arrayHelpers.push({
         identifier: contributorResponse.data.identifier,
@@ -88,9 +87,8 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
           dlr_contributor_identifier: contributorResponse.data.identifier,
         },
       });
-      setAddContributorError(false);
     } catch (error) {
-      setAddContributorError(true);
+      setAddContributorError(error);
     } finally {
       setAllChangesSaved(true);
       inputElements.current[values.contributors.length].focus();
@@ -104,12 +102,12 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
   ) => {
     try {
       setAllChangesSaved(false);
+      setUpdateContributorError(undefined);
+      setErrorIndex(ErrorIndex.NO_ERRORS);
       const name = '' + event.target.name.split('.').pop();
       if (event.target.value.length > 0) {
         await putContributorFeature(values.identifier, contributorIdentifier, name, event.target.value);
       }
-      setUpdateContributorError(false);
-      setErrorIndex(ErrorIndex.NO_ERRORS);
       if (
         values?.contributors[contributorIndex].identifier === contributorIdentifier &&
         name === ContributorFeatureNames.Type
@@ -117,8 +115,8 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
         values.contributors[contributorIndex].features.dlr_contributor_type = event.target.value;
       }
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
-    } catch (saveContributorError: any) {
-      setUpdateContributorError(true);
+    } catch (error) {
+      setUpdateContributorError(error);
       setErrorIndex(contributorIndex);
     } finally {
       setAllChangesSaved(true);
@@ -134,14 +132,42 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
       setAllChangesSaved(false);
       await deleteContributor(values.identifier, contributorIdentifier);
       arrayHelpers.remove(contributorIndex);
-      setUpdateContributorError(false);
+      setUpdateContributorError(undefined);
       setErrorIndex(ErrorIndex.NO_ERRORS);
-    } catch (deleteContributorError: any) {
-      setUpdateContributorError(true);
+    } catch (error) {
+      setUpdateContributorError(error);
       setErrorIndex(contributorIndex);
     } finally {
       setAllChangesSaved(true);
     }
+  };
+
+  const calculateNumSMTypeColumn = (index: number, bigScreen: boolean): GridSize => {
+    const contributorName = values.contributors[index]?.features?.dlr_contributor_name;
+    if (contributorName) {
+      if (contributorName.length >= TextLengthOverflow && !bigScreen) {
+        return MaxGridColumns;
+      } else if (index === 0 && contributorName.length < TextLengthOverflow) {
+        return DefaultSmallColumns;
+      } else {
+        return DefaultLargeColumns;
+      }
+    }
+    return DefaultLargeColumns;
+  };
+
+  const calculateNumSMNameColumn = (index: number): GridSize => {
+    const contributorName = values.contributors[index]?.features?.dlr_contributor_name;
+    if (contributorName) {
+      if (contributorName.length >= TextLengthOverflow) {
+        return MaxGridColumns;
+      } else if (index === 0 && contributorName.length < TextLengthOverflow) {
+        return DefaultSmallColumns;
+      } else {
+        return DefaultSmallColumns;
+      }
+    }
+    return DefaultSmallColumns;
   };
 
   return (
@@ -154,78 +180,105 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
             <>
               {values.contributors?.map((contributor: Contributor, index: number) => {
                 return (
-                  <StyledFieldsWrapper key={contributor.identifier}>
-                    <Field
-                      name={`${FieldNames.ContributorsBase}[${index}].${FieldNames.Features}.${ContributorFeatureNames.Type}`}>
-                      {({ field, meta: { touched, error } }: FieldProps<string>) => (
-                        <StyledTextField
-                          {...field}
-                          id={`contributor-feature-type-${index}`}
-                          variant="filled"
-                          select
-                          required
-                          inputRef={(element) => (inputElements.current[index] = element)}
-                          data-testid={`contributor-type-field-${index}`}
-                          label={t('common.type')}
-                          value={field.value}
-                          error={touched && !!error}
-                          helperText={<ErrorMessage name={field.name} />}
-                          onBlur={(event) => {
-                            handleBlur(event);
-                            setFieldTouched(
-                              `${FieldNames.ContributorsBase}[${index}].${FieldNames.Features}.${ContributorFeatureNames.Type}`,
-                              true,
-                              true
-                            );
-                          }}
-                          onChange={(event) => {
-                            handleChange(event);
-                            saveContributorField(event, contributor.identifier, index);
+                  <StyledSpacer key={contributor.identifier}>
+                    <Grid container alignItems="center" key={contributor.identifier} spacing={2}>
+                      <Grid
+                        item
+                        xs={MaxGridColumns}
+                        sm={calculateNumSMTypeColumn(index, false)}
+                        xl={calculateNumSMTypeColumn(index, true)}>
+                        <Field
+                          name={`${FieldNames.ContributorsBase}[${index}].${FieldNames.Features}.${ContributorFeatureNames.Type}`}>
+                          {({ field, meta: { touched, error } }: FieldProps<string>) => (
+                            <TextField
+                              {...field}
+                              id={`contributor-feature-type-${index}`}
+                              variant="filled"
+                              select
+                              required
+                              fullWidth
+                              inputRef={(element) => (inputElements.current[index] = element)}
+                              data-testid={`contributor-type-field-${index}`}
+                              label={t('common.type')}
+                              value={field.value}
+                              error={touched && !!error}
+                              helperText={<ErrorMessage name={field.name} />}
+                              onBlur={(event) => {
+                                handleBlur(event);
+                                setFieldTouched(
+                                  `${FieldNames.ContributorsBase}[${index}].${FieldNames.Features}.${ContributorFeatureNames.Type}`,
+                                  true,
+                                  true
+                                );
+                              }}
+                              onChange={(event) => {
+                                handleChange(event);
+                                saveContributorField(event, contributor.identifier, index);
+                              }}>
+                              {contributorTypesTranslated.map((contributorType, index) => {
+                                return (
+                                  <MenuItem
+                                    data-testid={`contributor-type-options-${index}`}
+                                    key={index}
+                                    value={contributorType.key}>
+                                    <Typography variant="inherit">{contributorType.description}</Typography>
+                                  </MenuItem>
+                                );
+                              })}
+                            </TextField>
+                          )}
+                        </Field>
+                      </Grid>
+                      <Grid item xs={MaxGridColumns} sm={calculateNumSMNameColumn(index)} xl={DefaultSmallColumns}>
+                        <Field
+                          name={`${FieldNames.ContributorsBase}[${index}].${FieldNames.Features}.${ContributorFeatureNames.Name}`}>
+                          {({ field, meta: { touched, error } }: FieldProps<string>) => (
+                            <TextField
+                              {...field}
+                              id={`contributor-name-${index}`}
+                              variant="filled"
+                              label={t('common.name')}
+                              required
+                              fullWidth
+                              error={touched && !!error}
+                              helperText={<ErrorMessage name={field.name} />}
+                              data-testid={`contributor-name-field-${index}`}
+                              onBlur={(event) => {
+                                handleBlur(event);
+                                !error && saveContributorField(event, contributor.identifier, index);
+                              }}
+                            />
+                          )}
+                        </Field>
+                      </Grid>
+                      {index === 0 && (
+                        <Grid item xs={2} sm={1}>
+                          <HelperTextPopover
+                            ariaButtonLabel={t('explanation_text.contributor_helper_aria_label')}
+                            popoverId={'contributor-helper-popover'}>
+                            <Typography variant="body1">{t('explanation_text.contributor_helper_text')}.</Typography>
+                          </HelperTextPopover>
+                        </Grid>
+                      )}
+                      <Grid item xs={6} sm={3}>
+                        <StyledDeleteButton
+                          color="secondary"
+                          startIcon={<DeleteIcon fontSize="large" />}
+                          size="large"
+                          data-testid={`contributor-delete-button-${index}`}
+                          onClick={() => {
+                            removeContributor(contributor.features.dlr_contributor_identifier, arrayHelpers, index);
                           }}>
-                          {contributorTypesTranslated.map((contributorType, index) => {
-                            return (
-                              <MenuItem
-                                data-testid={`contributor-type-options-${index}`}
-                                key={index}
-                                value={contributorType.key}>
-                                <Typography variant="inherit">{contributorType.description}</Typography>
-                              </MenuItem>
-                            );
-                          })}
-                        </StyledTextField>
+                          {t('common.remove').toUpperCase()}
+                        </StyledDeleteButton>
+                      </Grid>
+                      {updateContributorError && errorIndex === index && (
+                        <Grid item xs={MaxGridColumns}>
+                          <ErrorBanner error={updateContributorError} />
+                        </Grid>
                       )}
-                    </Field>
-                    <Field
-                      name={`${FieldNames.ContributorsBase}[${index}].${FieldNames.Features}.${ContributorFeatureNames.Name}`}>
-                      {({ field, meta: { touched, error } }: FieldProps<string>) => (
-                        <StyledTextField
-                          {...field}
-                          id={`contributor-name-${index}`}
-                          variant="filled"
-                          label={t('common.name')}
-                          required
-                          error={touched && !!error}
-                          helperText={<ErrorMessage name={field.name} />}
-                          data-testid={`contributor-name-field-${index}`}
-                          onBlur={(event) => {
-                            handleBlur(event);
-                            !error && saveContributorField(event, contributor.identifier, index);
-                          }}
-                        />
-                      )}
-                    </Field>
-                    <StyledDeleteButton
-                      color="secondary"
-                      startIcon={<DeleteIcon fontSize="large" />}
-                      size="large"
-                      data-testid={`contributor-delete-button-${index}`}
-                      onClick={() => {
-                        removeContributor(contributor.features.dlr_contributor_identifier, arrayHelpers, index);
-                      }}>
-                      {t('common.remove').toUpperCase()}
-                    </StyledDeleteButton>
-                    {updateContributorError && errorIndex === index && <ErrorBanner />}
-                  </StyledFieldsWrapper>
+                    </Grid>
+                  </StyledSpacer>
                 );
               })}
               <Button
@@ -239,7 +292,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                 }}>
                 {t('resource.add_contributor').toUpperCase()}
               </Button>
-              {addContributorError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
+              {addContributorError && <ErrorBanner userNeedsToBeLoggedIn={true} error={addContributorError} />}
             </>
           )}
         />

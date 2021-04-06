@@ -170,7 +170,7 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
           additionalFileUploadUppy.removeFile(fileId);
         }
       }
-    } catch (e) {
+    } catch (error) {
       setErrorIndex(index);
     }
   };

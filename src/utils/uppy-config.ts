@@ -88,7 +88,7 @@ export const createThumbnailFileUppy = (
       await prepareUploadPart(uploadId, key, body, number),
   });
 
-export const uppyLocale = (t: TFunction<string>) => {
+export const uppyLocale = (t: TFunction<'translation'>) => {
   return {
     strings: {
       dropPaste: `${t('resource.files_and_license.dashboard_component.drag_file')} %{browse}`,

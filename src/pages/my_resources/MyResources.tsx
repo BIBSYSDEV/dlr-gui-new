@@ -25,20 +25,20 @@ const MyResources = () => {
   const [isLoadingMyResources, setIsLoadingMyResources] = useState(false);
   const [resourcesUnpublished, setMyUnpublishedResources] = useState<Resource[]>([]);
   const [resourcesPublished, setMyPublishedResources] = useState<Resource[]>([]);
-  const [loadingError, setLoadingError] = useState(false);
+  const [loadingError, setLoadingError] = useState<Error>();
   const { institution } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoadingMyResources(true);
+        setLoadingError(undefined);
         const response = await getMyResources();
         setMyUnpublishedResources(response.data.filter((resource) => !resource.features.dlr_status_published));
         setMyPublishedResources(response.data.filter((resource) => resource.features.dlr_status_published));
-        setLoadingError(false);
         setIsLoadingMyResources(false);
       } catch (error) {
-        setLoadingError(true);
+        setLoadingError(error);
       } finally {
         setIsLoadingMyResources(false);
       }
@@ -60,7 +60,7 @@ const MyResources = () => {
 
   return (
     <StyledContentWrapperLarge>
-      {loadingError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
+      {loadingError && <ErrorBanner userNeedsToBeLoggedIn={true} error={loadingError} />}
       {isLoadingMyResources && <CircularProgress />}
       <ListMarginAlign>
         <PageHeader>{t('resource.my_resources')}</PageHeader>

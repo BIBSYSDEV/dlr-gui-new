@@ -76,7 +76,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
     handleChange,
     setFieldTouched,
   } = useFormikContext<Resource>();
-  const [savingError, setSavingError] = useState(false);
+  const [savingError, setSavingError] = useState<Error>();
 
   const LicenseAgreements: string[] = [
     Licenses.CC,
@@ -140,9 +140,9 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
         setFieldValue('features.dlr_access', accessType);
       }
       setFieldValue('usageClearedWithOwner', event.target.value);
-      setSavingError(false);
+      setSavingError(undefined);
     } catch (error) {
-      setSavingError(true);
+      setSavingError(error);
     } finally {
       setAllChangesSaved(true);
       forceResetInLicenseWizard();
@@ -224,7 +224,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
             </Field>
           </StyledRadioBoxWrapper>
         )}
-        {savingError && <ErrorBanner userNeedsToBeLoggedIn={true} />}
+        {savingError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingError} />}
         {values.usageClearedWithOwner !== LicenseAgreementsOptions.YesOther &&
           values.usageClearedWithOwner !== '' &&
           values.containsOtherPeoplesWork && (

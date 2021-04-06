@@ -46,7 +46,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
   const [showThumbnailDashboardModal, setShowThumbnailDashboardModal] = useState(false);
   const [showPopover, setShowPopover] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-  const [thumbnailUpdateError, setThumbnailUpdateError] = useState(false);
+  const [thumbnailUpdateError, setThumbnailUpdateError] = useState<Error>();
   const mountedRef = useRef(true);
 
   useEffect(() => {
@@ -117,9 +117,9 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
           }
         }
         if (!mountedRef.current) return null;
-        setThumbnailUpdateError(false);
+        setThumbnailUpdateError(undefined);
       } catch (error) {
-        setThumbnailUpdateError(true);
+        setThumbnailUpdateError(error);
       } finally {
         newThumbnailIsReady();
         setFileInputIsBusy(false);
@@ -153,9 +153,9 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
       values.contents.masterContent.features.dlr_thumbnail_default = 'true';
       pollNewThumbnail(true);
       await new Promise((r) => setTimeout(r, 2000));
-      setThumbnailUpdateError(false);
+      setThumbnailUpdateError(undefined);
     } catch (error) {
-      setThumbnailUpdateError(true);
+      setThumbnailUpdateError(error);
     } finally {
       setFileInputIsBusy(false);
       pollNewThumbnail(false);
@@ -174,7 +174,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
 
   return (
     <StyledWrapper>
-      {thumbnailUpdateError && <ErrorBanner />}
+      {thumbnailUpdateError && <ErrorBanner error={thumbnailUpdateError} />}
       <Button
         variant="outlined"
         color="primary"
