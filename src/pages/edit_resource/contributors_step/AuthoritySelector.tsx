@@ -67,12 +67,14 @@ interface AuthoritySelectorProps {
   initialNameValue: string;
   resourceIdentifier: string;
   creatorOrContributorId: string;
+  onAuthoritySelected?: (authorities: Authority[]) => void;
 }
 
 const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   initialNameValue,
   resourceIdentifier,
   creatorOrContributorId,
+  onAuthoritySelected,
 }) => {
   const [selectedAuthorities, setSelectedAuthorities] = useState<Authority[]>([]);
   const [authorityInputSearchValue, setAuthorityInputSearchValue] = useState('');
@@ -109,12 +111,15 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
           creatorOrContributorId
         );
         setSelectedAuthorities(response);
+        if (response.length > 0 && onAuthoritySelected) {
+          onAuthoritySelected(response);
+        }
       } catch (error) {
         setError(error);
       }
     };
     fetchAuthorities();
-  }, [resourceIdentifier, creatorOrContributorId]);
+  }, [resourceIdentifier, creatorOrContributorId, onAuthoritySelected]);
 
   const searchForAuthorities = useCallback(
     (offset: number) => {
@@ -142,7 +147,10 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
       const newAuthority = authoritySearchResponse.results.find((auth) => auth.id === authorityId);
       if (newAuthority) {
         postAuthorityForResourceCreatorOrContributor(resourceIdentifier, creatorOrContributorId, newAuthority);
-        setSelectedAuthorities([...selectedAuthorities, newAuthority]);
+        setSelectedAuthorities([newAuthority]);
+        if (onAuthoritySelected) {
+          onAuthoritySelected([newAuthority]);
+        }
       }
     }
   };

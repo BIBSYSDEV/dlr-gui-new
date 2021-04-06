@@ -156,6 +156,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                               inputRef={(element) => (inputElements.current[index] = element)}
                               required
                               fullWidth
+                              disabled={!!(creator.authorities && creator.authorities.length > 0)}
                               label={t('common.name')}
                               error={touched && !!error}
                               helperText={<ErrorMessage name={field.name} />}
@@ -186,6 +187,9 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                             resourceIdentifier={values.identifier}
                             creatorOrContributorId={creator.identifier}
                             initialNameValue={creator.features.dlr_creator_name ?? ''}
+                            onAuthoritySelected={(authorities) => {
+                              values.creators[index].authorities = authorities;
+                            }}
                           />
                         </Grid>
                       )}
