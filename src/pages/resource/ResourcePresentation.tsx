@@ -34,7 +34,7 @@ const StyledCaption = styled(Typography)`
   display: block;
 `;
 
-const StyledChip = styled(Chip)`
+const StyledChip: any = styled(Chip)`
   margin-right: 0.5rem;
   margin-top: 0.5rem;
 `;
@@ -124,6 +124,9 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
         {resource.tags && resource.tags.length !== 0 && (
           <StyledFeatureWrapper data-testid="resource-tags">
             <StyledCaption variant="caption">{t('resource.metadata.tags')}</StyledCaption>
+            {/*                 clickable
+                component="a"
+                href={`/?${SearchParameters.tag}=${tag}`} */}
             {resource.tags.map((tag, index) => (
               <StyledChip key={index} size="medium" label={tag} />
             ))}
