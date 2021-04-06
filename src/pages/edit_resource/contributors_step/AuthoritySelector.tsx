@@ -23,8 +23,8 @@ import AuthorityListItem from './AuthorityListItem';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
 import { DeviceWidths } from '../../../themes/mainTheme';
-import { IconButton } from '@material-ui/core';
 import useDebounce from '../../../utils/useDebounce';
+import { BIBSYS_AUTHORITY_URL } from '../../../utils/constants';
 
 const StyledDialog = styled(Dialog)`
   min-width: 80vw;
@@ -38,8 +38,8 @@ const StyledListWrapper = styled.div`
   margin-top: 2rem;
 `;
 
-const StyledAuthorityInformation = styled.div`
-  display: flex;
+const StyledLinkButton: any = styled(Button)`
+  color: green;
 `;
 
 const nameConverter = (fullName: string) => {
@@ -164,12 +164,13 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   return (
     <>
       {selectedAuthorities.length > 0 && (
-        <StyledAuthorityInformation>
-          <IconButton onClick={handleClickOpen}>
-            <StyledHowToRegIcon />
-          </IconButton>
+        <StyledLinkButton
+          target="_blank"
+          rel="noopener noreferrer"
+          href={`${BIBSYS_AUTHORITY_URL}/${selectedAuthorities[0].id}`}
+          startIcon={<StyledHowToRegIcon />}>
           {selectedAuthorities[0].name}
-        </StyledAuthorityInformation>
+        </StyledLinkButton>
       )}
       {selectedAuthorities.length === 0 && (
         <Button variant="outlined" color="primary" onClick={handleClickOpen} startIcon={<AddCircleIcon />}>
