@@ -147,14 +147,6 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                         onChange={handleChange}
                         fullWidth
                         data-testid="resource-tags-input"
-                        onBlur={(event) => {
-                          const value = event.target.value;
-                          const tags = value
-                            .split(/[|,;]+/)
-                            .map((value: string) => value.trim())
-                            .filter((tag) => tag !== '');
-                          saveTagsChanging(field.name, [...field.value, ...tags]);
-                        }}
                         InputProps={{
                           ...params.InputProps,
                           endAdornment: (
