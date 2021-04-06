@@ -15,6 +15,9 @@ import contributorTypeList from '../../../resources/assets/contributorTypeList.j
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import { StyledDeleteButton } from '../../../components/styled/StyledButtons';
 import HelperTextPopover from '../../../components/HelperTextPopover';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../state/rootReducer';
+import AuthoritySelector from './AuthoritySelector';
 
 const StyledSpacer = styled.div`
   margin-bottom: 1rem;
@@ -31,7 +34,7 @@ enum ErrorIndex {
 const MaxGridColumns = 12;
 const DefaultSmallColumns = 4;
 const DefaultLargeColumns = 5;
-const TextLengthOverflow = 14;
+const DefaultHalfRow = 6;
 
 interface contributorTypesTranslated {
   key: string;
@@ -69,6 +72,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
     generateContributorTypesTranslated(t)
   );
   const inputElements = useRef<any>({});
+  const user = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     setContributorTypesTranslated(generateContributorTypesTranslated(t));
@@ -142,32 +146,22 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
     }
   };
 
-  const calculateNumSMTypeColumn = (index: number, bigScreen: boolean): GridSize => {
-    const contributorName = values.contributors[index]?.features?.dlr_contributor_name;
-    if (contributorName) {
-      if (contributorName.length >= TextLengthOverflow && !bigScreen) {
-        return MaxGridColumns;
-      } else if (index === 0 && contributorName.length < TextLengthOverflow) {
-        return DefaultSmallColumns;
-      } else {
-        return DefaultLargeColumns;
-      }
+  const calculateNumSMTypeColumn = (index: number): GridSize => {
+    if (!user.institutionAuthorities?.isCurator && index === 0) {
+      return DefaultSmallColumns;
+    } else if (!user.institutionAuthorities?.isCurator && index > 0) {
+      return DefaultLargeColumns;
     }
-    return DefaultLargeColumns;
+    return DefaultHalfRow;
   };
 
   const calculateNumSMNameColumn = (index: number): GridSize => {
-    const contributorName = values.contributors[index]?.features?.dlr_contributor_name;
-    if (contributorName) {
-      if (contributorName.length >= TextLengthOverflow) {
-        return MaxGridColumns;
-      } else if (index === 0 && contributorName.length < TextLengthOverflow) {
-        return DefaultSmallColumns;
-      } else {
-        return DefaultSmallColumns;
-      }
+    if (index === 0 && !user.institutionAuthorities?.isCurator) {
+      return DefaultSmallColumns;
+    } else if (index === 0 && user.institutionAuthorities?.isCurator) {
+      return DefaultLargeColumns;
     }
-    return DefaultSmallColumns;
+    return DefaultHalfRow;
   };
 
   return (
@@ -182,11 +176,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                 return (
                   <StyledSpacer key={contributor.identifier}>
                     <Grid container alignItems="center" key={contributor.identifier} spacing={2}>
-                      <Grid
-                        item
-                        xs={MaxGridColumns}
-                        sm={calculateNumSMTypeColumn(index, false)}
-                        xl={calculateNumSMTypeColumn(index, true)}>
+                      <Grid item xs={MaxGridColumns} sm={calculateNumSMTypeColumn(index)}>
                         <Field
                           name={`${FieldNames.ContributorsBase}[${index}].${FieldNames.Features}.${ContributorFeatureNames.Type}`}>
                           {({ field, meta: { touched, error } }: FieldProps<string>) => (
@@ -229,7 +219,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                           )}
                         </Field>
                       </Grid>
-                      <Grid item xs={MaxGridColumns} sm={calculateNumSMNameColumn(index)} xl={DefaultSmallColumns}>
+                      <Grid item xs={MaxGridColumns} sm={calculateNumSMNameColumn(index)}>
                         <Field
                           name={`${FieldNames.ContributorsBase}[${index}].${FieldNames.Features}.${ContributorFeatureNames.Name}`}>
                           {({ field, meta: { touched, error } }: FieldProps<string>) => (
@@ -239,6 +229,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                               variant="filled"
                               label={t('common.name')}
                               required
+                              disabled={!!(contributor.authorities && contributor.authorities.length > 0)}
                               fullWidth
                               error={touched && !!error}
                               helperText={<ErrorMessage name={field.name} />}
@@ -260,7 +251,19 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                           </HelperTextPopover>
                         </Grid>
                       )}
-                      <Grid item xs={6} sm={3}>
+                      {user.institutionAuthorities?.isCurator && (
+                        <Grid item xs={5} sm={6}>
+                          <AuthoritySelector
+                            resourceIdentifier={values.identifier}
+                            creatorOrContributorId={contributor.identifier}
+                            initialNameValue={contributor.features.dlr_contributor_name ?? ''}
+                            onAuthoritySelected={(authorities) => {
+                              values.contributors[index].authorities = authorities;
+                            }}
+                          />
+                        </Grid>
+                      )}
+                      <Grid item xs={5} sm={3}>
                         <StyledDeleteButton
                           color="secondary"
                           startIcon={<DeleteIcon fontSize="large" />}

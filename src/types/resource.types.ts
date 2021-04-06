@@ -150,7 +150,7 @@ interface CreatorFeatures {
 export interface Contributor {
   identifier: string;
   features: ContributorFeatures;
-  Authority?: Authority;
+  authorities?: Authority[];
 }
 
 export const emptyContributor: Contributor = {
