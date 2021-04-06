@@ -69,19 +69,21 @@ const App = () => {
   const [hasValidToken, setHasValidToken] = useState(false);
 
   useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const userDataResponse = await getUserData();
+        const institutionAuthorities = await getUserAuthorizationsInstitution();
+        dispatch(setUser({ ...userDataResponse.data, institutionAuthorities: institutionAuthorities }));
+      } catch (error) {
+        setUserError(error);
+      } finally {
+        setIsLoadingUser(false);
+      }
+    };
     if (localStorage.token) {
       setUserError(undefined);
       if (localStorage.token && !isTokenAnonymous() && !isLoggedInTokenExpired() && !user.id) {
-        getUserData()
-          .then((response) => {
-            getUserAuthorizationsInstitution().then((autResponse) =>
-              dispatch(setUser({ ...response.data, institutionAuthorities: autResponse }))
-            );
-          })
-          .catch((error) => {
-            setUserError(error);
-          })
-          .finally(() => setIsLoadingUser(false));
+        loadUser();
       } else {
         setIsLoadingUser(false);
       }
