@@ -16,7 +16,7 @@ const StyledIconButton = styled(IconButton)`
 
 interface AuthorityListItemProps {
   authority: Authority;
-  handleSelectedAuthorityChange: (identifier: string) => void;
+  handleSelectedAuthorityChange: (authority: Authority) => void;
   isSelected: boolean;
 }
 
@@ -35,7 +35,8 @@ const AuthorityListItem: FC<AuthorityListItemProps> = ({ authority, handleSelect
       {!isSelected && (
         <ListItemSecondaryAction>
           <IconButton
-            onClick={() => handleSelectedAuthorityChange(authority.id)}
+            data-testid={`add-verify-authority-${authority.id}`}
+            onClick={() => handleSelectedAuthorityChange(authority)}
             edge="end"
             aria-label={t('authority.add_authority')}>
             <VerifiedUserIcon />
@@ -44,7 +45,11 @@ const AuthorityListItem: FC<AuthorityListItemProps> = ({ authority, handleSelect
       )}
       {isSelected && (
         <ListItemSecondaryAction>
-          <StyledIconButton edge="end" disabled={true} aria-label={t('authority.deselect_authority')}>
+          <StyledIconButton
+            data-testid={`add-verify-authority-${authority.id}`}
+            edge="end"
+            disabled={true}
+            aria-label={t('authority.deselect_authority')}>
             <VerifiedUserIcon />
           </StyledIconButton>
         </ListItemSecondaryAction>

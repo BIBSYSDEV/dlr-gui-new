@@ -145,15 +145,12 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
     return textFieldDirty && textFieldTouched && authorityInputSearchValue.length < 1;
   };
 
-  const handleSelectedAuthorityChange = (authorityId: string) => {
+  const handleSelectedAuthorityChange = (authority: Authority) => {
     if (authoritySearchResponse) {
-      const newAuthority = authoritySearchResponse.results.find((auth) => auth.id === authorityId);
-      if (newAuthority) {
-        postAuthorityForResourceCreatorOrContributor(resourceIdentifier, creatorOrContributorId, newAuthority);
-        setSelectedAuthorities([newAuthority]);
-        if (onAuthoritySelected) {
-          onAuthoritySelected([newAuthority]);
-        }
+      postAuthorityForResourceCreatorOrContributor(resourceIdentifier, creatorOrContributorId, authority);
+      setSelectedAuthorities([authority]);
+      if (onAuthoritySelected) {
+        onAuthoritySelected([authority]);
       }
     }
   };
@@ -183,6 +180,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
     <>
       {selectedAuthorities.length > 0 && (
         <StyledLinkButton
+          data-testid="authority-link-button"
           target="_blank"
           rel="noopener noreferrer"
           href={`${BIBSYS_AUTHORITY_URL}/${selectedAuthorities[0].id}`}
@@ -191,7 +189,12 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
         </StyledLinkButton>
       )}
       {selectedAuthorities.length === 0 && (
-        <Button variant="outlined" color="primary" onClick={handleClickOpen} startIcon={<AddCircleIcon />}>
+        <Button
+          data-testid="verify-authority-button"
+          variant="outlined"
+          color="primary"
+          onClick={handleClickOpen}
+          startIcon={<AddCircleIcon />}>
           {t('authority.verify')}
         </Button>
       )}
@@ -262,10 +265,14 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
                 }}
               />
             )}
-          {error && <ErrorBanner userNeedsToBeLoggedIn={true} />}
+          {error && <ErrorBanner userNeedsToBeLoggedIn={true} error={error} />}
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" onClick={handleClose} color="primary">
+          <Button
+            data-testid="authority-selector-close-button"
+            variant="contained"
+            onClick={handleClose}
+            color="primary">
             {t('authority.close')}
           </Button>
         </DialogActions>
