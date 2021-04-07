@@ -87,6 +87,9 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
 
   const handleClose = () => {
     setOpen(false);
+    if (onAuthoritySelected && selectedAuthorities.length > 0) {
+      onAuthoritySelected(selectedAuthorities);
+    }
   };
 
   const handlePageChange = (value: number) => {
@@ -139,9 +142,6 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
     if (authoritySearchResponse) {
       postAuthorityForResourceCreatorOrContributor(resourceIdentifier, creatorOrContributorId, authority);
       setSelectedAuthorities([authority]);
-      if (onAuthoritySelected) {
-        onAuthoritySelected([authority]);
-      }
     }
   };
 

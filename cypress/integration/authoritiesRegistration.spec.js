@@ -14,6 +14,9 @@ context('Actions', () => {
     cy.get('[data-testid=verify-authority-button]').first().click();
     cy.get('[data-testid=add-verify-authority-1214]').should('exist');
     cy.get('[data-testid=add-verify-authority-213]').click();
+    cy.get('[data-testid=add-verify-authority-1214]').should('not.exist');
+    cy.get('[data-testid=add-verify-authority-213]').should('be.disabled');
+    cy.get('[data-testid=authority-selector-close-button]').click();
     cy.get('[data-testid=authority-link-button]').should('exist');
     cy.get('[data-testid=creator-name-field-0] input').should('be.disabled');
   });
