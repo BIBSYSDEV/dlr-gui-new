@@ -23,6 +23,9 @@ import AuthorityLink from '../../../components/AuthorityLink';
 const StyledSpacer = styled.div`
   margin-bottom: 1rem;
 `;
+const StyledTypography = styled(Typography)`
+  margin-bottom: 0.5rem;
+`;
 
 interface ContributorFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -248,7 +251,12 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                           <HelperTextPopover
                             ariaButtonLabel={t('explanation_text.contributor_helper_aria_label')}
                             popoverId={'contributor-helper-popover'}>
-                            <Typography variant="body1">{t('explanation_text.contributor_helper_text')}.</Typography>
+                            <StyledTypography variant="body1">
+                              {t('explanation_text.contributor_helper_text1')}.
+                            </StyledTypography>
+                            {user.institutionAuthorities?.isCurator && (
+                              <Typography variant="body1">{t('explanation_text.contributor_helper_text2')}.</Typography>
+                            )}
                           </HelperTextPopover>
                         </Grid>
                       )}

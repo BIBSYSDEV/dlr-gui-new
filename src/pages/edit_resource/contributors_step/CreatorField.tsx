@@ -185,8 +185,13 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                             ariaButtonLabel={t('explanation_text.creator_helper_aria_label')}
                             popoverId={'creator-helper-popover'}>
                             <StyledTypography variant="body1">
-                              {t('explanation_text.creator_helper_text')}.
+                              {t('explanation_text.creator_helper_text1')}.
                             </StyledTypography>
+                            {user.institutionAuthorities?.isCurator && (
+                              <StyledTypography variant="body1">
+                                {t('explanation_text.creator_helper_text2')}.
+                              </StyledTypography>
+                            )}
                             <Typography variant="body2">{t('explanation_text.creator_helper_example')}</Typography>
                           </HelperTextPopover>
                         </Grid>
