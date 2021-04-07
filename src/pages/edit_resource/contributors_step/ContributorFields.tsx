@@ -18,6 +18,7 @@ import HelperTextPopover from '../../../components/HelperTextPopover';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/rootReducer';
 import AuthoritySelector from './AuthoritySelector';
+import AuthorityLink from '../../../components/AuthorityLink';
 
 const StyledSpacer = styled.div`
   margin-bottom: 1rem;
@@ -251,7 +252,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                           </HelperTextPopover>
                         </Grid>
                       )}
-                      {user.institutionAuthorities?.isCurator && (
+                      {user.institutionAuthorities?.isCurator && !contributor.authorities && (
                         <Grid item xs={5} sm={6}>
                           <AuthoritySelector
                             resourceIdentifier={values.identifier}
@@ -259,10 +260,18 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                             initialNameValue={contributor.features.dlr_contributor_name ?? ''}
                             onAuthoritySelected={(authorities) => {
                               values.contributors[index].authorities = authorities;
+                              resetFormButKeepTouched(touched, resetForm, values, setTouched);
                             }}
                           />
                         </Grid>
                       )}
+                      {user.institutionAuthorities?.isCurator &&
+                        contributor.authorities &&
+                        contributor.authorities.length > 0 && (
+                          <Grid item xs={5} sm={6}>
+                            <AuthorityLink authority={contributor.authorities[0]} />
+                          </Grid>
+                        )}
                       <Grid item xs={5} sm={3}>
                         <StyledDeleteButton
                           color="secondary"

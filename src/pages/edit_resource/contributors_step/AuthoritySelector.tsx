@@ -14,7 +14,6 @@ import {
 import { Authority, AuthoritySearchResponse } from '../../../types/authority.types';
 import List from '@material-ui/core/List';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import Pagination from '@material-ui/lab/Pagination';
 import ErrorBanner from '../../../components/ErrorBanner';
 import styled from 'styled-components';
@@ -24,22 +23,13 @@ import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
 import { DeviceWidths } from '../../../themes/mainTheme';
 import useDebounce from '../../../utils/useDebounce';
-import { BIBSYS_AUTHORITY_URL } from '../../../utils/constants';
 
 const StyledDialog = styled(Dialog)`
   min-width: 80vw;
 `;
 
-const StyledHowToRegIcon = styled(VerifiedUserIcon)`
-  color: darkgreen;
-`;
-
 const StyledListWrapper = styled.div`
   margin-top: 2rem;
-`;
-
-const StyledLinkButton: any = styled(Button)`
-  color: green;
 `;
 
 const nameConverter = (fullName: string) => {
@@ -178,26 +168,14 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
 
   return (
     <>
-      {selectedAuthorities.length > 0 && (
-        <StyledLinkButton
-          data-testid="authority-link-button"
-          target="_blank"
-          rel="noopener noreferrer"
-          href={`${BIBSYS_AUTHORITY_URL}/${selectedAuthorities[0].id}`}
-          startIcon={<StyledHowToRegIcon />}>
-          {selectedAuthorities[0].name}
-        </StyledLinkButton>
-      )}
-      {selectedAuthorities.length === 0 && (
-        <Button
-          data-testid="verify-authority-button"
-          variant="outlined"
-          color="primary"
-          onClick={handleClickOpen}
-          startIcon={<AddCircleIcon />}>
-          {t('authority.verify')}
-        </Button>
-      )}
+      <Button
+        data-testid="verify-authority-button"
+        variant="outlined"
+        color="primary"
+        onClick={handleClickOpen}
+        startIcon={<AddCircleIcon />}>
+        {t('authority.verify')}
+      </Button>
       <StyledDialog fullScreen={fullScreenDialog} open={open} onClose={handleClose} aria-labelledby={FormDialogTitleId}>
         <DialogTitle id={FormDialogTitleId}>
           {selectedAuthorities.length === 0 && t('authority.add_authority')}

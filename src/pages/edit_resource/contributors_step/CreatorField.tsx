@@ -17,6 +17,7 @@ import HelperTextPopover from '../../../components/HelperTextPopover';
 import AuthoritySelector from './AuthoritySelector';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/rootReducer';
+import AuthorityLink from '../../../components/AuthorityLink';
 
 const StyledSpacer = styled.div`
   margin-bottom: 1rem;
@@ -190,7 +191,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                           </HelperTextPopover>
                         </Grid>
                       )}
-                      {!isDeleting && user.institutionAuthorities?.isCurator && (
+                      {!isDeleting && user.institutionAuthorities?.isCurator && !creator.authorities && (
                         <Grid item xs={6} sm={3}>
                           <AuthoritySelector
                             resourceIdentifier={values.identifier}
@@ -198,10 +199,19 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                             initialNameValue={creator.features.dlr_creator_name ?? ''}
                             onAuthoritySelected={(authorities) => {
                               values.creators[index].authorities = authorities;
+                              resetFormButKeepTouched(touched, resetForm, values, setTouched);
                             }}
                           />
                         </Grid>
                       )}
+                      {!isDeleting &&
+                        user.institutionAuthorities?.isCurator &&
+                        creator.authorities &&
+                        creator.authorities.length > 0 && (
+                          <Grid item xs={6} sm={3}>
+                            <AuthorityLink authority={creator.authorities[0]} />
+                          </Grid>
+                        )}
                       {values.creators?.length > 1 && !isDeleting && (
                         <Grid item xs={6} sm={3}>
                           <StyledDeleteButton
