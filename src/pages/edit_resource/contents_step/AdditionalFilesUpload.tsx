@@ -55,6 +55,15 @@ const SmallParagraphSpace = styled.div`
   }
 `;
 
+const UppyDashboardWrapper = styled.div`
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
+    max-width: 45rem;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
+    max-width: 90vw;
+  }
+`;
+
 const UploadImageProgressCard = styled.div`
   width: 100px;
 `;
@@ -240,7 +249,9 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
           </LargeParagraphSpace>
         ))}
         <LargeParagraphSpace data-testid={`additional-files-uppy-dashboard`}>
-          <UppyDashboard hideCancelButton={false} uppy={additionalFileUploadUppy} />
+          <UppyDashboardWrapper>
+            <UppyDashboard hideCancelButton={false} uppy={additionalFileUploadUppy} />
+          </UppyDashboardWrapper>
         </LargeParagraphSpace>
       </StyledContentWrapper>
     </StyledSchemaPartColored>
