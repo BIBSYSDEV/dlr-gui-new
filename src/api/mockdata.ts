@@ -332,6 +332,31 @@ export const mockFacets = {
       value: 'unit',
     },
     {
+      count: '20',
+      type: 'dlr_institution_id',
+      value: 'ntnu',
+    },
+    {
+      count: '20',
+      type: 'dlr_institution_id',
+      value: 'bi',
+    },
+    {
+      count: '20',
+      type: 'dlr_institution_id',
+      value: 'oslomet',
+    },
+    {
+      count: '20',
+      type: 'dlr_institution_id',
+      value: 'uib',
+    },
+    {
+      count: '20',
+      type: 'dlr_institution_id',
+      value: 'hvl',
+    },
+    {
       count: '8',
       type: 'dlr_rights_license_name',
       value: 'CC BY 4.0',
