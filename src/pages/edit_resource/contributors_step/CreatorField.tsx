@@ -123,12 +123,18 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
   };
 
   const calculateNumSMColumns = (index: number) => {
-    if (index === 0 && values.creators?.length < 2) {
+    if (index === 0 && values.creators?.length < 2 && user.institutionAuthorities?.isCurator) {
       return 7;
-    } else if (index === 0 && values.creators?.length >= 2) {
+    } else if (index === 0 && values.creators?.length >= 2 && user.institutionAuthorities?.isCurator) {
       return 5;
-    } else {
+    } else if (index === 0 && values.creators?.length < 2 && !user.institutionAuthorities?.isCurator) {
+      return 10;
+    } else if (index === 0 && values.creators?.length >= 2 && !user.institutionAuthorities?.isCurator) {
+      return 8;
+    } else if (user.institutionAuthorities?.isCurator) {
       return 6;
+    } else {
+      return 9;
     }
   };
 

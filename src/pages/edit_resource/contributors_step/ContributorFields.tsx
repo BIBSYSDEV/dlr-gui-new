@@ -161,7 +161,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
     } else if (index === 0 && user.institutionAuthorities?.isCurator) {
       return DefaultLargeColumns;
     }
-    return DefaultHalfRow;
+    return DefaultSmallColumns;
   };
 
   return (
