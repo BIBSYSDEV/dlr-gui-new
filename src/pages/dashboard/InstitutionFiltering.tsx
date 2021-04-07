@@ -47,20 +47,19 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
   }, []);
 
   useEffect(() => {
-    if (queryObject.institutions.length > 0) {
-      const nextState = institutionsFromGetFacets.map((institutionName) => ({
-        name: institutionName,
-        isSelected: !!queryObject.institutions.find(
-          (instName) => instName.toLowerCase() === institutionName.toLowerCase()
-        ),
-      }));
-      setInstitutionCheckedList(nextState);
-    } else {
-      setInstitutionCheckedList(initialInstitutionCheckedList(institutionsFromGetFacets));
-    }
-  }, [queryObject, institutionsFromGetFacets]);
-
-  useEffect(() => {
+    const updateInstitutionCheckedList = (list: string[]) => {
+      if (queryObject.institutions.length > 0) {
+        const nextState = list.map((institutionName) => ({
+          name: institutionName,
+          isSelected: !!queryObject.institutions.find(
+            (instName) => instName.toLowerCase() === institutionName.toLowerCase()
+          ),
+        }));
+        setInstitutionCheckedList(nextState);
+      } else {
+        setInstitutionCheckedList(initialInstitutionCheckedList(list));
+      }
+    };
     const generateInstitutionListFromFacets = async () => {
       setError(null);
       try {
@@ -72,17 +71,7 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
           .sort((a, b) => a.localeCompare(b));
         if (!mountedRef.current) return null;
         setInstitutionsFromGetFacets(list);
-        if (queryObject.institutions.length > 0) {
-          const nextState = list.map((institutionName) => ({
-            name: institutionName,
-            isSelected: !!queryObject.institutions.find(
-              (instName) => instName.toLowerCase() === institutionName.toLowerCase()
-            ),
-          }));
-          setInstitutionCheckedList(nextState);
-        } else {
-          setInstitutionCheckedList(initialInstitutionCheckedList(list));
-        }
+        updateInstitutionCheckedList(list);
       } catch (error) {
         setError(error);
       } finally {
@@ -92,8 +81,10 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
     if (!calledAPIOnce) {
       setCalledAPIONCE(true);
       generateInstitutionListFromFacets();
+    } else {
+      updateInstitutionCheckedList(institutionsFromGetFacets);
     }
-  }, [calledAPIOnce, queryObject.institutions]);
+  }, [calledAPIOnce, queryObject.institutions, institutionsFromGetFacets]);
 
   const changeSelected = (index: number, event: any) => {
     if (event.target.checked) {
