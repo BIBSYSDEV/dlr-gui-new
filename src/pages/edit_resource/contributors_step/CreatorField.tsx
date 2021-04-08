@@ -33,6 +33,15 @@ const StyledTextField = styled(TextField)`
   margin-right: 0.5rem;
 `;
 
+const HeaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const HelperTextWrapper = styled.div`
+  padding-left: 1rem;
+`;
+
 interface CreatorFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
 }
@@ -125,13 +134,13 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
 
   const calculateNumSMColumns = (index: number) => {
     if (index === 0 && values.creators?.length < 2 && user.institutionAuthorities?.isCurator) {
-      return 7;
-    } else if (index === 0 && values.creators?.length >= 2 && user.institutionAuthorities?.isCurator) {
-      return 5;
-    } else if (index === 0 && values.creators?.length < 2 && !user.institutionAuthorities?.isCurator) {
-      return 10;
-    } else if (index === 0 && values.creators?.length >= 2 && !user.institutionAuthorities?.isCurator) {
       return 8;
+    } else if (index === 0 && values.creators?.length >= 2 && user.institutionAuthorities?.isCurator) {
+      return 6;
+    } else if (index === 0 && values.creators?.length < 2 && !user.institutionAuthorities?.isCurator) {
+      return 12;
+    } else if (index === 0 && values.creators?.length >= 2 && !user.institutionAuthorities?.isCurator) {
+      return 9;
     } else if (user.institutionAuthorities?.isCurator) {
       return 6;
     } else {
@@ -146,7 +155,20 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
   return (
     <StyledSchemaPartColored color={Colors.ContributorsPageGradientColor1}>
       <StyledContentWrapper>
-        <Typography variant="h3">{t('resource.metadata.creator')}</Typography>
+        <HeaderWrapper>
+          <Typography variant="h3">{t('resource.metadata.creator')}</Typography>
+          <HelperTextWrapper>
+            <HelperTextPopover
+              ariaButtonLabel={t('explanation_text.creator_helper_aria_label')}
+              popoverId={'creator-helper-popover'}>
+              <StyledTypography variant="body1">{t('explanation_text.creator_helper_text1')}.</StyledTypography>
+              {user.institutionAuthorities?.isCurator && (
+                <StyledTypography variant="body1">{t('explanation_text.creator_helper_text2')}.</StyledTypography>
+              )}
+              <Typography variant="body2">{t('explanation_text.creator_helper_example')}</Typography>
+            </HelperTextPopover>
+          </HelperTextWrapper>
+        </HeaderWrapper>
         <FieldArray
           name={FieldNames.CreatorsBase}
           render={(arrayHelpers) => (
@@ -154,7 +176,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
               {sortCreatorArray()?.map((creator, index) => {
                 return (
                   <StyledSpacer key={index}>
-                    <Grid container alignItems="center" key={index} spacing={2}>
+                    <Grid container alignItems="center" key={index} spacing={3}>
                       <Grid item xs={calculateNumXSColumns(index)} sm={calculateNumSMColumns(index)}>
                         <Field
                           name={`${FieldNames.CreatorsBase}[${index}].${FieldNames.Features}.${CreatorFeatureAttributes.Name}`}>
@@ -179,23 +201,6 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                           )}
                         </Field>
                       </Grid>
-                      {index === 0 && (
-                        <Grid item xs={2} sm={1}>
-                          <HelperTextPopover
-                            ariaButtonLabel={t('explanation_text.creator_helper_aria_label')}
-                            popoverId={'creator-helper-popover'}>
-                            <StyledTypography variant="body1">
-                              {t('explanation_text.creator_helper_text1')}.
-                            </StyledTypography>
-                            {user.institutionAuthorities?.isCurator && (
-                              <StyledTypography variant="body1">
-                                {t('explanation_text.creator_helper_text2')}.
-                              </StyledTypography>
-                            )}
-                            <Typography variant="body2">{t('explanation_text.creator_helper_example')}</Typography>
-                          </HelperTextPopover>
-                        </Grid>
-                      )}
                       {!isDeleting && user.institutionAuthorities?.isCurator && !creator.authorities && (
                         <Grid item xs={6} sm={3}>
                           <AuthoritySelector

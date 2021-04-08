@@ -13,7 +13,6 @@ import {
 } from '../../../api/authoritiesApi';
 import { Authority, AuthoritySearchResponse } from '../../../types/authority.types';
 import List from '@material-ui/core/List';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Pagination from '@material-ui/lab/Pagination';
 import ErrorBanner from '../../../components/ErrorBanner';
 import styled from 'styled-components';
@@ -168,12 +167,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
 
   return (
     <>
-      <Button
-        data-testid="verify-authority-button"
-        variant="outlined"
-        color="primary"
-        onClick={handleClickOpen}
-        startIcon={<AddCircleIcon />}>
+      <Button data-testid="verify-authority-button" variant="outlined" color="primary" onClick={handleClickOpen}>
         {t('authority.verify')}
       </Button>
       <StyledDialog fullScreen={fullScreenDialog} open={open} onClose={handleClose} aria-labelledby={FormDialogTitleId}>
