@@ -31,9 +31,9 @@ interface InstitutionFilteringProps {
 
 const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQueryObject }) => {
   const { t } = useTranslation();
-  const [isLoading, setIsloading] = useState(false);
-  const [institutionsFromGetFacets, setInstitutionsFromGetFacets] = useState<string[]>(AllDLRInstitutionNames);
-  const [calledAPIOnce, setCalledAPIONCE] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [institutionsFromGetFacets, setInstitutionsFromGetFacets] = useState(AllDLRInstitutionNames);
+  const [calledApiOnce, setCalledApiOnce] = useState(false);
   const [institutionCheckedList, setInstitutionCheckedList] = useState(
     initialInstitutionCheckedList(AllDLRInstitutionNames)
   );
@@ -61,9 +61,9 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
       }
     };
     const generateInstitutionListFromFacets = async () => {
-      setError(null);
       try {
-        setIsloading(true);
+        setError(null);
+        setIsLoading(true);
         const facetsResponse = await getAllFacets();
         const list = facetsResponse.data.facet_counts
           .filter((facet) => facet.type === FacetType.dlrInstitutionId)
@@ -75,16 +75,16 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
       } catch (error) {
         setError(error);
       } finally {
-        setIsloading(false);
+        setIsLoading(false);
       }
     };
-    if (!calledAPIOnce) {
-      setCalledAPIONCE(true);
+    if (!calledApiOnce) {
+      setCalledApiOnce(true);
       generateInstitutionListFromFacets();
     } else {
       updateInstitutionCheckedList(institutionsFromGetFacets);
     }
-  }, [calledAPIOnce, queryObject.institutions, institutionsFromGetFacets]);
+  }, [calledApiOnce, queryObject.institutions, institutionsFromGetFacets]);
 
   const changeSelected = (index: number, event: any) => {
     if (event.target.checked) {
@@ -109,8 +109,9 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
       <FormLabel>
         <Typography variant="h3">{t('dashboard.institutions')}</Typography>{' '}
       </FormLabel>
-      {isLoading && <CircularProgress />}
-      {!isLoading && (
+      {isLoading ? (
+        <CircularProgress />
+      ) : (
         <FormGroup>
           {institutionCheckedList.map((institution, index) => (
             <FormControlLabel
