@@ -157,7 +157,7 @@ context('Actions', () => {
   it('adds and remove tags as a filters', () => {
     cy.visit('/');
     const tag1 = 'digital';
-    const tag2_search = 'jalla';
+    const tag2_search = 'dig';
     const tag2 = 'digital læringsressurs';
     const tag2_encoded = 'digital%20l%C3%A6ringsressurs';
     cy.get('[data-testid=search-for-resource-input]').type(search);
