@@ -77,9 +77,13 @@ const MyResources = () => {
       <ListMarginAlign>
         <PageHeader>{t('resource.my_resources')}</PageHeader>
         <TabContext value={tabValue}>
-          <StyledTabList textColor="primary" onChange={handleTabChange} aria-label="simple tabs example">
-            <Tab label={t('resource.unpublished_resources')} value={Tabs.UnPublished} />
-            <Tab label={t('resource.published_resources')} value={Tabs.Published} />
+          <StyledTabList
+            textColor="primary"
+            indicatorColor="primary"
+            onChange={handleTabChange}
+            aria-label="simple tabs example">
+            <Tab label={t('resource.unpublished_resources')} value={Tabs.UnPublished} data-testid={'unpublished-tab'} />
+            <Tab label={t('resource.published_resources')} value={Tabs.Published} data-testid={'published-tab'} />
           </StyledTabList>
           <TabPanel value={Tabs.UnPublished}>
             <List>

@@ -13,14 +13,20 @@ context('Actions', () => {
     cy.get(`[data-testid=list-item-resources-${unpublishedTestPost.identifier}]`).contains(
       unpublishedTestPost.features.dlr_title
     );
+    cy.get(`[data-testid=published-tab]`).click();
+    cy.get(`[data-testid=list-item-resources-${unpublishedTestPost.identifier}]`).should('not.exist');
     cy.get(`[data-testid=list-item-resources-${publishedTestPost.identifier}]`).should('exist');
     cy.get(`[data-testid=list-item-resources-${publishedTestPost.identifier}]`).contains(
       publishedTestPost.features.dlr_title
     );
+    cy.get(`[data-testid=unpublished-tab]`).click();
+    cy.get(`[data-testid=list-item-resources-${unpublishedTestPost.identifier}]`).should('exist');
+    cy.get(`[data-testid=list-item-resources-${publishedTestPost.identifier}]`).should('not.exist');
   });
 
   it('can delete a resource', () => {
     cy.get('[data-testid=my-resources-link]').click();
+    cy.get(`[data-testid=published-tab]`).click();
     cy.get('[data-testid=delete-confirm-dialog]').should('not.exist');
     cy.get('[data-testid=delete-my-resources-123]').click();
     cy.get('[data-testid=delete-confirm-dialog]').should('exist');
@@ -31,6 +37,7 @@ context('Actions', () => {
 
   it('can start deleting, then aborting deletion by clicking on abort button', () => {
     cy.get('[data-testid=my-resources-link]').click();
+    cy.get(`[data-testid=published-tab]`).click();
     cy.get('[data-testid=delete-confirm-dialog]').should('not.exist');
     cy.get('[data-testid=delete-my-resources-123]').click();
     cy.get('[data-testid=delete-confirm-dialog]').should('exist');
@@ -41,6 +48,7 @@ context('Actions', () => {
 
   it('can start deleting, then aborting deletion by clicking outside the confirm-delete dialog', () => {
     cy.get('[data-testid=my-resources-link]').click();
+    cy.get(`[data-testid=published-tab]`).click();
     cy.get('[data-testid=delete-confirm-dialog]').should('not.exist');
     cy.get('[data-testid=delete-my-resources-123]').click();
     cy.get('[data-testid=delete-confirm-dialog]').should('exist');
