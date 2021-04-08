@@ -98,7 +98,7 @@ export const interceptRequestsOnMock = () => {
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*`)).reply(202, {});
 
   //FACETS
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.facets`)).reply(200, mockFacets);
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesSearchPath}/resources/facets`)).reply(200, mockFacets);
 
   //RESOURCE TAGS
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/tags/types/tag`)).reply(200, mockTags);
