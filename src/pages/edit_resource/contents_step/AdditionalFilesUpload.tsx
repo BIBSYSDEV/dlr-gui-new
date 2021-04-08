@@ -7,7 +7,7 @@ import { Resource } from '../../../types/resource.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { UppyFile } from '@uppy/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { Colors } from '../../../themes/mainTheme';
+import { Colors, StyleWidths } from '../../../themes/mainTheme';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
@@ -58,7 +58,7 @@ const SmallParagraphSpace = styled.div`
 const UppyDashboardWrapper = styled.div`
   max-width: 90vw;
   @media (min-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
-    max-width: 39rem;
+    max-width: ${StyleWidths.width3};
   }
 `;
 
