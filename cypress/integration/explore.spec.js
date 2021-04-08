@@ -207,14 +207,15 @@ context('Actions', () => {
   it('adds and remove license as a filters', () => {
     const license1 = 'CC BY 4.0';
     const license1Short = 'CCBY40';
-    const license2 = 'bi-opphaver-bi';
+    const license2 = 'CC BY-ND 4.0';
+    const license2Short = 'CCBY-ND40';
     const license3 = 'CC BY-SA 4.0';
     const license3Short = 'CCBY-SA40';
     cy.get('[data-testid=search-for-resource-input]').type(search);
     cy.get('[data-testid=search-for-resource-submit]').click();
     cy.get('[data-testid=expand-filtering-options]').click();
     cy.get(`[data-testid=license-filtering-checkbox-label-${license1Short}]`).click();
-    cy.get(`[data-testid=license-filtering-checkbox-label-${license2}]`).click();
+    cy.get(`[data-testid=license-filtering-checkbox-label-${license2Short}]`).click();
     cy.get(`[data-testid=license-filtering-checkbox-label-${license3Short}]`).click();
     cy.location().should((loc) => {
       expect(loc.search).to.eq(
@@ -231,7 +232,7 @@ context('Actions', () => {
         }=${encodeURI(license3)}`
       );
     });
-    cy.get(`[data-testid=license-filtering-checkbox-label-${license2}]`).click();
+    cy.get(`[data-testid=license-filtering-checkbox-label-${license2Short}]`).click();
     cy.get(`[data-testid=license-filtering-checkbox-label-${license3Short}]`).click();
     cy.location().should((loc) => {
       expect(loc.search).to.eq(`?${SearchParameters.query}=${search}`);
@@ -241,7 +242,8 @@ context('Actions', () => {
   it('can detect license filters in the url', () => {
     const license1 = 'CC BY 4.0';
     const license1Short = 'CCBY40';
-    const license2 = 'bi-opphaver-bi';
+    const license2 = 'CC BY-ND 4.0';
+    const license2Short = 'CCBY-ND40';
     const license3Short = 'CCBY-SA40';
     cy.visit(
       `/?${SearchParameters.query}=${search}&${SearchParameters.license}=${encodeURI(license1)}&${
@@ -250,7 +252,7 @@ context('Actions', () => {
     );
     cy.get('[data-testid=expand-filtering-options]').click();
     cy.get(`[data-testid=license-filtering-checkbox-${license1Short}] input`).should('be.checked');
-    cy.get(`[data-testid=license-filtering-checkbox-${license2}] input`).should('be.checked');
+    cy.get(`[data-testid=license-filtering-checkbox-${license2Short}] input`).should('be.checked');
     cy.get(`[data-testid=license-filtering-checkbox-${license3Short}] input`).should('not.be.checked');
   });
 
