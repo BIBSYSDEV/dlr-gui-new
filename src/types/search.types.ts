@@ -77,7 +77,7 @@ interface FacetCount {
   type: FacetType;
 }
 
-enum FacetType {
+export enum FacetType {
   dlrFiletype = 'dlr_filetype',
   dlrInstitutionId = 'dlr_institution_id',
   dlrRightsLicenseName = 'dlr_rights_license_name',
