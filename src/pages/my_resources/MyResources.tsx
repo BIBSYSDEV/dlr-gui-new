@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 
 const StyledListWrapper = styled.div`
-  margin-top: 40px;
+  margin-top: 2rem;
 `;
 
 const ListMarginAlign = styled.div`
@@ -74,7 +74,6 @@ const MyResources = () => {
                   data-testid={`my-unpublished-resources-${resource.identifier}`}
                   key={index}
                   resource={resource}
-                  showTimeCreated={true}
                   fallbackInstitution={institution}
                   handleDelete={() => {
                     deleteResource(resource.identifier, false);
@@ -96,7 +95,6 @@ const MyResources = () => {
                   data-testid={`my-published-resources-${resource.identifier}`}
                   key={index}
                   resource={resource}
-                  showTimeCreated={true}
                   fallbackInstitution={institution}
                   handleDelete={() => {
                     deleteResource(resource.identifier, true);
