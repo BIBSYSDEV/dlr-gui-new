@@ -56,11 +56,9 @@ const SmallParagraphSpace = styled.div`
 `;
 
 const UppyDashboardWrapper = styled.div`
+  max-width: 90vw;
   @media (min-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
-    max-width: 45rem;
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
-    max-width: 90vw;
+    max-width: 39rem;
   }
 `;
 
