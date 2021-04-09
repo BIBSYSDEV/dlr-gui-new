@@ -7,7 +7,7 @@ import { Resource } from '../../../types/resource.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { UppyFile } from '@uppy/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { Colors } from '../../../themes/mainTheme';
+import { Colors, StyleWidths } from '../../../themes/mainTheme';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
@@ -52,6 +52,13 @@ const SmallParagraphSpace = styled.div`
   }
   @media (min-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
     padding-left: 2rem;
+  }
+`;
+
+const UppyDashboardWrapper = styled.div`
+  max-width: 90vw;
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
+    max-width: ${StyleWidths.width3};
   }
 `;
 
@@ -240,7 +247,9 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
           </LargeParagraphSpace>
         ))}
         <LargeParagraphSpace data-testid={`additional-files-uppy-dashboard`}>
-          <UppyDashboard hideCancelButton={false} uppy={additionalFileUploadUppy} />
+          <UppyDashboardWrapper>
+            <UppyDashboard hideCancelButton={false} uppy={additionalFileUploadUppy} />
+          </UppyDashboardWrapper>
         </LargeParagraphSpace>
       </StyledContentWrapper>
     </StyledSchemaPartColored>
