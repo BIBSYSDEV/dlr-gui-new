@@ -1,5 +1,5 @@
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
-import { LicenseCodes } from '../../types/license.types';
+import { CreativeCommonsLicenseCodes, Licenses } from '../../types/license.types';
 import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
 import { Checkbox, FormControl, FormControlLabel, FormGroup } from '@material-ui/core';
@@ -8,6 +8,9 @@ import { useTranslation } from 'react-i18next';
 import CClogoImage from '../../components/CClogoImage';
 import LicensePopoverExplanation from '../../components/LicensePopoverExplanation';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../state/rootReducer';
+import { User, UserInstitution } from '../../types/user.types';
 
 const StyledCheckboxLabelWrapper = styled.div`
   display: flex;
@@ -26,11 +29,28 @@ interface LicenseListItem {
   isSelected: boolean;
 }
 
-const initLicenseList = (): LicenseListItem[] => {
-  return LicenseCodes.map((license) => ({
+const initLicenseList = (user: User): LicenseListItem[] => {
+  const licenses = CreativeCommonsLicenseCodes.map((license) => ({
     licenseCode: license,
     isSelected: false,
   }));
+  switch (user.institution.toLowerCase()) {
+    case UserInstitution.NTNU.toLowerCase():
+      licenses.push({
+        licenseCode: Licenses.NTNU,
+        isSelected: false,
+      });
+      break;
+    case UserInstitution.BI.toLowerCase():
+      licenses.push({
+        licenseCode: Licenses.BI,
+        isSelected: false,
+      });
+      break;
+    default:
+      break;
+  }
+  return licenses;
 };
 
 interface LicenseFilteringProps {
@@ -39,20 +59,21 @@ interface LicenseFilteringProps {
 }
 
 const LicenseFiltering: FC<LicenseFilteringProps> = ({ queryObject, setQueryObject }) => {
-  const [licensesCheckList, setLicensesCheckList] = useState<LicenseListItem[]>(initLicenseList());
+  const user = useSelector((state: RootState) => state.user);
+  const [licensesCheckList, setLicensesCheckList] = useState<LicenseListItem[]>(initLicenseList(user));
   const { t } = useTranslation();
 
   useEffect(() => {
     if (queryObject.licenses.length > 0) {
-      const nextState = LicenseCodes.map((licenseCode) => ({
+      const nextState = CreativeCommonsLicenseCodes.map((licenseCode) => ({
         licenseCode: licenseCode,
         isSelected: !!queryObject.licenses.find((queryLicenseCode) => queryLicenseCode === licenseCode),
       }));
       setLicensesCheckList(nextState);
     } else {
-      setLicensesCheckList(initLicenseList());
+      setLicensesCheckList(initLicenseList(user));
     }
-  }, [queryObject]);
+  }, [queryObject, user]);
 
   const changeSelected = (index: number, event: any) => {
     if (event.target.checked) {
