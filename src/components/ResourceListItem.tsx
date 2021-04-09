@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Resource, ResourceFeatureTypes } from '../types/resource.types';
-import { ListItemText, TypographyTypeMap } from '@material-ui/core';
+import { Resource, ResourceCreationType } from '../types/resource.types';
 import Thumbnail from './Thumbnail';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
@@ -9,14 +8,9 @@ import Button from '@material-ui/core/Button';
 import ConfirmDeleteDialog from './ConfirmDeleteDialog.';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useHistory } from 'react-router-dom';
-import { OverridableComponent } from '@material-ui/core/OverridableComponent';
 import { Colors, StyleWidths } from '../themes/mainTheme';
 import { format } from 'date-fns';
-import VolumeUpIcon from '@material-ui/icons/VolumeUp';
-import PhotoOutlinedIcon from '@material-ui/icons/PhotoOutlined';
-import SlideshowIcon from '@material-ui/icons/Slideshow';
-import VideocamIcon from '@material-ui/icons/Videocam';
-import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
+import { getStyledFileTypeIcon } from './FileTypeIcon';
 
 const StyledListItemWrapper: any = styled.div`
   width: 100%;
@@ -52,11 +46,8 @@ const StyledActions: any = styled.div`
   }
 `;
 
-const StyledFileName = styled(Typography)`
-  max-width: 6rem;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+const StyledResourceTypeTypography = styled(Typography)`
+  margin: 0.5rem 0 1rem 0;
 `;
 
 const StyledActionButton = styled(Button)`
@@ -66,9 +57,6 @@ const StyledActionButton = styled(Button)`
 `;
 const StyledFileTypeIcon = styled.span`
   margin: 0.5rem 0.3rem 0.5rem 0.5rem;
-`;
-const StyledTypography: OverridableComponent<TypographyTypeMap<unknown, 'span'>> = styled(Typography)`
-  margin-top: 1rem;
 `;
 
 interface ResourceListItemProps {
@@ -86,16 +74,6 @@ const ResourceListItem: FC<ResourceListItemProps> = ({ resource, handleDelete, f
     history.push(`/editresource/${resource.identifier}`);
   };
 
-  //todo: Extract
-  const getStyledFileTypeIcon = (type: string) => {
-    if (type.toUpperCase() === ResourceFeatureTypes.audio.toUpperCase()) return <VolumeUpIcon />;
-    if (type.toUpperCase() === ResourceFeatureTypes.image.toUpperCase()) return <PhotoOutlinedIcon />;
-    if (type.toUpperCase() === ResourceFeatureTypes.presentation.toUpperCase()) return <SlideshowIcon />;
-    if (type.toUpperCase() === ResourceFeatureTypes.simulation.toUpperCase()) return <SlideshowIcon />;
-    if (type.toUpperCase() === ResourceFeatureTypes.video.toUpperCase()) return <VideocamIcon />;
-    if (type.toUpperCase() === ResourceFeatureTypes.document.toUpperCase()) return <DescriptionOutlinedIcon />;
-    return <DescriptionOutlinedIcon />; //default
-  };
   return (
     <StyledListItemWrapper>
       <StyledListItem data-testid={`list-item-resources-${resource.identifier}`}>
@@ -104,23 +82,34 @@ const ResourceListItem: FC<ResourceListItemProps> = ({ resource, handleDelete, f
           resourceOrContentIdentifier={resource.identifier}
           alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
         />
-
         {/*//todo: mobilbisning*/}
-        {/*//todo: rikig metadata*/}
+        {/*//TODO: mangler data for last edit, filnavn og hvilke tilganger når begrenset*/}
         <StyledMetaDataColumn>
           <Typography variant="h4">{`${resource.features.dlr_title}`}</Typography>
           {resource.features.dlr_type && (
             <StyledFileTypeIcon>{getStyledFileTypeIcon(resource.features.dlr_type)}</StyledFileTypeIcon>
           )}
-          <StyledFileName display="inline" variant="body1">
-            {resource.features.dlr_content_type}
-          </StyledFileName>
-          {resource.features.dlr_time_published && (
-            <StyledTypography variant="body2" color="textPrimary">
-              {t('Published')}: {format(new Date(resource.features.dlr_time_published), 'dd.MM.yyyy')}
-            </StyledTypography>
+          <StyledResourceTypeTypography variant="body2">
+            {resource.features.dlr_content_type === ResourceCreationType.FILE
+              ? t('resource.metadata.file')
+              : t('resource.metadata.link')}
+          </StyledResourceTypeTypography>
+          {resource.features.dlr_status_published
+            ? resource.features.dlr_time_published && (
+                <Typography variant="body1" color="textPrimary">
+                  {t('resource.metadata.published')}:{' '}
+                  {format(new Date(resource.features.dlr_time_published), 'dd.MM.yyyy')}
+                </Typography>
+              )
+            : resource.features.dlr_time_created && (
+                <Typography variant="body1" color="textPrimary">
+                  {t('resource.metadata.created')}: {format(new Date(resource.features.dlr_time_created), 'dd.MM.yyyy')}
+                </Typography>
+              )}
+
+          {resource.features.dlr_access && (
+            <Typography variant="body1">{t(`resource.access_types.${resource.features.dlr_access}`)}</Typography>
           )}
-          {resource.features.dlr_access && <StyledTypography>{resource.features.dlr_access}</StyledTypography>}
         </StyledMetaDataColumn>
         <StyledActions>
           {!resource.features.dlr_status_published && (
