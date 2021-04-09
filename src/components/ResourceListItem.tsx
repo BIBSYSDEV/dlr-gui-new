@@ -104,13 +104,16 @@ const ResourceListItem: FC<ResourceListItemProps> = ({ resource, handleDelete, f
           resourceOrContentIdentifier={resource.identifier}
           alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
         />
+
+        {/*//todo: mobilbisning*/}
+        {/*//todo: rikig metadata*/}
         <StyledMetaDataColumn>
           <Typography variant="h4">{`${resource.features.dlr_title}`}</Typography>
           {resource.features.dlr_type && (
             <StyledFileTypeIcon>{getStyledFileTypeIcon(resource.features.dlr_type)}</StyledFileTypeIcon>
           )}
-          <StyledFileName display="inline" variant="body2">
-            {resource.features.dlr_title}
+          <StyledFileName display="inline" variant="body1">
+            {resource.features.dlr_content_type}
           </StyledFileName>
           {resource.features.dlr_time_published && (
             <StyledTypography variant="body2" color="textPrimary">
