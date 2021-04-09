@@ -68,7 +68,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
       if (!cancelSearch) {
         setLoading(true);
         try {
-          const response = await searchTags(debouncedTagInputValue);
+          const response = await searchTags(debouncedTagInputValue.toLowerCase());
           const optionsResult = response.data.facet_counts.map((facetCount) => facetCount.value);
           setOptions(optionsResult);
         } catch (error) {
@@ -132,7 +132,10 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           onChange={(event: ChangeEvent<unknown>, value: any) => {
             setTagValue(value);
           }}
-          getOptionSelected={(option, value) => option.toLowerCase() === value.toLowerCase()}
+          getOptionSelected={() => {
+            return true; //HACK: Because we want the chips to stay on the outside of the autocomplete component
+          }}
+          inputValue={tagInputFieldValue}
           loading={loading}
           renderOption={(option) => <span data-testid={'tag-option'}>{option}</span>}
           renderInput={(params) => (
