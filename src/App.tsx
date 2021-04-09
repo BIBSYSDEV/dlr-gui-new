@@ -5,7 +5,7 @@ import Header from './layout/header/Header';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from './state/userSlice';
-import { getAnonymousWebToken, getUserData } from './api/userApi';
+import { getAnonymousWebToken, getUserAuthorizationsInstitution, getUserData } from './api/userApi';
 import AppRoutes from './AppRoutes';
 import { RootState } from './state/rootReducer';
 import { CircularProgress } from '@material-ui/core';
@@ -69,17 +69,21 @@ const App = () => {
   const [hasValidToken, setHasValidToken] = useState(false);
 
   useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const userDataResponse = await getUserData();
+        const institutionAuthorities = await getUserAuthorizationsInstitution();
+        dispatch(setUser({ ...userDataResponse.data, institutionAuthorities: institutionAuthorities }));
+      } catch (error) {
+        setUserError(error);
+      } finally {
+        setIsLoadingUser(false);
+      }
+    };
     if (localStorage.token) {
       setUserError(undefined);
       if (localStorage.token && !isTokenAnonymous() && !isLoggedInTokenExpired() && !user.id) {
-        getUserData()
-          .then((response) => {
-            dispatch(setUser(response.data));
-          })
-          .catch((error) => {
-            setUserError(error);
-          })
-          .finally(() => setIsLoadingUser(false));
+        loadUser();
       } else {
         setIsLoadingUser(false);
       }

@@ -13,11 +13,11 @@
     "@uppy/dashboard": "^1.17.1",
     "@uppy/react": "^1.11.6",
     "axios": "^0.21.1",
-    "date-fns": "^2.19.0",
+    "date-fns": "^2.20.0",
     "deepmerge": "^4.2.2",
     "env-cmd": "^10.1.0",
     "formik": "^2.2.6",
-    "i18next": "^20.1.0",
+    "i18next": "^20.2.1",
     "i18next-browser-languagedetector": "^6.1.0",
     "moment": "^2.29.1",
     "react": "^17.0.1",
@@ -44,8 +44,8 @@
     "@types/uuid": "^8.3.0",
     "@types/yup": "^0.29.11",
     "axios-mock-adapter": "^1.19.0",
-    "cypress": "^7.0.0",
-    "cypress-file-upload": "^5.0.3",
+    "cypress": "^7.0.1",
+    "cypress-file-upload": "^5.0.5",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-cypress": "^2.11.2",
     "eslint-plugin-prettier": "^3.3.1",
@@ -53,7 +53,7 @@
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
     "start-server-and-test": "^1.12.1",
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.4"
   },
   "scripts": {
     "start": "react-scripts -r start",

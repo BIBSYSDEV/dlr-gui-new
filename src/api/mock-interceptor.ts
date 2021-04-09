@@ -27,6 +27,7 @@ import {
   mockTags,
   mockToken,
   mockUser,
+  mockInstitutionAuthorities,
 } from './mockdata';
 
 // AXIOS INTERCEPTOR
@@ -97,7 +98,7 @@ export const interceptRequestsOnMock = () => {
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*`)).reply(202, {});
 
   //FACETS
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.facets`)).reply(200, mockFacets);
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesSearchPath}/resources/facets`)).reply(200, mockFacets);
 
   //RESOURCE TAGS
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/tags/types/tag`)).reply(200, mockTags);
@@ -169,6 +170,11 @@ export const interceptRequestsOnMock = () => {
 
   // USER
   mock.onGet(new RegExp(`${API_PATHS.guiBackendUsersPath}/users/authorized`)).reply(200, mockUser);
+  mock
+    .onGet(
+      new RegExp(`${API_PATHS.guiBackendUserAuthorizationsPath}/authorizations/users/authorized/institutions/current`)
+    )
+    .reply(200, mockInstitutionAuthorities);
   mock.onGet(new RegExp(`${API_PATHS.guiBackendLoginPath}/logout`)).reply(200);
 
   //TOKEN
