@@ -309,11 +309,12 @@
       "submitter_email": "Registrators epost"
     },
     "my_resources": "Mine ressurser",
+    "my_publication_tabs" : "Faner for mine ressurser",
     "new_registration": "Ny registering",
     "no_published_resources": "Du har ingen publiserte ressurser",
     "no_unpublished_resources": "Du har ingen upubliserte ressurser",
     "preview_not_supported_filetype": "Fohåndsvisning støttes ikke for dette filformatet",
-    "published_resources": "Publiserte ressurser",
+    "published_resources": "Publisert",
     "search_for_resources": "Søk etter ressurser",
     "start_with_link_to_resource": "Start registrering med en lenke",
     "start_with_uploading_file": "Last opp fil hvis ressursen skal publiseres på Internett for første gang",
@@ -327,7 +328,7 @@
       "simulation": "Simulasjon",
       "video": "Video"
     },
-    "unpublished_resources": "Upubliserte ressurser"
+    "unpublished_resources": "Påbegynt"
   },
   "sitemap": {
     "contents": "Innhold",
