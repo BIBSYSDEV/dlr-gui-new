@@ -42,12 +42,25 @@ const StyledFieldsWrapper = styled.div`
   }
 `;
 
-const StyledTextField = styled(TextField)`
-  margin-right: 1rem;
+interface TextFieldSizerProps {
+  isCurator: boolean;
+  id: string;
+  className?: string;
+}
+const TextFieldSizer: FC<TextFieldSizerProps> = ({ children, className, id }) => {
+  return (
+    <div id={id} className={className}>
+      {children}
+    </div>
+  );
+};
+
+const StyledTextFieldSizer = styled(TextFieldSizer)`
   flex-grow: 1;
-  width: 10rem;
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    width: 100%;
+  width: auto;
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 1 + 'px'}) {
+    width: ${(props) => (props.isCurator ? '28%' : '14rem')};
+    margin-right: 1rem;
   }
 `;
 
@@ -64,7 +77,7 @@ const StyledButtonRowWrapper = styled.div`
 
 const StyledButtonWrapper = styled.div`
   min-width: 6rem;
-  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 1 + 'px'}) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
     margin-left: 1rem;
   }
 `;
@@ -213,88 +226,90 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                     <Field
                       name={`${FieldNames.ContributorsBase}[${index}].${FieldNames.Features}.${ContributorFeatureNames.Type}`}>
                       {({ field, meta: { touched, error } }: FieldProps<string>) => (
-                        <StyledTextField
-                          {...field}
-                          id={`contributor-feature-type-${index}`}
-                          variant="filled"
-                          select
-                          required
-                          fullWidth
-                          inputRef={(element) => (inputElements.current[index] = element)}
-                          data-testid={`contributor-type-field-${index}`}
-                          label={t('common.type')}
-                          value={field.value}
-                          error={touched && !!error}
-                          helperText={<ErrorMessage name={field.name} />}
-                          onBlur={(event) => {
-                            handleBlur(event);
-                            setFieldTouched(
-                              `${FieldNames.ContributorsBase}[${index}].${FieldNames.Features}.${ContributorFeatureNames.Type}`,
-                              true,
-                              true
-                            );
-                          }}
-                          onChange={(event) => {
-                            handleChange(event);
-                            saveContributorField(event, contributor.identifier, index);
-                          }}>
-                          {contributorTypesTranslated.map((contributorType, index) => {
-                            return (
-                              <MenuItem
-                                data-testid={`contributor-type-options-${index}`}
-                                key={index}
-                                value={contributorType.key}>
-                                <Typography variant="inherit">{contributorType.description}</Typography>
-                              </MenuItem>
-                            );
-                          })}
-                        </StyledTextField>
+                        <StyledTextFieldSizer
+                          id="help-me-out-here"
+                          isCurator={!!user.institutionAuthorities?.isCurator}>
+                          <TextField
+                            {...field}
+                            id={`contributor-feature-type-${index}`}
+                            variant="filled"
+                            select
+                            required
+                            fullWidth
+                            inputRef={(element) => (inputElements.current[index] = element)}
+                            data-testid={`contributor-type-field-${index}`}
+                            label={t('common.type')}
+                            value={field.value}
+                            error={touched && !!error}
+                            helperText={<ErrorMessage name={field.name} />}
+                            onBlur={(event) => {
+                              handleBlur(event);
+                              setFieldTouched(
+                                `${FieldNames.ContributorsBase}[${index}].${FieldNames.Features}.${ContributorFeatureNames.Type}`,
+                                true,
+                                true
+                              );
+                            }}
+                            onChange={(event) => {
+                              handleChange(event);
+                              saveContributorField(event, contributor.identifier, index);
+                            }}>
+                            {contributorTypesTranslated.map((contributorType, index) => {
+                              return (
+                                <MenuItem
+                                  data-testid={`contributor-type-options-${index}`}
+                                  key={index}
+                                  value={contributorType.key}>
+                                  <Typography variant="inherit">{contributorType.description}</Typography>
+                                </MenuItem>
+                              );
+                            })}
+                          </TextField>
+                        </StyledTextFieldSizer>
                       )}
                     </Field>
 
                     <Field
                       name={`${FieldNames.ContributorsBase}[${index}].${FieldNames.Features}.${ContributorFeatureNames.Name}`}>
                       {({ field, meta: { touched, error } }: FieldProps<string>) => (
-                        <StyledTextField
-                          {...field}
-                          id={`contributor-name-${index}`}
-                          variant="filled"
-                          label={t('common.name')}
-                          required
-                          disabled={!!(contributor.authorities && contributor.authorities.length > 0)}
-                          fullWidth
-                          error={touched && !!error}
-                          helperText={<ErrorMessage name={field.name} />}
-                          data-testid={`contributor-name-field-${index}`}
-                          onBlur={(event) => {
-                            handleBlur(event);
-                            !error && saveContributorField(event, contributor.identifier, index);
-                          }}
-                        />
+                        <StyledTextFieldSizer isCurator={!!user.institutionAuthorities?.isCurator} id="name-field">
+                          <TextField
+                            {...field}
+                            id={`contributor-name-${index}`}
+                            variant="filled"
+                            label={t('common.name')}
+                            required
+                            disabled={!!(contributor.authorities && contributor.authorities.length > 0)}
+                            fullWidth
+                            error={touched && !!error}
+                            helperText={<ErrorMessage name={field.name} />}
+                            data-testid={`contributor-name-field-${index}`}
+                            onBlur={(event) => {
+                              handleBlur(event);
+                              !error && saveContributorField(event, contributor.identifier, index);
+                            }}
+                          />
+                        </StyledTextFieldSizer>
                       )}
                     </Field>
                     <StyledButtonRowWrapper id="button-wrapper">
-                      {user.institutionAuthorities?.isCurator && !contributor.authorities && (
+                      {user.institutionAuthorities?.isCurator && (
                         <StyledButtonWrapper>
-                          <AuthoritySelector
-                            resourceIdentifier={values.identifier}
-                            creatorOrContributorId={contributor.identifier}
-                            initialNameValue={contributor.features.dlr_contributor_name ?? ''}
-                            onAuthoritySelected={(authorities) => {
-                              values.contributors[index].authorities = authorities;
-                              resetFormButKeepTouched(touched, resetForm, values, setTouched);
-                            }}
-                          />
+                          {!contributor.authorities ? (
+                            <AuthoritySelector
+                              resourceIdentifier={values.identifier}
+                              creatorOrContributorId={contributor.identifier}
+                              initialNameValue={contributor.features.dlr_contributor_name ?? ''}
+                              onAuthoritySelected={(authorities) => {
+                                values.contributors[index].authorities = authorities;
+                                resetFormButKeepTouched(touched, resetForm, values, setTouched);
+                              }}
+                            />
+                          ) : (
+                            <AuthorityLink authority={contributor.authorities[0]} />
+                          )}
                         </StyledButtonWrapper>
                       )}
-
-                      {user.institutionAuthorities?.isCurator &&
-                        contributor.authorities &&
-                        contributor.authorities.length > 0 && (
-                          <StyledButtonWrapper>
-                            <AuthorityLink authority={contributor.authorities[0]} />
-                          </StyledButtonWrapper>
-                        )}
                       <StyledButtonWrapper>
                         <StyledDeleteButton
                           color="secondary"

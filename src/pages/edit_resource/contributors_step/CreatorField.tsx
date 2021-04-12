@@ -203,9 +203,9 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                         />
                       )}
                     </Field>
-                    <StyledButtonRowWrapper id="styled-row-wrapper">
+                    <StyledButtonRowWrapper>
                       {!isDeleting && user.institutionAuthorities?.isCurator && (
-                        <StyledButtonWrapper id="styled-button-wrapper">
+                        <StyledButtonWrapper>
                           {!creator.authorities ? (
                             <AuthoritySelector
                               resourceIdentifier={values.identifier}
