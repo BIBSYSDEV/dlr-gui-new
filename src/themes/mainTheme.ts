@@ -32,7 +32,6 @@ export enum Colors {
   Danger = '#ff5555',
   Warning = 'rgba(147, 10, 10, 1)',
   DangerLight = '#ffbbbb',
-  Indicator = '#FFB546',
   HeaderBackground = 'rgba(99,34,107, 0.15)',
   HeaderText = 'rgba(0,0,0, 1)',
   StepperSelected = 'rgba(99, 34, 107, 1)',
@@ -228,23 +227,10 @@ export default createMuiTheme({
       },
     },
     MuiTab: {
-      wrapper: {
-        flexDirection: 'row-reverse',
-      },
-      labelIcon: {
-        minHeight: undefined,
-        paddingTop: undefined,
-      },
       textColorPrimary: {
         '&$selected': {
-          color: Colors.PrimaryText,
           fontWeight: 'bold',
         },
-      },
-    },
-    MuiTabs: {
-      indicator: {
-        backgroundColor: Colors.Indicator,
       },
     },
     MuiTextField: {
