@@ -100,6 +100,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   useEffect(() => {
     const fetchAuthorities = async () => {
       try {
+        setError(null);
         const response = await getAuthoritiesForResourceCreatorOrContributor(
           resourceIdentifier,
           creatorOrContributorId
@@ -144,6 +145,10 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
     if (authoritySearchResponse) {
       postAuthorityForResourceCreatorOrContributor(resourceIdentifier, creatorOrContributorId, authority);
       setSelectedAuthorities([authority]);
+      setOpen(false);
+      if (onAuthoritySelected) {
+        onAuthoritySelected([authority]);
+      }
     }
   };
 

@@ -301,6 +301,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                               creatorOrContributorId={contributor.identifier}
                               initialNameValue={contributor.features.dlr_contributor_name ?? ''}
                               onAuthoritySelected={(authorities) => {
+                                values.contributors[index].features.dlr_contributor_name = authorities[0].name;
                                 values.contributors[index].authorities = authorities;
                                 resetFormButKeepTouched(touched, resetForm, values, setTouched);
                               }}

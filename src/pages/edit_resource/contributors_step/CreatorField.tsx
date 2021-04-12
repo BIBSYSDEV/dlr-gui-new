@@ -213,6 +213,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                               initialNameValue={creator.features.dlr_creator_name ?? ''}
                               onAuthoritySelected={(authorities) => {
                                 values.creators[index].authorities = authorities;
+                                values.creators[index].features.dlr_creator_name = authorities[0].name;
                                 resetFormButKeepTouched(touched, resetForm, values, setTouched);
                               }}
                             />
