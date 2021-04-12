@@ -27,9 +27,12 @@ const StyledDialog = styled(Dialog)`
   min-width: 80vw;
 `;
 
+const StyledContentWrapper = styled.div`
+  min-height: 50vh;
+`;
+
 const StyledListWrapper = styled.div`
   margin-top: 2rem;
-  min-height: 50vh;
 `;
 
 const nameConverter = (fullName: string) => {
@@ -67,11 +70,11 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   onAuthoritySelected,
 }) => {
   const [selectedAuthorities, setSelectedAuthorities] = useState<Authority[]>([]);
-  const [authorityInputSearchValue, setAuthorityInputSearchValue] = useState('');
+  const [authorityInputSearchValue, setAuthorityInputSearchValue] = useState(nameConverter(initialNameValue));
   const [textFieldDirty, setTextFieldDirty] = useState(false);
   const [textFieldTouched, setTextFieldTouched] = useState(false);
   const [open, setOpen] = useState(false);
-  const [authoritySearchResponse, setAuthoritySearchResponse] = useState<AuthoritySearchResponse>();
+  const [authoritySearchResponse, setAuthoritySearchResponse] = useState<AuthoritySearchResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [page, setPage] = useState(1);
@@ -87,14 +90,11 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
 
   const handleClose = () => {
     setOpen(false);
-    if (onAuthoritySelected && selectedAuthorities.length > 0) {
-      onAuthoritySelected(selectedAuthorities);
-    }
   };
 
   const handlePageChange = (value: number) => {
     setPage(value);
-    searchForAuthorities((value - FirstPage) * AuthorityListLength);
+    searchForAuthorities((value - FirstPage) * AuthorityListLength, debouncedSearchTerm);
   };
 
   useEffect(() => {
@@ -111,31 +111,32 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
           onAuthoritySelected(response);
         }
       } catch (error) {
+        if (!mountedRef.current) return null;
         setError(error);
       }
     };
     fetchAuthorities();
   }, [resourceIdentifier, creatorOrContributorId, onAuthoritySelected]);
 
-  const searchForAuthorities = useCallback(
-    (offset: number) => {
-      setError(null);
-      setIsLoading(true);
-      setError(null);
-      searchAuthorities(debouncedSearchTerm, offset)
-        .then((response) => {
-          if (!mountedRef.current) return null;
-          setAuthoritySearchResponse(response.data);
-        })
-        .catch((error) => {
-          setError(error);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    },
-    [debouncedSearchTerm]
-  );
+  const searchForAuthorities = useCallback((offset: number, searchTerm) => {
+    setError(null);
+    setIsLoading(true);
+    setError(null);
+    setAuthoritySearchResponse(null);
+    searchAuthorities(searchTerm, offset)
+      .then((response) => {
+        if (!mountedRef.current) return null;
+        setAuthoritySearchResponse(response.data);
+      })
+      .catch((error) => {
+        if (!mountedRef.current) return null;
+        setError(error);
+      })
+      .finally(() => {
+        if (!mountedRef.current) return null;
+        setIsLoading(false);
+      });
+  }, []);
 
   const invalidInput = (): boolean => {
     return textFieldDirty && textFieldTouched && authorityInputSearchValue.length < 1;
@@ -152,20 +153,19 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
     }
   };
 
-  const checkIfListItemIsSelectedAuthority = (checkAuthority: Authority): boolean => {
-    if (selectedAuthorities) {
-      return selectedAuthorities.findIndex((auth) => auth.id === checkAuthority.id) > -1;
-    } else {
-      return false;
+  useEffect(() => {
+    if (nameConverter(initialNameValue).length > 1 && open) {
+      setPage(FirstPage);
+      searchForAuthorities(OffsetFirstPage, nameConverter(initialNameValue));
     }
-  };
+  }, [open, searchForAuthorities, initialNameValue]);
 
   useEffect(() => {
-    if (debouncedSearchTerm.length > 1 && selectedAuthorities.length === 0) {
+    if (debouncedSearchTerm.length >= 1 && debouncedSearchTerm !== nameConverter(initialNameValue) && open) {
       setPage(FirstPage);
-      searchForAuthorities(OffsetFirstPage);
+      searchForAuthorities(OffsetFirstPage, debouncedSearchTerm);
     }
-  }, [debouncedSearchTerm.length, debouncedSearchTerm, selectedAuthorities, open, searchForAuthorities]);
+  }, [debouncedSearchTerm, open, searchForAuthorities, initialNameValue]);
 
   useEffect(() => {
     return () => {
@@ -185,57 +185,46 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
         </DialogTitle>
         <DialogContent>
           <DialogContentText>{t('authority.not_possible_to_remove_warning')}. </DialogContentText>
-          {selectedAuthorities.length === 0 && (
-            <form onSubmit={() => searchForAuthorities(OffsetFirstPage)}>
-              <TextField
-                value={authorityInputSearchValue}
-                onChange={(event) => {
-                  setTextFieldDirty(true);
-                  setAuthorityInputSearchValue(event.target.value);
-                }}
-                onBlur={() => setTextFieldTouched(true)}
-                autoFocus
-                error={invalidInput()}
-                helperText={invalidInput() && t('authority.empty_search_query')}
-                id={TextFieldId}
-                label={t('authority.search_for_authority')}
-                type="text"
-                fullWidth
-              />
-            </form>
-          )}
+          <StyledContentWrapper>
+            {selectedAuthorities.length === 0 && (
+              <form onSubmit={() => searchForAuthorities(OffsetFirstPage, debouncedSearchTerm)}>
+                <TextField
+                  value={authorityInputSearchValue}
+                  onChange={(event) => {
+                    setTextFieldDirty(true);
+                    setAuthorityInputSearchValue(event.target.value);
+                  }}
+                  onBlur={() => setTextFieldTouched(true)}
+                  autoFocus
+                  error={invalidInput()}
+                  helperText={invalidInput() && t('authority.empty_search_query')}
+                  id={TextFieldId}
+                  label={t('authority.search_for_authority')}
+                  type="text"
+                  fullWidth
+                />
+              </form>
+            )}
 
-          {isLoading && <CircularProgress />}
-          {authoritySearchResponse && !isLoading && (
-            <StyledListWrapper>
-              <Typography id={ListTitleId} variant="h3">
-                {t('authority.authorities')} ({authoritySearchResponse.numFound}):
-              </Typography>
-              <List aria-labelledby={ListTitleId}>
-                {selectedAuthorities.map((authority, index) => (
-                  <AuthorityListItem
-                    isSelected={true}
-                    handleSelectedAuthorityChange={handleSelectedAuthorityChange}
-                    authority={authority}
-                    key={index}
-                  />
-                ))}
-                {!isLoading &&
-                  selectedAuthorities.length === 0 &&
-                  authoritySearchResponse.results.map((authority, index) => (
-                    <AuthorityListItem
-                      isSelected={checkIfListItemIsSelectedAuthority(authority)}
-                      handleSelectedAuthorityChange={handleSelectedAuthorityChange}
-                      authority={authority}
-                      key={index}
-                    />
-                  ))}
-              </List>
-            </StyledListWrapper>
-          )}
-          {selectedAuthorities.length === 0 &&
-            authoritySearchResponse?.numFound &&
-            authoritySearchResponse.numFound >= AuthorityListLength && (
+            {isLoading && <CircularProgress />}
+            {authoritySearchResponse && !isLoading && (
+              <StyledListWrapper>
+                <Typography id={ListTitleId} variant="h3">
+                  {t('authority.authorities')} ({authoritySearchResponse.numFound}):
+                </Typography>
+                <List aria-labelledby={ListTitleId}>
+                  {!isLoading &&
+                    authoritySearchResponse.results.map((authority, index) => (
+                      <AuthorityListItem
+                        handleSelectedAuthorityChange={handleSelectedAuthorityChange}
+                        authority={authority}
+                        key={index}
+                      />
+                    ))}
+                </List>
+              </StyledListWrapper>
+            )}
+            {authoritySearchResponse?.numFound && authoritySearchResponse.numFound >= AuthorityListLength && (
               <Pagination
                 color="primary"
                 count={Math.ceil(authoritySearchResponse.numFound / AuthorityListLength)}
@@ -245,7 +234,8 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
                 }}
               />
             )}
-          {error && <ErrorBanner userNeedsToBeLoggedIn={true} error={error} />}
+            {error && <ErrorBanner userNeedsToBeLoggedIn={true} error={error} />}
+          </StyledContentWrapper>
         </DialogContent>
         <DialogActions>
           <Button
