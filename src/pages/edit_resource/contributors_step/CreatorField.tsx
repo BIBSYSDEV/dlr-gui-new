@@ -25,8 +25,10 @@ const StyledTypography = styled(Typography)`
 
 const StyledTextField = styled(TextField)`
   width: 100%;
-  margin-left: 0.5rem;
   margin-right: 0.5rem;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    margin-left: 0.5rem;
+  }
 `;
 
 const HeaderWrapper = styled.div`
