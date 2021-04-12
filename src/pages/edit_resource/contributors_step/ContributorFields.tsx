@@ -59,7 +59,7 @@ const StyledTextFieldSizer = styled(TextFieldSizer)`
   flex-grow: 1;
   width: auto;
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 1 + 'px'}) {
-    width: ${(props) => (props.isCurator ? '28%' : '14rem')};
+    width: ${(props) => (props.isCurator ? '27%' : '14rem')};
     margin-right: 1rem;
   }
 `;
@@ -77,7 +77,7 @@ const StyledButtonRowWrapper = styled.div`
 
 const StyledButtonWrapper = styled.div`
   min-width: 6rem;
-  @media (min-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.md + 1 + 'px'}) {
     margin-left: 1rem;
   }
 `;

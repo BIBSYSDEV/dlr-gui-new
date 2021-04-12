@@ -61,7 +61,7 @@ const StyledButtonRowWrapper = styled.div`
 `;
 
 const StyledButtonWrapper = styled.div`
-  min-width: 6rem;
+  min-width: 6.3rem;
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 1 + 'px'}) {
     margin-left: 1rem;
   }

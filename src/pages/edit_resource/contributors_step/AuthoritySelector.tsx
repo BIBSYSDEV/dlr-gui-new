@@ -168,7 +168,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   return (
     <>
       <Button data-testid="verify-authority-button" variant="outlined" color="primary" onClick={handleClickOpen}>
-        {t('authority.verify')}
+        {t('authority.verify').toUpperCase()}
       </Button>
       <StyledDialog fullScreen={fullScreenDialog} open={open} onClose={handleClose} aria-labelledby={FormDialogTitleId}>
         <DialogTitle id={FormDialogTitleId}>
