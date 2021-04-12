@@ -310,11 +310,12 @@
       "submitter_email": "Submitter email"
     },
     "my_resources": "My resources",
+    "my_publication_tabs" : "Tabs for my resources",
     "new_registration": "New registration",
     "no_published_resources": "You have no published resources",
     "no_unpublished_resources": "You have no unpublished resources",
     "preview_not_supported_filetype": "Preview is not supported for this file type",
-    "published_resources": "Published resources",
+    "published_resources": "Published",
     "search_for_resources": "Search for resources",
     "start_with_link_to_resource": "Start registration with a link",
     "start_with_uploading_file": "Upload file if the resource is to be published on the Internet for the first time",
@@ -328,7 +329,7 @@
       "simulation": "Simulation",
       "video": "Video"
     },
-    "unpublished_resources": "Unpublished resources"
+    "unpublished_resources": "Started"
   },
   "sitemap": {
     "contents": "Contents",
