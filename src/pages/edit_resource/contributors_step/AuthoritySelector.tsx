@@ -29,6 +29,7 @@ const StyledDialog = styled(Dialog)`
 
 const StyledListWrapper = styled.div`
   margin-top: 2rem;
+  min-height: 50vh;
 `;
 
 const nameConverter = (fullName: string) => {
@@ -117,16 +118,18 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
 
   const searchForAuthorities = useCallback(
     (offset: number) => {
+      setError(null);
       setIsLoading(true);
       setError(null);
       searchAuthorities(debouncedSearchTerm, offset)
         .then((response) => {
           if (!mountedRef.current) return null;
           setAuthoritySearchResponse(response.data);
-          setIsLoading(false);
         })
         .catch((error) => {
           setError(error);
+        })
+        .finally(() => {
           setIsLoading(false);
         });
     },
@@ -201,7 +204,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
           {authoritySearchResponse && !isLoading && (
             <StyledListWrapper>
               <Typography id={ListTitleId} variant="h3">
-                {t('authority.authorities')}:
+                {t('authority.authorities')} ({authoritySearchResponse.numFound}):
               </Typography>
               <List aria-labelledby={ListTitleId}>
                 {selectedAuthorities.map((authority, index) => (
