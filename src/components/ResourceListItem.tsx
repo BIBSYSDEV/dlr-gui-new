@@ -19,6 +19,7 @@ const StyledListItemWrapper: any = styled.div`
   padding: 1rem 1rem 0 1rem;
   display: flex;
   justify-content: center;
+  margin-top: 1rem;
 `;
 
 const StyledListItem: any = styled.li`
@@ -28,12 +29,17 @@ const StyledListItem: any = styled.li`
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const StyledMetaDataColumn = styled.div`
   flex: 1;
-  min-width: 20rem;
+  min-width: 18rem;
   margin-bottom: 1rem;
+  margin-right: 1rem;
 `;
 
 const StyledActions: any = styled.div`
