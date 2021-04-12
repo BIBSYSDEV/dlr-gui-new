@@ -16,8 +16,7 @@ const StyledListItemWrapper: any = styled.div`
   width: 100%;
   max-width: ${StyleWidths.width5};
   background-color: ${Colors.ResultListBackground};
-  margin-bottom: 0.5rem;
-  padding: 1rem;
+  padding: 1rem 1rem 0 1rem;
   display: flex;
   justify-content: center;
 `;
@@ -28,32 +27,36 @@ const StyledListItem: any = styled.li`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  flex-wrap: wrap;
 `;
 
 const StyledMetaDataColumn = styled.div`
-  padding-left: 1rem;
   flex: 1;
-  //border: 1px solid blue;
+  min-width: 20rem;
+  margin-bottom: 1rem;
 `;
 
 const StyledActions: any = styled.div`
-  //border: 1px solid red;
-  min-width: 17rem;
   display: flex;
   justify-content: flex-end;
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
-    margin-bottom: 3rem;
-  }
+  margin-bottom: 1rem;
 `;
 
 const StyledResourceTypeTypography = styled(Typography)`
   margin: 0.5rem 0 1rem 0;
+`;
+const StyledThumbnailWrapper = styled.div`
+  margin-bottom: 1rem;
+  margin-right: 1rem;
 `;
 
 const StyledActionButton = styled(Button)`
   height: 2.25rem;
   align-self: flex-start;
   margin-left: 1.5rem;
+  &:first-of-type {
+    margin-left: 0;
+  }
 `;
 const StyledFileTypeIcon = styled.span`
   margin: 0.5rem 0.3rem 0.5rem 0.5rem;
@@ -77,13 +80,14 @@ const ResourceListItem: FC<ResourceListItemProps> = ({ resource, handleDelete, f
   return (
     <StyledListItemWrapper>
       <StyledListItem data-testid={`list-item-resources-${resource.identifier}`}>
-        <Thumbnail
-          institution={resource.features.dlr_storage_id ?? fallbackInstitution}
-          resourceOrContentIdentifier={resource.identifier}
-          alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
-        />
+        <StyledThumbnailWrapper>
+          <Thumbnail
+            institution={resource.features.dlr_storage_id ?? fallbackInstitution}
+            resourceOrContentIdentifier={resource.identifier}
+            alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
+          />
+        </StyledThumbnailWrapper>
         {/*//todo: mobilbisning*/}
-        {/*//TODO: mangler data for last edit, filnavn og hvilke tilganger når begrenset*/}
         <StyledMetaDataColumn>
           <Typography variant="h4">{`${resource.features.dlr_title}`}</Typography>
           {resource.features.dlr_type && (

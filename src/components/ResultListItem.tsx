@@ -134,7 +134,7 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
             )}
             <StyledFileName display="inline" variant="body2">
               {resource.features.dlr_content_type === ResourceCreationType.FILE
-                ? t('resource.metadata.file')
+                ? resource.features.dlr_content
                 : t('resource.metadata.link')}
             </StyledFileName>
           </StyledThumbnailMetadata>
