@@ -195,6 +195,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
               <form onSubmit={() => searchForAuthorities(OffsetFirstPage, debouncedSearchTerm)}>
                 <TextField
                   value={authorityInputSearchValue}
+                  inputProps={{ 'data-testid': 'authority-search-field' }}
                   onChange={(event) => {
                     setTextFieldDirty(true);
                     setAuthorityInputSearchValue(event.target.value);
