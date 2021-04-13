@@ -27,9 +27,5 @@ interface AuthorityFeatures {
   dlr_authority_time_created?: string;
 }
 
-enum AuthorityTypes {
-  Person = 'person',
-  Corporation = 'corporation',
-  Meeting = 'meeting',
-  Uniformtitle = 'uniformtitle',
-}
+export const DefaultAuthoritySearchLength = 10;
+export const DefaultAuthoritySearchOffset = 0;

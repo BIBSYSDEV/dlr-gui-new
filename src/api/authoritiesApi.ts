@@ -1,12 +1,18 @@
 import { authenticatedApiRequest } from './api';
 import { API_PATHS } from '../utils/constants';
-import { Authority, AuthorityResponse, AuthoritySearchResponse } from '../types/authority.types';
+import {
+  Authority,
+  AuthorityResponse,
+  AuthoritySearchResponse,
+  DefaultAuthoritySearchLength,
+  DefaultAuthoritySearchOffset,
+} from '../types/authority.types';
 import { AxiosResponse } from 'axios';
 
 export const searchAuthorities = (
   query: string,
-  offset = 0,
-  limit = 10
+  offset = DefaultAuthoritySearchOffset,
+  limit = DefaultAuthoritySearchLength
 ): Promise<AxiosResponse<AuthoritySearchResponse>> => {
   return authenticatedApiRequest({
     url: encodeURI(

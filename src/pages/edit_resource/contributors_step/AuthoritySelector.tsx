@@ -11,7 +11,12 @@ import {
   postAuthorityForResourceCreatorOrContributor,
   searchAuthorities,
 } from '../../../api/authoritiesApi';
-import { Authority, AuthoritySearchResponse } from '../../../types/authority.types';
+import {
+  Authority,
+  AuthoritySearchResponse,
+  DefaultAuthoritySearchLength,
+  DefaultAuthoritySearchOffset,
+} from '../../../types/authority.types';
 import List from '@material-ui/core/List';
 import Pagination from '@material-ui/lab/Pagination';
 import ErrorBanner from '../../../components/ErrorBanner';
@@ -49,9 +54,9 @@ const nameConverter = (fullName: string) => {
   return names.join(' ');
 };
 
-const OffsetFirstPage = 0;
+const OffsetFirstPage = DefaultAuthoritySearchOffset;
 const FirstPage = 1;
-const AuthorityListLength = 10;
+const AuthorityListLength = DefaultAuthoritySearchLength;
 const FormDialogTitleId = 'form-dialog-title';
 const TextFieldId = 'name';
 const ListTitleId = 'nested-list-subheader';
