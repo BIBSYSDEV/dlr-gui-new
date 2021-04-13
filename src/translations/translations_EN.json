@@ -32,7 +32,6 @@
   "authority": {
     "add_authority": "Add authority",
     "authorities": "Authorities",
-    "close": "Close",
     "deselect_authority": "Deselect authority",
     "empty_search_query": "Must contain at least one letter or number",
     "not_possible_to_remove_warning": "NB! It is not possible to remove an authority after it has been selected",
@@ -47,6 +46,7 @@
     "back": "Back",
     "cancel": "Cancel",
     "clear": "Clear",
+    "close": "Close",
     "delete": "Delete",
     "edit": "Edit",
     "error": "Error",

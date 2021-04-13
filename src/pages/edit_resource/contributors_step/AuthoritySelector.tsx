@@ -248,7 +248,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
             variant="contained"
             onClick={handleClose}
             color="primary">
-            {t('authority.close')}
+            {t('common.close')}
           </Button>
         </DialogActions>
       </StyledDialog>

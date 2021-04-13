@@ -32,7 +32,6 @@
   "authority": {
     "add_authority": "Legg til autoritet",
     "authorities": "Autoriteter",
-    "close": "Close",
     "deselect_authority": "Fjern autoritet",
     "empty_search_query": "Må inneholde minst en bokstav eller et tall",
     "not_possible_to_remove_warning": "NB! Det er ikke mulig å slette en autoritet etter at den er valgt",
@@ -47,6 +46,7 @@
     "back": "Tilbake",
     "cancel": "Avbryt",
     "clear": "Tøm",
+    "close": "Lukk",
     "delete": "Slett",
     "edit": "Rediger",
     "error": "Feil",
