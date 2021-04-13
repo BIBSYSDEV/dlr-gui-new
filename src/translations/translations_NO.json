@@ -38,6 +38,7 @@
     "not_possible_to_remove_warning": "NB! Det er ikke mulig å slette en autoritet etter at den er valgt",
     "search_for_authority": "Søk etter verifisert autoritet",
     "selected": "Valgt",
+    "verified": "Verifisert",
     "verify": "Verifiser",
     "view_verified_authority": "Se verifisert"
   },

@@ -38,6 +38,7 @@
     "not_possible_to_remove_warning": "NB! It is not possible to remove an authority after it has been selected",
     "search_for_authority": "Search for verified authority",
     "selected": "Selected",
+    "verified": "Verified",
     "verify": "Verify",
     "view_verified_authority": "View verified"
   },

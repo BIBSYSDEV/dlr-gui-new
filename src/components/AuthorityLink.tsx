@@ -4,13 +4,13 @@ import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { Authority } from '../types/authority.types';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+import { Colors } from '../themes/mainTheme';
+import { useTranslation } from 'react-i18next';
 
-const StyledLinkButton: any = styled(Button)`
-  color: green;
-`;
+const StyledLinkButton: any = styled(Button)``;
 
 const StyledHowToRegIcon = styled(VerifiedUserIcon)`
-  color: darkgreen;
+  color: ${Colors.AuthorityBadge};
 `;
 
 interface AuthorityLinkProps {
@@ -18,14 +18,16 @@ interface AuthorityLinkProps {
 }
 
 const AuthorityLink: FC<AuthorityLinkProps> = ({ authority }) => {
+  const { t } = useTranslation();
   return (
     <StyledLinkButton
+      size="small"
       data-testid="authority-link-button"
       target="_blank"
       rel="noopener noreferrer"
       href={`${BIBSYS_AUTHORITY_URL}/${authority.id}`}
       startIcon={<StyledHowToRegIcon />}>
-      {authority.name}
+      {t('authority.verified')}
     </StyledLinkButton>
   );
 };

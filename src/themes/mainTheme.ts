@@ -55,6 +55,7 @@ export enum Colors {
   ChipAccessBackgroundFocus = 'rgb(0, 213, 166)',
   ChipAccessIconBackground = 'rgb(0, 157, 114)',
   ChipAccessIconHoverBackground = 'rgb(0, 185, 139)',
+  AuthorityBadge = 'rgb(11, 55, 26)',
 }
 
 export enum StyleWidths {
