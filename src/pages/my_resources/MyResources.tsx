@@ -11,15 +11,7 @@ import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
 import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
 import ResourceListItem from '../../components/ResourceListItem';
-
-const StyledListWrapper = styled.div`
-  margin-top: 2rem;
-`;
-
-const StyledTabList = styled(TabList)`
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-`;
+import { Colors } from '../../themes/mainTheme';
 
 const StyledTabPanel = styled(TabPanel)`
   &.MuiTabPanel-root {
@@ -100,6 +92,7 @@ const MyResources = () => {
                     key={index}
                     resource={resource}
                     fallbackInstitution={institution}
+                    backgroundColor={Colors.UnitTurquoise_20percent}
                     handleDelete={() => {
                       deleteResource(resource.identifier, true);
                     }}
@@ -119,6 +112,7 @@ const MyResources = () => {
                     data-testid={`my-unpublished-resources-${resource.identifier}`}
                     key={index}
                     resource={resource}
+                    backgroundColor={Colors.UnitGrey2_10percent}
                     fallbackInstitution={institution}
                     handleDelete={() => {
                       deleteResource(resource.identifier, false);

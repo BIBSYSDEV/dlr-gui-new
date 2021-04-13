@@ -12,17 +12,21 @@ import { Colors, StyleWidths } from '../themes/mainTheme';
 import { format } from 'date-fns';
 import { getStyledFileTypeIcon } from './FileTypeIcon';
 
-const StyledListItemWrapper: any = styled.div`
+interface Props {
+  backgroundColor: string;
+}
+
+const StyledListItemWrapper: any = styled.li<Props>`
   width: 100%;
   max-width: ${StyleWidths.width5};
-  background-color: ${Colors.ResultListBackground};
+  background-color: ${(props: any) => props.backgroundColor || Colors.UnitTurquoise_20percent};
   padding: 1rem 1rem 0 1rem;
   display: flex;
   justify-content: center;
   margin-top: 1rem;
 `;
 
-const StyledListItem: any = styled.li`
+const StyledListItem: any = styled.div`
   width: 100%;
   max-width: ${StyleWidths.width4};
   display: flex;
@@ -72,9 +76,15 @@ interface ResourceListItemProps {
   resource: Resource;
   handleDelete?: () => void;
   fallbackInstitution?: string;
+  backgroundColor?: string;
 }
 
-const ResourceListItem: FC<ResourceListItemProps> = ({ resource, handleDelete, fallbackInstitution = '' }) => {
+const ResourceListItem: FC<ResourceListItemProps> = ({
+  resource,
+  handleDelete,
+  fallbackInstitution = '',
+  backgroundColor,
+}) => {
   const { t } = useTranslation();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const history = useHistory();
@@ -84,7 +94,7 @@ const ResourceListItem: FC<ResourceListItemProps> = ({ resource, handleDelete, f
   };
 
   return (
-    <StyledListItemWrapper>
+    <StyledListItemWrapper backgroundColor={backgroundColor}>
       <StyledListItem data-testid={`list-item-resources-${resource.identifier}`}>
         <StyledThumbnailWrapper>
           <Thumbnail
@@ -93,7 +103,6 @@ const ResourceListItem: FC<ResourceListItemProps> = ({ resource, handleDelete, f
             alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
           />
         </StyledThumbnailWrapper>
-        {/*//todo: mobilbisning*/}
         <StyledMetaDataColumn>
           <Typography variant="h4">{`${resource.features.dlr_title}`}</Typography>
           {resource.features.dlr_type && (

@@ -46,7 +46,6 @@ export enum Colors {
   LicenseAccessPageGradientColor1 = 'rgba(68,242,193,0.10)',
   LicenseAccessPageGradientColor2 = 'rgba(68,242,193,0.25)',
   LicenseAccessPageGradientColor3 = 'rgba(68,242,193,0.50)',
-  ResultListBackground = 'rgba(121,203,220,0.2)',
   ChipBackground = 'rgba(66, 127, 140, 1)',
   ChipBackgroundFocus = 'hsl(191, 37%, 80%)',
   ChipIconBackground = 'hsl(191, 37%, 60%)',
@@ -54,6 +53,8 @@ export enum Colors {
   ChipAccessBackgroundFocus = 'rgb(0, 213, 166)',
   ChipAccessIconBackground = 'rgb(0, 157, 114)',
   ChipAccessIconHoverBackground = 'rgb(0, 185, 139)',
+  UnitGrey2_10percent = 'rgb(151,151, 151,0.1)',
+  UnitTurquoise_20percent = 'rgba(121,203,220,0.2)',
 }
 
 export enum StyleWidths {
