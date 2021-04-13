@@ -29,6 +29,7 @@ import {
   mockUser,
   mockInstitutionAuthorities,
   mockAuthoritySearchResponse,
+  mockAuthoritySearchResponse2,
 } from './mockdata';
 
 // AXIOS INTERCEPTOR
@@ -43,6 +44,9 @@ export const interceptRequestsOnMock = () => {
   };
 
   //AUTHORITY
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendAuthoritiesPath}/authorities/search\\?q=C.*`))
+    .reply(200, mockAuthoritySearchResponse2);
   mock
     .onGet(new RegExp(`${API_PATHS.guiBackendAuthoritiesPath}/authorities/search.*`))
     .reply(200, mockAuthoritySearchResponse);

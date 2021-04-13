@@ -16,7 +16,7 @@ interface AuthorityListItemProps {
 const AuthorityListItem: FC<AuthorityListItemProps> = ({ authority, handleSelectedAuthorityChange }) => {
   const { t } = useTranslation();
   return (
-    <ListItem disableGutters>
+    <ListItem disableGutters data-testid={`authority-list-item-${authority.id}`}>
       <ListItemText
         primary={authority.name}
         secondary={

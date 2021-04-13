@@ -114,6 +114,17 @@ export const mockAuthoritySearchResponse: AuthoritySearchResponse = {
   ],
 };
 
+export const mockAuthoritySearchResponse2: AuthoritySearchResponse = {
+  limit: '3',
+  numFound: 3,
+  offset: '0',
+  results: [
+    { id: '435', name: 'Creatorson, Creator', type: 'person' },
+    { id: '456', name: 'Creatorson2, Creator2', type: 'person' },
+    { id: '344', name: 'Creatorson3, Creator3', type: 'person' },
+  ],
+};
+
 export const mockDefaultResource: Resource = deepmerge(emptyResource, {
   features: {
     dlr_title: 'This is a mocked generated title',

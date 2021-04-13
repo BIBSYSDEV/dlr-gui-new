@@ -1,7 +1,7 @@
 import React, { FC, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField, Typography } from '@material-ui/core';
-import { CreatorFeatureAttributes, FieldNames, Resource } from '../../../types/resource.types';
+import { Creator, CreatorFeatureAttributes, FieldNames, Resource } from '../../../types/resource.types';
 import { ErrorMessage, Field, FieldArray, FieldArrayRenderProps, FieldProps, useFormikContext } from 'formik';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
@@ -18,6 +18,7 @@ import AuthoritySelector from './AuthoritySelector';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/rootReducer';
 import AuthorityLink from '../../../components/AuthorityLink';
+import { Authority } from '../../../types/authority.types';
 
 const StyledTypography = styled(Typography)`
   margin-bottom: 0.5rem;
@@ -157,6 +158,30 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
     });
   };
 
+  const onAuthoritySelected = (authorities: Authority[], index: number, creator: Creator) => {
+    try {
+      values.creators[index].authorities = authorities;
+      if (values.creators[index].features.dlr_creator_name !== authorities[0].name) {
+        setUpdateCreatorError(undefined);
+        setErrorIndex(ErrorIndex.NO_ERRORS);
+        setAllChangesSaved(false);
+        values.creators[index].features.dlr_creator_name = authorities[0].name;
+        putResourceCreatorFeature(
+          values.identifier,
+          creator.identifier,
+          CreatorFeatureAttributes.Name,
+          authorities[0].name
+        );
+      }
+      resetFormButKeepTouched(touched, resetForm, values, setTouched);
+    } catch (error) {
+      setUpdateCreatorError(error);
+      setErrorIndex(index);
+    } finally {
+      setAllChangesSaved(true);
+    }
+  };
+
   return (
     <StyledSchemaPartColored color={Colors.ContributorsPageGradientColor1}>
       <StyledContentWrapper>
@@ -211,11 +236,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                               resourceIdentifier={values.identifier}
                               creatorOrContributorId={creator.identifier}
                               initialNameValue={creator.features.dlr_creator_name ?? ''}
-                              onAuthoritySelected={(authorities) => {
-                                values.creators[index].authorities = authorities;
-                                values.creators[index].features.dlr_creator_name = authorities[0].name;
-                                resetFormButKeepTouched(touched, resetForm, values, setTouched);
-                              }}
+                              onAuthoritySelected={(authorities) => onAuthoritySelected(authorities, index, creator)}
                             />
                           ) : (
                             <AuthorityLink authority={creator.authorities[0]} />

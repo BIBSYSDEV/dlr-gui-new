@@ -19,6 +19,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/rootReducer';
 import AuthoritySelector from './AuthoritySelector';
 import AuthorityLink from '../../../components/AuthorityLink';
+import { Authority } from '../../../types/authority.types';
 
 const StyledTypography = styled(Typography)`
   margin-bottom: 0.5rem;
@@ -200,6 +201,30 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
     }
   };
 
+  const onAuthoritySelected = (contributor: Contributor, index: number, authorities: Authority[]) => {
+    try {
+      values.contributors[index].authorities = authorities;
+      if (values.contributors[index].features.dlr_contributor_name !== authorities[0].name) {
+        setAllChangesSaved(false);
+        setUpdateContributorError(undefined);
+        setErrorIndex(ErrorIndex.NO_ERRORS);
+        values.contributors[index].features.dlr_contributor_name = authorities[0].name;
+        putContributorFeature(
+          values.identifier,
+          contributor.identifier,
+          ContributorFeatureNames.Name,
+          authorities[0].name
+        );
+      }
+      resetFormButKeepTouched(touched, resetForm, values, setTouched);
+    } catch (error) {
+      setUpdateContributorError(error);
+      setErrorIndex(index);
+    } finally {
+      setAllChangesSaved(true);
+    }
+  };
+
   return (
     <StyledSchemaPartColored color={Colors.ContributorsPageGradientColor2}>
       <StyledContentWrapper>
@@ -300,11 +325,9 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                               resourceIdentifier={values.identifier}
                               creatorOrContributorId={contributor.identifier}
                               initialNameValue={contributor.features.dlr_contributor_name ?? ''}
-                              onAuthoritySelected={(authorities) => {
-                                values.contributors[index].features.dlr_contributor_name = authorities[0].name;
-                                values.contributors[index].authorities = authorities;
-                                resetFormButKeepTouched(touched, resetForm, values, setTouched);
-                              }}
+                              onAuthoritySelected={(authorities) =>
+                                onAuthoritySelected(contributor, index, authorities)
+                              }
                             />
                           ) : (
                             <AuthorityLink authority={contributor.authorities[0]} />
