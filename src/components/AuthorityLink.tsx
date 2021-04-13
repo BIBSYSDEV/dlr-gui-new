@@ -7,8 +7,6 @@ import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import { Colors } from '../themes/mainTheme';
 import { useTranslation } from 'react-i18next';
 
-const StyledLinkButton: any = styled(Button)``;
-
 const StyledHowToRegIcon = styled(VerifiedUserIcon)`
   color: ${Colors.AuthorityBadge};
 `;
@@ -20,7 +18,7 @@ interface AuthorityLinkProps {
 const AuthorityLink: FC<AuthorityLinkProps> = ({ authority }) => {
   const { t } = useTranslation();
   return (
-    <StyledLinkButton
+    <Button
       size="small"
       data-testid="authority-link-button"
       target="_blank"
@@ -28,7 +26,7 @@ const AuthorityLink: FC<AuthorityLinkProps> = ({ authority }) => {
       href={`${BIBSYS_AUTHORITY_URL}/${authority.id}`}
       startIcon={<StyledHowToRegIcon />}>
       {t('authority.verified')}
-    </StyledLinkButton>
+    </Button>
   );
 };
 
