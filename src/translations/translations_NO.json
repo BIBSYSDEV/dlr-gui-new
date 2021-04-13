@@ -63,6 +63,7 @@
     "or": "Eller",
     "other_options": "Andre lisenser",
     "page": "Page",
+    "preview_not_implemented": "Forhåndsvisning vil bli implementert senere",
     "possible_options": "Mulige lisenser",
     "publish": "Publiser",
     "remove": "Fjern",
@@ -120,7 +121,7 @@
     "tags_helper_aria_label": "Vis emneord forklaring",
     "tags_helper_text": "Emneord benyttes for å beskrive innholdet i en ressurs. Et emneord kan bestå av flere ord, f.eks \"optisk illusjon\" ",
     "tags_helper_text_edit_resource1": "Gode valg av emneord sørger for at det er lettere for andre å finne ressursen din ",
-    "tags_helper_text_edit_resource2": "Gjerne legg inn flere emneord samtidig. Skriv inn emneordet etterfulgt av enter eller Tab, så kan du skrive inn neste emneord. Man kan legge til og slette emneord etter at en ressurs er publisert",
+    "tags_helper_text_edit_resource2": "Gjerne legg inn flere emneord samtidig. Skriv inn emneordet etterfulgt av enter så kan du skrive inn neste emneord. Man kan legge til og slette emneord etter at en ressurs er publisert",
     "tags_helper_text_example": "For eksempel kan ressurs med tittel: \"Det sympatiske nervesystemet\" kan for eksempel ha emneord \"syk130\", \"sykepleie\", \"helsefag\", \"nervesystemet\" og \"helse\"",
     "title_helper_aria_label": "Vis tittel forklaring",
     "title_helper_text": "Fyll inn en tittel som hjelper andre å finne ressursen din"
@@ -221,7 +222,7 @@
     },
     "add_contributor": "Legg til bidragsyter",
     "add_creator": "Legg til opphaver",
-    "add_tags": "Legg inn 4-6 emneord. Trykk enter eller tab for å legge inn flere",
+    "add_tags": "Legg inn 4-6 emneord. Trykk enter for å legge inn flere",
     "contributor_type": {
       "ContactPerson": "Kontakt person",
       "DataCollector": "Datasamler",
@@ -324,11 +325,12 @@
       "submitter_email": "Registrators epost"
     },
     "my_resources": "Mine ressurser",
+    "my_publication_tabs" : "Faner for mine ressurser",
     "new_registration": "Ny registering",
     "no_published_resources": "Du har ingen publiserte ressurser",
     "no_unpublished_resources": "Du har ingen upubliserte ressurser",
     "preview_not_supported_filetype": "Fohåndsvisning støttes ikke for dette filformatet",
-    "published_resources": "Publiserte ressurser",
+    "published_resources": "Publisert",
     "search_for_resources": "Søk etter ressurser",
     "start_with_link_to_resource": "Start registrering med en lenke",
     "start_with_uploading_file": "Last opp fil hvis ressursen skal publiseres på Internett for første gang",
@@ -342,7 +344,7 @@
       "simulation": "Simulasjon",
       "video": "Video"
     },
-    "unpublished_resources": "Upubliserte ressurser"
+    "unpublished_resources": "Påbegynt"
   },
   "sitemap": {
     "contents": "Innhold",

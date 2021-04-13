@@ -239,6 +239,9 @@ export enum FieldNames {
   AdditionalContent = 'additionalContent',
   ContainsOtherPeoplesWork = 'containsOtherPeoplesWork',
   UsageClearedWithOwner = 'usageClearedWithOwner',
+  resourceRestriction = 'resourceRestriction',
+  othersCanModifyAndBuildUpon = 'othersCanModifyAndBuildUpon',
+  canBeUsedCommercially = 'canBeUsedCommercially',
 }
 
 export enum ResourceFormStep {

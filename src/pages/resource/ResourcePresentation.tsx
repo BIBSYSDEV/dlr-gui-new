@@ -4,11 +4,11 @@ import { Chip, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import Card from '../../components/Card';
 import styled from 'styled-components';
-import ContentPreview from '../../components/ContentPreview';
+//import ContentPreview from '../../components/ContentPreview';
 import LicenseCard from '../../components/LicenseCard';
 import { API_PATHS, API_URL } from '../../utils/constants';
 import { emptyPreview } from '../../types/content.types';
-import { StyleWidths } from '../../themes/mainTheme';
+import { Colors, StyleWidths } from '../../themes/mainTheme';
 import { format } from 'date-fns';
 
 const PreviewComponentWrapper = styled.div`
@@ -16,6 +16,10 @@ const PreviewComponentWrapper = styled.div`
   height: 15rem;
   max-height: 15rem;
   max-width: 100%;
+  border: 1px solid ${Colors.DescriptionPageGradientColor1};
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const StyledPresentationWrapper = styled.div`
@@ -69,7 +73,8 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
 
         {preview && (
           <PreviewComponentWrapper data-testid="resource-preview">
-            <ContentPreview preview={preview} />
+            {/*<ContentPreview preview={preview} />*/}
+            {t('common.preview_not_implemented')}
           </PreviewComponentWrapper>
         )}
 

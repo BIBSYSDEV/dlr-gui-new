@@ -61,9 +61,10 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   ];
 
   useEffect(() => {
-    setFieldValue('resourceRestriction', '');
-    setFieldValue('canBeUsedCommercially', '');
-    setFieldValue('othersCanModifyAndBuildUpon', '');
+    if (values.othersCanModifyAndBuildUpon) setExpandModifyAndBuildOption(true);
+  }, [values.othersCanModifyAndBuildUpon]);
+
+  useEffect(() => {
     setSaveRestrictionError(undefined);
   }, [forceResetInLicenseWizard, setFieldValue]);
 
@@ -167,7 +168,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                 aria-label={t('license.questions.special_needs')}
                 value={field.value}
                 onChange={(event) => handleChangeInExtraRestriction(event)}>
-                {licenseRestrictions.map((element, index) => (
+                {licenseRestrictions.map((element) => (
                   <FormControlLabel
                     key={element}
                     data-testid={`resource-restriction-option-${element.replace(/[.\s]/g, '_')}`}

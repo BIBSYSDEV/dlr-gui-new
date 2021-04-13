@@ -64,6 +64,7 @@
     "other_options": "Other licenses",
     "page": "Page",
     "possible_options": "Possible licenses",
+    "preview_not_implemented": "Preview will be implemented later",
     "publish": "Publish",
     "remove": "Remove",
     "result": "Result",
@@ -120,7 +121,7 @@
     "tags_helper_aria_label": "Show tags explanation",
     "tags_helper_text": "Tags describes the contents of a resource. A single tag may consist of multiple words, for example \"optical illusion\"",
     "tags_helper_text_edit_resource1": "Quality tags increases the chance that others will find and use your resource",
-    "tags_helper_text_edit_resource2": "You can add more than one tag if desired. Write your first tag and then press enter or tab, and then type your next tag followed by enter or tab. It is possible to add or remove tags after publication of your resource",
+    "tags_helper_text_edit_resource2": "You can add more than one tag if desired. Write your first tag and then press enter and then type your next tag followed by enter or tab. It is possible to add or remove tags after publication of your resource",
     "tags_helper_text_example": "For instance can a resource with title \"The Sympathetic Nervous System\" have \"syk130\", \"nursery\", \"healthcare subject\", \"nervous system\", and \"health\" as tags",
     "title_helper_aria_label": "Show title explanation",
     "title_helper_text": "Useful titles help others to find your resource"
@@ -221,7 +222,7 @@
     },
     "add_contributor": "Add contributor",
     "add_creator": "Add creator",
-    "add_tags": "Add 4-6 tags. Press enter or tab for adding more tags.",
+    "add_tags": "Add 4-6 tags. Press enter for adding more tags.",
     "contributor_type": {
       "ContactPerson": "Contact person",
       "DataCollector": "Data collector",
@@ -324,11 +325,12 @@
       "submitter_email": "Submitter email"
     },
     "my_resources": "My resources",
+    "my_publication_tabs" : "Tabs for my resources",
     "new_registration": "New registration",
     "no_published_resources": "You have no published resources",
     "no_unpublished_resources": "You have no unpublished resources",
     "preview_not_supported_filetype": "Preview is not supported for this file type",
-    "published_resources": "Published resources",
+    "published_resources": "Published",
     "search_for_resources": "Search for resources",
     "start_with_link_to_resource": "Start registration with a link",
     "start_with_uploading_file": "Upload file if the resource is to be published on the Internet for the first time",
@@ -342,7 +344,7 @@
       "simulation": "Simulation",
       "video": "Video"
     },
-    "unpublished_resources": "Unpublished resources"
+    "unpublished_resources": "Started"
   },
   "sitemap": {
     "contents": "Contents",
