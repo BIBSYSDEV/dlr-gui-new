@@ -25,6 +25,8 @@ const StyledMenuItem = styled(MenuItem)`
 const StyledMenuItemContent = styled.div`
   display: flex;
   align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const StyledListItemIcon = styled(ListItemIcon)`
@@ -33,11 +35,13 @@ const StyledListItemIcon = styled(ListItemIcon)`
 const StyledTextField = styled(TextField)`
   max-width: 90vw;
 `;
+const StyledCombinedTextWrapper = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
 
 const StyledResourceExampleTypography = styled(Typography)`
   margin-left: 0.5rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 interface ResourceTypeFieldProps {
@@ -111,10 +115,12 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                       <StyledListItemIcon>
                         <PhotoOutlinedIcon />
                       </StyledListItemIcon>
-                      <Typography variant="inherit">{t('resource.type.image')}</Typography>
-                      <StyledResourceExampleTypography variant="caption">
-                        ({t('explanation_text.resource_type_examples_image')})
-                      </StyledResourceExampleTypography>
+                      <StyledCombinedTextWrapper>
+                        <Typography variant="inherit">{t('resource.type.image')}</Typography>
+                        <StyledResourceExampleTypography variant="caption">
+                          ({t('explanation_text.resource_type_examples_image')})
+                        </StyledResourceExampleTypography>
+                      </StyledCombinedTextWrapper>
                     </StyledMenuItemContent>
                   </StyledMenuItem>
                   <StyledMenuItem value={ResourceFeatureTypes.document}>
@@ -122,10 +128,12 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                       <StyledListItemIcon>
                         <DescriptionOutlinedIcon />
                       </StyledListItemIcon>
-                      <Typography variant="inherit">{t('resource.type.document')}</Typography>
-                      <StyledResourceExampleTypography variant="caption">
-                        ({t('explanation_text.resource_type_examples_document')})
-                      </StyledResourceExampleTypography>
+                      <StyledCombinedTextWrapper>
+                        <Typography variant="inherit">{t('resource.type.document')}</Typography>
+                        <StyledResourceExampleTypography variant="caption">
+                          ({t('explanation_text.resource_type_examples_document')})
+                        </StyledResourceExampleTypography>
+                      </StyledCombinedTextWrapper>
                     </StyledMenuItemContent>
                   </StyledMenuItem>
                   <StyledMenuItem value={ResourceFeatureTypes.presentation}>
@@ -133,10 +141,12 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                       <StyledListItemIcon>
                         <SlideshowIcon />
                       </StyledListItemIcon>
-                      <Typography variant="inherit">{t('resource.type.presentation')}</Typography>
-                      <StyledResourceExampleTypography variant="caption">
-                        ({t('explanation_text.resource_type_examples_presentation')})
-                      </StyledResourceExampleTypography>
+                      <StyledCombinedTextWrapper>
+                        <Typography variant="inherit">{t('resource.type.presentation')}</Typography>
+                        <StyledResourceExampleTypography variant="caption">
+                          ({t('explanation_text.resource_type_examples_presentation')})
+                        </StyledResourceExampleTypography>
+                      </StyledCombinedTextWrapper>
                     </StyledMenuItemContent>
                   </StyledMenuItem>
                   <StyledMenuItem value={ResourceFeatureTypes.audio}>
