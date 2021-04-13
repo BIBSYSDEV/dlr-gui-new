@@ -100,8 +100,10 @@
     "resource_type_helper_aria_label": "Vis type forklaring",
     "resource_type_example1": "Eksempelvis: Har du et videopptak av en forelesning, så velger du \"video\" som type",
     "resource_type_example2": "Passer ingen av ressurstypene overhodet, så velg \"dokument\"",
-    "resource_type_helper_text1": "Ressurstype er forsøkt utfylt ved opplasting av fil",
-    "resource_type_helper_text2": "Velg type som stemmer best overens med innholdet",
+    "resource_type_examples_image": "Foto, illustrasjon, graf e.l.",
+    "resource_type_examples_presentation": "Powerpoint, Keynote e.l.",
+    "resource_type_examples_document": "Tekstfil, regneark e.l.",
+    "resource_type_helper_text": "Velg ressurstype som stemmer best overens med innholdet",
     "tags_helper_aria_label": "Vis emneord forklaring",
     "tags_helper_text": "Emneord benyttes for å beskrive innholdet i en ressurs. Et emneord kan bestå av flere ord, f.eks \"optisk illusjon\" ",
     "tags_helper_text_edit_resource1": "Gode valg av emneord sørger for at det er lettere for andre å finne ressursen din ",
@@ -326,7 +328,7 @@
       "document": "Dokument",
       "image": "Bilde",
       "presentation": "Presentasjon",
-      "simulation": "Simulasjon",
+      "simulation": "Simulering",
       "video": "Video"
     },
     "unpublished_resources": "Påbegynt"
