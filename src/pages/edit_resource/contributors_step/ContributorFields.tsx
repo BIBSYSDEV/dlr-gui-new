@@ -43,20 +43,11 @@ const StyledFieldsWrapper = styled.div`
   }
 `;
 
-interface TextFieldSizerProps {
+interface Props {
   isCurator: boolean;
-  id: string;
-  className?: string;
 }
-const TextFieldSizer: FC<TextFieldSizerProps> = ({ children, className, id }) => {
-  return (
-    <div id={id} className={className}>
-      {children}
-    </div>
-  );
-};
 
-const StyledTextFieldSizer = styled(TextFieldSizer)`
+const StyledTextFieldSizer: any = styled.div<Props>`
   flex-grow: 1;
   width: auto;
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 1 + 'px'}) {
@@ -251,9 +242,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                     <Field
                       name={`${FieldNames.ContributorsBase}[${index}].${FieldNames.Features}.${ContributorFeatureNames.Type}`}>
                       {({ field, meta: { touched, error } }: FieldProps<string>) => (
-                        <StyledTextFieldSizer
-                          id="help-me-out-here"
-                          isCurator={!!user.institutionAuthorities?.isCurator}>
+                        <StyledTextFieldSizer isCurator={!!user.institutionAuthorities?.isCurator}>
                           <TextField
                             {...field}
                             id={`contributor-feature-type-${index}`}
@@ -304,7 +293,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                             variant="filled"
                             label={t('common.name')}
                             required
-                            disabled={!!(contributor.authorities && contributor.authorities.length > 0)}
+                            disabled={contributor.authorities && contributor.authorities.length > 0}
                             fullWidth
                             error={touched && !!error}
                             helperText={<ErrorMessage name={field.name} />}

@@ -27,6 +27,7 @@ import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
 import { DeviceWidths } from '../../../themes/mainTheme';
 import useDebounce from '../../../utils/useDebounce';
+import { Divider } from '@material-ui/core';
 
 const StyledDialog = styled(Dialog)`
   min-width: 80vw;
@@ -124,23 +125,25 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   }, [resourceIdentifier, creatorOrContributorId, onAuthoritySelected]);
 
   const searchForAuthorities = useCallback((offset: number, searchTerm) => {
-    setError(null);
-    setIsLoading(true);
-    setError(null);
-    setAuthoritySearchResponse(null);
-    searchAuthorities(searchTerm, offset)
-      .then((response) => {
+    const search = async (offset: number, searchTerm: string) => {
+      try {
+        setError(null);
+        setIsLoading(true);
+        setError(null);
+        setAuthoritySearchResponse(null);
+        const response = await searchAuthorities(searchTerm, offset);
         if (!mountedRef.current) return null;
         setAuthoritySearchResponse(response.data);
-      })
-      .catch((error) => {
+      } catch (error) {
         if (!mountedRef.current) return null;
         setError(error);
-      })
-      .finally(() => {
-        if (!mountedRef.current) return null;
-        setIsLoading(false);
-      });
+      } finally {
+        if (mountedRef.current) {
+          setIsLoading(false);
+        }
+      }
+    };
+    search(offset, searchTerm);
   }, []);
 
   const invalidInput = (): boolean => {
@@ -221,11 +224,14 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
                 <List aria-labelledby={ListTitleId}>
                   {!isLoading &&
                     authoritySearchResponse.results.map((authority, index) => (
-                      <AuthorityListItem
-                        handleSelectedAuthorityChange={handleSelectedAuthorityChange}
-                        authority={authority}
-                        key={index}
-                      />
+                      <>
+                        <AuthorityListItem
+                          handleSelectedAuthorityChange={handleSelectedAuthorityChange}
+                          authority={authority}
+                          key={index}
+                        />
+                        <Divider variant="middle" component="li" />
+                      </>
                     ))}
                 </List>
               </StyledListWrapper>
