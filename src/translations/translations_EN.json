@@ -106,8 +106,8 @@
     "resource_type_helper_text": "Set the resource type according to the main resource content",
     "tags_helper_aria_label": "Show tags explanation",
     "tags_helper_text": "Tags describes the contents of a resource. A single tag may consist of one or multiple words, for example \"optical illusion\"",
-    "tags_helper_text_edit_resource2": "Quality tags increases the chance that others will find and use your resource",
     "tags_helper_text_edit_resource1": "Write your first tag and then press enter and then type your next tag. It is possible to add or remove tags after publication of your resource",
+    "tags_helper_text_edit_resource2": "Quality tags increases the chance that others will find and use your resource",
     "tags_helper_text_example": "A resource with title \"The Sympathetic Nervous System\" can have \"syk130\", \"nursery\", \"healthcare subject\", \"nervous system\", and \"health\" as tags",
     "title_helper_aria_label": "Show title explanation",
     "title_helper_text": "Useful titles help others to find your resource"
