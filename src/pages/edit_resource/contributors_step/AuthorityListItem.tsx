@@ -12,7 +12,10 @@ import { Divider } from '@material-ui/core';
 
 const StyledListItem: any = styled(ListItemText)`
   & .MuiListItemText-primary {
-    max-width: 90%;
+    max-width: 80%;
+  }
+  & .MuiListItemText-secondary {
+    max-width: 80%;
   }
 `;
 
