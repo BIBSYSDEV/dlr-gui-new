@@ -78,12 +78,15 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
     if (
       (values.licenses[0]?.features?.dlr_license_code &&
         !values.licenses[0].features.dlr_license_code.toLowerCase().includes('cc')) ||
-      (values.usageClearedWithOwner && values.usageClearedWithOwner === 'no_clearance')
+      values.features.dlr_licensehelper_usage_cleared_with_owner === LicenseAgreementsOptions.NoClearance
     ) {
       if (values.features.dlr_access !== AccessTypes.private) {
         setPrivateAccess();
       }
-      if (values.usageClearedWithOwner && values.usageClearedWithOwner === 'no_clearance') {
+      if (
+        values.features.dlr_licensehelper_usage_cleared_with_owner &&
+        values.features.dlr_licensehelper_usage_cleared_with_owner === LicenseAgreementsOptions.NoClearance
+      ) {
         setDisabledHelperText(t('access.no_clearance_no_public_access'));
       } else {
         setDisabledHelperText(t('access.only_private_is_available'));

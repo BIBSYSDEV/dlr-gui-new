@@ -62,11 +62,12 @@ const getAllDescriptionStepFieldNames = () => {
     //TODO: tags
   ];
 };
+
 const getAllAccessAndLicenseStepFieldNames = () => {
   return [
     `${FieldNames.LicensesBase}[0]`,
-    `${FieldNames.ContainsOtherPeoplesWork}`,
-    `${FieldNames.UsageClearedWithOwner}`,
+    `${ResourceFeatureNamesFullPath.UsageClearedWithOwner}`,
+    `${ResourceFeatureNamesFullPath.ContainsOtherPeoplesWorks}`,
     `${FieldNames.resourceRestriction}`,
     `${FieldNames.othersCanModifyAndBuildUpon}`,
     `${FieldNames.canBeUsedCommercially}`,
@@ -160,8 +161,8 @@ export const touchedContentsFields = (contents: ResourceContents, resourceType: 
 export const touchedAccessAndLicenseFields = (containsOtherPeoplesWork: string): FormikTouched<Resource> => ({
   features: {
     dlr_licensehelper_contains_other_peoples_work: true,
+    dlr_licensehelper_usage_cleared_with_owner: containsOtherPeoplesWork === ContainsOtherPeoplesWorkOptions.Yes,
   },
-  usageClearedWithOwner: containsOtherPeoplesWork === ContainsOtherPeoplesWorkOptions.Yes,
   licenses: [{ identifier: true }],
 });
 
