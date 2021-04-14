@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Resource } from '../types/resource.types';
-import { ListItemText, TypographyTypeMap } from '@material-ui/core';
+import { Resource, ResourceCreationType } from '../types/resource.types';
 import Thumbnail from './Thumbnail';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
@@ -9,66 +8,82 @@ import Button from '@material-ui/core/Button';
 import ConfirmDeleteDialog from './ConfirmDeleteDialog.';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useHistory } from 'react-router-dom';
-import { OverridableComponent } from '@material-ui/core/OverridableComponent';
-import { StyleWidths } from '../themes/mainTheme';
+import { Colors, StyleWidths } from '../themes/mainTheme';
 import { format } from 'date-fns';
+import { getStyledFileTypeIcon } from './FileTypeIcon';
 
-const StyledListItem: any = styled.li`
+interface Props {
+  backgroundColor: string;
+}
+
+const StyledListItemWrapper: any = styled.li<Props>`
+  width: 100%;
+  max-width: ${StyleWidths.width5};
+  background-color: ${(props: any) => props.backgroundColor || Colors.UnitTurquoise_20percent};
+  padding: 1rem 1rem 0 1rem;
   display: flex;
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
-    display: block;
+  justify-content: center;
+  margin-top: 1rem;
+`;
+
+const StyledListItem: any = styled.div`
+  width: 100%;
+  max-width: ${StyleWidths.width4};
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    flex-direction: column;
+    align-items: flex-start;
   }
 `;
 
-const StyledLinkButton: any = styled(Button)`
-  flex-grow: 1;
-  justify-content: space-between;
-  margin-right: 2rem;
-  max-width: ${StyleWidths.width3};
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
-    display: block;
-    margin: 0 1rem;
-  }
+const StyledMetaDataColumn = styled.div`
+  flex: 1;
+  min-width: 18rem;
+  margin-bottom: 1rem;
+  margin-right: 1rem;
 `;
 
 const StyledActions: any = styled.div`
   display: flex;
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
-    margin-bottom: 3rem;
-  }
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+`;
+
+const StyledResourceTypeTypography = styled(Typography)`
+  margin: 0.5rem 0 1rem 0;
+`;
+const StyledThumbnailWrapper = styled.div`
+  margin-bottom: 1rem;
+  margin-right: 1rem;
 `;
 
 const StyledActionButton = styled(Button)`
-  min-width: 8rem;
   height: 2.25rem;
   align-self: flex-start;
   margin-left: 1.5rem;
+  &:first-of-type {
+    margin-left: 0;
+  }
 `;
-
-const StyledListItemText = styled(ListItemText)`
-  padding-left: 16px;
-`;
-
-const StyledTypography: OverridableComponent<TypographyTypeMap<unknown, 'span'>> = styled(Typography)`
-  margin-top: 16px;
+const StyledFileTypeIcon = styled.span`
+  margin: 0.5rem 0.3rem 0.5rem 0.5rem;
 `;
 
 interface ResourceListItemProps {
   resource: Resource;
-  showSubmitter?: boolean;
-  showHandle?: boolean;
-  showTimeCreated?: boolean;
   handleDelete?: () => void;
   fallbackInstitution?: string;
+  backgroundColor?: string;
 }
 
 const ResourceListItem: FC<ResourceListItemProps> = ({
   resource,
-  showSubmitter = false,
-  showHandle = false,
-  showTimeCreated = false,
   handleDelete,
   fallbackInstitution = '',
+  backgroundColor,
 }) => {
   const { t } = useTranslation();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
@@ -79,75 +94,82 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
   };
 
   return (
-    <StyledListItem data-testid={`list-item-resources-${resource.identifier}`}>
-      <StyledLinkButton component="a" href={`/resource/${resource.identifier}`}>
-        <Thumbnail
-          institution={resource.features.dlr_storage_id ?? fallbackInstitution}
-          resourceOrContentIdentifier={resource.identifier}
-          alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
-        />
-        <StyledListItemText
-          primary={`${resource.features.dlr_title} (${resource.features.dlr_content_type})`}
-          secondary={
-            <>
-              {showSubmitter && resource.features.dlr_submitter_email && (
-                <StyledTypography style={{ display: 'block' }} component="span" variant="body2" color="textPrimary">
-                  {resource.features.dlr_submitter_email}
-                </StyledTypography>
+    <StyledListItemWrapper backgroundColor={backgroundColor}>
+      <StyledListItem data-testid={`list-item-resources-${resource.identifier}`}>
+        <StyledThumbnailWrapper>
+          <Thumbnail
+            institution={resource.features.dlr_storage_id ?? fallbackInstitution}
+            resourceOrContentIdentifier={resource.identifier}
+            alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
+          />
+        </StyledThumbnailWrapper>
+        <StyledMetaDataColumn>
+          <Typography variant="h4">{`${resource.features.dlr_title}`}</Typography>
+          {resource.features.dlr_type && (
+            <StyledFileTypeIcon>{getStyledFileTypeIcon(resource.features.dlr_type)}</StyledFileTypeIcon>
+          )}
+          <StyledResourceTypeTypography variant="body2">
+            {resource.features.dlr_content_type === ResourceCreationType.FILE
+              ? t('resource.metadata.file')
+              : t('resource.metadata.link')}
+          </StyledResourceTypeTypography>
+          {resource.features.dlr_status_published
+            ? resource.features.dlr_time_published && (
+                <Typography variant="body1" color="textPrimary">
+                  {t('resource.metadata.published')}:{' '}
+                  {format(new Date(resource.features.dlr_time_published), 'dd.MM.yyyy')}
+                </Typography>
+              )
+            : resource.features.dlr_time_created && (
+                <Typography variant="body1" color="textPrimary">
+                  {t('resource.metadata.created')}: {format(new Date(resource.features.dlr_time_created), 'dd.MM.yyyy')}
+                </Typography>
               )}
-              {showTimeCreated && resource.features.dlr_time_created && (
-                <StyledTypography style={{ display: 'block' }} component="span" variant="body2" color="textPrimary">
-                  {format(new Date(resource.features.dlr_time_created), 'dd.MM.yyyy')}
-                </StyledTypography>
-              )}
-              {resource.features.dlr_identifier_handle && showHandle && (
-                <span>
-                  {t('handle')}: {resource.features.dlr_identifier_handle}
-                </span>
-              )}
-            </>
-          }
-        />
-      </StyledLinkButton>
-      <StyledActions>
-        {!resource.features.dlr_status_published && (
-          <StyledActionButton
-            data-testid={`edit-resource-button-${resource.identifier}`}
-            color="primary"
-            size="large"
-            variant="outlined"
-            onClick={handleClickEditButton}>
-            {t('common.edit').toUpperCase()}
-          </StyledActionButton>
-        )}
-        {handleDelete && (
-          <>
+
+          {resource.features.dlr_access && (
+            <Typography variant="body1">{t(`resource.access_types.${resource.features.dlr_access}`)}</Typography>
+          )}
+        </StyledMetaDataColumn>
+        <StyledActions>
+          {!resource.features.dlr_status_published && (
             <StyledActionButton
-              data-testid={`delete-my-resources-${resource.identifier}`}
-              color="secondary"
-              startIcon={<DeleteIcon fontSize="large" />}
+              data-testid={`edit-resource-button-${resource.identifier}`}
+              color="primary"
               size="large"
               variant="outlined"
-              onClick={() => setShowConfirmDialog(true)}>
-              {t('common.delete').toUpperCase()}
+              onClick={handleClickEditButton}>
+              {t('common.edit').toUpperCase()}
             </StyledActionButton>
-            <ConfirmDeleteDialog
-              data-testid={`delete-my-resource-confirm-dialog-${resource.identifier}`}
-              resourceIdentifier={resource.identifier}
-              open={showConfirmDialog}
-              resourceTitle={resource.features.dlr_title}
-              confirmedDelete={() => {
-                setShowConfirmDialog(false);
-                handleDelete();
-              }}
-              abortDelete={() => {
-                setShowConfirmDialog(false);
-              }}
-            />
-          </>
-        )}
-      </StyledActions>
-    </StyledListItem>
+          )}
+          {handleDelete && (
+            <>
+              <StyledActionButton
+                data-testid={`delete-my-resources-${resource.identifier}`}
+                color="secondary"
+                startIcon={<DeleteIcon fontSize="large" />}
+                size="large"
+                variant="outlined"
+                onClick={() => setShowConfirmDialog(true)}>
+                {t('common.delete').toUpperCase()}
+              </StyledActionButton>
+              <ConfirmDeleteDialog
+                data-testid={`delete-my-resource-confirm-dialog-${resource.identifier}`}
+                resourceIdentifier={resource.identifier}
+                open={showConfirmDialog}
+                resourceTitle={resource.features.dlr_title}
+                confirmedDelete={() => {
+                  setShowConfirmDialog(false);
+                  handleDelete();
+                }}
+                abortDelete={() => {
+                  setShowConfirmDialog(false);
+                }}
+              />
+            </>
+          )}
+        </StyledActions>
+      </StyledListItem>
+    </StyledListItemWrapper>
   );
 };
 
