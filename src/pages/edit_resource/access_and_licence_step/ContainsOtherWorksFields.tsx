@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import Radio from '@material-ui/core/Radio';
 import { useTranslation } from 'react-i18next';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import { Resource } from '../../../types/resource.types';
+import { Resource, ResourceFeatureNames, ResourceFeatureNamesFullPath } from '../../../types/resource.types';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import { useSelector } from 'react-redux';
@@ -14,7 +14,12 @@ import {
   StyledRadioGroup,
   StyledSchemaPartColored,
 } from '../../../components/styled/Wrappers';
-import { deleteResourceLicense, putAccessType, setResourceLicense } from '../../../api/resourceApi';
+import {
+  deleteResourceLicense,
+  postResourceFeature,
+  putAccessType,
+  setResourceLicense,
+} from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
@@ -77,6 +82,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
     setFieldTouched,
   } = useFormikContext<Resource>();
   const [savingError, setSavingError] = useState<Error>();
+  const [saveContainsOtherPeoplesWorkError, setSaveContainsOtherPeoplesWorkError] = useState<Error>();
 
   const LicenseAgreements: string[] = [
     Licenses.CC,
@@ -88,9 +94,18 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
 
   const handleChangeInContainsOtherPeoplesWork = async (event: React.ChangeEvent<HTMLInputElement>) => {
     handleChange(event);
-    forceResetInLicenseWizard();
-    resetFormButKeepTouched(touched, resetForm, values, setTouched);
-    setFieldValue('containsOtherPeoplesWork', event.target.value);
+    setFieldValue(ResourceFeatureNamesFullPath.ContainsOtherPeoplesWorks, event.target.value);
+    setAllChangesSaved(false);
+    try {
+      setSaveContainsOtherPeoplesWorkError(undefined);
+      await postResourceFeature(values.identifier, ResourceFeatureNames.ContainsOtherPeoplesWorks, event.target.value);
+      setAllChangesSaved(true);
+      forceResetInLicenseWizard();
+      resetFormButKeepTouched(touched, resetForm, values, setTouched);
+      setFieldValue(ResourceFeatureNamesFullPath.ContainsOtherPeoplesWorks, event.target.value);
+    } catch (error) {
+      setSaveContainsOtherPeoplesWorkError(error);
+    }
     if (event.target.value === ContainsOtherPeoplesWorkOptions.No) {
       setHasSelectedCC(false);
       setFieldTouched('usageClearedWithOwner', false);
@@ -113,6 +128,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   const handleLicenseAgreementChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     handleChange(event);
     try {
+      setSavingError(undefined);
       setAllChangesSaved(false);
       let accessType = AccessTypes.private;
       if (event.target.value === Licenses.CC) {
@@ -132,15 +148,14 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
         }
       }
       if (values.features.dlr_access !== accessType) {
-        setFieldValue('features.dlr_access', accessType);
+        setFieldValue(ResourceFeatureNamesFullPath.Access, accessType);
         await putAccessType(values.identifier, accessType);
       }
       resetForm({ values });
       if (values.features.dlr_access !== accessType) {
-        setFieldValue('features.dlr_access', accessType);
+        setFieldValue(ResourceFeatureNamesFullPath.Access, accessType);
       }
       setFieldValue('usageClearedWithOwner', event.target.value);
-      setSavingError(undefined);
     } catch (error) {
       setSavingError(error);
     } finally {
@@ -160,7 +175,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor1}>
       <StyledContentWrapper>
-        <Field name={'containsOtherPeoplesWork'}>
+        <Field name={ResourceFeatureNamesFullPath.ContainsOtherPeoplesWorks}>
           {({ field, meta: { error, touched } }: FieldProps) => (
             <FormControl component="fieldset" required error={hasError(error, touched)}>
               <StyledFormLabel component="legend" id={otherPeopleWorkId}>
@@ -192,7 +207,10 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
             </FormControl>
           )}
         </Field>
-        {values.containsOtherPeoplesWork === ContainsOtherPeoplesWorkOptions.Yes && (
+        {saveContainsOtherPeoplesWorkError && (
+          <ErrorBanner userNeedsToBeLoggedIn={true} error={saveContainsOtherPeoplesWorkError} />
+        )}
+        {values.features.dlr_licensehelper_contains_other_peoples_work === ContainsOtherPeoplesWorkOptions.Yes && (
           <StyledRadioBoxWrapper>
             <Field name={'usageClearedWithOwner'}>
               {({ field, meta: { error, touched } }: FieldProps) => (
@@ -227,7 +245,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
         {savingError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingError} />}
         {values.usageClearedWithOwner !== LicenseAgreementsOptions.YesOther &&
           values.usageClearedWithOwner !== '' &&
-          values.containsOtherPeoplesWork && (
+          values.features.dlr_licensehelper_contains_other_peoples_work && (
             <StyledOutLinedBox data-testid={'usage-cleared-with-owner-info'}>
               <ErrorOutlineIcon color="primary" />
               <StyledTypography>

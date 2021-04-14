@@ -48,7 +48,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
           resetForm({ values });
           if (
             event.target.value === AccessTypes.private &&
-            values.containsOtherPeoplesWork !== LicenseAgreementsOptions.NoClearance
+            values.features.dlr_licensehelper_contains_other_peoples_work !== LicenseAgreementsOptions.NoClearance
           ) {
             await postCurrentUserInstitutionConsumerAccess(values.identifier);
             setForceRefreshInPrivateConsumerAccessFields((prevState) => !prevState);

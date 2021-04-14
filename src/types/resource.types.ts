@@ -22,7 +22,6 @@ export interface Resource {
   accessWrite?: string[];
   contents: ResourceContents;
   licenses: License[];
-  containsOtherPeoplesWork: string;
   usageClearedWithOwner: string;
   resourceRestriction: string;
   othersCanModifyAndBuildUpon: string;
@@ -36,6 +35,7 @@ export const emptyResource: Resource = {
     dlr_content: '',
     dlr_time_created: '',
     dlr_content_type: '',
+    dlr_licensehelper_contains_other_peoples_work: '',
   },
   contents: {
     masterContent: {
@@ -51,7 +51,6 @@ export const emptyResource: Resource = {
   creators: [],
   licenses: [],
   tags: [],
-  containsOtherPeoplesWork: '',
   usageClearedWithOwner: '',
   resourceRestriction: '',
   othersCanModifyAndBuildUpon: '',
@@ -93,6 +92,7 @@ interface ResourceFeatures {
   dlr_title_alternative?: string;
   dlr_type?: string;
   dlr_thumbnail_url?: string;
+  dlr_licensehelper_contains_other_peoples_work: string;
 }
 
 export interface ResourceContents {
@@ -214,6 +214,7 @@ export enum ResourceFeatureNames {
   Title = 'dlr_title',
   Description = 'dlr_description',
   Access = 'dlr_access',
+  ContainsOtherPeoplesWorks = 'dlr_licensehelper_contains_other_peoples_work',
 }
 
 export enum ResourceFeatureNamesFullPath {
@@ -221,6 +222,7 @@ export enum ResourceFeatureNamesFullPath {
   Title = 'features.dlr_title',
   Description = 'features.dlr_description',
   Access = 'features.dlr_access',
+  ContainsOtherPeoplesWorks = 'features.dlr_licensehelper_contains_other_peoples_work',
 }
 
 export enum ContentFeatureNames {

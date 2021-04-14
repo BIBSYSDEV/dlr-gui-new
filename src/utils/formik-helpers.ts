@@ -158,7 +158,9 @@ export const touchedContentsFields = (contents: ResourceContents, resourceType: 
 });
 
 export const touchedAccessAndLicenseFields = (containsOtherPeoplesWork: string): FormikTouched<Resource> => ({
-  containsOtherPeoplesWork: true,
+  features: {
+    dlr_licensehelper_contains_other_peoples_work: true,
+  },
   usageClearedWithOwner: containsOtherPeoplesWork === ContainsOtherPeoplesWorkOptions.Yes,
   licenses: [{ identifier: true }],
 });
