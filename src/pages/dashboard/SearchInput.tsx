@@ -1,7 +1,6 @@
-import React, { ChangeEvent, Dispatch, FC, FormEvent, SetStateAction, useState } from 'react';
+import React, { ChangeEvent, Dispatch, FC, FormEvent, SetStateAction, useEffect, useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import SearchIcon from '@material-ui/icons/Search';
 import { StyleWidths } from '../../themes/mainTheme';
@@ -37,11 +36,11 @@ const StyledButton = styled(Button)`
 
 interface SearchInputProps {
   setQueryObject: Dispatch<SetStateAction<QueryObject>>;
+  queryObject: QueryObject;
 }
 
-const SearchInput: FC<SearchInputProps> = ({ setQueryObject }) => {
-  const location = useLocation();
-  const [searchTerm, setSearchTerm] = useState(new URLSearchParams(location.search).get('query') || '');
+const SearchInput: FC<SearchInputProps> = ({ setQueryObject, queryObject }) => {
+  const [searchTerm, setSearchTerm] = useState(queryObject.query);
   const { t } = useTranslation();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -54,6 +53,10 @@ const SearchInput: FC<SearchInputProps> = ({ setQueryObject }) => {
       queryFromURL: false,
     }));
   };
+
+  useEffect(() => {
+    setSearchTerm(queryObject.query);
+  }, [queryObject.query]);
 
   const updateSearchTermValue = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
