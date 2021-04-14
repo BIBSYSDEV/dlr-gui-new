@@ -295,6 +295,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                             required
                             disabled={contributor.authorities && contributor.authorities.length > 0}
                             fullWidth
+                            multiline
                             error={touched && !!error}
                             helperText={<ErrorMessage name={field.name} />}
                             data-testid={`contributor-name-field-${index}`}
@@ -309,7 +310,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                     <StyledButtonRowWrapper id="button-wrapper">
                       {user.institutionAuthorities?.isCurator && (
                         <StyledButtonWrapper>
-                          {!contributor.authorities ? (
+                          {!contributor.authorities || contributor.authorities.length === 0 ? (
                             <AuthoritySelector
                               resourceIdentifier={values.identifier}
                               creatorOrContributorId={contributor.identifier}

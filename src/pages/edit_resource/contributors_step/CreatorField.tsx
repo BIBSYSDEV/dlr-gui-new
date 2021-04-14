@@ -215,6 +215,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                           variant="filled"
                           inputRef={(element) => (inputElements.current[index] = element)}
                           required
+                          multiline
                           fullWidth
                           disabled={!!(creator.authorities && creator.authorities.length > 0)}
                           label={t('common.name')}
@@ -231,7 +232,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                     <StyledButtonRowWrapper>
                       {!isDeleting && user.institutionAuthorities?.isCurator && (
                         <StyledButtonWrapper>
-                          {!creator.authorities ? (
+                          {!creator.authorities || creator.authorities.length === 0 ? (
                             <AuthoritySelector
                               resourceIdentifier={values.identifier}
                               creatorOrContributorId={creator.identifier}
