@@ -36,6 +36,14 @@ const StyledListWrapper = styled.div`
   margin-top: 2rem;
 `;
 
+const StyledProgressWrapper = styled.div`
+  margin-top: 2.5rem;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+`;
+
 const nameConverter = (fullName: string) => {
   if (fullName.includes(',')) {
     return fullName;
@@ -157,33 +165,33 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
       <StyledDialog fullScreen={fullScreenDialog} open={open} onClose={handleClose} aria-labelledby={FormDialogTitleId}>
         <DialogTitle id={FormDialogTitleId}>
           {selectedAuthorities.length === 0 && t('authority.add_authority')}
-          {selectedAuthorities.length > 0 && t('authority.authorities')}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>{t('authority.not_possible_to_remove_warning')}. </DialogContentText>
           <StyledContentWrapper>
-            {selectedAuthorities.length === 0 && (
-              <form onSubmit={() => searchForAuthorities(OffsetFirstPage, debouncedSearchTerm)}>
-                <TextField
-                  value={authorityInputSearchValue}
-                  inputProps={{ 'data-testid': 'authority-search-field' }}
-                  onChange={(event) => {
-                    setTextFieldDirty(true);
-                    setAuthorityInputSearchValue(event.target.value);
-                  }}
-                  onBlur={() => setTextFieldTouched(true)}
-                  autoFocus
-                  error={invalidInput()}
-                  helperText={invalidInput() && t('authority.empty_search_query')}
-                  id={TextFieldId}
-                  label={t('authority.search_for_authority')}
-                  type="text"
-                  fullWidth
-                />
-              </form>
+            <form onSubmit={() => searchForAuthorities(OffsetFirstPage, debouncedSearchTerm)}>
+              <TextField
+                value={authorityInputSearchValue}
+                inputProps={{ 'data-testid': 'authority-search-field' }}
+                onChange={(event) => {
+                  setTextFieldDirty(true);
+                  setAuthorityInputSearchValue(event.target.value);
+                }}
+                onBlur={() => setTextFieldTouched(true)}
+                autoFocus
+                error={invalidInput()}
+                helperText={invalidInput() && t('authority.empty_search_query')}
+                id={TextFieldId}
+                label={t('authority.search_for_authority')}
+                type="text"
+                fullWidth
+              />
+            </form>
+            {isLoading && (
+              <StyledProgressWrapper>
+                <CircularProgress />
+              </StyledProgressWrapper>
             )}
-
-            {isLoading && <CircularProgress />}
             {authoritySearchResponse && !isLoading && (
               <StyledListWrapper>
                 <Typography id={ListTitleId} variant="h3">
@@ -201,7 +209,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
                 </List>
               </StyledListWrapper>
             )}
-            {authoritySearchResponse?.numFound && authoritySearchResponse.numFound >= AuthorityListLength && (
+            {authoritySearchResponse && authoritySearchResponse.results.length >= AuthorityListLength && (
               <Pagination
                 color="primary"
                 count={Math.ceil(authoritySearchResponse.numFound / AuthorityListLength)}
