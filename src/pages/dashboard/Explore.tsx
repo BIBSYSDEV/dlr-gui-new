@@ -24,6 +24,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import LoginReminder from '../../components/LoginReminder';
 import AccessFiltering from './AccessFiltering';
+import { queryObjectIsEquals } from '../../utils/queryObject-functions';
 
 const SearchResultWrapper = styled.div`
   display: flex;
@@ -112,43 +113,6 @@ const Explore = () => {
     }));
   };
 
-  //ignores queryFromURL and allowSearch.
-  const equals = function (a: QueryObject, b: QueryObject): boolean {
-    if (a.query !== b.query) {
-      return false;
-    } else if (a.showInaccessible !== b.showInaccessible) {
-      return false;
-    } else if (a.offset !== b.offset) {
-      return false;
-    } else if (a.licenses.length !== b.licenses.length) {
-      return false;
-    } else if (a.tags.length !== b.tags.length) {
-      return false;
-    } else if (a.resourceTypes.length !== b.resourceTypes.length) {
-      return false;
-    } else if (a.institutions.length !== b.institutions.length) {
-      return false;
-    }
-    const licensesA = a.licenses.slice().sort();
-    const licenseB = b.licenses.slice().sort();
-    if (!licensesA.every((element, index) => element === licenseB[index])) {
-      return false;
-    }
-    const tagsA = a.tags.slice().sort();
-    const tagsB = b.tags.slice().sort();
-    if (!tagsA.every((element, index) => element === tagsB[index])) {
-      return false;
-    }
-    const resourceTypesA = a.resourceTypes.slice().sort();
-    const resourceTypesB = b.resourceTypes.slice().sort();
-    if (!resourceTypesA.every((element, index) => element === resourceTypesB[index])) {
-      return false;
-    }
-    const institutionsA = a.institutions.slice().sort();
-    const institutionsB = b.institutions.slice().sort();
-    return institutionsA.every((element, index) => element === institutionsB[index]);
-  };
-
   useEffect(() => {
     const createQueryFromUrl = () => {
       const searchTerms = new URLSearchParams(location.search);
@@ -175,7 +139,7 @@ const Explore = () => {
       };
     };
     const newQueryObject = createQueryFromUrl();
-    if ((!queryObject.queryFromURL && !queryObject.allowSearch) || !equals(queryObject, newQueryObject)) {
+    if ((!queryObject.queryFromURL && !queryObject.allowSearch) || !queryObjectIsEquals(queryObject, newQueryObject)) {
       setQueryObject(newQueryObject);
     }
   }, [location, queryObject.allowSearch, queryObject.queryFromURL, queryObject]);
