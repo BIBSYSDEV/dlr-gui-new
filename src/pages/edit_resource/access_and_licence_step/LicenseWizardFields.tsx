@@ -6,11 +6,17 @@ import { useTranslation } from 'react-i18next';
 import { RootState } from '../../../state/rootReducer';
 import { useSelector } from 'react-redux';
 import { AccessTypes, InstitutionLicenseProviders, License, Licenses } from '../../../types/license.types';
-import { deleteResourceLicense, putAccessType, setResourceLicense } from '../../../api/resourceApi';
+import {
+  deleteResourceLicense,
+  postResourceFeature,
+  putAccessType,
+  setResourceLicense,
+} from '../../../api/resourceApi';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import { Resource } from '../../../types/resource.types';
+import { Resource, ResourceFeatureNames, ResourceFeatureNamesFullPath } from '../../../types/resource.types';
 import AccordionRadioGroup from '../../../components/AccordionRadioGroup';
 import ErrorBanner from '../../../components/ErrorBanner';
+import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 
 const extraRestrictionRadio = 'extra-restriction';
 const commercialRadio = 'commersial';
@@ -49,8 +55,13 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
 }) => {
   const { t } = useTranslation();
   const { institution } = useSelector((state: RootState) => state.user);
-  const { values, resetForm, setFieldValue, handleChange } = useFormikContext<Resource>();
+  const { values, resetForm, setFieldValue, handleChange, setTouched, touched } = useFormikContext<Resource>();
   const [saveRestrictionError, setSaveRestrictionError] = useState<Error>();
+
+  const [savingResourceRestrictionError, setSavingResourceRestrictionError] = useState<Error>();
+  const [savingOthersCanModifyAndBuildUponError, setSavingOthersCanModifyAndBuildUponError] = useState<Error>();
+  const [savingCanBeUsedCommerciallyError, setSavingCanBeUsedCommerciallyError] = useState<Error>();
+
   const [expandModifyAndBuildOption, setExpandModifyAndBuildOption] = useState(false);
 
   const licenseRestrictions = [
@@ -61,8 +72,8 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   ];
 
   useEffect(() => {
-    if (values.othersCanModifyAndBuildUpon) setExpandModifyAndBuildOption(true);
-  }, [values.othersCanModifyAndBuildUpon]);
+    if (values.features.dlr_licensehelper_others_can_modify_and_build_upon) setExpandModifyAndBuildOption(true);
+  }, [values.features.dlr_licensehelper_others_can_modify_and_build_upon]);
 
   useEffect(() => {
     setSaveRestrictionError(undefined);
@@ -125,29 +136,74 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
 
   const handleChangeInExtraRestriction = async (event: React.ChangeEvent<HTMLInputElement>) => {
     handleChange(event);
+    console.log('->', event.target.value);
+    setFieldValue(ResourceFeatureNamesFullPath.ResourceRestriction, event.target.value);
+    try {
+      setAllChangesSaved(false);
+      setSavingResourceRestrictionError(undefined);
+      await postResourceFeature(values.identifier, ResourceFeatureNames.ResourceRestriction, event.target.value);
+      setAllChangesSaved(true);
+      resetFormButKeepTouched(touched, resetForm, values, setTouched);
+    } catch (error) {
+      setSavingResourceRestrictionError(error);
+    }
     await calculatePreferredLicense(
       event.target.value,
-      values.canBeUsedCommercially,
-      values.othersCanModifyAndBuildUpon
+      values.features.dlr_licensehelper_can_be_used_commercially,
+      values.features.dlr_licensehelper_others_can_modify_and_build_upon
     );
     if (event.target.value !== LicenseRestrictionOptions.yes) {
-      setFieldValue('canBeUsedCommercially', '');
-      setFieldValue('othersCanModifyAndBuildUpon', '');
+      setFieldValue(ResourceFeatureNamesFullPath.CanBeUsedCommercially, '');
+      setFieldValue(ResourceFeatureNamesFullPath.OthersCanModifyAndBuildUpon, '');
     }
-    setFieldValue('resourceRestriction', event.target.value);
+    setFieldValue(ResourceFeatureNamesFullPath.ResourceRestriction, event.target.value);
   };
 
   const handleChangeInCommercialOption = async (event: React.ChangeEvent<HTMLInputElement>) => {
     handleChange(event);
+    setFieldValue(ResourceFeatureNamesFullPath.CanBeUsedCommercially, event.target.value);
+    try {
+      setAllChangesSaved(false);
+      setSavingCanBeUsedCommerciallyError(undefined);
+      await postResourceFeature(values.identifier, ResourceFeatureNames.CanBeUsedCommercially, event.target.value);
+      setAllChangesSaved(true);
+      resetFormButKeepTouched(touched, resetForm, values, setTouched);
+    } catch (error) {
+      setSavingCanBeUsedCommerciallyError(error);
+    }
+
     setExpandModifyAndBuildOption(true);
-    await calculatePreferredLicense(values.resourceRestriction, event.target.value, values.othersCanModifyAndBuildUpon);
-    setFieldValue('canBeUsedCommercially', event.target.value);
+    await calculatePreferredLicense(
+      values.features.dlr_licensehelper_resource_restriction,
+      event.target.value,
+      values.features.dlr_licensehelper_others_can_modify_and_build_upon
+    );
+    setFieldValue(ResourceFeatureNamesFullPath.CanBeUsedCommercially, event.target.value);
   };
 
   const handleChangeInModifyAndBuildOption = async (event: React.ChangeEvent<HTMLInputElement>) => {
     handleChange(event);
-    await calculatePreferredLicense(values.resourceRestriction, values.canBeUsedCommercially, event.target.value);
-    setFieldValue('othersCanModifyAndBuildUpon', event.target.value);
+    setFieldValue(ResourceFeatureNamesFullPath.OthersCanModifyAndBuildUpon, event.target.value);
+    try {
+      setAllChangesSaved(false);
+      setSavingOthersCanModifyAndBuildUponError(undefined);
+      await postResourceFeature(
+        values.identifier,
+        ResourceFeatureNames.OthersCanModifyAndBuildUpon,
+        event.target.value
+      );
+      setAllChangesSaved(true);
+      resetFormButKeepTouched(touched, resetForm, values, setTouched);
+    } catch (error) {
+      setSavingOthersCanModifyAndBuildUponError(error);
+    }
+
+    await calculatePreferredLicense(
+      values.features.dlr_licensehelper_resource_restriction,
+      values.features.dlr_licensehelper_can_be_used_commercially,
+      event.target.value
+    );
+    setFieldValue(ResourceFeatureNamesFullPath.OthersCanModifyAndBuildUpon, event.target.value);
   };
 
   return (
@@ -160,7 +216,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           <FormLabel component="legend" id={`${extraRestrictionRadio}-label`}>
             <Typography variant="overline">{t('license.questions.special_needs')}</Typography>
           </FormLabel>
-          <Field name={'resourceRestriction'}>
+          <Field name={ResourceFeatureNamesFullPath.ResourceRestriction}>
             {({ field }: FieldProps) => (
               <StyledRadioGroup
                 {...field}
@@ -196,9 +252,12 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
               </StyledRadioGroup>
             )}
           </Field>
+          {savingResourceRestrictionError && (
+            <ErrorBanner userNeedsToBeLoggedIn={true} error={savingResourceRestrictionError} />
+          )}
         </AccordionRadioGroup>
-
-        {values.resourceRestriction === LicenseRestrictionOptions.yes && (
+        <pre style={{ maxWidth: '90%' }}>PER2: {JSON.stringify(values, null, 2)}</pre>
+        {values.features.dlr_licensehelper_resource_restriction === LicenseRestrictionOptions.yes && (
           <AccordionRadioGroup
             ariaDescription={commercialRadio}
             title={t('license.commercial_purposes')}
@@ -206,7 +265,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
             <FormLabel component="legend" id={`${commercialRadio}-label`}>
               <Typography variant="overline">{t('license.questions.commercial')}</Typography>
             </FormLabel>
-            <Field name={'canBeUsedCommercially'}>
+            <Field name={ResourceFeatureNamesFullPath.CanBeUsedCommercially}>
               {({ field }: FieldProps) => (
                 <>
                   <StyledRadioGroup
@@ -228,10 +287,13 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                 </>
               )}
             </Field>
+            {savingCanBeUsedCommerciallyError && (
+              <ErrorBanner userNeedsToBeLoggedIn={true} error={savingCanBeUsedCommerciallyError} />
+            )}
           </AccordionRadioGroup>
         )}
 
-        {values.resourceRestriction === LicenseRestrictionOptions.yes && (
+        {values.features.dlr_licensehelper_resource_restriction === LicenseRestrictionOptions.yes && (
           <AccordionRadioGroup
             ariaDescription={modifyAndBuildRadio}
             title={t('license.modify_and_build')}
@@ -239,7 +301,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
             <FormLabel component="legend" id={`${modifyAndBuildRadio}-label`}>
               <Typography variant="overline">{t('license.questions.modify_and_build')}</Typography>
             </FormLabel>
-            <Field name={'othersCanModifyAndBuildUpon'}>
+            <Field name={ResourceFeatureNamesFullPath.OthersCanModifyAndBuildUpon}>
               {({ field }: FieldProps) => (
                 <>
                   <StyledRadioGroup
@@ -277,6 +339,9 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                 </>
               )}
             </Field>
+            {savingOthersCanModifyAndBuildUponError && (
+              <ErrorBanner userNeedsToBeLoggedIn={true} error={savingOthersCanModifyAndBuildUponError} />
+            )}
           </AccordionRadioGroup>
         )}
 

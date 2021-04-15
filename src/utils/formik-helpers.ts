@@ -68,9 +68,9 @@ const getAllAccessAndLicenseStepFieldNames = () => {
     `${FieldNames.LicensesBase}[0]`,
     `${ResourceFeatureNamesFullPath.UsageClearedWithOwner}`,
     `${ResourceFeatureNamesFullPath.ContainsOtherPeoplesWorks}`,
-    `${FieldNames.resourceRestriction}`,
-    `${FieldNames.othersCanModifyAndBuildUpon}`,
-    `${FieldNames.canBeUsedCommercially}`,
+    `${ResourceFeatureNamesFullPath.ResourceRestriction}`,
+    `${ResourceFeatureNamesFullPath.OthersCanModifyAndBuildUpon}`,
+    `${ResourceFeatureNamesFullPath.CanBeUsedCommercially}`,
   ];
 };
 

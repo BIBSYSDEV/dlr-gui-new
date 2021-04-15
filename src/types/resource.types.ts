@@ -22,9 +22,6 @@ export interface Resource {
   accessWrite?: string[];
   contents: ResourceContents;
   licenses: License[];
-  resourceRestriction: string;
-  othersCanModifyAndBuildUpon: string;
-  canBeUsedCommercially: string;
 }
 
 export const emptyResource: Resource = {
@@ -54,9 +51,6 @@ export const emptyResource: Resource = {
   creators: [],
   licenses: [],
   tags: [],
-  resourceRestriction: '',
-  othersCanModifyAndBuildUpon: '',
-  canBeUsedCommercially: '',
 };
 
 enum ResourceType {
@@ -140,11 +134,6 @@ export interface Creator {
   Authority?: Authority;
 }
 
-export const emptyCreator = {
-  identifier: '',
-  features: {},
-};
-
 interface CreatorFeatures {
   dlr_creator_identifier?: string;
   dlr_creator_name?: string;
@@ -222,6 +211,9 @@ export enum ResourceFeatureNames {
   Access = 'dlr_access',
   ContainsOtherPeoplesWorks = 'dlr_licensehelper_contains_other_peoples_work',
   UsageClearedWithOwner = 'dlr_licensehelper_usage_cleared_with_owner',
+  ResourceRestriction = 'dlr_licensehelper_resource_restriction',
+  CanBeUsedCommercially = 'dlr_licensehelper_can_be_used_commercially',
+  OthersCanModifyAndBuildUpon = 'dlr_licensehelper_others_can_modify_and_build_upon',
 }
 
 export enum ResourceFeatureNamesFullPath {
@@ -231,6 +223,9 @@ export enum ResourceFeatureNamesFullPath {
   Access = 'features.dlr_access',
   ContainsOtherPeoplesWorks = 'features.dlr_licensehelper_contains_other_peoples_work',
   UsageClearedWithOwner = 'features.dlr_licensehelper_usage_cleared_with_owner',
+  ResourceRestriction = 'features.dlr_licensehelper_resource_restriction',
+  CanBeUsedCommercially = 'features.dlr_licensehelper_can_be_used_commercially',
+  OthersCanModifyAndBuildUpon = 'features.dlr_licensehelper_others_can_modify_and_build_upon',
 }
 
 export enum ContentFeatureNames {
@@ -259,10 +254,6 @@ export enum FieldNames {
   Tags = 'tags',
   MasterContent = 'masterContent',
   AdditionalContent = 'additionalContent',
-  //TODO: remove
-  resourceRestriction = 'resourceRestriction',
-  othersCanModifyAndBuildUpon = 'othersCanModifyAndBuildUpon',
-  canBeUsedCommercially = 'canBeUsedCommercially',
 }
 
 export enum ResourceFormStep {
