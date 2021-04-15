@@ -94,7 +94,7 @@
     "description_helper_text1": "Provide a short description about your resource content",
     "description_helper_text2": "Description examples",
     "file_title_helper_aria_label": "Show file title explanation",
-    "file_title_helper_example1": "\"flower\" is a better file title than \"img_23434.jpg\"",
+    "file_title_helper_example1": "\"Orange blossoms on tree\" is a better file title than \"img_23434.jpg\"",
     "file_title_helper_example2": "The filename \"thesis.pdf\" can be used as file title",
     "file_title_helper_text": "File title can be different from file name",
     "resource_type_aria_label": "Show type explanation",
