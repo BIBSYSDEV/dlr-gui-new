@@ -32,7 +32,7 @@ const SearchResultWrapper = styled.div`
 const StyledResultListWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: ${Colors.ResultListBackground};
+  background-color: ${Colors.UnitTurquoise_20percent};
   padding: 1.5rem 0.5rem 1rem 0.5rem;
   margin-bottom: 2rem;
   max-width: ${StyleWidths.width5};

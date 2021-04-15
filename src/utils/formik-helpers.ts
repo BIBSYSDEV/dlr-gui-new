@@ -67,6 +67,9 @@ const getAllAccessAndLicenseStepFieldNames = () => {
     `${FieldNames.LicensesBase}[0]`,
     `${FieldNames.ContainsOtherPeoplesWork}`,
     `${FieldNames.UsageClearedWithOwner}`,
+    `${FieldNames.resourceRestriction}`,
+    `${FieldNames.othersCanModifyAndBuildUpon}`,
+    `${FieldNames.canBeUsedCommercially}`,
   ];
 };
 

@@ -7,6 +7,7 @@ import { AllDLRInstitutionNames, FacetType, QueryObject } from '../../types/sear
 import styled from 'styled-components';
 import { getAllFacets } from '../../api/resourceApi';
 import ErrorBanner from '../../components/ErrorBanner';
+import institutions from '../../resources/assets/institutions.json';
 
 const StyledFormControl: any = styled(FormControl)`
   margin-top: 2rem;
@@ -62,20 +63,22 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
     };
     const generateInstitutionListFromFacets = async () => {
       try {
+        if (!mountedRef.current) return null;
         setError(null);
         setIsLoading(true);
         const facetsResponse = await getAllFacets();
+        if (!mountedRef.current) return null;
         const list = facetsResponse.data.facet_counts
           .filter((facet) => facet.type === FacetType.dlrInstitutionId)
           .map((facet) => facet.value)
           .sort((a, b) => a.localeCompare(b));
-        if (!mountedRef.current) return null;
         setInstitutionsFromGetFacets(list);
         updateInstitutionCheckedList(list);
       } catch (error) {
+        if (!mountedRef.current) return null;
         setError(error);
       } finally {
-        setIsLoading(false);
+        if (mountedRef.current) setIsLoading(false);
       }
     };
     if (!calledApiOnce) {
@@ -104,6 +107,15 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
     }
   };
 
+  const generateInstitutionName = (institutionCode: string): string => {
+    const inst = institutions.find((institution) => institution.toLowerCase() === institutionCode.toLowerCase());
+    if (inst) {
+      return inst;
+    } else {
+      return institutionCode;
+    }
+  };
+
   return (
     <StyledFormControl component="fieldset">
       <FormLabel>
@@ -125,7 +137,7 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
                   name={institution.name}
                 />
               }
-              label={institution.name}
+              label={generateInstitutionName(institution.name)}
               onChange={(event) => {
                 changeSelected(index, event);
               }}

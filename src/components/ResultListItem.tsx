@@ -1,20 +1,16 @@
 import React, { FC } from 'react';
-import { Resource, ResourceFeatureTypes } from '../types/resource.types';
+import { Resource, ResourceCreationType } from '../types/resource.types';
 import Thumbnail from './Thumbnail';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import { Colors, StyleWidths } from '../themes/mainTheme';
-import VolumeUpIcon from '@material-ui/icons/VolumeUp';
-import VideocamIcon from '@material-ui/icons/Videocam';
-import SlideshowIcon from '@material-ui/icons/Slideshow';
-import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
-import PhotoOutlinedIcon from '@material-ui/icons/PhotoOutlined';
 import { format } from 'date-fns';
 import { Chip } from '@material-ui/core';
 import CClogoImage from './CClogoImage';
 import Link from '@material-ui/core/Link';
 import { SearchParameters } from '../types/search.types';
+import { getStyledFileTypeIcon } from './FileTypeIcon';
 
 const StyledListItem: any = styled.li`
   width: 100%;
@@ -50,7 +46,7 @@ const StyledThumbnailMetadata = styled.div`
 `;
 
 const StyledFileTypeIcon = styled.span`
-  margin: 0.5rem 0.3rem 0.5rem 0.5rem;
+  margin: 0.7rem 0.3rem 0.5rem 0.5rem;
 `;
 
 const StyledTimeCreatedTypography = styled(Typography)`
@@ -124,16 +120,6 @@ interface ResultListItemProps {
 const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
   const { t } = useTranslation();
 
-  const getStyledFileTypeIcon = (type: string) => {
-    if (type.toUpperCase() === ResourceFeatureTypes.audio.toUpperCase()) return <VolumeUpIcon />;
-    if (type.toUpperCase() === ResourceFeatureTypes.image.toUpperCase()) return <PhotoOutlinedIcon />;
-    if (type.toUpperCase() === ResourceFeatureTypes.presentation.toUpperCase()) return <SlideshowIcon />;
-    if (type.toUpperCase() === ResourceFeatureTypes.simulation.toUpperCase()) return <SlideshowIcon />;
-    if (type.toUpperCase() === ResourceFeatureTypes.video.toUpperCase()) return <VideocamIcon />;
-    if (type.toUpperCase() === ResourceFeatureTypes.document.toUpperCase()) return <DescriptionOutlinedIcon />;
-    return <DescriptionOutlinedIcon />; //default
-  };
-
   return (
     <StyledListItem data-testid={`list-item-resources-${resource.identifier}`}>
       <StyledFirstColumn>
@@ -148,7 +134,9 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
               <StyledFileTypeIcon>{getStyledFileTypeIcon(resource.features.dlr_type)}</StyledFileTypeIcon>
             )}
             <StyledFileName display="inline" variant="body2">
-              {resource.features.dlr_title}
+              {resource.features.dlr_content_type === ResourceCreationType.FILE
+                ? resource.features.dlr_content
+                : t('resource.metadata.link')}
             </StyledFileName>
           </StyledThumbnailMetadata>
         </StyledThumbnailWrapper>

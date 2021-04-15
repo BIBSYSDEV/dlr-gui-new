@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getMyResources } from '../../api/resourceApi';
-import { CircularProgress, List, Typography } from '@material-ui/core';
+import { CircularProgress, List, Tab, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { Resource } from '../../types/resource.types';
-import ErrorBanner from '../../components/ErrorBanner';
-import ResourceListItem from '../../components/ResourceListItem';
-import { PageHeader } from '../../components/PageHeader';
-import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
+import { TabContext, TabList, TabPanel } from '@material-ui/lab';
+import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
+import ErrorBanner from '../../components/ErrorBanner';
+import { PageHeader } from '../../components/PageHeader';
+import ResourceListItem from '../../components/ResourceListItem';
+import { Colors } from '../../themes/mainTheme';
 
-const StyledListWrapper = styled.div`
-  margin-top: 40px;
+const StyledTabPanel = styled(TabPanel)`
+  &.MuiTabPanel-root {
+    padding: 0;
+  }
 `;
 
-const ListMarginAlign = styled.div`
-  display: block;
-  align-items: start;
-`;
+enum Tabs {
+  UnPublished = 'unpublished',
+  Published = 'published',
+}
 
 const MyResources = () => {
   const { t } = useTranslation();
@@ -27,6 +31,7 @@ const MyResources = () => {
   const [resourcesPublished, setMyPublishedResources] = useState<Resource[]>([]);
   const [loadingError, setLoadingError] = useState<Error>();
   const { institution } = useSelector((state: RootState) => state.user);
+  const [tabValue, setTabValue] = React.useState(Tabs.Published);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,57 +63,69 @@ const MyResources = () => {
     }
   };
 
+  const handleTabChange = (event: React.ChangeEvent<unknown>, newValue: Tabs) => {
+    setTabValue(newValue);
+  };
+
   return (
     <StyledContentWrapperLarge>
       {loadingError && <ErrorBanner userNeedsToBeLoggedIn={true} error={loadingError} />}
       {isLoadingMyResources && <CircularProgress />}
-      <ListMarginAlign>
+      <>
         <PageHeader>{t('resource.my_resources')}</PageHeader>
-        <StyledListWrapper>
-          <Typography variant="h2">{t('resource.unpublished_resources')}</Typography>
-          <List>
-            {!isLoadingMyResources &&
-              resourcesUnpublished.length > 0 &&
-              resourcesUnpublished.map((resource: Resource, index: number) => (
-                <ResourceListItem
-                  data-testid={`my-unpublished-resources-${resource.identifier}`}
-                  key={index}
-                  resource={resource}
-                  showTimeCreated={true}
-                  fallbackInstitution={institution}
-                  handleDelete={() => {
-                    deleteResource(resource.identifier, false);
-                  }}
-                />
-              ))}
-          </List>
-          {!isLoadingMyResources && resourcesUnpublished.length === 0 && (
-            <Typography>{t('resource.no_unpublished_resources')}</Typography>
-          )}
-        </StyledListWrapper>
-        <StyledListWrapper>
-          <Typography variant="h2">{t('resource.published_resources')}</Typography>
-          <List>
-            {!isLoadingMyResources &&
-              resourcesPublished.length > 0 &&
-              resourcesPublished.map((resource: Resource, index: number) => (
-                <ResourceListItem
-                  data-testid={`my-published-resources-${resource.identifier}`}
-                  key={index}
-                  resource={resource}
-                  showTimeCreated={true}
-                  fallbackInstitution={institution}
-                  handleDelete={() => {
-                    deleteResource(resource.identifier, true);
-                  }}
-                />
-              ))}
-          </List>
-          {!isLoadingMyResources && resourcesPublished.length === 0 && (
-            <Typography>{t('resource.no_published_resources')}</Typography>
-          )}
-        </StyledListWrapper>
-      </ListMarginAlign>
+        <TabContext value={tabValue}>
+          <TabList
+            textColor="primary"
+            indicatorColor="primary"
+            onChange={handleTabChange}
+            aria-label={t('resource.my_publication_tabs')}>
+            <Tab label={t('resource.published_resources')} value={Tabs.Published} data-testid={'published-tab'} />
+            <Tab label={t('resource.unpublished_resources')} value={Tabs.UnPublished} data-testid={'unpublished-tab'} />
+          </TabList>
+          <StyledTabPanel value={Tabs.Published}>
+            <List>
+              {!isLoadingMyResources &&
+                resourcesPublished.length > 0 &&
+                resourcesPublished.map((resource: Resource, index: number) => (
+                  <ResourceListItem
+                    data-testid={`my-published-resources-${resource.identifier}`}
+                    key={index}
+                    resource={resource}
+                    fallbackInstitution={institution}
+                    backgroundColor={Colors.UnitTurquoise_20percent}
+                    handleDelete={() => {
+                      deleteResource(resource.identifier, true);
+                    }}
+                  />
+                ))}
+            </List>
+            {!isLoadingMyResources && resourcesPublished.length === 0 && (
+              <Typography>{t('resource.no_published_resources')}</Typography>
+            )}
+          </StyledTabPanel>
+          <StyledTabPanel value={Tabs.UnPublished}>
+            <List>
+              {!isLoadingMyResources &&
+                resourcesUnpublished.length > 0 &&
+                resourcesUnpublished.map((resource: Resource, index: number) => (
+                  <ResourceListItem
+                    data-testid={`my-unpublished-resources-${resource.identifier}`}
+                    key={index}
+                    resource={resource}
+                    backgroundColor={Colors.UnitGrey2_10percent}
+                    fallbackInstitution={institution}
+                    handleDelete={() => {
+                      deleteResource(resource.identifier, false);
+                    }}
+                  />
+                ))}
+            </List>
+            {!isLoadingMyResources && resourcesUnpublished.length === 0 && (
+              <Typography>{t('resource.no_unpublished_resources')}</Typography>
+            )}
+          </StyledTabPanel>
+        </TabContext>
+      </>
     </StyledContentWrapperLarge>
   );
 };

@@ -14,6 +14,8 @@ import { Colors } from '../themes/mainTheme';
 import { UserInstitution } from '../types/user.types';
 
 const StyledImageWrapper = styled.div`
+  min-width: 11rem;
+  min-height: 7rem;
   width: 11rem;
   height: 7rem;
   display: flex;
