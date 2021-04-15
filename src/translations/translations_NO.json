@@ -29,11 +29,24 @@
     "show_list": "Vis liste",
     "who_got_access": "Hvem har tilgang"
   },
+  "authority": {
+    "add_authority": "Legg til autoritet",
+    "authorities": "Autoriteter",
+    "deselect_authority": "Fjern autoritet",
+    "empty_search_query": "Må inneholde minst en bokstav eller et tall",
+    "not_possible_to_remove_warning": "NB! Det er ikke mulig å slette en autoritet etter at den er valgt",
+    "search_for_authority": "Søk etter verifisert autoritet",
+    "selected": "Valgt",
+    "verified": "Verifisert",
+    "verify": "Verifiser",
+    "view_verified_authority": "Se verifisert"
+  },
   "common": {
     "all_changes_saved": "Alle endringer er lagret",
     "back": "Tilbake",
     "cancel": "Avbryt",
     "clear": "Tøm",
+    "close": "Lukk",
     "delete": "Slett",
     "edit": "Rediger",
     "error": "Feil",
@@ -57,6 +70,7 @@
     "result": "Resultat",
     "search": "Søk",
     "save": "Lagre",
+    "select": "Velg",
     "step": "Trinn",
     "type": "Type",
     "yes": "Ja"
@@ -83,10 +97,12 @@
   },
   "explanation_text": {
     "contributor_helper_aria_label" : "Vis bigradsyter forklaring",
-    "contributor_helper_text" : "Andre som har bidratt med ressursen, men som ikke trengs å krediteres av de som tar i bruk ressursen",
+    "contributor_helper_text1" : "Andre som har bidratt med ressursen, men som ikke trengs å krediteres av de som tar i bruk ressursen",
+    "contributor_helper_text2" : "Det er ikke mulig å endre navnet etter at man har verfifisert bigragsyteren",
     "creator_helper_aria_label": "Vis opphaver forklaring",
     "creator_helper_example": "Eksempelvis: forelesere, undervisere, forfattere og skaperne av ressursen kan føres opp her",
-    "creator_helper_text": "Personen, firmaet eller orginasjonen som eier rettighetene til ressursen",
+    "creator_helper_text1": "Personen, firmaet eller orginasjonen som eier rettighetene til ressursen",
+    "creator_helper_text2": "Det er ikke mulig å endre navnet på opphaver etter at man har verfifisert opphaver",
     "description_helper_aria_label": "Vis beskrivelse forklaring",
     "description_helper_example1": "Kort video om hvordan det sympatiske nervesystemet er bygget opp og fungerer",
     "description_helper_example2": "Forelesning om tastaturnavigering og universell utforming. Forelesningen er beregnet for frontendutviklere og tar for seg WCAG 2.1",
