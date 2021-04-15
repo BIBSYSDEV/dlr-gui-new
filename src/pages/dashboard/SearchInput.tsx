@@ -6,6 +6,9 @@ import styled from 'styled-components';
 import SearchIcon from '@material-ui/icons/Search';
 import { StyleWidths } from '../../themes/mainTheme';
 import { NumberOfResultsPrPage, QueryObject } from '../../types/search.types';
+import HelperTextPopover from '../../components/HelperTextPopover';
+import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 
 const StyledForm = styled.form`
   margin-top: 2rem;
@@ -28,11 +31,17 @@ const StyledTextField = styled(TextField)`
   }
 `;
 
-const StyledButton = styled(Button)`
-  min-width: 7rem;
+const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: baseline;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     margin-top: 1rem;
   }
+`;
+
+const StyledButton = styled(Button)`
+  min-width: 7rem;
+  margin-right: 0.5rem;
 `;
 
 interface SearchInputProps {
@@ -70,15 +79,23 @@ const SearchInput: FC<SearchInputProps> = ({ setQueryObject }) => {
         value={searchTerm}
         label={t('common.search')}
       />
-      <StyledButton
-        data-testid="search-for-resource-submit"
-        startIcon={<SearchIcon />}
-        disabled={!searchTerm && searchTerm.length < 4}
-        color="primary"
-        variant="contained"
-        type="submit">
-        {t('common.search')}
-      </StyledButton>
+      <ButtonWrapper>
+        <StyledButton
+          data-testid="search-for-resource-submit"
+          startIcon={<SearchIcon />}
+          disabled={!searchTerm && searchTerm.length < 4}
+          color="primary"
+          variant="contained"
+          type="submit">
+          {t('common.search')}
+        </StyledButton>
+        <HelperTextPopover ariaButtonLabel={'vis søkeinformasjon'} popoverId={'search-input-explainer'}>
+          <Typography>
+            Spesialtegn *, ? og ~ støttes. Mer informasjon om søketekst finner du på{' '}
+            <Link href={'/search-helper'}>Tips til søk etter ressurser</Link>
+          </Typography>
+        </HelperTextPopover>
+      </ButtonWrapper>
     </StyledForm>
   );
 };

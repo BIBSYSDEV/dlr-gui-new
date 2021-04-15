@@ -40,6 +40,10 @@ const Sitemap = () => {
       href: '/registration',
       description: `${t('resource.new_registration')} (${t('common.must_be_logged_in').toLowerCase()})`,
     },
+    {
+      href: '/search-helper',
+      description: `${t('Tips til søk etter ressurser')}`,
+    },
   ].sort((a, b) => a.description.localeCompare(b.description));
 
   return (
