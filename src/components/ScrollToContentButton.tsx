@@ -10,7 +10,7 @@ const StyledContentButton = styled(Button)`
   height: 1px;
   color: #fff;
   display: block;
-  padding: 8px;
+  padding: 0.5rem;
   text-align: center;
   text-decoration: none !important;
   background-color: #1a1a18;

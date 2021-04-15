@@ -28,6 +28,8 @@ import {
   mockToken,
   mockUser,
   mockInstitutionAuthorities,
+  mockAuthoritySearchResponse,
+  mockAuthoritySearchResponse2,
 } from './mockdata';
 
 // AXIOS INTERCEPTOR
@@ -40,6 +42,17 @@ export const interceptRequestsOnMock = () => {
     //console.log('MOCKED API-CALL: ', config, statusCode, mockedResult);
     return [statusCode, mockedResult];
   };
+
+  //AUTHORITY
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendAuthoritiesPath}/authorities/search\\?q=C.*`))
+    .reply(200, mockAuthoritySearchResponse2);
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendAuthoritiesPath}/authorities/search.*`))
+    .reply(200, mockAuthoritySearchResponse);
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*/authorities`)).reply(200, []);
+  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*/authorities`)).reply(201);
+  mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*/authorities`)).reply(201);
 
   // SEARCH
   mock

@@ -22,6 +22,27 @@ const StyledMenuItem = styled(MenuItem)`
   padding: 1rem;
   margin: 0.3rem;
 `;
+const StyledMenuItemContent = styled.div`
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const StyledListItemIcon = styled(ListItemIcon)`
+  min-width: 2.5rem;
+`;
+const StyledTextField = styled(TextField)`
+  max-width: 90vw;
+`;
+const StyledCombinedTextWrapper = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const StyledResourceExampleTypography = styled(Typography)`
+  margin-left: 0.5rem;
+`;
 
 interface ResourceTypeFieldProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -63,7 +84,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
           {({ field, meta: { error, touched } }: FieldProps) => (
             <Grid container alignItems="center" spacing={2}>
               <Grid item xs={10}>
-                <TextField
+                <StyledTextField
                   {...field}
                   id="resource-feature-type"
                   variant="filled"
@@ -81,43 +102,70 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                     handleChange(event);
                     saveResourceType(event);
                   }}>
-                  <StyledMenuItem value={ResourceFeatureTypes.audio}>
-                    <ListItemIcon>
-                      <VolumeUpIcon />
-                    </ListItemIcon>
-                    <Typography variant="inherit">{t('resource.type.audio')}</Typography>
-                  </StyledMenuItem>
                   <StyledMenuItem value={ResourceFeatureTypes.video}>
-                    <ListItemIcon>
-                      <VideocamIcon />
-                    </ListItemIcon>
-                    <Typography variant="inherit">{t('resource.type.video')}</Typography>
-                  </StyledMenuItem>
-                  <StyledMenuItem value={ResourceFeatureTypes.presentation}>
-                    <ListItemIcon>
-                      <SlideshowIcon />
-                    </ListItemIcon>
-                    <Typography variant="inherit">{t('resource.type.presentation')}</Typography>
-                  </StyledMenuItem>
-                  <StyledMenuItem value={ResourceFeatureTypes.document}>
-                    <ListItemIcon>
-                      <DescriptionOutlinedIcon />
-                    </ListItemIcon>
-                    <Typography variant="inherit">{t('resource.type.document')}</Typography>
+                    <StyledMenuItemContent>
+                      <StyledListItemIcon>
+                        <VideocamIcon />
+                      </StyledListItemIcon>
+                      <Typography variant="inherit">{t('resource.type.video')}</Typography>
+                    </StyledMenuItemContent>
                   </StyledMenuItem>
                   <StyledMenuItem value={ResourceFeatureTypes.image}>
-                    <ListItemIcon>
-                      <PhotoOutlinedIcon />
-                    </ListItemIcon>
-                    <Typography variant="inherit">{t('resource.type.image')}</Typography>
+                    <StyledMenuItemContent>
+                      <StyledListItemIcon>
+                        <PhotoOutlinedIcon />
+                      </StyledListItemIcon>
+                      <StyledCombinedTextWrapper>
+                        <Typography variant="inherit">{t('resource.type.image')}</Typography>
+                        <StyledResourceExampleTypography variant="caption">
+                          ({t('explanation_text.resource_type_examples_image')})
+                        </StyledResourceExampleTypography>
+                      </StyledCombinedTextWrapper>
+                    </StyledMenuItemContent>
+                  </StyledMenuItem>
+                  <StyledMenuItem value={ResourceFeatureTypes.document}>
+                    <StyledMenuItemContent>
+                      <StyledListItemIcon>
+                        <DescriptionOutlinedIcon />
+                      </StyledListItemIcon>
+                      <StyledCombinedTextWrapper>
+                        <Typography variant="inherit">{t('resource.type.document')}</Typography>
+                        <StyledResourceExampleTypography variant="caption">
+                          ({t('explanation_text.resource_type_examples_document')})
+                        </StyledResourceExampleTypography>
+                      </StyledCombinedTextWrapper>
+                    </StyledMenuItemContent>
+                  </StyledMenuItem>
+                  <StyledMenuItem value={ResourceFeatureTypes.presentation}>
+                    <StyledMenuItemContent>
+                      <StyledListItemIcon>
+                        <SlideshowIcon />
+                      </StyledListItemIcon>
+                      <StyledCombinedTextWrapper>
+                        <Typography variant="inherit">{t('resource.type.presentation')}</Typography>
+                        <StyledResourceExampleTypography variant="caption">
+                          ({t('explanation_text.resource_type_examples_presentation')})
+                        </StyledResourceExampleTypography>
+                      </StyledCombinedTextWrapper>
+                    </StyledMenuItemContent>
+                  </StyledMenuItem>
+                  <StyledMenuItem value={ResourceFeatureTypes.audio}>
+                    <StyledMenuItemContent>
+                      <StyledListItemIcon>
+                        <VolumeUpIcon />
+                      </StyledListItemIcon>
+                      <Typography variant="inherit">{t('resource.type.audio')}</Typography>
+                    </StyledMenuItemContent>
                   </StyledMenuItem>
                   <StyledMenuItem value={ResourceFeatureTypes.simulation} data-testid="resource-type-option-simulation">
-                    <ListItemIcon>
-                      <SlideshowIcon />
-                    </ListItemIcon>
-                    <Typography variant="inherit">{t('resource.type.simulation')}</Typography>
+                    <StyledMenuItemContent>
+                      <StyledListItemIcon>
+                        <SlideshowIcon />
+                      </StyledListItemIcon>
+                      <Typography variant="inherit">{t('resource.type.simulation')}</Typography>
+                    </StyledMenuItemContent>
                   </StyledMenuItem>
-                </TextField>
+                </StyledTextField>
                 {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
                 {savingResourceTypeError && (
                   <ErrorBanner userNeedsToBeLoggedIn={true} error={savingResourceTypeError} />
@@ -128,10 +176,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                   ariaButtonLabel={t('explanation_text.resource_type_helper_aria_label')}
                   popoverId={'helper-resource-type'}>
                   <StylePopoverTypography variant="body1">
-                    {t('explanation_text.resource_type_helper_text1')}.
-                  </StylePopoverTypography>
-                  <StylePopoverTypography variant="body1">
-                    {t('explanation_text.resource_type_helper_text2')}
+                    {t('explanation_text.resource_type_helper_text')}
                   </StylePopoverTypography>
                   <StylePopoverTypography variant="body2">
                     {t('explanation_text.resource_type_example1')}

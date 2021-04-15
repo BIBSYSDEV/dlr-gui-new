@@ -8,7 +8,7 @@ import LoginButton from '../layout/header/LoginButton';
 const StyledLoginReminder = styled(Container)`
   padding: 2rem;
   margin: 2rem 0;
-  background-color: ${Colors.ResultListBackground};
+  background-color: ${Colors.UnitTurquoise_20percent};
   display: flex;
   flex-direction: column;
   align-items: center;
