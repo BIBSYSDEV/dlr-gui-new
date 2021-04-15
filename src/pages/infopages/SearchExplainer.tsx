@@ -1,15 +1,30 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { StyledContentWrapper } from '../../components/styled/Wrappers';
 import { useTranslation } from 'react-i18next';
 import { PageHeader } from '../../components/PageHeader';
 import Typography from '@material-ui/core/Typography';
-import { List, ListItem } from '@material-ui/core';
+import { List, ListItem, ListItemText } from '@material-ui/core';
 import styled from 'styled-components';
 import Link from '@material-ui/core/Link';
 
 const StyledTypography = styled(Typography)`
   margin-top: 2rem;
 `;
+
+const StyledList = styled(List)`
+  margin-bottom: 2rem;
+`;
+
+interface SimpleListItemProps {
+  primary: string;
+}
+const SimpleListItem: FC<SimpleListItemProps> = ({ primary }) => {
+  return (
+    <ListItem>
+      <ListItemText primary={primary} />
+    </ListItem>
+  );
+};
 
 const SearchExplainer = () => {
   const { t } = useTranslation();
@@ -43,17 +58,17 @@ const SearchExplainer = () => {
         Søkefelt:
       </StyledTypography>
       <Typography gutterBottom>Søketeksten leter etter treff i følgende felt:</Typography>
-      <List>
-        <ListItem>Ressurstittel</ListItem>
-        <ListItem>Ressursbeskrivelse</ListItem>
-        <ListItem>Ressurs-id</ListItem>
-        <ListItem>Emneord</ListItem>
-        <ListItem>Opphaver-navn</ListItem>
-        <ListItem>Opphaver-id</ListItem>
-        <ListItem>Bidragsyter-navn</ListItem>
-        <ListItem>Bidragsyter-id</ListItem>
-        <ListItem>Institusjon</ListItem>
-      </List>
+      <StyledList>
+        <SimpleListItem primary={'Resubstittel'} />
+        <SimpleListItem primary={'Ressursbeskrivelse'} />
+        <SimpleListItem primary={'Ressurs-id'} />
+        <SimpleListItem primary={'Emneord'} />
+        <SimpleListItem primary={'Opphaver-navn'} />
+        <SimpleListItem primary={'Opphaver-id'} />
+        <SimpleListItem primary={'Bidragsyter-navn'} />
+        <SimpleListItem primary={'Bidragsyter-id'} />
+        <SimpleListItem primary={'Institusjon'} />
+      </StyledList>
     </StyledContentWrapper>
   );
 };
