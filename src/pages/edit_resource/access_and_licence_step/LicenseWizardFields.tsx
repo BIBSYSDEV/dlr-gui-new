@@ -136,7 +136,6 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
 
   const handleChangeInExtraRestriction = async (event: React.ChangeEvent<HTMLInputElement>) => {
     handleChange(event);
-    console.log('->', event.target.value);
     setFieldValue(ResourceFeatureNamesFullPath.ResourceRestriction, event.target.value);
     try {
       setAllChangesSaved(false);
