@@ -1,6 +1,6 @@
-//ignores queryFromURL and allowSearch.
 import { QueryObject } from '../types/search.types';
 
+//ignores queryFromURL and allowSearch attributes on QueryObjects.
 export const queryObjectIsEquals = (a: QueryObject, b: QueryObject): boolean => {
   try {
     if (
