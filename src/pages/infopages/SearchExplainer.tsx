@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { StyledContentWrapperLarge, StyledContentWrapperMedium } from '../../components/styled/Wrappers';
 import { useTranslation } from 'react-i18next';
 import { PageHeader } from '../../components/PageHeader';
@@ -28,66 +28,55 @@ const StyledTypography = styled(Typography)`
   margin-top: 2rem;
 `;
 
-interface SimpleListItemProps {
-  primary: string;
-}
-const SimpleListItem: FC<SimpleListItemProps> = ({ primary }) => {
-  return (
-    <ListItem>
-      <ListItemText primary={primary} />
-    </ListItem>
-  );
-};
+const validSearchFields = [
+  'resource_title',
+  'resource_description',
+  'resource_id',
+  'tags',
+  'creator_name',
+  'creator_id',
+  'contributor_name',
+  'contributor_id',
+  'institution',
+];
 
 const SearchExplainer = () => {
   const { t } = useTranslation();
   return (
     <StyledContentWrapperLarge>
-      <PageHeader>{t('Tips til søk etter ressurser')}</PageHeader>
+      <PageHeader>{t('search_tricks.page_title')}</PageHeader>
       <ColoringWrapper color={'inherit'}>
         <StyledContentWrapperMedium>
           <BrowsingResource />
           <StyledTypography gutterBottom variant="body1">
-            Her finner du tips til hvordan du <Link href="/">søker etter ressurser</Link>.
+            {`${t('search_tricks.find_tricks')} `}
+            <Link href="/">{t('search_tricks.search_for_resource').toLowerCase()}.</Link>
           </StyledTypography>
         </StyledContentWrapperMedium>
       </ColoringWrapper>
       <ColoringWrapper color={Colors.ContributorsPageGradientColor1}>
         <StyledContentWrapperMedium>
           <Typography gutterBottom variant="h2">
-            {t('Konstruering av søketekst')}
+            {t('search_tricks.construction_search_term')}
           </Typography>
-          <Typography gutterBottom>
-            Spørsmålstegn (?) kan brukes for å erstatte en bokstav. b?k gir treff på både "bok" og "bak" men ikke
-            "brekk".
-          </Typography>
-          <Typography gutterBottom>
-            Asterisk (*) kan brukes for å erstatte en eller flere bokstaver. b*k gir treff på "bok", "bak" og "brekk".
-          </Typography>
-          <Typography gutterBottom>
-            Thilde (~) finner resultat som ligner på ordet. lete~ vil gi treff på blant annet "sete", "leter" og
-            "seter". Man kan også spesifisere hvor mange bokstaver ordet kan avvike med: lete~1 vil gi treff på blant
-            annet "sete" og "leter", men ikke "seter".
-          </Typography>
-          <Typography>Søk støtter ikke funksjonalitet til +, AND og OR som syntaks.</Typography>
+          <Typography gutterBottom>{t('search_tricks.question_mark')}.</Typography>
+          <Typography gutterBottom>{t('search_tricks.asterisk')}.</Typography>
+          <Typography gutterBottom>{t('search_tricks.tilde')}.</Typography>
+          <Typography>{t('search_tricks.does_not_support')}.</Typography>
         </StyledContentWrapperMedium>
       </ColoringWrapper>
       <StyledBottomColoringWrapper color={Colors.ContributorsPageGradientColor2}>
         <StyledContentWrapperMedium>
           <Typography gutterBottom variant="h2">
-            Søkefelt:
+            {t('search_tricks.search_field_title')}:
           </Typography>
-          <Typography gutterBottom>Søketeksten leter etter treff i følgende felt:</Typography>
+          <Typography gutterBottom>{t('search_tricks.field_hits')}:</Typography>
           <List>
-            <SimpleListItem primary={'Resurstittel'} />
-            <SimpleListItem primary={'Ressursbeskrivelse'} />
-            <SimpleListItem primary={'Ressurs-id'} />
-            <SimpleListItem primary={'Emneord'} />
-            <SimpleListItem primary={'Opphaver-navn'} />
-            <SimpleListItem primary={'Opphaver-id'} />
-            <SimpleListItem primary={'Bidragsyter-navn'} />
-            <SimpleListItem primary={'Bidragsyter-id'} />
-            <SimpleListItem primary={'Institusjon'} />
+            {validSearchFields.map((field, index) => (
+              <ListItem key={index}>
+                <ListItemText primary={t(`search_tricks.search_field.${field}`)} />
+              </ListItem>
+            ))}
           </List>
         </StyledContentWrapperMedium>
       </StyledBottomColoringWrapper>

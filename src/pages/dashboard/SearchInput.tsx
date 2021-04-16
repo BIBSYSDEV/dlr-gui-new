@@ -89,10 +89,12 @@ const SearchInput: FC<SearchInputProps> = ({ setQueryObject }) => {
           type="submit">
           {t('common.search')}
         </StyledButton>
-        <HelperTextPopover ariaButtonLabel={'vis søkeinformasjon'} popoverId={'search-input-explainer'}>
+        <HelperTextPopover
+          ariaButtonLabel={t('explanation_text.search_input_helper_aria_label')}
+          popoverId={'search-input-explainer'}>
           <Typography>
-            Spesialtegn *, ? og ~ støttes. Mer informasjon om søketekst finner du på{' '}
-            <Link href={'/search-helper'}>Tips til søk etter ressurser</Link>
+            {`${t('explanation_text.search_input_helper_text')} `}
+            <Link href={'/search-helper'}>{t('search_tricks.page_title')}</Link>
           </Typography>
         </HelperTextPopover>
       </ButtonWrapper>

@@ -120,6 +120,8 @@
     "resource_type_examples_presentation": "Powerpoint, Keynote e.l.",
     "resource_type_examples_document": "Tekstfil, regneark e.l.",
     "resource_type_helper_text": "Velg ressurstype som stemmer best overens med innholdet",
+    "search_input_helper_aria_label": "Vis søkeinformasjon",
+    "search_input_helper_text" : "Spesialtegn *, ? og ~ støttes. Mer informasjon om søketekst finner du på",
     "tags_helper_aria_label": "Vis emneord forklaring",
     "tags_helper_text": "Emneord benyttes for å beskrive innholdet i en ressurs. Et emneord kan bestå av flere ord, f.eks \"optisk illusjon\" ",
     "tags_helper_text_edit_resource1": "Gode valg av emneord sørger for at det er lettere for andre å finne ressursen din ",
@@ -148,6 +150,9 @@
     "commercial_purposes": "Kommersielle formål",
     "external_page": "Ekstern side",
     "extra_restrictions": "Ekstra restriksjoner",
+    "illustration_alts_tags": {
+      "browsing_resource": "En dame søker etter en ressurs"
+    },
     "license_information": "Lisensinformasjon",
     "modify_and_build": "Endre og bygge videre på",
     "modify_and_build_options": {
@@ -348,6 +353,29 @@
       "video": "Video"
     },
     "unpublished_resources": "Påbegynt"
+  },
+  "search_tricks": {
+    "asterisk": "Asterisk (*) kan brukes for å erstatte en eller flere bokstaver. b*k gir treff på \"bok\", \"bak\" og \"brekk\"",
+    "construction_search_term": "Konstruering av søketekst",
+    "does_not_support": "Søk støtter ikke funksjonalitet til +, AND og OR som syntaks",
+    "field_hits": "Søketeksten leter etter treff i følgende felt",
+    "find_tricks": "Her finner du tips til hvordan du",
+    "page_title": "Tips til søk etter ressurser",
+    "question_mark": "Spørsmålstegn (?) kan brukes for å erstatte en bokstav. b?k gir treff på både \"bok\" og \"bak\" men ikke \"brekk\"",
+    "search_field" : {
+      "creator_id":  "Opphaver-id",
+      "creator_name":  "Opphavernavn",
+      "contributor_id": "Bidragsyter-id",
+      "contributor_name": "Bidragsyternavn",
+      "institution": "Institusjon",
+      "resource_description":  "Ressursbeskrivelse",
+      "resource_id":  "Ressurs-id",
+      "resource_title" : "Ressurstittel",
+      "tags": "Emneord"
+    },
+    "search_field_title": "Søkefelt",
+    "search_for_resource": "søker etter ressurser",
+    "tilde": "Tilde (~) finner resultat som ligner på ordet. lete~ vil gi treff på blant annet \"lete\", \"sete\", \"leter\" og\"seter\". Man kan også spesifisere opptil 2 bokstaver i ordet kan avvike med: lete~1 vil gi treff på blant annet \"sete\" og \"leter\", men ikke \"seter\""
   },
   "sitemap": {
     "contents": "Innhold",

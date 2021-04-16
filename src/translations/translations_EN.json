@@ -120,6 +120,8 @@
     "resource_type_examples_presentation": "Powerpoint, Keynote etc.",
     "resource_type_examples_document": "Text file, spreadsheet etc.",
     "resource_type_helper_text": "Set the resource type according to the main resource content",
+    "search_input_helper_aria_label": "Show search explanation",
+    "search_input_helper_text1" : "Special characters *, ?, and ~ are supported. More information about search terms are available at",
     "tags_helper_aria_label": "Show tags explanation",
     "tags_helper_text": "Tags describes the contents of a resource. A single tag may consist of multiple words, for example \"optical illusion\"",
     "tags_helper_text_edit_resource1": "Quality tags increases the chance that others will find and use your resource",
@@ -148,6 +150,9 @@
     "commercial_purposes": "Commercial purposes",
     "external_page": "External site",
     "extra_restrictions": "Extra restrictions",
+    "illustration_alts_tags": {
+      "browsing_resource": "A woman is browsing for resources"
+    },
     "license_information": "License information",
     "modify_and_build": "Modify and build upon",
     "modify_and_build_options": {
@@ -348,6 +353,29 @@
       "video": "Video"
     },
     "unpublished_resources": "Started"
+  },
+  "search_tricks": {
+    "asterisk": "Asterisk (*) are used as wildcard to replace one or more characters in the search term. t*ck will match \"tick\", \"tock\", and \"trick\"",
+    "construction_search_term": "Construction of search term",
+    "does_not_support": "Search does not support +, AND, or OR as syntax",
+    "field_hits": "The following fields are used by the search text",
+    "find_tricks": "Here you find tips for how to",
+    "page_title": "Tips for searching for resources",
+    "question_mark": "Question mark (?) are used as single wildcard to replace one character in the search term. t?ck will match \"tick\", and \"tock\" - but not \"trick\"",
+    "search_field" : {
+      "contributor_id": "Contributor identifier",
+      "contributor_name": "Contributor name",
+      "creator_id":  "Creator identifier",
+      "creator_name":  "Creator name",
+      "institution": "Institution",
+      "resource_description":  "Resource description",
+      "resource_id":  "Resource identifier",
+      "resource_title" : "Resource title",
+      "tags": "Tags"
+    },
+    "search_field_title": "Search field",
+    "search_for_resource": "Search for resource",
+    "tilde": "Tilde (~) discover terms that are similar to a specified term without necessarily being an exact match. roam~ will match terms like \"roam\" \"roams\", \"foam\", & \"foams\". An optional distance parameter specifies the maximum number of edits allowed, between 0 and 2, defaulting to 2. For example: roam~1 will match terms like \"roams\" & \"foam\" - but not \"foams\""
   },
   "sitemap": {
     "contents": "Contents",

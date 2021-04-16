@@ -1,8 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const BrowsingResourceTitleId = 'browsing-resource-title';
 
 export const BrowsingResource = () => {
+  const { t } = useTranslation();
   return (
     <svg
       aria-labelledby={BrowsingResourceTitleId}
@@ -11,7 +13,7 @@ export const BrowsingResource = () => {
       viewBox="0 0 363 320"
       fill="none"
       xmlns="http://www.w3.org/2000/svg">
-      <title id={BrowsingResourceTitleId}>En dame som ser på en ressurs</title>
+      <title id={BrowsingResourceTitleId}>{t('illustration_alts_tags.browsing_resource')}</title>
       <g clipPath="url(#clip0)">
         <path
           d="M314.904 191.7H9.9279C7.46795 191.697 5.10954 190.719 3.37009 188.979C1.63064 187.24 0.652191 184.882 0.649414 182.422V10.4603H324.182V182.422C324.179 184.882 323.201 187.24 321.461 188.979C319.722 190.719 317.363 191.697 314.904 191.7Z"
