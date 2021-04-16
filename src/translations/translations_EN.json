@@ -355,13 +355,13 @@
     "unpublished_resources": "Started"
   },
   "search_tricks": {
-    "asterisk": "Asterisk (*) are used as wildcard to replace one or more characters in the search term. t*ck will match \"tick\", \"tock\", and \"trick\"",
+    "asterisk": "Asterisk (*) is used as wildcard to replace one or more characters in the search term. t*ck will match \"tick\", \"tock\", and \"trick\"",
     "construction_search_term": "Construction of search term",
-    "does_not_support": "Search does not support +, AND, or OR as syntax",
+    "does_not_support": "It is not possible to use +, AND, or OR as syntax",
     "field_hits": "The following fields are used by the search text",
     "find_tricks": "Here you find tips for how to",
     "page_title": "Tips for searching for resources",
-    "question_mark": "Question mark (?) are used as single wildcard to replace one character in the search term. t?ck will match \"tick\", and \"tock\" - but not \"trick\"",
+    "question_mark": "Question mark (?) is used as single wildcard to replace one character in the search term. t?ck will match \"tick\", and \"tock\" - but not \"trick\"",
     "search_field" : {
       "contributor_id": "Contributor identifier",
       "contributor_name": "Contributor name",
@@ -375,7 +375,7 @@
     },
     "search_field_title": "Search field",
     "search_for_resource": "Search for resource",
-    "tilde": "Tilde (~) discover terms that are similar to a specified term without necessarily being an exact match. roam~ will match terms like \"roam\" \"roams\", \"foam\", & \"foams\". An optional distance parameter specifies the maximum number of edits allowed, between 0 and 2, defaulting to 2. For example: roam~1 will match terms like \"roams\" & \"foam\" - but not \"foams\""
+    "tilde": "Tilde (~) discovers terms that is similar to a specified term without necessarily being an exact match. roam~ will match terms like \"roam\" \"roams\", \"foam\", & \"foams\". An optional distance parameter specifies the maximum number of edits allowed, between 0 and 2, defaulting to 2. For example: roam~1 will match terms like \"roams\" & \"foam\" - but not \"foams\""
   },
   "sitemap": {
     "contents": "Contents",
