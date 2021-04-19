@@ -129,9 +129,6 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
         {resource.tags && resource.tags.length !== 0 && (
           <StyledFeatureWrapper data-testid="resource-tags">
             <StyledCaption variant="caption">{t('resource.metadata.tags')}</StyledCaption>
-            {/*                 clickable
-                component="a"
-                href={`/?${SearchParameters.tag}=${tag}`} */}
             {resource.tags.map((tag, index) => (
               <StyledChip key={index} size="medium" label={tag} />
             ))}
