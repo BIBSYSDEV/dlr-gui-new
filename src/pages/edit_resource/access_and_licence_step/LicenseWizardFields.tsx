@@ -121,7 +121,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           }
           values.licenses[0] = license;
         }
-        resetForm({ values });
+        resetFormButKeepTouched(touched, resetForm, values, setTouched);
       } else if (license && values.licenses && values.licenses[0].identifier === license.identifier) {
         setSaveRestrictionError(undefined);
       } else {
@@ -255,7 +255,6 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
             <ErrorBanner userNeedsToBeLoggedIn={true} error={savingResourceRestrictionError} />
           )}
         </AccordionRadioGroup>
-        <pre style={{ maxWidth: '90%' }}>PER2: {JSON.stringify(values, null, 2)}</pre>
         {values.features.dlr_licensehelper_resource_restriction === LicenseRestrictionOptions.yes && (
           <AccordionRadioGroup
             ariaDescription={commercialRadio}
@@ -291,7 +290,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
             )}
           </AccordionRadioGroup>
         )}
-
+        <h1>{values.features.dlr_licensehelper_others_can_modify_and_build_upon}</h1>
         {values.features.dlr_licensehelper_resource_restriction === LicenseRestrictionOptions.yes && (
           <AccordionRadioGroup
             ariaDescription={modifyAndBuildRadio}
