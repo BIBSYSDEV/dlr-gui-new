@@ -135,6 +135,9 @@
     "required_field": "Required field",
     "valid_url": "Input must be a valid URL"
   },
+  "illustration_alts_tags": {
+    "browsing_resource": "A woman is browsing for resources"
+  },
   "institutions": {
     "bi": "BI",
     "hvl": "HVL",
@@ -150,9 +153,6 @@
     "commercial_purposes": "Commercial purposes",
     "external_page": "External site",
     "extra_restrictions": "Extra restrictions",
-    "illustration_alts_tags": {
-      "browsing_resource": "A woman is browsing for resources"
-    },
     "license_information": "License information",
     "modify_and_build": "Modify and build upon",
     "modify_and_build_options": {

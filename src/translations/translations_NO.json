@@ -135,6 +135,9 @@
     "required_field": "Påkrevd felt",
     "valid_url": "Input må være gyldig URL"
   },
+  "illustration_alts_tags": {
+    "browsing_resource": "En dame søker etter en ressurs"
+  },
   "institutions": {
     "bi": "BI",
     "hvl": "HVL",
@@ -150,9 +153,6 @@
     "commercial_purposes": "Kommersielle formål",
     "external_page": "Ekstern side",
     "extra_restrictions": "Ekstra restriksjoner",
-    "illustration_alts_tags": {
-      "browsing_resource": "En dame søker etter en ressurs"
-    },
     "license_information": "Lisensinformasjon",
     "modify_and_build": "Endre og bygge videre på",
     "modify_and_build_options": {
