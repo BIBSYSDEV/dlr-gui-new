@@ -5,6 +5,7 @@ import { License } from '../types/license.types';
 import { v4 as uuidv4 } from 'uuid';
 import { Course, CourseSeason, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
 import { Content } from '../types/content.types';
+import { AuthorityResponse, AuthoritySearchResponse } from '../types/authority.types';
 
 export const mockResource: Resource = deepmerge(emptyResource, {
   identifier: 'resource-123',
@@ -75,6 +76,12 @@ export const mockUser: User = {
   institution: 'ntnu',
   email: 'test@test.com',
   name: 'Test User',
+  institutionAuthorities: {
+    isCurator: true,
+    isAdministrator: false,
+    isPublisher: false,
+    isEditor: false,
+  },
 };
 
 export const mockInstitutionAuthorities: UserRoleFromInstitution = {
@@ -85,6 +92,36 @@ export const mockInstitutionAuthorities: UserRoleFromInstitution = {
     { name: InstitutionProfilesNames.editor },
     { name: InstitutionProfilesNames.user },
     { name: InstitutionProfilesNames.authenticated },
+  ],
+};
+
+export const mockCreatorOrContributorAuthoritiesResponse: AuthorityResponse = {
+  identifier: '12321321',
+  features: {
+    dlr_authority_entity_type: 'person',
+    dlr_authority_id: '123213214',
+    dlr_authority_name: 'User, test',
+  },
+};
+
+export const mockAuthoritySearchResponse: AuthoritySearchResponse = {
+  limit: '2',
+  numFound: 2,
+  offset: '0',
+  results: [
+    { id: '213', name: 'User, test', type: 'person' },
+    { id: '1214', name: 'User2, test2', type: 'person' },
+  ],
+};
+
+export const mockAuthoritySearchResponse2: AuthoritySearchResponse = {
+  limit: '3',
+  numFound: 3,
+  offset: '0',
+  results: [
+    { id: '435', name: 'Creatorson, Creator', type: 'person' },
+    { id: '456', name: 'Creatorson2, Creator2', type: 'person' },
+    { id: '344', name: 'Creatorson3, Creator3', type: 'person' },
   ],
 };
 
