@@ -16,11 +16,6 @@ interface ResourceTypeListItem {
   isSelected: boolean;
 }
 
-interface ResourceTypeFilteringProps {
-  queryObject: QueryObject;
-  setQueryObject: Dispatch<SetStateAction<QueryObject>>;
-}
-
 const initialResourceTypeCheckList = (t: TFunction<'translation'>): ResourceTypeListItem[] => {
   return DefaultResourceTypes.map<ResourceTypeListItem>((resourceType) => ({
     name: t(resourceType),
@@ -28,7 +23,19 @@ const initialResourceTypeCheckList = (t: TFunction<'translation'>): ResourceType
   }));
 };
 
-const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({ queryObject, setQueryObject }) => {
+interface ResourceTypeFilteringProps {
+  queryObject: QueryObject;
+  setQueryObject: Dispatch<SetStateAction<QueryObject>>;
+  setQueryFromURL: Dispatch<SetStateAction<boolean>>;
+  queryFromURL: boolean;
+}
+
+const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({
+  queryObject,
+  setQueryObject,
+  setQueryFromURL,
+  queryFromURL,
+}) => {
   const { t } = useTranslation();
 
   const [resourceTypeCheckList, setResourceCheckList] = useState(initialResourceTypeCheckList(t));
@@ -51,7 +58,6 @@ const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({ queryObject, se
         ...prevState,
         resourceTypes: [...prevState.resourceTypes, resourceTypeCheckList[index].name],
         offset: 0,
-        queryFromURL: false,
       }));
     } else {
       setQueryObject((prevState) => {
@@ -62,9 +68,11 @@ const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({ queryObject, se
           ...prevState,
           resourceTypes: newResourceTypes,
           offset: 0,
-          queryFromURL: false,
         };
       });
+    }
+    if (queryFromURL) {
+      setQueryFromURL(false);
     }
   };
 

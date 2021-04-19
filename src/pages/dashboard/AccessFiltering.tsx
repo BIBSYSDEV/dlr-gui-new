@@ -5,16 +5,20 @@ import { QueryObject } from '../../types/search.types';
 interface AccoessFilteringProps {
   queryObject: QueryObject;
   setQueryObject: Dispatch<SetStateAction<QueryObject>>;
+  setQueryFromURL: Dispatch<SetStateAction<boolean>>;
+  queryFromURL: boolean;
 }
 
-const AccessFiltering: FC<AccoessFilteringProps> = ({ queryObject, setQueryObject }) => {
+const AccessFiltering: FC<AccoessFilteringProps> = ({ queryObject, setQueryObject, setQueryFromURL, queryFromURL }) => {
   const changeSelected = (event: any) => {
     setQueryObject((prevState) => ({
       ...prevState,
       showInaccessible: event.target.checked ?? false,
       offset: 0,
-      queryFromURL: false,
     }));
+    if (queryFromURL) {
+      setQueryFromURL(false);
+    }
   };
 
   return (

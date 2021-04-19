@@ -56,9 +56,16 @@ const initLicenseList = (user: User): LicenseListItem[] => {
 interface LicenseFilteringProps {
   queryObject: QueryObject;
   setQueryObject: Dispatch<SetStateAction<QueryObject>>;
+  setQueryFromURL: Dispatch<SetStateAction<boolean>>;
+  queryFromURL: boolean;
 }
 
-const LicenseFiltering: FC<LicenseFilteringProps> = ({ queryObject, setQueryObject }) => {
+const LicenseFiltering: FC<LicenseFilteringProps> = ({
+  queryObject,
+  setQueryObject,
+  setQueryFromURL,
+  queryFromURL,
+}) => {
   const user = useSelector((state: RootState) => state.user);
   const [licensesCheckList, setLicensesCheckList] = useState<LicenseListItem[]>(initLicenseList(user));
   const { t } = useTranslation();
@@ -81,7 +88,6 @@ const LicenseFiltering: FC<LicenseFilteringProps> = ({ queryObject, setQueryObje
         ...prevState,
         licenses: [...prevState.licenses, licensesCheckList[index].licenseCode],
         offset: 0,
-        queryFromURL: false,
       }));
     } else {
       setQueryObject((prevState) => {
@@ -92,9 +98,11 @@ const LicenseFiltering: FC<LicenseFilteringProps> = ({ queryObject, setQueryObje
           ...prevState,
           licenses: newLicenses,
           offset: 0,
-          queryFromURL: false,
         };
       });
+    }
+    if (queryFromURL) {
+      setQueryFromURL(false);
     }
   };
 

@@ -28,9 +28,16 @@ const initialInstitutionCheckedList = (instList: string[]): InstitutionListItem[
 interface InstitutionFilteringProps {
   queryObject: QueryObject;
   setQueryObject: Dispatch<SetStateAction<QueryObject>>;
+  setQueryFromURL: Dispatch<SetStateAction<boolean>>;
+  queryFromURL: boolean;
 }
 
-const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQueryObject }) => {
+const InstitutionFiltering: FC<InstitutionFilteringProps> = ({
+  queryObject,
+  setQueryObject,
+  setQueryFromURL,
+  queryFromURL,
+}) => {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [institutionsFromGetFacets, setInstitutionsFromGetFacets] = useState(AllDLRInstitutionNames);
@@ -95,15 +102,16 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
         ...prevState,
         institutions: [...prevState.institutions, institutionCheckedList[index].name],
         offset: 0,
-        queryFromURL: false,
       }));
     } else {
       setQueryObject((prevState) => ({
         ...prevState,
         institutions: prevState.institutions.filter((instName) => instName !== institutionCheckedList[index].name),
         offset: 0,
-        queryFromURL: false,
       }));
+    }
+    if (queryFromURL) {
+      setQueryFromURL(false);
     }
   };
 

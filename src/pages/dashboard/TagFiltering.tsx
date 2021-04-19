@@ -51,9 +51,11 @@ const StyledFormLabel = styled(FormLabel)`
 interface TagsFilteringProps {
   queryObject: QueryObject;
   setQueryObject: Dispatch<SetStateAction<QueryObject>>;
+  setQueryFromURL: Dispatch<SetStateAction<boolean>>;
+  queryFromURL: boolean;
 }
 
-const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) => {
+const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject, queryFromURL, setQueryFromURL }) => {
   const { t } = useTranslation();
   const [tagInputFieldValue, setTagInputFieldValue] = useState('');
   const [tagValue, setTagValue] = useState('');
@@ -93,8 +95,10 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           ...prevState,
           tags: !prevState.tags.includes(newTagValue) ? [...prevState.tags, newTagValue] : prevState.tags,
           offset: 0,
-          queryFromURL: false,
         }));
+        if (queryFromURL) {
+          setQueryFromURL(false);
+        }
       }
       setTagInputFieldValue('');
       setCancelSearch(false);
@@ -111,8 +115,10 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
       ...prevState,
       tags: prevState.tags.filter((tag) => tag !== tagToDelete),
       offset: 0,
-      queryFromURL: false,
     }));
+    if (queryFromURL) {
+      setQueryFromURL(false);
+    }
   };
 
   return (

@@ -37,9 +37,11 @@ const StyledButton = styled(Button)`
 interface SearchInputProps {
   setQueryObject: Dispatch<SetStateAction<QueryObject>>;
   queryObject: QueryObject;
+  setQueryFromURL: Dispatch<SetStateAction<boolean>>;
+  queryFromURL: boolean;
 }
 
-const SearchInput: FC<SearchInputProps> = ({ setQueryObject, queryObject }) => {
+const SearchInput: FC<SearchInputProps> = ({ setQueryObject, queryObject, setQueryFromURL, queryFromURL }) => {
   const [searchTerm, setSearchTerm] = useState(queryObject.query);
   const { t } = useTranslation();
 
@@ -52,6 +54,9 @@ const SearchInput: FC<SearchInputProps> = ({ setQueryObject, queryObject }) => {
       offset: 0,
       queryFromURL: false,
     }));
+    if (queryFromURL) {
+      setQueryFromURL(false);
+    }
   };
 
   useEffect(() => {

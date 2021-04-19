@@ -23,8 +23,6 @@ export interface QueryObject {
   resourceTypes: string[];
   licenses: string[];
   tags: string[];
-  queryFromURL: boolean;
-  allowSearch: boolean; //instead of setting queryobject null at initiation
   showInaccessible: boolean;
   orderBy: string;
   order: Order;
@@ -46,8 +44,6 @@ export const emptyQueryObject: QueryObject = {
   resourceTypes: [],
   licenses: [],
   tags: [],
-  queryFromURL: false,
-  allowSearch: false,
   showInaccessible: false,
   orderBy: 'created',
   order: Order.Desc,

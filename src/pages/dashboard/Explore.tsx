@@ -18,7 +18,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import LoginReminder from '../../components/LoginReminder';
 import AccessFiltering from './AccessFiltering';
-import { queryObjectIsEquals } from '../../utils/queryObject-functions';
+import _ from 'lodash';
 
 const SearchResultWrapper = styled.div`
   display: flex;
@@ -97,13 +97,15 @@ const Explore = () => {
   const { t } = useTranslation();
   const [searchError, setSearchError] = useState<Error>();
   const history = useHistory();
+  const [allowSearch, setAllowSearch] = useState(false);
+  const [queryFromURL, setQueryFromURL] = useState(false);
 
   const handlePaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
+    setQueryFromURL(false);
     setQueryObject((prevState) => ({
       ...prevState,
       offset: (Number(value) - 1) * NumberOfResultsPrPage,
-      queryFromURL: false,
     }));
   };
 
@@ -127,16 +129,16 @@ const Explore = () => {
         institutions: institutions,
         licenses: licenses,
         tags: tags,
-        queryFromURL: true,
-        allowSearch: true,
         showInaccessible: showInaccessible,
       };
     };
     const newQueryObject = createQueryFromUrl();
-    if ((!queryObject.queryFromURL && !queryObject.allowSearch) || !queryObjectIsEquals(queryObject, newQueryObject)) {
+    if ((!queryFromURL && !allowSearch) || !_.isEqual(queryObject, newQueryObject)) {
       setQueryObject(newQueryObject);
+      setQueryFromURL(true);
+      setAllowSearch(true);
     }
-  }, [location, queryObject.allowSearch, queryObject.queryFromURL, queryObject]);
+  }, [location, allowSearch, queryFromURL, queryObject]);
 
   useEffect(() => {
     const reWriteUrl = () => {
@@ -156,7 +158,7 @@ const Explore = () => {
     };
 
     const triggerSearch = async () => {
-      if (!queryObject.queryFromURL) {
+      if (!queryFromURL) {
         reWriteUrl();
       }
       if (queryObject) {
@@ -173,15 +175,20 @@ const Explore = () => {
         }
       }
     };
-    if (queryObject.allowSearch) triggerSearch();
+    if (allowSearch) triggerSearch();
     if (queryObject.offset === 0) setPage(firstPage);
-  }, [queryObject, history]);
+  }, [allowSearch, queryFromURL, queryObject, history]);
 
   return (
     <StyledContentWrapperLarge>
       {!user.id && <LoginReminder />}
       <PageHeader>{t('dashboard.explore')}</PageHeader>
-      <SearchInput setQueryObject={setQueryObject} queryObject={queryObject} />
+      <SearchInput
+        queryFromURL={queryFromURL}
+        setQueryFromURL={setQueryFromURL}
+        setQueryObject={setQueryObject}
+        queryObject={queryObject}
+      />
       {searchError && <ErrorBanner error={searchError} />}
       {!searchResult && isSearching && (
         <StyledProgressWrapper>
@@ -190,7 +197,12 @@ const Explore = () => {
       )}
       {searchResult && (
         <SearchResultWrapper>
-          <FilterSearchOptions queryObject={queryObject} setQueryObject={setQueryObject} />
+          <FilterSearchOptions
+            queryFromURL={queryFromURL}
+            setQueryFromURL={setQueryFromURL}
+            queryObject={queryObject}
+            setQueryObject={setQueryObject}
+          />
           <StyledResultListWrapper>
             {isSearching ? (
               <StyledProgressWrapper>
@@ -202,7 +214,12 @@ const Explore = () => {
                   <Typography variant="h2">
                     {t('common.result')} ({searchResult.numFound})
                   </Typography>
-                  <AccessFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+                  <AccessFiltering
+                    queryFromURL={queryFromURL}
+                    setQueryFromURL={setQueryFromURL}
+                    queryObject={queryObject}
+                    setQueryObject={setQueryObject}
+                  />
                 </StyledResultListHeaderWrapper>
                 <StyledList>
                   {resources &&

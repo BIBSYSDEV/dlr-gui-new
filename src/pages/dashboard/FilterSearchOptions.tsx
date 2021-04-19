@@ -70,9 +70,16 @@ const StyledAccordionFilterBoxesWrapper = styled.div`
 interface FilterSearchOptionsProps {
   queryObject: QueryObject;
   setQueryObject: Dispatch<SetStateAction<QueryObject>>;
+  setQueryFromURL: Dispatch<SetStateAction<boolean>>;
+  queryFromURL: boolean;
 }
 
-const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQueryObject }) => {
+const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({
+  queryObject,
+  setQueryObject,
+  setQueryFromURL,
+  queryFromURL,
+}) => {
   const { t } = useTranslation();
   const width = useWindowWidth();
   const [numberOfFilters, setNumberOfFilters] = useState(0);
@@ -104,10 +111,30 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
       {width >= DeviceWidths.lg ? (
         <StyledSideBar>
           {filterHeader()}
-          <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
-          <ResourceTypeFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
-          <LicenseFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
-          <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+          <InstitutionFiltering
+            queryFromURL={queryFromURL}
+            setQueryFromURL={setQueryFromURL}
+            queryObject={queryObject}
+            setQueryObject={setQueryObject}
+          />
+          <ResourceTypeFiltering
+            queryFromURL={queryFromURL}
+            setQueryFromURL={setQueryFromURL}
+            queryObject={queryObject}
+            setQueryObject={setQueryObject}
+          />
+          <LicenseFiltering
+            queryFromURL={queryFromURL}
+            setQueryFromURL={setQueryFromURL}
+            queryObject={queryObject}
+            setQueryObject={setQueryObject}
+          />
+          <TagFiltering
+            queryFromURL={queryFromURL}
+            setQueryFromURL={setQueryFromURL}
+            queryObject={queryObject}
+            setQueryObject={setQueryObject}
+          />
         </StyledSideBar>
       ) : (
         <StyledAccordion expanded={isFiltersExpanded} onChange={handleChange}>
@@ -120,11 +147,31 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
           </AccordionSummary>
           <StyledAccordionDetails>
             <StyledAccordionFilterBoxesWrapper>
-              <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
-              <ResourceTypeFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
-              <LicenseFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+              <InstitutionFiltering
+                queryFromURL={queryFromURL}
+                setQueryFromURL={setQueryFromURL}
+                queryObject={queryObject}
+                setQueryObject={setQueryObject}
+              />
+              <ResourceTypeFiltering
+                queryFromURL={queryFromURL}
+                setQueryFromURL={setQueryFromURL}
+                queryObject={queryObject}
+                setQueryObject={setQueryObject}
+              />
+              <LicenseFiltering
+                queryFromURL={queryFromURL}
+                setQueryFromURL={setQueryFromURL}
+                queryObject={queryObject}
+                setQueryObject={setQueryObject}
+              />
             </StyledAccordionFilterBoxesWrapper>
-            <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+            <TagFiltering
+              queryFromURL={queryFromURL}
+              setQueryFromURL={setQueryFromURL}
+              queryObject={queryObject}
+              setQueryObject={setQueryObject}
+            />
           </StyledAccordionDetails>
         </StyledAccordion>
       )}
