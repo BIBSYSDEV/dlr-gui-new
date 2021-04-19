@@ -108,16 +108,16 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     }
   };
 
-  const saveLicense = async (licenseCode: string) => {
+  const saveLicense = (licenseCode: string) => {
     try {
       setAllChangesSaved(false);
       const license = licenses.find((license) => license.features?.dlr_license_code === licenseCode);
       if (license && values.licenses && values.licenses[0].identifier !== license.identifier) {
         setSaveRestrictionError(undefined);
-        await setResourceLicense(values.identifier, license.identifier);
+        setResourceLicense(values.identifier, license.identifier).then();
         if (values.licenses) {
           if (values.licenses[0].identifier.length > 0) {
-            await deleteResourceLicense(values.identifier, values.licenses[0].identifier);
+            deleteResourceLicense(values.identifier, values.licenses[0].identifier).then();
           }
           values.licenses[0] = license;
         }
@@ -290,7 +290,6 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
             )}
           </AccordionRadioGroup>
         )}
-        <h1>{values.features.dlr_licensehelper_others_can_modify_and_build_upon}</h1>
         {values.features.dlr_licensehelper_resource_restriction === LicenseRestrictionOptions.yes && (
           <AccordionRadioGroup
             ariaDescription={modifyAndBuildRadio}
