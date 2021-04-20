@@ -133,7 +133,10 @@ const Explore = () => {
       };
     };
     const newQueryObject = createQueryFromUrl();
-    if ((!queryFromURL && !allowSearch) || !_.isEqual(queryObject, newQueryObject)) {
+    if (
+      (!queryFromURL && !allowSearch) ||
+      (!_.isEqual(queryObject, newQueryObject) && queryObject.offset === newQueryObject.offset)
+    ) {
       setQueryObject(newQueryObject);
       setQueryFromURL(true);
       setAllowSearch(true);
