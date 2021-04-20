@@ -104,7 +104,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject, qu
       setCancelSearch(false);
       setOptions([]);
     }
-  }, [tagValue, setQueryObject]);
+  }, [tagValue, setQueryObject, queryFromURL, setQueryFromURL]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTagInputFieldValue(event.target.value);
@@ -164,7 +164,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject, qu
             />
           )}
         />
-        {tagSearchError && <ErrorBanner error={tagSearchError}></ErrorBanner>}
+        {tagSearchError && <ErrorBanner error={tagSearchError} />}
         <StyledChipContainer data-testid="filter-tag-container">
           {queryObject.tags.map((tag, index) => (
             <StyledChip
