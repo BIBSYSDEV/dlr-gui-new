@@ -99,6 +99,7 @@ const Explore = () => {
   const history = useHistory();
   const [allowSearch, setAllowSearch] = useState(false);
   const [queryFromURL, setQueryFromURL] = useState(false);
+  const [attached, setAttached] = useState(false);
 
   const handlePaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -107,36 +108,36 @@ const Explore = () => {
       ...prevState,
       offset: (Number(value) - 1) * NumberOfResultsPrPage,
     }));
+    const searchTerms = new URLSearchParams(location.search);
+    searchTerms.set('page', '' + value);
+    history.push('?' + searchTerms.toString());
+  };
+  const createQueryFromUrl = (location: any) => {
+    const searchTerms = new URLSearchParams(location.search);
+    const institutions = searchTerms.getAll(SearchParameters.institution);
+    const resourceTypes = searchTerms.getAll(SearchParameters.resourceType);
+    const tags = searchTerms.getAll(SearchParameters.tag).map((tag) => tag.toLowerCase());
+    const pageTerm = searchTerms.get(SearchParameters.page);
+    const showInaccessibleParameter = searchTerms.get(SearchParameters.showInaccessible);
+    const offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
+    const showInaccessible = showInaccessibleParameter ? showInaccessibleParameter.toLowerCase() === 'true' : false;
+    const licenses = searchTerms.getAll(SearchParameters.license);
+    return {
+      ...emptyQueryObject,
+      query: searchTerms.get(SearchParameters.query) ?? '',
+      offset: offset,
+      limit: NumberOfResultsPrPage,
+      resourceTypes: resourceTypes,
+      institutions: institutions,
+      licenses: licenses,
+      tags: tags,
+      showInaccessible: showInaccessible,
+    };
   };
 
   useEffect(() => {
-    const createQueryFromUrl = () => {
-      const searchTerms = new URLSearchParams(location.search);
-      const institutions = searchTerms.getAll(SearchParameters.institution);
-      const resourceTypes = searchTerms.getAll(SearchParameters.resourceType);
-      const tags = searchTerms.getAll(SearchParameters.tag).map((tag) => tag.toLowerCase());
-      const pageTerm = searchTerms.get(SearchParameters.page);
-      const showInaccessibleParameter = searchTerms.get(SearchParameters.showInaccessible);
-      const showInaccessible = showInaccessibleParameter ? showInaccessibleParameter.toLowerCase() === 'true' : false;
-      const licenses = searchTerms.getAll(SearchParameters.license);
-      const offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
-      return {
-        ...emptyQueryObject,
-        query: searchTerms.get(SearchParameters.query) ?? '',
-        offset: offset,
-        limit: NumberOfResultsPrPage,
-        resourceTypes: resourceTypes,
-        institutions: institutions,
-        licenses: licenses,
-        tags: tags,
-        showInaccessible: showInaccessible,
-      };
-    };
-    const newQueryObject = createQueryFromUrl();
-    if (
-      (!queryFromURL && !allowSearch) ||
-      (!_.isEqual(queryObject, newQueryObject) && queryObject.offset === newQueryObject.offset)
-    ) {
+    const newQueryObject = createQueryFromUrl(location);
+    if (!queryFromURL && !allowSearch) {
       setQueryObject(newQueryObject);
       setQueryFromURL(true);
       setAllowSearch(true);
@@ -145,6 +146,7 @@ const Explore = () => {
 
   useEffect(() => {
     const reWriteUrl = () => {
+      console.log('rewrite url');
       let url = `?`;
       if (queryObject.query.length > 0) url += `${SearchParameters.query}=${queryObject.query}`;
       if (queryObject.institutions.length > 0)
@@ -157,6 +159,7 @@ const Explore = () => {
         url += queryObject.licenses.map((licenseCode) => `&${SearchParameters.license}=${licenseCode}`).join('');
       if (queryObject.tags.length > 0) url += queryObject.tags.map((tag) => `&${SearchParameters.tag}=${tag}`).join('');
       if (queryObject.showInaccessible) url += `&${SearchParameters.showInaccessible}=true`;
+      if (queryObject.offset > 0) url += `&${SearchParameters.page}=${queryObject.offset / 10 + 1}`;
       history.push(url);
     };
 
@@ -179,8 +182,22 @@ const Explore = () => {
       }
     };
     if (allowSearch) triggerSearch();
-    if (queryObject.offset === 0) setPage(firstPage);
+    setPage(queryObject.offset / 10 + 1);
   }, [allowSearch, queryFromURL, queryObject, history]);
+
+  useEffect(() => {
+    if (!attached) {
+      setAttached(true);
+      window.addEventListener('popstate', (event: any) => {
+        const newQueryObject = createQueryFromUrl(window.location);
+        if (!_.isEqual(newQueryObject, queryObject)) {
+          setQueryObject(newQueryObject);
+          setAllowSearch(true);
+          setQueryFromURL(true);
+        }
+      });
+    }
+  }, [allowSearch, attached, queryFromURL, queryObject]);
 
   return (
     <StyledContentWrapperLarge>
