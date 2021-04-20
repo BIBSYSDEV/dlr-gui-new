@@ -7,7 +7,7 @@ import { List, ListItem, ListItemText } from '@material-ui/core';
 import styled from 'styled-components';
 import Link from '@material-ui/core/Link';
 import { Colors } from '../../themes/mainTheme';
-import { BrowsingResource } from '../../resources/images/illustrations/svg';
+import BrowsingResource from '../../resources/images/illustrations/browsing_resource.svg';
 
 interface Props {
   color: string;
@@ -28,6 +28,12 @@ const StyledTypography = styled(Typography)`
   margin-top: 2rem;
 `;
 
+const StyledImg = styled.img`
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    width: 23rem;
+  }
+`;
+
 const validSearchFields = [
   'resource_title',
   'resource_description',
@@ -42,12 +48,15 @@ const validSearchFields = [
 
 const SearchExplainer = () => {
   const { t } = useTranslation();
+  const validSearchFieldsTranslated = validSearchFields
+    .map((field) => t(`search_tricks.search_field.${field}`))
+    .sort((a, b) => a.localeCompare(b));
   return (
     <StyledContentWrapperLarge>
       <PageHeader>{t('search_tricks.page_title')}</PageHeader>
       <ColoringWrapper color={'inherit'}>
         <StyledContentWrapperMedium>
-          <BrowsingResource />
+          <StyledImg src={BrowsingResource} alt={t('illustration_alts_tags.browsing_resource')} />
           <StyledTypography gutterBottom variant="body1">
             {`${t('search_tricks.find_tricks')} `}
             <Link href="/">{t('search_tricks.search_for_resource').toLowerCase()}.</Link>
@@ -59,9 +68,18 @@ const SearchExplainer = () => {
           <Typography gutterBottom variant="h2">
             {t('search_tricks.construction_search_term')}
           </Typography>
-          <Typography gutterBottom>{t('search_tricks.question_mark')}.</Typography>
-          <Typography gutterBottom>{t('search_tricks.asterisk')}.</Typography>
-          <Typography gutterBottom>{t('search_tricks.tilde')}.</Typography>
+          <Typography gutterBottom>
+            {t('search_tricks.question_mark1')}
+            {'. '} <b>{t('search_tricks.question_mark2')}</b> {t('search_tricks.question_mark3')}.
+          </Typography>
+          <Typography gutterBottom>
+            {t('search_tricks.asterisk1')}.<b>{` ${t('search_tricks.asterisk2')} `}</b> {t('search_tricks.asterisk3')}.
+          </Typography>
+          <Typography gutterBottom>
+            {t('search_tricks.tilde1')}. <b>{` ${t('search_tricks.tilde2')} `}</b>
+            {t('search_tricks.tilde3')}:<b>{` ${t('search_tricks.tilde4')} `}</b>
+            {t('search_tricks.tilde5')}
+          </Typography>
           <Typography>{t('search_tricks.does_not_support')}.</Typography>
         </StyledContentWrapperMedium>
       </ColoringWrapper>
@@ -72,9 +90,9 @@ const SearchExplainer = () => {
           </Typography>
           <Typography gutterBottom>{t('search_tricks.field_hits')}:</Typography>
           <List>
-            {validSearchFields.map((field, index) => (
+            {validSearchFieldsTranslated.map((field, index) => (
               <ListItem key={index}>
-                <ListItemText primary={t(`search_tricks.search_field.${field}`)} />
+                <ListItemText primary={field} />
               </ListItem>
             ))}
           </List>

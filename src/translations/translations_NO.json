@@ -355,13 +355,17 @@
     "unpublished_resources": "Påbegynt"
   },
   "search_tricks": {
-    "asterisk": "Asterisk (*) kan brukes for å erstatte en eller flere bokstaver. b*k gir treff på \"bok\", \"bak\" og \"brekk\"",
+    "asterisk1": "Asterisk (*) kan brukes for å erstatte en eller flere bokstaver",
+    "asterisk2": "b*k",
+    "asterisk3": "gir treff på \"bok\", \"bak\" og \"brekk\"",
     "construction_search_term": "Konstruering av søketekst",
     "does_not_support": "Søk støtter ikke funksjonalitet til +, AND og OR som syntaks",
     "field_hits": "Søketeksten leter etter treff i følgende felt",
-    "find_tricks": "Her finner du tips til hvordan du",
+    "find_tricks": "Her finner du tips til hvordan du søker etter ressurser. Gå til",
     "page_title": "Tips til søk etter ressurser",
-    "question_mark": "Spørsmålstegn (?) kan brukes for å erstatte en bokstav. b?k gir treff på både \"bok\" og \"bak\" men ikke \"brekk\"",
+    "question_mark1": "Spørsmålstegn (?) kan brukes for å erstatte en bokstav",
+    "question_mark2": "b?k",
+    "question_mark3": "gir treff på både \"bok\" og \"bak\" men ikke \"brekk\"",
     "search_field" : {
       "creator_id":  "Opphaver-id",
       "creator_name":  "Opphavernavn",
@@ -374,8 +378,12 @@
       "tags": "Emneord"
     },
     "search_field_title": "Søkefelt",
-    "search_for_resource": "søker etter ressurser",
-    "tilde": "Tilde (~) finner resultat som ligner på ordet. lete~ vil gi treff på blant annet \"lete\", \"sete\", \"leter\" og\"seter\". Man kan også spesifisere opptil 2 bokstaver i ordet kan avvike med: lete~1 vil gi treff på blant annet \"sete\" og \"leter\", men ikke \"seter\""
+    "search_for_resource": "søk etter ressurser",
+    "tilde1": "Tilde (~) finner resultat som ligner på ordet",
+    "tilde2": "lete~",
+    "tilde3": "vil gi treff på blant annet \"lete\", \"sete\", \"leter\" og\"seter\". Man kan også spesifisere opptil 2 bokstaver ordet kan avvike med",
+    "tilde4": "lete~1",
+    "tilde5": "vil gi treff på blant annet \"sete\" og \"leter\", men ikke \"seter\""
   },
   "sitemap": {
     "contents": "Innhold",
