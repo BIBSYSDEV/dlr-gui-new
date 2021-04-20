@@ -104,10 +104,10 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
       {width >= DeviceWidths.lg ? (
         <StyledSideBar>
           {filterHeader()}
+          <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           <ResourceTypeFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           <LicenseFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
-          <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
         </StyledSideBar>
       ) : (
         <StyledAccordion expanded={isFiltersExpanded} onChange={handleChange}>
@@ -119,12 +119,12 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
             {filterHeader()}
           </AccordionSummary>
           <StyledAccordionDetails>
+            <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
             <StyledAccordionFilterBoxesWrapper>
               <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
               <ResourceTypeFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
               <LicenseFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
             </StyledAccordionFilterBoxesWrapper>
-            <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           </StyledAccordionDetails>
         </StyledAccordion>
       )}
