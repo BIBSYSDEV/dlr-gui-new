@@ -29,11 +29,24 @@
     "show_list": "Vis liste",
     "who_got_access": "Hvem har tilgang"
   },
+  "authority": {
+    "add_authority": "Legg til autoritet",
+    "authorities": "Autoriteter",
+    "deselect_authority": "Fjern autoritet",
+    "empty_search_query": "Må inneholde minst en bokstav eller et tall",
+    "not_possible_to_remove_warning": "NB! Det er ikke mulig å slette en autoritet etter at den er valgt",
+    "search_for_authority": "Søk etter verifisert autoritet",
+    "selected": "Valgt",
+    "verified": "Verifisert",
+    "verify": "Verifiser",
+    "view_verified_authority": "Se verifisert"
+  },
   "common": {
     "all_changes_saved": "Alle endringer er lagret",
     "back": "Tilbake",
     "cancel": "Avbryt",
     "clear": "Tøm",
+    "close": "Lukk",
     "delete": "Slett",
     "edit": "Rediger",
     "error": "Feil",
@@ -57,6 +70,7 @@
     "result": "Resultat",
     "search": "Søk",
     "save": "Lagre",
+    "select": "Velg",
     "step": "Trinn",
     "type": "Type",
     "yes": "Ja"
@@ -83,10 +97,12 @@
   },
   "explanation_text": {
     "contributor_helper_aria_label" : "Vis bigradsyter forklaring",
-    "contributor_helper_text" : "Andre som har bidratt med ressursen, men som ikke trengs å krediteres av de som tar i bruk ressursen",
+    "contributor_helper_text1" : "Andre som har bidratt med ressursen, men som ikke trengs å krediteres av de som tar i bruk ressursen",
+    "contributor_helper_text2" : "Det er ikke mulig å endre navnet etter at man har verfifisert bigragsyteren",
     "creator_helper_aria_label": "Vis opphaver forklaring",
     "creator_helper_example": "Eksempelvis: forelesere, undervisere, forfattere og skaperne av ressursen kan føres opp her",
-    "creator_helper_text": "Personen, firmaet eller orginasjonen som eier rettighetene til ressursen",
+    "creator_helper_text1": "Personen, firmaet eller orginasjonen som eier rettighetene til ressursen",
+    "creator_helper_text2": "Det er ikke mulig å endre navnet på opphaver etter at man har verfifisert opphaver",
     "description_helper_aria_label": "Vis beskrivelse forklaring",
     "description_helper_example1": "Kort video om hvordan det sympatiske nervesystemet er bygget opp og fungerer",
     "description_helper_example2": "Forelesning om tastaturnavigering og universell utforming. Forelesningen er beregnet for frontendutviklere og tar for seg WCAG 2.1",
@@ -94,8 +110,8 @@
     "description_helper_text1": "Gi en kort beskrivelse av hva ressursen inneholder",
     "description_helper_text2": "Eksempler på beskrivelser",
     "file_title_helper_aria_label": "Vis filtittel forklaring",
-    "file_title_helper_example1": "Eksempel: \"blomst\" som filtittel er bedre enn \"img_23434.jpg\"",
-    "file_title_helper_example2": "Eksempel: Filnavnet \"thesis.pdf\" kan godt også brukes som filtittel",
+    "file_title_helper_example1": "\"Appelsinblomster på tre\" som filtittel er bedre enn \"img_23434.jpg\"",
+    "file_title_helper_example2": "Filnavnet \"thesis.pdf\" kan godt også brukes som filtittel",
     "file_title_helper_text": "Filtittel kan godt være noe annet enn filnavn",
     "resource_type_helper_aria_label": "Vis type forklaring",
     "resource_type_example1": "Eksempelvis: Har du et videopptak av en forelesning, så velger du \"video\" som type",
@@ -104,11 +120,13 @@
     "resource_type_examples_presentation": "Powerpoint, Keynote e.l.",
     "resource_type_examples_document": "Tekstfil, regneark e.l.",
     "resource_type_helper_text": "Velg ressurstype som stemmer best overens med innholdet",
+    "search_input_helper_aria_label": "Vis søkeinformasjon",
+    "search_input_helper_text" : "Spesialtegn *, ? og ~ støttes. Mer informasjon om søketekst finner du på",
     "tags_helper_aria_label": "Vis emneord forklaring",
-    "tags_helper_text": "Emneord benyttes for å beskrive innholdet i en ressurs. Et emneord kan bestå av flere ord, f.eks \"optisk illusjon\" ",
-    "tags_helper_text_edit_resource1": "Gode valg av emneord sørger for at det er lettere for andre å finne ressursen din ",
-    "tags_helper_text_edit_resource2": "Gjerne legg inn flere emneord samtidig. Skriv inn emneordet etterfulgt av enter så kan du skrive inn neste emneord. Man kan legge til og slette emneord etter at en ressurs er publisert",
-    "tags_helper_text_example": "For eksempel kan ressurs med tittel: \"Det sympatiske nervesystemet\" kan for eksempel ha emneord \"syk130\", \"sykepleie\", \"helsefag\", \"nervesystemet\" og \"helse\"",
+    "tags_helper_text": "Emneord benyttes for å beskrive innholdet i en ressurs. Et emneord kan bestå av ett eller flere ord, f.eks \"optisk illusjon\" ",
+    "tags_helper_text_edit_resource1": "Skriv inn emneordet etterfulgt av enter så kan du skrive inn neste emneord. Man kan legge til og slette emneord etter at en ressurs er publisert",
+    "tags_helper_text_edit_resource2": "Gode valg av emneord sørger for at det er lettere for andre å finne ressursen din ",
+    "tags_helper_text_example": "En ressurs med tittel: \"Det sympatiske nervesystemet\" kan for ha emneord \"syk130\", \"sykepleie\", \"helsefag\", \"nervesystemet\" og \"helse\"",
     "title_helper_aria_label": "Vis tittel forklaring",
     "title_helper_text": "Fyll inn en tittel som hjelper andre å finne ressursen din"
   },
@@ -116,6 +134,9 @@
     "form_errors": "Det er feil i skjema. Disse må rettes før ressursen kan publiseres",
     "required_field": "Påkrevd felt",
     "valid_url": "Input må være gyldig URL"
+  },
+  "illustration_alts_tags": {
+    "browsing_resource": "En dame søker etter en ressurs"
   },
   "institutions": {
     "bi": "BI",
@@ -332,6 +353,37 @@
       "video": "Video"
     },
     "unpublished_resources": "Påbegynt"
+  },
+  "search_tricks": {
+    "asterisk1": "Asterisk (*) kan brukes for å erstatte en eller flere bokstaver",
+    "asterisk2": "b*k",
+    "asterisk3": "gir treff på \"bok\", \"bak\" og \"brekk\"",
+    "construction_search_term": "Konstruering av søketekst",
+    "does_not_support": "Søk støtter ikke funksjonalitet til +, AND og OR som syntaks",
+    "field_hits": "Søketeksten leter etter treff i følgende felt",
+    "find_tricks": "Her finner du tips til hvordan du søker etter ressurser. Gå til",
+    "page_title": "Tips til søk etter ressurser",
+    "question_mark1": "Spørsmålstegn (?) kan brukes for å erstatte en bokstav",
+    "question_mark2": "b?k",
+    "question_mark3": "gir treff på både \"bok\" og \"bak\" men ikke \"brekk\"",
+    "search_field" : {
+      "creator_id":  "Opphaver-id",
+      "creator_name":  "Opphavernavn",
+      "contributor_id": "Bidragsyter-id",
+      "contributor_name": "Bidragsyternavn",
+      "institution": "Institusjon",
+      "resource_description":  "Ressursbeskrivelse",
+      "resource_id":  "Ressurs-id",
+      "resource_title" : "Ressurstittel",
+      "tags": "Emneord"
+    },
+    "search_field_title": "Søkefelt",
+    "search_for_resource": "søk etter ressurser",
+    "tilde1": "Tilde (~) finner resultat som ligner på ordet",
+    "tilde2": "lete~",
+    "tilde3": "vil gi treff på blant annet \"lete\", \"sete\", \"leter\" og\"seter\". Man kan også spesifisere opptil 2 bokstaver ordet kan avvike med",
+    "tilde4": "lete~1",
+    "tilde5": "vil gi treff på blant annet \"sete\" og \"leter\", men ikke \"seter\""
   },
   "sitemap": {
     "contents": "Innhold",
