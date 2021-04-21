@@ -3,7 +3,7 @@ import { CreativeCommonsLicenseCodes, Licenses } from '../../types/license.types
 import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
 import { Checkbox, FormControl, FormControlLabel, FormGroup } from '@material-ui/core';
-import { QueryObject } from '../../types/search.types';
+import { QueryObject, SearchParameters } from '../../types/search.types';
 import { useTranslation } from 'react-i18next';
 import CClogoImage from '../../components/CClogoImage';
 import LicensePopoverExplanation from '../../components/LicensePopoverExplanation';
@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import { User, UserInstitution } from '../../types/user.types';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const StyledCheckboxLabelWrapper = styled.div`
   display: flex;
@@ -56,19 +57,14 @@ const initLicenseList = (user: User): LicenseListItem[] => {
 interface LicenseFilteringProps {
   queryObject: QueryObject;
   setQueryObject: Dispatch<SetStateAction<QueryObject>>;
-  setQueryFromURL: Dispatch<SetStateAction<boolean>>;
-  queryFromURL: boolean;
 }
 
-const LicenseFiltering: FC<LicenseFilteringProps> = ({
-  queryObject,
-  setQueryObject,
-  setQueryFromURL,
-  queryFromURL,
-}) => {
+const LicenseFiltering: FC<LicenseFilteringProps> = ({ queryObject, setQueryObject }) => {
   const user = useSelector((state: RootState) => state.user);
   const [licensesCheckList, setLicensesCheckList] = useState<LicenseListItem[]>(initLicenseList(user));
   const { t } = useTranslation();
+  const location = useLocation();
+  const history = useHistory();
 
   useEffect(() => {
     if (queryObject.licenses.length > 0) {
@@ -83,27 +79,19 @@ const LicenseFiltering: FC<LicenseFilteringProps> = ({
   }, [queryObject, user]);
 
   const changeSelected = (index: number, event: any) => {
-    if (event.target.checked) {
-      setQueryObject((prevState) => ({
-        ...prevState,
-        licenses: [...prevState.licenses, licensesCheckList[index].licenseCode],
-        offset: 0,
-      }));
-    } else {
-      setQueryObject((prevState) => {
-        const newLicenses = prevState.licenses.filter(
+    const newQueryObject = { ...queryObject, offset: 0 };
+    event.target.checked
+      ? (newQueryObject.licenses = [...newQueryObject.licenses, licensesCheckList[index].licenseCode])
+      : (newQueryObject.licenses = newQueryObject.licenses.filter(
           (licenseCode) => licenseCode !== licensesCheckList[index].licenseCode
-        );
-        return {
-          ...prevState,
-          licenses: newLicenses,
-          offset: 0,
-        };
-      });
-    }
-    if (queryFromURL) {
-      setQueryFromURL(false);
-    }
+        ));
+    setQueryObject(newQueryObject);
+    const urlSearchTerms = new URLSearchParams(location.search);
+    urlSearchTerms.delete(SearchParameters.license);
+    newQueryObject.licenses.forEach((license) => {
+      urlSearchTerms.append(SearchParameters.license, license);
+    });
+    history.push('?' + urlSearchTerms.toString());
   };
 
   return (

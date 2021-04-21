@@ -4,7 +4,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { QueryObject } from '../../types/search.types';
+import { QueryObject, SearchParameters } from '../../types/search.types';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -12,6 +12,8 @@ import HelperTextPopover from '../../components/HelperTextPopover';
 import { searchTags } from '../../api/resourceApi';
 import useDebounce from '../../utils/useDebounce';
 import ErrorBanner from '../../components/ErrorBanner';
+import { useHistory, useLocation } from 'react-router-dom';
+import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 
 const minimumTagLength = 1;
 
@@ -51,19 +53,18 @@ const StyledFormLabel = styled(FormLabel)`
 interface TagsFilteringProps {
   queryObject: QueryObject;
   setQueryObject: Dispatch<SetStateAction<QueryObject>>;
-  setQueryFromURL: Dispatch<SetStateAction<boolean>>;
-  queryFromURL: boolean;
 }
 
-const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject, queryFromURL, setQueryFromURL }) => {
+const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) => {
   const { t } = useTranslation();
   const [tagInputFieldValue, setTagInputFieldValue] = useState('');
-  const [tagValue, setTagValue] = useState('');
   const debouncedTagInputValue = useDebounce(tagInputFieldValue);
   const [options, setOptions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [cancelSearch, setCancelSearch] = useState(false);
   const [tagSearchError, setTagSearchError] = useState<Error>();
+  const location = useLocation();
+  const history = useHistory();
 
   useEffect(() => {
     const searchForTags = async () => {
@@ -87,38 +88,36 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject, qu
     }
   }, [debouncedTagInputValue, cancelSearch, t]);
 
-  useEffect(() => {
-    if (tagValue?.length > 0) {
-      const newTagValue = tagValue.trim();
+  const handleNewTags = (value: any) => {
+    if (value?.length > 0) {
+      const newTagValue = value.trim();
       if (newTagValue.length > minimumTagLength) {
+        const newTags = !queryObject.tags.includes(newTagValue) ? [...queryObject.tags, newTagValue] : queryObject.tags;
         setQueryObject((prevState) => ({
           ...prevState,
-          tags: !prevState.tags.includes(newTagValue) ? [...prevState.tags, newTagValue] : prevState.tags,
+          tags: newTags,
           offset: 0,
         }));
-        if (queryFromURL) {
-          setQueryFromURL(false);
-        }
+        rewriteSearchParams(SearchParameters.tag, newTags, history, location);
       }
       setTagInputFieldValue('');
       setCancelSearch(false);
       setOptions([]);
     }
-  }, [tagValue, setQueryObject, queryFromURL, setQueryFromURL]);
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTagInputFieldValue(event.target.value);
   };
 
   const handleDelete = (tagToDelete: string) => {
+    const newTags = queryObject.tags.filter((tag) => tag !== tagToDelete);
     setQueryObject((prevState) => ({
       ...prevState,
-      tags: prevState.tags.filter((tag) => tag !== tagToDelete),
+      tags: newTags,
       offset: 0,
     }));
-    if (queryFromURL) {
-      setQueryFromURL(false);
-    }
+    rewriteSearchParams(SearchParameters.tag, newTags, history, location);
   };
 
   return (
@@ -136,7 +135,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject, qu
           options={options}
           noOptionsText={t('common.no_options')}
           onChange={(event: ChangeEvent<unknown>, value: any) => {
-            setTagValue(value);
+            handleNewTags(value);
           }}
           getOptionSelected={() => {
             return true; //HACK: Because we want the chips to stay on the outside of the autocomplete component

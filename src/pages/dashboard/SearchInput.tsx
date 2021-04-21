@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import SearchIcon from '@material-ui/icons/Search';
 import { StyleWidths } from '../../themes/mainTheme';
-import { NumberOfResultsPrPage, QueryObject } from '../../types/search.types';
+import { NumberOfResultsPrPage, QueryObject, SearchParameters } from '../../types/search.types';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const StyledForm = styled.form`
   margin-top: 2rem;
@@ -37,12 +38,12 @@ const StyledButton = styled(Button)`
 interface SearchInputProps {
   setQueryObject: Dispatch<SetStateAction<QueryObject>>;
   queryObject: QueryObject;
-  setQueryFromURL: Dispatch<SetStateAction<boolean>>;
-  queryFromURL: boolean;
 }
 
-const SearchInput: FC<SearchInputProps> = ({ setQueryObject, queryObject, setQueryFromURL, queryFromURL }) => {
+const SearchInput: FC<SearchInputProps> = ({ setQueryObject, queryObject }) => {
   const [searchTerm, setSearchTerm] = useState(queryObject.query);
+  const location = useLocation();
+  const history = useHistory();
   const { t } = useTranslation();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -54,9 +55,9 @@ const SearchInput: FC<SearchInputProps> = ({ setQueryObject, queryObject, setQue
       offset: 0,
       queryFromURL: false,
     }));
-    if (queryFromURL) {
-      setQueryFromURL(false);
-    }
+    const urlSearchTerms = new URLSearchParams(location.search);
+    urlSearchTerms.set(SearchParameters.query, searchTerm);
+    history.push('?' + urlSearchTerms.toString());
   };
 
   useEffect(() => {
