@@ -84,6 +84,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
     features: Yup.object().shape({
       dlr_title: Yup.string().required(t('feedback.required_field')),
       dlr_type: Yup.string().required(t('feedback.required_field')).min(1, t('feedback.required_field')),
+      dlr_licensehelper_contains_other_peoples_work: Yup.string().required(t('feedback.required_field')).min(1),
       dlr_licensehelper_usage_cleared_with_owner: Yup.string()
         .optional()
         .when('dlr_licensehelper_contains_other_peoples_work', {
@@ -118,7 +119,6 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
         identifier: Yup.string().required(t('feedback.required_field')).min(1),
       })
     ),
-    containsOtherPeoplesWork: Yup.string().required(t('feedback.required_field')).min(1),
   });
 
   const scrollToTop = () => {
