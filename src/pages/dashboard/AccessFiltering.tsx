@@ -18,7 +18,12 @@ const AccessFiltering: FC<AccoessFilteringProps> = ({ queryObject, setQueryObjec
       showInaccessible: event.target.checked ?? false,
       offset: 0,
     }));
-    rewriteSearchParams(SearchParameters.tag, [event.target.checked ? 'true' : 'false'], history, location);
+    rewriteSearchParams(
+      SearchParameters.showInaccessible,
+      [event.target.checked ? 'true' : 'false'],
+      history,
+      location
+    );
   };
 
   return (
