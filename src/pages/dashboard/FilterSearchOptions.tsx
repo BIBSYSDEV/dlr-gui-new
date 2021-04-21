@@ -46,24 +46,21 @@ const StyledSideBar = styled.div`
 const StyledAccordionDetails = styled(AccordionDetails)`
   display: flex;
   flex-direction: column;
+  margin-top: 0;
+`;
+
+const StyledTagFilteringWrapper = styled.div`
+  margin-top: 1rem;
 `;
 
 const StyledAccordionFilterBoxesWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
+  margin-top: 1rem;
   fieldset {
     margin-right: 6rem;
     margin-top: 0;
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
-    flex-direction: column;
-    fieldset {
-      margin-right: 0;
-      margin-top: 2rem;
-    }
-    fieldset:first-of-type {
-      margin-top: 0;
-    }
   }
 `;
 
@@ -104,7 +101,9 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
       {width >= DeviceWidths.lg ? (
         <StyledSideBar>
           {filterHeader()}
-          <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+          <StyledTagFilteringWrapper>
+            <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+          </StyledTagFilteringWrapper>
           <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           <ResourceTypeFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           <LicenseFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
