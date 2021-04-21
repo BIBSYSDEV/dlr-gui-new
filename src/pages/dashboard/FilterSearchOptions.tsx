@@ -29,6 +29,7 @@ function useWindowWidth() {
 const StyledAccordion = styled(Accordion)`
   background-color: ${Colors.ExploreResourcesPageOptionFiler};
   border: none;
+  margin-left: -0.5rem;
   & .MuiPaper-elevation1 {
     box-shadow: none;
   }
@@ -57,10 +58,9 @@ const StyledAccordionFilterBoxesWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  margin-top: 1rem;
   fieldset {
     margin-right: 6rem;
-    margin-top: 0;
+    margin-top: 1rem;
   }
 `;
 
