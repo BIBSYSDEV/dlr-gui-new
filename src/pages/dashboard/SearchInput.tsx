@@ -6,6 +6,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import { StyleWidths } from '../../themes/mainTheme';
 import { NumberOfResultsPrPage, QueryObject, SearchParameters } from '../../types/search.types';
 import { useHistory, useLocation } from 'react-router-dom';
+import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 
 const StyledForm = styled.form`
   margin-top: 2rem;
@@ -55,9 +56,7 @@ const SearchInput: FC<SearchInputProps> = ({ setQueryObject, queryObject }) => {
       offset: 0,
       queryFromURL: false,
     }));
-    const urlSearchTerms = new URLSearchParams(location.search);
-    urlSearchTerms.set(SearchParameters.query, searchTerm);
-    history.push('?' + urlSearchTerms.toString());
+    rewriteSearchParams(SearchParameters.query, [searchTerm], history, location);
   };
 
   useEffect(() => {

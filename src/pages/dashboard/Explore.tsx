@@ -24,6 +24,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import LoginReminder from '../../components/LoginReminder';
 import AccessFiltering from './AccessFiltering';
+import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 
 const SearchResultWrapper = styled.div`
   display: flex;
@@ -133,9 +134,7 @@ const Explore = () => {
       ...prevState,
       offset: (Number(value) - 1) * NumberOfResultsPrPage,
     }));
-    const searchTerms = new URLSearchParams(location.search);
-    searchTerms.set('page', '' + value);
-    history.push('?' + searchTerms.toString());
+    rewriteSearchParams(SearchParameters.page, ['' + value], history, location);
   };
 
   const triggerSearch = async (queryObject: QueryObject) => {

@@ -9,6 +9,7 @@ import { getAllFacets } from '../../api/resourceApi';
 import ErrorBanner from '../../components/ErrorBanner';
 import institutions from '../../resources/assets/institutions.json';
 import { useHistory, useLocation } from 'react-router-dom';
+import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 
 const StyledFormControl: any = styled(FormControl)`
   margin-top: 2rem;
@@ -102,12 +103,7 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
       );
     }
     setQueryObject(newQueryObject);
-    const urlSearchTerms = new URLSearchParams(location.search);
-    urlSearchTerms.delete(SearchParameters.institution);
-    newQueryObject.institutions.forEach((institution) => {
-      urlSearchTerms.append(SearchParameters.institution, institution);
-    });
-    history.push('?' + urlSearchTerms.toString());
+    rewriteSearchParams(SearchParameters.institution, newQueryObject.institutions, history, location);
   };
 
   const generateInstitutionName = (institutionCode: string): string => {

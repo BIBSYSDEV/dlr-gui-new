@@ -2,6 +2,7 @@ import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Checkbox, FormControlLabel } from '@material-ui/core';
 import { QueryObject, SearchParameters } from '../../types/search.types';
 import { useHistory, useLocation } from 'react-router-dom';
+import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 
 interface AccoessFilteringProps {
   queryObject: QueryObject;
@@ -17,11 +18,7 @@ const AccessFiltering: FC<AccoessFilteringProps> = ({ queryObject, setQueryObjec
       showInaccessible: event.target.checked ?? false,
       offset: 0,
     }));
-    const urlSearchTerms = new URLSearchParams(location.search);
-    event.target.checked
-      ? urlSearchTerms.set(SearchParameters.showInaccessible, 'true')
-      : urlSearchTerms.delete(SearchParameters.showInaccessible);
-    history.push('?' + urlSearchTerms.toString());
+    rewriteSearchParams(SearchParameters.tag, [event.target.checked ? 'true' : 'false'], history, location);
   };
 
   return (

@@ -7,6 +7,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import { useHistory, useLocation } from 'react-router-dom';
+import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 
 const StyledFormControl: any = styled(FormControl)`
   margin-top: 2rem;
@@ -52,14 +53,11 @@ const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({ queryObject, se
     const newQueryObject = { ...queryObject, offset: 0 };
     event.target.checked
       ? (newQueryObject.resourceTypes = [...newQueryObject.resourceTypes, resourceTypeCheckList[index].name])
-      : newQueryObject.resourceTypes.filter((resourceType) => resourceType !== resourceTypeCheckList[index].name);
+      : (newQueryObject.resourceTypes = newQueryObject.resourceTypes.filter(
+          (resourceType) => resourceType !== resourceTypeCheckList[index].name
+        ));
     setQueryObject(newQueryObject);
-    const urlSearchTerms = new URLSearchParams(location.search);
-    urlSearchTerms.delete(SearchParameters.resourceType);
-    newQueryObject.resourceTypes.forEach((type) => {
-      urlSearchTerms.append(SearchParameters.resourceType, type);
-    });
-    history.push('?' + urlSearchTerms.toString());
+    rewriteSearchParams(SearchParameters.resourceType, newQueryObject.resourceTypes, history, location);
   };
 
   return (
