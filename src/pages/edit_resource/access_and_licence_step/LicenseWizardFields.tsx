@@ -17,7 +17,6 @@ import { Resource, ResourceFeatureNames, ResourceFeatureNamesFullPath } from '..
 import AccordionRadioGroup from '../../../components/AccordionRadioGroup';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
-import { Simulate } from 'react-dom/test-utils';
 
 const extraRestrictionRadio = 'extra-restriction';
 const commercialRadio = 'commersial';

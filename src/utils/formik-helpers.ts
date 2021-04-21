@@ -59,7 +59,6 @@ const getAllDescriptionStepFieldNames = () => {
     ResourceFeatureNamesFullPath.Type,
     ResourceFeatureNamesFullPath.Title,
     ResourceFeatureNamesFullPath.Description,
-    //TODO: tags
   ];
 };
 
