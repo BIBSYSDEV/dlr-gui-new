@@ -45,7 +45,7 @@
     "@types/yup": "^0.29.11",
     "axios-mock-adapter": "^1.19.0",
     "cypress": "^7.1.0",
-    "cypress-file-upload": "^5.0.5",
+    "cypress-file-upload": "^5.0.6",
     "eslint-config-prettier": "^8.2.0",
     "eslint-plugin-cypress": "^2.11.2",
     "eslint-plugin-prettier": "^3.4.0",
