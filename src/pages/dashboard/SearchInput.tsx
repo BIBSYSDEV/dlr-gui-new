@@ -7,6 +7,9 @@ import { StyleWidths } from '../../themes/mainTheme';
 import { NumberOfResultsPrPage, QueryObject, SearchParameters } from '../../types/search.types';
 import { useHistory, useLocation } from 'react-router-dom';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
+import HelperTextPopover from '../../components/HelperTextPopover';
+import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 
 const StyledForm = styled.form`
   margin-top: 2rem;
@@ -29,11 +32,17 @@ const StyledTextField = styled(TextField)`
   }
 `;
 
-const StyledButton = styled(Button)`
-  min-width: 7rem;
+const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: baseline;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     margin-top: 1rem;
   }
+`;
+
+const StyledButton = styled(Button)`
+  min-width: 7rem;
+  margin-right: 0.5rem;
 `;
 
 interface SearchInputProps {
@@ -78,15 +87,25 @@ const SearchInput: FC<SearchInputProps> = ({ setQueryObject, queryObject }) => {
         value={searchTerm}
         label={t('common.search')}
       />
-      <StyledButton
-        data-testid="search-for-resource-submit"
-        startIcon={<SearchIcon />}
-        disabled={!searchTerm && searchTerm.length < 4}
-        color="primary"
-        variant="contained"
-        type="submit">
-        {t('common.search')}
-      </StyledButton>
+      <ButtonWrapper>
+        <StyledButton
+          data-testid="search-for-resource-submit"
+          startIcon={<SearchIcon />}
+          disabled={!searchTerm && searchTerm.length < 4}
+          color="primary"
+          variant="contained"
+          type="submit">
+          {t('common.search')}
+        </StyledButton>
+        <HelperTextPopover
+          ariaButtonLabel={t('explanation_text.search_input_helper_aria_label')}
+          popoverId={'search-input-explainer'}>
+          <Typography>
+            {`${t('explanation_text.search_input_helper_text')} `}
+            <Link href={'/search-helper'}>{t('search_tricks.page_title')}</Link>
+          </Typography>
+        </HelperTextPopover>
+      </ButtonWrapper>
     </StyledForm>
   );
 };

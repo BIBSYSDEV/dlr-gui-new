@@ -58,6 +58,7 @@ interface TagsFilteringProps {
 const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) => {
   const { t } = useTranslation();
   const [tagInputFieldValue, setTagInputFieldValue] = useState('');
+  const [tagValue, setTagValue] = useState('');
   const debouncedTagInputValue = useDebounce(tagInputFieldValue);
   const [options, setOptions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -89,6 +90,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
   }, [debouncedTagInputValue, cancelSearch, t]);
 
   const handleNewTags = (value: any) => {
+    setTagValue(value);
     if (value?.length > 0) {
       const newTagValue = value.trim();
       if (newTagValue.length > minimumTagLength) {
@@ -140,6 +142,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           getOptionSelected={() => {
             return true; //HACK: Because we want the chips to stay on the outside of the autocomplete component
           }}
+          value={tagValue}
           inputValue={tagInputFieldValue}
           loading={loading}
           renderOption={(option) => <span data-testid={'tag-option'}>{option}</span>}
