@@ -71,7 +71,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   const [allChangesSaved, setAllChangesSaved] = useState(true);
   const [isLoadingLicenses, setIsLoadingLicenses] = useState(false);
   const [newContent, setNewContent] = useState<Content>();
-  const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
+  const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED);
   const [licenses, setLicenses] = useState<License[]>();
   const additionalFilesUppy = useUppy(additionalCreateFilesUppy(resource.identifier, setNewContent));
   const [newThumbnailContent, setNewThumbnailContent] = useState<Content>();
@@ -135,7 +135,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
       setIsLoadingLicenses(true);
       setLoadingLicensesErrorStatus(StatusCode.ACCEPTED);
       try {
-        const response = await getLicenses(); //todo: Async method
+        const response = await getLicenses();
         setLicenses(response.data);
       } catch (error) {
         error.response && setLoadingLicensesErrorStatus(error.response.status);
