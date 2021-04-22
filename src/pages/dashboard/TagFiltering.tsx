@@ -15,9 +15,11 @@ import ErrorBanner from '../../components/ErrorBanner';
 
 const minimumTagLength = 1;
 
+const StyledAutocomplete: any = styled(Autocomplete)`
+  max-width: 18rem;
+`;
+
 const StyledFormControl: any = styled(FormControl)`
-  margin-right: 1rem;
-  margin-top: 2rem;
   max-width: ${StyleWidths.width3};
 `;
 
@@ -125,7 +127,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
         </HelperTextPopover>
       </StyledFormLabel>
       <FormGroup>
-        <Autocomplete
+        <StyledAutocomplete
           id="filter-tags-input"
           options={options}
           noOptionsText={t('common.no_options')}
@@ -138,8 +140,8 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           value={tagValue}
           inputValue={tagInputFieldValue}
           loading={loading}
-          renderOption={(option) => <span data-testid={'tag-option'}>{option}</span>}
-          renderInput={(params) => (
+          renderOption={(option: any) => <span data-testid={'tag-option'}>{option}</span>}
+          renderInput={(params: any) => (
             <TextField
               {...params}
               variant="outlined"
