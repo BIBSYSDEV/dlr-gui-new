@@ -72,6 +72,16 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     ...(institution.toLowerCase() === InstitutionLicenseProviders.BI ? [Licenses.BI] : []),
   ];
 
+  const setAccessTypePrivate = async () => {
+    setSavingAccesTypeError(undefined);
+    try {
+      await putAccessType(values.identifier, AccessTypes.private);
+    } catch (error) {
+      setSavingAccesTypeError(error);
+    }
+    values.features.dlr_access = AccessTypes.private;
+  };
+
   const calculatePreferredLicense = async (
     restrictedValue: string,
     commercialValue: string,
@@ -95,13 +105,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     } else {
       await saveLicense(restrictedValue);
       if (restrictedValue === Licenses.BI || restrictedValue === Licenses.NTNU) {
-        setSavingAccesTypeError(undefined);
-        try {
-          await putAccessType(values.identifier, AccessTypes.private);
-        } catch (error) {
-          setSavingAccesTypeError(error);
-        }
-        values.features.dlr_access = AccessTypes.private;
+        await setAccessTypePrivate();
       }
     }
   };
@@ -113,12 +117,10 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
       if (license && values.licenses && values.licenses[0].identifier !== license.identifier) {
         setSavingLicenseError(undefined);
         await setResourceLicense(values.identifier, license.identifier).then();
-        if (values.licenses) {
-          if (values.licenses[0].identifier.length > 0) {
-            await deleteResourceLicense(values.identifier, values.licenses[0].identifier).then();
-          }
-          values.licenses[0] = license;
+        if (values.licenses[0].identifier.length > 0) {
+          await deleteResourceLicense(values.identifier, values.licenses[0].identifier).then();
         }
+        values.licenses[0] = license;
       } else if (license && values.licenses && values.licenses[0].identifier === license.identifier) {
         setSavingLicenseError(undefined);
       } else {
@@ -141,8 +143,23 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
         postResourceFeature(values.identifier, ResourceFeatureNames.ResourceRestriction, event.target.value)
       );
       if (event.target.value !== LicenseRestrictionOptions.yes) {
-        promiseArray.push(postResourceFeature(values.identifier, ResourceFeatureNames.CanBeUsedCommercially, ''));
-        promiseArray.push(postResourceFeature(values.identifier, ResourceFeatureNames.OthersCanModifyAndBuildUpon, ''));
+        setExpandModifyAndBuildOption(true);
+        values.features.dlr_licensehelper_can_be_used_commercially = '';
+        values.features.dlr_licensehelper_others_can_modify_and_build_upon = '';
+        promiseArray.push(
+          postResourceFeature(
+            values.identifier,
+            ResourceFeatureNames.CanBeUsedCommercially,
+            values.features.dlr_licensehelper_can_be_used_commercially
+          )
+        );
+        promiseArray.push(
+          postResourceFeature(
+            values.identifier,
+            ResourceFeatureNames.OthersCanModifyAndBuildUpon,
+            values.features.dlr_licensehelper_others_can_modify_and_build_upon
+          )
+        );
       }
       promiseArray.push(
         calculatePreferredLicense(
@@ -156,15 +173,11 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     } catch (error) {
       setSavingResourceRestrictionError(error);
     }
-    if (event.target.value !== LicenseRestrictionOptions.yes) {
-      values.features.dlr_licensehelper_can_be_used_commercially = '';
-      values.features.dlr_licensehelper_others_can_modify_and_build_upon = '';
-      setExpandModifyAndBuildOption(true);
-    }
     resetFormButKeepTouched(touched, resetForm, values, setTouched);
   };
 
   const handleChangeInCommercialOption = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    values.features.dlr_licensehelper_can_be_used_commercially = event.target.value;
     try {
       setAllChangesSaved(false);
       setSavingCanBeUsedCommerciallyError(undefined);
@@ -180,7 +193,6 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
         )
       );
       await Promise.all(promiseArray);
-      values.features.dlr_licensehelper_can_be_used_commercially = event.target.value;
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
       setAllChangesSaved(true);
     } catch (error) {
@@ -190,6 +202,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   };
 
   const handleChangeInModifyAndBuildOption = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    values.features.dlr_licensehelper_others_can_modify_and_build_upon = event.target.value;
     try {
       setAllChangesSaved(false);
       setSavingOthersCanModifyAndBuildUponError(undefined);
@@ -206,7 +219,6 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
       );
       await Promise.all(promiseArray);
       setAllChangesSaved(true);
-      values.features.dlr_licensehelper_others_can_modify_and_build_upon = event.target.value;
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
     } catch (error) {
       setSavingOthersCanModifyAndBuildUponError(error);
