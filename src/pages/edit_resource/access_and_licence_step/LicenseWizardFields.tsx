@@ -56,7 +56,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   const { t } = useTranslation();
   const { institution } = useSelector((state: RootState) => state.user);
   const { values, resetForm, setTouched, touched } = useFormikContext<Resource>();
-  const [saveRestrictionError, setSaveRestrictionError] = useState<Error>();
+  const [savingLicenseError, setSavingLicenseError] = useState<Error>();
   const [savingResourceRestrictionError, setSavingResourceRestrictionError] = useState<Error>();
   const [savingOthersCanModifyAndBuildUponError, setSavingOthersCanModifyAndBuildUponError] = useState<Error>();
   const [savingCanBeUsedCommerciallyError, setSavingCanBeUsedCommerciallyError] = useState<Error>();
@@ -156,7 +156,6 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     } catch (error) {
       setSavingResourceRestrictionError(error);
     }
-
     if (event.target.value !== LicenseRestrictionOptions.yes) {
       values.features.dlr_licensehelper_can_be_used_commercially = '';
       values.features.dlr_licensehelper_others_can_modify_and_build_upon = '';
@@ -187,7 +186,6 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     } catch (error) {
       setSavingCanBeUsedCommerciallyError(error);
     }
-
     setExpandModifyAndBuildOption(true);
   };
 
@@ -353,7 +351,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           </AccordionRadioGroup>
         )}
 
-        {saveRestrictionError && <ErrorBanner userNeedsToBeLoggedIn={true} error={saveRestrictionError} />}
+        {savingLicenseError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingLicenseError} />}
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );
