@@ -105,11 +105,6 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
         </StyledThumbnailWrapper>
         <StyledMetaDataColumn>
           <Typography gutterBottom variant="h4">{`${resource.features.dlr_title}`}</Typography>
-          {resource.features.dlr_content && (
-            <Typography gutterBottom variant="body2">
-              {resource.features.dlr_content}
-            </Typography>
-          )}
           {resource.features.dlr_type && (
             <StyledFileTypeIcon>{getStyledFileTypeIcon(resource.features.dlr_type)}</StyledFileTypeIcon>
           )}
