@@ -56,7 +56,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   const { t } = useTranslation();
   const { institution } = useSelector((state: RootState) => state.user);
   const { values, resetForm, setFieldValue, handleChange, setTouched, touched } = useFormikContext<Resource>();
-  const [saveRestrictionError, setSaveRestrictionError] = useState<Error>();
+  const [savingLicenseError, setSavingLicenseError] = useState<Error>();
 
   const [savingResourceRestrictionError, setSavingResourceRestrictionError] = useState<Error>();
   const [savingOthersCanModifyAndBuildUponError, setSavingOthersCanModifyAndBuildUponError] = useState<Error>();
@@ -77,7 +77,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   }, [values.features.dlr_licensehelper_others_can_modify_and_build_upon]);
 
   useEffect(() => {
-    setSaveRestrictionError(undefined);
+    setSavingLicenseError(undefined);
   }, [forceResetInLicenseWizard, setFieldValue]);
 
   const calculatePreferredLicense = (restrictedValue: string, commercialValue: string, modifyAndBuildValue: string) => {
@@ -111,28 +111,25 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   };
 
   const saveLicense = (licenseCode: string) => {
-    try {
-      setAllChangesSaved(false);
-      const license = licenses.find((license) => license.features?.dlr_license_code === licenseCode);
-      if (license && values.licenses && values.licenses[0].identifier !== license.identifier) {
-        setSaveRestrictionError(undefined);
-        setResourceLicense(values.identifier, license.identifier).then();
-        if (values.licenses) {
+    setAllChangesSaved(false);
+    setSavingLicenseError(undefined);
+    const license = licenses.find((license) => license.features?.dlr_license_code === licenseCode);
+    if (license && values.licenses && values.licenses[0].identifier !== license.identifier) {
+      setResourceLicense(values.identifier, license.identifier)
+        .then(() => {
           if (values.licenses[0].identifier.length > 0) {
-            deleteResourceLicense(values.identifier, values.licenses[0].identifier).then();
+            deleteResourceLicense(values.identifier, values.licenses[0].identifier)
+              .then(() => {
+                values.licenses[0] = license;
+              })
+              .catch((error) => {
+                setSavingLicenseError(error);
+              });
           }
-          values.licenses[0] = license;
-        }
-        resetFormButKeepTouched(touched, resetForm, values, setTouched);
-      } else if (license && values.licenses && values.licenses[0].identifier === license.identifier) {
-        setSaveRestrictionError(undefined);
-      } else {
-        setSaveRestrictionError(new Error('internal error'));
-      }
-    } catch (error) {
-      setSaveRestrictionError(error);
-    } finally {
-      setAllChangesSaved(true);
+        })
+        .catch((error) => {
+          setSavingLicenseError(error);
+        });
     }
   };
 
@@ -156,7 +153,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     } catch (error) {
       setSavingResourceRestrictionError(error);
     }
-    await calculatePreferredLicense(
+    calculatePreferredLicense(
       event.target.value,
       values.features.dlr_licensehelper_can_be_used_commercially,
       values.features.dlr_licensehelper_others_can_modify_and_build_upon
@@ -180,9 +177,8 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     } catch (error) {
       setSavingCanBeUsedCommerciallyError(error);
     }
-
     setExpandModifyAndBuildOption(true);
-    await calculatePreferredLicense(
+    calculatePreferredLicense(
       values.features.dlr_licensehelper_resource_restriction,
       event.target.value,
       values.features.dlr_licensehelper_others_can_modify_and_build_upon
@@ -206,8 +202,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     } catch (error) {
       setSavingOthersCanModifyAndBuildUponError(error);
     }
-
-    await calculatePreferredLicense(
+    calculatePreferredLicense(
       values.features.dlr_licensehelper_resource_restriction,
       values.features.dlr_licensehelper_can_be_used_commercially,
       event.target.value
@@ -353,7 +348,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           </AccordionRadioGroup>
         )}
 
-        {saveRestrictionError && <ErrorBanner userNeedsToBeLoggedIn={true} error={saveRestrictionError} />}
+        {savingLicenseError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingLicenseError} />}
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );
