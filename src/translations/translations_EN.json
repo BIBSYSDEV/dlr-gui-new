@@ -192,7 +192,7 @@
       },
       "creative_commons": {
         "title": "Yes, with Creative Commons license",
-        "important_notice": "If the source content's license is CC BY-SA 4.0 or CC BY-NC 4.0, you must provide the same license"
+        "important_notice": "If the source content's license is CC BY-SA or CC BY-NC, you must provide the same license"
       },
       "no_clearance": {
         "title": "No",
@@ -211,8 +211,8 @@
     "restriction_options": {
       "bi-opphaver-bi": "Yes, it can only be used internally at BI",
       "CC_BY_4_0": "No, I want the resource to be used and shared",
-      "CC_BY-NC-SA_4_0": "Yes, it contains material with license CC BY-NC-SA 4.0",
-      "CC_BY-SA_4_0": "Yes, it contains material with license CC BY-SA 4.0",
+      "CC_BY-NC-SA_4_0": "Yes, it contains material with license CC BY-NC-SA",
+      "CC_BY-SA_4_0": "Yes, it contains material with license CC BY-SA",
       "ntnu-internt": "Yes, it can only be used internally at NTNU",
       "yes": "Yes, I want to apply restrictions on the use of the resource"
     },
