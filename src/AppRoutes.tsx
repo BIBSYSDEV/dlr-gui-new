@@ -9,6 +9,7 @@ import DelayedFallback from './components/DelayedFallback';
 import { v4 as uuidv4 } from 'uuid';
 import Forbidden from './pages/errorpages/Forbidden';
 import Sitemap from './pages/sitemap/Sitemap';
+import SearchExplainer from './pages/infopages/SearchExplainer';
 
 const Explore = lazy(() => import('./pages/dashboard/Explore'));
 const EditResourcePage = lazy(() => import('./pages/edit_resource/EditResourcePage'));
@@ -37,6 +38,7 @@ const AppRoutes = () => {
           render={(props) => <EditResourcePage id={user.id} {...props} key={uuidv4()} />}
         />
         <Route exact path="/forbidden" component={Forbidden} />
+        <Route exact path="/search-helper" component={SearchExplainer} />
         <Route exact path="/sitemap" component={Sitemap} />
         <Route path="*" component={NotFound} />
       </Switch>
