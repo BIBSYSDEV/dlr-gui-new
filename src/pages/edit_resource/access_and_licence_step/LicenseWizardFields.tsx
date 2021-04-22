@@ -111,7 +111,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
       setAllChangesSaved(false);
       const license = licenses.find((license) => license.features?.dlr_license_code === licenseCode);
       if (license && values.licenses && values.licenses[0].identifier !== license.identifier) {
-        setSaveRestrictionError(undefined);
+        setSavingLicenseError(undefined);
         await setResourceLicense(values.identifier, license.identifier).then();
         if (values.licenses) {
           if (values.licenses[0].identifier.length > 0) {
@@ -120,12 +120,12 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           values.licenses[0] = license;
         }
       } else if (license && values.licenses && values.licenses[0].identifier === license.identifier) {
-        setSaveRestrictionError(undefined);
+        setSavingLicenseError(undefined);
       } else {
-        setSaveRestrictionError(new Error('internal error'));
+        setSavingLicenseError(new Error('internal error'));
       }
     } catch (error) {
-      setSaveRestrictionError(error);
+      setSavingLicenseError(error);
     } finally {
       setAllChangesSaved(true);
     }
