@@ -27,7 +27,7 @@ function useWindowWidth() {
 }
 
 const StyledAccordion = styled(Accordion)`
-  background-color: ${Colors.ExploreResourcesPageOptionFiler};
+  background-color: ${Colors.DLRYellow1};
   border: none;
   margin-left: -0.5rem;
   & .MuiPaper-elevation1 {
@@ -38,7 +38,7 @@ const StyledAccordion = styled(Accordion)`
 const StyledSideBar = styled.div`
   padding-top: 1.5rem;
   padding-left: 1rem;
-  background-color: ${Colors.ExploreResourcesPageOptionFiler};
+  background-color: ${Colors.DLRYellow1};
   width: 17rem;
   display: flex;
   flex-direction: column;
