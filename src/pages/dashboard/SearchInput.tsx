@@ -65,7 +65,7 @@ const SearchInput: FC<SearchInputProps> = ({ setQueryObject, queryObject }) => {
       offset: 0,
       queryFromURL: false,
     }));
-    rewriteSearchParams(SearchParameters.query, [searchTerm], history, location);
+    rewriteSearchParams(SearchParameters.query, [searchTerm], history, location, true);
   };
 
   useEffect(() => {

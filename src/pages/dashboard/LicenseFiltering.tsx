@@ -87,7 +87,7 @@ const LicenseFiltering: FC<LicenseFilteringProps> = ({ queryObject, setQueryObje
           (licenseCode) => licenseCode !== licensesCheckList[index].licenseCode
         ));
     setQueryObject(newQueryObject);
-    rewriteSearchParams(SearchParameters.license, newQueryObject.licenses, history, location);
+    rewriteSearchParams(SearchParameters.license, newQueryObject.licenses, history, location, true);
   };
 
   return (

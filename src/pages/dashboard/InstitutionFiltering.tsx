@@ -103,7 +103,7 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
       );
     }
     setQueryObject(newQueryObject);
-    rewriteSearchParams(SearchParameters.institution, newQueryObject.institutions, history, location);
+    rewriteSearchParams(SearchParameters.institution, newQueryObject.institutions, history, location, true);
   };
 
   const generateInstitutionName = (institutionCode: string): string => {

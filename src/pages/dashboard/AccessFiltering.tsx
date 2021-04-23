@@ -22,7 +22,8 @@ const AccessFiltering: FC<AccoessFilteringProps> = ({ queryObject, setQueryObjec
       SearchParameters.showInaccessible,
       [event.target.checked ? 'true' : 'false'],
       history,
-      location
+      location,
+      true
     );
   };
 

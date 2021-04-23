@@ -57,7 +57,7 @@ const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({ queryObject, se
           (resourceType) => resourceType !== resourceTypeCheckList[index].name
         ));
     setQueryObject(newQueryObject);
-    rewriteSearchParams(SearchParameters.resourceType, newQueryObject.resourceTypes, history, location);
+    rewriteSearchParams(SearchParameters.resourceType, newQueryObject.resourceTypes, history, location, true);
   };
 
   return (

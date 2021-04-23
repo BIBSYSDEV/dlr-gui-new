@@ -100,7 +100,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           tags: newTags,
           offset: 0,
         }));
-        rewriteSearchParams(SearchParameters.tag, newTags, history, location);
+        rewriteSearchParams(SearchParameters.tag, newTags, history, location, true);
       }
       setTagInputFieldValue('');
       setCancelSearch(false);
@@ -119,7 +119,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
       tags: newTags,
       offset: 0,
     }));
-    rewriteSearchParams(SearchParameters.tag, newTags, history, location);
+    rewriteSearchParams(SearchParameters.tag, newTags, history, location, true);
   };
 
   return (
