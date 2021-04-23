@@ -4,7 +4,13 @@ import styled from 'styled-components';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
 import { searchResources } from '../../api/resourceApi';
 import { useTranslation } from 'react-i18next';
-import { emptyQueryObject, NumberOfResultsPrPage, SearchParameters, SearchResult } from '../../types/search.types';
+import {
+  emptyQueryObject,
+  NumberOfResultsPrPage,
+  QueryObject,
+  SearchParameters,
+  SearchResult,
+} from '../../types/search.types';
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
@@ -18,6 +24,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import LoginReminder from '../../components/LoginReminder';
 import AccessFiltering from './AccessFiltering';
+import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 
 const SearchResultWrapper = styled.div`
   display: flex;
@@ -85,101 +92,85 @@ const StyledResultListHeaderWrapper = styled.div`
 
 const firstPage = 1;
 
+const createQueryFromUrl = (location: any): QueryObject => {
+  const searchTerms = new URLSearchParams(location.search);
+  const institutions = searchTerms.getAll(SearchParameters.institution);
+  const resourceTypes = searchTerms.getAll(SearchParameters.resourceType);
+  const tags = searchTerms.getAll(SearchParameters.tag).map((tag) => tag.toLowerCase());
+  const pageTerm = searchTerms.get(SearchParameters.page);
+  const showInaccessibleParameter = searchTerms.get(SearchParameters.showInaccessible);
+  const offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
+  const showInaccessible = showInaccessibleParameter ? showInaccessibleParameter.toLowerCase() === 'true' : false;
+  const licenses = searchTerms.getAll(SearchParameters.license);
+  return {
+    ...emptyQueryObject,
+    query: searchTerms.get(SearchParameters.query) ?? '',
+    offset: offset,
+    limit: NumberOfResultsPrPage,
+    resourceTypes: resourceTypes,
+    institutions: institutions,
+    licenses: licenses,
+    tags: tags,
+    showInaccessible: showInaccessible,
+  };
+};
+
 const Explore = () => {
-  const [page, setPage] = useState(firstPage);
   const location = useLocation();
+  const [queryObject, setQueryObject] = useState<QueryObject>(createQueryFromUrl(location));
+  const [page, setPage] = useState(queryObject.offset / 10 + 1);
   const user = useSelector((state: RootState) => state.user);
-  const [queryObject, setQueryObject] = useState(emptyQueryObject);
   const [isSearching, setIsSearching] = useState(false);
   const [searchResult, setSearchResult] = useState<SearchResult>();
   const [resources, setResources] = useState<Resource[]>([]);
   const { t } = useTranslation();
   const [searchError, setSearchError] = useState<Error>();
   const history = useHistory();
+  const [hasPopStateListener, setHasPopStateListener] = useState(false);
 
   const handlePaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
     setQueryObject((prevState) => ({
       ...prevState,
       offset: (Number(value) - 1) * NumberOfResultsPrPage,
-      queryFromURL: false,
     }));
+    rewriteSearchParams(SearchParameters.page, ['' + value], history, location);
+  };
+
+  const triggerSearch = async (queryObject: QueryObject) => {
+    try {
+      setIsSearching(true);
+      const response = await searchResources(queryObject);
+      setSearchError(undefined);
+      setSearchResult(response.data);
+      setResources(response.data.resourcesAsJson.map((resourceAsString: string) => JSON.parse(resourceAsString)));
+    } catch (error) {
+      setSearchError(error);
+    } finally {
+      setIsSearching(false);
+    }
   };
 
   useEffect(() => {
-    const createQueryFromUrl = () => {
-      const searchTerms = new URLSearchParams(location.search);
-      const institutions = searchTerms.getAll(SearchParameters.institution);
-      const resourceTypes = searchTerms.getAll(SearchParameters.resourceType);
-      const tags = searchTerms.getAll(SearchParameters.tag).map((tag) => tag.toLowerCase());
-      const pageTerm = searchTerms.get(SearchParameters.page);
-      const showInaccessibleParameter = searchTerms.get(SearchParameters.showInaccessible);
-      const showInaccessible = showInaccessibleParameter ? showInaccessibleParameter.toLowerCase() === 'true' : false;
-      const licenses = searchTerms.getAll(SearchParameters.license);
-      const offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
-      return {
-        ...emptyQueryObject,
-        query: searchTerms.get(SearchParameters.query) ?? '',
-        offset: offset,
-        limit: NumberOfResultsPrPage,
-        resourceTypes: resourceTypes,
-        institutions: institutions,
-        licenses: licenses,
-        tags: tags,
-        queryFromURL: true,
-        allowSearch: true,
-        showInaccessible: showInaccessible,
-      };
-    };
-    if (!queryObject.queryFromURL && !queryObject.allowSearch) {
-      setQueryObject(createQueryFromUrl());
-    }
-  }, [location, queryObject.allowSearch, queryObject.queryFromURL]);
+    triggerSearch(queryObject);
+  }, [queryObject]);
 
   useEffect(() => {
-    const reWriteUrl = () => {
-      let url = `?`;
-      if (queryObject.query.length > 0) url += `${SearchParameters.query}=${queryObject.query}`;
-      if (queryObject.institutions.length > 0)
-        url += queryObject.institutions
-          .map((institution) => `&${SearchParameters.institution}=${institution}`)
-          .join('');
-      if (queryObject.resourceTypes.length > 0)
-        url += queryObject.resourceTypes.map((type) => `&${SearchParameters.resourceType}=${type}`).join('');
-      if (queryObject.licenses.length > 0)
-        url += queryObject.licenses.map((licenseCode) => `&${SearchParameters.license}=${licenseCode}`).join('');
-      if (queryObject.tags.length > 0) url += queryObject.tags.map((tag) => `&${SearchParameters.tag}=${tag}`).join('');
-      if (queryObject.showInaccessible) url += `&${SearchParameters.showInaccessible}=true`;
-      history.push(url);
-    };
-
-    const triggerSearch = async () => {
-      if (!queryObject.queryFromURL) {
-        reWriteUrl();
-      }
-      if (queryObject) {
-        try {
-          setIsSearching(true);
-          const response = await searchResources(queryObject);
-          setSearchError(undefined);
-          setSearchResult(response.data);
-          setResources(response.data.resourcesAsJson.map((resourceAsString: string) => JSON.parse(resourceAsString)));
-        } catch (error) {
-          setSearchError(error);
-        } finally {
-          setIsSearching(false);
-        }
-      }
-    };
-    if (queryObject.allowSearch) triggerSearch();
-    if (queryObject.offset === 0) setPage(firstPage);
-  }, [queryObject, history]);
+    if (!hasPopStateListener) {
+      setHasPopStateListener(true);
+      window.addEventListener('popstate', () => {
+        const newQueryObject = createQueryFromUrl(window.location);
+        setQueryObject(newQueryObject);
+        setPage(newQueryObject.offset / 10 + 1);
+      });
+    }
+  }, [queryObject, hasPopStateListener]);
 
   return (
     <StyledContentWrapperLarge>
       {!user.id && <LoginReminder />}
       <PageHeader>{t('dashboard.explore')}</PageHeader>
-      <SearchInput setQueryObject={setQueryObject} />
+      <SearchInput setQueryObject={setQueryObject} queryObject={queryObject} />
       {searchError && <ErrorBanner error={searchError} />}
       {!searchResult && isSearching && (
         <StyledProgressWrapper>

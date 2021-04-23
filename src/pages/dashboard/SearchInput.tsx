@@ -1,11 +1,12 @@
-import React, { ChangeEvent, Dispatch, FC, FormEvent, SetStateAction, useState } from 'react';
+import React, { ChangeEvent, Dispatch, FC, FormEvent, SetStateAction, useEffect, useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import SearchIcon from '@material-ui/icons/Search';
 import { StyleWidths } from '../../themes/mainTheme';
-import { NumberOfResultsPrPage, QueryObject } from '../../types/search.types';
+import { NumberOfResultsPrPage, QueryObject, SearchParameters } from '../../types/search.types';
+import { useHistory, useLocation } from 'react-router-dom';
+import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 import HelperTextPopover from '../../components/HelperTextPopover';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
@@ -46,11 +47,13 @@ const StyledButton = styled(Button)`
 
 interface SearchInputProps {
   setQueryObject: Dispatch<SetStateAction<QueryObject>>;
+  queryObject: QueryObject;
 }
 
-const SearchInput: FC<SearchInputProps> = ({ setQueryObject }) => {
+const SearchInput: FC<SearchInputProps> = ({ setQueryObject, queryObject }) => {
+  const [searchTerm, setSearchTerm] = useState(queryObject.query);
   const location = useLocation();
-  const [searchTerm, setSearchTerm] = useState(new URLSearchParams(location.search).get('query') || '');
+  const history = useHistory();
   const { t } = useTranslation();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -62,7 +65,12 @@ const SearchInput: FC<SearchInputProps> = ({ setQueryObject }) => {
       offset: 0,
       queryFromURL: false,
     }));
+    rewriteSearchParams(SearchParameters.query, [searchTerm], history, location, true);
   };
+
+  useEffect(() => {
+    setSearchTerm(queryObject.query);
+  }, [queryObject.query]);
 
   const updateSearchTermValue = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);

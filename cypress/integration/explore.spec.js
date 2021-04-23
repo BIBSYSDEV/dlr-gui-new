@@ -6,6 +6,12 @@ context('Actions', () => {
   const ntnu = 'ntnu';
   const bi = 'bi';
   const oslomet = 'oslomet';
+  const license1 = 'CC BY 4.0';
+  const license1Short = 'CCBY40';
+  const license2 = 'CC BY-ND 4.0';
+  const license2Short = 'CCBY-ND40';
+  const license3Short = 'CCBY-SA40';
+  const tag1 = 'digital';
 
   beforeEach(() => {
     cy.visit('/');
@@ -156,10 +162,10 @@ context('Actions', () => {
 
   it('adds and remove tags as a filters', () => {
     cy.visit('/');
-    const tag1 = 'digital';
+
     const tag2_search = 'dig';
     const tag2 = 'digital læringsressurs';
-    const tag2_encoded = 'digital%20l%C3%A6ringsressurs';
+    const tag2_encoded = 'digital+l%C3%A6ringsressurs';
     cy.get('[data-testid=search-for-resource-input]').type(search);
     cy.get('[data-testid=search-for-resource-submit]').click();
     cy.get('[data-testid=expand-filtering-options]').click();
@@ -211,6 +217,7 @@ context('Actions', () => {
     const license2Short = 'CCBY-ND40';
     const license3 = 'CC BY-SA 4.0';
     const license3Short = 'CCBY-SA40';
+
     cy.get('[data-testid=search-for-resource-input]').type(search);
     cy.get('[data-testid=search-for-resource-submit]').click();
     cy.get('[data-testid=expand-filtering-options]').click();
@@ -218,19 +225,21 @@ context('Actions', () => {
     cy.get(`[data-testid=license-filtering-checkbox-label-${license2Short}]`).click();
     cy.get(`[data-testid=license-filtering-checkbox-label-${license3Short}]`).click();
     cy.location().should((loc) => {
-      expect(loc.search).to.eq(
-        `?${SearchParameters.query}=${search}&${SearchParameters.license}=${encodeURI(license1)}&${
-          SearchParameters.license
-        }=${encodeURI(license2)}&${SearchParameters.license}=${encodeURI(license3)}`
-      );
+      const searchParams = new URLSearchParams();
+      searchParams.set(SearchParameters.query, search);
+      searchParams.append(SearchParameters.license, license1);
+      searchParams.append(SearchParameters.license, license2);
+      searchParams.append(SearchParameters.license, license3);
+      expect(loc.search).to.eq(`?${searchParams.toString()}`);
     });
     cy.get(`[data-testid=license-filtering-checkbox-label-${license1Short}]`).click();
     cy.location().should((loc) => {
-      expect(loc.search).to.eq(
-        `?${SearchParameters.query}=${search}&${SearchParameters.license}=${encodeURI(license2)}&${
-          SearchParameters.license
-        }=${encodeURI(license3)}`
-      );
+      const searchParams = new URLSearchParams();
+      searchParams.set(SearchParameters.query, search);
+      searchParams.delete(SearchParameters.license);
+      searchParams.append(SearchParameters.license, license2);
+      searchParams.append(SearchParameters.license, license3);
+      expect(loc.search).to.eq(`?${searchParams.toString()}`);
     });
     cy.get(`[data-testid=license-filtering-checkbox-label-${license2Short}]`).click();
     cy.get(`[data-testid=license-filtering-checkbox-label-${license3Short}]`).click();
@@ -240,11 +249,6 @@ context('Actions', () => {
   });
 
   it('can detect license filters in the url', () => {
-    const license1 = 'CC BY 4.0';
-    const license1Short = 'CCBY40';
-    const license2 = 'CC BY-ND 4.0';
-    const license2Short = 'CCBY-ND40';
-    const license3Short = 'CCBY-SA40';
     cy.visit(
       `/?${SearchParameters.query}=${search}&${SearchParameters.license}=${encodeURI(license1)}&${
         SearchParameters.license

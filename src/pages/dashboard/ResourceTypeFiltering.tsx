@@ -1,11 +1,13 @@
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
-import { QueryObject } from '../../types/search.types';
+import { QueryObject, SearchParameters } from '../../types/search.types';
 import { DefaultResourceTypes } from '../../types/resource.types';
 import { TFunction, useTranslation } from 'react-i18next';
 import { Checkbox, FormControl, FormControlLabel, FormGroup } from '@material-ui/core';
 import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
+import { useHistory, useLocation } from 'react-router-dom';
+import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 
 const StyledFormControl: any = styled(FormControl)`
   margin-top: 2rem;
@@ -16,11 +18,6 @@ interface ResourceTypeListItem {
   isSelected: boolean;
 }
 
-interface ResourceTypeFilteringProps {
-  queryObject: QueryObject;
-  setQueryObject: Dispatch<SetStateAction<QueryObject>>;
-}
-
 const initialResourceTypeCheckList = (t: TFunction<'translation'>): ResourceTypeListItem[] => {
   return DefaultResourceTypes.map<ResourceTypeListItem>((resourceType) => ({
     name: t(resourceType),
@@ -28,8 +25,15 @@ const initialResourceTypeCheckList = (t: TFunction<'translation'>): ResourceType
   }));
 };
 
+interface ResourceTypeFilteringProps {
+  queryObject: QueryObject;
+  setQueryObject: Dispatch<SetStateAction<QueryObject>>;
+}
+
 const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({ queryObject, setQueryObject }) => {
   const { t } = useTranslation();
+  const location = useLocation();
+  const history = useHistory();
 
   const [resourceTypeCheckList, setResourceCheckList] = useState(initialResourceTypeCheckList(t));
 
@@ -46,26 +50,14 @@ const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({ queryObject, se
   }, [queryObject, t]);
 
   const changeSelected = (index: number, event: any) => {
-    if (event.target.checked) {
-      setQueryObject((prevState) => ({
-        ...prevState,
-        resourceTypes: [...prevState.resourceTypes, resourceTypeCheckList[index].name],
-        offset: 0,
-        queryFromURL: false,
-      }));
-    } else {
-      setQueryObject((prevState) => {
-        const newResourceTypes = prevState.resourceTypes.filter(
+    const newQueryObject = { ...queryObject, offset: 0 };
+    event.target.checked
+      ? (newQueryObject.resourceTypes = [...newQueryObject.resourceTypes, resourceTypeCheckList[index].name])
+      : (newQueryObject.resourceTypes = newQueryObject.resourceTypes.filter(
           (resourceType) => resourceType !== resourceTypeCheckList[index].name
-        );
-        return {
-          ...prevState,
-          resourceTypes: newResourceTypes,
-          offset: 0,
-          queryFromURL: false,
-        };
-      });
-    }
+        ));
+    setQueryObject(newQueryObject);
+    rewriteSearchParams(SearchParameters.resourceType, newQueryObject.resourceTypes, history, location, true);
   };
 
   return (
