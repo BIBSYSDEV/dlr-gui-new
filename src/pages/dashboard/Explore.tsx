@@ -126,7 +126,7 @@ const Explore = () => {
   const { t } = useTranslation();
   const [searchError, setSearchError] = useState<Error>();
   const history = useHistory();
-  const [attached, setAttached] = useState(false);
+  const [hasPopStateListener, setHasPopStateListener] = useState(false);
 
   const handlePaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -156,15 +156,15 @@ const Explore = () => {
   }, [queryObject]);
 
   useEffect(() => {
-    if (!attached) {
-      setAttached(true);
+    if (!hasPopStateListener) {
+      setHasPopStateListener(true);
       window.addEventListener('popstate', () => {
         const newQueryObject = createQueryFromUrl(window.location);
         setQueryObject(newQueryObject);
         setPage(newQueryObject.offset / 10 + 1);
       });
     }
-  }, [queryObject, attached]);
+  }, [queryObject, hasPopStateListener]);
 
   return (
     <StyledContentWrapperLarge>
