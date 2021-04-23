@@ -192,7 +192,7 @@
       },
       "creative_commons": {
         "title": "Ja, med Creative Commons lisens",
-        "important_notice": "Dersom lisensen er CC BY-SA 4.0 eller CC BY-NC, må du bruke samme lisens når du deler"
+        "important_notice": "Dersom lisensen er CC BY-SA eller CC BY-NC, må du bruke samme lisens når du deler"
       },
       "no_clearance": {
         "title": "Nei",
@@ -211,8 +211,8 @@
     "restriction_options": {
       "bi-opphaver-bi": "Ja, den kan kun brukes internt på BI",
       "CC_BY_4_0": "Nei, jeg ønsker at ressursen blir brukt og delt",
-      "CC_BY-NC-SA_4_0": "Ja, den inneholder materiale med lisens CC BY-NC-SA 4.0",
-      "CC_BY-SA_4_0": "Ja, den inneholder materiale med lisens CC BY-SA 4.0",
+      "CC_BY-NC-SA_4_0": "Ja, den inneholder materiale med lisens CC BY-NC-SA",
+      "CC_BY-SA_4_0": "Ja, den inneholder materiale med lisens CC BY-SA",
       "ntnu-internt": "Ja, den kan kun brukes internt på NTNU",
       "yes": "Ja, jeg vil legge restriksjoner på bruken av ressursen"
     },

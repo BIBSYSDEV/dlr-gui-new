@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import Radio from '@material-ui/core/Radio';
 import { useTranslation } from 'react-i18next';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import { Resource } from '../../../types/resource.types';
+import { Resource, ResourceFeatureNames, ResourceFeatureNamesFullPath } from '../../../types/resource.types';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import { useSelector } from 'react-redux';
@@ -14,7 +14,12 @@ import {
   StyledRadioGroup,
   StyledSchemaPartColored,
 } from '../../../components/styled/Wrappers';
-import { deleteResourceLicense, putAccessType, setResourceLicense } from '../../../api/resourceApi';
+import {
+  deleteResourceLicense,
+  postResourceFeature,
+  putAccessType,
+  setResourceLicense,
+} from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
@@ -67,16 +72,9 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
 }) => {
   const { institution } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
-  const {
-    values,
-    resetForm,
-    setFieldValue,
-    setTouched,
-    touched,
-    handleChange,
-    setFieldTouched,
-  } = useFormikContext<Resource>();
-  const [savingError, setSavingError] = useState<Error>();
+  const { values, resetForm, setTouched, touched } = useFormikContext<Resource>();
+  const [savingUsageClearedWithOwnerError, setSavingUsageClearedWithOwnerError] = useState<Error>();
+  const [savingContainsOtherPeoplesWorkError, setSavingContainsOtherPeoplesWorkError] = useState<Error>();
 
   const LicenseAgreements: string[] = [
     Licenses.CC,
@@ -87,18 +85,27 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   ];
 
   const handleChangeInContainsOtherPeoplesWork = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    handleChange(event);
-    forceResetInLicenseWizard();
-    resetFormButKeepTouched(touched, resetForm, values, setTouched);
-    setFieldValue('containsOtherPeoplesWork', event.target.value);
+    values.features.dlr_licensehelper_contains_other_peoples_work = event.target.value;
+    try {
+      setAllChangesSaved(false);
+      setSavingContainsOtherPeoplesWorkError(undefined);
+      await postResourceFeature(values.identifier, ResourceFeatureNames.ContainsOtherPeoplesWorks, event.target.value);
+      setAllChangesSaved(true);
+      forceResetInLicenseWizard();
+    } catch (error) {
+      setSavingContainsOtherPeoplesWorkError(error);
+    }
     if (event.target.value === ContainsOtherPeoplesWorkOptions.No) {
       setHasSelectedCC(false);
-      setFieldTouched('usageClearedWithOwner', false);
-      setFieldValue('usageClearedWithOwner', '');
+      values.features.dlr_licensehelper_usage_cleared_with_owner = '';
     }
-    if (event.target.value === ContainsOtherPeoplesWorkOptions.Yes && values.usageClearedWithOwner === Licenses.CC) {
+    if (
+      event.target.value === ContainsOtherPeoplesWorkOptions.Yes &&
+      values.features.dlr_licensehelper_usage_cleared_with_owner === Licenses.CC
+    ) {
       setHasSelectedCC(true);
     }
+    resetFormButKeepTouched(touched, resetForm, values, setTouched);
   };
 
   const replaceOldLicense = async (newLicence: License) => {
@@ -110,10 +117,12 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
     }
   };
 
-  const handleLicenseAgreementChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    handleChange(event);
+  const handleUsageClearedWithOwnerChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    values.features.dlr_licensehelper_usage_cleared_with_owner = event.target.value;
     try {
+      setSavingUsageClearedWithOwnerError(undefined);
       setAllChangesSaved(false);
+      await postResourceFeature(values.identifier, ResourceFeatureNames.UsageClearedWithOwner, event.target.value);
       let accessType = AccessTypes.private;
       if (event.target.value === Licenses.CC) {
         accessType = AccessTypes.open;
@@ -132,17 +141,12 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
         }
       }
       if (values.features.dlr_access !== accessType) {
-        setFieldValue('features.dlr_access', accessType);
+        values.features.dlr_access = accessType;
         await putAccessType(values.identifier, accessType);
       }
-      resetForm({ values });
-      if (values.features.dlr_access !== accessType) {
-        setFieldValue('features.dlr_access', accessType);
-      }
-      setFieldValue('usageClearedWithOwner', event.target.value);
-      setSavingError(undefined);
+      resetFormButKeepTouched(touched, resetForm, values, setTouched);
     } catch (error) {
-      setSavingError(error);
+      setSavingUsageClearedWithOwnerError(error);
     } finally {
       setAllChangesSaved(true);
       forceResetInLicenseWizard();
@@ -160,7 +164,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor1}>
       <StyledContentWrapper>
-        <Field name={'containsOtherPeoplesWork'}>
+        <Field name={ResourceFeatureNamesFullPath.ContainsOtherPeoplesWorks}>
           {({ field, meta: { error, touched } }: FieldProps) => (
             <FormControl component="fieldset" required error={hasError(error, touched)}>
               <StyledFormLabel component="legend" id={otherPeopleWorkId}>
@@ -192,9 +196,12 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
             </FormControl>
           )}
         </Field>
-        {values.containsOtherPeoplesWork === ContainsOtherPeoplesWorkOptions.Yes && (
+        {savingUsageClearedWithOwnerError && (
+          <ErrorBanner userNeedsToBeLoggedIn={true} error={savingUsageClearedWithOwnerError} />
+        )}
+        {values.features.dlr_licensehelper_contains_other_peoples_work === ContainsOtherPeoplesWorkOptions.Yes && (
           <StyledRadioBoxWrapper>
-            <Field name={'usageClearedWithOwner'}>
+            <Field name={ResourceFeatureNamesFullPath.UsageClearedWithOwner}>
               {({ field, meta: { error, touched } }: FieldProps) => (
                 <FormControl component="fieldset" required error={hasError(error, touched)}>
                   <StyledFormLabel id={usageClearedId} component="legend">
@@ -207,7 +214,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
                     aria-label={t('license.questions.usage_cleared_with_owner')}
                     value={field.value}
                     data-testid="usage-cleared-with-owner-radio-group"
-                    onChange={(event) => handleLicenseAgreementChange(event)}>
+                    onChange={(event) => handleUsageClearedWithOwnerChange(event)}>
                     {LicenseAgreements.map((element, index) => (
                       <FormControlLabel
                         value={element}
@@ -224,14 +231,17 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
             </Field>
           </StyledRadioBoxWrapper>
         )}
-        {savingError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingError} />}
-        {values.usageClearedWithOwner !== LicenseAgreementsOptions.YesOther &&
-          values.usageClearedWithOwner !== '' &&
-          values.containsOtherPeoplesWork && (
+
+        {savingContainsOtherPeoplesWorkError && (
+          <ErrorBanner userNeedsToBeLoggedIn={true} error={savingContainsOtherPeoplesWorkError} />
+        )}
+        {values.features.dlr_licensehelper_usage_cleared_with_owner !== LicenseAgreementsOptions.YesOther &&
+          values.features.dlr_licensehelper_usage_cleared_with_owner !== '' &&
+          values.features.dlr_licensehelper_contains_other_peoples_work && (
             <StyledOutLinedBox data-testid={'usage-cleared-with-owner-info'}>
               <ErrorOutlineIcon color="primary" />
               <StyledTypography>
-                {t(`license.limitation.${values.usageClearedWithOwner}.important_notice`)}
+                {t(`license.limitation.${values.features.dlr_licensehelper_usage_cleared_with_owner}.important_notice`)}
               </StyledTypography>
             </StyledOutLinedBox>
           )}

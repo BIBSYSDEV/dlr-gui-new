@@ -71,7 +71,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
   const [allChangesSaved, setAllChangesSaved] = useState(true);
   const [isLoadingLicenses, setIsLoadingLicenses] = useState(false);
   const [newContent, setNewContent] = useState<Content>();
-  const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED); //todo: String
+  const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED);
   const [licenses, setLicenses] = useState<License[]>();
   const additionalFilesUppy = useUppy(additionalCreateFilesUppy(resource.identifier, setNewContent));
   const [newThumbnailContent, setNewThumbnailContent] = useState<Content>();
@@ -84,6 +84,13 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
     features: Yup.object().shape({
       dlr_title: Yup.string().required(t('feedback.required_field')),
       dlr_type: Yup.string().required(t('feedback.required_field')).min(1, t('feedback.required_field')),
+      dlr_licensehelper_contains_other_peoples_work: Yup.string().required(t('feedback.required_field')).min(1),
+      dlr_licensehelper_usage_cleared_with_owner: Yup.string()
+        .optional()
+        .when('dlr_licensehelper_contains_other_peoples_work', {
+          is: ContainsOtherPeoplesWorkOptions.Yes,
+          then: Yup.string().required(t('feedback.required_field')).min(1),
+        }),
     }),
     creators: Yup.array().of(
       Yup.object().shape({
@@ -112,13 +119,6 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
         identifier: Yup.string().required(t('feedback.required_field')).min(1),
       })
     ),
-    containsOtherPeoplesWork: Yup.string().required(t('feedback.required_field')).min(1),
-    usageClearedWithOwner: Yup.string()
-      .optional()
-      .when('containsOtherPeoplesWork', {
-        is: ContainsOtherPeoplesWorkOptions.Yes,
-        then: Yup.string().required(t('feedback.required_field')).min(1),
-      }),
   });
 
   const scrollToTop = () => {
@@ -135,7 +135,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
       setIsLoadingLicenses(true);
       setLoadingLicensesErrorStatus(StatusCode.ACCEPTED);
       try {
-        const response = await getLicenses(); //todo: Async method
+        const response = await getLicenses();
         setLicenses(response.data);
       } catch (error) {
         error.response && setLoadingLicensesErrorStatus(error.response.status);

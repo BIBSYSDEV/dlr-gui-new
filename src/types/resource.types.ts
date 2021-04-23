@@ -23,11 +23,6 @@ export interface Resource {
   accessWrite?: string[];
   contents: ResourceContents;
   licenses: License[];
-  containsOtherPeoplesWork: string;
-  usageClearedWithOwner: string;
-  resourceRestriction: string;
-  othersCanModifyAndBuildUpon: string;
-  canBeUsedCommercially: string;
 }
 
 export const emptyResource: Resource = {
@@ -37,6 +32,11 @@ export const emptyResource: Resource = {
     dlr_content: '',
     dlr_time_created: '',
     dlr_content_type: '',
+    dlr_licensehelper_contains_other_peoples_work: '',
+    dlr_licensehelper_usage_cleared_with_owner: '',
+    dlr_licensehelper_resource_restriction: '',
+    dlr_licensehelper_others_can_modify_and_build_upon: '',
+    dlr_licensehelper_can_be_used_commercially: '',
   },
   contents: {
     masterContent: {
@@ -52,11 +52,6 @@ export const emptyResource: Resource = {
   creators: [],
   licenses: [],
   tags: [],
-  containsOtherPeoplesWork: '',
-  usageClearedWithOwner: '',
-  resourceRestriction: '',
-  othersCanModifyAndBuildUpon: '',
-  canBeUsedCommercially: '',
 };
 
 enum ResourceType {
@@ -94,6 +89,11 @@ interface ResourceFeatures {
   dlr_title_alternative?: string;
   dlr_type?: string;
   dlr_thumbnail_url?: string;
+  dlr_licensehelper_contains_other_peoples_work: string;
+  dlr_licensehelper_usage_cleared_with_owner: string;
+  dlr_licensehelper_resource_restriction: string;
+  dlr_licensehelper_others_can_modify_and_build_upon: string;
+  dlr_licensehelper_can_be_used_commercially: string;
 }
 
 export interface ResourceContents {
@@ -134,11 +134,6 @@ export interface Creator {
   features: CreatorFeatures;
   authorities?: Authority[] | undefined;
 }
-
-export const emptyCreator = {
-  identifier: '',
-  features: {},
-};
 
 interface CreatorFeatures {
   dlr_creator_identifier?: string;
@@ -202,6 +197,11 @@ export enum ResourceFeatureNames {
   Title = 'dlr_title',
   Description = 'dlr_description',
   Access = 'dlr_access',
+  ContainsOtherPeoplesWorks = 'dlr_licensehelper_contains_other_peoples_work',
+  UsageClearedWithOwner = 'dlr_licensehelper_usage_cleared_with_owner',
+  ResourceRestriction = 'dlr_licensehelper_resource_restriction',
+  CanBeUsedCommercially = 'dlr_licensehelper_can_be_used_commercially',
+  OthersCanModifyAndBuildUpon = 'dlr_licensehelper_others_can_modify_and_build_upon',
 }
 
 export enum ResourceFeatureNamesFullPath {
@@ -209,6 +209,11 @@ export enum ResourceFeatureNamesFullPath {
   Title = 'features.dlr_title',
   Description = 'features.dlr_description',
   Access = 'features.dlr_access',
+  ContainsOtherPeoplesWorks = 'features.dlr_licensehelper_contains_other_peoples_work',
+  UsageClearedWithOwner = 'features.dlr_licensehelper_usage_cleared_with_owner',
+  ResourceRestriction = 'features.dlr_licensehelper_resource_restriction',
+  CanBeUsedCommercially = 'features.dlr_licensehelper_can_be_used_commercially',
+  OthersCanModifyAndBuildUpon = 'features.dlr_licensehelper_others_can_modify_and_build_upon',
 }
 
 export enum ContentFeatureNames {
@@ -237,11 +242,6 @@ export enum FieldNames {
   Tags = 'tags',
   MasterContent = 'masterContent',
   AdditionalContent = 'additionalContent',
-  ContainsOtherPeoplesWork = 'containsOtherPeoplesWork',
-  UsageClearedWithOwner = 'usageClearedWithOwner',
-  resourceRestriction = 'resourceRestriction',
-  othersCanModifyAndBuildUpon = 'othersCanModifyAndBuildUpon',
-  canBeUsedCommercially = 'canBeUsedCommercially',
 }
 
 export enum ResourceFormStep {
