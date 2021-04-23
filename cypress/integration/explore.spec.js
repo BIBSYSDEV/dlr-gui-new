@@ -6,6 +6,12 @@ context('Actions', () => {
   const ntnu = 'ntnu';
   const bi = 'bi';
   const oslomet = 'oslomet';
+  const license1 = 'CC BY 4.0';
+  const license1Short = 'CCBY40';
+  const license2 = 'CC BY-ND 4.0';
+  const license2Short = 'CCBY-ND40';
+  const license3Short = 'CCBY-SA40';
+  const tag1 = 'digital';
 
   beforeEach(() => {
     cy.visit('/');
@@ -156,7 +162,7 @@ context('Actions', () => {
 
   it('adds and remove tags as a filters', () => {
     cy.visit('/');
-    const tag1 = 'digital';
+
     const tag2_search = 'dig';
     const tag2 = 'digital læringsressurs';
     const tag2_encoded = 'digital+l%C3%A6ringsressurs';
@@ -243,11 +249,6 @@ context('Actions', () => {
   });
 
   it('can detect license filters in the url', () => {
-    const license1 = 'CC BY 4.0';
-    const license1Short = 'CCBY40';
-    const license2 = 'CC BY-ND 4.0';
-    const license2Short = 'CCBY-ND40';
-    const license3Short = 'CCBY-SA40';
     cy.visit(
       `/?${SearchParameters.query}=${search}&${SearchParameters.license}=${encodeURI(license1)}&${
         SearchParameters.license
