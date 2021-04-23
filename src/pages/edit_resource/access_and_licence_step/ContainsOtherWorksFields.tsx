@@ -72,15 +72,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
 }) => {
   const { institution } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
-  const {
-    values,
-    resetForm,
-    setFieldValue,
-    setTouched,
-    touched,
-    handleChange,
-    setFieldTouched,
-  } = useFormikContext<Resource>();
+  const { values, resetForm, setFieldValue, setTouched, touched, setFieldTouched } = useFormikContext<Resource>();
   const [savingUsageClearedWithOwnerError, setSavingUsageClearedWithOwnerError] = useState<Error>();
   const [savingContainsOtherPeoplesWorkError, setSavingContainsOtherPeoplesWorkError] = useState<Error>();
 
@@ -93,19 +85,18 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   ];
 
   const handleChangeInContainsOtherPeoplesWork = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    handleChange(event);
-    setFieldValue(ResourceFeatureNamesFullPath.ContainsOtherPeoplesWorks, event.target.value);
-    setAllChangesSaved(false);
+    values.features.dlr_licensehelper_contains_other_peoples_work = event.target.value;
     try {
+      setAllChangesSaved(false);
       setSavingContainsOtherPeoplesWorkError(undefined);
       await postResourceFeature(values.identifier, ResourceFeatureNames.ContainsOtherPeoplesWorks, event.target.value);
       setAllChangesSaved(true);
-      forceResetInLicenseWizard();
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
-      setFieldValue(ResourceFeatureNamesFullPath.ContainsOtherPeoplesWorks, event.target.value);
+      forceResetInLicenseWizard();
     } catch (error) {
       setSavingContainsOtherPeoplesWorkError(error);
     }
+
     if (event.target.value === ContainsOtherPeoplesWorkOptions.No) {
       setHasSelectedCC(false);
       setFieldTouched(ResourceFeatureNamesFullPath.UsageClearedWithOwner, false);
@@ -129,8 +120,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   };
 
   const handleUsageClearedWithOwnerChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    handleChange(event);
-    setFieldValue(ResourceFeatureNamesFullPath.UsageClearedWithOwner, event.target.value);
+    values.features.dlr_licensehelper_usage_cleared_with_owner = event.target.value;
     try {
       setSavingUsageClearedWithOwnerError(undefined);
       setAllChangesSaved(false);
@@ -153,14 +143,10 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
         }
       }
       if (values.features.dlr_access !== accessType) {
-        setFieldValue(ResourceFeatureNamesFullPath.Access, accessType);
+        values.features.dlr_access = accessType;
         await putAccessType(values.identifier, accessType);
       }
-      resetForm({ values });
-      if (values.features.dlr_access !== accessType) {
-        setFieldValue(ResourceFeatureNamesFullPath.Access, accessType);
-      }
-      setFieldValue(ResourceFeatureNamesFullPath.UsageClearedWithOwner, event.target.value);
+      resetFormButKeepTouched(touched, resetForm, values, setTouched);
     } catch (error) {
       setSavingUsageClearedWithOwnerError(error);
     } finally {
