@@ -74,7 +74,6 @@ const StyledLicense = styled.div`
 `;
 
 const StyledFileName = styled(Typography)`
-  max-width: 6rem;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -134,9 +133,9 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
               <StyledFileTypeIcon>{getStyledFileTypeIcon(resource.features.dlr_type)}</StyledFileTypeIcon>
             )}
             <StyledFileName display="inline" variant="body2">
-              {resource.features.dlr_content_type === ResourceCreationType.FILE
-                ? resource.features.dlr_content
-                : t('resource.metadata.link')}
+              {t(`resource.type.${resource.features.dlr_type?.toLowerCase()}`)}
+              {resource.features.dlr_content_type === ResourceCreationType.LINK &&
+                ' (' + t('resource.metadata.link') + ')'}
             </StyledFileName>
           </StyledThumbnailMetadata>
         </StyledThumbnailWrapper>

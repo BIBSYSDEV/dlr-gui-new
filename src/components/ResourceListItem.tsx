@@ -104,7 +104,7 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
           />
         </StyledThumbnailWrapper>
         <StyledMetaDataColumn>
-          <Typography variant="h4">{`${resource.features.dlr_title}`}</Typography>
+          <Typography gutterBottom variant="h4">{`${resource.features.dlr_title}`}</Typography>
           {resource.features.dlr_type && (
             <StyledFileTypeIcon>{getStyledFileTypeIcon(resource.features.dlr_type)}</StyledFileTypeIcon>
           )}

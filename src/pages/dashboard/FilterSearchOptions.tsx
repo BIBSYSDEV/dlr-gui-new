@@ -29,6 +29,7 @@ function useWindowWidth() {
 const StyledAccordion = styled(Accordion)`
   background-color: ${Colors.ExploreResourcesPageOptionFiler};
   border: none;
+  margin-left: -0.5rem;
   & .MuiPaper-elevation1 {
     box-shadow: none;
   }
@@ -46,24 +47,20 @@ const StyledSideBar = styled.div`
 const StyledAccordionDetails = styled(AccordionDetails)`
   display: flex;
   flex-direction: column;
+  margin-top: 0;
+`;
+
+const StyledTagFilteringWrapper = styled.div`
+  margin-top: 1rem;
 `;
 
 const StyledAccordionFilterBoxesWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
   fieldset {
     margin-right: 6rem;
-    margin-top: 0;
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
-    flex-direction: column;
-    fieldset {
-      margin-right: 0;
-      margin-top: 2rem;
-    }
-    fieldset:first-of-type {
-      margin-top: 0;
-    }
+    margin-top: 1rem;
   }
 `;
 
@@ -104,10 +101,12 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
       {width >= DeviceWidths.lg ? (
         <StyledSideBar>
           {filterHeader()}
+          <StyledTagFilteringWrapper>
+            <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+          </StyledTagFilteringWrapper>
           <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           <ResourceTypeFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           <LicenseFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
-          <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
         </StyledSideBar>
       ) : (
         <StyledAccordion expanded={isFiltersExpanded} onChange={handleChange}>
@@ -119,12 +118,12 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
             {filterHeader()}
           </AccordionSummary>
           <StyledAccordionDetails>
+            <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
             <StyledAccordionFilterBoxesWrapper>
               <InstitutionFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
               <ResourceTypeFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
               <LicenseFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
             </StyledAccordionFilterBoxesWrapper>
-            <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
           </StyledAccordionDetails>
         </StyledAccordion>
       )}
