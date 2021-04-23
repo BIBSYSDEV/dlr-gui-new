@@ -3,11 +3,13 @@ import { Checkbox, CircularProgress, FormControl, FormControlLabel, FormGroup } 
 import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
-import { AllDLRInstitutionNames, FacetType, QueryObject } from '../../types/search.types';
+import { AllDLRInstitutionNames, FacetType, QueryObject, SearchParameters } from '../../types/search.types';
 import styled from 'styled-components';
 import { getAllFacets } from '../../api/resourceApi';
 import ErrorBanner from '../../components/ErrorBanner';
 import institutions from '../../resources/assets/institutions.json';
+import { useHistory, useLocation } from 'react-router-dom';
+import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 
 const StyledFormControl: any = styled(FormControl)`
   margin-top: 2rem;
@@ -40,6 +42,8 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
   );
   const [error, setError] = useState<Error | null>(null);
   const mountedRef = useRef(true);
+  const location = useLocation();
+  const history = useHistory();
 
   useEffect(() => {
     return () => {
@@ -90,21 +94,16 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
   }, [calledApiOnce, queryObject.institutions, institutionsFromGetFacets]);
 
   const changeSelected = (index: number, event: any) => {
+    const newQueryObject = { ...queryObject, offset: 0 };
     if (event.target.checked) {
-      setQueryObject((prevState) => ({
-        ...prevState,
-        institutions: [...prevState.institutions, institutionCheckedList[index].name],
-        offset: 0,
-        queryFromURL: false,
-      }));
+      newQueryObject.institutions = [...newQueryObject.institutions, institutionCheckedList[index].name];
     } else {
-      setQueryObject((prevState) => ({
-        ...prevState,
-        institutions: prevState.institutions.filter((instName) => instName !== institutionCheckedList[index].name),
-        offset: 0,
-        queryFromURL: false,
-      }));
+      newQueryObject.institutions = newQueryObject.institutions.filter(
+        (instName) => instName !== institutionCheckedList[index].name
+      );
     }
+    setQueryObject(newQueryObject);
+    rewriteSearchParams(SearchParameters.institution, newQueryObject.institutions, history, location, true);
   };
 
   const generateInstitutionName = (institutionCode: string): string => {

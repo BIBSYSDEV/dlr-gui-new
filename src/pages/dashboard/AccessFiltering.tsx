@@ -1,6 +1,8 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Checkbox, FormControlLabel } from '@material-ui/core';
-import { QueryObject } from '../../types/search.types';
+import { QueryObject, SearchParameters } from '../../types/search.types';
+import { useHistory, useLocation } from 'react-router-dom';
+import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 
 interface AccoessFilteringProps {
   queryObject: QueryObject;
@@ -8,13 +10,21 @@ interface AccoessFilteringProps {
 }
 
 const AccessFiltering: FC<AccoessFilteringProps> = ({ queryObject, setQueryObject }) => {
+  const location = useLocation();
+  const history = useHistory();
   const changeSelected = (event: any) => {
     setQueryObject((prevState) => ({
       ...prevState,
       showInaccessible: event.target.checked ?? false,
       offset: 0,
-      queryFromURL: false,
     }));
+    rewriteSearchParams(
+      SearchParameters.showInaccessible,
+      [event.target.checked ? 'true' : 'false'],
+      history,
+      location,
+      true
+    );
   };
 
   return (
