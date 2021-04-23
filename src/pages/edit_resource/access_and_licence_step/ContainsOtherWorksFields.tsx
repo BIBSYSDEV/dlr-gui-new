@@ -72,7 +72,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
 }) => {
   const { institution } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
-  const { values, resetForm, setFieldValue, setTouched, touched, setFieldTouched } = useFormikContext<Resource>();
+  const { values, resetForm, setTouched, touched } = useFormikContext<Resource>();
   const [savingUsageClearedWithOwnerError, setSavingUsageClearedWithOwnerError] = useState<Error>();
   const [savingContainsOtherPeoplesWorkError, setSavingContainsOtherPeoplesWorkError] = useState<Error>();
 
@@ -91,16 +91,13 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
       setSavingContainsOtherPeoplesWorkError(undefined);
       await postResourceFeature(values.identifier, ResourceFeatureNames.ContainsOtherPeoplesWorks, event.target.value);
       setAllChangesSaved(true);
-      resetFormButKeepTouched(touched, resetForm, values, setTouched);
       forceResetInLicenseWizard();
     } catch (error) {
       setSavingContainsOtherPeoplesWorkError(error);
     }
-
     if (event.target.value === ContainsOtherPeoplesWorkOptions.No) {
       setHasSelectedCC(false);
-      setFieldTouched(ResourceFeatureNamesFullPath.UsageClearedWithOwner, false);
-      setFieldValue(ResourceFeatureNamesFullPath.UsageClearedWithOwner, '');
+      values.features.dlr_licensehelper_usage_cleared_with_owner = '';
     }
     if (
       event.target.value === ContainsOtherPeoplesWorkOptions.Yes &&
@@ -108,6 +105,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
     ) {
       setHasSelectedCC(true);
     }
+    resetFormButKeepTouched(touched, resetForm, values, setTouched);
   };
 
   const replaceOldLicense = async (newLicence: License) => {
