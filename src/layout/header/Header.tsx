@@ -63,15 +63,19 @@ const Header = () => {
         </IconButton>
       </StyledBurgerMenu>
       <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleBurgerMenuClose}>
-        <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/registration">
-          <ListItemIcon>
-            <AddIcon />
-          </ListItemIcon>
-          <Typography variant="button">{t('resource.new_registration')}</Typography>
-        </MenuItem>
-        <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/resources/user/current">
-          <Typography variant="button">{t('resource.my_resources')}</Typography>
-        </MenuItem>
+        {user.id && (
+          <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/registration">
+            <ListItemIcon>
+              <AddIcon />
+            </ListItemIcon>
+            <Typography variant="button">{t('resource.new_registration')}</Typography>
+          </MenuItem>
+        )}
+        {user.id && (
+          <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/resources/user/current">
+            <Typography variant="button">{t('resource.my_resources')}</Typography>
+          </MenuItem>
+        )}
         <MenuItem onClick={handleBurgerMenuClose}>{user.id ? <Logout /> : <LoginButton />}</MenuItem>
       </Menu>
       <Logo />
@@ -88,7 +92,7 @@ const Header = () => {
         )}
         {user.id ? (
           <Typography variant="body1">
-            {t('user.logged_in_as')} {user.name} <Logout />
+            {user.name} <Logout />
           </Typography>
         ) : (
           <LoginButton variant="outlined" />

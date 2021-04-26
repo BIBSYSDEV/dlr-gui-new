@@ -12,6 +12,7 @@ import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
 import ResourceListItem from '../../components/ResourceListItem';
 import { Colors } from '../../themes/mainTheme';
+import PrivateRoute from '../../utils/routes/PrivateRoute';
 
 const StyledTabPanel = styled(TabPanel)`
   &.MuiTabPanel-root {
@@ -130,4 +131,4 @@ const MyResources = () => {
   );
 };
 
-export default MyResources;
+export default PrivateRoute(MyResources);

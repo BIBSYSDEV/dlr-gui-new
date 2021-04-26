@@ -121,6 +121,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
       tags: newTags,
       offset: 0,
     }));
+    setTagValue('');
     rewriteSearchParams(SearchParameters.tag, newTags, history, location, true);
   };
 
@@ -173,7 +174,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           {queryObject.tags.map((tag, index) => (
             <StyledChip
               key={index}
-              deleteIcon={<StyledCancelIcon />}
+              deleteIcon={<StyledCancelIcon data-testid={`tag-filter-delete-${tag}`} />}
               data-testid={`filter-tag-chip-${index}`}
               label={tag}
               onDelete={() => handleDelete(tag)}
