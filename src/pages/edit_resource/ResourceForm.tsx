@@ -44,11 +44,6 @@ const StyledPanelWrapper = styled.div`
 `;
 
 const StyledAlert = styled(Alert)`
-  & .MuiAlertTitle-root {
-    font-size: 1.2rem;
-  }
-  color: ${Colors.PrimaryText};
-  font-size: 1rem;
   margin-top: 2rem;
 `;
 
