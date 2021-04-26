@@ -69,12 +69,6 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
   return (
     resource && (
       <StyledPresentationWrapper>
-        {
-          //TODO: tittel skal vises frem forskjellig fra preview og "ekte" presentasjon
-          //TODO: La den ta opp plassen den får servert?
-          //TODO: enten wrappet inn i rediger ressurs eller i ResourcePage
-        }
-
         {preview && (
           <StyledSchemaPart>
             <StyledContentWrapperMedium>

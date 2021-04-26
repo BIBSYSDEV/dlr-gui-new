@@ -29,6 +29,10 @@ const StyledResourceActionBar = styled.div`
   margin-top: 2rem;
 `;
 
+const StyledContentWrapperLargeWithBottomMargin = styled(StyledContentWrapperLarge)`
+  margin-bottom: 2rem;
+`;
+
 interface resourcePageParamTypes {
   identifier: string;
 }
@@ -78,7 +82,7 @@ const ResourcePage = () => {
   ) : resourceLoadingError ? (
     <ErrorBanner error={resourceLoadingError} />
   ) : (
-    <StyledContentWrapperLarge>
+    <StyledContentWrapperLargeWithBottomMargin>
       {isUnpublished() && isAuthor() && (
         <StyledResourceActionBar>
           <Button
@@ -93,7 +97,7 @@ const ResourcePage = () => {
       )}
       <PageHeader>{resource.features.dlr_title}</PageHeader>
       <ResourcePresentation resource={resource} />
-    </StyledContentWrapperLarge>
+    </StyledContentWrapperLargeWithBottomMargin>
   );
 };
 

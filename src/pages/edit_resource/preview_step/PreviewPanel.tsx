@@ -4,8 +4,11 @@ import ResourcePresentation from '../../resource/ResourcePresentation';
 import { Resource } from '../../../types/resource.types';
 import { Box, Typography } from '@material-ui/core';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
-const StyledTypography = styled(Typography)``;
+const StyledTypography = styled(Typography)`
+  margin-bottom: 2rem;
+`;
 
 interface DescriptionFieldsProps {
   formikProps: FormikProps<FormikValues>;
@@ -13,13 +16,11 @@ interface DescriptionFieldsProps {
 
 const PreviewPanel: FC<DescriptionFieldsProps> = () => {
   const { values } = useFormikContext<Resource>();
+  const { t } = useTranslation();
 
   return (
     <>
-      <StyledTypography>
-        Sjekk at ting ser riktig ut før du publiserer. Ser du noe som ikke stemmer kan du gå tilbake og redigere.
-      </StyledTypography>
-
+      <StyledTypography>{t('confirm_before_publishing')}.</StyledTypography>
       {values && (
         <>
           <Typography data-testid="resource-title" variant="h2">

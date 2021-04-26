@@ -75,6 +75,7 @@
     "type": "Type",
     "yes": "Yes"
   },
+  "confirm_before_publishing": "Please reread before you publish the resource. If you find incorrect data you can go back and edit the form",
   "dashboard": {
     "close_popover": "Press escape to close this box",
     "enabled": "enabled",
