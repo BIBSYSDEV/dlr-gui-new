@@ -75,7 +75,8 @@
     "type": "Type",
     "yes": "Ja"
   },
-  "confirm_before_publishing": "Sjekk at ting ser riktig ut før du publiserer. Ser du noe som ikke stemmer kan du gå tilbake og redigere",
+  "confirm_before_publishing": "Ser du noe som ikke stemmer kan du gå tilbake og redigere",
+  "confirm_before_publishing_title": "Sjekk at ting ser riktig ut før du publiserer",
   "dashboard": {
     "close_popover": "Trykk escape for å lukke denne boksen",
     "enabled": "aktive",
