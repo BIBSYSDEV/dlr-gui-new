@@ -9,6 +9,7 @@ context('Actions', () => {
     cy.get('[data-testid=my-resources-link]').click();
     const publishedTestPost = mockMyResources[0];
     const unpublishedTestPost = mockMyResources[1];
+    cy.get(`[data-testid=unpublished-tab]`).click();
     cy.get(`[data-testid=list-item-resources-${unpublishedTestPost.identifier}]`).should('exist');
     cy.get(`[data-testid=list-item-resources-${unpublishedTestPost.identifier}]`).contains(
       unpublishedTestPost.features.dlr_title
