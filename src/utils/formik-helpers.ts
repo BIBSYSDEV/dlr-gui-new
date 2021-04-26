@@ -59,17 +59,17 @@ const getAllDescriptionStepFieldNames = () => {
     ResourceFeatureNamesFullPath.Type,
     ResourceFeatureNamesFullPath.Title,
     ResourceFeatureNamesFullPath.Description,
-    //TODO: tags
   ];
 };
+
 const getAllAccessAndLicenseStepFieldNames = () => {
   return [
     `${FieldNames.LicensesBase}[0]`,
-    `${FieldNames.ContainsOtherPeoplesWork}`,
-    `${FieldNames.UsageClearedWithOwner}`,
-    `${FieldNames.resourceRestriction}`,
-    `${FieldNames.othersCanModifyAndBuildUpon}`,
-    `${FieldNames.canBeUsedCommercially}`,
+    `${ResourceFeatureNamesFullPath.UsageClearedWithOwner}`,
+    `${ResourceFeatureNamesFullPath.ContainsOtherPeoplesWorks}`,
+    `${ResourceFeatureNamesFullPath.ResourceRestriction}`,
+    `${ResourceFeatureNamesFullPath.OthersCanModifyAndBuildUpon}`,
+    `${ResourceFeatureNamesFullPath.CanBeUsedCommercially}`,
   ];
 };
 
@@ -158,8 +158,10 @@ export const touchedContentsFields = (contents: ResourceContents, resourceType: 
 });
 
 export const touchedAccessAndLicenseFields = (containsOtherPeoplesWork: string): FormikTouched<Resource> => ({
-  containsOtherPeoplesWork: true,
-  usageClearedWithOwner: containsOtherPeoplesWork === ContainsOtherPeoplesWorkOptions.Yes,
+  features: {
+    dlr_licensehelper_contains_other_peoples_work: true,
+    dlr_licensehelper_usage_cleared_with_owner: containsOtherPeoplesWork === ContainsOtherPeoplesWorkOptions.Yes,
+  },
   licenses: [{ identifier: true }],
 });
 

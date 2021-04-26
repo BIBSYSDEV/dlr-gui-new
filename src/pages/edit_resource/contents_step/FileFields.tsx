@@ -106,12 +106,14 @@ const FileFields: FC<FileFieldsProps> = ({
               alt={t('resource.metadata.resource')}
             />
           </MainFileImageWrapper>
+
           <MainFileMetadata>
             <StyledFieldWrapper>
               {values.contents.masterContent.features.dlr_content_type === 'file' && (
                 <FileTitleWrapper>
                   <Field
                     name={`${FieldNames.ContentsBase}.${FieldNames.MasterContent}.${FieldNames.Features}.${ContentFeatureNames.Title}`}>
+                    {/*Important! No linebreak in name*/}
                     {({ field, meta: { touched, error } }: FieldProps) => (
                       <TextField
                         {...field}
