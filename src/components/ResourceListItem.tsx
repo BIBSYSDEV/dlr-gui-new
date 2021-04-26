@@ -73,7 +73,7 @@ const StyledFileTypeIcon = styled.span`
   margin: 0.5rem 0.3rem 0.5rem 0.5rem;
 `;
 const StyledLink = styled(Link)`
-  color: black;
+  color: ${Colors.PrimaryText};
 `;
 
 interface ResourceListItemProps {
