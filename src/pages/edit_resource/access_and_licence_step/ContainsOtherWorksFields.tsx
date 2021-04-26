@@ -238,7 +238,8 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
         {savingContainsOtherPeoplesWorkError && (
           <ErrorBanner userNeedsToBeLoggedIn={true} error={savingContainsOtherPeoplesWorkError} />
         )}
-        {values.features.dlr_licensehelper_usage_cleared_with_owner !== LicenseAgreementsOptions.YesOther &&
+        {!values.features.dlr_status_published &&
+          values.features.dlr_licensehelper_usage_cleared_with_owner !== LicenseAgreementsOptions.YesOther &&
           values.features.dlr_licensehelper_usage_cleared_with_owner !== '' &&
           values.features.dlr_licensehelper_contains_other_peoples_work && (
             <StyledOutLinedBox data-testid={'usage-cleared-with-owner-info'}>

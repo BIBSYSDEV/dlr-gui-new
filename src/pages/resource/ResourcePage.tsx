@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import { StyleWidths } from '../../themes/mainTheme';
-import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
+import { StyledContentWrapperLarge, StyledProgressWrapper } from '../../components/styled/Wrappers';
 import { PageHeader } from '../../components/PageHeader';
 
 const StyledResourceActionBar = styled.div`
