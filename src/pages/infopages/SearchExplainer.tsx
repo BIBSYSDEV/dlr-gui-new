@@ -63,7 +63,7 @@ const SearchExplainer = () => {
           </StyledTypography>
         </StyledContentWrapperMedium>
       </ColoringWrapper>
-      <ColoringWrapper color={Colors.ContributorsPageGradientColor1}>
+      <ColoringWrapper color={Colors.DLRBlue1}>
         <StyledContentWrapperMedium>
           <Typography gutterBottom variant="h2">
             {t('search_tricks.construction_search_term')}
@@ -83,7 +83,7 @@ const SearchExplainer = () => {
           <Typography>{t('search_tricks.does_not_support')}.</Typography>
         </StyledContentWrapperMedium>
       </ColoringWrapper>
-      <StyledBottomColoringWrapper color={Colors.ContributorsPageGradientColor2}>
+      <StyledBottomColoringWrapper color={Colors.DLRBlue2}>
         <StyledContentWrapperMedium>
           <Typography gutterBottom variant="h2">
             {t('search_tricks.search_field_title')}:
