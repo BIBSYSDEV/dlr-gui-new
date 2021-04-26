@@ -161,7 +161,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
       {resource && (
         <>
           <StyledAlert severity="warning" variant="filled">
-            <AlertTitle>{t('common.published_warning')}</AlertTitle>
+            <AlertTitle>{t('common.warning')}</AlertTitle>
             {t('feedback.published_warning')}
           </StyledAlert>
 
