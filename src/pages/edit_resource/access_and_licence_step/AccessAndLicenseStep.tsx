@@ -32,7 +32,9 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSave
           </Typography>
         </StyledContentWrapper>
       </StyledSchemaPart>
-      <Alert severity="warning">{t('license.cannot_change_on_published')}</Alert>
+      {values.features.dlr_status_published && (
+        <Alert severity="warning">{t('license.cannot_change_on_published')}</Alert>
+      )}
       <ContainsOtherWorksFields
         licenses={licenses}
         setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
@@ -64,4 +66,5 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSave
     </>
   );
 };
+
 export default AccessAndLicenseStep;

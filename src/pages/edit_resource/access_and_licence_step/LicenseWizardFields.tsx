@@ -17,6 +17,17 @@ import { Resource, ResourceFeatureNames, ResourceFeatureNamesFullPath } from '..
 import AccordionRadioGroup from '../../../components/AccordionRadioGroup';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
+import styled from 'styled-components';
+
+const StyledFormControlLabel = styled.div`
+  font-size: 1rem;
+`;
+
+const StyledFormControlLabelDetail = styled.div`
+  font-weight: 400;
+  line-height: 0.875rem;
+  font-size: 0.75rem;
+`;
 
 const extraRestrictionRadio = 'extra-restriction';
 const commercialRadio = 'commersial';
@@ -346,11 +357,12 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                       control={<Radio color="primary" />}
                       label={
                         <>
-                          {/*TODO: Color on disabled*/}
-                          <Typography variant="body1">{t(`license.modify_and_build_options.share_alike`)}</Typography>
-                          <Typography variant="caption">
+                          <StyledFormControlLabel>
+                            {t(`license.modify_and_build_options.share_alike`)}
+                          </StyledFormControlLabel>
+                          <StyledFormControlLabelDetail>
                             {t(`license.modify_and_build_options.share_alike_warning`)}
-                          </Typography>
+                          </StyledFormControlLabelDetail>
                         </>
                       }
                     />

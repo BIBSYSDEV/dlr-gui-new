@@ -160,10 +160,12 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
       <PageHeader>{t('resource.edit_resource')}</PageHeader>
       {resource && (
         <>
-          <StyledAlert severity="warning">
-            <AlertTitle>{t('common.nb')}</AlertTitle>
-            {t('feedback.published_warning')}
-          </StyledAlert>
+          {resource.features.dlr_status_published && (
+            <StyledAlert severity="warning">
+              <AlertTitle>{t('common.nb')}</AlertTitle>
+              {t('feedback.published_warning')}
+            </StyledAlert>
+          )}
 
           <Formik
             initialValues={resource}
