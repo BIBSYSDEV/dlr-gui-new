@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import { StyleWidths } from '../../themes/mainTheme';
+import { StyledProgressWrapper } from '../../components/styled/Wrappers';
 
 const StyledPageContent = styled.div`
   display: flex;
@@ -81,7 +82,9 @@ const ResourcePage = () => {
   const isUnpublished = () => !resource.features.dlr_status_published;
 
   return isLoadingResource ? (
-    <CircularProgress />
+    <StyledProgressWrapper>
+      <CircularProgress />
+    </StyledProgressWrapper>
   ) : resourceLoadingError ? (
     <ErrorBanner error={resourceLoadingError} />
   ) : (

@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom';
 import { Colors, StyleWidths } from '../themes/mainTheme';
 import { format } from 'date-fns';
 import { getStyledFileTypeIcon } from './FileTypeIcon';
+import { Link } from '@material-ui/core';
 
 interface Props {
   backgroundColor: string;
@@ -71,6 +72,9 @@ const StyledActionButton = styled(Button)`
 const StyledFileTypeIcon = styled.span`
   margin: 0.5rem 0.3rem 0.5rem 0.5rem;
 `;
+const StyledLink = styled(Link)`
+  color: black;
+`;
 
 interface ResourceListItemProps {
   resource: Resource;
@@ -104,7 +108,13 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
           />
         </StyledThumbnailWrapper>
         <StyledMetaDataColumn>
-          <Typography gutterBottom variant="h4">{`${resource.features.dlr_title}`}</Typography>
+          <Typography gutterBottom variant="h4">
+            {resource.features.dlr_status_published ? (
+              <StyledLink href={`/resource/${resource.identifier}`}>{`${resource.features.dlr_title}`}</StyledLink>
+            ) : (
+              resource.features.dlr_title
+            )}
+          </Typography>
           {resource.features.dlr_type && (
             <StyledFileTypeIcon>{getStyledFileTypeIcon(resource.features.dlr_type)}</StyledFileTypeIcon>
           )}

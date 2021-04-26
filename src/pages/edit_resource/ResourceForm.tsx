@@ -160,8 +160,8 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
       <PageHeader>{t('resource.edit_resource')}</PageHeader>
       {resource && (
         <>
-          <StyledAlert severity="warning" variant="filled">
-            <AlertTitle>{t('common.warning')}</AlertTitle>
+          <StyledAlert severity="warning">
+            <AlertTitle>{t('common.nb')}</AlertTitle>
             {t('feedback.published_warning')}
           </StyledAlert>
 

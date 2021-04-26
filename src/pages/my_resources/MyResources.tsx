@@ -7,7 +7,7 @@ import { Resource } from '../../types/resource.types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
-import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
+import { StyledContentWrapperLarge, StyledProgressWrapper } from '../../components/styled/Wrappers';
 import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
 import ResourceListItem from '../../components/ResourceListItem';
@@ -71,7 +71,6 @@ const MyResources = () => {
   return (
     <StyledContentWrapperLarge>
       {loadingError && <ErrorBanner userNeedsToBeLoggedIn={true} error={loadingError} />}
-      {isLoadingMyResources && <CircularProgress />}
       <>
         <PageHeader>{t('resource.my_resources')}</PageHeader>
         <TabContext value={tabValue}>
@@ -126,6 +125,11 @@ const MyResources = () => {
             )}
           </StyledTabPanel>
         </TabContext>
+        {isLoadingMyResources && (
+          <StyledProgressWrapper>
+            <CircularProgress />
+          </StyledProgressWrapper>
+        )}
       </>
     </StyledContentWrapperLarge>
   );
