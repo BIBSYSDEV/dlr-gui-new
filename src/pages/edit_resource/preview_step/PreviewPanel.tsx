@@ -1,20 +1,39 @@
 import React, { FC } from 'react';
 import { FormikProps, FormikValues, useFormikContext } from 'formik';
-import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import ResourcePresentation from '../../resource/ResourcePresentation';
 import { Resource } from '../../../types/resource.types';
+import { Box, Typography } from '@material-ui/core';
+import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
+
+const StyledTypography = styled(Typography)`
+  margin-bottom: 2rem;
+`;
 
 interface DescriptionFieldsProps {
   formikProps: FormikProps<FormikValues>;
 }
 
-const PreviewPanel: FC<DescriptionFieldsProps> = ({ formikProps }) => {
+const PreviewPanel: FC<DescriptionFieldsProps> = () => {
   const { values } = useFormikContext<Resource>();
+  const { t } = useTranslation();
 
   return (
-    <StyledSchemaPartColored color={'#FFFFFF'}>
-      <StyledContentWrapper>{values && <ResourcePresentation resource={values} />}</StyledContentWrapper>
-    </StyledSchemaPartColored>
+    <>
+      <StyledTypography>
+        {t('confirm_before_publishing_title')}
+        {'. '}
+        {t('confirm_before_publishing')}.
+      </StyledTypography>
+      {values && (
+        <>
+          <Typography data-testid="resource-title" variant="h2">
+            <Box textAlign="left">{values.features.dlr_title}</Box>
+          </Typography>
+          <ResourcePresentation resource={values} />
+        </>
+      )}
+    </>
   );
 };
 

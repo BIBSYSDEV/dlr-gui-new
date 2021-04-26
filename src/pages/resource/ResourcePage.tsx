@@ -17,15 +17,8 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import { StyleWidths } from '../../themes/mainTheme';
-
-const StyledPageContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-items: center;
-  margin-top: 2rem;
-  align-items: center;
-  width: 100%;
-`;
+import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
+import { PageHeader } from '../../components/PageHeader';
 
 const StyledResourceActionBar = styled.div`
   display: flex;
@@ -34,6 +27,10 @@ const StyledResourceActionBar = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   margin-top: 2rem;
+`;
+
+const StyledContentWrapperLargeWithBottomMargin = styled(StyledContentWrapperLarge)`
+  margin-bottom: 2rem;
 `;
 
 interface resourcePageParamTypes {
@@ -85,7 +82,7 @@ const ResourcePage = () => {
   ) : resourceLoadingError ? (
     <ErrorBanner error={resourceLoadingError} />
   ) : (
-    <StyledPageContent>
+    <StyledContentWrapperLargeWithBottomMargin>
       {isUnpublished() && isAuthor() && (
         <StyledResourceActionBar>
           <Button
@@ -98,8 +95,9 @@ const ResourcePage = () => {
           </Button>
         </StyledResourceActionBar>
       )}
+      <PageHeader>{resource.features.dlr_title}</PageHeader>
       <ResourcePresentation resource={resource} />
-    </StyledPageContent>
+    </StyledContentWrapperLargeWithBottomMargin>
   );
 };
 
