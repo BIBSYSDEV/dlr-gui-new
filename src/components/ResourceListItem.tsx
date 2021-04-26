@@ -131,16 +131,14 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
           )}
         </StyledMetaDataColumn>
         <StyledActions>
-          {!resource.features.dlr_status_published && (
-            <StyledActionButton
-              data-testid={`edit-resource-button-${resource.identifier}`}
-              color="primary"
-              size="large"
-              variant="outlined"
-              onClick={handleClickEditButton}>
-              {t('common.edit').toUpperCase()}
-            </StyledActionButton>
-          )}
+          <StyledActionButton
+            data-testid={`edit-resource-button-${resource.identifier}`}
+            color="primary"
+            size="large"
+            variant="outlined"
+            onClick={handleClickEditButton}>
+            {t('common.edit').toUpperCase()}
+          </StyledActionButton>
           {handleDelete && (
             <>
               <StyledActionButton
