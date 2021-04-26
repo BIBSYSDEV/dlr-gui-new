@@ -26,7 +26,7 @@ import ResourceFormErrors from './ResourceFormErrors';
 import ResourceFormActions from './ResourceFormActions';
 import RequiredFieldInformation from '../../components/RequiredFieldInformation';
 import ScrollToContentButton from '../../components/ScrollToContentButton';
-import { StyleWidths } from '../../themes/mainTheme';
+import { Colors, StyleWidths } from '../../themes/mainTheme';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
 const StyledForm = styled(Form)`
@@ -47,8 +47,7 @@ const StyledAlert = styled(Alert)`
   & .MuiAlertTitle-root {
     font-size: 1.2rem;
   }
-
-  color: black;
+  color: ${Colors.PrimaryText};
   font-size: 1rem;
   margin-top: 2rem;
 `;
@@ -162,9 +161,8 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
       {resource && (
         <>
           <StyledAlert severity="warning" variant="filled">
-            <AlertTitle>Advarsel</AlertTitle>
-            Ressursen er publisert. Alle felter som endres blir lagret umiddelbart og dermed blir endringene også
-            publisert.
+            <AlertTitle>{t('common.published_warning')}</AlertTitle>
+            {t('feedback.published_warning')}
           </StyledAlert>
 
           <Formik

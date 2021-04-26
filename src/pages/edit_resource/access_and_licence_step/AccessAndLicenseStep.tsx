@@ -9,6 +9,8 @@ import { Typography } from '@material-ui/core';
 import { useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
 import RequiredFieldInformation from '../../../components/RequiredFieldInformation';
+import { Alert } from '@material-ui/lab';
+import { useTranslation } from 'react-i18next';
 
 interface AccessAndLicenseStepProps {
   setAllChangesSaved: (value: boolean) => void;
@@ -19,6 +21,7 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSave
   const [forceResetInLicenseWizard, setForceResetInLicenseWizard] = useState(false);
   const [containsOtherWorksFieldsSelectedCC, setContainsOtherWorksFieldsSelectedCC] = useState(false);
   const { values } = useFormikContext<Resource>();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -29,7 +32,7 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSave
           </Typography>
         </StyledContentWrapper>
       </StyledSchemaPart>
-
+      <Alert severity="warning">{t('license.cannot_change_on_published')}</Alert>
       <ContainsOtherWorksFields
         licenses={licenses}
         setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}

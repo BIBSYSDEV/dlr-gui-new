@@ -182,12 +182,14 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
                 <FormControlLabel
                   value={ContainsOtherPeoplesWorkOptions.No}
                   data-testid="contains-other-peoples-work-option-no"
+                  disabled={values.features.dlr_status_published}
                   control={<Radio required={true} color="primary" />}
                   label={t('common.no')}
                 />
                 <FormControlLabel
                   value={ContainsOtherPeoplesWorkOptions.Yes}
                   data-testid="contains-other-peoples-work-option-yes"
+                  disabled={values.features.dlr_status_published}
                   control={<Radio color="primary" />}
                   label={t('common.yes')}
                 />
@@ -219,6 +221,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
                       <FormControlLabel
                         value={element}
                         key={index}
+                        disabled={values.features.dlr_status_published}
                         data-testid={`usage-cleared-with-owner-option-${element}`}
                         label={t(`license.limitation.${element}.title`)}
                         control={<Radio required={true} color="primary" />}

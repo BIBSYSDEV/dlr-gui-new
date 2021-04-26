@@ -248,6 +248,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                     key={element}
                     data-testid={`resource-restriction-option-${element.replace(/[.\s]/g, '_')}`}
                     value={element}
+                    disabled={values.features.dlr_status_published}
                     control={<Radio color="primary" />}
                     label={t(`license.restriction_options.${element.replace(/[.\s]/g, '_')}`)}
                   />
@@ -258,10 +259,12 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                       value={Licenses.CC_BY_SA}
                       data-testid={`resource-restriction-option-${Licenses.CC_BY_SA}`}
                       control={<Radio color="primary" />}
+                      disabled={values.features.dlr_status_published}
                       label={t(`license.restriction_options.CC_BY-SA_4_0`)}
                     />
                     <FormControlLabel
                       value={Licenses.CC_BY_NC_SA}
+                      disabled={values.features.dlr_status_published}
                       data-testid={`resource-restriction-option-${Licenses.CC_BY_NC_SA}`}
                       control={<Radio color="primary" />}
                       label={t(`license.restriction_options.CC_BY-NC-SA_4_0`)}
@@ -297,6 +300,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                       <FormControlLabel
                         key={index}
                         value={element}
+                        disabled={values.features.dlr_status_published}
                         data-testid={`commercial-use-option-${element}`}
                         control={<Radio color="primary" />}
                         label={t(`license.commercial_options.${element}`)}
@@ -331,15 +335,18 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                     <FormControlLabel
                       value={ModifyAndBuildOptions.primaryYes}
                       data-testid={`modify-and-build-option-${ModifyAndBuildOptions.primaryYes}`}
+                      disabled={values.features.dlr_status_published}
                       control={<Radio color="primary" />}
                       label={t(`license.modify_and_build_options.yes`)}
                     />
                     <FormControlLabel
                       value={ModifyAndBuildOptions.SA}
                       data-testid={`modify-and-build-option-${ModifyAndBuildOptions.SA}`}
+                      disabled={values.features.dlr_status_published}
                       control={<Radio color="primary" />}
                       label={
                         <>
+                          {/*TODO: Color on disabled*/}
                           <Typography variant="body1">{t(`license.modify_and_build_options.share_alike`)}</Typography>
                           <Typography variant="caption">
                             {t(`license.modify_and_build_options.share_alike_warning`)}
@@ -349,6 +356,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                     />
                     <FormControlLabel
                       value={ModifyAndBuildOptions.ND}
+                      disabled={values.features.dlr_status_published}
                       data-testid={`modify-and-build-option-${ModifyAndBuildOptions.ND}`}
                       control={<Radio color="primary" />}
                       label={t(`license.modify_and_build_options.non_destructive`)}
