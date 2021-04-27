@@ -8,11 +8,11 @@ import { API_PATHS, API_URL } from '../utils/constants';
 import { Alert } from '@material-ui/lab';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 
-const ImageWrapper = styled.img`
+const StyledImage = styled.img`
   height: 100%;
 `;
 
-const VideoWrapper = styled.video`
+const StyledVideo = styled.video`
   height: 100%;
 `;
 
@@ -109,7 +109,7 @@ const windowsMaxRenderSize = 10000000;
 interface ContentPreviewProps {
   resource: Resource;
 }
-//parseInt(resource.contents.masterContent.features.dlr_content_size_bytes ?? '0')
+
 const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
   const { t } = useTranslation();
   const presentationMode = determinePresentationMode(resource);
@@ -117,8 +117,8 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
 
   return (
     <>
-      {presentationMode === resourceType.IMAGE && <ImageWrapper src={contentURL} alt="Preview of resource" />}
-      {presentationMode === resourceType.VIDEO && <VideoWrapper src={contentURL} controls />}
+      {presentationMode === resourceType.IMAGE && <StyledImage src={contentURL} alt="Preview of resource" />}
+      {presentationMode === resourceType.VIDEO && <StyledVideo src={contentURL} controls />}
       {!(presentationMode === resourceType.IMAGE) &&
         !(presentationMode === resourceType.VIDEO) &&
         !(presentationMode === SupportedFileTypes.Document) &&

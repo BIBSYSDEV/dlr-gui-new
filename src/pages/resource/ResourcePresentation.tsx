@@ -12,7 +12,7 @@ import {
   StyledSchemaPartColored,
 } from '../../components/styled/Wrappers';
 import ResourceMetadata from './ResourceMetadata';
-import ContentPreview from '../../components/ContentPreview';
+//import ContentPreview from '../../components/ContentPreview';
 
 const PreviewComponentWrapper = styled.div`
   margin: 1rem 0;
@@ -52,7 +52,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
         <StyledSchemaPart>
           <StyledContentWrapperMedium>
             <PreviewComponentWrapper data-testid="resource-preview">
-              <ContentPreview resource={resource} />
+              {/* <ContentPreview resource={resource} /> */}
             </PreviewComponentWrapper>
           </StyledContentWrapperMedium>
         </StyledSchemaPart>
@@ -78,8 +78,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
         </StyledSchemaPartColored>
         <StyledSchemaPartColored color={Colors.DLRYellow3}>
           <StyledContentWrapperMedium>
-            <Typography variant="h3">Bruk</Typography>
-            <Typography>Kommer snart</Typography>
+            <Typography variant="h3">{t('common.usage')}</Typography>
           </StyledContentWrapperMedium>
         </StyledSchemaPartColored>
       </StyledPresentationWrapper>

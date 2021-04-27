@@ -74,6 +74,7 @@
     "select": "Select",
     "step": "Step",
     "type": "Type",
+    "usage": "Usage",
     "yes": "Yes"
   },
   "confirm_before_publishing": "If you find incorrect data you can go back and edit the form",

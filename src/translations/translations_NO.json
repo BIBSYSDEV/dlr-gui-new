@@ -74,6 +74,7 @@
     "select": "Velg",
     "step": "Trinn",
     "type": "Type",
+    "usage": "Bruk",
     "yes": "Ja"
   },
   "confirm_before_publishing": "Ser du noe som ikke stemmer kan du gå tilbake og redigere",
