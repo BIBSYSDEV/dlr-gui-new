@@ -109,7 +109,7 @@ const StyledChip: any = styled(Chip)`
 `;
 
 const StyledLink = styled(Link)`
-  color: black;
+  color: ${Colors.PrimaryText};
 `;
 
 interface ResultListItemProps {

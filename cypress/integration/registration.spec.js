@@ -56,7 +56,7 @@ context('Actions', () => {
     cy.get('[data-testid=next-step-button]').click();
     cy.get('[data-testid=resource-title]').contains(mockTitle);
     cy.get('[data-testid=resource-description]').contains(mockDescription);
-    cy.get('[data-testid=publish-button]').click();
+    cy.get('[data-testid=resource-publish-button]').click();
     cy.url().should('include', `/resource/${mockDefaultResource.identifier}`);
   });
 
@@ -69,7 +69,7 @@ context('Actions', () => {
     cy.get('[data-testid=dlr-title-input]').clear();
     //preview
     cy.get('[data-testid=step-navigation-4]').click();
-    cy.get('[data-testid=publish-button]').should('be.disabled');
+    cy.get('[data-testid=resource-publish-button]').should('be.disabled');
     cy.get('[data-testid=form-errors-panel]').should('exist');
     cy.get('[data-testid=step-navigation-0] .Mui-error').should('exist');
     cy.get('[data-testid=step-navigation-1] .Mui-error').should('not.exist');

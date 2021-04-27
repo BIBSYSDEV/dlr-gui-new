@@ -19,21 +19,19 @@ const PreviewPanel: FC<DescriptionFieldsProps> = () => {
   const { t } = useTranslation();
 
   return (
-    <>
-      <StyledTypography>
-        {t('confirm_before_publishing_title')}
-        {'. '}
-        {t('confirm_before_publishing')}.
-      </StyledTypography>
-      {values && (
-        <>
-          <Typography data-testid="resource-title" variant="h2">
-            {values.features.dlr_title}
-          </Typography>
-          <ResourcePresentation resource={values} />
-        </>
-      )}
-    </>
+    values && (
+      <>
+        {!values.features.dlr_status_published && (
+          <StyledTypography>
+            {t('confirm_before_publishing_title')} {t('confirm_before_publishing')}
+          </StyledTypography>
+        )}
+        <Typography data-testid="resource-title" variant="h2">
+          {values.features.dlr_title}
+        </Typography>
+        <ResourcePresentation resource={values} />
+      </>
+    )
   );
 };
 

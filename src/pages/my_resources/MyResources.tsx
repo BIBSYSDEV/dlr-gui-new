@@ -7,7 +7,7 @@ import { Resource } from '../../types/resource.types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
-import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
+import { StyledContentWrapperLarge, StyledProgressWrapper } from '../../components/styled/Wrappers';
 import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
 import ResourceListItem from '../../components/ResourceListItem';
@@ -52,7 +52,7 @@ const MyResources = () => {
     fetchData();
   }, []);
 
-  const deleteResource = (resourceIdentifier: string, isPublished: boolean) => {
+  const handleDeleteResource = (resourceIdentifier: string, isPublished: boolean) => {
     if (isPublished) {
       setMyPublishedResources((prevState) =>
         prevState.filter((resource) => resource.identifier !== resourceIdentifier)
@@ -71,7 +71,6 @@ const MyResources = () => {
   return (
     <StyledContentWrapperLarge>
       {loadingError && <ErrorBanner userNeedsToBeLoggedIn={true} error={loadingError} />}
-      {isLoadingMyResources && <CircularProgress />}
       <>
         <PageHeader>{t('resource.my_resources')}</PageHeader>
         <TabContext value={tabValue}>
@@ -95,7 +94,7 @@ const MyResources = () => {
                     fallbackInstitution={institution}
                     backgroundColor={Colors.UnitTurquoise_20percent}
                     handleDelete={() => {
-                      deleteResource(resource.identifier, true);
+                      handleDeleteResource(resource.identifier, true);
                     }}
                   />
                 ))}
@@ -116,7 +115,7 @@ const MyResources = () => {
                     backgroundColor={Colors.UnitGrey2_10percent}
                     fallbackInstitution={institution}
                     handleDelete={() => {
-                      deleteResource(resource.identifier, false);
+                      handleDeleteResource(resource.identifier, false);
                     }}
                   />
                 ))}
@@ -126,6 +125,11 @@ const MyResources = () => {
             )}
           </StyledTabPanel>
         </TabContext>
+        {isLoadingMyResources && (
+          <StyledProgressWrapper>
+            <CircularProgress />
+          </StyledProgressWrapper>
+        )}
       </>
     </StyledContentWrapperLarge>
   );

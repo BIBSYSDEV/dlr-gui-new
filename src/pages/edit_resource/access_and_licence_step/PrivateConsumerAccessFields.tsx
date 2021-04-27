@@ -250,6 +250,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
           <StyledChip
             data-testid={`private-consumer-access-chip-${index}`}
             key={index}
+            disabled={values.features.dlr_status_published}
             deleteIcon={<StyledCancelIcon data-testid={`delete-private-consumer-access-chip-${index}`} />}
             label={
               <StyledChipLabelTypography variant="subtitle1">{generateChipLabel(access)}</StyledChipLabelTypography>
@@ -265,18 +266,21 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
       {savePrivateAccessNetworkError && (
         <ErrorBanner userNeedsToBeLoggedIn={true} error={savePrivateAccessNetworkError} />
       )}
-      <StyledAccessButtonWrapper>
-        <StyledAddAccessButton
-          data-testid="add-private-consumer-access-button"
-          startIcon={<AddIcon />}
-          color="primary"
-          variant="outlined"
-          onClick={(event) => {
-            handleAddAccessButtonClick(event);
-          }}>
-          {t('access.add_access')}
-        </StyledAddAccessButton>
-      </StyledAccessButtonWrapper>
+      {!values.features.dlr_status_published && (
+        <StyledAccessButtonWrapper>
+          <StyledAddAccessButton
+            data-testid="add-private-consumer-access-button"
+            startIcon={<AddIcon />}
+            color="primary"
+            variant="outlined"
+            onClick={(event) => {
+              handleAddAccessButtonClick(event);
+            }}>
+            {t('access.add_access')}
+          </StyledAddAccessButton>
+        </StyledAccessButtonWrapper>
+      )}
+
       <Popover
         open={showAddAccessPopover}
         anchorEl={anchorEl}

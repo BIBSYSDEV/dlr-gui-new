@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import { StyleWidths } from '../../themes/mainTheme';
-import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
+import { StyledContentWrapperLarge, StyledProgressWrapper } from '../../components/styled/Wrappers';
 import { PageHeader } from '../../components/PageHeader';
 
 const StyledResourceActionBar = styled.div`
@@ -78,12 +78,14 @@ const ResourcePage = () => {
   const isUnpublished = () => !resource.features.dlr_status_published;
 
   return isLoadingResource ? (
-    <CircularProgress />
+    <StyledProgressWrapper>
+      <CircularProgress />
+    </StyledProgressWrapper>
   ) : resourceLoadingError ? (
     <ErrorBanner error={resourceLoadingError} />
   ) : (
     <StyledContentWrapperLargeWithBottomMargin>
-      {isUnpublished() && isAuthor() && (
+      {isAuthor() && (
         <StyledResourceActionBar>
           <Button
             size="large"
