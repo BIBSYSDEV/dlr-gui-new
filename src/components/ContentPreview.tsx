@@ -132,7 +132,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
       )}
       {presentationMode === SupportedFileTypes.Document && (
         <>
-          {parseInt(resource.contents.masterContent.features.dlr_content_size_bytes ?? '0') > windowsMaxRenderSize ? (
+          {parseInt(resource.contents.masterContent.features.dlr_content_size_bytes ?? '0') < windowsMaxRenderSize ? (
             <iframe
               title="document1"
               src={`https://view.officeapps.live.com/op/embed.aspx?src=${contentURL}`}
