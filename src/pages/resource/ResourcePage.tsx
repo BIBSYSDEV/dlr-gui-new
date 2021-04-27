@@ -85,7 +85,7 @@ const ResourcePage = () => {
     <ErrorBanner error={resourceLoadingError} />
   ) : (
     <StyledContentWrapperLargeWithBottomMargin>
-      {isUnpublished() && isAuthor() && (
+      {isAuthor() && (
         <StyledResourceActionBar>
           <Button
             size="large"
