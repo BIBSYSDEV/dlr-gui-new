@@ -26,7 +26,7 @@ import ResourceFormErrors from './ResourceFormErrors';
 import ResourceFormActions from './ResourceFormActions';
 import RequiredFieldInformation from '../../components/RequiredFieldInformation';
 import ScrollToContentButton from '../../components/ScrollToContentButton';
-import { Colors, StyleWidths } from '../../themes/mainTheme';
+import { StyleWidths } from '../../themes/mainTheme';
 import { Alert, AlertTitle } from '@material-ui/lab';
 
 const StyledForm = styled(Form)`
