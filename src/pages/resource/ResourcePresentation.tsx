@@ -53,6 +53,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
           <StyledContentWrapperMedium>
             <PreviewComponentWrapper data-testid="resource-preview">
               {/* <ContentPreview resource={resource} /> */}
+              Forhåndsvisning kommer snart
             </PreviewComponentWrapper>
           </StyledContentWrapperMedium>
         </StyledSchemaPart>
