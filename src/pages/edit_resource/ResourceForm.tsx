@@ -166,7 +166,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
       {resource && (
         <>
           {resource.features.dlr_status_published && (
-            <StyledAlert severity="warning">
+            <StyledAlert data-testid="resource-published-warning" severity="warning">
               <AlertTitle>{t('common.nb')}</AlertTitle>
               {t('feedback.published_warning')}
             </StyledAlert>

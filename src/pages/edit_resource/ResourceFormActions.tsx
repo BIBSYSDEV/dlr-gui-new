@@ -119,7 +119,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
           <StyledRightSideButtonWrapper>
             {values.features.dlr_status_published ? (
               <UpperCaseButton
-                data-testid="publish-button"
+                data-testid="resource-close-button"
                 variant="contained"
                 color="primary"
                 onClick={handlePublishResource}>
@@ -134,7 +134,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
                 </StyledSaveButtonWrapper>
                 {activeStep === ResourceFormStep.Preview ? (
                   <UpperCaseButton
-                    data-testid="publish-button"
+                    data-testid="resource-publish-button"
                     variant="contained"
                     color="primary"
                     onClick={handlePublishResource}
