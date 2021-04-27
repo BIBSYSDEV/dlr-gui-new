@@ -52,7 +52,7 @@ const MyResources = () => {
     fetchData();
   }, []);
 
-  const deleteResource = (resourceIdentifier: string, isPublished: boolean) => {
+  const handleDeleteResource = (resourceIdentifier: string, isPublished: boolean) => {
     if (isPublished) {
       setMyPublishedResources((prevState) =>
         prevState.filter((resource) => resource.identifier !== resourceIdentifier)
@@ -94,7 +94,7 @@ const MyResources = () => {
                     fallbackInstitution={institution}
                     backgroundColor={Colors.UnitTurquoise_20percent}
                     handleDelete={() => {
-                      deleteResource(resource.identifier, true);
+                      handleDeleteResource(resource.identifier, true);
                     }}
                   />
                 ))}
@@ -115,7 +115,7 @@ const MyResources = () => {
                     backgroundColor={Colors.UnitGrey2_10percent}
                     fallbackInstitution={institution}
                     handleDelete={() => {
-                      deleteResource(resource.identifier, false);
+                      handleDeleteResource(resource.identifier, false);
                     }}
                   />
                 ))}
