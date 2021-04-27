@@ -20,6 +20,9 @@ interface ContentFeature {
   dlr_content_type?: string;
   dlr_thumbnail_default?: string;
   dlr_content_title: string;
+  dlr_content_type_link_scheme_http?: string;
+  dlr_content_type_link_header_http_x_frame_options?: string;
+  dlr_content_url?: string;
 }
 
 export const emptyContents: Content[] = [
@@ -42,14 +45,22 @@ export enum resourceType {
   VIDEO = 'video',
 }
 
-export interface Preview {
-  type: string;
-  url: string;
-}
-
-export const emptyPreview: Preview = {
-  type: '',
-  url: '',
-};
-
 export const LinkMetadataFilename = 'metadata_external.json';
+
+export enum SupportedFileTypes {
+  Document = 'document',
+  Video = 'video',
+  Image = 'image',
+  PDF = 'pdf',
+  Link = 'link',
+  Download = 'download',
+  MediaSite = 'mediasite',
+  Youtube = 'youtube',
+  Vimeo = 'vimeo',
+  Spotify = 'spotify',
+  Soundcloud = 'soundcloud',
+  Video23 = '23video',
+  Kaltura = 'kaltura',
+  Text = 'text',
+  Audio = 'audio',
+}

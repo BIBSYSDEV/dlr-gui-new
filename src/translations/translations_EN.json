@@ -48,6 +48,7 @@
     "clear": "Clear",
     "close": "Close",
     "delete": "Delete",
+    "download": "Download",
     "edit": "Edit",
     "error": "Error",
     "finish": "Finish",
@@ -137,6 +138,7 @@
     "required_field": "Required field",
     "valid_url": "Input must be a valid URL"
   },
+  "file_to_big": "The file is too big for preview",
   "illustration_alts_tags": {
     "browsing_resource": "A woman is browsing for resources"
   },

@@ -48,6 +48,7 @@
     "clear": "Tøm",
     "close": "Lukk",
     "delete": "Slett",
+    "download": "Last ned",
     "edit": "Rediger",
     "error": "Feil",
     "finish": "Avslutt",
@@ -137,6 +138,7 @@
     "required_field": "Påkrevd felt",
     "valid_url": "Input må være gyldig URL"
   },
+  "file_to_big": "Fila er for stor for forhåndsvisning",
   "illustration_alts_tags": {
     "browsing_resource": "En dame søker etter en ressurs"
   },
