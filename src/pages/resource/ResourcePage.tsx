@@ -75,7 +75,6 @@ const ResourcePage = () => {
   }, [identifier]);
 
   const isAuthor = () => resource.features.dlr_submitter_email === user.email;
-  const isUnpublished = () => !resource.features.dlr_status_published;
 
   return isLoadingResource ? (
     <StyledProgressWrapper>

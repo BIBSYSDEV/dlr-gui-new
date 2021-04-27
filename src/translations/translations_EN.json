@@ -318,6 +318,7 @@
     "link_to_resource": "Link to resource",
     "metadata": {
       "access": "Access",
+      "content": "Files",
       "contributor": "Contributor",
       "contributors": "Contributors",
       "created": "Created",
