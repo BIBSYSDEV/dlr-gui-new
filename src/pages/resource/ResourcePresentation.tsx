@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Resource } from '../../types/resource.types';
-import { Chip, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import Card from '../../components/Card';
 import styled from 'styled-components';
@@ -8,12 +8,12 @@ import LicenseCard from '../../components/LicenseCard';
 import { API_PATHS, API_URL } from '../../utils/constants';
 import { emptyPreview } from '../../types/content.types';
 import { Colors } from '../../themes/mainTheme';
-import { format } from 'date-fns';
 import {
   StyledContentWrapperMedium,
   StyledSchemaPart,
   StyledSchemaPartColored,
 } from '../../components/styled/Wrappers';
+import ResourceMetadata from './ResourceMetadata';
 
 const PreviewComponentWrapper = styled.div`
   margin: 1rem 0;
@@ -38,11 +38,6 @@ const StyledFeatureWrapper = styled.div`
 
 const StyledCaption = styled(Typography)`
   display: block;
-`;
-
-const StyledChip: any = styled(Chip)`
-  margin-right: 0.5rem;
-  margin-top: 0.5rem;
 `;
 
 interface ResourcePresentationProps {
@@ -80,66 +75,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
           </StyledSchemaPart>
         )}
 
-        <StyledSchemaPartColored color={Colors.DLRYellow1}>
-          <StyledContentWrapperMedium>
-            {resource.creators && resource.creators.length !== 0 && (
-              <StyledFeatureWrapper data-testid="resource-creators">
-                <Typography variant="h6">
-                  {resource.creators.map((creator) => creator.features.dlr_creator_name).join(', ')}
-                </Typography>
-              </StyledFeatureWrapper>
-            )}
-
-            {resource.contributors && resource.contributors.length !== 0 && (
-              <StyledFeatureWrapper data-testid="resource-contributors">
-                <Typography variant="subtitle1">
-                  {resource.contributors.map((contributor) => contributor.features.dlr_contributor_name).join(', ')}
-                </Typography>
-              </StyledFeatureWrapper>
-            )}
-
-            {resource.features.dlr_time_published && (
-              <StyledFeatureWrapper data-testid="resource-time-published">
-                <StyledCaption variant="caption">{t('resource.metadata.published')}</StyledCaption>
-                <Typography variant="body1">
-                  {format(new Date(resource.features.dlr_time_published), 'dd.MM.yyyy')}
-                </Typography>
-              </StyledFeatureWrapper>
-            )}
-
-            {resource.features.dlr_time_created && (
-              <StyledFeatureWrapper data-testid="resource-time-created">
-                <StyledCaption variant="caption">{t('resource.metadata.created')}</StyledCaption>
-                <Typography variant="body1">
-                  {format(new Date(resource.features.dlr_time_created), 'dd.MM.yyyy')}
-                </Typography>
-              </StyledFeatureWrapper>
-            )}
-
-            {resource.features.dlr_submitter_email && (
-              <StyledFeatureWrapper data-testid="resource-submitter">
-                <StyledCaption variant="caption">{t('resource.metadata.owner')}</StyledCaption>
-                <Typography variant="body1">{resource.features.dlr_submitter_email}</Typography>
-              </StyledFeatureWrapper>
-            )}
-
-            {resource.features.dlr_description && (
-              <StyledFeatureWrapper data-testid="resource-description">
-                <StyledCaption variant="caption">{t('resource.metadata.description')}</StyledCaption>
-                <Typography variant="body1">{resource.features.dlr_description}</Typography>
-              </StyledFeatureWrapper>
-            )}
-
-            {resource.tags && resource.tags.length !== 0 && (
-              <StyledFeatureWrapper data-testid="resource-tags">
-                <StyledCaption variant="caption">{t('resource.metadata.tags')}</StyledCaption>
-                {resource.tags.map((tag, index) => (
-                  <StyledChip key={index} size="medium" label={tag} />
-                ))}
-              </StyledFeatureWrapper>
-            )}
-          </StyledContentWrapperMedium>
-        </StyledSchemaPartColored>
+        <ResourceMetadata resource={resource} />
 
         <StyledSchemaPartColored color={Colors.DLRYellow2}>
           <StyledContentWrapperMedium>

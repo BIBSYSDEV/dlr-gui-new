@@ -97,7 +97,7 @@ const ResourcePage = () => {
           </Button>
         </StyledResourceActionBar>
       )}
-      <PageHeader>{resource.features.dlr_title}</PageHeader>
+      <PageHeader testId="resource-title">{resource.features.dlr_title}</PageHeader>
       <ResourcePresentation resource={resource} />
     </StyledContentWrapperLargeWithBottomMargin>
   );

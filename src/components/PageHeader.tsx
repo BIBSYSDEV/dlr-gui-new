@@ -11,6 +11,11 @@ const StyledHeader = styled(Typography)`
 
 interface PageHeaderProps {
   children: ReactNode;
+  testId?: string;
 }
 
-export const PageHeader: FC<PageHeaderProps> = ({ children }) => <StyledHeader variant="h1">{children}</StyledHeader>;
+export const PageHeader: FC<PageHeaderProps> = ({ children, testId }) => (
+  <StyledHeader data-testid={testId} variant="h1">
+    {children}
+  </StyledHeader>
+);
