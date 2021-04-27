@@ -122,8 +122,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
                 data-testid="publish-button"
                 variant="contained"
                 color="primary"
-                onClick={handlePublishResource}
-                disabled={!isValid}>
+                onClick={handlePublishResource}>
                 {t('common.close')}
               </UpperCaseButton>
             ) : (
