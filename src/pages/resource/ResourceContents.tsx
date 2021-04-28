@@ -9,10 +9,11 @@ import { RootState } from '../../state/rootReducer';
 import styled from 'styled-components';
 import { Content } from '../../types/content.types';
 
-const StyledContentMetadataWrapper = styled.div`
+const StyledMetadataWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
 const StyledGridContainer = styled(Grid)`
   margin-bottom: 2rem;
 `;
@@ -35,14 +36,14 @@ const ResourceContents: FC<ResourceContentsProps> = ({ resource }) => {
         />
       </Grid>
       <Grid item xs={12} sm={5}>
-        <StyledContentMetadataWrapper>
-          <Typography variant="body1" data-testid={`additional-file-content-${content.identifier}`}>
+        <StyledMetadataWrapper>
+          <Typography variant="body1" gutterBottom data-testid={`additional-file-content-${content.identifier}`}>
             {content.features.dlr_content}
           </Typography>
           <Typography variant="overline" data-testid={`additional-file-content-${content.identifier}`}>
             {content.features.dlr_content_size}
           </Typography>
-        </StyledContentMetadataWrapper>
+        </StyledMetadataWrapper>
       </Grid>
       <Grid item>
         <Button disabled variant="outlined" color="primary">
