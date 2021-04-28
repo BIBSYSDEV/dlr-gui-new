@@ -254,6 +254,17 @@ export const mockContents: Content[] = [
       dlr_thumbnail_default: 'false',
     },
   },
+  {
+    identifier: '14342',
+    features: {
+      dlr_content: 'additional_image.jpg',
+      dlr_content_identifier: 'gkkgdfløgkdflø',
+      dlr_content_content_type: 'image',
+      dlr_content_title: 'test.jpg',
+      dlr_content_type: 'file',
+      dlr_thumbnail_default: 'false',
+    },
+  },
 ];
 
 export const mockContent: Content = {

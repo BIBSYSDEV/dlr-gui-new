@@ -27,7 +27,7 @@ const StyledImageWrapper: any = styled.div<Props>`
   align-items: center;
   justify-content: center;
   background-color: ${(props) => props.color};
-  border: 1px solid ${Colors.DescriptionPageGradientColor1};
+  border: 1px solid ${Colors.DescriptionPageGradientColor2};
 `;
 
 const StyledImage: any = styled.img<Props>`
