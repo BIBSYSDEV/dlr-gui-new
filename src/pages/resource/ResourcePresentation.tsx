@@ -1,10 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Resource } from '../../types/resource.types';
-import { Button, Grid, Typography } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import Card from '../../components/Card';
 import styled from 'styled-components';
-import LicenseCard from '../../components/LicenseCard';
 import { API_PATHS, API_URL } from '../../utils/constants';
 import { emptyPreview } from '../../types/content.types';
 import { Colors } from '../../themes/mainTheme';
@@ -14,9 +12,8 @@ import {
   StyledSchemaPartColored,
 } from '../../components/styled/Wrappers';
 import ResourceMetadata from './ResourceMetadata';
-import Thumbnail from '../../components/Thumbnail';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../state/rootReducer';
+import ResourceContents from './ResourceContents';
+import ResourceLicense from './ResourceLicense';
 
 const PreviewComponentWrapper = styled.div`
   margin: 1rem 0;
@@ -35,10 +32,6 @@ const StyledPresentationWrapper = styled.div`
   width: 100%;
 `;
 
-const StyledFeatureWrapper = styled.div`
-  padding: 0.5rem 0;
-`;
-
 interface ResourcePresentationProps {
   resource: Resource;
 }
@@ -46,7 +39,6 @@ interface ResourcePresentationProps {
 const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
   const { t } = useTranslation();
   const [preview, setPreview] = useState(emptyPreview);
-  const { institution } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     if (resource.contents) {
@@ -74,48 +66,15 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
             </StyledContentWrapperMedium>
           </StyledSchemaPart>
         )}
-
         <ResourceMetadata resource={resource} />
-
         <StyledSchemaPartColored color={Colors.DLRYellow2}>
           <StyledContentWrapperMedium>
             <Grid container spacing={6}>
               <Grid item xs={12} md={8}>
-                <StyledFeatureWrapper data-testid="resource-content">
-                  <Typography variant="h2">{t('resource.metadata.content')}</Typography>
-                  {resource.contents.additionalContent.map((content) => (
-                    <>
-                      <Thumbnail
-                        institution={resource.features.dlr_storage_id ?? institution}
-                        alt={content.features.dlr_content}
-                        resourceOrContentIdentifier={content.identifier}
-                      />
-                      <Typography variant="body1" data-testid={`additional-file-content-${content.identifier}`}>
-                        {content.features.dlr_content}
-                      </Typography>
-                      <Button variant="outlined" color="primary">
-                        Last ned
-                      </Button>
-                    </>
-                  ))}
-                </StyledFeatureWrapper>
+                <ResourceContents resource={resource} />
               </Grid>
               <Grid item xs={12} md={4}>
-                {resource.licenses && resource.licenses.length !== 0 && resource.licenses[0].identifier.length > 0 && (
-                  <StyledFeatureWrapper data-testid="resource-license">
-                    <Typography gutterBottom variant="h2">
-                      {t('resource.metadata.license')}
-                    </Typography>
-                    {resource.licenses.map(
-                      (license) =>
-                        license.identifier && (
-                          <Card key={license.identifier}>
-                            <LicenseCard license={license} />
-                          </Card>
-                        )
-                    )}
-                  </StyledFeatureWrapper>
-                )}
+                <ResourceLicense resource={resource} />
               </Grid>
             </Grid>
           </StyledContentWrapperMedium>
