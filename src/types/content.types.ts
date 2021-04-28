@@ -63,4 +63,6 @@ export enum SupportedFileTypes {
   Kaltura = 'kaltura',
   Text = 'text',
   Audio = 'audio',
+  LinkSchemeHttp = 'linkSchemeHttp',
+  LinkXFrameOptionsPresent = 'linkXFrameOptionsPresent',
 }
