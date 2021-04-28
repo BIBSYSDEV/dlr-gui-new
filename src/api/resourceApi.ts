@@ -248,6 +248,7 @@ export const getResourceContents = async (identifier: string): Promise<ResourceC
     method: 'GET',
   });
   const resourceContent: ResourceContents = emptyResourceContent;
+  resourceContent.additionalContent = [];
   contentResponse.data.forEach((content: Content) => {
     if (content.features.dlr_content_master === 'true') {
       resourceContent.masterContent = content;
