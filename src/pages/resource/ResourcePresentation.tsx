@@ -53,7 +53,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
           <StyledContentWrapperMedium>
             <PreviewComponentWrapper data-testid="resource-preview">
               {/* <ContentPreview resource={resource} /> */}
-              {t('common.preview_not_implemented')}
+              {t('resource.preview.preview_not_implemented')}
             </PreviewComponentWrapper>
           </StyledContentWrapperMedium>
         </StyledSchemaPart>

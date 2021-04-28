@@ -47,7 +47,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
         !(presentationMode === SupportedFileTypes.Document) &&
         !(presentationMode === SupportedFileTypes.Audio) && (
           <>
-            <Typography>{t('resource.preview_is_not_supported_for_file_format')}</Typography>
+            <Typography>{t('resource.preview.preview_is_not_supported_for_file_format')}</Typography>
             <DownloadButton contentURL={contentURL} />
           </>
         )}
@@ -60,7 +60,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
         <>
           {parseInt(resource.contents.masterContent.features.dlr_content_size_bytes ?? '0') < windowsMaxRenderSize ? (
             <iframe
-              title={t('resource.preview_of_master_content')}
+              title={t('resource.preview.preview_of_master_content')}
               src={`${MICROSOFT_DOCUMENT_VIEWER}?src=${contentURL}`}
               frameBorder="0"
               height={'100%'}
@@ -68,7 +68,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
             />
           ) : (
             <InformationAndDownloadWrapper>
-              <StyledAlert severity="info">{t('file_to_big')}</StyledAlert>
+              <StyledAlert severity="info">{t('resource.preview.file_to_big')}</StyledAlert>
               <DownloadButton contentURL={contentURL} />
             </InformationAndDownloadWrapper>
           )}

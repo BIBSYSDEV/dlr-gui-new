@@ -65,7 +65,6 @@
     "or": "Eller",
     "other_options": "Andre lisenser",
     "page": "Page",
-    "preview_not_implemented": "Forhåndsvisning vil bli implementert senere",
     "possible_options": "Mulige lisenser",
     "publish": "Publiser",
     "remove": "Fjern",
@@ -141,7 +140,6 @@
     "valid_url": "Input må være gyldig URL",
     "published_warning": "Ressursen er publisert. Alle felter som endres blir lagret og publisert på nytt umiddelbart etter endring."
   },
-  "file_to_big": "Fila er for stor for forhåndsvisning",
   "illustration_alts_tags": {
     "browsing_resource": "En dame søker etter en ressurs"
   },
@@ -345,8 +343,12 @@
     "new_registration": "Ny registering",
     "no_published_resources": "Du har ingen publiserte ressurser",
     "no_unpublished_resources": "Du har ingen upubliserte ressurser",
-    "preview_of_master_content": "Forhåndsvisning av hovedinnhold",
-    "preview_is_not_supported_for_file_format": "Fohåndsvisning støttes ikke for dette filformatet",
+    "preview": {
+      "file_to_big": "Filen er for stor for forhåndsvisning",
+      "preview_of_master_content": "Forhåndsvisning av hovedinnhold",
+      "preview_is_not_supported_for_file_format": "Forhåndsvisning støttes ikke for dette filformatet",
+      "preview_not_implemented": "Forhåndsvisning vil bli implementert senere"
+    },
     "published_resources": "Publisert",
     "search_for_resources": "Søk etter ressurser",
     "start_with_link_to_resource": "Start registrering med en lenke",

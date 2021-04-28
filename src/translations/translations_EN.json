@@ -66,7 +66,6 @@
     "other_options": "Other licenses",
     "page": "Page",
     "possible_options": "Possible licenses",
-    "preview_not_implemented": "Preview will be implemented later",
     "publish": "Publish",
     "remove": "Remove",
     "result": "Result",
@@ -141,7 +140,6 @@
     "valid_url": "Input must be a valid URL",
     "published_warning": "The resource is published. Changes to any field will be saved and published instantly."
   },
-  "file_to_big": "The file is too big for preview",
   "illustration_alts_tags": {
     "browsing_resource": "A woman is browsing for resources"
   },
@@ -345,8 +343,12 @@
     "new_registration": "New registration",
     "no_published_resources": "You have no published resources",
     "no_unpublished_resources": "You have no unpublished resources",
-    "preview_of_master_content": "Preview of main content",
-    "preview_is_not_supported_for_file_format": "Preview is not supported for this file format",
+    "preview": {
+      "file_to_big": "The file is too big for preview",
+      "preview_of_master_content": "Preview of main content",
+      "preview_is_not_supported_for_file_format": "Preview is not supported for this file format",
+      "preview_not_implemented": "Preview will be implemented later"
+    },
     "published_resources": "Published",
     "search_for_resources": "Search for resources",
     "start_with_link_to_resource": "Start registration with a link",
