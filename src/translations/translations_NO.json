@@ -41,6 +41,11 @@
     "verify": "Verifiser",
     "view_verified_authority": "Se verifisert"
   },
+  "citation": {
+    "citation_link": "Siteringslenke",
+    "copy_citation": "Kopier siteringslenke",
+    "retrieved_from": "Hentet fra"
+  },
   "common": {
     "all_changes_saved": "Alle endringer er lagret",
     "back": "Tilbake",
