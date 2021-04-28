@@ -4,7 +4,7 @@ import { Button, Typography } from '@material-ui/core';
 import { resourceType, SupportedFileTypes } from '../types/content.types';
 import styled from 'styled-components';
 import { Resource } from '../types/resource.types';
-import { API_PATHS, API_URL } from '../utils/constants';
+import { API_PATHS, API_URL, MICROSOFT_DOCUMENT_VIEWER } from '../utils/constants';
 import { Alert } from '@material-ui/lab';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import { determinePresentationMode } from '../utils/mime_type_utils';
@@ -58,7 +58,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
           {parseInt(resource.contents.masterContent.features.dlr_content_size_bytes ?? '0') < windowsMaxRenderSize ? (
             <iframe
               title="document1"
-              src={`https://view.officeapps.live.com/op/embed.aspx?src=${contentURL}`}
+              src={`${MICROSOFT_DOCUMENT_VIEWER}?src=${contentURL}`}
               frameBorder="0"
               height={'100%'}
               width={'100%'}
