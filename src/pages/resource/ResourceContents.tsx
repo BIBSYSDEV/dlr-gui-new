@@ -28,9 +28,14 @@ const ResourceContents: FC<ResourceContentsProps> = ({ resource }) => {
   const { institution } = useSelector((state: RootState) => state.user);
 
   const contentItem = (content: Content) => (
-    <StyledGridContainer container spacing={2} key={content.features.dlr_content_identifier}>
+    <StyledGridContainer
+      container
+      spacing={2}
+      key={content.features.dlr_content_identifier}
+      data-testid={`file-content-${content.identifier}`}>
       <Grid item>
         <Thumbnail
+          data-testid={`file-content-${content.identifier}-content`}
           institution={resource.features.dlr_storage_id ?? institution}
           alt={content.features.dlr_content}
           resourceOrContentIdentifier={content.identifier}
@@ -39,16 +44,17 @@ const ResourceContents: FC<ResourceContentsProps> = ({ resource }) => {
       </Grid>
       <Grid item xs={12} sm={5}>
         <StyledMetadataWrapper>
-          <Typography variant="body1" gutterBottom data-testid={`additional-file-content-${content.identifier}`}>
+          <Typography variant="body1" gutterBottom data-testid={`file-content-${content.identifier}-content`}>
             {content.features.dlr_content}
           </Typography>
-          <Typography variant="overline" data-testid={`additional-file-content-${content.identifier}`}>
+          <Typography variant="overline" data-testid={`file-content-${content.identifier}-size`}>
             {content.features.dlr_content_size}
           </Typography>
         </StyledMetadataWrapper>
       </Grid>
       <Grid item>
         <Button
+          data-testid={`file-content-${content.identifier}-download-button`}
           variant="outlined"
           color="primary"
           href={`${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${content.identifier}/delivery?jwt=${localStorage.token}`}>

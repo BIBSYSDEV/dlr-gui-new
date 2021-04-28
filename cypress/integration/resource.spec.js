@@ -1,4 +1,6 @@
 import {
+  mockContent,
+  mockContents,
   mockContributors,
   mockCreators,
   mockLicenses,
@@ -21,6 +23,25 @@ context('Actions', () => {
     cy.get('[data-testid=resource-time-published]').contains('06.11.2020');
     cy.get('[data-testid=resource-tags]').contains(mockTags[0]);
     cy.get('[data-testid=resource-license]').contains(mockLicenses[0].features.dlr_license_code);
+  });
+
+  it('shows a resources content', () => {
+    const masterMockContent = mockContents[0];
+    cy.get(`[data-testid=file-content-${masterMockContent.identifier}-download-button]`).should('exist');
+    cy.get(`[data-testid=file-content-${masterMockContent.identifier}-content]`).contains(
+      masterMockContent.features.dlr_content
+    );
+    cy.get(`[data-testid=file-content-${masterMockContent.identifier}-size]`).contains(
+      masterMockContent.features.dlr_content_size
+    );
+    const additionalMockContent = mockContents[2];
+    cy.get(`[data-testid=file-content-${additionalMockContent.identifier}-download-button]`).should('exist');
+    cy.get(`[data-testid=file-content-${additionalMockContent.identifier}-content]`).contains(
+      additionalMockContent.features.dlr_content
+    );
+    cy.get(`[data-testid=file-content-${additionalMockContent.identifier}-size]`).contains(
+      additionalMockContent.features.dlr_content_size
+    );
   });
 
   it('shows edit-button', () => {
