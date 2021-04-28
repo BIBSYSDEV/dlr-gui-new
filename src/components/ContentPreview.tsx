@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { resourceType, SupportedFileTypes } from '../types/content.types';
 import styled from 'styled-components';
 import { Resource } from '../types/resource.types';
 import { API_PATHS, API_URL, MICROSOFT_DOCUMENT_VIEWER } from '../utils/constants';
 import { Alert } from '@material-ui/lab';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import { determinePresentationMode } from '../utils/mime_type_utils';
+import DownloadButton from './DownloadButton';
 
 const StyledImage = styled.img`
   height: 100%;
@@ -46,7 +46,10 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
         !(presentationMode === resourceType.VIDEO) &&
         !(presentationMode === SupportedFileTypes.Document) &&
         !(presentationMode === SupportedFileTypes.Audio) && (
-          <Typography>{t('resource.preview_not_supported_filetype')}</Typography>
+          <>
+            <Typography>{t('resource.preview_is_not_supported_for_file_format')}</Typography>
+            <DownloadButton contentURL={contentURL} />
+          </>
         )}
       {presentationMode === SupportedFileTypes.Audio && (
         <audio controls>
@@ -57,7 +60,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
         <>
           {parseInt(resource.contents.masterContent.features.dlr_content_size_bytes ?? '0') < windowsMaxRenderSize ? (
             <iframe
-              title="document1"
+              title={t('resource.preview_of_master_content')}
               src={`${MICROSOFT_DOCUMENT_VIEWER}?src=${contentURL}`}
               frameBorder="0"
               height={'100%'}
@@ -66,19 +69,12 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
           ) : (
             <InformationAndDownloadWrapper>
               <StyledAlert severity="info">{t('file_to_big')}</StyledAlert>
-              <Button
-                href={contentURL}
-                size="large"
-                fullWidth={false}
-                startIcon={<CloudDownloadIcon />}
-                variant="contained"
-                color="primary">
-                {t('common.download')}
-              </Button>
+              <DownloadButton contentURL={contentURL} />
             </InformationAndDownloadWrapper>
           )}
         </>
       )}
+      {presentationMode === SupportedFileTypes.Download && <DownloadButton contentURL={contentURL} />}
     </>
   );
 };
