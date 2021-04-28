@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import styled from 'styled-components';
 import { Content } from '../../types/content.types';
+import { API_PATHS, API_URL } from '../../utils/constants';
 
 const StyledMetadataWrapper = styled.div`
   display: flex;
@@ -33,6 +34,7 @@ const ResourceContents: FC<ResourceContentsProps> = ({ resource }) => {
           institution={resource.features.dlr_storage_id ?? institution}
           alt={content.features.dlr_content}
           resourceOrContentIdentifier={content.identifier}
+          small={true}
         />
       </Grid>
       <Grid item xs={12} sm={5}>
@@ -46,8 +48,11 @@ const ResourceContents: FC<ResourceContentsProps> = ({ resource }) => {
         </StyledMetadataWrapper>
       </Grid>
       <Grid item>
-        <Button disabled variant="outlined" color="primary">
-          {t('download')}
+        <Button
+          variant="outlined"
+          color="primary"
+          href={`${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${content.identifier}/delivery?jwt=${localStorage.token}`}>
+          {t('common.download')}
         </Button>
       </Grid>
     </StyledGridContainer>
