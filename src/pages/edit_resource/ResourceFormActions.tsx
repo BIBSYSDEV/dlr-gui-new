@@ -117,25 +117,41 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
             )}
           </div>
           <StyledRightSideButtonWrapper>
-            <StyledSaveButtonWrapper>
-              <UpperCaseButton data-testid="leave-form-button" variant="outlined" onClick={handleLeaveForm}>
-                {t('resource.leave_form')}
-              </UpperCaseButton>
-            </StyledSaveButtonWrapper>
-            {activeStep === ResourceFormStep.Preview ? (
+            {values.features.dlr_status_published ? (
               <UpperCaseButton
-                data-testid="publish-button"
+                data-testid="resource-close-button"
                 variant="contained"
                 color="primary"
-                onClick={handlePublishResource}
-                disabled={!isValid}>
-                {t('common.publish')}
+                onClick={handlePublishResource}>
+                {t('common.close')}
               </UpperCaseButton>
             ) : (
-              <UpperCaseButton data-testid="next-step-button" variant="contained" color="primary" onClick={handleNext}>
-                <StyledButtonText>{t(getStepLabel(activeStep + 1))}</StyledButtonText>
-                <StyledArrowForwardIcon />
-              </UpperCaseButton>
+              <>
+                <StyledSaveButtonWrapper>
+                  <UpperCaseButton data-testid="leave-form-button" variant="outlined" onClick={handleLeaveForm}>
+                    {t('resource.leave_form')}
+                  </UpperCaseButton>
+                </StyledSaveButtonWrapper>
+                {activeStep === ResourceFormStep.Preview ? (
+                  <UpperCaseButton
+                    data-testid="resource-publish-button"
+                    variant="contained"
+                    color="primary"
+                    onClick={handlePublishResource}
+                    disabled={!isValid}>
+                    {t('common.publish')}
+                  </UpperCaseButton>
+                ) : (
+                  <UpperCaseButton
+                    data-testid="next-step-button"
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}>
+                    <StyledButtonText>{t(getStepLabel(activeStep + 1))}</StyledButtonText>
+                    <StyledArrowForwardIcon />
+                  </UpperCaseButton>
+                )}
+              </>
             )}
           </StyledRightSideButtonWrapper>
         </StyledButtonWrapper>
