@@ -217,7 +217,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
   };
 
   return (
-    <StyledSchemaPartColored color={Colors.ContributorsPageGradientColor2}>
+    <StyledSchemaPartColored color={Colors.DLRBlue2}>
       <StyledContentWrapper>
         <HeaderWrapper>
           <Typography variant="h3">{t('resource.metadata.contributors')}</Typography>

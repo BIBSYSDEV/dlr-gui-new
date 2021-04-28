@@ -111,7 +111,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
                   data-testid="access-dropdown-menu"
                   variant="filled"
                   select
-                  disabled={disabledUserInput}
+                  disabled={disabledUserInput || values.features.dlr_status_published}
                   required
                   error={touched && !!error}
                   fullWidth

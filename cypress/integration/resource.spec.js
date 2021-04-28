@@ -19,7 +19,6 @@ context('Actions', () => {
     cy.get('[data-testid=resource-description]').contains(mockResource.features.dlr_description);
     cy.get('[data-testid=resource-time-created]').contains('01.11.2020');
     cy.get('[data-testid=resource-time-published]').contains('06.11.2020');
-    cy.get('[data-testid=resource-submitter]').contains(mockResource.features.dlr_submitter_email);
     cy.get('[data-testid=resource-tags]').contains(mockTags[0]);
     cy.get('[data-testid=resource-license]').contains(mockLicenses[0].features.dlr_license_code);
   });
@@ -27,9 +26,20 @@ context('Actions', () => {
   it('shows edit-button', () => {
     const publishedTestPost = mockMyResources[0];
     const unpublishedTestPost = mockMyResources[1];
+    const newTitle = 'a new title';
+
     cy.visit(`/resource/${unpublishedTestPost.identifier}]`);
-    cy.get('[data-testid=edit-resource-button').should('exist');
+    cy.get('[data-testid=edit-resource-button').click();
+    cy.get('[data-testid=step-navigation-0]').click();
+    cy.get('[data-testid=dlr-title-input]').clear().type(newTitle);
+    cy.get('[data-testid=step-navigation-4]').click();
+    cy.get('[data-testid=resource-title]').contains(newTitle);
+
     cy.visit(`/resource/${publishedTestPost.identifier}]`);
-    cy.get('[data-testid=edit-resource-button').should('not.exist');
+    cy.get('[data-testid=edit-resource-button').click();
+    cy.get('[data-testid=step-navigation-0]').click();
+    cy.get('[data-testid=dlr-title-input]').clear().type(newTitle);
+    cy.get('[data-testid=step-navigation-4]').click();
+    cy.get('[data-testid=resource-title]').contains(newTitle);
   });
 });

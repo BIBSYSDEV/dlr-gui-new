@@ -17,7 +17,7 @@ context('Actions', () => {
     cy.get('[data-testid=add-verify-authority-1214]').should('exist');
     cy.get('[data-testid=add-verify-authority-213]').click();
     cy.get('[data-testid=authority-link-button]').should('exist');
-    cy.get('[data-testid=creator-name-field-0] input').should('be.disabled');
+    cy.get('[data-testid=creator-name-field-0] textarea').should('be.disabled');
   });
 
   it('is possible to input search text in authoritySelector', () => {

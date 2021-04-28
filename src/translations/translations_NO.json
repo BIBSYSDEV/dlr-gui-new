@@ -56,6 +56,7 @@
     "logout": "Logg ut",
     "must_be_logged_in": "Krever pålogging",
     "name": "Navn",
+    "nb": "NB!",
     "next": "Neste",
     "no": "Nei",
     "no_options": "Ingen treff",
@@ -75,6 +76,8 @@
     "type": "Type",
     "yes": "Ja"
   },
+  "confirm_before_publishing": "Ser du noe som ikke stemmer kan du gå tilbake og redigere.",
+  "confirm_before_publishing_title": "Se over at ressursen ser riktig ut før du publiserer.",
   "dashboard": {
     "close_popover": "Trykk escape for å lukke denne boksen",
     "enabled": "aktive",
@@ -133,7 +136,8 @@
   "feedback": {
     "form_errors": "Det er feil i skjema. Disse må rettes før ressursen kan publiseres",
     "required_field": "Påkrevd felt",
-    "valid_url": "Input må være gyldig URL"
+    "valid_url": "Input må være gyldig URL",
+    "published_warning": "Ressursen er publisert. Alle felter som endres blir lagret og publisert på nytt umiddelbart etter endring."
   },
   "illustration_alts_tags": {
     "browsing_resource": "En dame søker etter en ressurs"
@@ -150,6 +154,7 @@
       "yes": "Ja, materialet kan brukes for kommersielle formål",
       "NC": "Nei, andre kan ikke bruke materialet for kommersielle formål"
     },
+    "cannot_change_on_published": "Lisens og begrensninger kan ikke endres siden ressursen er publisert.",
     "commercial_purposes": "Kommersielle formål",
     "external_page": "Ekstern side",
     "extra_restrictions": "Ekstra restriksjoner",

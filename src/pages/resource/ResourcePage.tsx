@@ -17,15 +17,8 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import { StyleWidths } from '../../themes/mainTheme';
-
-const StyledPageContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-items: center;
-  margin-top: 2rem;
-  align-items: center;
-  width: 100%;
-`;
+import { StyledContentWrapperLarge, StyledProgressWrapper } from '../../components/styled/Wrappers';
+import { PageHeader } from '../../components/PageHeader';
 
 const StyledResourceActionBar = styled.div`
   display: flex;
@@ -34,6 +27,10 @@ const StyledResourceActionBar = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   margin-top: 2rem;
+`;
+
+const StyledContentWrapperLargeWithBottomMargin = styled(StyledContentWrapperLarge)`
+  margin-bottom: 2rem;
 `;
 
 interface resourcePageParamTypes {
@@ -81,12 +78,14 @@ const ResourcePage = () => {
   const isUnpublished = () => !resource.features.dlr_status_published;
 
   return isLoadingResource ? (
-    <CircularProgress />
+    <StyledProgressWrapper>
+      <CircularProgress />
+    </StyledProgressWrapper>
   ) : resourceLoadingError ? (
     <ErrorBanner error={resourceLoadingError} />
   ) : (
-    <StyledPageContent>
-      {isUnpublished() && isAuthor() && (
+    <StyledContentWrapperLargeWithBottomMargin>
+      {isAuthor() && (
         <StyledResourceActionBar>
           <Button
             size="large"
@@ -98,8 +97,9 @@ const ResourcePage = () => {
           </Button>
         </StyledResourceActionBar>
       )}
+      <PageHeader testId="resource-title">{resource.features.dlr_title}</PageHeader>
       <ResourcePresentation resource={resource} />
-    </StyledPageContent>
+    </StyledContentWrapperLargeWithBottomMargin>
   );
 };
 

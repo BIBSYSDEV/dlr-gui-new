@@ -56,6 +56,7 @@
     "logout": "Logout",
     "must_be_logged_in": "Require login",
     "name": "Name",
+    "nb": "Note",
     "next": "Next",
     "no": "No",
     "no_options": "No tags found",
@@ -75,6 +76,8 @@
     "type": "Type",
     "yes": "Yes"
   },
+  "confirm_before_publishing": "If you find incorrect data you can go back and edit the form.",
+  "confirm_before_publishing_title": "Please reread before you publish the resource.",
   "dashboard": {
     "close_popover": "Press escape to close this box",
     "enabled": "enabled",
@@ -133,7 +136,8 @@
   "feedback": {
     "form_errors": "There are errors in the form. They have to be corrected before the resource can be published",
     "required_field": "Required field",
-    "valid_url": "Input must be a valid URL"
+    "valid_url": "Input must be a valid URL",
+    "published_warning": "The resource is published. Changes to any field will be saved and published instantly."
   },
   "illustration_alts_tags": {
     "browsing_resource": "A woman is browsing for resources"
@@ -150,6 +154,7 @@
       "yes": "Yes, the material can be used for commercial purposes",
       "NC": "No, others cannot use the material for commercial purposes"
     },
+    "cannot_change_on_published": "The license and restrictions cannot be changed since the resource is published.",
     "commercial_purposes": "Commercial purposes",
     "external_page": "External site",
     "extra_restrictions": "Extra restrictions",
