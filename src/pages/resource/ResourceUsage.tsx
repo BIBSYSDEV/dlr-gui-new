@@ -25,7 +25,11 @@ const StyledTypography = styled(Typography)`
   }
 `;
 
-const generateCitationStringFromResourceMetadata = (resource: Resource, t: TFunction<'translation'>): string => {
+const StyledButton = styled(Button)`
+  min-width: 10rem;
+`;
+
+const generateCitationStringPreTitle = (resource: Resource): string => {
   let citation = resource.creators
     .sort((creatorA, creatorB) => {
       if (creatorA.features.dlr_creator_order && creatorB.features.dlr_creator_order) {
@@ -36,16 +40,19 @@ const generateCitationStringFromResourceMetadata = (resource: Resource, t: TFunc
     .map((creator) => creator.features.dlr_creator_name)
     .join(', ');
   if (resource.features.dlr_time_published) {
-    citation += `. ${format(new Date(resource.features.dlr_time_published), 'dd.MM.yyyy')}`;
-  }
-
-  citation += `. ${resource.features.dlr_title}`;
-  if (resource.features.dlr_identifier_doi) {
-    citation += `. ${t('citation.retrieved_from')} ${resource.features.dlr_identifier_doi}`;
-  } else if (resource.features.dlr_identifier_handle) {
-    citation += `. ${t('citation.retrieved_from')} ${resource.features.dlr_identifier_handle}`;
+    citation += `. (${format(new Date(resource.features.dlr_time_published), 'yyyy')}).`;
   }
   return citation;
+};
+
+const generateCitationStringPostTitle = (resource: Resource, t: TFunction<'translation'>): string => {
+  if (resource.features.dlr_identifier_doi) {
+    return `. ${t('citation.retrieved_from')} ${resource.features.dlr_identifier_doi}`;
+  } else if (resource.features.dlr_identifier_handle) {
+    return `. ${t('citation.retrieved_from')} ${resource.features.dlr_identifier_handle}`;
+  } else {
+    return '';
+  }
 };
 
 interface ResourceUsageProps {
@@ -54,24 +61,39 @@ interface ResourceUsageProps {
 
 const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   const { t } = useTranslation();
-  const [citation, setCitation] = useState('');
+  const [citationPreTitle, setCitationPreTitle] = useState('');
+  const [citationTitle, setCitationTitle] = useState('');
+  const [citationPostTitle, setCitationPostTitle] = useState('');
   const mountedRef = useRef(true);
 
   useEffect(() => {
     const getCitation = async () => {
-      const newCitation = generateCitationStringFromResourceMetadata(resource, t);
+      const newCitationPreTitle = generateCitationStringPreTitle(resource);
+      const newCitationPostTitle = generateCitationStringPostTitle(resource, t);
       try {
         if (resource.features.dlr_identifier_doi) {
           const citationResponse = await getCitationFromCrossCite(resource.features.dlr_identifier_doi);
           if (!mountedRef.current) return null;
-          if (citationResponse.data.text) {
-            setCitation(citationResponse.data.text);
+          if (citationResponse.data) {
+            const splitCitation = citationResponse.data.split(/(<i>|<\/i>)+/);
+            if (splitCitation.length === 5) {
+              setCitationPreTitle(splitCitation[0]);
+              setCitationTitle(splitCitation[2]);
+              setCitationPostTitle(splitCitation[4]);
+            } else {
+              setCitationPreTitle(citationResponse.data);
+              setCitationTitle(' ' + resource.features.dlr_title);
+            }
           }
         } else {
-          setCitation(newCitation);
+          setCitationPreTitle(newCitationPreTitle);
+          setCitationTitle(' ' + resource.features.dlr_title);
+          setCitationPostTitle(newCitationPostTitle);
         }
       } catch (_error) {
-        setCitation(newCitation);
+        setCitationPreTitle(newCitationPreTitle);
+        setCitationTitle(' ' + resource.features.dlr_title);
+        setCitationPostTitle(newCitationPostTitle);
       }
     };
     getCitation();
@@ -84,7 +106,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   }, []);
 
   const handleCopyButtonClick = () => {
-    navigator.clipboard.writeText(citation);
+    navigator.clipboard.writeText(citationPreTitle + citationTitle + citationPostTitle);
   };
 
   return (
@@ -92,10 +114,14 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
       <StyledTextAndButtonWrapper>
         <Typography variant="caption">{t('citation.citation_link')}</Typography>
         <StyledInformationWrapper>
-          <StyledTypography variant="body1">{citation}</StyledTypography>
-          <Button color="primary" variant="outlined" onClick={() => handleCopyButtonClick()}>
+          <StyledTypography variant="body1">
+            {citationPreTitle}
+            <i>{citationTitle}</i>
+            {citationPostTitle}
+          </StyledTypography>
+          <StyledButton color="primary" variant="outlined" onClick={() => handleCopyButtonClick()}>
             {t('citation.copy_citation').toUpperCase()}
-          </Button>
+          </StyledButton>
         </StyledInformationWrapper>
       </StyledTextAndButtonWrapper>
     </>
