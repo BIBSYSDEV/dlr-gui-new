@@ -44,7 +44,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
 
   const hrefLinkUrl = (
     <Link target="_blank" rel="noopener noreferrer" href={resource.contents.masterContent.features.dlr_content}>
-      {resource.contents.masterContent.features.dlr_content} (Åpne i nytt vindu)
+      {resource.contents.masterContent.features.dlr_content} ({t('resource.preview.open_in_new_tag')})
     </Link>
   );
 
@@ -114,20 +114,20 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
         presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent) && (
         <StyledBlockWrapper>
           <Typography gutterBottom variant="body1">
-            Ekstern side: {hrefLinkUrl}
+            {t('resource.preview.external_page')}: {hrefLinkUrl}
           </Typography>
           {presentationMode === SupportedFileTypes.LinkSchemeHttp && (
-            <Typography variant="body1">Kan ikke forhåndsvise denne siden av sikkerhetsmessige årsaker</Typography>
+            <Typography variant="body1">{t('resource.preview.no_preview_security_reasons')}</Typography>
           )}
           {presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent && (
-            <Typography variant="body1">Nettstedet gir ikke mulighet til å la seg forhåndsvises</Typography>
+            <Typography variant="body1">{t('resource.preview.no_preview_support_reasons')}</Typography>
           )}
         </StyledBlockWrapper>
       )}
       {presentationMode === SupportedFileTypes.Text && (
         <StyledBlockWrapper>
           <Typography gutterBottom variant="body1">
-            Denne ressursen er en tekstfil:
+            {t('resource.preview.resource_is_text_file')}:
           </Typography>
           <DownloadButton
             contentURL={contentURL}

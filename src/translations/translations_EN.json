@@ -344,10 +344,15 @@
     "no_published_resources": "You have no published resources",
     "no_unpublished_resources": "You have no unpublished resources",
     "preview": {
+      "external_page": "External page",
       "file_to_big": "The file is too big for preview",
+      "no_preview_security_reasons": "No preview for this resource exists due to security reasons",
+      "no_preview_support_reasons": "The external site does not allow preview",
+      "open_in_new_tag": "Open in new tab",
       "preview_of_master_content": "Preview of main content",
       "preview_is_not_supported_for_file_format": "Preview is not supported for this file format",
-      "preview_not_implemented": "Preview will be implemented later"
+      "preview_not_implemented": "Preview will be implemented later",
+      "resource_is_text_file": "This resource is a text file"
     },
     "published_resources": "Published",
     "search_for_resources": "Search for resources",
