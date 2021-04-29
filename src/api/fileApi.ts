@@ -53,6 +53,7 @@ export const createResourceAndMultipartUpload = async (
 ) => {
   const newResource = await createResource(ResourceCreationType.FILE, file.name);
   newResource.features.dlr_title = newResource.features.dlr_content;
+  newResource.contents.masterContent.features.dlr_content_mime_type = file.type;
   const contentId = newResource.contents.masterContent.identifier;
   onCreateFile(newResource);
 
@@ -104,6 +105,7 @@ export const createAdditionalFileUpload = async (
   onCreateContent: (newContent: Content) => void
 ) => {
   const responseContent = (await postResourceContent(resourceIdentifier, 'file', file.name)).data;
+  responseContent.features.dlr_content_mime_type = file.type;
   onCreateContent(responseContent);
   const data = encodeURI(
     `filename=${file.name}&size=${file.data.size}&lastmodified=${(file.data as File).lastModified}&mimetype=${
