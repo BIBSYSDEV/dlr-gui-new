@@ -75,6 +75,11 @@ export const determinePresentationMode = (resource: Resource): string => {
     resource.contents.masterContent.features.dlr_content_mime_type !== 'video-service/x-youtube'
   ) {
     return SupportedFileTypes.LinkXFrameOptionsPresent;
+  } else if (
+    resource.features.dlr_content_type === 'link' &&
+    !resource.contents.masterContent.features.dlr_content_mime_type
+  ) {
+    return SupportedFileTypes.Link;
   } else {
     return documentTypeFromMime(resource);
   }
