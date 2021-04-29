@@ -46,7 +46,12 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
         !(presentationMode === resourceType.VIDEO) &&
         !(presentationMode === SupportedFileTypes.Document) &&
         !(presentationMode === SupportedFileTypes.Audio) &&
-        !(presentationMode === SupportedFileTypes.PDF) && (
+        !(presentationMode === SupportedFileTypes.PDF) &&
+        !(presentationMode === SupportedFileTypes.Kaltura) &&
+        !(presentationMode === SupportedFileTypes.Youtube) &&
+        !(presentationMode === SupportedFileTypes.MediaSite) &&
+        !(presentationMode === SupportedFileTypes.Link) &&
+        !(presentationMode === SupportedFileTypes.Vimeo) && (
           <>
             <Typography>{t('resource.preview.preview_is_not_supported_for_file_format')}</Typography>
             <DownloadButton contentURL={contentURL} />
@@ -83,6 +88,19 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
           height={'100%'}
           width={'100%'}
           scrolling="no"
+        />
+      )}
+      {(presentationMode === SupportedFileTypes.Youtube ||
+        presentationMode === SupportedFileTypes.Kaltura ||
+        presentationMode === SupportedFileTypes.Vimeo ||
+        presentationMode === SupportedFileTypes.Link ||
+        presentationMode === SupportedFileTypes.MediaSite) && (
+        <iframe
+          title={t('resource.preview.preview_of_master_content')}
+          src={contentURL}
+          frameBorder="0"
+          height={'100%'}
+          width={'100%'}
         />
       )}
       {presentationMode === SupportedFileTypes.Download && <DownloadButton contentURL={contentURL} />}
