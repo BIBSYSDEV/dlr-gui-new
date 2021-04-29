@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Typography } from '@material-ui/core';
+import { Link, Typography } from '@material-ui/core';
 import { resourceType, SupportedFileTypes } from '../types/content.types';
 import styled from 'styled-components';
 import { Resource } from '../types/resource.types';
@@ -27,6 +27,10 @@ const StyledAlert = styled(Alert)`
   margin-bottom: 2rem;
 `;
 
+const StyledBlockWrapper = styled.div`
+  display: block;
+`;
+
 const windowsMaxRenderSize = 10000000;
 
 interface ContentPreviewProps {
@@ -38,6 +42,12 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
   const presentationMode = determinePresentationMode(resource);
   const contentURL = `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${resource.contents.masterContent.identifier}/delivery?jwt=${localStorage.token}`;
 
+  const hrefLinkUrl = (
+    <Link target="_blank" rel="noopener noreferrer" href={resource.contents.masterContent.features.dlr_content}>
+      {resource.contents.masterContent.features.dlr_content} (Åpne i nytt vindu)
+    </Link>
+  );
+
   return (
     <>
       {presentationMode === resourceType.IMAGE && <StyledImage src={contentURL} alt="Preview of resource" />}
@@ -46,10 +56,16 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
         !(presentationMode === resourceType.VIDEO) &&
         !(presentationMode === SupportedFileTypes.Document) &&
         !(presentationMode === SupportedFileTypes.Audio) &&
-        !(presentationMode === SupportedFileTypes.PDF) && (
+        !(presentationMode === SupportedFileTypes.PDF) &&
+        !(presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent) &&
+        !(presentationMode === SupportedFileTypes.LinkSchemeHttp) &&
+        !(presentationMode === SupportedFileTypes.Text) && (
           <>
             <Typography>{t('resource.preview.preview_is_not_supported_for_file_format')}</Typography>
-            <DownloadButton contentURL={contentURL} />
+            <DownloadButton
+              contentURL={contentURL}
+              contentSize={resource.contents.masterContent.features.dlr_content_size}
+            />
           </>
         )}
       {presentationMode === SupportedFileTypes.Audio && (
@@ -70,7 +86,10 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
           ) : (
             <InformationAndDownloadWrapper>
               <StyledAlert severity="info">{t('resource.preview.file_to_big')}</StyledAlert>
-              <DownloadButton contentURL={contentURL} />
+              <DownloadButton
+                contentURL={contentURL}
+                contentSize={resource.contents.masterContent.features.dlr_content_size}
+              />
             </InformationAndDownloadWrapper>
           )}
         </>
@@ -85,7 +104,37 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
           scrolling="no"
         />
       )}
-      {presentationMode === SupportedFileTypes.Download && <DownloadButton contentURL={contentURL} />}
+      {presentationMode === SupportedFileTypes.Download && (
+        <DownloadButton
+          contentURL={contentURL}
+          contentSize={resource.contents.masterContent.features.dlr_content_size}
+        />
+      )}
+      {(presentationMode === SupportedFileTypes.LinkSchemeHttp ||
+        presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent) && (
+        <StyledBlockWrapper>
+          <Typography gutterBottom variant="body1">
+            Ekstern side: {hrefLinkUrl}
+          </Typography>
+          {presentationMode === SupportedFileTypes.LinkSchemeHttp && (
+            <Typography variant="body1">Kan ikke forhåndsvise denne siden av sikkerhetsmessige årsaker</Typography>
+          )}
+          {presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent && (
+            <Typography variant="body1">Nettstedet gir ikke mulighet til å la seg forhåndsvises</Typography>
+          )}
+        </StyledBlockWrapper>
+      )}
+      {presentationMode === SupportedFileTypes.Text && (
+        <StyledBlockWrapper>
+          <Typography gutterBottom variant="body1">
+            Denne ressursen er en tekstfil:
+          </Typography>
+          <DownloadButton
+            contentURL={contentURL}
+            contentSize={resource.contents.masterContent.features.dlr_content_size}
+          />
+        </StyledBlockWrapper>
+      )}
     </>
   );
 };
