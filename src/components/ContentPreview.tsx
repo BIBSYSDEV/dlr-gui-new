@@ -51,7 +51,8 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
         !(presentationMode === SupportedFileTypes.Youtube) &&
         !(presentationMode === SupportedFileTypes.MediaSite) &&
         !(presentationMode === SupportedFileTypes.Link) &&
-        !(presentationMode === SupportedFileTypes.Vimeo) && (
+        !(presentationMode === SupportedFileTypes.Vimeo) &&
+        !(presentationMode === SupportedFileTypes.Download) && (
           <>
             <Typography>{t('resource.preview.preview_is_not_supported_for_file_format')}</Typography>
             <DownloadButton contentURL={contentURL} />
