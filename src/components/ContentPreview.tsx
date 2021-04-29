@@ -4,7 +4,7 @@ import { Typography } from '@material-ui/core';
 import { resourceType, SupportedFileTypes } from '../types/content.types';
 import styled from 'styled-components';
 import { Resource } from '../types/resource.types';
-import { API_PATHS, API_URL, MICROSOFT_DOCUMENT_VIEWER } from '../utils/constants';
+import { API_PATHS, API_URL, GOOGLE_DOC_VIEWER, MICROSOFT_DOCUMENT_VIEWER } from '../utils/constants';
 import { Alert } from '@material-ui/lab';
 import { determinePresentationMode } from '../utils/mime_type_utils';
 import DownloadButton from './DownloadButton';
@@ -45,7 +45,8 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
       {!(presentationMode === resourceType.IMAGE) &&
         !(presentationMode === resourceType.VIDEO) &&
         !(presentationMode === SupportedFileTypes.Document) &&
-        !(presentationMode === SupportedFileTypes.Audio) && (
+        !(presentationMode === SupportedFileTypes.Audio) &&
+        !(presentationMode === SupportedFileTypes.PDF) && (
           <>
             <Typography>{t('resource.preview.preview_is_not_supported_for_file_format')}</Typography>
             <DownloadButton contentURL={contentURL} />
@@ -73,6 +74,16 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
             </InformationAndDownloadWrapper>
           )}
         </>
+      )}
+      {presentationMode === SupportedFileTypes.PDF && (
+        <iframe
+          title={t('resource.preview.preview_of_master_content')}
+          src={`${GOOGLE_DOC_VIEWER}?embedded=true&url=${contentURL}`}
+          frameBorder="0"
+          height={'100%'}
+          width={'100%'}
+          scrolling="no"
+        />
       )}
       {presentationMode === SupportedFileTypes.Download && <DownloadButton contentURL={contentURL} />}
     </>
