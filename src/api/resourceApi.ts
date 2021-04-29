@@ -366,7 +366,7 @@ export const searchTags = (query: string): Promise<AxiosResponse<FacetResponse>>
   });
 };
 
-export const getCitationFromCrossCite = (dlr_identifier_doi: string) => {
+export const getCitationFromCrossCite = (dlr_identifier_doi: string): Promise<AxiosResponse<string>> => {
   return axios({
     headers: { Accept: 'text/x-bibliography; style=apa-6th-edition; locale=en-GB' },
     url: dlr_identifier_doi,
