@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { Resource } from '../../types/resource.types';
+import { CompareCreators, Resource } from '../../types/resource.types';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { format } from 'date-fns';
@@ -31,12 +31,7 @@ const StyledButton = styled(Button)`
 
 const generateCitationStringPreTitle = (resource: Resource): string => {
   let citation = resource.creators
-    .sort((creatorA, creatorB) => {
-      if (creatorA.features.dlr_creator_order && creatorB.features.dlr_creator_order) {
-        return creatorA.features.dlr_creator_order - creatorB.features.dlr_creator_order;
-      }
-      return 0;
-    })
+    .sort((creatorA, creatorB) => CompareCreators(creatorA, creatorB))
     .map((creator) => creator.features.dlr_creator_name)
     .join(', ');
   if (resource.features.dlr_time_published) {
@@ -110,21 +105,19 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   };
 
   return (
-    <>
-      <StyledTextAndButtonWrapper>
-        <Typography variant="caption">{t('citation.citation_link')}</Typography>
-        <StyledInformationWrapper>
-          <StyledTypography variant="body1">
-            {citationPreTitle}
-            <i>{citationTitle}</i>
-            {citationPostTitle}
-          </StyledTypography>
-          <StyledButton color="primary" variant="outlined" onClick={() => handleCopyButtonClick()}>
-            {t('citation.copy_citation').toUpperCase()}
-          </StyledButton>
-        </StyledInformationWrapper>
-      </StyledTextAndButtonWrapper>
-    </>
+    <StyledTextAndButtonWrapper>
+      <Typography variant="caption">{t('citation.citation_link')}</Typography>
+      <StyledInformationWrapper>
+        <StyledTypography variant="body1">
+          {citationPreTitle}
+          <i>{citationTitle}</i>
+          {citationPostTitle}
+        </StyledTypography>
+        <StyledButton color="primary" variant="outlined" onClick={() => handleCopyButtonClick()}>
+          {t('citation.copy_citation').toUpperCase()}
+        </StyledButton>
+      </StyledInformationWrapper>
+    </StyledTextAndButtonWrapper>
   );
 };
 
