@@ -12,7 +12,7 @@ import {
   StyledSchemaPartColored,
 } from '../../components/styled/Wrappers';
 import ResourceMetadata from './ResourceMetadata';
-//import ContentPreview from '../../components/ContentPreview';
+import ContentPreview from '../../components/ContentPreview';
 
 const PreviewComponentWrapper = styled.div`
   margin: 1rem 0;
@@ -41,9 +41,10 @@ const StyledCaption = styled(Typography)`
 
 interface ResourcePresentationProps {
   resource: Resource;
+  isPreview?: boolean;
 }
 
-const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
+const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource, isPreview = false }) => {
   const { t } = useTranslation();
 
   return (
@@ -52,8 +53,8 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
         <StyledSchemaPart>
           <StyledContentWrapperMedium>
             <PreviewComponentWrapper data-testid="resource-preview">
-              {/* <ContentPreview resource={resource} /> */}
-              {t('resource.preview.preview_not_implemented')}
+              {<ContentPreview resource={resource} isPreview={isPreview} />}
+              {/*t('resource.preview.preview_not_implemented') */}
             </PreviewComponentWrapper>
           </StyledContentWrapperMedium>
         </StyledSchemaPart>
