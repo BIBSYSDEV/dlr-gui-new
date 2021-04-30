@@ -41,6 +41,11 @@
     "verify": "Verify",
     "view_verified_authority": "View verified"
   },
+  "citation": {
+    "citation_link": "Citation link",
+    "copy_citation": "Copy citation link",
+    "retrieved_from": "Retrieved from"
+  },
   "common": {
     "all_changes_saved": "All changes saved",
     "back": "Back",

@@ -12,6 +12,7 @@ import {
   StyledSchemaPartColored,
 } from '../../components/styled/Wrappers';
 import ResourceMetadata from './ResourceMetadata';
+import ResourceUsage from './ResourceUsage';
 //import ContentPreview from '../../components/ContentPreview';
 
 const PreviewComponentWrapper = styled.div`
@@ -79,7 +80,8 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
         </StyledSchemaPartColored>
         <StyledSchemaPartColored color={Colors.DLRYellow3}>
           <StyledContentWrapperMedium>
-            <Typography variant="h3">{t('common.usage')}</Typography>
+            <Typography variant="h2">{t('common.usage')}</Typography>
+            <ResourceUsage resource={resource} />
           </StyledContentWrapperMedium>
         </StyledSchemaPartColored>
       </StyledPresentationWrapper>
