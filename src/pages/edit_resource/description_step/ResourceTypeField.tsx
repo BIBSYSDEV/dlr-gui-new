@@ -6,7 +6,7 @@ import { Colors } from '../../../themes/mainTheme';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { Resource, ResourceFeatureNamesFullPath, ResourceFeatureTypes } from '../../../types/resource.types';
-import { postResourceFeature } from '../../../api/resourceApi';
+import { postResourceFeature, updateSearchIndex } from '../../../api/resourceApi';
 import styled from 'styled-components';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import VideocamIcon from '@material-ui/icons/Videocam';
@@ -70,6 +70,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
         setFieldValue(ResourceFeatureNamesFullPath.Type, event.target.value);
         values.features.dlr_type = event.target.value;
         resetFormButKeepTouched(touched, resetForm, values, setTouched);
+        values.features.dlr_status_published && updateSearchIndex(values.identifier);
       } catch (error) {
         setSavingResourceTypeError(error);
       } finally {

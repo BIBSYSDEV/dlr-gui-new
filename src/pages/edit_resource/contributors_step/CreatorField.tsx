@@ -13,7 +13,12 @@ import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
-import { deleteResourceCreator, postResourceCreator, putResourceCreatorFeature } from '../../../api/resourceApi';
+import {
+  deleteResourceCreator,
+  postResourceCreator,
+  putResourceCreatorFeature,
+  updateSearchIndex,
+} from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
@@ -108,6 +113,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
     } finally {
       setAllChangesSaved(true);
       inputElements.current[values.creators.length].focus();
+      values.features.dlr_status_published && updateSearchIndex(values.identifier);
     }
   };
 
@@ -130,6 +136,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
       setErrorIndex(creatorIndex);
     } finally {
       setAllChangesSaved(true);
+      values.features.dlr_status_published && updateSearchIndex(values.identifier);
     }
   };
 
@@ -151,6 +158,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
     } finally {
       setAllChangesSaved(true);
       setIsDeleting(false);
+      values.features.dlr_status_published && updateSearchIndex(values.identifier);
     }
   };
 
@@ -179,6 +187,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
       setErrorIndex(index);
     } finally {
       setAllChangesSaved(true);
+      values.features.dlr_status_published && updateSearchIndex(values.identifier);
     }
   };
 
