@@ -64,19 +64,16 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
     }
   }, [isPreview, resource.contents.masterContent, resource.identifier]);
 
+  const getURL = () => {
+    return defaultContent?.features.dlr_content_url ?? UrlGeneratedFromMasterContent;
+  };
+
   return (
     <>
       {!isLoading ? (
         <>
-          {presentationMode === resourceType.IMAGE && (
-            <StyledImage
-              src={defaultContent?.features.dlr_content_url ?? UrlGeneratedFromMasterContent}
-              alt="Preview of resource"
-            />
-          )}
-          {presentationMode === resourceType.VIDEO && (
-            <StyledVideo src={defaultContent?.features.dlr_content_url ?? UrlGeneratedFromMasterContent} controls />
-          )}
+          {presentationMode === resourceType.IMAGE && <StyledImage src={getURL()} alt="Preview of resource" />}
+          {presentationMode === resourceType.VIDEO && <StyledVideo src={getURL()} controls />}
           {!(presentationMode === resourceType.IMAGE) &&
             !(presentationMode === resourceType.VIDEO) &&
             !(presentationMode === SupportedFileTypes.Document) &&
@@ -84,15 +81,13 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
             !(presentationMode === SupportedFileTypes.PDF) && (
               <>
                 <Typography>{t('resource.preview.preview_is_not_supported_for_file_format')}</Typography>
-                <DownloadButton
-                  contentURL={defaultContent?.features.dlr_content_url ?? UrlGeneratedFromMasterContent}
-                />
+                <DownloadButton contentURL={getURL()} />
               </>
             )}
           {presentationMode === SupportedFileTypes.Audio && (
             <audio controls>
               <source
-                src={defaultContent?.features.dlr_content_url ?? UrlGeneratedFromMasterContent}
+                src={getURL()}
                 type={
                   defaultContent?.features.dlr_content_mime_type ??
                   resource.contents.masterContent.features.dlr_content_mime_type
@@ -108,9 +103,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
               ) < windowsMaxRenderSize ? (
                 <iframe
                   title={t('resource.preview.preview_of_master_content')}
-                  src={`${MICROSOFT_DOCUMENT_VIEWER}?src=${
-                    defaultContent?.features.dlr_content_url ?? UrlGeneratedFromMasterContent
-                  }`}
+                  src={`${MICROSOFT_DOCUMENT_VIEWER}?src=${getURL()}`}
                   frameBorder="0"
                   height={'100%'}
                   width={'100%'}
@@ -118,9 +111,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
               ) : (
                 <InformationAndDownloadWrapper>
                   <StyledAlert severity="info">{t('resource.preview.file_to_big')}</StyledAlert>
-                  <DownloadButton
-                    contentURL={defaultContent?.features.dlr_content_url ?? UrlGeneratedFromMasterContent}
-                  />
+                  <DownloadButton contentURL={getURL()} />
                 </InformationAndDownloadWrapper>
               )}
             </>
@@ -128,18 +119,14 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
           {presentationMode === SupportedFileTypes.PDF && (
             <iframe
               title={t('resource.preview.preview_of_master_content')}
-              src={`${GOOGLE_DOC_VIEWER}?embedded=true&url=${
-                defaultContent?.features.dlr_content_url ?? UrlGeneratedFromMasterContent
-              }`}
+              src={`${GOOGLE_DOC_VIEWER}?embedded=true&url=${getURL()}`}
               frameBorder="0"
               height={'100%'}
               width={'100%'}
               scrolling="no"
             />
           )}
-          {presentationMode === SupportedFileTypes.Download && (
-            <DownloadButton contentURL={defaultContent?.features.dlr_content_url ?? UrlGeneratedFromMasterContent} />
-          )}
+          {presentationMode === SupportedFileTypes.Download && <DownloadButton contentURL={getURL()} />}
         </>
       ) : (
         <CircularProgress />
