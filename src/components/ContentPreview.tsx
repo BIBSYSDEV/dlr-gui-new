@@ -9,6 +9,8 @@ import { determinePresentationMode } from '../utils/mime_type_utils';
 import DownloadButton from './DownloadButton';
 import { getResourceDefaultContent } from '../api/resourceApi';
 import { Resource } from '../types/resource.types';
+import { getSourceFromIframeString } from '../utils/iframe_utils';
+import { getSoundCloudInformation } from '../api/externalApi';
 
 const StyledImage = styled.img`
   height: 100%;
@@ -49,8 +51,14 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
       setLoading(true);
       try {
         const defaultContentResponse = await getResourceDefaultContent(resource.identifier);
-        setDefaultContent(defaultContentResponse.data);
-        setPresentationMode(determinePresentationMode(defaultContentResponse.data, resource));
+        const newDefaultContent = defaultContentResponse.data;
+        const newPresentationMode = determinePresentationMode(newDefaultContent, resource);
+        if (newPresentationMode === SupportedFileTypes.Soundcloud && newDefaultContent.features.dlr_content_url) {
+          const contentResponse = await getSoundCloudInformation(newDefaultContent.features.dlr_content_url);
+          newDefaultContent.features.dlr_content_url = getSourceFromIframeString(contentResponse.data.html);
+        }
+        setDefaultContent(newDefaultContent);
+        setPresentationMode(newPresentationMode);
       } catch (error) {
         setDefaultContent(null);
         setPresentationMode(determinePresentationMode(resource.contents.masterContent, resource));
@@ -81,7 +89,20 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
       !(presentationMode === SupportedFileTypes.Link) &&
       !(presentationMode === SupportedFileTypes.Vimeo) &&
       !(presentationMode === SupportedFileTypes.Download) &&
-      !(presentationMode === SupportedFileTypes.Spotify)
+      !(presentationMode === SupportedFileTypes.Spotify) &&
+      !(presentationMode === SupportedFileTypes.Soundcloud)
+    );
+  };
+
+  const previewIsRegularIframe = () => {
+    return (
+      presentationMode === SupportedFileTypes.Youtube ||
+      presentationMode === SupportedFileTypes.Kaltura ||
+      presentationMode === SupportedFileTypes.Vimeo ||
+      presentationMode === SupportedFileTypes.Link ||
+      presentationMode === SupportedFileTypes.MediaSite ||
+      presentationMode === SupportedFileTypes.Spotify ||
+      presentationMode === SupportedFileTypes.Soundcloud
     );
   };
 
@@ -140,16 +161,12 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
             />
           )}
           {presentationMode === SupportedFileTypes.Download && <DownloadButton contentURL={getURL()} />}
-          {(presentationMode === SupportedFileTypes.Youtube ||
-            presentationMode === SupportedFileTypes.Kaltura ||
-            presentationMode === SupportedFileTypes.Vimeo ||
-            presentationMode === SupportedFileTypes.Link ||
-            presentationMode === SupportedFileTypes.MediaSite ||
-            presentationMode === SupportedFileTypes.Spotify) && (
+          {previewIsRegularIframe() && (
             <iframe
               title={t('resource.preview.preview_of_master_content')}
               src={getURL()}
               frameBorder="0"
+              allowFullScreen
               height={'100%'}
               width={'100%'}
             />
