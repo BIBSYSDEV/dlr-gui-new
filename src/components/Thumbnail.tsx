@@ -59,7 +59,7 @@ const Thumbnail: FC<thumbnailProps> = ({
   alt,
   needsToStartToPoll = false,
   institution = '',
-  small,
+  small = false,
 }) => {
   const [url, setUrl] = useState(urlGenerator(resourceOrContentIdentifier));
   const [backgroundColor, setBackgroundColor] = useState('white');
