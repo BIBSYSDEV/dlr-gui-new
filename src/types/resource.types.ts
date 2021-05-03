@@ -183,13 +183,14 @@ export enum ResourceFeatureTypes {
   video = 'Video',
 }
 
+//Note! This is also the presentation order for the type-filter
 export const DefaultResourceTypes: ResourceFeatureTypes[] = [
-  ResourceFeatureTypes.audio,
-  ResourceFeatureTypes.document,
-  ResourceFeatureTypes.image,
-  ResourceFeatureTypes.presentation,
-  ResourceFeatureTypes.simulation,
   ResourceFeatureTypes.video,
+  ResourceFeatureTypes.image,
+  ResourceFeatureTypes.document,
+  ResourceFeatureTypes.presentation,
+  ResourceFeatureTypes.audio,
+  ResourceFeatureTypes.simulation,
 ];
 
 export enum ResourceFeatureNames {
