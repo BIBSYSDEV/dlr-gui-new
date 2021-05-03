@@ -37,6 +37,7 @@ const StyledTextField = styled(TextField)`
 `;
 const StyledCombinedTextWrapper = styled.div`
   overflow: hidden;
+  align-items: baseline;
   text-overflow: ellipsis;
 `;
 
@@ -162,7 +163,12 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                       <StyledListItemIcon>
                         <SlideshowIcon />
                       </StyledListItemIcon>
-                      <Typography variant="inherit">{t('resource.type.simulation')}</Typography>
+                      <StyledCombinedTextWrapper>
+                        <Typography variant="inherit">{t('resource.type.simulation')}</Typography>
+                        <StyledResourceExampleTypography variant="caption">
+                          ({t('explanation_text.resource_type_examples_simulation')})
+                        </StyledResourceExampleTypography>
+                      </StyledCombinedTextWrapper>
                     </StyledMenuItemContent>
                   </StyledMenuItem>
                 </StyledTextField>
