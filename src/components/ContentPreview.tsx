@@ -68,29 +68,35 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
     return defaultContent?.features.dlr_content_url ?? UrlGeneratedFromMasterContent;
   };
 
+  const previewNotSupported = () => {
+    return (
+      !(presentationMode === resourceType.IMAGE) &&
+      !(presentationMode === resourceType.VIDEO) &&
+      !(presentationMode === SupportedFileTypes.Document) &&
+      !(presentationMode === SupportedFileTypes.Audio) &&
+      !(presentationMode === SupportedFileTypes.PDF) &&
+      !(presentationMode === SupportedFileTypes.Kaltura) &&
+      !(presentationMode === SupportedFileTypes.Youtube) &&
+      !(presentationMode === SupportedFileTypes.MediaSite) &&
+      !(presentationMode === SupportedFileTypes.Link) &&
+      !(presentationMode === SupportedFileTypes.Vimeo) &&
+      !(presentationMode === SupportedFileTypes.Download) &&
+      !(presentationMode === SupportedFileTypes.Spotify)
+    );
+  };
+
   return (
     <>
       {!isLoading ? (
         <>
           {presentationMode === resourceType.IMAGE && <StyledImage src={getURL()} alt="Preview of resource" />}
           {presentationMode === resourceType.VIDEO && <StyledVideo src={getURL()} controls />}
-          {!(presentationMode === resourceType.IMAGE) &&
-            !(presentationMode === resourceType.VIDEO) &&
-            !(presentationMode === SupportedFileTypes.Document) &&
-            !(presentationMode === SupportedFileTypes.Audio) &&
-            !(presentationMode === SupportedFileTypes.PDF) &&
-            !(presentationMode === SupportedFileTypes.Kaltura) &&
-            !(presentationMode === SupportedFileTypes.Youtube) &&
-            !(presentationMode === SupportedFileTypes.MediaSite) &&
-            !(presentationMode === SupportedFileTypes.Link) &&
-            !(presentationMode === SupportedFileTypes.Vimeo) &&
-            !(presentationMode === SupportedFileTypes.Download) &&
-            !(presentationMode === SupportedFileTypes.Spotify) && (
-              <>
-                <Typography>{t('resource.preview.preview_is_not_supported_for_file_format')}</Typography>
-                <DownloadButton contentURL={getURL()} />
-              </>
-            )}
+          {previewNotSupported() && (
+            <>
+              <Typography>{t('resource.preview.preview_is_not_supported_for_file_format')}</Typography>
+              <DownloadButton contentURL={getURL()} />
+            </>
+          )}
           {presentationMode === SupportedFileTypes.Audio && (
             <audio controls>
               <source
