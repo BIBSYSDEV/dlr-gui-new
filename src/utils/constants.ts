@@ -21,6 +21,7 @@ export const API_PATHS = {
   guiBackendInstitutionUserAutorizationsPath: '/dlr-gui-backend-institution-user-authorizations/v1',
   guiBackendResourcesStoragePath: '/dlr-gui-backend-resources-storage/v1',
   guiBackendResourcesContentPath: '/dlr-gui-backend-resources-content/v2/contents',
+  guiBackendResourceDefaultContentPath: '/dlr-gui-backend-resources-content/v2/resources',
   guiBackendResearchProjectsPath: '/dlr-gui-backend-research-projects/v1',
   guiBackendDmpsPath: '/dlr-gui-backend-dmps/v1',
   guiBackendResourcesSearchPath: '/dlr-gui-backend-resources-search/v1',

@@ -1,10 +1,8 @@
 import React, { FC } from 'react';
 import { Resource } from '../../types/resource.types';
-import { Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import Card from '../../components/Card';
 import styled from 'styled-components';
-import LicenseCard from '../../components/LicenseCard';
 import { Colors } from '../../themes/mainTheme';
 import {
   StyledContentWrapperMedium,
@@ -12,6 +10,9 @@ import {
   StyledSchemaPartColored,
 } from '../../components/styled/Wrappers';
 import ResourceMetadata from './ResourceMetadata';
+import ResourceUsage from './ResourceUsage';
+import ResourceContents from './ResourceContents';
+import ResourceLicense from './ResourceLicense';
 //import ContentPreview from '../../components/ContentPreview';
 
 const PreviewComponentWrapper = styled.div`
@@ -31,19 +32,12 @@ const StyledPresentationWrapper = styled.div`
   width: 100%;
 `;
 
-const StyledFeatureWrapper = styled.div`
-  padding: 0.5rem 0;
-`;
-
-const StyledCaption = styled(Typography)`
-  display: block;
-`;
-
 interface ResourcePresentationProps {
   resource: Resource;
+  isPreview?: boolean;
 }
 
-const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
+const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource, isPreview = false }) => {
   const { t } = useTranslation();
 
   return (
@@ -52,7 +46,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
         <StyledSchemaPart>
           <StyledContentWrapperMedium>
             <PreviewComponentWrapper data-testid="resource-preview">
-              {/* <ContentPreview resource={resource} /> */}
+              {/* <ContentPreview resource={resource} isPreview={isPreview} /> */}
               {t('resource.preview.preview_not_implemented')}
             </PreviewComponentWrapper>
           </StyledContentWrapperMedium>
@@ -62,24 +56,20 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
 
         <StyledSchemaPartColored color={Colors.DLRYellow2}>
           <StyledContentWrapperMedium>
-            {resource.licenses && resource.licenses.length !== 0 && resource.licenses[0].identifier.length > 0 && (
-              <StyledFeatureWrapper data-testid="resource-license">
-                <StyledCaption variant="caption">{t('resource.metadata.license')}</StyledCaption>
-                {resource.licenses.map(
-                  (license) =>
-                    license.identifier && (
-                      <Card key={license.identifier}>
-                        <LicenseCard license={license} />
-                      </Card>
-                    )
-                )}
-              </StyledFeatureWrapper>
-            )}
+            <Grid container spacing={6}>
+              <Grid item xs={12} md={8}>
+                <ResourceContents resource={resource} />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <ResourceLicense resource={resource} />
+              </Grid>
+            </Grid>
           </StyledContentWrapperMedium>
         </StyledSchemaPartColored>
         <StyledSchemaPartColored color={Colors.DLRYellow3}>
           <StyledContentWrapperMedium>
-            <Typography variant="h3">{t('common.usage')}</Typography>
+            <Typography variant="h2">{t('common.usage')}</Typography>
+            <ResourceUsage resource={resource} />
           </StyledContentWrapperMedium>
         </StyledSchemaPartColored>
       </StyledPresentationWrapper>

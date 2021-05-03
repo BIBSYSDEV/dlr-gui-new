@@ -1,8 +1,8 @@
+import { Content, SupportedFileTypes } from '../types/content.types';
 import { Resource } from '../types/resource.types';
-import { SupportedFileTypes } from '../types/content.types';
 
-const documentTypeFromMime = (resource: Resource): string => {
-  switch (resource.contents.masterContent.features.dlr_content_mime_type) {
+const documentTypeFromMime = (content: Content): string => {
+  switch (content.features.dlr_content_mime_type) {
     case SupportedFileTypes.Document:
     case SupportedFileTypes.Image:
     case SupportedFileTypes.PDF:
@@ -12,7 +12,7 @@ const documentTypeFromMime = (resource: Resource): string => {
     case SupportedFileTypes.MediaSite:
     case SupportedFileTypes.Youtube:
     case SupportedFileTypes.Vimeo:
-      return resource.contents.masterContent.features.dlr_content_mime_type;
+      return content.features.dlr_content_mime_type;
     case 'audio-service/x-spotify':
       return SupportedFileTypes.Spotify;
     case 'audio-service/x-soundcloud':
@@ -65,17 +65,22 @@ const documentTypeFromMime = (resource: Resource): string => {
   }
 };
 
-export const determinePresentationMode = (resource: Resource): string => {
-  if (resource.contents.masterContent.features.dlr_content_type_link_scheme_http === 'true') {
+export const determinePresentationMode = (content: Content, resource: Resource): string => {
+  if (content.features.dlr_content_type_link_scheme_http === 'true') {
     return SupportedFileTypes.LinkSchemeHttp;
   } else if (
-    (resource.contents.masterContent.features.dlr_content_type_link_header_http_x_frame_options === 'deny' ||
-      resource.contents.masterContent.features.dlr_content_type_link_header_http_x_frame_options === 'sameorigin') &&
-    resource.contents.masterContent.features.dlr_content_mime_type !== 'video-service/x-vimeo' &&
-    resource.contents.masterContent.features.dlr_content_mime_type !== 'video-service/x-youtube'
+    (content.features.dlr_content_type_link_header_http_x_frame_options === 'deny' ||
+      content.features.dlr_content_type_link_header_http_x_frame_options === 'sameorigin') &&
+    content.features.dlr_content_mime_type !== 'video-service/x-vimeo' &&
+    content.features.dlr_content_mime_type !== 'video-service/x-youtube'
   ) {
     return SupportedFileTypes.LinkXFrameOptionsPresent;
+  } else if (
+    resource.features.dlr_content_type === 'link' &&
+    !resource.contents.masterContent.features.dlr_content_mime_type
+  ) {
+    return SupportedFileTypes.Link;
   } else {
-    return documentTypeFromMime(resource);
+    return documentTypeFromMime(content);
   }
 };
