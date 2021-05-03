@@ -34,9 +34,10 @@ const StyledPresentationWrapper = styled.div`
 
 interface ResourcePresentationProps {
   resource: Resource;
+  isPreview?: boolean;
 }
 
-const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
+const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource, isPreview = false }) => {
   const { t } = useTranslation();
 
   return (
@@ -45,7 +46,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
         <StyledSchemaPart>
           <StyledContentWrapperMedium>
             <PreviewComponentWrapper data-testid="resource-preview">
-              {/* <ContentPreview resource={resource} /> */}
+              {/* <ContentPreview resource={resource} isPreview={isPreview} /> */}
               {t('resource.preview.preview_not_implemented')}
             </PreviewComponentWrapper>
           </StyledContentWrapperMedium>

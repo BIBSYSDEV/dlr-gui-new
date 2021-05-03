@@ -360,6 +360,13 @@ export const getAllFacets = (): Promise<AxiosResponse<FacetResponse>> => {
   });
 };
 
+export const getResourceDefaultContent = (resourceIdentifier: string): Promise<AxiosResponse<Content>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourceDefaultContentPath}/${resourceIdentifier}/contents/default`),
+    method: 'GET',
+  });
+};
+
 export const searchTags = (query: string): Promise<AxiosResponse<FacetResponse>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesSearchPath}/suggestions/tags?prefix=${query}`),
