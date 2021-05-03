@@ -58,7 +58,7 @@ const ResourceContents: FC<ResourceContentsProps> = ({ resource }) => {
           variant="outlined"
           color="primary"
           href={`${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${content.identifier}/delivery?jwt=${localStorage.token}`}>
-          {t('common.download')}
+          {t('common.download').toUpperCase()}
         </Button>
       </Grid>
     </StyledGridContainer>
