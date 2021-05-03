@@ -163,6 +163,9 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                         <SlideshowIcon />
                       </StyledListItemIcon>
                       <Typography variant="inherit">{t('resource.type.simulation')}</Typography>
+                      <StyledResourceExampleTypography variant="caption">
+                        ({t('explanation_text.resource_type_examples_simulation')})
+                      </StyledResourceExampleTypography>
                     </StyledMenuItemContent>
                   </StyledMenuItem>
                 </StyledTextField>
