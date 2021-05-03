@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CircularProgress, Typography } from '@material-ui/core';
+import { Link, Typography, CircularProgress } from '@material-ui/core';
 import { Content, resourceType, SupportedFileTypes } from '../types/content.types';
 import styled from 'styled-components';
 import { API_PATHS, API_URL, GOOGLE_DOC_VIEWER, MICROSOFT_DOCUMENT_VIEWER } from '../utils/constants';
@@ -28,6 +28,10 @@ const InformationAndDownloadWrapper = styled.div`
 
 const StyledAlert = styled(Alert)`
   margin-bottom: 2rem;
+`;
+
+const StyledBlockWrapper = styled.div`
+  display: block;
 `;
 
 const windowsMaxRenderSize = 10000000;
@@ -90,6 +94,8 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
       !(presentationMode === SupportedFileTypes.Vimeo) &&
       !(presentationMode === SupportedFileTypes.Download) &&
       !(presentationMode === SupportedFileTypes.Spotify) &&
+      !(presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent) &&
+      !(presentationMode === SupportedFileTypes.LinkSchemeHttp) &&
       !(presentationMode === SupportedFileTypes.Soundcloud)
     );
   };
@@ -106,6 +112,12 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
     );
   };
 
+  const hrefLinkUrl = (
+    <Link target="_blank" rel="noopener noreferrer" href={resource.contents.masterContent.features.dlr_content}>
+      {resource.contents.masterContent.features.dlr_content} ({t('resource.preview.open_in_new_tag')})
+    </Link>
+  );
+
   return (
     <>
       {!isLoading ? (
@@ -115,7 +127,10 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
           {previewNotSupported() && (
             <>
               <Typography>{t('resource.preview.preview_is_not_supported_for_file_format')}</Typography>
-              <DownloadButton contentURL={getURL()} />
+              <DownloadButton
+                contentURL={getURL()}
+                contentSize={resource.contents.masterContent.features.dlr_content_size}
+              />
             </>
           )}
           {presentationMode === SupportedFileTypes.Audio && (
@@ -145,7 +160,10 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
               ) : (
                 <InformationAndDownloadWrapper>
                   <StyledAlert severity="info">{t('resource.preview.file_to_big')}</StyledAlert>
-                  <DownloadButton contentURL={getURL()} />
+                  <DownloadButton
+                    contentURL={getURL()}
+                    contentSize={resource.contents.masterContent.features.dlr_content_size}
+                  />
                 </InformationAndDownloadWrapper>
               )}
             </>
@@ -160,7 +178,12 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
               scrolling="no"
             />
           )}
-          {presentationMode === SupportedFileTypes.Download && <DownloadButton contentURL={getURL()} />}
+          {presentationMode === SupportedFileTypes.Download && (
+            <DownloadButton
+              contentURL={getURL()}
+              contentSize={resource.contents.masterContent.features.dlr_content_size}
+            />
+          )}
           {previewIsRegularIframe() && (
             <iframe
               title={t('resource.preview.preview_of_master_content')}
@@ -170,6 +193,20 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
               height={'100%'}
               width={'100%'}
             />
+          )}
+          {(presentationMode === SupportedFileTypes.LinkSchemeHttp ||
+            presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent) && (
+            <StyledBlockWrapper>
+              <Typography gutterBottom variant="body1">
+                {t('resource.preview.external_page')}: {hrefLinkUrl}
+              </Typography>
+              {presentationMode === SupportedFileTypes.LinkSchemeHttp && (
+                <Typography variant="body1">{t('resource.preview.no_preview_security_reasons')}</Typography>
+              )}
+              {presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent && (
+                <Typography variant="body1">{t('resource.preview.no_preview_support_reasons')}</Typography>
+              )}
+            </StyledBlockWrapper>
           )}
         </>
       ) : (
