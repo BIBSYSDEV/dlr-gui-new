@@ -11,11 +11,9 @@ interface DownloadButtonProps {
 const DownloadButton: FC<DownloadButtonProps> = ({ contentURL, contentSize }) => {
   const { t } = useTranslation();
   return (
-    <>
-      <Button href={contentURL} size="large" startIcon={<CloudDownloadIcon />} variant="contained" color="primary">
-        {t('common.download')} {contentSize && ` (${contentSize})`}
-      </Button>
-    </>
+    <Button href={contentURL} size="large" startIcon={<CloudDownloadIcon />} variant="contained" color="primary">
+      {t('common.download')} {contentSize && ` (${contentSize})`}
+    </Button>
   );
 };
 
