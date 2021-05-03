@@ -44,6 +44,10 @@ export const StyledSchemaPartColored = styled(StyledSchemaPart)`
   background-color: ${(props) => props.color};
 `;
 
+export const StyledFeatureWrapper = styled.div`
+  padding: 0.5rem 0;
+`;
+
 export const StyledContentWrapper = styled.div`
   width: 100%;
   max-width: ${StyleWidths.width3};

@@ -324,6 +324,7 @@
     "link_to_resource": "Lenke til ressurs",
     "metadata": {
       "access": "Tilgang",
+      "content": "Filer",
       "contributor": "Bigragsyter",
       "contributors": "Bidragsytere",
       "created": "Opprettet",
