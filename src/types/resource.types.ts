@@ -274,3 +274,11 @@ export const getStepLabel = (step: ResourceFormStep) => {
       return 'resource.form_steps.preview';
   }
 };
+
+export const CompareCreators = (creatorA: Creator, creatorB: Creator): number => {
+  if (creatorA.features.dlr_creator_order && creatorB.features.dlr_creator_order) {
+    return creatorA.features.dlr_creator_order - creatorB.features.dlr_creator_order;
+  } else {
+    return 0;
+  }
+};

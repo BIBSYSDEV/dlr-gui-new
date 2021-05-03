@@ -1,13 +1,14 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Typography } from '@material-ui/core';
-import { resourceType, SupportedFileTypes } from '../types/content.types';
+import { CircularProgress, Typography } from '@material-ui/core';
+import { Content, resourceType, SupportedFileTypes } from '../types/content.types';
 import styled from 'styled-components';
-import { Resource } from '../types/resource.types';
 import { API_PATHS, API_URL, GOOGLE_DOC_VIEWER, MICROSOFT_DOCUMENT_VIEWER } from '../utils/constants';
 import { Alert } from '@material-ui/lab';
 import { determinePresentationMode } from '../utils/mime_type_utils';
 import DownloadButton from './DownloadButton';
+import { getResourceDefaultContent } from '../api/resourceApi';
+import { Resource } from '../types/resource.types';
 
 const StyledImage = styled.img`
   height: 100%;
@@ -31,82 +32,126 @@ const windowsMaxRenderSize = 10000000;
 
 interface ContentPreviewProps {
   resource: Resource;
+  isPreview?: boolean;
 }
 
-const ContentPreview: FC<ContentPreviewProps> = ({ resource }) => {
+const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }) => {
   const { t } = useTranslation();
-  const presentationMode = determinePresentationMode(resource);
-  const contentURL = `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${resource.contents.masterContent.identifier}/delivery?jwt=${localStorage.token}`;
+  const [defaultContent, setDefaultContent] = useState<Content | null>(null);
+  const [presentationMode, setPresentationMode] = useState<string>(
+    determinePresentationMode(resource.contents.masterContent, resource)
+  );
+  const [isLoading, setLoading] = useState(false);
+  const UrlGeneratedFromMasterContent = `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${resource.contents.masterContent.identifier}/delivery?jwt=${localStorage.token}`;
+
+  useEffect(() => {
+    const fetch = async () => {
+      setLoading(true);
+      try {
+        const defaultContentResponse = await getResourceDefaultContent(resource.identifier);
+        setDefaultContent(defaultContentResponse.data);
+        setPresentationMode(determinePresentationMode(defaultContentResponse.data, resource));
+      } catch (error) {
+        setDefaultContent(null);
+        setPresentationMode(determinePresentationMode(resource.contents.masterContent, resource));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (!isPreview) {
+      fetch();
+    }
+  }, [isPreview, resource, resource.contents.masterContent, resource.identifier]);
+
+  const getURL = () => {
+    return defaultContent?.features.dlr_content_url ?? UrlGeneratedFromMasterContent;
+  };
 
   return (
     <>
-      {presentationMode === resourceType.IMAGE && <StyledImage src={contentURL} alt="Preview of resource" />}
-      {presentationMode === resourceType.VIDEO && <StyledVideo src={contentURL} controls />}
-      {!(presentationMode === resourceType.IMAGE) &&
-        !(presentationMode === resourceType.VIDEO) &&
-        !(presentationMode === SupportedFileTypes.Document) &&
-        !(presentationMode === SupportedFileTypes.Audio) &&
-        !(presentationMode === SupportedFileTypes.PDF) &&
-        !(presentationMode === SupportedFileTypes.Kaltura) &&
-        !(presentationMode === SupportedFileTypes.Youtube) &&
-        !(presentationMode === SupportedFileTypes.MediaSite) &&
-        !(presentationMode === SupportedFileTypes.Link) &&
-        !(presentationMode === SupportedFileTypes.Vimeo) &&
-        !(presentationMode === SupportedFileTypes.Download) &&
-        !(presentationMode === SupportedFileTypes.Spotify) && (
-          <>
-            <Typography>{t('resource.preview.preview_is_not_supported_for_file_format')}</Typography>
-            <DownloadButton contentURL={contentURL} />
-          </>
-        )}
-      {presentationMode === SupportedFileTypes.Audio && (
-        <audio controls>
-          <source src={contentURL} type={resource.contents.masterContent.features.dlr_content_mime_type} />
-        </audio>
-      )}
-      {presentationMode === SupportedFileTypes.Document && (
+      {!isLoading ? (
         <>
-          {parseInt(resource.contents.masterContent.features.dlr_content_size_bytes ?? '0') < windowsMaxRenderSize ? (
+          {presentationMode === resourceType.IMAGE && <StyledImage src={getURL()} alt="Preview of resource" />}
+          {presentationMode === resourceType.VIDEO && <StyledVideo src={getURL()} controls />}
+          {!(presentationMode === resourceType.IMAGE) &&
+            !(presentationMode === resourceType.VIDEO) &&
+            !(presentationMode === SupportedFileTypes.Document) &&
+            !(presentationMode === SupportedFileTypes.Audio) &&
+            !(presentationMode === SupportedFileTypes.PDF) &&
+            !(presentationMode === SupportedFileTypes.Kaltura) &&
+            !(presentationMode === SupportedFileTypes.Youtube) &&
+            !(presentationMode === SupportedFileTypes.MediaSite) &&
+            !(presentationMode === SupportedFileTypes.Link) &&
+            !(presentationMode === SupportedFileTypes.Vimeo) &&
+            !(presentationMode === SupportedFileTypes.Download) &&
+            !(presentationMode === SupportedFileTypes.Spotify) && (
+              <>
+                <Typography>{t('resource.preview.preview_is_not_supported_for_file_format')}</Typography>
+                <DownloadButton contentURL={getURL()} />
+              </>
+            )}
+          {presentationMode === SupportedFileTypes.Audio && (
+            <audio controls>
+              <source
+                src={getURL()}
+                type={
+                  defaultContent?.features.dlr_content_mime_type ??
+                  resource.contents.masterContent.features.dlr_content_mime_type
+                }
+              />
+            </audio>
+          )}
+          {presentationMode === SupportedFileTypes.Document && (
+            <>
+              {parseInt(
+                defaultContent?.features.dlr_content_size_bytes ??
+                  '' + resource.contents.masterContent.features.dlr_content_size_bytes
+              ) < windowsMaxRenderSize ? (
+                <iframe
+                  title={t('resource.preview.preview_of_master_content')}
+                  src={`${MICROSOFT_DOCUMENT_VIEWER}?src=${getURL()}`}
+                  frameBorder="0"
+                  height={'100%'}
+                  width={'100%'}
+                />
+              ) : (
+                <InformationAndDownloadWrapper>
+                  <StyledAlert severity="info">{t('resource.preview.file_to_big')}</StyledAlert>
+                  <DownloadButton contentURL={getURL()} />
+                </InformationAndDownloadWrapper>
+              )}
+            </>
+          )}
+          {presentationMode === SupportedFileTypes.PDF && (
             <iframe
               title={t('resource.preview.preview_of_master_content')}
-              src={`${MICROSOFT_DOCUMENT_VIEWER}?src=${contentURL}`}
+              src={`${GOOGLE_DOC_VIEWER}?embedded=true&url=${getURL()}`}
+              frameBorder="0"
+              height={'100%'}
+              width={'100%'}
+              scrolling="no"
+            />
+          )}
+          {presentationMode === SupportedFileTypes.Download && <DownloadButton contentURL={getURL()} />}
+          {(presentationMode === SupportedFileTypes.Youtube ||
+            presentationMode === SupportedFileTypes.Kaltura ||
+            presentationMode === SupportedFileTypes.Vimeo ||
+            presentationMode === SupportedFileTypes.Link ||
+            presentationMode === SupportedFileTypes.MediaSite ||
+            presentationMode === SupportedFileTypes.Spotify) && (
+            <iframe
+              title={t('resource.preview.preview_of_master_content')}
+              src={getURL()}
               frameBorder="0"
               height={'100%'}
               width={'100%'}
             />
-          ) : (
-            <InformationAndDownloadWrapper>
-              <StyledAlert severity="info">{t('resource.preview.file_to_big')}</StyledAlert>
-              <DownloadButton contentURL={contentURL} />
-            </InformationAndDownloadWrapper>
           )}
         </>
+      ) : (
+        <CircularProgress />
       )}
-      {presentationMode === SupportedFileTypes.PDF && (
-        <iframe
-          title={t('resource.preview.preview_of_master_content')}
-          src={`${GOOGLE_DOC_VIEWER}?embedded=true&url=${contentURL}`}
-          frameBorder="0"
-          height={'100%'}
-          width={'100%'}
-          scrolling="no"
-        />
-      )}
-      {(presentationMode === SupportedFileTypes.Youtube ||
-        presentationMode === SupportedFileTypes.Kaltura ||
-        presentationMode === SupportedFileTypes.Vimeo ||
-        presentationMode === SupportedFileTypes.Link ||
-        presentationMode === SupportedFileTypes.MediaSite ||
-        presentationMode === SupportedFileTypes.Spotify) && (
-        <iframe
-          title={t('resource.preview.preview_of_master_content')}
-          src={contentURL}
-          frameBorder="0"
-          height={'100%'}
-          width={'100%'}
-        />
-      )}
-      {presentationMode === SupportedFileTypes.Download && <DownloadButton contentURL={contentURL} />}
     </>
   );
 };

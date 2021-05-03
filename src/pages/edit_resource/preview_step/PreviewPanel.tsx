@@ -29,7 +29,7 @@ const PreviewPanel: FC<DescriptionFieldsProps> = () => {
         <Typography data-testid="resource-title" variant="h2">
           {values.features.dlr_title}
         </Typography>
-        <ResourcePresentation resource={values} />
+        <ResourcePresentation resource={values} isPreview={true} />
       </>
     )
   );

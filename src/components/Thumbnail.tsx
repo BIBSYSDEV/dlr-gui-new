@@ -13,21 +13,26 @@ import useInterval from '../utils/useInterval';
 import { Colors } from '../themes/mainTheme';
 import { UserInstitution } from '../types/user.types';
 
-const StyledImageWrapper = styled.div`
-  min-width: 11rem;
-  min-height: 7rem;
-  width: 11rem;
-  height: 7rem;
+interface Props {
+  small: boolean;
+  color: string;
+}
+
+const StyledImageWrapper: any = styled.div<Props>`
+  min-height: ${(props: any) => (props.small ? '5rem' : '7rem')};
+  height: ${(props: any) => (props.small ? '5rem' : '7rem')};
+  min-width: ${(props: any) => (props.small ? '7.85rem' : '11rem')};
+  width: ${(props: any) => (props.small ? '7.85rem' : '11rem')};
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: ${(props) => props.color};
-  border: 1px solid ${Colors.DescriptionPageGradientColor1};
+  border: 1px solid ${Colors.DescriptionPageGradientColor2};
 `;
 
-const StyledImage = styled.img`
-  max-height: 7rem;
-  max-width: 11rem;
+const StyledImage: any = styled.img<Props>`
+  max-height: ${(props: any) => (props.small ? '5rem' : '7rem')};
+  max-width: ${(props: any) => (props.small ? '7.85rem' : '11rem')};
 `;
 
 const UnitBanner = '#405363';
@@ -46,6 +51,7 @@ interface thumbnailProps {
   alt: string;
   needsToStartToPoll?: boolean;
   institution?: string;
+  small?: boolean;
 }
 
 const Thumbnail: FC<thumbnailProps> = ({
@@ -53,6 +59,7 @@ const Thumbnail: FC<thumbnailProps> = ({
   alt,
   needsToStartToPoll = false,
   institution = '',
+  small = false,
 }) => {
   const [url, setUrl] = useState(urlGenerator(resourceOrContentIdentifier));
   const [backgroundColor, setBackgroundColor] = useState('white');
@@ -105,10 +112,11 @@ const Thumbnail: FC<thumbnailProps> = ({
   }, [resourceOrContentIdentifier]);
 
   return (
-    <StyledImageWrapper color={backgroundColor}>
+    <StyledImageWrapper color={backgroundColor} small={small}>
       <StyledImage
-        onError={(event) => addDefaultImage(event)}
+        onError={(event: any) => addDefaultImage(event)}
         src={url}
+        small={small}
         alt={alt}
         aria-hidden="true"
         data-testid={`thumbnail-${resourceOrContentIdentifier}`}
