@@ -1,7 +1,13 @@
 import React, { FC, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField, Typography } from '@material-ui/core';
-import { Creator, CreatorFeatureAttributes, FieldNames, Resource } from '../../../types/resource.types';
+import {
+  CompareCreators,
+  Creator,
+  CreatorFeatureAttributes,
+  FieldNames,
+  Resource,
+} from '../../../types/resource.types';
 import { ErrorMessage, Field, FieldArray, FieldArrayRenderProps, FieldProps, useFormikContext } from 'formik';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
@@ -149,13 +155,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
   };
 
   const sortCreatorArray = () => {
-    return values.creators?.sort((element1, element2) => {
-      if (element1.features.dlr_creator_order && element2.features.dlr_creator_order) {
-        return element2.features.dlr_creator_order - element1.features.dlr_creator_order;
-      } else {
-        return 0;
-      }
-    });
+    return values.creators?.sort((element1, element2) => CompareCreators(element1, element2));
   };
 
   const onAuthoritySelected = (authorities: Authority[], index: number, creator: Creator) => {

@@ -10,6 +10,7 @@ import {
   StyledSchemaPartColored,
 } from '../../components/styled/Wrappers';
 import ResourceMetadata from './ResourceMetadata';
+import ResourceUsage from './ResourceUsage';
 import ResourceContents from './ResourceContents';
 import ResourceLicense from './ResourceLicense';
 //import ContentPreview from '../../components/ContentPreview';
@@ -51,6 +52,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
         </StyledSchemaPart>
 
         <ResourceMetadata resource={resource} />
+
         <StyledSchemaPartColored color={Colors.DLRYellow2}>
           <StyledContentWrapperMedium>
             <Grid container spacing={6}>
@@ -65,7 +67,8 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource }) => {
         </StyledSchemaPartColored>
         <StyledSchemaPartColored color={Colors.DLRYellow3}>
           <StyledContentWrapperMedium>
-            <Typography variant="h3">{t('common.usage')}</Typography>
+            <Typography variant="h2">{t('common.usage')}</Typography>
+            <ResourceUsage resource={resource} />
           </StyledContentWrapperMedium>
         </StyledSchemaPartColored>
       </StyledPresentationWrapper>

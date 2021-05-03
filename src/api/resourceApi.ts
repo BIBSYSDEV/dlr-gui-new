@@ -1,5 +1,5 @@
 import { API_PATHS } from '../utils/constants';
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import {
   Contributor,
   Creator,
@@ -363,6 +363,14 @@ export const getAllFacets = (): Promise<AxiosResponse<FacetResponse>> => {
 export const searchTags = (query: string): Promise<AxiosResponse<FacetResponse>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesSearchPath}/suggestions/tags?prefix=${query}`),
+    method: 'GET',
+  });
+};
+
+export const getCitationFromCrossCite = (dlr_identifier_doi: string): Promise<AxiosResponse<string>> => {
+  return axios({
+    headers: { Accept: 'text/x-bibliography; style=apa-6th-edition; locale=en-GB' },
+    url: dlr_identifier_doi,
     method: 'GET',
   });
 };
