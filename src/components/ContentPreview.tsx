@@ -39,7 +39,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
   const { t } = useTranslation();
   const [defaultContent, setDefaultContent] = useState<Content | null>(null);
   const [presentationMode, setPresentationMode] = useState<string>(
-    determinePresentationMode(resource.contents.masterContent)
+    determinePresentationMode(resource.contents.masterContent, resource)
   );
   const [isLoading, setLoading] = useState(false);
   const UrlGeneratedFromMasterContent = `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${resource.contents.masterContent.identifier}/delivery?jwt=${localStorage.token}`;
@@ -50,10 +50,10 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
       try {
         const defaultContentResponse = await getResourceDefaultContent(resource.identifier);
         setDefaultContent(defaultContentResponse.data);
-        setPresentationMode(determinePresentationMode(defaultContentResponse.data));
+        setPresentationMode(determinePresentationMode(defaultContentResponse.data, resource));
       } catch (error) {
         setDefaultContent(null);
-        setPresentationMode(determinePresentationMode(resource.contents.masterContent));
+        setPresentationMode(determinePresentationMode(resource.contents.masterContent, resource));
       } finally {
         setLoading(false);
       }
@@ -62,10 +62,27 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
     if (!isPreview) {
       fetch();
     }
-  }, [isPreview, resource.contents.masterContent, resource.identifier]);
+  }, [isPreview, resource, resource.contents.masterContent, resource.identifier]);
 
   const getURL = () => {
     return defaultContent?.features.dlr_content_url ?? UrlGeneratedFromMasterContent;
+  };
+
+  const previewNotSupported = () => {
+    return (
+      !(presentationMode === resourceType.IMAGE) &&
+      !(presentationMode === resourceType.VIDEO) &&
+      !(presentationMode === SupportedFileTypes.Document) &&
+      !(presentationMode === SupportedFileTypes.Audio) &&
+      !(presentationMode === SupportedFileTypes.PDF) &&
+      !(presentationMode === SupportedFileTypes.Kaltura) &&
+      !(presentationMode === SupportedFileTypes.Youtube) &&
+      !(presentationMode === SupportedFileTypes.MediaSite) &&
+      !(presentationMode === SupportedFileTypes.Link) &&
+      !(presentationMode === SupportedFileTypes.Vimeo) &&
+      !(presentationMode === SupportedFileTypes.Download) &&
+      !(presentationMode === SupportedFileTypes.Spotify)
+    );
   };
 
   return (
@@ -74,16 +91,12 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
         <>
           {presentationMode === resourceType.IMAGE && <StyledImage src={getURL()} alt="Preview of resource" />}
           {presentationMode === resourceType.VIDEO && <StyledVideo src={getURL()} controls />}
-          {!(presentationMode === resourceType.IMAGE) &&
-            !(presentationMode === resourceType.VIDEO) &&
-            !(presentationMode === SupportedFileTypes.Document) &&
-            !(presentationMode === SupportedFileTypes.Audio) &&
-            !(presentationMode === SupportedFileTypes.PDF) && (
-              <>
-                <Typography>{t('resource.preview.preview_is_not_supported_for_file_format')}</Typography>
-                <DownloadButton contentURL={getURL()} />
-              </>
-            )}
+          {previewNotSupported() && (
+            <>
+              <Typography>{t('resource.preview.preview_is_not_supported_for_file_format')}</Typography>
+              <DownloadButton contentURL={getURL()} />
+            </>
+          )}
           {presentationMode === SupportedFileTypes.Audio && (
             <audio controls>
               <source
@@ -127,6 +140,20 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
             />
           )}
           {presentationMode === SupportedFileTypes.Download && <DownloadButton contentURL={getURL()} />}
+          {(presentationMode === SupportedFileTypes.Youtube ||
+            presentationMode === SupportedFileTypes.Kaltura ||
+            presentationMode === SupportedFileTypes.Vimeo ||
+            presentationMode === SupportedFileTypes.Link ||
+            presentationMode === SupportedFileTypes.MediaSite ||
+            presentationMode === SupportedFileTypes.Spotify) && (
+            <iframe
+              title={t('resource.preview.preview_of_master_content')}
+              src={getURL()}
+              frameBorder="0"
+              height={'100%'}
+              width={'100%'}
+            />
+          )}
         </>
       ) : (
         <CircularProgress />
