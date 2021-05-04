@@ -248,6 +248,7 @@ export const getResourceContents = async (identifier: string): Promise<ResourceC
     method: 'GET',
   });
   const resourceContent: ResourceContents = emptyResourceContent;
+  resourceContent.additionalContent = [];
   contentResponse.data.forEach((content: Content) => {
     if (content.features.dlr_content_master === 'true') {
       resourceContent.masterContent = content;
@@ -355,6 +356,13 @@ export const getResourceContentEvent = (contentIdentifier: string): Promise<Axio
 export const getAllFacets = (): Promise<AxiosResponse<FacetResponse>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesSearchPath}/resources/facets`),
+    method: 'GET',
+  });
+};
+
+export const getResourceDefaultContent = (resourceIdentifier: string): Promise<AxiosResponse<Content>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourceDefaultContentPath}/${resourceIdentifier}/contents/default`),
     method: 'GET',
   });
 };

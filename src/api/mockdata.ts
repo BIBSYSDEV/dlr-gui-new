@@ -71,7 +71,7 @@ export const mockMyResources: Resource[] = [
 ];
 
 export const mockUser: User = {
-  id: 'user123',
+  id: 'test@test.com',
   issuer: 'me',
   institution: 'ntnu',
   email: 'test@test.com',
@@ -233,25 +233,38 @@ export const createMockCreator = (): Creator => {
 
 export const mockContents: Content[] = [
   {
-    identifier: 'mockMasterContentID',
+    identifier: '534534534534534534',
     features: {
       dlr_content: 'mockMasterContent',
       dlr_content_type: 'file',
       dlr_content_master: 'true',
-      dlr_content_identifier: 'mockMasterContentID',
+      dlr_content_identifier: '534534534534534534',
       dlr_content_content_type: 'image',
       dlr_content_title: 'mockMasterContentTitle',
+      dlr_content_size: '2.2 GB',
     },
   },
   {
     identifier: '437829',
     features: {
       dlr_content: 'metadata_external.json',
-      dlr_content_identifier: 'adfasf1sdfsdfdf',
+      dlr_content_identifier: '437829',
       dlr_content_content_type: 'image',
       dlr_content_title: 'metadata_external.json',
       dlr_content_type: 'file',
       dlr_thumbnail_default: 'false',
+    },
+  },
+  {
+    identifier: '14342',
+    features: {
+      dlr_content: 'additional_image.jpg',
+      dlr_content_identifier: '14342',
+      dlr_content_content_type: 'image',
+      dlr_content_title: 'test.jpg',
+      dlr_content_type: 'file',
+      dlr_thumbnail_default: 'false',
+      dlr_content_size: '110 MB',
     },
   },
 ];

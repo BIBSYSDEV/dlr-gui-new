@@ -74,7 +74,7 @@ const ResourcePage = () => {
     }
   }, [identifier]);
 
-  const isAuthor = () => resource.features.dlr_submitter_email === user.email;
+  const isAuthor = () => resource.features.dlr_submitter_email === user.id;
 
   return isLoadingResource ? (
     <StyledProgressWrapper>
@@ -97,7 +97,7 @@ const ResourcePage = () => {
         </StyledResourceActionBar>
       )}
       <PageHeader testId="resource-title">{resource.features.dlr_title}</PageHeader>
-      <ResourcePresentation resource={resource} />
+      <ResourcePresentation resource={resource} isPreview={false} />
     </StyledContentWrapperLargeWithBottomMargin>
   );
 };

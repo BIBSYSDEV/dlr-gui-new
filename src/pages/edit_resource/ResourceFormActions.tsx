@@ -122,7 +122,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
                 data-testid="resource-close-button"
                 variant="contained"
                 color="primary"
-                onClick={handlePublishResource}>
+                onClick={handleLeaveForm}>
                 {t('common.close')}
               </UpperCaseButton>
             ) : (
