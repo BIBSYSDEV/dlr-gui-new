@@ -6,6 +6,7 @@ import { Chip, Grid, Typography } from '@material-ui/core';
 import { format } from 'date-fns';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
+import { SearchParameters } from '../../types/search.types';
 
 const StyledChip: any = styled(Chip)`
   && {
@@ -98,7 +99,14 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource }) => {
                   {t('resource.metadata.tags')}
                 </Typography>
                 {resource.tags.map((tag, index) => (
-                  <StyledChip key={index} size="medium" label={tag} />
+                  <StyledChip
+                    href={`/?${SearchParameters.tag}=${tag}`}
+                    component="a"
+                    key={index}
+                    size="medium"
+                    label={tag}
+                    clickable
+                  />
                 ))}
               </StyledFeatureWrapper>
             )}
