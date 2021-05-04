@@ -9,6 +9,7 @@ import { determinePresentationMode } from '../utils/mime_type_utils';
 import DownloadButton from './DownloadButton';
 import { getResourceDefaultContent } from '../api/resourceApi';
 import { Resource } from '../types/resource.types';
+import axios from 'axios';
 
 const StyledImage = styled.img`
   height: 100%;
@@ -53,8 +54,26 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
       setLoading(true);
       try {
         const defaultContentResponse = await getResourceDefaultContent(resource.identifier);
-        setDefaultContent(defaultContentResponse.data);
-        setPresentationMode(determinePresentationMode(defaultContentResponse.data, resource));
+        const newDefaultContent = defaultContentResponse.data;
+        const newDeterminedPresentationMode = determinePresentationMode(newDefaultContent, resource);
+
+        if (
+          newDeterminedPresentationMode === SupportedFileTypes.TwentyThreeVideo &&
+          defaultContentResponse.data.features.dlr_content_url
+        ) {
+          const twentyThreeVideoResponse = await axios.get(defaultContentResponse.data.features.dlr_content_url);
+          let htmlIframeAsString: string = twentyThreeVideoResponse.data.html;
+          htmlIframeAsString = htmlIframeAsString
+            .split(' ')
+            .filter((section) => section.includes('src='))
+            .join('')
+            .replaceAll('src="', '')
+            .replaceAll('></iframe>', '')
+            .replace('"', '');
+          newDefaultContent.features.dlr_content_url = htmlIframeAsString;
+        }
+        setDefaultContent(newDefaultContent);
+        setPresentationMode(newDeterminedPresentationMode);
       } catch (error) {
         setDefaultContent(null);
         setPresentationMode(determinePresentationMode(resource.contents.masterContent, resource));
@@ -73,22 +92,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
   };
 
   const previewNotSupported = () => {
-    return (
-      !(presentationMode === resourceType.IMAGE) &&
-      !(presentationMode === resourceType.VIDEO) &&
-      !(presentationMode === SupportedFileTypes.Document) &&
-      !(presentationMode === SupportedFileTypes.Audio) &&
-      !(presentationMode === SupportedFileTypes.PDF) &&
-      !(presentationMode === SupportedFileTypes.Kaltura) &&
-      !(presentationMode === SupportedFileTypes.Youtube) &&
-      !(presentationMode === SupportedFileTypes.MediaSite) &&
-      !(presentationMode === SupportedFileTypes.Link) &&
-      !(presentationMode === SupportedFileTypes.Vimeo) &&
-      !(presentationMode === SupportedFileTypes.Download) &&
-      !(presentationMode === SupportedFileTypes.Spotify) &&
-      !(presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent) &&
-      !(presentationMode === SupportedFileTypes.LinkSchemeHttp)
-    );
+    return presentationMode === SupportedFileTypes.Text;
   };
 
   const hrefLinkUrl = (
@@ -163,20 +167,21 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
               contentSize={resource.contents.masterContent.features.dlr_content_size}
             />
           )}
-          {(presentationMode === SupportedFileTypes.Youtube ||
+          {presentationMode === SupportedFileTypes.Youtube ||
             presentationMode === SupportedFileTypes.Kaltura ||
             presentationMode === SupportedFileTypes.Vimeo ||
             presentationMode === SupportedFileTypes.Link ||
             presentationMode === SupportedFileTypes.MediaSite ||
-            presentationMode === SupportedFileTypes.Spotify) && (
-            <iframe
-              title={t('resource.preview.preview_of_master_content')}
-              src={getURL()}
-              frameBorder="0"
-              height={'100%'}
-              width={'100%'}
-            />
-          )}
+            presentationMode === SupportedFileTypes.Spotify ||
+            (presentationMode === SupportedFileTypes.TwentyThreeVideo && (
+              <iframe
+                title={t('resource.preview.preview_of_master_content')}
+                src={getURL()}
+                frameBorder="0"
+                height={'100%'}
+                width={'100%'}
+              />
+            ))}
           {(presentationMode === SupportedFileTypes.LinkSchemeHttp ||
             presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent) && (
             <StyledBlockWrapper>

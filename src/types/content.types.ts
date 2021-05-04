@@ -59,7 +59,7 @@ export enum SupportedFileTypes {
   Vimeo = 'vimeo',
   Spotify = 'spotify',
   Soundcloud = 'soundcloud',
-  Video23 = '23video',
+  TwentyThreeVideo = '23video',
   Kaltura = 'kaltura',
   Text = 'text',
   Audio = 'audio',
