@@ -6,7 +6,7 @@ import { Resource } from '../../../types/resource.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { deleteTag, postTag, searchTags } from '../../../api/resourceApi';
+import { deleteTag, postTag, searchTags, updateSearchIndex } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import styled from 'styled-components';
@@ -98,6 +98,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
       setSaveError(error);
     } finally {
       setAllChangesSaved(true);
+      values.features.dlr_status_published && updateSearchIndex(values.identifier);
     }
   };
 
