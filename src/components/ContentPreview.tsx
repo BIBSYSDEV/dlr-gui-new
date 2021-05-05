@@ -7,7 +7,7 @@ import { API_PATHS, API_URL, GOOGLE_DOC_VIEWER, MICROSOFT_DOCUMENT_VIEWER } from
 import { Alert } from '@material-ui/lab';
 import { determinePresentationMode } from '../utils/mime_type_utils';
 import DownloadButton from './DownloadButton';
-import { getResourceDefaultContent } from '../api/resourceApi';
+import { getResourceDefaultContent, getTextFileContents } from '../api/resourceApi';
 import { Resource } from '../types/resource.types';
 
 const StyledImage = styled.img`
@@ -55,6 +55,12 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
         const defaultContentResponse = await getResourceDefaultContent(resource.identifier);
         setDefaultContent(defaultContentResponse.data);
         setPresentationMode(determinePresentationMode(defaultContentResponse.data, resource));
+        if (
+          determinePresentationMode(defaultContentResponse.data, resource) === SupportedFileTypes.Text &&
+          defaultContentResponse.data.features.dlr_content_url
+        ) {
+          const contentFileResponse = await getTextFileContents(defaultContentResponse.data.features.dlr_content_url);
+        }
       } catch (error) {
         setDefaultContent(null);
         setPresentationMode(determinePresentationMode(resource.contents.masterContent, resource));
