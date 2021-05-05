@@ -13,7 +13,7 @@
     "@uppy/dashboard": "^1.17.1",
     "@uppy/react": "^1.11.6",
     "axios": "^0.21.1",
-    "date-fns": "^2.21.1",
+    "date-fns": "^2.21.2",
     "deepmerge": "^4.2.2",
     "env-cmd": "^10.1.0",
     "formik": "^2.2.6",
