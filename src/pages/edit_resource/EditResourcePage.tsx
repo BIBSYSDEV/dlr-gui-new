@@ -32,6 +32,7 @@ import {
   getResourceTags,
   postResourceCreator,
   postResourceFeature,
+  postTag,
   putContributorFeature,
   putResourceCreatorFeature,
   updateContentTitle,
@@ -135,7 +136,7 @@ const EditResourcePage = () => {
     }
   };
 
-  const setCreator = async (tempResource: Resource, resourceIdentifier: string, mainCreatorName: string) => {
+  const setCreator = async (resource: Resource, resourceIdentifier: string, mainCreatorName: string) => {
     const postCreatorResponse = await postResourceCreator(resourceIdentifier);
     await putResourceCreatorFeature(
       resourceIdentifier,
@@ -143,7 +144,7 @@ const EditResourcePage = () => {
       CreatorFeatureAttributes.Name,
       mainCreatorName
     );
-    tempResource.creators = [
+    resource.creators = [
       {
         identifier: postCreatorResponse.data.identifier,
         features: {
@@ -153,10 +154,16 @@ const EditResourcePage = () => {
       },
     ];
   };
+  const setTags = async (resource: Resource, resourceIdentifier: string) => {
+    const promiseArray: Promise<any>[] = [];
+    resource.tags?.forEach((tag) => {
+      promiseArray.push(postTag(resourceIdentifier, tag));
+    });
+  };
 
-  const setResourceAccessType = async (tempResource: Resource) => {
-    await postResourceFeature(tempResource.identifier, 'dlr_access', 'open');
-    tempResource.features.dlr_access = 'open';
+  const setResourceAccessType = async (resource: Resource) => {
+    await postResourceFeature(resource.identifier, 'dlr_access', 'open');
+    resource.features.dlr_access = 'open';
   };
 
   async function setDLRType(
@@ -223,6 +230,7 @@ const EditResourcePage = () => {
       };
       await setDLRType(resourceCreationType, responseWithCalculatedDefaults, resource, startingResource);
       await setCreator(resource, startingResource.identifier, user.name);
+      await setTags(resource, startingResource.identifier);
 
       if (!resource.features.dlr_access) {
         await setResourceAccessType(resource);
