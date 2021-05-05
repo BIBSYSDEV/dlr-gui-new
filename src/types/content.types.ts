@@ -66,3 +66,21 @@ export enum SupportedFileTypes {
   LinkSchemeHttp = 'linkSchemeHttp',
   LinkXFrameOptionsPresent = 'linkXFrameOptionsPresent',
 }
+
+export interface SoundCloudResponse {
+  html: string;
+  author_name?: string;
+  author_url?: string;
+  description?: string;
+  provider_name?: string;
+  provider_url?: string;
+  thumbnail_url?: string;
+  title?: string;
+  version?: number;
+  height?: number;
+  width?: string;
+}
+
+export interface TwentyThreeVideoResponse {
+  html: string;
+}

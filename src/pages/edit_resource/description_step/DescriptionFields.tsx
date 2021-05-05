@@ -4,7 +4,7 @@ import { Grid, TextField } from '@material-ui/core';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import TagsField from './TagsField';
-import { postResourceFeature } from '../../../api/resourceApi';
+import { postResourceFeature, updateSearchIndex } from '../../../api/resourceApi';
 import { Resource, ResourceFeatureNamesFullPath } from '../../../types/resource.types';
 import ErrorBanner from '../../../components/ErrorBanner';
 import ResourceTypeField from './ResourceTypeField';
@@ -32,6 +32,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
       setAllChangesSaved(true);
       setSaveErrorFields([]);
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
+      values.features.dlr_status_published && updateSearchIndex(values.identifier);
       //todo: remove from array
     } catch (error) {
       setSaveErrorFields([...saveErrorFields, name]);

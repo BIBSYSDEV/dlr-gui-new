@@ -9,7 +9,8 @@ import { determinePresentationMode } from '../utils/mime_type_utils';
 import DownloadButton from './DownloadButton';
 import { getResourceDefaultContent } from '../api/resourceApi';
 import { Resource } from '../types/resource.types';
-import axios from 'axios';
+import { getSourceFromIframeString } from '../utils/iframe_utils';
+import { getSoundCloudInformation, getTwentyThreeVideoInformation } from '../api/externalApi';
 
 const StyledImage = styled.img`
   height: 100%;
@@ -55,25 +56,20 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
       try {
         const defaultContentResponse = await getResourceDefaultContent(resource.identifier);
         const newDefaultContent = defaultContentResponse.data;
-        const newDeterminedPresentationMode = determinePresentationMode(newDefaultContent, resource);
+        const newPresentationMode = determinePresentationMode(newDefaultContent, resource);
 
-        if (
-          newDeterminedPresentationMode === SupportedFileTypes.TwentyThreeVideo &&
-          defaultContentResponse.data.features.dlr_content_url
-        ) {
-          const twentyThreeVideoResponse = await axios.get(defaultContentResponse.data.features.dlr_content_url);
-          let htmlIframeAsString: string = twentyThreeVideoResponse.data.html;
-          htmlIframeAsString = htmlIframeAsString
-            .split(' ')
-            .filter((section) => section.includes('src='))
-            .join('')
-            .replaceAll('src="', '')
-            .replaceAll('></iframe>', '')
-            .replace('"', '');
-          newDefaultContent.features.dlr_content_url = htmlIframeAsString;
+        if (newPresentationMode === SupportedFileTypes.TwentyThreeVideo && newDefaultContent.features.dlr_content_url) {
+          const twentyThreeVideoResponse = await getTwentyThreeVideoInformation(
+            newDefaultContent.features.dlr_content_url
+          );
+          newDefaultContent.features.dlr_content_url = getSourceFromIframeString(twentyThreeVideoResponse.data.html);
+        }
+        if (newPresentationMode === SupportedFileTypes.Soundcloud && newDefaultContent.features.dlr_content_url) {
+          const contentResponse = await getSoundCloudInformation(newDefaultContent.features.dlr_content_url);
+          newDefaultContent.features.dlr_content_url = getSourceFromIframeString(contentResponse.data.html);
         }
         setDefaultContent(newDefaultContent);
-        setPresentationMode(newDeterminedPresentationMode);
+        setPresentationMode(newPresentationMode);
       } catch (error) {
         setDefaultContent(null);
         setPresentationMode(determinePresentationMode(resource.contents.masterContent, resource));
@@ -93,6 +89,19 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
 
   const previewNotSupported = () => {
     return presentationMode === SupportedFileTypes.Text;
+  };
+
+  const previewIsRegularIframe = () => {
+    return (
+      presentationMode === SupportedFileTypes.Youtube ||
+      presentationMode === SupportedFileTypes.Kaltura ||
+      presentationMode === SupportedFileTypes.Vimeo ||
+      presentationMode === SupportedFileTypes.Link ||
+      presentationMode === SupportedFileTypes.MediaSite ||
+      presentationMode === SupportedFileTypes.Spotify ||
+      presentationMode === SupportedFileTypes.Soundcloud ||
+      presentationMode === SupportedFileTypes.TwentyThreeVideo
+    );
   };
 
   const hrefLinkUrl = (
@@ -167,21 +176,16 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
               contentSize={resource.contents.masterContent.features.dlr_content_size}
             />
           )}
-          {presentationMode === SupportedFileTypes.Youtube ||
-            presentationMode === SupportedFileTypes.Kaltura ||
-            presentationMode === SupportedFileTypes.Vimeo ||
-            presentationMode === SupportedFileTypes.Link ||
-            presentationMode === SupportedFileTypes.MediaSite ||
-            presentationMode === SupportedFileTypes.Spotify ||
-            (presentationMode === SupportedFileTypes.TwentyThreeVideo && (
-              <iframe
-                title={t('resource.preview.preview_of_master_content')}
-                src={getURL()}
-                frameBorder="0"
-                height={'100%'}
-                width={'100%'}
-              />
-            ))}
+          {previewIsRegularIframe() && (
+            <iframe
+              title={t('resource.preview.preview_of_master_content')}
+              src={getURL()}
+              frameBorder="0"
+              allowFullScreen
+              height={'100%'}
+              width={'100%'}
+            />
+          )}
           {(presentationMode === SupportedFileTypes.LinkSchemeHttp ||
             presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent) && (
             <StyledBlockWrapper>

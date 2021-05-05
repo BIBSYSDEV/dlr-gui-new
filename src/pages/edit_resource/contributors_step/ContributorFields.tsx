@@ -4,7 +4,12 @@ import { MenuItem, TextField, Typography } from '@material-ui/core';
 import { Contributor, ContributorFeatureNames, FieldNames, Resource } from '../../../types/resource.types';
 import { ErrorMessage, Field, FieldArray, FieldArrayRenderProps, FieldProps, useFormikContext } from 'formik';
 import Button from '@material-ui/core/Button';
-import { createContributor, deleteContributor, putContributorFeature } from '../../../api/resourceApi';
+import {
+  createContributor,
+  deleteContributor,
+  putContributorFeature,
+  updateSearchIndex,
+} from '../../../api/resourceApi';
 import styled from 'styled-components';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
@@ -142,6 +147,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
     } finally {
       setAllChangesSaved(true);
       inputElements.current[values.contributors.length].focus();
+      values.features.dlr_status_published && updateSearchIndex(values.identifier);
     }
   };
 
@@ -170,6 +176,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
       setErrorIndex(contributorIndex);
     } finally {
       setAllChangesSaved(true);
+      values.features.dlr_status_published && updateSearchIndex(values.identifier);
     }
   };
 
@@ -189,6 +196,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
       setErrorIndex(contributorIndex);
     } finally {
       setAllChangesSaved(true);
+      values.features.dlr_status_published && updateSearchIndex(values.identifier);
     }
   };
 
@@ -208,6 +216,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
         );
       }
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
+      values.features.dlr_status_published && updateSearchIndex(values.identifier);
     } catch (error) {
       setUpdateContributorError(error);
       setErrorIndex(index);

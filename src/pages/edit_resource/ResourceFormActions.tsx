@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
-import { publishResource } from '../../api/resourceApi';
+import { publishResource, updateSearchIndex } from '../../api/resourceApi';
 import { getStepLabel, Resource, ResourceFormStep } from '../../types/resource.types';
 import { StyledContentWrapperMedium, StyledSchemaPart } from '../../components/styled/Wrappers';
 import ErrorBanner from '../../components/ErrorBanner';
@@ -96,6 +96,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
   };
 
   const handleLeaveForm = async () => {
+    values.features.dlr_status_published && updateSearchIndex(values.identifier);
     history.push('/resources/user/current');
   };
 

@@ -13,7 +13,7 @@ import ResourceMetadata from './ResourceMetadata';
 import ResourceUsage from './ResourceUsage';
 import ResourceContents from './ResourceContents';
 import ResourceLicense from './ResourceLicense';
-//import ContentPreview from '../../components/ContentPreview';
+import ContentPreview from '../../components/ContentPreview';
 
 const PreviewComponentWrapper = styled.div`
   margin: 1rem 0;
@@ -46,8 +46,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource, isPrevi
         <StyledSchemaPart>
           <StyledContentWrapperMedium>
             <PreviewComponentWrapper data-testid="resource-preview">
-              {/* <ContentPreview resource={resource} isPreview={isPreview} /> */}
-              {t('resource.preview.preview_not_implemented')}
+              {<ContentPreview resource={resource} isPreview={isPreview} />}
             </PreviewComponentWrapper>
           </StyledContentWrapperMedium>
         </StyledSchemaPart>

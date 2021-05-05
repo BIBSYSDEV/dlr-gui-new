@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { Paper, TextField, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
-import { updateContentTitle } from '../../../api/resourceApi';
+import { updateContentTitle, updateSearchIndex } from '../../../api/resourceApi';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import ErrorBanner from '../../../components/ErrorBanner';
@@ -87,6 +87,7 @@ const FileFields: FC<FileFieldsProps> = ({
         await updateContentTitle(resourceId, contentId, event.target.value);
         setAllChangesSaved(true);
         resetFormButKeepTouched(touched, resetForm, values, setTouched);
+        values.features.dlr_status_published && updateSearchIndex(values.identifier);
       } catch (error) {
         setSaveTitleError(error);
       }
