@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, Typography, CircularProgress } from '@material-ui/core';
+import { Link, Typography, CircularProgress, Paper } from '@material-ui/core';
 import { Content, resourceType, SupportedFileTypes } from '../types/content.types';
 import styled from 'styled-components';
 import { API_PATHS, API_URL, GOOGLE_DOC_VIEWER, MICROSOFT_DOCUMENT_VIEWER } from '../utils/constants';
@@ -34,6 +34,12 @@ const StyledBlockWrapper = styled.div`
   display: block;
 `;
 
+const StyledPaper = styled(Paper)`
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+`;
+
 const windowsMaxRenderSize = 10000000;
 
 interface ContentPreviewProps {
@@ -49,6 +55,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
   );
   const [isLoading, setLoading] = useState(false);
   const UrlGeneratedFromMasterContent = `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${resource.contents.masterContent.identifier}/delivery?jwt=${localStorage.token}`;
+  const [contentText, setContentText] = useState('');
 
   useEffect(() => {
     const fetch = async () => {
@@ -64,6 +71,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
         }
         if (newPresentationMode === SupportedFileTypes.Text && newDefaultContent.features.dlr_content_url) {
           const contentFileResponse = await getTextFileContents(newDefaultContent.features.dlr_content_url);
+          setContentText(contentFileResponse.data);
         }
         setDefaultContent(newDefaultContent);
         setPresentationMode(newPresentationMode);
@@ -82,26 +90,6 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
 
   const getURL = () => {
     return defaultContent?.features.dlr_content_url ?? UrlGeneratedFromMasterContent;
-  };
-
-  const previewNotSupported = () => {
-    return (
-      !(presentationMode === resourceType.IMAGE) &&
-      !(presentationMode === resourceType.VIDEO) &&
-      !(presentationMode === SupportedFileTypes.Document) &&
-      !(presentationMode === SupportedFileTypes.Audio) &&
-      !(presentationMode === SupportedFileTypes.PDF) &&
-      !(presentationMode === SupportedFileTypes.Kaltura) &&
-      !(presentationMode === SupportedFileTypes.Youtube) &&
-      !(presentationMode === SupportedFileTypes.MediaSite) &&
-      !(presentationMode === SupportedFileTypes.Link) &&
-      !(presentationMode === SupportedFileTypes.Vimeo) &&
-      !(presentationMode === SupportedFileTypes.Download) &&
-      !(presentationMode === SupportedFileTypes.Spotify) &&
-      !(presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent) &&
-      !(presentationMode === SupportedFileTypes.LinkSchemeHttp) &&
-      !(presentationMode === SupportedFileTypes.Soundcloud)
-    );
   };
 
   const previewIsRegularIframe = () => {
@@ -128,15 +116,6 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
         <>
           {presentationMode === resourceType.IMAGE && <StyledImage src={getURL()} alt="Preview of resource" />}
           {presentationMode === resourceType.VIDEO && <StyledVideo src={getURL()} controls />}
-          {previewNotSupported() && (
-            <>
-              <Typography>{t('resource.preview.preview_is_not_supported_for_file_format')}</Typography>
-              <DownloadButton
-                contentURL={getURL()}
-                contentSize={resource.contents.masterContent.features.dlr_content_size}
-              />
-            </>
-          )}
           {presentationMode === SupportedFileTypes.Audio && (
             <audio controls>
               <source
@@ -211,6 +190,11 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
                 <Typography variant="body1">{t('resource.preview.no_preview_support_reasons')}</Typography>
               )}
             </StyledBlockWrapper>
+          )}
+          {presentationMode === SupportedFileTypes.Text && (
+            <StyledPaper elevation={2}>
+              <Typography>{contentText}</Typography>
+            </StyledPaper>
           )}
         </>
       ) : (
