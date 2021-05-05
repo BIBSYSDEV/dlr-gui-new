@@ -15,6 +15,8 @@ context('Actions', () => {
     cy.get('[data-testid=new-resource-link-input]').type(testLink);
     cy.get('[data-testid=new-resource-link-submit-button]').click();
     cy.get('[data-testid=dlr-title-input]').should('have.value', mockDefaultResource.features.dlr_title);
+    cy.get('[data-testid=tag-chip-0]').contains(mockDefaultResource.tags[0]);
+    cy.get('[data-testid=resource-type-input] input').should('have.value', ResourceFeatureTypes.document);
     cy.get('[data-testid=step-navigation-2').click();
     cy.get('[data-testid=content-step-link]').contains(testLink);
   });
