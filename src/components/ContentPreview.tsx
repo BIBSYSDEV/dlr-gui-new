@@ -13,11 +13,13 @@ import { getSourceFromIframeString } from '../utils/iframe_utils';
 import { getSoundCloudInformation } from '../api/externalApi';
 
 const StyledImage = styled.img`
-  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
 `;
 
 const StyledVideo = styled.video`
-  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
 `;
 
 const InformationAndDownloadWrapper = styled.div`
@@ -45,9 +47,10 @@ const windowsMaxRenderSize = 10000000;
 interface ContentPreviewProps {
   resource: Resource;
   isPreview?: boolean;
+  mainFileBeingUploaded?: boolean;
 }
 
-const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }) => {
+const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, mainFileBeingUploaded = false }) => {
   const { t } = useTranslation();
   const [defaultContent, setDefaultContent] = useState<Content | null>(null);
   const [presentationMode, setPresentationMode] = useState<string>(
@@ -88,10 +91,10 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
       }
     };
 
-    if (!isPreview) {
+    if (!isPreview || !mainFileBeingUploaded) {
       fetch();
     }
-  }, [isPreview, resource, resource.contents.masterContent, resource.identifier]);
+  }, [isPreview, mainFileBeingUploaded, resource, resource.contents.masterContent, resource.identifier]);
 
   const previewIsRegularIframe = () => {
     return (
@@ -113,7 +116,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
 
   return (
     <>
-      {!isLoading ? (
+      {!isLoading && !mainFileBeingUploaded ? (
         <>
           {presentationMode === resourceType.IMAGE && <StyledImage src={usageURL} alt="Preview of resource" />}
           {presentationMode === resourceType.VIDEO && <StyledVideo src={usageURL} controls />}
@@ -162,6 +165,10 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
                 frameBorder="0"
               />
               <Typography>{t('resource.preview.browser_does_not_support_pdf_viewing')}</Typography>
+              <DownloadButton
+                contentURL={usageURL}
+                contentSize={resource.contents.masterContent.features.dlr_content_size}
+              />
             </object>
           )}
           {presentationMode === SupportedFileTypes.Download && (

@@ -82,6 +82,7 @@ const EditResourcePage = () => {
   const [resourceType, setResourceType] = useState<ResourceCreationType>(ResourceCreationType.FILE);
   const [resourceInitError, setResourceInitError] = useState<Error>();
   const [fileUploadError, setFileUploadError] = useState<Error>();
+  const [mainFileBeingUploaded, setMainFileBeingUploaded] = useState(false);
 
   const user = useSelector((state: RootState) => state.user);
 
@@ -260,9 +261,13 @@ const EditResourcePage = () => {
     if (mainFileHandler) {
       mainFileHandler.on('upload', () => {
         setResourceType(ResourceCreationType.FILE);
+        setMainFileBeingUploaded(true);
       });
       mainFileHandler.on('upload-error', () => {
         setFileUploadError(new Error('File upload error'));
+      });
+      mainFileHandler.on('complete', () => {
+        setMainFileBeingUploaded(false);
       });
     }
   }, [mainFileHandler]);
@@ -367,7 +372,12 @@ const EditResourcePage = () => {
   ) : resourceInitError ? (
     <ErrorBanner userNeedsToBeLoggedIn={true} error={resourceInitError} />
   ) : formikInitResource ? (
-    <ResourceForm resource={formikInitResource} uppy={mainFileHandler} resourceType={resourceType} />
+    <ResourceForm
+      resource={formikInitResource}
+      uppy={mainFileHandler}
+      resourceType={resourceType}
+      mainFileBeingUploaded={mainFileBeingUploaded}
+    />
   ) : null;
 };
 
