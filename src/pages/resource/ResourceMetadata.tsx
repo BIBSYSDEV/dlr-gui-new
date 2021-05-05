@@ -105,6 +105,7 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource }) => {
                     key={index}
                     size="medium"
                     label={tag}
+                    data-testid={`tag-chip-${index}`}
                     clickable
                   />
                 ))}
