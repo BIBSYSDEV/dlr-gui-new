@@ -46,8 +46,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource, isPrevi
         <StyledSchemaPart>
           <StyledContentWrapperMedium>
             <PreviewComponentWrapper data-testid="resource-preview">
-              {<ContentPreview resource={resource} isPreview={isPreview} />}
-              {/*t('resource.preview.preview_not_implemented') */}
+              <ContentPreview resource={resource} isPreview={isPreview} />
             </PreviewComponentWrapper>
           </StyledContentWrapperMedium>
         </StyledSchemaPart>

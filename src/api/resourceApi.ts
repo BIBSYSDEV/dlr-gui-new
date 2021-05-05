@@ -118,6 +118,13 @@ export const getResourceDefaults = (identifier: string): Promise<AxiosResponse<R
   });
 };
 
+export const updateSearchIndex = (resourceIdentifier: string) => {
+  authenticatedApiRequest({
+    url: `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/searchindexing`,
+    method: 'PUT',
+  });
+};
+
 export const getResourceTags = (identifier: string): Promise<AxiosResponse<string[]>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/tags/types/tag`),

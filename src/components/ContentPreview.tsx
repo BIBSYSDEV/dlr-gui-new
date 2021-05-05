@@ -9,6 +9,8 @@ import { determinePresentationMode } from '../utils/mime_type_utils';
 import DownloadButton from './DownloadButton';
 import { getResourceDefaultContent, getTextFileContents } from '../api/resourceApi';
 import { Resource } from '../types/resource.types';
+import { getSourceFromIframeString } from '../utils/iframe_utils';
+import { getSoundCloudInformation } from '../api/externalApi';
 
 const StyledImage = styled.img`
   height: 100%;
@@ -53,14 +55,18 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
       setLoading(true);
       try {
         const defaultContentResponse = await getResourceDefaultContent(resource.identifier);
-        setDefaultContent(defaultContentResponse.data);
-        setPresentationMode(determinePresentationMode(defaultContentResponse.data, resource));
-        if (
-          determinePresentationMode(defaultContentResponse.data, resource) === SupportedFileTypes.Text &&
-          defaultContentResponse.data.features.dlr_content_url
-        ) {
-          const contentFileResponse = await getTextFileContents(defaultContentResponse.data.features.dlr_content_url);
+
+        const newDefaultContent = defaultContentResponse.data;
+        const newPresentationMode = determinePresentationMode(newDefaultContent, resource);
+        if (newPresentationMode === SupportedFileTypes.Soundcloud && newDefaultContent.features.dlr_content_url) {
+          const contentResponse = await getSoundCloudInformation(newDefaultContent.features.dlr_content_url);
+          newDefaultContent.features.dlr_content_url = getSourceFromIframeString(contentResponse.data.html);
         }
+        if (newPresentationMode === SupportedFileTypes.Text && newDefaultContent.features.dlr_content_url) {
+          const contentFileResponse = await getTextFileContents(newDefaultContent.features.dlr_content_url);
+        }
+        setDefaultContent(newDefaultContent);
+        setPresentationMode(newPresentationMode);
       } catch (error) {
         setDefaultContent(null);
         setPresentationMode(determinePresentationMode(resource.contents.masterContent, resource));
@@ -93,7 +99,20 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
       !(presentationMode === SupportedFileTypes.Download) &&
       !(presentationMode === SupportedFileTypes.Spotify) &&
       !(presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent) &&
-      !(presentationMode === SupportedFileTypes.LinkSchemeHttp)
+      !(presentationMode === SupportedFileTypes.LinkSchemeHttp) &&
+      !(presentationMode === SupportedFileTypes.Soundcloud)
+    );
+  };
+
+  const previewIsRegularIframe = () => {
+    return (
+      presentationMode === SupportedFileTypes.Youtube ||
+      presentationMode === SupportedFileTypes.Kaltura ||
+      presentationMode === SupportedFileTypes.Vimeo ||
+      presentationMode === SupportedFileTypes.Link ||
+      presentationMode === SupportedFileTypes.MediaSite ||
+      presentationMode === SupportedFileTypes.Spotify ||
+      presentationMode === SupportedFileTypes.Soundcloud
     );
   };
 
@@ -169,16 +188,12 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
               contentSize={resource.contents.masterContent.features.dlr_content_size}
             />
           )}
-          {(presentationMode === SupportedFileTypes.Youtube ||
-            presentationMode === SupportedFileTypes.Kaltura ||
-            presentationMode === SupportedFileTypes.Vimeo ||
-            presentationMode === SupportedFileTypes.Link ||
-            presentationMode === SupportedFileTypes.MediaSite ||
-            presentationMode === SupportedFileTypes.Spotify) && (
+          {previewIsRegularIframe() && (
             <iframe
               title={t('resource.preview.preview_of_master_content')}
               src={getURL()}
               frameBorder="0"
+              allowFullScreen
               height={'100%'}
               width={'100%'}
             />
