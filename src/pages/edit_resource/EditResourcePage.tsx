@@ -159,6 +159,7 @@ const EditResourcePage = () => {
     resource.tags?.forEach((tag) => {
       promiseArray.push(postTag(resourceIdentifier, tag));
     });
+    await Promise.all(promiseArray);
   };
 
   const setResourceAccessType = async (resource: Resource) => {
