@@ -351,6 +351,7 @@
     "no_published_resources": "You have no published resources",
     "no_unpublished_resources": "You have no unpublished resources",
     "preview": {
+      "browser_does_not_support_pdf_viewing": "This browser does not support PDF",
       "external_page": "External page",
       "file_to_big": "The file is too big for preview",
       "no_preview_security_reasons": "No preview for this resource exists due to security reasons",

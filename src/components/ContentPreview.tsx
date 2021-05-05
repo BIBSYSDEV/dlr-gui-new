@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, Typography, CircularProgress, Paper } from '@material-ui/core';
 import { Content, resourceType, SupportedFileTypes } from '../types/content.types';
 import styled from 'styled-components';
-import { API_PATHS, API_URL, GOOGLE_DOC_VIEWER, MICROSOFT_DOCUMENT_VIEWER } from '../utils/constants';
+import { API_PATHS, API_URL, MICROSOFT_DOCUMENT_VIEWER } from '../utils/constants';
 import { Alert } from '@material-ui/lab';
 import { determinePresentationMode } from '../utils/mime_type_utils';
 import DownloadButton from './DownloadButton';
@@ -54,8 +54,10 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
     determinePresentationMode(resource.contents.masterContent, resource)
   );
   const [isLoading, setLoading] = useState(false);
-  const UrlGeneratedFromMasterContent = `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${resource.contents.masterContent.identifier}/delivery?jwt=${localStorage.token}`;
   const [contentText, setContentText] = useState('');
+  const [usageURL, setUsageURL] = useState(
+    `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${resource.contents.masterContent.identifier}/delivery?jwt=${localStorage.token}`
+  );
 
   useEffect(() => {
     const fetch = async () => {
@@ -73,6 +75,9 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
           const contentFileResponse = await getTextFileContents(newDefaultContent.features.dlr_content_url);
           setContentText(contentFileResponse.data);
         }
+        if (newDefaultContent.features.dlr_content_url) {
+          setUsageURL(newDefaultContent.features.dlr_content_url);
+        }
         setDefaultContent(newDefaultContent);
         setPresentationMode(newPresentationMode);
       } catch (error) {
@@ -87,10 +92,6 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
       fetch();
     }
   }, [isPreview, resource, resource.contents.masterContent, resource.identifier]);
-
-  const getURL = () => {
-    return defaultContent?.features.dlr_content_url ?? UrlGeneratedFromMasterContent;
-  };
 
   const previewIsRegularIframe = () => {
     return (
@@ -114,12 +115,12 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
     <>
       {!isLoading ? (
         <>
-          {presentationMode === resourceType.IMAGE && <StyledImage src={getURL()} alt="Preview of resource" />}
-          {presentationMode === resourceType.VIDEO && <StyledVideo src={getURL()} controls />}
+          {presentationMode === resourceType.IMAGE && <StyledImage src={usageURL} alt="Preview of resource" />}
+          {presentationMode === resourceType.VIDEO && <StyledVideo src={usageURL} controls />}
           {presentationMode === SupportedFileTypes.Audio && (
             <audio controls>
               <source
-                src={getURL()}
+                src={usageURL}
                 type={
                   defaultContent?.features.dlr_content_mime_type ??
                   resource.contents.masterContent.features.dlr_content_mime_type
@@ -135,7 +136,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
               ) < windowsMaxRenderSize ? (
                 <iframe
                   title={t('resource.preview.preview_of_master_content')}
-                  src={`${MICROSOFT_DOCUMENT_VIEWER}?src=${getURL()}`}
+                  src={`${MICROSOFT_DOCUMENT_VIEWER}?src=${usageURL}`}
                   frameBorder="0"
                   height={'100%'}
                   width={'100%'}
@@ -144,7 +145,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
                 <InformationAndDownloadWrapper>
                   <StyledAlert severity="info">{t('resource.preview.file_to_big')}</StyledAlert>
                   <DownloadButton
-                    contentURL={getURL()}
+                    contentURL={usageURL}
                     contentSize={resource.contents.masterContent.features.dlr_content_size}
                   />
                 </InformationAndDownloadWrapper>
@@ -152,25 +153,27 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
             </>
           )}
           {presentationMode === SupportedFileTypes.PDF && (
-            <iframe
-              title={t('resource.preview.preview_of_master_content')}
-              src={`${GOOGLE_DOC_VIEWER}?embedded=true&url=${getURL()}`}
-              frameBorder="0"
-              height={'100%'}
-              width={'100%'}
-              scrolling="no"
-            />
+            <object data={usageURL} type="application/pdf" height={'100%'} width={'100%'}>
+              <iframe
+                title={t('resource.preview.preview_of_master_content')}
+                height={'100%'}
+                width={'100%'}
+                src={usageURL}
+                frameBorder="0"
+              />
+              <Typography>{t('resource.preview.browser_does_not_support_pdf_viewing')}</Typography>
+            </object>
           )}
           {presentationMode === SupportedFileTypes.Download && (
             <DownloadButton
-              contentURL={getURL()}
+              contentURL={usageURL}
               contentSize={resource.contents.masterContent.features.dlr_content_size}
             />
           )}
           {previewIsRegularIframe() && (
             <iframe
               title={t('resource.preview.preview_of_master_content')}
-              src={getURL()}
+              src={usageURL}
               frameBorder="0"
               allowFullScreen
               height={'100%'}
