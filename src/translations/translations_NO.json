@@ -131,7 +131,7 @@
     "resource_type_examples_simulation": "3D-modell, spill, VR e.l.",
     "resource_type_helper_text": "Velg ressurstype som stemmer best overens med innholdet",
     "search_input_helper_aria_label": "Vis søkeinformasjon",
-    "search_input_helper_text" : "Spesialtegn *, ? og ~ støttes. Mer informasjon om søketekst finner du på",
+    "search_input_helper_text" : "Søketegn *, ? og ~ støttes. Mer informasjon om søketekst finner du på",
     "tags_helper_aria_label": "Vis emneord forklaring",
     "tags_helper_text": "Emneord benyttes for å beskrive innholdet i en ressurs. Et emneord kan bestå av ett eller flere ord, f.eks \"optisk illusjon\" ",
     "tags_helper_text_edit_resource1": "Skriv inn emneordet etterfulgt av enter så kan du skrive inn neste emneord. Man kan legge til og slette emneord etter at en ressurs er publisert",

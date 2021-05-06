@@ -8,6 +8,7 @@ import {
   mockResource,
   mockTags,
 } from '../../src/api/mockdata';
+import { SearchParameters } from '../../src/types/search.types';
 
 context('Actions', () => {
   beforeEach(() => {
@@ -42,6 +43,15 @@ context('Actions', () => {
     cy.get(`[data-testid=file-content-${additionalMockContent.identifier}-size]`).contains(
       additionalMockContent.features.dlr_content_size
     );
+  });
+
+  it('can click on tags to open a search ', () => {
+    const tag0_encoded = 'mock%20tag1';
+    cy.get('[data-testid=tag-chip-0]').click();
+    cy.get('[data-testid=filter-tag-chip-0]').should('exist');
+    cy.location().should((loc) => {
+      expect(loc.search).to.eq(`?${SearchParameters.tag}=${tag0_encoded}`);
+    });
   });
 
   it('shows edit-button', () => {

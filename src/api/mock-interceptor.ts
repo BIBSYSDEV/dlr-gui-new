@@ -110,6 +110,9 @@ export const interceptRequestsOnMock = () => {
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*`)).reply(202, {});
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*`)).reply(202, {});
 
+  //UPDATE SEARCH INDEX
+  mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/searchindexing`)).reply(202, {});
+
   //FACETS
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesSearchPath}/resources/facets`)).reply(200, mockFacets);
 
