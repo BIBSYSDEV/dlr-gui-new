@@ -1,9 +1,24 @@
 import React, { FC } from 'react';
 import { Resource } from '../../types/resource.types';
-import { Typography } from '@material-ui/core';
+import { Link, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { StyledFeatureWrapper } from '../../components/styled/Wrappers';
-import LicenseCard2 from '../../components/LicenseCard2';
+import CClogoImage from '../../components/CClogoImage';
+import styled from 'styled-components';
+import { Colors } from '../../themes/mainTheme';
+import i18next from 'i18next';
+
+const StyledLink = styled(Link)`
+  color: ${Colors.Primary};
+  margin-left: -0.3rem;
+  display: flex;
+  align-items: flex-start;
+`;
+
+enum langCodes {
+  NO = 'no',
+  EN = 'en',
+}
 
 interface ResourceLicenseProps {
   resource: Resource;
@@ -11,17 +26,34 @@ interface ResourceLicenseProps {
 
 const ResourceLicense: FC<ResourceLicenseProps> = ({ resource }) => {
   const { t } = useTranslation();
+  const license = resource.licenses[0];
+  const langCode: string = i18next.language.includes('nb') ? langCodes.NO : langCodes.EN;
+
+  const generateLicenseDescription = () => {
+    const description = langCodes.NO
+      ? license.features?.dlr_license_description_no
+      : license.features?.dlr_license_description_en;
+    return description ?? license.features?.dlr_license_description;
+  };
+
+  const generateLicenseUrl = () => {
+    const link = langCodes.NO ? license.features?.dlr_license_url_no : license.features?.dlr_license_url_en;
+    return link ?? license.features?.dlr_license_url;
+  };
 
   return (
     <>
-      {resource.licenses && resource.licenses.length !== 0 && resource.licenses[0].identifier.length > 0 && (
+      {license && license.identifier.length > 0 && (
         <StyledFeatureWrapper data-testid="resource-license">
           <Typography gutterBottom variant="h2">
             {t('resource.metadata.license')}
           </Typography>
-          {resource.licenses.map(
-            (license) => license.identifier && <LicenseCard2 license={license} key={license.identifier} />
-          )}
+          <div lang={langCode}>
+            <StyledLink gutterBottom target="_blank" rel="noopener noreferrer" href={generateLicenseUrl()}>
+              {license.features?.dlr_license_code && <CClogoImage licenseCode={license.features.dlr_license_code} />}
+            </StyledLink>
+            <Typography variant="overline">{generateLicenseDescription()}</Typography>
+          </div>
         </StyledFeatureWrapper>
       )}
     </>
