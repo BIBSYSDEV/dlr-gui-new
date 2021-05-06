@@ -133,6 +133,7 @@ export const mockDefaultResource: Resource = deepmerge(emptyResource, {
   },
   identifier: 'resource-345',
   contents: [],
+  tags: ['tag1', 'tag2'],
 });
 
 export const mockContributors: Contributor[] = [
