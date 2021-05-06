@@ -54,7 +54,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
   const { t } = useTranslation();
   const [defaultContent, setDefaultContent] = useState<Content | null>(null);
   const [presentationMode, setPresentationMode] = useState<string>(
-    determinePresentationMode(resource.contents.masterContent, resource)
+    determinePresentationMode(resource.contents.masterContent)
   );
   const [isLoading, setLoading] = useState(false);
   const [contentText, setContentText] = useState('');
@@ -69,7 +69,8 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
         const defaultContentResponse = await getResourceDefaultContent(resource.identifier);
 
         const newDefaultContent = defaultContentResponse.data;
-        const newPresentationMode = determinePresentationMode(newDefaultContent, resource);
+        const newPresentationMode = determinePresentationMode(newDefaultContent);
+
         if (newPresentationMode === SupportedFileTypes.Soundcloud && newDefaultContent.features.dlr_content_url) {
           const contentResponse = await getSoundCloudInformation(newDefaultContent.features.dlr_content_url);
           newDefaultContent.features.dlr_content_url = getSourceFromIframeString(contentResponse.data.html);
@@ -85,7 +86,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
         setPresentationMode(newPresentationMode);
       } catch (error) {
         setDefaultContent(null);
-        setPresentationMode(determinePresentationMode(resource.contents.masterContent, resource));
+        setPresentationMode(determinePresentationMode(resource.contents.masterContent));
       } finally {
         setLoading(false);
       }

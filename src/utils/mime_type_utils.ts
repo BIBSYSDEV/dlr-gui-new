@@ -1,5 +1,4 @@
 import { Content, SupportedFileTypes } from '../types/content.types';
-import { Resource } from '../types/resource.types';
 
 const documentTypeFromMime = (content: Content): string => {
   switch (content.features.dlr_content_mime_type) {
@@ -65,7 +64,7 @@ const documentTypeFromMime = (content: Content): string => {
   }
 };
 
-export const determinePresentationMode = (content: Content, resource: Resource): string => {
+export const determinePresentationMode = (content: Content): string => {
   if (content.features.dlr_content_type_link_scheme_http === 'true') {
     return SupportedFileTypes.LinkSchemeHttp;
   } else if (
@@ -75,11 +74,6 @@ export const determinePresentationMode = (content: Content, resource: Resource):
     content.features.dlr_content_mime_type !== 'video-service/x-youtube'
   ) {
     return SupportedFileTypes.LinkXFrameOptionsPresent;
-  } else if (
-    resource.features.dlr_content_type === 'link' &&
-    !resource.contents.masterContent.features.dlr_content_mime_type
-  ) {
-    return SupportedFileTypes.Link;
   } else {
     return documentTypeFromMime(content);
   }
