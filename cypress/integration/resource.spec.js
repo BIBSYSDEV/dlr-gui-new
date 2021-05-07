@@ -1,5 +1,4 @@
 import {
-  mockContent,
   mockContents,
   mockContributors,
   mockCreators,
@@ -7,12 +6,17 @@ import {
   mockMyResources,
   mockResource,
   mockTags,
+  MockText,
 } from '../../src/api/mockdata';
 import { SearchParameters } from '../../src/types/search.types';
 
 context('Actions', () => {
   beforeEach(() => {
     cy.visit(`/resource/mock-id`);
+  });
+
+  it('can preview a text file', () => {
+    cy.get('[data-testid=text-file-content-typography').contains(MockText);
   });
 
   it('shows a resources data', () => {

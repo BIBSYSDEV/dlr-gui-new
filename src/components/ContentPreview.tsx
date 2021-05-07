@@ -53,7 +53,6 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
       setLoading(true);
       try {
         const defaultContentResponse = await getResourceDefaultContent(resource.identifier);
-
         const newDefaultContent = defaultContentResponse.data;
         const newPresentationMode = determinePresentationMode(newDefaultContent);
 
@@ -138,7 +137,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
           )}
           {presentationMode === SupportedFileTypes.Text && (
             <StyledPaper elevation={2}>
-              <Typography>{contentText}</Typography>
+              <Typography data-testid="text-file-content-typography">{contentText}</Typography>
             </StyledPaper>
           )}
         </>
