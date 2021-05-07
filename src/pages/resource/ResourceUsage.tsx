@@ -110,6 +110,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
       textField.innerText = citationPreTitle + citationTitle + citationPostTitle;
       document.body.appendChild(textField);
       textField.select();
+      //execCommand is deprecated but copy command is still widely supported
       document.execCommand('copy');
       textField.remove();
     }
