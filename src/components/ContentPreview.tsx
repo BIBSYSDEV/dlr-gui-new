@@ -10,7 +10,7 @@ import DownloadButton from './DownloadButton';
 import { getResourceDefaultContent } from '../api/resourceApi';
 import { Resource } from '../types/resource.types';
 import { getSourceFromIframeString } from '../utils/iframe_utils';
-import { getSoundCloudInformation } from '../api/externalApi';
+import { getSoundCloudInformation, getTwentyThreeVideoInformation } from '../api/externalApi';
 
 const StyledImage = styled.img`
   height: 100%;
@@ -57,6 +57,13 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
         const defaultContentResponse = await getResourceDefaultContent(resource.identifier);
         const newDefaultContent = defaultContentResponse.data;
         const newPresentationMode = determinePresentationMode(newDefaultContent, resource);
+
+        if (newPresentationMode === SupportedFileTypes.TwentyThreeVideo && newDefaultContent.features.dlr_content_url) {
+          const twentyThreeVideoResponse = await getTwentyThreeVideoInformation(
+            newDefaultContent.features.dlr_content_url
+          );
+          newDefaultContent.features.dlr_content_url = getSourceFromIframeString(twentyThreeVideoResponse.data.html);
+        }
         if (newPresentationMode === SupportedFileTypes.Soundcloud && newDefaultContent.features.dlr_content_url) {
           const contentResponse = await getSoundCloudInformation(newDefaultContent.features.dlr_content_url);
           newDefaultContent.features.dlr_content_url = getSourceFromIframeString(contentResponse.data.html);
@@ -81,23 +88,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
   };
 
   const previewNotSupported = () => {
-    return (
-      !(presentationMode === resourceType.IMAGE) &&
-      !(presentationMode === resourceType.VIDEO) &&
-      !(presentationMode === SupportedFileTypes.Document) &&
-      !(presentationMode === SupportedFileTypes.Audio) &&
-      !(presentationMode === SupportedFileTypes.PDF) &&
-      !(presentationMode === SupportedFileTypes.Kaltura) &&
-      !(presentationMode === SupportedFileTypes.Youtube) &&
-      !(presentationMode === SupportedFileTypes.MediaSite) &&
-      !(presentationMode === SupportedFileTypes.Link) &&
-      !(presentationMode === SupportedFileTypes.Vimeo) &&
-      !(presentationMode === SupportedFileTypes.Download) &&
-      !(presentationMode === SupportedFileTypes.Spotify) &&
-      !(presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent) &&
-      !(presentationMode === SupportedFileTypes.LinkSchemeHttp) &&
-      !(presentationMode === SupportedFileTypes.Soundcloud)
-    );
+    return presentationMode === SupportedFileTypes.Text;
   };
 
   const previewIsRegularIframe = () => {
@@ -108,7 +99,8 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
       presentationMode === SupportedFileTypes.Link ||
       presentationMode === SupportedFileTypes.MediaSite ||
       presentationMode === SupportedFileTypes.Spotify ||
-      presentationMode === SupportedFileTypes.Soundcloud
+      presentationMode === SupportedFileTypes.Soundcloud ||
+      presentationMode === SupportedFileTypes.TwentyThreeVideo
     );
   };
 
