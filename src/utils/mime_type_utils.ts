@@ -19,7 +19,7 @@ const documentTypeFromMime = (content: Content): string => {
     case 'video-service/x-youtube':
       return SupportedFileTypes.Youtube;
     case 'video-service/x-twentythree':
-      return SupportedFileTypes.Video23;
+      return SupportedFileTypes.TwentyThreeVideo;
     case 'video-service/x-mediasite':
       return SupportedFileTypes.MediaSite;
     case 'video-service/x-kaltura':

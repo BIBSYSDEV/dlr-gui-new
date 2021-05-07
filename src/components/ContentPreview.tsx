@@ -9,10 +9,11 @@ import DownloadButton from './DownloadButton';
 import { getResourceDefaultContent, getTextFileContents } from '../api/resourceApi';
 import { Resource } from '../types/resource.types';
 import { getSourceFromIframeString } from '../utils/iframe_utils';
-import { getSoundCloudInformation } from '../api/externalApi';
+
 import ContentIframe from './ContentIframe';
 import DocumentPreview from './DocumentPreview';
 import LinkPreviewNotPossible from './LinkPreviewNotPossible';
+import { getSoundCloudInformation, getTwentyThreeVideoInformation } from '../api/externalApi';
 
 const StyledImage = styled.img`
   max-height: 100%;
@@ -56,6 +57,12 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
         const newDefaultContent = defaultContentResponse.data;
         const newPresentationMode = determinePresentationMode(newDefaultContent);
 
+        if (newPresentationMode === SupportedFileTypes.TwentyThreeVideo && newDefaultContent.features.dlr_content_url) {
+          const twentyThreeVideoResponse = await getTwentyThreeVideoInformation(
+            newDefaultContent.features.dlr_content_url
+          );
+          newDefaultContent.features.dlr_content_url = getSourceFromIframeString(twentyThreeVideoResponse.data.html);
+        }
         if (newPresentationMode === SupportedFileTypes.Soundcloud && newDefaultContent.features.dlr_content_url) {
           const contentResponse = await getSoundCloudInformation(newDefaultContent.features.dlr_content_url);
           newDefaultContent.features.dlr_content_url = getSourceFromIframeString(contentResponse.data.html);
@@ -90,7 +97,8 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
       presentationMode === SupportedFileTypes.Link ||
       presentationMode === SupportedFileTypes.MediaSite ||
       presentationMode === SupportedFileTypes.Spotify ||
-      presentationMode === SupportedFileTypes.Soundcloud
+      presentationMode === SupportedFileTypes.Soundcloud ||
+      presentationMode === SupportedFileTypes.TwentyThreeVideo
     );
   };
 
