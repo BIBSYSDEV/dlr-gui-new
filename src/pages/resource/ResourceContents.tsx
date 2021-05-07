@@ -57,8 +57,11 @@ const ResourceContents: FC<ResourceContentsProps> = ({ resource }) => {
           data-testid={`file-content-${content.identifier}-download-button`}
           variant="outlined"
           color="primary"
+          download={content.features.dlr_content}
+          target="_blank"
+          rel="noopener norefferer"
           href={`${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${content.identifier}/delivery?jwt=${localStorage.token}`}>
-          {t('common.download').toUpperCase()}
+          {t('resource.preview.open_in_new_tag').toUpperCase()}
         </Button>
       </Grid>
     </StyledGridContainer>

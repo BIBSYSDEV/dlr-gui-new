@@ -120,6 +120,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
             <>
               <Typography>{t('resource.preview.preview_is_not_supported_for_file_format')}</Typography>
               <DownloadButton
+                fileName={resource.contents.masterContent.features.dlr_content}
                 contentURL={getURL()}
                 contentSize={resource.contents.masterContent.features.dlr_content_size}
               />
@@ -153,6 +154,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
                 <InformationAndDownloadWrapper>
                   <StyledAlert severity="info">{t('resource.preview.file_to_big')}</StyledAlert>
                   <DownloadButton
+                    fileName={resource.contents.masterContent.features.dlr_content}
                     contentURL={getURL()}
                     contentSize={resource.contents.masterContent.features.dlr_content_size}
                   />
@@ -172,6 +174,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false }
           )}
           {presentationMode === SupportedFileTypes.Download && (
             <DownloadButton
+              fileName={resource.contents.masterContent.features.dlr_content}
               contentURL={getURL()}
               contentSize={resource.contents.masterContent.features.dlr_content_size}
             />
