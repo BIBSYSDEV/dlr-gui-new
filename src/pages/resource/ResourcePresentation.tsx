@@ -35,9 +35,14 @@ const StyledPresentationWrapper = styled.div`
 interface ResourcePresentationProps {
   resource: Resource;
   isPreview?: boolean;
+  mainFileBeingUploaded?: boolean;
 }
 
-const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource, isPreview = false }) => {
+const ResourcePresentation: FC<ResourcePresentationProps> = ({
+  resource,
+  isPreview = false,
+  mainFileBeingUploaded = false,
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -46,7 +51,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({ resource, isPrevi
         <StyledSchemaPart>
           <StyledContentWrapperMedium>
             <PreviewComponentWrapper data-testid="resource-preview">
-              {<ContentPreview resource={resource} isPreview={isPreview} />}
+              <ContentPreview resource={resource} isPreview={isPreview} mainFileBeingUploaded={mainFileBeingUploaded} />
             </PreviewComponentWrapper>
           </StyledContentWrapperMedium>
         </StyledSchemaPart>

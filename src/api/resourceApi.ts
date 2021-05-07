@@ -388,3 +388,7 @@ export const getCitationFromCrossCite = (dlr_identifier_doi: string): Promise<Ax
     method: 'GET',
   });
 };
+
+export const getTextFileContents = (url: string): Promise<AxiosResponse<string>> => {
+  return axios.get(url);
+};
