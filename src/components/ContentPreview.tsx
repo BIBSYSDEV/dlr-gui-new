@@ -1,16 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, Typography, CircularProgress, Paper } from '@material-ui/core';
+import { Typography, CircularProgress, Paper } from '@material-ui/core';
 import { Content, resourceType, SupportedFileTypes } from '../types/content.types';
 import styled from 'styled-components';
-import { API_PATHS, API_URL, MICROSOFT_DOCUMENT_VIEWER } from '../utils/constants';
-import { Alert } from '@material-ui/lab';
+import { API_PATHS, API_URL } from '../utils/constants';
 import { determinePresentationMode } from '../utils/mime_type_utils';
 import DownloadButton from './DownloadButton';
 import { getResourceDefaultContent, getTextFileContents } from '../api/resourceApi';
 import { Resource } from '../types/resource.types';
 import { getSourceFromIframeString } from '../utils/iframe_utils';
 import { getSoundCloudInformation } from '../api/externalApi';
+import ContentIframe from './ContentIframe';
+import DocumentPreview from './DocumentPreview';
+import LinkPreviewNotPossible from './LinkPreviewNotPossible';
 
 const StyledImage = styled.img`
   max-height: 100%;
@@ -22,27 +24,11 @@ const StyledVideo = styled.video`
   max-width: 100%;
 `;
 
-const InformationAndDownloadWrapper = styled.div`
-  display: block;
-  width: 27rem;
-  text-align: center;
-`;
-
-const StyledAlert = styled(Alert)`
-  margin-bottom: 2rem;
-`;
-
-const StyledBlockWrapper = styled.div`
-  display: block;
-`;
-
 const StyledPaper = styled(Paper)`
   width: 100%;
   height: 100%;
   overflow: auto;
 `;
-
-const windowsMaxRenderSize = 10000000;
 
 interface ContentPreviewProps {
   resource: Resource;
@@ -109,12 +95,6 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
     );
   };
 
-  const hrefLinkUrl = (
-    <Link target="_blank" rel="noopener noreferrer" href={resource.contents.masterContent.features.dlr_content}>
-      {resource.contents.masterContent.features.dlr_content} ({t('resource.preview.open_in_new_tag')})
-    </Link>
-  );
-
   return (
     <>
       {!isLoading && !mainFileBeingUploaded ? (
@@ -133,38 +113,11 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
             </audio>
           )}
           {presentationMode === SupportedFileTypes.Document && (
-            <>
-              {parseInt(
-                defaultContent?.features.dlr_content_size_bytes ??
-                  '' + resource.contents.masterContent.features.dlr_content_size_bytes
-              ) < windowsMaxRenderSize ? (
-                <iframe
-                  title={t('resource.preview.preview_of_master_content')}
-                  src={`${MICROSOFT_DOCUMENT_VIEWER}?src=${usageURL}`}
-                  frameBorder="0"
-                  height={'100%'}
-                  width={'100%'}
-                />
-              ) : (
-                <InformationAndDownloadWrapper>
-                  <StyledAlert severity="info">{t('resource.preview.file_to_big')}</StyledAlert>
-                  <DownloadButton
-                    contentURL={usageURL}
-                    contentSize={resource.contents.masterContent.features.dlr_content_size}
-                  />
-                </InformationAndDownloadWrapper>
-              )}
-            </>
+            <DocumentPreview defaultContent={defaultContent} resource={resource} usageURL={usageURL} />
           )}
           {presentationMode === SupportedFileTypes.PDF && (
             <object data={usageURL} type="application/pdf" height={'100%'} width={'100%'}>
-              <iframe
-                title={t('resource.preview.preview_of_master_content')}
-                height={'100%'}
-                width={'100%'}
-                src={usageURL}
-                frameBorder="0"
-              />
+              <ContentIframe src={usageURL} />
               <Typography>{t('resource.preview.browser_does_not_support_pdf_viewing')}</Typography>
               <DownloadButton
                 contentURL={usageURL}
@@ -178,29 +131,10 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
               contentSize={resource.contents.masterContent.features.dlr_content_size}
             />
           )}
-          {previewIsRegularIframe() && (
-            <iframe
-              title={t('resource.preview.preview_of_master_content')}
-              src={usageURL}
-              frameBorder="0"
-              allowFullScreen
-              height={'100%'}
-              width={'100%'}
-            />
-          )}
+          {previewIsRegularIframe() && <ContentIframe src={usageURL} />}
           {(presentationMode === SupportedFileTypes.LinkSchemeHttp ||
             presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent) && (
-            <StyledBlockWrapper>
-              <Typography gutterBottom variant="body1">
-                {t('resource.preview.external_page')}: {hrefLinkUrl}
-              </Typography>
-              {presentationMode === SupportedFileTypes.LinkSchemeHttp && (
-                <Typography variant="body1">{t('resource.preview.no_preview_security_reasons')}</Typography>
-              )}
-              {presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent && (
-                <Typography variant="body1">{t('resource.preview.no_preview_support_reasons')}</Typography>
-              )}
-            </StyledBlockWrapper>
+            <LinkPreviewNotPossible resource={resource} presentationMode={presentationMode} />
           )}
           {presentationMode === SupportedFileTypes.Text && (
             <StyledPaper elevation={2}>
