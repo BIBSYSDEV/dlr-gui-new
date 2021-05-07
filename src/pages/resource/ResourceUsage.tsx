@@ -101,7 +101,18 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   }, []);
 
   const handleCopyButtonClick = () => {
-    navigator.clipboard.writeText(citationPreTitle + citationTitle + citationPostTitle);
+    try {
+      //requires HTTPS connection or localhost in order to work.
+      navigator.clipboard.writeText(citationPreTitle + citationTitle + citationPostTitle);
+    } catch (_error) {
+      //Hacky workaround in case of no HTTPS connection
+      const textField = document.createElement('textarea');
+      textField.innerText = citationPreTitle + citationTitle + citationPostTitle;
+      document.body.appendChild(textField);
+      textField.select();
+      document.execCommand('copy');
+      textField.remove();
+    }
   };
 
   return (
