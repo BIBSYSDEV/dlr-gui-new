@@ -303,7 +303,9 @@ export const mockCreatedResourceWithContents = {
   },
 };
 
-export const MockText = 'text: bla blah blah blah blah';
+export const mockText = 'text: bla blah blah blah blah';
+
+export const mockEmailList = ['test@test.com', 'test2@test.com', 'test3@test.com'];
 
 export const mockToken = 'mockToken';
 

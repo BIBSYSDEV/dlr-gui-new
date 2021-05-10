@@ -31,7 +31,8 @@ import {
   mockAuthoritySearchResponse,
   mockAuthoritySearchResponse2,
   mockDefaultContent,
-  MockText,
+  mockText,
+  mockEmailList,
 } from './mockdata';
 
 // AXIOS INTERCEPTOR
@@ -46,7 +47,7 @@ export const interceptRequestsOnMock = () => {
   };
 
   //Get text content file:
-  mock.onGet(new RegExp('textfilepath')).reply(200, MockText);
+  mock.onGet(new RegExp('textfilepath')).reply(200, mockText);
 
   //AUTHORITY
   mock
@@ -192,6 +193,15 @@ export const interceptRequestsOnMock = () => {
 
   //DEFAULTS
   mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*`)).reply(200, mockDefaultResource);
+
+  //LIST AUTHORIZED USERS
+  mock
+    .onGet(
+      new RegExp(
+        `${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations/users/accessProfiles/.*`
+      )
+    )
+    .reply(200, mockEmailList);
 
   // USER
   mock.onGet(new RegExp(`${API_PATHS.guiBackendUsersPath}/users/authorized`)).reply(200, mockUser);
