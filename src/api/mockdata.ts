@@ -281,6 +281,20 @@ export const mockContent: Content = {
   },
 };
 
+export const mockDefaultContent: Content = {
+  identifier: '23123123213',
+  features: {
+    dlr_content: 'masse_tekst.txt',
+    dlr_content_content_type: 'text',
+    dlr_content_title: 'masse tekst',
+    dlr_content_mime_type: 'text/plain',
+    dlr_content_size: '32.9 KB',
+    dlr_content_size_bytes: '33720',
+    dlr_content_type: 'file',
+    dlr_content_url: 'textfilepath',
+  },
+};
+
 export const mockCreatedResourceWithContents = {
   contents: mockContents,
   identifier: 'resource-345',
@@ -288,6 +302,8 @@ export const mockCreatedResourceWithContents = {
     dlr_content: 'content mock',
   },
 };
+
+export const MockText = 'text: bla blah blah blah blah';
 
 export const mockToken = 'mockToken';
 
