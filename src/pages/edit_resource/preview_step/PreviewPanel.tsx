@@ -12,9 +12,10 @@ const StyledTypography = styled(Typography)`
 
 interface DescriptionFieldsProps {
   formikProps: FormikProps<FormikValues>;
+  mainFileBeingUploaded: boolean;
 }
 
-const PreviewPanel: FC<DescriptionFieldsProps> = () => {
+const PreviewPanel: FC<DescriptionFieldsProps> = ({ mainFileBeingUploaded }) => {
   const { values } = useFormikContext<Resource>();
   const { t } = useTranslation();
 
@@ -29,7 +30,7 @@ const PreviewPanel: FC<DescriptionFieldsProps> = () => {
         <Typography data-testid="resource-title" variant="h2">
           {values.features.dlr_title}
         </Typography>
-        <ResourcePresentation resource={values} isPreview={true} />
+        <ResourcePresentation resource={values} isPreview={true} mainFileBeingUploaded={mainFileBeingUploaded} />
       </>
     )
   );

@@ -30,6 +30,8 @@ import {
   mockInstitutionAuthorities,
   mockAuthoritySearchResponse,
   mockAuthoritySearchResponse2,
+  mockDefaultContent,
+  MockText,
 } from './mockdata';
 
 // AXIOS INTERCEPTOR
@@ -42,6 +44,9 @@ export const interceptRequestsOnMock = () => {
     //console.log('MOCKED API-CALL: ', config, statusCode, mockedResult);
     return [statusCode, mockedResult];
   };
+
+  //Get text content file:
+  mock.onGet(new RegExp('textfilepath')).reply(200, MockText);
 
   //AUTHORITY
   mock
@@ -100,6 +105,10 @@ export const interceptRequestsOnMock = () => {
 
   //RESOURCE CONTENTS
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents`)).reply(200, mockContents);
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendResourceDefaultContentPath}/.*/contents/default`))
+    .reply(200, mockDefaultContent);
+
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents/.*/titles`)).reply(200);
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents.*`)).reply(200, mockContent);
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents/.*`)).reply(202);
