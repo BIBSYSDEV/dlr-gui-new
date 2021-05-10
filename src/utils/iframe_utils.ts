@@ -4,5 +4,6 @@ export const getSourceFromIframeString = (iframe: string): string => {
     .filter((section) => section.includes('src='))
     .join('')
     .replaceAll('src="', '')
-    .replaceAll('></iframe>', '');
+    .replaceAll('></iframe>', '')
+    .replaceAll('"', '');
 };

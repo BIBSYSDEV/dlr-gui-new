@@ -62,11 +62,12 @@ interface ResourceFormProps {
   resource: Resource;
   uppy: Uppy;
   resourceType: ResourceCreationType;
+  mainFileBeingUploaded: boolean;
 }
 
 const fileUploadPanelId = 'file-upload-panel';
 
-const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) => {
+const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mainFileBeingUploaded }) => {
   const setNewContentAndThumbnail = (newContent: Content) => {
     newContent.features.dlr_thumbnail_default = 'true';
     setNewContent(newContent);
@@ -243,7 +244,9 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType }) =
                         />
                       </div>
                     )}
-                    {activeStep === ResourceFormStep.Preview && <PreviewPanel formikProps={formikProps} />}
+                    {activeStep === ResourceFormStep.Preview && (
+                      <PreviewPanel formikProps={formikProps} mainFileBeingUploaded={mainFileBeingUploaded} />
+                    )}
                     {activeStep === ResourceFormStep.Preview && !formikProps.isValid && <ResourceFormErrors />}
                     <ResourceFormActions
                       activeStep={activeStep}

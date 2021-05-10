@@ -351,6 +351,7 @@
     "no_published_resources": "Du har ingen publiserte ressurser",
     "no_unpublished_resources": "Du har ingen upubliserte ressurser",
     "preview": {
+      "browser_does_not_support_pdf_viewing": "Nettleseren din støtter ikke PDF",
       "external_page": "Ekstern side",
       "file_to_big": "Filen er for stor for forhåndsvisning",
       "no_preview_security_reasons": "Kan ikke forhåndsvise denne siden av sikkerhetsmessige årsaker",
