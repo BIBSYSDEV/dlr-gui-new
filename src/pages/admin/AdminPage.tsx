@@ -20,9 +20,14 @@ const AdminPage = () => {
       try {
         setIsLoadingUsers(true);
         setLoadingError(undefined);
-        setAdministrators((await getInstitutionAuthorizations(DLR_Institution_Roles.Administrator)).data);
-        setCurators((await getInstitutionAuthorizations(DLR_Institution_Roles.Curator)).data);
-        setEditors((await getInstitutionAuthorizations(DLR_Institution_Roles.Editor)).data);
+        const promiseArray: Promise<any>[] = [];
+        promiseArray.push(getInstitutionAuthorizations(DLR_Institution_Roles.Administrator));
+        promiseArray.push(getInstitutionAuthorizations(DLR_Institution_Roles.Curator));
+        promiseArray.push(getInstitutionAuthorizations(DLR_Institution_Roles.Editor));
+        const results = await Promise.all(promiseArray);
+        setAdministrators(results[0].data);
+        setCurators(results[1].data);
+        setEditors(results[2].data);
       } catch (error) {
         setLoadingError(error);
       } finally {
@@ -37,7 +42,7 @@ const AdminPage = () => {
       <Typography gutterBottom variant="h6" component="h3">
         {title}
       </Typography>
-      <List>
+      <List dense>
         {users.map((email) => (
           <ListItem>
             <ListItemText>{email}</ListItemText>
@@ -50,14 +55,14 @@ const AdminPage = () => {
   return (
     <StyledContentWrapperLarge>
       {loadingError && <ErrorBanner userNeedsToBeLoggedIn={true} error={loadingError} />}
-      <PageHeader>{t('Administrativt')}</PageHeader>
+      <PageHeader>{t('administrative.page_heading')}</PageHeader>
       <Typography gutterBottom variant="h2">
-        Roller
+        {t('administrative.roles_heading')}
       </Typography>
       <Grid container spacing={6}>
-        {administrators && RoleCard(t('administrator'), administrators)}
-        {curators && RoleCard(t('curator'), curators)}
-        {editors && RoleCard(t('editor'), editors)}
+        {RoleCard(t('administrative.role_headers.administrators'), administrators)}
+        {RoleCard(t('administrative.role_headers.curators'), curators)}
+        {RoleCard(t('administrative.role_headers.editors'), editors)}
       </Grid>
       {isLoadingUsers && (
         <StyledProgressWrapper>

@@ -29,6 +29,15 @@
     "show_list": "Show list",
     "who_got_access": "Who got access"
   },
+  "administrative" : {
+    "page_heading": "Administrative",
+    "role_headers": {
+      "administrators": "Administratorer",
+      "curators": "Kuratorer",
+      "editors": "Redaktører"
+    },
+    "roles_heading": "Roles"
+  },
   "authority": {
     "add_authority": "Add authority",
     "authorities": "Authorities",
@@ -424,6 +433,11 @@
     "upload_new_thumbnail": "Upload new thumbnail"
   },
   "user": {
-    "logged_in_as": "Logged in as"
+    "logged_in_as": "Logged in as",
+    "roles": {
+      "administrators": "Administrators",
+      "curators": "Curators",
+      "editors": "Editors"
+    }
   }
 }
