@@ -127,7 +127,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/loginRedirect" component={LoginRedirectPage} />
+        <Route path="/loginRedirect" component={LoginRedirectPage} />
         <Route path="*">
           {tokenError && <ErrorBanner error={tokenError} />}
           {!isLoadingUser && hasValidToken ? (

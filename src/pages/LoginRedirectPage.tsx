@@ -24,7 +24,11 @@ const LoginRedirectPage = () => {
             getUserData().then((response) => {
               dispatch(setUser(response.data));
             });
-            history.push('/');
+            const newPathName = window.location.pathname.replace('/loginRedirect', '');
+            const searchParams = new URLSearchParams(location.search);
+            searchParams.delete('token');
+            const newUrl = newPathName + (searchParams.toString().length > 0 ? '?' + searchParams.toString() : '');
+            history.push(newUrl);
             history.go(0);
           }
         })
