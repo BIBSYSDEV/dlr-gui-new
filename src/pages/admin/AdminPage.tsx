@@ -3,17 +3,23 @@ import { useTranslation } from 'react-i18next';
 import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
 import { StyledContentWrapperLarge, StyledProgressWrapper } from '../../components/styled/Wrappers';
-import { CircularProgress, Grid, List, ListItem, ListItemText, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Grid, List, ListItem, ListItemText, TextField, Typography } from '@material-ui/core';
 import { getInstitutionAuthorizations } from '../../api/institutionAuthorizationsApi';
 import { InstitutionProfilesNames } from '../../types/user.types';
 import styled from 'styled-components';
 import { Colors } from '../../themes/mainTheme';
 import AdminRoute from '../../utils/routes/AdminRoute';
+import RoleSetter from './RoleSetter';
 
 const StyledWrapper = styled(Grid)`
   background-color: ${Colors.UnitTurquoise_20percent};
   padding: 1rem;
   margin-top: 2rem;
+`;
+
+const StyledWrapper2 = styled(Grid)`
+  background-color: ${Colors.UnitTurquoise_30percent};
+  padding: 1rem;
 `;
 
 const AdminPage = () => {
@@ -74,12 +80,15 @@ const AdminPage = () => {
           {RoleCard(t('administrative.role_headers.curators'), curators, 'curator-list')}
           {RoleCard(t('administrative.role_headers.editors'), editors, 'editor-list')}
         </Grid>
+        {isLoadingUsers && (
+          <StyledProgressWrapper>
+            <CircularProgress />
+          </StyledProgressWrapper>
+        )}
       </StyledWrapper>
-      {isLoadingUsers && (
-        <StyledProgressWrapper>
-          <CircularProgress />
-        </StyledProgressWrapper>
-      )}
+      <StyledWrapper2>
+        <RoleSetter />
+      </StyledWrapper2>
     </StyledContentWrapperLarge>
   );
 };

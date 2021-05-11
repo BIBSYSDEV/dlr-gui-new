@@ -36,7 +36,8 @@
       "curators": "Kuratorer",
       "editors": "Redaktører"
     },
-    "roles_heading": "Roller"
+    "roles_heading": "Roller",
+    "set_roles_heading": "Søke opp brukere og sette roller"
   },
   "authority": {
     "add_authority": "Legg til autoritet",

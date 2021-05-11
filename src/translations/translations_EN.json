@@ -36,7 +36,8 @@
       "curators": "Curators",
       "editors": "Editors"
     },
-    "roles_heading": "Roles"
+    "roles_heading": "Roles",
+    "set_roles_heading": "Søke opp brukere og sette roller"
   },
   "authority": {
     "add_authority": "Add authority",
