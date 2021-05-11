@@ -22,23 +22,23 @@ const StyledPageHeader = styled.div`
   padding-right: 1rem;
   background-color: ${Colors.HeaderBackground};
   min-height: 4rem;
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
     justify-content: flex-start;
   }
 `;
 
 const StyledBurgerMenu = styled.div`
   justify-self: left;
-  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
     display: none;
   }
 `;
 
 const StyledSecondaryButtonBar = styled.div`
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
     display: none;
   }
-  @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
     display: contents;
   }
 `;
@@ -65,15 +65,18 @@ const Header = () => {
       <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleBurgerMenuClose}>
         {user.id && (
           <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/registration">
-            <ListItemIcon>
-              <AddIcon />
-            </ListItemIcon>
+            <AddIcon />
             <Typography variant="button">{t('resource.new_registration')}</Typography>
           </MenuItem>
         )}
         {user.id && (
           <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/resources/user/current">
             <Typography variant="button">{t('resource.my_resources')}</Typography>
+          </MenuItem>
+        )}
+        {user.institutionAuthorities?.isAdministrator && (
+          <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/admin">
+            <Typography variant="button">{t('administrative.page_heading')}</Typography>
           </MenuItem>
         )}
         <MenuItem onClick={handleBurgerMenuClose}>{user.id ? <Logout /> : <LoginButton />}</MenuItem>
@@ -88,6 +91,11 @@ const Header = () => {
         {user.id && (
           <Button color="primary" component={RouterLink} data-testid="my-resources-link" to="/resources/user/current">
             <Typography variant="button">{t('resource.my_resources')}</Typography>
+          </Button>
+        )}
+        {user.institutionAuthorities?.isAdministrator && (
+          <Button color="primary" component={RouterLink} data-testid="admin-link" to="/admin">
+            <Typography variant="button">{t('administrative.page_heading')}</Typography>
           </Button>
         )}
         {user.id ? (
