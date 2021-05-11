@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { API_PATHS, API_URL } from './utils/constants';
 import { useSelector } from 'react-redux';
 import { RootState } from './state/rootReducer';
+import { LMSParametersName } from './types/LMSParameters';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -35,10 +36,9 @@ interface LMSServiceProps {
 const LMSService: FC<LMSServiceProps> = ({ mainContentRef, userError }) => {
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.user);
-
   const searchParams = new URLSearchParams(window.location.search);
-  const forceAuthentication = searchParams.get('forceAuthentication') === 'true';
-  const navbar = searchParams.get('navbar') !== 'false';
+  const forceAuthentication = searchParams.get(LMSParametersName.ForceAuthentication) === 'true';
+  const navbar = searchParams.get(LMSParametersName.Navbar) !== 'false';
 
   if (user.id.length === 0 && forceAuthentication) {
     const originSearchParams = searchParams.toString().length > 0 ? '?' + searchParams.toString() : '';
