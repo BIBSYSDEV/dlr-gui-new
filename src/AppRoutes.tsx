@@ -25,7 +25,11 @@ const AppRoutes = () => {
         <Route exact path="/" component={Explore} />
         <Route exact path="/resource/:identifier" component={ResourcePage} />
         <Route exact path="/resources/user/current" render={(props) => <MyResources id={user.id} {...props} />} />
-        <Route exact path="/admin" render={(props) => <AdminPage id={user.id} {...props} />} />
+        <Route
+          exact
+          path="/admin"
+          render={(props) => <AdminPage isAdmin={user.institutionAuthorities?.isAdministrator} {...props} />}
+        />
         <Route exact path="/privacy-policy" component={PrivacyPolicy} />
         {/* CreatorRoutes */}
         <Route

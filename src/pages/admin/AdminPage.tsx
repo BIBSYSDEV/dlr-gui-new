@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import PrivateRoute from '../../utils/routes/PrivateRoute';
 import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
 import { StyledContentWrapperLarge, StyledProgressWrapper } from '../../components/styled/Wrappers';
@@ -9,6 +8,7 @@ import { getInstitutionAuthorizations } from '../../api/institutionAuthorization
 import { InstitutionProfilesNames } from '../../types/user.types';
 import styled from 'styled-components';
 import { Colors } from '../../themes/mainTheme';
+import AdminRoute from '../../utils/routes/AdminRoute';
 
 const StyledWrapper = styled(Grid)`
   background-color: ${Colors.UnitTurquoise_20percent};
@@ -84,4 +84,4 @@ const AdminPage = () => {
   );
 };
 
-export default PrivateRoute(AdminPage);
+export default AdminRoute(AdminPage);
