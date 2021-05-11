@@ -38,9 +38,9 @@ const LMSService: FC<LMSServiceProps> = ({ mainContentRef, userError }) => {
 
   const searchParams = new URLSearchParams(window.location.search);
   const forceAuthentication = searchParams.get('forceAuthentication') === 'true';
+  const navbar = searchParams.get('navbar') !== 'false';
 
   if (user.id.length === 0 && forceAuthentication) {
-    searchParams.delete('forceAuthentication');
     const originSearchParams = searchParams.toString().length > 0 ? '?' + searchParams.toString() : '';
     const originHref = window.location.origin + '/loginRedirect' + window.location.pathname + originSearchParams;
     window.location.href = `${API_URL}${API_PATHS.guiBackendLoginPath}/feideLogin?target=${originHref}`;
@@ -49,7 +49,7 @@ const LMSService: FC<LMSServiceProps> = ({ mainContentRef, userError }) => {
   return (
     <StyledApp>
       <ScrollToContentButton contentRef={mainContentRef} text={t('skip_to_main_content')} />
-      <Header />
+      {navbar && <Header />}
       {userError && <ErrorBanner error={userError} />}
       <StyledContent tabIndex={-1} ref={mainContentRef} role="main" id="content">
         <AppRoutes />
