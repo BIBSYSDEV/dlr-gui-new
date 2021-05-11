@@ -39,6 +39,7 @@ const DocumentPreview: FC<DocumentPreviewProps> = ({ defaultContent, resource, u
         <InformationAndDownloadWrapper>
           <StyledAlert severity="info">{t('resource.preview.file_to_big')}</StyledAlert>
           <DownloadButton
+            fileName={resource.contents.masterContent.features.dlr_content}
             contentURL={usageURL}
             contentSize={resource.contents.masterContent.features.dlr_content_size}
           />
