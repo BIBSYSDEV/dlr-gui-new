@@ -7,6 +7,14 @@ import { StyledContentWrapperLarge, StyledProgressWrapper } from '../../componen
 import { CircularProgress, Grid, List, ListItem, ListItemText, Typography } from '@material-ui/core';
 import { getInstitutionAuthorizations } from '../../api/institutionAuthorizationsApi';
 import { InstitutionProfilesNames } from '../../types/user.types';
+import styled from 'styled-components';
+import { Colors } from '../../themes/mainTheme';
+
+const StyledWrapper = styled(Grid)`
+  background-color: ${Colors.UnitTurquoise_20percent};
+  padding: 1rem;
+  margin-top: 2rem;
+`;
 
 const AdminPage = () => {
   const { t } = useTranslation();
@@ -57,14 +65,16 @@ const AdminPage = () => {
     <StyledContentWrapperLarge>
       {loadingError && <ErrorBanner userNeedsToBeLoggedIn={true} error={loadingError} />}
       <PageHeader>{t('administrative.page_heading')}</PageHeader>
-      <Typography gutterBottom variant="h2">
-        {t('administrative.roles_heading')}
-      </Typography>
-      <Grid container spacing={6}>
-        {RoleCard(t('administrative.role_headers.administrators'), administrators, 'administrator-list')}
-        {RoleCard(t('administrative.role_headers.curators'), curators, 'curator-list')}
-        {RoleCard(t('administrative.role_headers.editors'), editors, 'editor-list')}
-      </Grid>
+      <StyledWrapper>
+        <Typography gutterBottom variant="h2">
+          {t('administrative.roles_heading')}
+        </Typography>
+        <Grid container spacing={6}>
+          {RoleCard(t('administrative.role_headers.administrators'), administrators, 'administrator-list')}
+          {RoleCard(t('administrative.role_headers.curators'), curators, 'curator-list')}
+          {RoleCard(t('administrative.role_headers.editors'), editors, 'editor-list')}
+        </Grid>
+      </StyledWrapper>
       {isLoadingUsers && (
         <StyledProgressWrapper>
           <CircularProgress />
