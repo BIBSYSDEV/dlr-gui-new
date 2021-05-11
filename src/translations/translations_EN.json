@@ -32,9 +32,9 @@
   "administrative" : {
     "page_heading": "Administrative",
     "role_headers": {
-      "administrators": "Administratorer",
-      "curators": "Kuratorer",
-      "editors": "Redaktører"
+      "administrators": "Administrators",
+      "curators": "Curators",
+      "editors": "Editors"
     },
     "roles_heading": "Roles"
   },
