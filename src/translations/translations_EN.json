@@ -433,11 +433,6 @@
     "upload_new_thumbnail": "Upload new thumbnail"
   },
   "user": {
-    "logged_in_as": "Logged in as",
-    "roles": {
-      "administrators": "Administrators",
-      "curators": "Curators",
-      "editors": "Editors"
-    }
+    "logged_in_as": "Logged in as"
   }
 }
