@@ -23,6 +23,8 @@ const LoginRedirectPage = () => {
             localStorage.tokenExpiry = response.data.exp;
             getUserData()
               .then((response) => {
+                //TODO: const institutionAuthorities = await getUserAuthorizationsInstitution();
+                //TODO: rewrite as async
                 dispatch(setUser(response.data));
               })
               .finally(() => {
