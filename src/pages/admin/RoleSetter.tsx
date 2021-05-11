@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, TextField, Typography } from '@material-ui/core';
+import { Button, Card, Switch, TextField, Typography } from '@material-ui/core';
 import styled from 'styled-components';
+import { getRolesForUser } from '../../api/institutionAuthorizationsApi';
+import { InstitutionAuthorities, User } from '../../types/user.types';
 
 const StyledSearchWrapper = styled.div`
   display: flex;
@@ -11,15 +13,19 @@ const StyledSearchWrapper = styled.div`
 const RoleSetter = () => {
   const { t } = useTranslation();
   const [userEmail, setUserEmail] = useState('');
+  const [user, setUser] = useState<User>();
 
   const handleUserTextFieldChange = (event: any) => {
     setUserEmail(event.target.value);
   };
 
-  const handleSearchForUser = () => {
-    console.log('SEARCH', userEmail);
-    //https://api-dev.dlr.aws.unit.no/dlr-gui-backend-institution-user-authorizations/v1/institutions/current/authorizations/users/ao@unit.no
-    //response : {"time":"2021-05-11T13:09:11.002Z","institution":"unit","user":"ao@unit.no","profiles":[]}
+  const handleSearchForUser = async () => {
+    const user = await getRolesForUser(userEmail);
+    setUser(user.data);
+  };
+
+  const handleChangeIsAdmin = async () => {
+    console.log(user?.institutionAuthorities?.isAdministrator);
   };
 
   return (
@@ -33,6 +39,13 @@ const RoleSetter = () => {
           Søk bruker
         </Button>
       </StyledSearchWrapper>
+      {user && (
+        <Card>
+          Admin:{' '}
+          <Switch checked={user.institutionAuthorities?.isAdministrator} onChange={handleChangeIsAdmin} name="admin" />
+        </Card>
+      )}
+      <pre style={{ maxWidth: '90%' }}>PER: {JSON.stringify(user, null, 2)}</pre>
     </>
   );
 };
