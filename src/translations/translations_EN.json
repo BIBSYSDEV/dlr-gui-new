@@ -29,6 +29,15 @@
     "show_list": "Show list",
     "who_got_access": "Who got access"
   },
+  "administrative" : {
+    "page_heading": "Administrative",
+    "role_headers": {
+      "administrators": "Administrators",
+      "curators": "Curators",
+      "editors": "Editors"
+    },
+    "roles_heading": "Roles"
+  },
   "authority": {
     "add_authority": "Add authority",
     "authorities": "Authorities",
