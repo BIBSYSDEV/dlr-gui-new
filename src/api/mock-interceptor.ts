@@ -7,6 +7,9 @@ import { FileApiPaths } from './fileApi';
 import {
   createMockContributor,
   createMockCreator,
+  mockAdminList,
+  mockAuthoritySearchResponse,
+  mockAuthoritySearchResponse2,
   mockCompleteUpload,
   mockContent,
   mockContents,
@@ -15,9 +18,12 @@ import {
   mockCreatedResourceWithContents,
   mockCreateUpload,
   mockCreators,
+  mockCuratorList,
+  mockDefaultContent,
   mockDefaultResource,
-  mockTagSuggestions,
+  mockEditorList,
   mockFacets,
+  mockInstitutionAuthorities,
   mockLicenses,
   mockMyResources,
   mockPrepareUpload,
@@ -25,14 +31,10 @@ import {
   mockResourceEvents,
   mockResourceReadAccess,
   mockTags,
+  mockTagSuggestions,
+  mockText,
   mockToken,
   mockUser,
-  mockInstitutionAuthorities,
-  mockAuthoritySearchResponse,
-  mockAuthoritySearchResponse2,
-  mockDefaultContent,
-  mockText,
-  mockEmailList,
 } from './mockdata';
 
 // AXIOS INTERCEPTOR
@@ -198,10 +200,24 @@ export const interceptRequestsOnMock = () => {
   mock
     .onGet(
       new RegExp(
-        `${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations/users/accessProfiles/.*`
+        `${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations/users/accessProfiles/dlr_institution_administrator`
       )
     )
-    .reply(200, mockEmailList);
+    .reply(200, mockAdminList);
+  mock
+    .onGet(
+      new RegExp(
+        `${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations/users/accessProfiles/dlr_institution_editor`
+      )
+    )
+    .reply(200, mockEditorList);
+  mock
+    .onGet(
+      new RegExp(
+        `${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations/users/accessProfiles/dlr_institution_curator`
+      )
+    )
+    .reply(200, mockCuratorList);
 
   // USER
   mock.onGet(new RegExp(`${API_PATHS.guiBackendUsersPath}/users/authorized`)).reply(200, mockUser);

@@ -5,7 +5,8 @@ import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
 import { StyledContentWrapperLarge, StyledProgressWrapper } from '../../components/styled/Wrappers';
 import { CircularProgress, Grid, List, ListItem, ListItemText, Typography } from '@material-ui/core';
-import { DLR_Institution_Roles, getInstitutionAuthorizations } from '../../api/institutionAuthorizationsApi';
+import { getInstitutionAuthorizations } from '../../api/institutionAuthorizationsApi';
+import { InstitutionProfilesNames } from '../../types/user.types';
 
 const AdminPage = () => {
   const { t } = useTranslation();
@@ -21,9 +22,9 @@ const AdminPage = () => {
         setIsLoadingUsers(true);
         setLoadingError(undefined);
         const promiseArray: Promise<any>[] = [];
-        promiseArray.push(getInstitutionAuthorizations(DLR_Institution_Roles.Administrator));
-        promiseArray.push(getInstitutionAuthorizations(DLR_Institution_Roles.Curator));
-        promiseArray.push(getInstitutionAuthorizations(DLR_Institution_Roles.Editor));
+        promiseArray.push(getInstitutionAuthorizations(InstitutionProfilesNames.administrator));
+        promiseArray.push(getInstitutionAuthorizations(InstitutionProfilesNames.curator));
+        promiseArray.push(getInstitutionAuthorizations(InstitutionProfilesNames.editor));
         const results = await Promise.all(promiseArray);
         setAdministrators(results[0].data);
         setCurators(results[1].data);
@@ -37,14 +38,14 @@ const AdminPage = () => {
     fetchData();
   }, []);
 
-  const RoleCard = (title: string, users: string[]) => (
-    <Grid item xs={12} sm={6} md={4}>
+  const RoleCard = (title: string, users: string[], testId: string) => (
+    <Grid item xs={12} sm={6} md={4} data-testid={testId}>
       <Typography gutterBottom variant="h6" component="h3">
         {title}
       </Typography>
       <List dense>
-        {users.map((email) => (
-          <ListItem>
+        {users.map((email, index) => (
+          <ListItem key={index}>
             <ListItemText>{email}</ListItemText>
           </ListItem>
         ))}
@@ -60,9 +61,9 @@ const AdminPage = () => {
         {t('administrative.roles_heading')}
       </Typography>
       <Grid container spacing={6}>
-        {RoleCard(t('administrative.role_headers.administrators'), administrators)}
-        {RoleCard(t('administrative.role_headers.curators'), curators)}
-        {RoleCard(t('administrative.role_headers.editors'), editors)}
+        {RoleCard(t('administrative.role_headers.administrators'), administrators, 'administrator-list')}
+        {RoleCard(t('administrative.role_headers.curators'), curators, 'curator-list')}
+        {RoleCard(t('administrative.role_headers.editors'), editors, 'editor-list')}
       </Grid>
       {isLoadingUsers && (
         <StyledProgressWrapper>

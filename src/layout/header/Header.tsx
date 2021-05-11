@@ -2,7 +2,7 @@ import React from 'react';
 import LoginButton from './LoginButton';
 import Logo from './Logo';
 import styled from 'styled-components';
-import { Button, IconButton, ListItemIcon, Typography } from '@material-ui/core';
+import { Button, IconButton, Typography } from '@material-ui/core';
 import { Link, Link as RouterLink } from 'react-router-dom';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useSelector } from 'react-redux';

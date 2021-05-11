@@ -77,10 +77,24 @@ export const mockUser: User = {
   email: 'test@test.com',
   name: 'Test User',
   institutionAuthorities: {
-    isCurator: true,
+    isCurator: false,
     isAdministrator: false,
     isPublisher: false,
     isEditor: false,
+  },
+};
+
+export const mockUserAdmin: User = {
+  id: 'test@test.com',
+  issuer: 'me',
+  institution: 'ntnu',
+  email: 'test@test.com',
+  name: 'Test User',
+  institutionAuthorities: {
+    isCurator: true,
+    isAdministrator: true,
+    isPublisher: true,
+    isEditor: true,
   },
 };
 
@@ -305,7 +319,9 @@ export const mockCreatedResourceWithContents = {
 
 export const mockText = 'text: bla blah blah blah blah';
 
-export const mockEmailList = ['test@test.com', 'test2@test.com', 'test3@test.com'];
+export const mockAdminList = ['admin1@test.com', 'admin2@test.com'];
+export const mockEditorList = ['editor1@test.com'];
+export const mockCuratorList = ['cur1@test.com', 'cur2@test.com', 'cur3@test.com'];
 
 export const mockToken = 'mockToken';
 
