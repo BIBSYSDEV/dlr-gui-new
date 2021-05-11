@@ -127,6 +127,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
               <ContentIframe src={usageURL} />
               <Typography>{t('resource.preview.browser_does_not_support_pdf_viewing')}</Typography>
               <DownloadButton
+                fileName={resource.contents.masterContent.features.dlr_content}
                 contentURL={usageURL}
                 contentSize={resource.contents.masterContent.features.dlr_content_size}
               />
@@ -134,6 +135,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
           )}
           {presentationMode === SupportedFileTypes.Download && (
             <DownloadButton
+              fileName={resource.contents.masterContent.features.dlr_content}
               contentURL={usageURL}
               contentSize={resource.contents.masterContent.features.dlr_content_size}
             />
