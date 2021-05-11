@@ -1,6 +1,6 @@
 import { Contributor, Creator, emptyResource, Resource } from '../types/resource.types';
 import deepmerge from 'deepmerge';
-import { InstitutionProfilesNames, User, UserRoleFromInstitution } from '../types/user.types';
+import { User } from '../types/user.types';
 import { License } from '../types/license.types';
 import { v4 as uuidv4 } from 'uuid';
 import { Course, CourseSeason, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
@@ -98,14 +98,17 @@ export const mockUserAdmin: User = {
   },
 };
 
-export const mockInstitutionAuthorities: UserRoleFromInstitution = {
+export const mockInstitutionAuthorities = {
+  time: '2021-05-11T08:13:35.538Z',
+  user: 'test@unit.no',
+  object: 'unit',
   profiles: [
-    { name: InstitutionProfilesNames.curator },
-    { name: InstitutionProfilesNames.administrator },
-    { name: InstitutionProfilesNames.publisher },
-    { name: InstitutionProfilesNames.editor },
-    { name: InstitutionProfilesNames.user },
-    { name: InstitutionProfilesNames.authenticated },
+    { name: 'dlr_institution_administrator' },
+    { name: 'dlr_institution_curator' },
+    { name: 'dlr_institution_editor' },
+    { name: 'dlr_institution_publisher' },
+    { name: 'dlr_institution_user' },
+    { name: 'dlr_institution_user_authenticated' },
   ],
 };
 

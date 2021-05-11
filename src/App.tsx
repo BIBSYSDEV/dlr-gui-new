@@ -10,7 +10,6 @@ import AppRoutes from './AppRoutes';
 import { RootState } from './state/rootReducer';
 import { CircularProgress } from '@material-ui/core';
 import { USE_MOCK_DATA } from './utils/constants';
-import { mockUserAdmin } from './api/mockdata';
 import i18next from 'i18next';
 import ScrollToContentButton from './components/ScrollToContentButton';
 import { useTranslation } from 'react-i18next';
@@ -80,9 +79,8 @@ const App = () => {
         setIsLoadingUser(false);
       }
     };
-    if (USE_MOCK_DATA) {
-      dispatch(setUser(mockUserAdmin));
-      setIsLoadingUser(false);
+    if (USE_MOCK_DATA && !user.id) {
+      loadUser();
     } else {
       if (localStorage.token) {
         setUserError(undefined);
