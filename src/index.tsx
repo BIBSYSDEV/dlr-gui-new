@@ -11,9 +11,11 @@ import { interceptRequestsOnMock } from './api/mock-interceptor';
 import * as Sentry from '@sentry/react';
 import { Integrations } from '@sentry/tracing';
 import { USE_MOCK_DATA } from './utils/constants';
-
 // import i18n (needs to be bundled ;))
 import './translations/i18n';
+import LogRocket from 'logrocket';
+
+LogRocket.init('8rv8br/dlr');
 
 if (USE_MOCK_DATA) {
   interceptRequestsOnMock();
