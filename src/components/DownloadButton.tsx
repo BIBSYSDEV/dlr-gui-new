@@ -22,7 +22,7 @@ const DownloadButton: FC<DownloadButtonProps> = ({ contentURL, contentSize, file
       startIcon={<CloudDownloadIcon />}
       variant="contained"
       color="primary">
-      {t('resource.preview.open_in_new_tag')} {contentSize && ` (${contentSize})`}
+      {t('resource.preview.link_to_content')} {contentSize && ` (${contentSize})`}
     </Button>
   );
 };

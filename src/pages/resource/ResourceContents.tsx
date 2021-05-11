@@ -61,7 +61,7 @@ const ResourceContents: FC<ResourceContentsProps> = ({ resource }) => {
           target="_blank"
           rel="noopener norefferer"
           href={`${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${content.identifier}/delivery?jwt=${localStorage.token}`}>
-          {t('resource.preview.open_in_new_tag').toUpperCase()}
+          {t('resource.preview.link_to_content').toUpperCase()}
         </Button>
       </Grid>
     </StyledGridContainer>
