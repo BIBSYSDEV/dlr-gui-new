@@ -19,7 +19,6 @@ import { RootState } from '../../state/rootReducer';
 import { StyleWidths } from '../../themes/mainTheme';
 import { StyledContentWrapperLarge, StyledProgressWrapper } from '../../components/styled/Wrappers';
 import { PageHeader } from '../../components/PageHeader';
-import ForceAuthentication from '../../utils/routes/ForceAuthentication';
 
 const StyledResourceActionBar = styled.div`
   display: flex;
@@ -103,4 +102,4 @@ const ResourcePage = () => {
   );
 };
 
-export default ForceAuthentication(ResourcePage);
+export default ResourcePage;

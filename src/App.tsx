@@ -1,38 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import Footer from './layout/Footer';
-import Header from './layout/header/Header';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from './state/userSlice';
 import { getAnonymousWebToken, getUserAuthorizationsInstitution, getUserData } from './api/userApi';
-import AppRoutes from './AppRoutes';
 import { RootState } from './state/rootReducer';
 import { CircularProgress } from '@material-ui/core';
 import { USE_MOCK_DATA } from './utils/constants';
 import { mockUser } from './api/mockdata';
 import i18next from 'i18next';
-import ScrollToContentButton from './components/ScrollToContentButton';
-import { useTranslation } from 'react-i18next';
 import ErrorBanner from './components/ErrorBanner';
 import LoginRedirectPage from './pages/LoginRedirectPage';
-
-const StyledApp = styled.div`
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  color: ${({ theme }) => theme.palette.primary.main};
-`;
-
-const StyledContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-self: center;
-  align-items: center;
-  flex-grow: 1;
-  word-break: break-word;
-  width: 100%;
-`;
+import LMSService from './LMSService';
 
 const StyledProgressWrapper = styled.div`
   display: flex;
@@ -63,7 +42,6 @@ const App = () => {
   const user = useSelector((state: RootState) => state.user);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
   const mainContentRef = useRef<HTMLDivElement>(null);
-  const { t } = useTranslation();
   const [userError, setUserError] = useState<Error>();
   const [tokenError, setTokenError] = useState<Error>();
   const [hasValidToken, setHasValidToken] = useState(false);
@@ -131,15 +109,7 @@ const App = () => {
         <Route path="*">
           {tokenError && <ErrorBanner error={tokenError} />}
           {!isLoadingUser && hasValidToken ? (
-            <StyledApp>
-              <ScrollToContentButton contentRef={mainContentRef} text={t('skip_to_main_content')} />
-              <Header />
-              {userError && <ErrorBanner error={userError} />}
-              <StyledContent tabIndex={-1} ref={mainContentRef} role="main" id="content">
-                <AppRoutes />
-              </StyledContent>
-              <Footer />
-            </StyledApp>
+            <LMSService mainContentRef={mainContentRef} userError={userError} />
           ) : (
             <StyledProgressWrapper>
               <CircularProgress />

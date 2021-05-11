@@ -21,15 +21,18 @@ const LoginRedirectPage = () => {
         .then((response) => {
           if (response.data.exp) {
             localStorage.tokenExpiry = response.data.exp;
-            getUserData().then((response) => {
-              dispatch(setUser(response.data));
-            });
-            const newPathName = window.location.pathname.replace('/loginRedirect', '');
-            const searchParams = new URLSearchParams(location.search);
-            searchParams.delete('token');
-            const newUrl = newPathName + (searchParams.toString().length > 0 ? '?' + searchParams.toString() : '');
-            history.push(newUrl);
-            history.go(0);
+            getUserData()
+              .then((response) => {
+                dispatch(setUser(response.data));
+              })
+              .finally(() => {
+                const newPathName = window.location.pathname.replace('/loginRedirect', '');
+                const searchParams = new URLSearchParams(location.search);
+                searchParams.delete('token');
+                const newUrl = newPathName + (searchParams.toString().length > 0 ? '?' + searchParams.toString() : '');
+                history.push(newUrl);
+                history.go(0);
+              });
           }
         })
         .catch((error) => {
