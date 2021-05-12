@@ -11,7 +11,7 @@ import { mockUser } from './api/mockdata';
 import i18next from 'i18next';
 import ErrorBanner from './components/ErrorBanner';
 import LoginRedirectPage from './pages/LoginRedirectPage';
-import LMSService from './LMSService';
+import AppContent from './AppContent';
 
 const StyledProgressWrapper = styled.div`
   display: flex;
@@ -109,7 +109,7 @@ const App = () => {
         <Route path="*">
           {tokenError && <ErrorBanner error={tokenError} />}
           {!isLoadingUser && hasValidToken ? (
-            <LMSService mainContentRef={mainContentRef} userError={userError} />
+            <AppContent mainContentRef={mainContentRef} userError={userError} />
           ) : (
             <StyledProgressWrapper>
               <CircularProgress />

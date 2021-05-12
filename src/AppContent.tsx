@@ -33,7 +33,7 @@ interface LMSServiceProps {
   userError: Error | undefined;
 }
 
-const LMSService: FC<LMSServiceProps> = ({ mainContentRef, userError }) => {
+const AppContent: FC<LMSServiceProps> = ({ mainContentRef, userError }) => {
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.user);
   const searchParams = new URLSearchParams(window.location.search);
@@ -41,8 +41,11 @@ const LMSService: FC<LMSServiceProps> = ({ mainContentRef, userError }) => {
   const navbar = searchParams.get(LMSParametersName.Navbar) !== 'false';
 
   if (user.id.length === 0 && forceAuthentication) {
-    const originSearchParams = searchParams.toString().length > 0 ? '?' + searchParams.toString() : '';
-    const originHref = window.location.origin + '/loginRedirect' + window.location.pathname + originSearchParams;
+    let newParams = searchParams.toString().length > 0 ? '?' : '';
+    searchParams.forEach((value, key) => (newParams += `ZZZ${key}XXX${value}`));
+    newParams += searchParams.toString().length > 0 ? '=t' : '';
+
+    const originHref = window.location.origin + '/loginRedirect' + window.location.pathname + newParams;
     window.location.href = `${API_URL}${API_PATHS.guiBackendLoginPath}/feideLogin?target=${originHref}`;
   }
 
@@ -59,4 +62,4 @@ const LMSService: FC<LMSServiceProps> = ({ mainContentRef, userError }) => {
   );
 };
 
-export default LMSService;
+export default AppContent;

@@ -9,6 +9,7 @@ import {
 } from '../types/user.types';
 import { AuthTokenClaims } from '../types/auth.types';
 import { authenticatedApiRequest } from './api';
+import axios from 'axios';
 
 export const getAnonymousWebToken = (): Promise<AxiosResponse<string>> => {
   return Axios({
@@ -17,11 +18,19 @@ export const getAnonymousWebToken = (): Promise<AxiosResponse<string>> => {
   });
 };
 
-export const getUserData = (): Promise<AxiosResponse<User>> => {
-  return authenticatedApiRequest({
-    url: encodeURI(`${API_PATHS.guiBackendUsersPath}/users/authorized`),
-    method: 'GET',
-  });
+export const getUserData = (idToken: string | undefined | boolean = false): Promise<AxiosResponse<User>> => {
+  if (!idToken) {
+    return authenticatedApiRequest({
+      url: encodeURI(`${API_PATHS.guiBackendUsersPath}/users/authorized`),
+      method: 'GET',
+    });
+  } else {
+    return axios({
+      method: 'GET',
+      url: `${API_PATHS.guiBackendUsersPath}/users/authorized`,
+      headers: { Authorization: `Bearer ${idToken}` },
+    });
+  }
 };
 
 export const getTokenExpiry = (token: string): Promise<AxiosResponse<AuthTokenClaims>> => {
@@ -38,14 +47,28 @@ export const logout = () => {
   });
 };
 
-export const getUserAuthorizationsInstitution = async (): Promise<InstitutionAuthorities> => {
-  const apiResponse: AxiosResponse<UserRoleFromInstitution> = await authenticatedApiRequest({
-    url: encodeURI(
-      `${API_PATHS.guiBackendUserAuthorizationsPath}/authorizations/users/authorized/institutions/current`
-    ),
-    method: 'GET',
-  });
-  const institutionAuthorities = emptyInstitutionAuthorities;
+export const getUserAuthorizationsInstitution = async (
+  idToken: string | undefined | boolean = false
+): Promise<InstitutionAuthorities> => {
+  let apiResponse: AxiosResponse<UserRoleFromInstitution>;
+  if (idToken) {
+    apiResponse = await axios({
+      url: encodeURI(
+        `${API_PATHS.guiBackendUserAuthorizationsPath}/authorizations/users/authorized/institutions/current`
+      ),
+      method: 'GET',
+      headers: { Authorization: `Bearer ${idToken}` },
+    });
+  } else {
+    apiResponse = await authenticatedApiRequest({
+      url: encodeURI(
+        `${API_PATHS.guiBackendUserAuthorizationsPath}/authorizations/users/authorized/institutions/current`
+      ),
+      method: 'GET',
+    });
+  }
+
+  const institutionAuthorities = { ...emptyInstitutionAuthorities };
   apiResponse.data.profiles.forEach((profile) => {
     switch (profile.name) {
       case InstitutionProfilesNames.curator:
