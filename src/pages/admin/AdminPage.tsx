@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
 import { StyledContentWrapperLarge, StyledProgressWrapper } from '../../components/styled/Wrappers';
-import { Button, CircularProgress, Grid, List, ListItem, ListItemText, TextField, Typography } from '@material-ui/core';
+import { CircularProgress, Grid, List, ListItem, ListItemText, Typography } from '@material-ui/core';
 import { getInstitutionAuthorizations } from '../../api/institutionAuthorizationsApi';
 import { InstitutionProfilesNames } from '../../types/user.types';
 import styled from 'styled-components';
@@ -20,6 +20,7 @@ const StyledWrapper = styled(Grid)`
 const StyledWrapper2 = styled(Grid)`
   background-color: ${Colors.UnitTurquoise_30percent};
   padding: 1rem;
+  margin-bottom: 2rem;
 `;
 
 const AdminPage = () => {
@@ -71,6 +72,9 @@ const AdminPage = () => {
     <StyledContentWrapperLarge>
       {loadingError && <ErrorBanner userNeedsToBeLoggedIn={true} error={loadingError} />}
       <PageHeader>{t('administrative.page_heading')}</PageHeader>
+      <StyledWrapper2>
+        <RoleSetter />
+      </StyledWrapper2>
       <StyledWrapper>
         <Typography gutterBottom variant="h2">
           {t('administrative.roles_heading')}
@@ -86,9 +90,6 @@ const AdminPage = () => {
           </StyledProgressWrapper>
         )}
       </StyledWrapper>
-      <StyledWrapper2>
-        <RoleSetter />
-      </StyledWrapper2>
     </StyledContentWrapperLarge>
   );
 };
