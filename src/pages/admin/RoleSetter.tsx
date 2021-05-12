@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  Box,
   Button,
   Card,
   CardContent,
@@ -17,18 +18,43 @@ import { getRolesForUser } from '../../api/institutionAuthorizationsApi';
 import ErrorBanner from '../../components/ErrorBanner';
 import { StyledProgressWrapper } from '../../components/styled/Wrappers';
 import { InstitutionProfilesNames } from '../../types/user.types';
+import { StyleWidths } from '../../themes/mainTheme';
 
 const StyledSearchWrapper = styled.div`
   display: flex;
-  align-items: baseline;
+  align-items: flex-end;
+  max-width: ${StyleWidths.width3};
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`;
+
+const StyledTextField = styled(TextField)`
+  margin-right: 1rem;
+  flex: 1;
+  & .MuiInputBase-root {
+    height: 3rem;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    margin-bottom: 1rem;
+  }
+`;
+const StyledCard = styled(Card)`
+  max-width: ${StyleWidths.width3};
+  margin-top: 1rem;
+`;
+
+const StyledButton = styled(Button)`
+  height: 3rem;
 `;
 
 const RoleSetter = () => {
   const { t } = useTranslation();
   const [user, setUser] = useState<string>();
-  const [searchInput, setSearchInput] = useState('');
+  const [searchInput, setSearchInput] = useState('pcb@unit.no');
   const [isSearching, setIsSearching] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdministrator, setIsAdministrator] = useState(false);
   const [isCurator, setIsCurator] = useState(false);
   const [isEditor, setIsEditor] = useState(false);
   const [isPublisher, setIsPublisher] = useState(false);
@@ -46,7 +72,7 @@ const RoleSetter = () => {
             setIsCurator(true);
             break;
           case InstitutionProfilesNames.administrator:
-            setIsAdmin(true);
+            setIsAdministrator(true);
             break;
           case InstitutionProfilesNames.editor:
             setIsEditor(true);
@@ -65,9 +91,9 @@ const RoleSetter = () => {
     }
   };
 
-  const handleChangeIsAdmin = async () => {
+  const handleChangeIsAdministrator = async () => {
     //todo: api
-    setIsAdmin(!isAdmin);
+    setIsAdministrator(!isAdministrator);
   };
   const handleChangeIsCurator = async () => {
     //todo: api
@@ -82,17 +108,41 @@ const RoleSetter = () => {
     setIsPublisher(!isPublisher);
   };
 
+  const createListItem = (title: string, description: string, value: boolean, onChangeHandler: any) => (
+    <ListItem>
+      <div>
+        <Typography variant="h6">{title}</Typography>
+        <Typography variant="caption">{description}</Typography>
+      </div>
+      <ListItemSecondaryAction>
+        <Switch checked={value} color="primary" onChange={onChangeHandler} name="publisher" />
+      </ListItemSecondaryAction>
+    </ListItem>
+  );
+
   return (
     <>
       <Typography gutterBottom variant="h2">
         {t('administrative.set_roles_heading')}
       </Typography>
       <StyledSearchWrapper>
-        <TextField onChange={(event) => setSearchInput(event.target.value)}></TextField>
-        {/*//todo: validate email*/}
-        <Button variant="contained" color="primary" onClick={handleSearchForUser}>
-          Søk bruker
-        </Button>
+        <StyledTextField
+          variant="outlined"
+          label={t('common.brukerid')}
+          defaultValue={searchInput}
+          onChange={(event) => setSearchInput(event.target.value)}
+          onKeyPress={(event) => {
+            if (event.key === 'Enter') {
+              handleSearchForUser();
+            }
+          }}
+        />
+        {/*//todo: validate email | search on enter*/}
+        <Box height="100%">
+          <StyledButton variant="contained" color="primary" onClick={handleSearchForUser}>
+            Søk bruker
+          </StyledButton>
+        </Box>
       </StyledSearchWrapper>
       {isSearching && (
         <StyledProgressWrapper>
@@ -101,48 +151,37 @@ const RoleSetter = () => {
       )}
       {searchError && <ErrorBanner userNeedsToBeLoggedIn={true} error={searchError} />}
       {user && (
-        <Card>
+        <StyledCard>
           <CardContent>
-            <Typography variant="body1">Funnet bruker: {user}</Typography>
-            <Typography variant="body2">Sett roller for brukeren</Typography>
+            <Typography variant="h4">Bruker: {user}</Typography>
             <List>
-              <ListItem>
-                <div>
-                  <Typography variant="h6">Utgiver</Typography>
-                  <Typography variant="caption">Tilgang til å publisere og redigere egne ressurser</Typography>
-                </div>
-                <ListItemSecondaryAction>
-                  <Switch checked={isPublisher} onChange={handleChangeIsPublisher} name="publisher" />
-                </ListItemSecondaryAction>
-              </ListItem>
-              <ListItem>
-                <div>
-                  <Typography variant="h6">Redaktør</Typography>
-                  <Typography variant="caption">
-                    Tilgang til Rapporteingsbehandling og har alle redigerings- og publiseringsmuligheter
-                  </Typography>
-                </div>
-                <Switch checked={isEditor} onChange={handleChangeIsEditor} name="editor" />
-              </ListItem>
-              <ListItem>
-                <div>
-                  <Typography variant="h6">Kurator</Typography>
-                  <Typography variant="caption">
-                    Tilgang til å tildele DOI og alle redigerings- og publiseringsmuligheter{' '}
-                  </Typography>
-                </div>
-                <Switch checked={isCurator} onChange={handleChangeIsCurator} name="curator" />
-              </ListItem>
-              <ListItem>
-                <div>
-                  <Typography variant="h6">Administrator</Typography>
-                  <Typography variant="caption">Tilgang til å tildele roller innenfor egen institusjon</Typography>
-                </div>
-                <Switch checked={isAdmin} onChange={handleChangeIsAdmin} name="admin" />
-              </ListItem>
+              {createListItem(
+                t('administrative.roles.publisher'),
+                t('administrative.role_description.publisher'),
+                isPublisher,
+                handleChangeIsPublisher
+              )}
+              {createListItem(
+                t('administrative.roles.editor'),
+                t('administrative.role_description.editor'),
+                isEditor,
+                handleChangeIsEditor
+              )}
+              {createListItem(
+                t('administrative.roles.curator'),
+                t('administrative.role_description.curator'),
+                isCurator,
+                handleChangeIsCurator
+              )}
+              {createListItem(
+                t('administrative.roles.administrator'),
+                t('administrative.role_description.administrator'),
+                isAdministrator,
+                handleChangeIsAdministrator
+              )}
             </List>
           </CardContent>
-        </Card>
+        </StyledCard>
       )}
     </>
   );

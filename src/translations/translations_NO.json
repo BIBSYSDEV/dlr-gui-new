@@ -36,6 +36,18 @@
       "curators": "Kuratorer",
       "editors": "Redaktører"
     },
+    "roles" : {
+      "administrator": "Administrator",
+      "curator": "Kurator",
+      "editor": "Redaktør",
+      "publisher": "Utgiver"
+    },
+    "role_description" : {
+      "administrator": "Tilgang til å tildele roller innenfor egen institusjon",
+      "curator": "Tilgang til å tildele DOI og alle redigerings- og publiseringsmuligheter",
+      "editor": "Tilgang til Rapporteingsbehandling og har alle redigerings- og publiseringsmuligheter",
+      "publisher": "Tilgang  til å publisere og redigere egne ressurser"
+    },
     "roles_heading": "Roller",
     "set_roles_heading": "Søke opp brukere og sette roller"
   },
