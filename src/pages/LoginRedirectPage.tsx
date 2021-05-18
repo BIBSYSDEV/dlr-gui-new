@@ -23,11 +23,13 @@ const LoginRedirectPage = () => {
         if (token) {
           localStorage.setItem('token', token);
           localStorage.setItem('anonymousToken', 'false');
-          const tokenExpiryResponse = await getTokenExpiry(token);
-          localStorage.setItem('tokenExpiry', tokenExpiryResponse.data.exp);
+          const tokenExpiryResponsePromise = await getTokenExpiry(token);
           const institutionAuthoritiesPromise = getUserAuthorizationsInstitution(token);
-          const userDataResponse = await getUserData(token);
+          const userDataPromise = getUserData(token);
+          const userDataResponse = await userDataPromise;
           const institutionAuthorities = await institutionAuthoritiesPromise;
+          const tokenExpiryResponse = await tokenExpiryResponsePromise;
+          localStorage.setItem('tokenExpiry', tokenExpiryResponse.data.exp);
           dispatch(setUser({ ...userDataResponse.data, institutionAuthorities: institutionAuthorities }));
         }
       } catch (error) {
