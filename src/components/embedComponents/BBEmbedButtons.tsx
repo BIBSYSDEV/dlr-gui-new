@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Button, Slider, Typography } from '@material-ui/core';
+import { Button, Grid, Slider, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import { Resource } from '../../types/resource.types';
 import { FRONTEND_URL } from '../../utils/constants';
@@ -9,7 +9,16 @@ const StyledVerticalSlider = styled(Slider)`
   margin-right: 10rem;
 `;
 const StyledHorizontalSlider = styled(Slider)`
-  max-width: 20rem;
+  width: 100%;
+`;
+
+const EmbedButtonWrapper = styled.div`
+  margin-top: 2rem;
+`;
+
+const StyledButtons = styled(Button)`
+  margin-right: 1rem;
+  margin-top: 1rem;
 `;
 
 const horizontalMarks = [
@@ -57,32 +66,31 @@ const BBEmbedButtons: FC<BBEmbedButtonsProps> = ({ resource }) => {
   };
   return (
     <>
-      <p>Embed del</p>
       {bbShowEmbedButton && (
-        <>
+        <EmbedButtonWrapper>
           <Typography>Sett inn i Blackboard</Typography>
-          <Button variant="outlined" color="primary" onClick={() => embed('link')}>
-            Sett inn lenke
-          </Button>
-          <Button
+          <StyledButtons variant="outlined" color="primary" onClick={() => embed('link')}>
+            lenke
+          </StyledButtons>
+          <StyledButtons
             variant="outlined"
             color="primary"
             onClick={() => embed(`${horizontalMarks[0].value}x${verticalMarks[0].value}`)}>
-            Sett inn liten
-          </Button>
-          <Button
+            liten
+          </StyledButtons>
+          <StyledButtons
             variant="outlined"
             color="primary"
             onClick={() => embed(`${horizontalMarks[1].value}x${verticalMarks[1].value}`)}>
-            Sett inn medium
-          </Button>
-          <Button
+            medium
+          </StyledButtons>
+          <StyledButtons
             variant="outlined"
             color="primary"
             onClick={() => embed(`${horizontalMarks[2].value}x${verticalMarks[2].value}`)}>
-            Sett inn stor
-          </Button>
-          <Button
+            stor
+          </StyledButtons>
+          <StyledButtons
             onClick={() => {
               if (showCustomSliders) {
                 setVerticalSize(360);
@@ -93,44 +101,50 @@ const BBEmbedButtons: FC<BBEmbedButtonsProps> = ({ resource }) => {
             variant="outlined"
             color="primary">
             {!showCustomSliders ? 'Velg egendefinert størrelse' : 'Skjul egendefinerte størrelser'}
-          </Button>
+          </StyledButtons>
           {showCustomSliders && (
-            <>
-              <Typography id="vertical-slider" gutterBottom>
-                Høyde
-              </Typography>
-              <StyledVerticalSlider
-                valueLabelDisplay="auto"
-                onChange={handleChangeInVerticalSlider}
-                min={300}
-                max={500}
-                step={5}
-                defaultValue={360}
-                getAriaValueText={verticalValueText}
-                orientation="vertical"
-                aria-labelledby="vertical-slider"
-                marks={verticalMarks}
-              />
-              <StyledHorizontalSlider
-                valueLabelDisplay="auto"
-                onChange={handleChangeInHorizontalSlider}
-                min={450}
-                max={1000}
-                step={5}
-                defaultValue={640}
-                aria-labelledby="horizontal-slider"
-                marks={horizontalMarks}
-              />
-              <Typography id="horizontal-slider" gutterBottom>
-                Bredde
-              </Typography>
-              <Typography>{`${horizontalSize} px * ${verticalSize} px`}</Typography>
-              <Button variant="contained" color="primary" onClick={() => embed(`${horizontalSize}x${verticalSize}`)}>
-                Sett inn egendefinert størrelse
-              </Button>
-            </>
+            <Grid container spacing={4} alignItems="flex-end">
+              <Grid item sm={12}>
+                <Typography id="vertical-slider" gutterBottom>
+                  Høyde
+                </Typography>
+                <StyledVerticalSlider
+                  valueLabelDisplay="auto"
+                  onChange={handleChangeInVerticalSlider}
+                  min={300}
+                  max={500}
+                  step={5}
+                  defaultValue={360}
+                  getAriaValueText={verticalValueText}
+                  orientation="vertical"
+                  aria-labelledby="vertical-slider"
+                  marks={verticalMarks}
+                />
+              </Grid>
+              <Grid item sm={9}>
+                <StyledHorizontalSlider
+                  valueLabelDisplay="auto"
+                  onChange={handleChangeInHorizontalSlider}
+                  min={450}
+                  max={1000}
+                  step={5}
+                  defaultValue={640}
+                  aria-labelledby="horizontal-slider"
+                  marks={horizontalMarks}
+                />
+                <Typography id="horizontal-slider" gutterBottom>
+                  Bredde
+                </Typography>
+              </Grid>
+              <Grid item sm={12}>
+                <Typography>{`${horizontalSize} px * ${verticalSize} px`}</Typography>
+                <Button variant="contained" color="primary" onClick={() => embed(`${horizontalSize}x${verticalSize}`)}>
+                  Sett inn egendefinert størrelse
+                </Button>
+              </Grid>
+            </Grid>
           )}
-        </>
+        </EmbedButtonWrapper>
       )}
     </>
   );
