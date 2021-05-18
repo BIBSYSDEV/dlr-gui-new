@@ -36,8 +36,24 @@
       "curators": "Curators",
       "editors": "Editors"
     },
+    "roles" : {
+      "administrator": "Administrator",
+      "curator": "Curator",
+      "editor": "Editor",
+      "publisher": "Publisher"
+    },
+    "role_description" : {
+      "administrator": "Assign roles to own institution",
+      "curator": "Access to assign DOIs and to edit and publish all resources",
+      "editor": "Access to manage reports and edit and publish all resources",
+      "publisher": "Access to publish and edit own resources"
+    },
     "roles_heading": "Roles",
-    "set_roles_heading": "Søke opp brukere og sette roller"
+    "roles_for_user": "Rolles for user: ",
+    "set_roles_heading": "Search user and set roles",
+    "search_user": "Search user",
+    "userid": "Bruker-id (feide-epost)"
+
   },
   "authority": {
     "add_authority": "Add authority",

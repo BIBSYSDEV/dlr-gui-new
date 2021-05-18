@@ -49,7 +49,10 @@
       "publisher": "Tilgang  til å publisere og redigere egne ressurser"
     },
     "roles_heading": "Roller",
-    "set_roles_heading": "Søke opp brukere og sette roller"
+    "roles_for_user": "Roller for bruker: ",
+    "set_roles_heading": "Søke opp brukere og sette roller",
+    "search_user": "Søk bruker",
+    "userid": "Bruker-id (feide-epost)"
   },
   "authority": {
     "add_authority": "Legg til autoritet",

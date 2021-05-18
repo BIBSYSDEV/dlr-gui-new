@@ -14,7 +14,11 @@ import {
   Typography,
 } from '@material-ui/core';
 import styled from 'styled-components';
-import { getRolesForInstitutionUser } from '../../api/institutionAuthorizationsApi';
+import {
+  getRolesForInstitutionUser,
+  removeRoleForInstitutionUser,
+  setRoleForInstitutionUser,
+} from '../../api/institutionAuthorizationsApi';
 import ErrorBanner from '../../components/ErrorBanner';
 import { StyledProgressWrapper } from '../../components/styled/Wrappers';
 import { InstitutionProfilesNames } from '../../types/user.types';
@@ -51,21 +55,23 @@ const StyledButton = styled(Button)`
 
 const RoleSetter = () => {
   const { t } = useTranslation();
-  const [user, setUser] = useState<string>();
-  const [searchInput, setSearchInput] = useState('pcb@unit.no');
+  const [institutionUser, setInstitutionUser] = useState<string>('');
+  const [searchInput, setSearchInput] = useState('gg@unit.no');
   const [isSearching, setIsSearching] = useState(false);
   const [isAdministrator, setIsAdministrator] = useState(false);
   const [isCurator, setIsCurator] = useState(false);
   const [isEditor, setIsEditor] = useState(false);
   const [isPublisher, setIsPublisher] = useState(false);
   const [searchError, setSearchError] = useState<Error>();
+  const [roleChangeError, setRoleChangeError] = useState<Error>();
 
   const handleSearchForUser = async () => {
     try {
       setSearchError(undefined);
       setIsSearching(true);
+      setInstitutionUser('');
       const institutionUser = (await getRolesForInstitutionUser(searchInput)).data;
-      setUser(institutionUser.user);
+      setInstitutionUser(institutionUser.user);
       institutionUser.profiles.forEach((profile) => {
         switch (profile.name) {
           case InstitutionProfilesNames.curator:
@@ -91,21 +97,49 @@ const RoleSetter = () => {
     }
   };
 
-  const handleChangeIsAdministrator = async () => {
-    //todo: api
-    setIsAdministrator(!isAdministrator);
+  const handleChangeIsAdministrator = () => {
+    setRoleChangeError(undefined);
+    try {
+      isAdministrator
+        ? removeRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.administrator)
+        : setRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.administrator);
+      setIsAdministrator(!isAdministrator);
+    } catch (error) {
+      setRoleChangeError(error);
+    }
   };
-  const handleChangeIsCurator = async () => {
-    //todo: api
-    setIsCurator(!isCurator);
+
+  const handleChangeIsCurator = () => {
+    setRoleChangeError(undefined);
+
+    try {
+      isCurator
+        ? removeRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.curator)
+        : setRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.curator);
+      setIsCurator(!isCurator);
+    } catch (error) {
+      setRoleChangeError(error);
+    }
   };
-  const handleChangeIsEditor = async () => {
-    //todo: api
-    setIsEditor(!isEditor);
+  const handleChangeIsEditor = () => {
+    try {
+      isEditor
+        ? removeRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.editor)
+        : setRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.editor);
+      setIsEditor(!isEditor);
+    } catch (error) {
+      setRoleChangeError(error);
+    }
   };
-  const handleChangeIsPublisher = async () => {
-    //todo: api
-    setIsPublisher(!isPublisher);
+  const handleChangeIsPublisher = () => {
+    try {
+      isPublisher
+        ? removeRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.publisher)
+        : setRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.publisher);
+      setIsPublisher(!isPublisher);
+    } catch (error) {
+      setRoleChangeError(error);
+    }
   };
 
   const createListItem = (title: string, description: string, value: boolean, onChangeHandler: any) => (
@@ -128,7 +162,7 @@ const RoleSetter = () => {
       <StyledSearchWrapper>
         <StyledTextField
           variant="outlined"
-          label={t('common.brukerid')}
+          label={t('administrative.userid')}
           defaultValue={searchInput}
           onChange={(event) => setSearchInput(event.target.value)}
           onKeyPress={(event) => {
@@ -137,10 +171,10 @@ const RoleSetter = () => {
             }
           }}
         />
-        {/*//todo: validate email | search on enter*/}
+        {/*//todo: validate email */}
         <Box height="100%">
           <StyledButton variant="contained" color="primary" onClick={handleSearchForUser}>
-            Søk bruker
+            {t('administrative.search_user')}
           </StyledButton>
         </Box>
       </StyledSearchWrapper>
@@ -150,10 +184,12 @@ const RoleSetter = () => {
         </StyledProgressWrapper>
       )}
       {searchError && <ErrorBanner userNeedsToBeLoggedIn={true} error={searchError} />}
-      {user && (
+      {institutionUser && (
         <StyledCard>
           <CardContent>
-            <Typography variant="h4">Bruker: {user}</Typography>
+            <Typography variant="h4">
+              {t('administrative.roles_for_user')} {institutionUser}
+            </Typography>
             <List>
               {createListItem(
                 t('administrative.roles.publisher'),
@@ -183,6 +219,7 @@ const RoleSetter = () => {
           </CardContent>
         </StyledCard>
       )}
+      {roleChangeError && <ErrorBanner userNeedsToBeLoggedIn={true} error={roleChangeError} />}
     </>
   );
 };
