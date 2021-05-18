@@ -6,10 +6,10 @@ import AppRoutes from './AppRoutes';
 import Footer from './layout/Footer';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { API_PATHS, API_URL } from './utils/constants';
 import { useSelector } from 'react-redux';
 import { RootState } from './state/rootReducer';
 import { LMSParametersName } from './types/LMSParameters';
+import { getPackedUrlForFeideLogin } from './utils/rewriteSearchParams';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -41,12 +41,7 @@ const AppContent: FC<LMSServiceProps> = ({ mainContentRef, userError }) => {
   const navbar = searchParams.get(LMSParametersName.Navbar) !== 'false';
 
   if (user.id.length === 0 && forceAuthentication) {
-    let newParams = searchParams.toString().length > 0 ? '?' : '';
-    searchParams.forEach((value, key) => (newParams += `ZZZ${key}XXX${value}`));
-    newParams += searchParams.toString().length > 0 ? '=t' : '';
-
-    const originHref = window.location.origin + '/loginRedirect' + window.location.pathname + newParams;
-    window.location.href = `${API_URL}${API_PATHS.guiBackendLoginPath}/feideLogin?target=${originHref}`;
+    window.location.href = getPackedUrlForFeideLogin();
   }
 
   return (
