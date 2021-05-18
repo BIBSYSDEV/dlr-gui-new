@@ -1,5 +1,6 @@
 export const USE_MOCK_DATA = process.env.REACT_APP_USE_MOCK === 'true';
 export const API_URL = process.env.REACT_APP_API_URL;
+export const FRONTEND_URL = process.env.REACT_S3_BUCKET_URL;
 export const BIBSYS_AUTHORITY_URL = 'https://authority.bibsys.no/authority/rest/authorities/html';
 export const MICROSOFT_DOCUMENT_VIEWER = 'https://view.officeapps.live.com/op/embed.aspx';
 

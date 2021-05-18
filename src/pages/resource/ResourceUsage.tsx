@@ -132,7 +132,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
           </StyledButton>
         </StyledInformationWrapper>
       </StyledTextAndButtonWrapper>
-      <BBEmbedButtons />
+      <BBEmbedButtons resource={resource} />
     </>
   );
 };
