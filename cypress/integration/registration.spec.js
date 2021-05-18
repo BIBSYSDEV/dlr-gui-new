@@ -328,7 +328,7 @@ context('Actions', () => {
 
     cy.get(`[data-testid=resource-tags-input] input`).type(testTag4SearchTerm);
     cy.get(`#register-tags-input-option-1`).click(); //as results are hard coded
-    cy.get(`[data-testid=tag-chip-2]`).contains(testTag4);
+    cy.get(`[data-testid=tag-chip-3]`).contains(testTag4);
 
     //tag exist on preview
     cy.get('[data-testid=step-navigation-4]').click();

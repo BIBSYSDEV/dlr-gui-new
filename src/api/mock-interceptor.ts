@@ -7,6 +7,9 @@ import { FileApiPaths } from './fileApi';
 import {
   createMockContributor,
   createMockCreator,
+  mockAdminList,
+  mockAuthoritySearchResponse,
+  mockAuthoritySearchResponse2,
   mockCompleteUpload,
   mockContent,
   mockContents,
@@ -15,9 +18,12 @@ import {
   mockCreatedResourceWithContents,
   mockCreateUpload,
   mockCreators,
+  mockCuratorList,
+  mockDefaultContent,
   mockDefaultResource,
-  mockTagSuggestions,
+  mockEditorList,
   mockFacets,
+  mockInstitutionAuthorities,
   mockLicenses,
   mockMyResources,
   mockPrepareUpload,
@@ -25,13 +31,10 @@ import {
   mockResourceEvents,
   mockResourceReadAccess,
   mockTags,
+  mockTagSuggestions,
+  mockText,
   mockToken,
   mockUser,
-  mockInstitutionAuthorities,
-  mockAuthoritySearchResponse,
-  mockAuthoritySearchResponse2,
-  mockDefaultContent,
-  MockText,
 } from './mockdata';
 
 // AXIOS INTERCEPTOR
@@ -46,7 +49,7 @@ export const interceptRequestsOnMock = () => {
   };
 
   //Get text content file:
-  mock.onGet(new RegExp('textfilepath')).reply(200, MockText);
+  mock.onGet(new RegExp('textfilepath')).reply(200, mockText);
 
   //AUTHORITY
   mock
@@ -192,6 +195,29 @@ export const interceptRequestsOnMock = () => {
 
   //DEFAULTS
   mock.onGet(new RegExp(`${API_PATHS.guiBackendDefaultsPath}/resources/.*`)).reply(200, mockDefaultResource);
+
+  //LIST AUTHORIZED USERS
+  mock
+    .onGet(
+      new RegExp(
+        `${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations/users/accessProfiles/dlr_institution_administrator`
+      )
+    )
+    .reply(200, mockAdminList);
+  mock
+    .onGet(
+      new RegExp(
+        `${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations/users/accessProfiles/dlr_institution_editor`
+      )
+    )
+    .reply(200, mockEditorList);
+  mock
+    .onGet(
+      new RegExp(
+        `${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations/users/accessProfiles/dlr_institution_curator`
+      )
+    )
+    .reply(200, mockCuratorList);
 
   // USER
   mock.onGet(new RegExp(`${API_PATHS.guiBackendUsersPath}/users/authorized`)).reply(200, mockUser);

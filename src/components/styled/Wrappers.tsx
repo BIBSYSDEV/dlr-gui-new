@@ -19,16 +19,6 @@ export const StyledProgressWrapper = styled.div`
   padding: 2rem;
 `;
 
-export const StyledRightAlignedButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
-
-export const StyledCenterAlignedContentWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
 export const StyledNormalTextPreWrapped = styled(NormalText)`
   white-space: pre-wrap;
 `;

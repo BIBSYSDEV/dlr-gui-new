@@ -42,7 +42,6 @@ const MyResources = () => {
         const response = await getMyResources();
         setMyUnpublishedResources(response.data.filter((resource) => !resource.features.dlr_status_published));
         setMyPublishedResources(response.data.filter((resource) => resource.features.dlr_status_published));
-        setIsLoadingMyResources(false);
       } catch (error) {
         setLoadingError(error);
       } finally {
