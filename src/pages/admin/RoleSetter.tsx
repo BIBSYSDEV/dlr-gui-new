@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import styled from 'styled-components';
-import { getRolesForUser } from '../../api/institutionAuthorizationsApi';
+import { getRolesForInstitutionUser } from '../../api/institutionAuthorizationsApi';
 import ErrorBanner from '../../components/ErrorBanner';
 import { StyledProgressWrapper } from '../../components/styled/Wrappers';
 import { InstitutionProfilesNames } from '../../types/user.types';
@@ -64,7 +64,7 @@ const RoleSetter = () => {
     try {
       setSearchError(undefined);
       setIsSearching(true);
-      const institutionUser = (await getRolesForUser(searchInput)).data;
+      const institutionUser = (await getRolesForInstitutionUser(searchInput)).data;
       setUser(institutionUser.user);
       institutionUser.profiles.forEach((profile) => {
         switch (profile.name) {

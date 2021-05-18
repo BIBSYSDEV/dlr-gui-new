@@ -14,11 +14,33 @@ export const getInstitutionAuthorizations = (
   });
 };
 
-export const getRolesForUser = (email: string): Promise<AxiosResponse<institutionUser>> => {
+export const getRolesForInstitutionUser = (email: string): Promise<AxiosResponse<institutionUser>> => {
   return authenticatedApiRequest({
     url: encodeURI(
       `${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations/users/${email}`
     ),
     method: 'GET',
+  });
+};
+export const setRoleForInstitutionUser = (
+  email: string,
+  accessProfile: string
+): Promise<AxiosResponse<institutionUser>> => {
+  const data = encodeURI(`user=${email}&accessProfile=${accessProfile}`);
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations`),
+    method: 'POST',
+    data,
+  });
+};
+export const removeRoleForInstitutionUser = (
+  email: string,
+  accessProfile: string
+): Promise<AxiosResponse<institutionUser>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(
+      `${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations/users/${email}/accessProfiles/${accessProfile}`
+    ),
+    method: 'DELETE',
   });
 };
