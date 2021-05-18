@@ -48,7 +48,6 @@ const App = () => {
 
   useEffect(() => {
     const loadUser = async () => {
-      console.log('loading user');
       try {
         const userDataResponse = await getUserData();
         const institutionAuthorities = await getUserAuthorizationsInstitution();
@@ -77,9 +76,8 @@ const App = () => {
 
   useEffect(() => {
     setTokenError(undefined);
-    if (!window.location.href.includes('/loginRedirect?token')) {
+    if (!window.location.href.includes('/loginRedirect')) {
       if (!localStorage.token || (localStorage.token && isLoggedInTokenExpired()) || !localStorage.anonymousToken) {
-        console.log('getAnynumousWebToken');
         getAnonymousWebToken()
           .then((response) => {
             if (response.data) {

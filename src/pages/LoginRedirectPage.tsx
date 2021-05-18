@@ -24,7 +24,7 @@ const LoginRedirectPage = () => {
           localStorage.setItem('token', token);
           localStorage.setItem('anonymousToken', 'false');
           const tokenExpiryResponse = await getTokenExpiry(token);
-          localStorage.tokenExpiry = tokenExpiryResponse.data.exp;
+          localStorage.setItem('tokenExpiry', tokenExpiryResponse.data.exp);
           const institutionAuthoritiesPromise = getUserAuthorizationsInstitution(token);
           const userDataResponse = await getUserData(token);
           const institutionAuthorities = await institutionAuthoritiesPromise;
