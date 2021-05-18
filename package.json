@@ -19,7 +19,7 @@
     "deepmerge": "^4.2.2",
     "env-cmd": "^10.1.0",
     "formik": "^2.2.6",
-    "i18next": "^20.2.2",
+    "i18next": "^20.2.4",
     "i18next-browser-languagedetector": "^6.1.1",
     "logrocket": "^1.2.0",
     "moment": "^2.29.1",
