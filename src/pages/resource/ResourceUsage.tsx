@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import { TFunction, useTranslation } from 'react-i18next';
 import { getCitationFromCrossCite } from '../../api/resourceApi';
 import styled from 'styled-components';
+import BBEmbedButtons from '../../components/embedComponents/BBEmbedButtons';
 
 const StyledTextAndButtonWrapper = styled.div`
   display: block;
@@ -117,19 +118,22 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   };
 
   return (
-    <StyledTextAndButtonWrapper>
-      <Typography variant="caption">{t('citation.citation_link')}</Typography>
-      <StyledInformationWrapper>
-        <StyledTypography variant="body1">
-          {citationPreTitle}
-          <i>{citationTitle}</i>
-          {citationPostTitle}
-        </StyledTypography>
-        <StyledButton color="primary" variant="outlined" onClick={() => handleCopyButtonClick()}>
-          {t('citation.copy_citation').toUpperCase()}
-        </StyledButton>
-      </StyledInformationWrapper>
-    </StyledTextAndButtonWrapper>
+    <>
+      <StyledTextAndButtonWrapper>
+        <Typography variant="caption">{t('citation.citation_link')}</Typography>
+        <StyledInformationWrapper>
+          <StyledTypography variant="body1">
+            {citationPreTitle}
+            <i>{citationTitle}</i>
+            {citationPostTitle}
+          </StyledTypography>
+          <StyledButton color="primary" variant="outlined" onClick={() => handleCopyButtonClick()}>
+            {t('citation.copy_citation').toUpperCase()}
+          </StyledButton>
+        </StyledInformationWrapper>
+      </StyledTextAndButtonWrapper>
+      <BBEmbedButtons />
+    </>
   );
 };
 
