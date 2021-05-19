@@ -169,6 +169,7 @@
   "feedback": {
     "form_errors": "There are errors in the form. They have to be corrected before the resource can be published",
     "required_field": "Required field",
+    "valid_email": "Input must be a valid email",
     "valid_url": "Input must be a valid URL",
     "published_warning": "The resource is published. Changes to any field will be saved and published instantly."
   },

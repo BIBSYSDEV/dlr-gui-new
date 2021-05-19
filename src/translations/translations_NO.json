@@ -169,7 +169,8 @@
   "feedback": {
     "form_errors": "Det er feil i skjema. Disse må rettes før ressursen kan publiseres",
     "required_field": "Påkrevd felt",
-    "valid_url": "Input må være gyldig URL",
+    "valid_url": "Input må være en gyldig URL",
+    "valid_email": "Input må være en gyldig epost",
     "published_warning": "Ressursen er publisert. Alle felter som endres blir lagret og publisert på nytt umiddelbart etter endring."
   },
   "illustration_alts_tags": {

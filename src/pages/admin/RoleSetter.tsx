@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Box,
   Button,
   Card,
   CardContent,
   CircularProgress,
   List,
   ListItem,
-  ListItemSecondaryAction,
   Switch,
   TextField,
   Typography,
@@ -50,7 +48,7 @@ const StyledTextField = styled(TextField)`
   }
 `;
 
-const StyledLine: any = styled.div`
+const StyledLine = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -176,16 +174,26 @@ const RoleSetter = () => {
     }
   };
 
-  const createListItem = (title: string, description: string, value: boolean, onChangeHandler: any) => (
+  const createListItem = (
+    title: string,
+    description: string,
+    value: boolean,
+    onChangeHandler: () => void,
+    role: InstitutionProfilesNames
+  ) => (
     <ListItem>
       <StyledLine>
         <div>
           <Typography variant="h6">{title}</Typography>
           <Typography variant="caption">{description}</Typography>
         </div>
-        <div>
-          <Switch checked={value} color="primary" onChange={onChangeHandler} name="publisher" />
-        </div>
+        <Switch
+          data-testid={`inst-user-${role}-switch`}
+          checked={value}
+          color="primary"
+          onChange={onChangeHandler}
+          name="publisher"
+        />
       </StyledLine>
     </ListItem>
   );
@@ -211,6 +219,7 @@ const RoleSetter = () => {
                   {({ field, meta: { error, touched } }: FieldProps) => (
                     <StyledTextField
                       variant="outlined"
+                      data-testid="inst-user-search-input"
                       label={t('administrative.userid')}
                       {...field}
                       error={!!error && touched}
@@ -219,11 +228,14 @@ const RoleSetter = () => {
                   )}
                 </Field>
               </StyledInputWrapper>
-              <Box height="100%">
-                <StyledButton disabled={!isValid || !dirty} variant="contained" type="submit" color="primary">
-                  {t('administrative.search_user')}
-                </StyledButton>
-              </Box>
+              <StyledButton
+                data-testid="inst-user-search-button"
+                disabled={!isValid || !dirty}
+                variant="contained"
+                type="submit"
+                color="primary">
+                {t('administrative.search_user')}
+              </StyledButton>
             </StyledSearchWrapper>
           </Form>
         )}
@@ -235,7 +247,7 @@ const RoleSetter = () => {
       )}
       {searchError && <ErrorBanner userNeedsToBeLoggedIn={true} error={searchError} />}
       {institutionUser && (
-        <StyledCard>
+        <StyledCard data-testid="inst-user-card">
           <CardContent>
             <Typography variant="h4">
               {t('administrative.roles_for_user')} {institutionUser}
@@ -245,29 +257,33 @@ const RoleSetter = () => {
                 t('administrative.roles.publisher'),
                 t('administrative.role_description.publisher'),
                 isPublisher,
-                handleChangeIsPublisher
+                handleChangeIsPublisher,
+                InstitutionProfilesNames.publisher
               )}
               {createListItem(
                 t('administrative.roles.editor'),
                 t('administrative.role_description.editor'),
                 isEditor,
-                handleChangeIsEditor
+                handleChangeIsEditor,
+                InstitutionProfilesNames.editor
               )}
               {createListItem(
                 t('administrative.roles.curator'),
                 t('administrative.role_description.curator'),
                 isCurator,
-                handleChangeIsCurator
+                handleChangeIsCurator,
+                InstitutionProfilesNames.curator
               )}
               {createListItem(
                 t('administrative.roles.administrator'),
                 t('administrative.role_description.administrator'),
                 isAdministrator,
-                handleChangeIsAdministrator
+                handleChangeIsAdministrator,
+                InstitutionProfilesNames.administrator
               )}
             </List>
             {changesSaved && (
-              <Typography color="primary" variant="body2">
+              <Typography color="primary" variant="body2" data-testid="inst-user-roles-saved">
                 {t('administrative.roles_changed')}
               </Typography>
             )}

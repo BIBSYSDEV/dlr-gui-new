@@ -13,7 +13,7 @@ import RoleSetter from './RoleSetter';
 
 const StyledWrapper = styled(Grid)`
   background-color: ${Colors.UnitTurquoise_20percent};
-  padding: 1rem;
+  padding: 1rem 1rem 2rem 1rem;
   margin-top: 2rem;
 `;
 
@@ -72,10 +72,10 @@ const AdminPage = () => {
     <StyledContentWrapperLarge>
       {loadingError && <ErrorBanner userNeedsToBeLoggedIn={true} error={loadingError} />}
       <PageHeader>{t('administrative.page_heading')}</PageHeader>
-      <StyledWrapper2>
-        <RoleSetter />
-      </StyledWrapper2>
       <StyledWrapper>
+        <RoleSetter />
+      </StyledWrapper>
+      <StyledWrapper2>
         <Typography gutterBottom variant="h2">
           {t('administrative.roles_heading')}
         </Typography>
@@ -89,7 +89,7 @@ const AdminPage = () => {
             <CircularProgress />
           </StyledProgressWrapper>
         )}
-      </StyledWrapper>
+      </StyledWrapper2>
     </StyledContentWrapperLarge>
   );
 };
