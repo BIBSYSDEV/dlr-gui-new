@@ -42,6 +42,7 @@
       "editor": "Redaktør",
       "publisher": "Utgiver"
     },
+    "roles_changed": "Endringer lagret",
     "role_description" : {
       "administrator": "Tilgang til å tildele roller innenfor egen institusjon",
       "curator": "Tilgang til å tildele DOI og alle redigerings- og publiseringsmuligheter",
@@ -52,7 +53,7 @@
     "roles_for_user": "Roller for bruker: ",
     "set_roles_heading": "Søke opp brukere og sette roller",
     "search_user": "Søk bruker",
-    "userid": "Bruker-id (feide-epost)"
+    "userid": "Epost eller Feide-id"
   },
   "authority": {
     "add_authority": "Legg til autoritet",

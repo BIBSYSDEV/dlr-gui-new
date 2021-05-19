@@ -23,27 +23,33 @@ import ErrorBanner from '../../components/ErrorBanner';
 import { StyledProgressWrapper } from '../../components/styled/Wrappers';
 import { InstitutionProfilesNames } from '../../types/user.types';
 import { StyleWidths } from '../../themes/mainTheme';
+import { ErrorMessage, Field, FieldProps, Form, Formik } from 'formik';
+import * as Yup from 'yup';
 
 const StyledSearchWrapper = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   max-width: ${StyleWidths.width3};
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     flex-direction: column;
     align-items: flex-start;
   }
 `;
-
-const StyledTextField = styled(TextField)`
+const StyledInputWrapper = styled.div`
   margin-right: 1rem;
   flex: 1;
-  & .MuiInputBase-root {
-    height: 3rem;
-  }
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     margin-bottom: 1rem;
   }
 `;
+
+const StyledTextField = styled(TextField)`
+  width: 100%;
+  & .MuiInputBase-root {
+    height: 3rem;
+  }
+`;
+
 const StyledCard = styled(Card)`
   max-width: ${StyleWidths.width3};
   margin-top: 1rem;
@@ -51,12 +57,23 @@ const StyledCard = styled(Card)`
 
 const StyledButton = styled(Button)`
   height: 3rem;
+  margin-top: 1rem;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    margin-top: 0;
+  }
 `;
+
+export interface InstitutionUserSearchFormValues {
+  email: string;
+}
+
+const emptyInstitutionUserSearchFormValues: InstitutionUserSearchFormValues = {
+  email: '',
+};
 
 const RoleSetter = () => {
   const { t } = useTranslation();
   const [institutionUser, setInstitutionUser] = useState<string>('');
-  const [searchInput, setSearchInput] = useState('gg@unit.no');
   const [isSearching, setIsSearching] = useState(false);
   const [isAdministrator, setIsAdministrator] = useState(false);
   const [isCurator, setIsCurator] = useState(false);
@@ -64,13 +81,15 @@ const RoleSetter = () => {
   const [isPublisher, setIsPublisher] = useState(false);
   const [searchError, setSearchError] = useState<Error>();
   const [roleChangeError, setRoleChangeError] = useState<Error>();
+  const [changesSaved, setChangesSaved] = useState(false);
 
-  const handleSearchForUser = async () => {
+  const handleSearchForUser = async (values: InstitutionUserSearchFormValues) => {
     try {
+      setChangesSaved(false);
       setSearchError(undefined);
       setIsSearching(true);
       setInstitutionUser('');
-      const institutionUser = (await getRolesForInstitutionUser(searchInput)).data;
+      const institutionUser = (await getRolesForInstitutionUser(values.email)).data;
       setInstitutionUser(institutionUser.user);
       institutionUser.profiles.forEach((profile) => {
         switch (profile.name) {
@@ -97,46 +116,55 @@ const RoleSetter = () => {
     }
   };
 
-  const handleChangeIsAdministrator = () => {
+  const handleChangeIsAdministrator = async () => {
+    setChangesSaved(false);
     setRoleChangeError(undefined);
     try {
       isAdministrator
-        ? removeRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.administrator)
-        : setRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.administrator);
+        ? await removeRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.administrator)
+        : await setRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.administrator);
       setIsAdministrator(!isAdministrator);
+      setChangesSaved(true);
     } catch (error) {
       setRoleChangeError(error);
     }
   };
 
-  const handleChangeIsCurator = () => {
+  const handleChangeIsCurator = async () => {
+    setChangesSaved(false);
     setRoleChangeError(undefined);
-
     try {
       isCurator
-        ? removeRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.curator)
-        : setRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.curator);
+        ? await removeRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.curator)
+        : await setRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.curator);
       setIsCurator(!isCurator);
+      setChangesSaved(true);
     } catch (error) {
       setRoleChangeError(error);
     }
   };
-  const handleChangeIsEditor = () => {
+  const handleChangeIsEditor = async () => {
+    setChangesSaved(false);
+    setRoleChangeError(undefined);
     try {
       isEditor
-        ? removeRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.editor)
-        : setRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.editor);
+        ? await removeRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.editor)
+        : await setRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.editor);
       setIsEditor(!isEditor);
+      setChangesSaved(true);
     } catch (error) {
       setRoleChangeError(error);
     }
   };
-  const handleChangeIsPublisher = () => {
+  const handleChangeIsPublisher = async () => {
+    setChangesSaved(false);
+    setRoleChangeError(undefined);
     try {
       isPublisher
-        ? removeRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.publisher)
-        : setRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.publisher);
+        ? await removeRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.publisher)
+        : await setRoleForInstitutionUser(institutionUser, InstitutionProfilesNames.publisher);
       setIsPublisher(!isPublisher);
+      setChangesSaved(true);
     } catch (error) {
       setRoleChangeError(error);
     }
@@ -154,30 +182,44 @@ const RoleSetter = () => {
     </ListItem>
   );
 
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().email(t('feedback.valid_email')).required(t('feedback.required_field')),
+  });
+
   return (
     <>
       <Typography gutterBottom variant="h2">
         {t('administrative.set_roles_heading')}
       </Typography>
-      <StyledSearchWrapper>
-        <StyledTextField
-          variant="outlined"
-          label={t('administrative.userid')}
-          defaultValue={searchInput}
-          onChange={(event) => setSearchInput(event.target.value)}
-          onKeyPress={(event) => {
-            if (event.key === 'Enter') {
-              handleSearchForUser();
-            }
-          }}
-        />
-        {/*//todo: validate email */}
-        <Box height="100%">
-          <StyledButton variant="contained" color="primary" onClick={handleSearchForUser}>
-            {t('administrative.search_user')}
-          </StyledButton>
-        </Box>
-      </StyledSearchWrapper>
+      <Formik
+        onSubmit={handleSearchForUser}
+        initialValues={emptyInstitutionUserSearchFormValues}
+        validationSchema={validationSchema}>
+        {({ isValid, dirty }) => (
+          <Form>
+            <StyledSearchWrapper>
+              <StyledInputWrapper>
+                <Field name="email">
+                  {({ field, meta: { error, touched } }: FieldProps) => (
+                    <StyledTextField
+                      variant="outlined"
+                      label={t('administrative.userid')}
+                      {...field}
+                      error={!!error && touched}
+                      helperText={<ErrorMessage name={field.name} />}
+                    />
+                  )}
+                </Field>
+              </StyledInputWrapper>
+              <Box height="100%">
+                <StyledButton disabled={!isValid || !dirty} variant="contained" type="submit" color="primary">
+                  {t('administrative.search_user')}
+                </StyledButton>
+              </Box>
+            </StyledSearchWrapper>
+          </Form>
+        )}
+      </Formik>
       {isSearching && (
         <StyledProgressWrapper>
           <CircularProgress />
@@ -216,6 +258,11 @@ const RoleSetter = () => {
                 handleChangeIsAdministrator
               )}
             </List>
+            {changesSaved && (
+              <Typography color="primary" variant="body2">
+                {t('administrative.roles_changed')}
+              </Typography>
+            )}
           </CardContent>
         </StyledCard>
       )}

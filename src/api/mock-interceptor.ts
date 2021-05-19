@@ -24,6 +24,7 @@ import {
   mockEditorList,
   mockFacets,
   mockInstitutionAuthorities,
+  mockInstitutionUser,
   mockLicenses,
   mockMyResources,
   mockPrepareUpload,
@@ -218,6 +219,21 @@ export const interceptRequestsOnMock = () => {
       )
     )
     .reply(200, mockCuratorList);
+
+  //inst-user-roles
+  mock
+    .onGet(
+      new RegExp(`${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations/users/.*`)
+    )
+    .reply(200, mockInstitutionUser);
+  mock
+    .onPost(new RegExp(`${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations`))
+    .reply(202);
+  mock
+    .onDelete(
+      new RegExp(`${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations/users/*.`)
+    )
+    .reply(202);
 
   // USER
   mock.onGet(new RegExp(`${API_PATHS.guiBackendUsersPath}/users/authorized`)).reply(200, mockUser);

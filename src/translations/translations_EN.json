@@ -42,6 +42,7 @@
       "editor": "Editor",
       "publisher": "Publisher"
     },
+    "roles_changed": "Changes saved",
     "role_description" : {
       "administrator": "Assign roles to own institution",
       "curator": "Access to assign DOIs and to edit and publish all resources",
@@ -52,8 +53,7 @@
     "roles_for_user": "Rolles for user: ",
     "set_roles_heading": "Search user and set roles",
     "search_user": "Search user",
-    "userid": "Bruker-id (feide-epost)"
-
+    "userid": "Email or Feide-id"
   },
   "authority": {
     "add_authority": "Add authority",
