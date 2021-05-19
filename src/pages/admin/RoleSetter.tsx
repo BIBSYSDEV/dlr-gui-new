@@ -50,6 +50,12 @@ const StyledTextField = styled(TextField)`
   }
 `;
 
+const StyledLine: any = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`;
+
 const StyledCard = styled(Card)`
   max-width: ${StyleWidths.width3};
   margin-top: 1rem;
@@ -172,13 +178,15 @@ const RoleSetter = () => {
 
   const createListItem = (title: string, description: string, value: boolean, onChangeHandler: any) => (
     <ListItem>
-      <div>
-        <Typography variant="h6">{title}</Typography>
-        <Typography variant="caption">{description}</Typography>
-      </div>
-      <ListItemSecondaryAction>
-        <Switch checked={value} color="primary" onChange={onChangeHandler} name="publisher" />
-      </ListItemSecondaryAction>
+      <StyledLine>
+        <div>
+          <Typography variant="h6">{title}</Typography>
+          <Typography variant="caption">{description}</Typography>
+        </div>
+        <div>
+          <Switch checked={value} color="primary" onChange={onChangeHandler} name="publisher" />
+        </div>
+      </StyledLine>
     </ListItem>
   );
 
