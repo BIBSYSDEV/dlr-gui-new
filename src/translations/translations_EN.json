@@ -31,10 +31,16 @@
   },
   "administrative" : {
     "page_heading": "Administrative",
-    "role_headers": {
+    "role_header": {
       "administrators": "Administrators",
       "curators": "Curators",
       "editors": "Editors"
+    },
+    "role_description" : {
+      "administrator": "Assign roles to affiliated institution",
+      "curator": "Access to assign DOIs and to edit and publish all resources",
+      "editor": "Access to manage reports and edit and publish all resources",
+      "publisher": "Access to publish and edit own resources"
     },
     "roles" : {
       "administrator": "Administrator",
@@ -43,16 +49,11 @@
       "publisher": "Publisher"
     },
     "roles_changed": "Changes saved",
-    "role_description" : {
-      "administrator": "Assign roles to affiliated institution",
-      "curator": "Access to assign DOIs and to edit and publish all resources",
-      "editor": "Access to manage reports and edit and publish all resources",
-      "publisher": "Access to publish and edit own resources"
-    },
     "roles_heading": "Roles",
     "roles_for_user": "Rolles for user: ",
     "set_roles_heading": "Search user and set roles",
     "search_user": "Search user",
+    "toggle": "Toggle role: ",
     "userid": "Email or Feide-id"
   },
   "authority": {

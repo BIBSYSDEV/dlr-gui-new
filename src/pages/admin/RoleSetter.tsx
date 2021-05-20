@@ -184,11 +184,12 @@ const RoleSetter = () => {
     <ListItem>
       <StyledLine>
         <div>
-          <Typography variant="h6">{title}</Typography>
-          <Typography variant="caption">{description}</Typography>
+          <Typography variant="h4">{title}</Typography>
+          <Typography variant="body2">{description}</Typography>
         </div>
         <Switch
           data-testid={`inst-user-${role}-switch`}
+          inputProps={{ 'aria-label': `${t('administrative.toggle')} ${title}` }}
           checked={value}
           color="primary"
           onChange={onChangeHandler}
@@ -249,7 +250,7 @@ const RoleSetter = () => {
       {institutionUser && (
         <StyledCard data-testid="inst-user-card">
           <CardContent>
-            <Typography variant="h4">
+            <Typography variant="h3">
               {t('administrative.roles_for_user')} {institutionUser}
             </Typography>
             <List>

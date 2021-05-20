@@ -80,9 +80,9 @@ const AdminPage = () => {
           {t('administrative.roles_heading')}
         </Typography>
         <Grid container spacing={6}>
-          {RoleCard(t('administrative.role_headers.administrators'), administrators, 'administrator-list')}
-          {RoleCard(t('administrative.role_headers.curators'), curators, 'curator-list')}
-          {RoleCard(t('administrative.role_headers.editors'), editors, 'editor-list')}
+          {RoleCard(t('administrative.role_header.administrators'), administrators, 'administrator-list')}
+          {RoleCard(t('administrative.role_header.curators'), curators, 'curator-list')}
+          {RoleCard(t('administrative.role_header.editors'), editors, 'editor-list')}
         </Grid>
         {isLoadingUsers && (
           <StyledProgressWrapper>

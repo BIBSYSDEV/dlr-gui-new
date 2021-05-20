@@ -31,10 +31,16 @@
   },
   "administrative" : {
     "page_heading": "Administrativt",
-    "role_headers": {
+    "role_header": {
       "administrators": "Administratorer",
       "curators": "Kuratorer",
       "editors": "Redaktører"
+    },
+    "role_description" : {
+      "administrator": "Tilgang til å tildele roller innenfor egen institusjon",
+      "curator": "Tilgang til å tildele DOI og alle redigerings- og publiseringsmuligheter",
+      "editor": "Tilgang til Rapporteingsbehandling og har alle redigerings- og publiseringsmuligheter",
+      "publisher": "Tilgang  til å publisere og redigere egne ressurser"
     },
     "roles" : {
       "administrator": "Administrator",
@@ -43,16 +49,11 @@
       "publisher": "Utgiver"
     },
     "roles_changed": "Endringer lagret",
-    "role_description" : {
-      "administrator": "Tilgang til å tildele roller innenfor egen institusjon",
-      "curator": "Tilgang til å tildele DOI og alle redigerings- og publiseringsmuligheter",
-      "editor": "Tilgang til Rapporteingsbehandling og har alle redigerings- og publiseringsmuligheter",
-      "publisher": "Tilgang  til å publisere og redigere egne ressurser"
-    },
     "roles_heading": "Roller",
     "roles_for_user": "Roller for bruker: ",
     "set_roles_heading": "Søke opp brukere og sette roller",
     "search_user": "Søk bruker",
+    "toggle": "Endre rolle: ",
     "userid": "Epost eller Feide-id"
   },
   "authority": {
