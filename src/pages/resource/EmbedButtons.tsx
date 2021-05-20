@@ -54,23 +54,34 @@ const EmbedButtons: FC<EmbedButtonsProps> = ({ resource }) => {
   return (
     <StyledGrid container spacing={2} alignItems="baseline">
       <Grid item xs={12} sm={5}>
-        <Typography>
-          {bbShowEmbedButton && t('embed.embed_in_blackboard')}
-          {showCanvasEmbed && t('embed.embed_in_canvas')}
-          {showItsLearningEmbed && t('embed.embed_in_its_learning')}
-          {showEdxEmbed && t('embed.embed_in_edx')}
-        </Typography>
+        {bbShowEmbedButton && (
+          <Typography data-testid="embed-typography-description"> {t('embed.embed_in_blackboard')} </Typography>
+        )}
+        {showCanvasEmbed && (
+          <Typography data-testid="embed-typography-description"> {t('embed.embed_in_canvas')} </Typography>
+        )}
+        {showItsLearningEmbed && (
+          <Typography data-testid="embed-typography-description"> {t('embed.embed_in_its_learning')} </Typography>
+        )}
+        {showEdxEmbed && (
+          <Typography data-testid="embed-typography-description"> {t('embed.embed_in_edx')} </Typography>
+        )}
       </Grid>
       {(bbShowEmbedButton || showCanvasEmbed || showItsLearningEmbed || showEdxEmbed) && (
         <Grid item xs={12} sm={7}>
           {!showEdxEmbed && (
-            <StyledButtons variant="outlined" color="primary" onClick={() => embed(resource, 'link', lmsPlatform)}>
+            <StyledButtons
+              data-testid="embed-link-button"
+              variant="outlined"
+              color="primary"
+              onClick={() => embed(resource, 'link', lmsPlatform)}>
               {t('embed.link')}
             </StyledButtons>
           )}
           <StyledButtons
             variant="outlined"
             color="primary"
+            data-testid="embed-small-button"
             onClick={() =>
               embed(resource, `${small.horizontal}x${small.vertical}`, lmsPlatform, small.horizontal, small.vertical)
             }>
@@ -79,6 +90,7 @@ const EmbedButtons: FC<EmbedButtonsProps> = ({ resource }) => {
           <StyledButtons
             variant="outlined"
             color="primary"
+            data-testid="embed-medium-button"
             onClick={() =>
               embed(
                 resource,
@@ -93,6 +105,7 @@ const EmbedButtons: FC<EmbedButtonsProps> = ({ resource }) => {
           <StyledButtons
             variant="outlined"
             color="primary"
+            data-testid="embed-large-button"
             onClick={() =>
               embed(resource, `${large.horizontal}x${large.vertical}`, lmsPlatform, large.horizontal, large.vertical)
             }>
@@ -105,6 +118,7 @@ const EmbedButtons: FC<EmbedButtonsProps> = ({ resource }) => {
           <Grid item xs={12} sm={7}>
             <StyledButtons
               variant="outlined"
+              data-testid="embed-canvas-link"
               color="primary"
               onClick={() => embed(resource, 'canvasShowEmbedLinkButton', lmsPlatform)}>
               {t('embed.insert_into_canvas')}
