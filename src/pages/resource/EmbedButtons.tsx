@@ -6,6 +6,7 @@ import { LMSTypes } from '../../types/lms.types';
 import { useTranslation } from 'react-i18next';
 import { embed } from '../../utils/lmsService';
 import { LMSParametersName } from '../../types/LMSParameters';
+import { useLocation } from 'react-router-dom';
 
 const StyledGrid = styled(Grid)`
   margin-top: 2rem;
@@ -37,7 +38,8 @@ interface EmbedButtonsProps {
 
 const EmbedButtons: FC<EmbedButtonsProps> = ({ resource }) => {
   const { t } = useTranslation();
-  const searchParams = new URLSearchParams(window.location.search);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
   const bbShowEmbedButton = searchParams.get(LMSParametersName.BBShowEmbedButton) === 'true';
   const showCanvasEmbed = searchParams.get(LMSParametersName.CanvasShowEmbedButton) === 'true';
   const showItsLearningEmbed = searchParams.get(LMSParametersName.ItsLearningShowEmbedButton) === 'true';

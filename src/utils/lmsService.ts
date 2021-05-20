@@ -8,6 +8,7 @@ const createEmbedUrlParam = (resource: Resource, width: number | string, height:
     `${FRONTEND_URL}/content/${resource.identifier}?showNewVersion=true&showLicense=true&width=${width}&height=${height}`
   );
 };
+
 const embedToBlackBoard = (resource: Resource, mode: string) => {
   const data = {
     id: resource.identifier,
@@ -18,6 +19,7 @@ const embedToBlackBoard = (resource: Resource, mode: string) => {
   };
   window.parent.postMessage(data, '*');
 };
+
 const embedToCanvas = (resource: Resource, mode: string, height: number, width: number) => {
   const searchParams = new URLSearchParams(window.location.search);
   const canvasReturnUrl = searchParams.get(LMSParametersName.CanvasLaunchPresentationReturnUrl);
@@ -32,6 +34,7 @@ const embedToCanvas = (resource: Resource, mode: string, height: number, width: 
     window.location.href = `${canvasReturnUrl}?return_type=iframe&allowfullscreen=true&webkitallowfullscreen=true&mozallowfullscreen=true&width=${width}px&height=${height}px&url=${urlParam}`;
   }
 };
+
 //Hacky workaround for bypassing CORS policy at ItsLearning. Cannot be replaced with axios.
 const postToItsLearning = (itsLearningReturnUrl: string, html: string) => {
   const form = document.createElement('form');
@@ -45,6 +48,7 @@ const postToItsLearning = (itsLearningReturnUrl: string, html: string) => {
   document.body.appendChild(form);
   form.submit();
 };
+
 const embedToItsLearning = async (resource: Resource, mode: string, width: number, height: number) => {
   const searchParams = new URLSearchParams(window.location.search);
   const itsLearningReturnUrl = searchParams.get(LMSParametersName.ItsLearningReturnUrl);
@@ -67,6 +71,7 @@ const embedToItsLearning = async (resource: Resource, mode: string, width: numbe
     throw error;
   }
 };
+
 const embedToEdx = (resource: Resource, mode: string) => {
   const data = {
     id: resource.identifier,
@@ -78,6 +83,7 @@ const embedToEdx = (resource: Resource, mode: string) => {
 
   window.parent.postMessage(data, '*');
 };
+
 export const embed = async (resource: Resource, mode: string, lmsPlatform: LMSTypes, width = 0, height = 0) => {
   switch (lmsPlatform) {
     case LMSTypes.BlackBoard:
