@@ -223,6 +223,7 @@ const RoleSetter = () => {
                       data-testid="inst-user-search-input"
                       label={t('administrative.userid')}
                       {...field}
+                      type="email"
                       error={!!error && touched}
                       helperText={<ErrorMessage name={field.name} />}
                     />
