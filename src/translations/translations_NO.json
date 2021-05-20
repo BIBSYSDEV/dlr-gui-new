@@ -29,6 +29,15 @@
     "show_list": "Vis liste",
     "who_got_access": "Hvem har tilgang"
   },
+  "administrative" : {
+    "page_heading": "Administrativt",
+    "role_headers": {
+      "administrators": "Administratorer",
+      "curators": "Kuratorer",
+      "editors": "Redaktører"
+    },
+    "roles_heading": "Roller"
+  },
   "authority": {
     "add_authority": "Legg til autoritet",
     "authorities": "Autoriteter",

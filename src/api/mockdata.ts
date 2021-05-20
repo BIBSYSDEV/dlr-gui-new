@@ -1,6 +1,6 @@
 import { Contributor, Creator, emptyResource, Resource } from '../types/resource.types';
 import deepmerge from 'deepmerge';
-import { InstitutionProfilesNames, User, UserRoleFromInstitution } from '../types/user.types';
+import { User } from '../types/user.types';
 import { License } from '../types/license.types';
 import { v4 as uuidv4 } from 'uuid';
 import { Course, CourseSeason, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
@@ -77,21 +77,38 @@ export const mockUser: User = {
   email: 'test@test.com',
   name: 'Test User',
   institutionAuthorities: {
-    isCurator: true,
+    isCurator: false,
     isAdministrator: false,
     isPublisher: false,
     isEditor: false,
   },
 };
 
-export const mockInstitutionAuthorities: UserRoleFromInstitution = {
+export const mockUserAdmin: User = {
+  id: 'test@test.com',
+  issuer: 'me',
+  institution: 'ntnu',
+  email: 'test@test.com',
+  name: 'Test User',
+  institutionAuthorities: {
+    isCurator: true,
+    isAdministrator: true,
+    isPublisher: true,
+    isEditor: true,
+  },
+};
+
+export const mockInstitutionAuthorities = {
+  time: '2021-05-11T08:13:35.538Z',
+  user: 'test@unit.no',
+  object: 'unit',
   profiles: [
-    { name: InstitutionProfilesNames.curator },
-    { name: InstitutionProfilesNames.administrator },
-    { name: InstitutionProfilesNames.publisher },
-    { name: InstitutionProfilesNames.editor },
-    { name: InstitutionProfilesNames.user },
-    { name: InstitutionProfilesNames.authenticated },
+    { name: 'dlr_institution_administrator' },
+    { name: 'dlr_institution_curator' },
+    { name: 'dlr_institution_editor' },
+    { name: 'dlr_institution_publisher' },
+    { name: 'dlr_institution_user' },
+    { name: 'dlr_institution_user_authenticated' },
   ],
 };
 
@@ -303,7 +320,11 @@ export const mockCreatedResourceWithContents = {
   },
 };
 
-export const MockText = 'text: bla blah blah blah blah';
+export const mockText = 'text: bla blah blah blah blah';
+
+export const mockAdminList = ['admin1@test.com', 'admin2@test.com'];
+export const mockEditorList = ['editor1@test.com'];
+export const mockCuratorList = ['cur1@test.com', 'cur2@test.com', 'cur3@test.com'];
 
 export const mockToken = 'mockToken';
 

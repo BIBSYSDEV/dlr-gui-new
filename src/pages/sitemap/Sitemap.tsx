@@ -41,6 +41,10 @@ const Sitemap = () => {
       description: `${t('resource.new_registration')} (${t('common.must_be_logged_in').toLowerCase()})`,
     },
     {
+      href: '/admin',
+      description: `${t('administrative.page_heading')} (${t('common.must_be_logged_in').toLowerCase()})`,
+    },
+    {
       href: '/search-helper',
       description: `${t('Tips til søk etter ressurser')}`,
     },

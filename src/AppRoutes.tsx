@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Forbidden from './pages/errorpages/Forbidden';
 import Sitemap from './pages/sitemap/Sitemap';
 import SearchExplainer from './pages/infopages/SearchExplainer';
+import AdminPage from './pages/admin/AdminPage';
 
 const Explore = lazy(() => import('./pages/dashboard/Explore'));
 const EditResourcePage = lazy(() => import('./pages/edit_resource/EditResourcePage'));
@@ -24,6 +25,11 @@ const AppRoutes = () => {
         <Route exact path="/" component={Explore} />
         <Route exact path="/resource/:identifier" component={ResourcePage} />
         <Route exact path="/resources/user/current" render={(props) => <MyResources id={user.id} {...props} />} />
+        <Route
+          exact
+          path="/admin"
+          render={(props) => <AdminPage isAdmin={user.institutionAuthorities?.isAdministrator} {...props} />}
+        />
         <Route exact path="/privacy-policy" component={PrivacyPolicy} />
         {/* CreatorRoutes */}
         <Route
