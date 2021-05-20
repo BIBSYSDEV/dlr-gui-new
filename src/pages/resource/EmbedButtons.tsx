@@ -2,9 +2,9 @@ import React, { FC } from 'react';
 import { Button, Grid, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import { Resource } from '../../types/resource.types';
-import { embed } from '../../utils/iframe_utils';
 import { LMSTypes } from '../../types/lms.types';
 import { useTranslation } from 'react-i18next';
+import { embed } from '../../utils/lmsService';
 
 const StyledGrid = styled(Grid)`
   margin-top: 2rem;
@@ -70,19 +70,31 @@ const EmbedButtons: FC<EmbedButtonsProps> = ({ resource }) => {
           <StyledButtons
             variant="outlined"
             color="primary"
-            onClick={() => embed(resource, `${small.horizontal}x${small.vertical}`, lmsPlatform)}>
+            onClick={() =>
+              embed(resource, `${small.horizontal}x${small.vertical}`, lmsPlatform, small.horizontal, small.vertical)
+            }>
             {t('embed.small')}
           </StyledButtons>
           <StyledButtons
             variant="outlined"
             color="primary"
-            onClick={() => embed(resource, `${medium.horizontal}x${medium.vertical}`, lmsPlatform)}>
+            onClick={() =>
+              embed(
+                resource,
+                `${medium.horizontal}x${medium.vertical}`,
+                lmsPlatform,
+                medium.horizontal,
+                medium.vertical
+              )
+            }>
             {t('embed.medium')}
           </StyledButtons>
           <StyledButtons
             variant="outlined"
             color="primary"
-            onClick={() => embed(resource, `${large.horizontal}x${large.vertical}`, lmsPlatform)}>
+            onClick={() =>
+              embed(resource, `${large.horizontal}x${large.vertical}`, lmsPlatform, large.horizontal, large.vertical)
+            }>
             {t('embed.large')}
           </StyledButtons>
         </Grid>
