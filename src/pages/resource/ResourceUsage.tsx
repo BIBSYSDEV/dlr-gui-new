@@ -6,7 +6,7 @@ import { format } from 'date-fns';
 import { TFunction, useTranslation } from 'react-i18next';
 import { getCitationFromCrossCite } from '../../api/resourceApi';
 import styled from 'styled-components';
-import EmbedButtons from '../../components/embedComponents/EmbedButtons';
+import EmbedButtons from './EmbedButtons';
 
 const StyledTextAndButtonWrapper = styled.div`
   display: block;
