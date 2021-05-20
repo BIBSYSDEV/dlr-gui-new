@@ -45,7 +45,8 @@ export const getUserAuthorizationsInstitution = async (): Promise<InstitutionAut
     ),
     method: 'GET',
   });
-  const institutionAuthorities = emptyInstitutionAuthorities;
+
+  const institutionAuthorities = { ...emptyInstitutionAuthorities };
   apiResponse.data.profiles.forEach((profile) => {
     switch (profile.name) {
       case InstitutionProfilesNames.curator:
