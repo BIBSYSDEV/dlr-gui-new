@@ -44,7 +44,7 @@
     },
     "roles_changed": "Changes saved",
     "role_description" : {
-      "administrator": "Assign roles to own institution",
+      "administrator": "Assign roles to affiliated institution",
       "curator": "Access to assign DOIs and to edit and publish all resources",
       "editor": "Access to manage reports and edit and publish all resources",
       "publisher": "Access to publish and edit own resources"
