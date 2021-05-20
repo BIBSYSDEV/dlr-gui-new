@@ -17,8 +17,8 @@ export const rewriteSearchParams = (
   history.push('?' + urlSearchTerms.toString());
 };
 
-const ParamsSplitter = 'ZZZ';
-const ValuePairSplitter = 'XXX';
+const ParamsSplitter = 'ZZZZ';
+const ValuePairSplitter = 'WWWW';
 
 //Hacky workaround: this piece of code exists because feide-login deletes all but one search params in the redirect url.
 //In order to retain the search params the valuePairs are concatenated into one big search param.
