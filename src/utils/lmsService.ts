@@ -1,6 +1,7 @@
 import { Resource } from '../types/resource.types';
 import { FRONTEND_URL } from './constants';
 import { LMSTypes } from '../types/lms.types';
+import { LMSParametersName } from '../types/LMSParameters';
 
 const createEmbedUrlParam = (resource: Resource, width: number | string, height: number) => {
   return encodeURIComponent(
@@ -19,7 +20,7 @@ const embedToBlackBoard = (resource: Resource, mode: string) => {
 };
 const embedToCanvas = (resource: Resource, mode: string, height: number, width: number) => {
   const searchParams = new URLSearchParams(window.location.search);
-  const canvasReturnUrl = searchParams.get('canvasLaunchPresentationReturnUrl');
+  const canvasReturnUrl = searchParams.get(LMSParametersName.CanvasLaunchPresentationReturnUrl);
   if (mode === 'link') {
     window.location.href = `${canvasReturnUrl}?return_type=url&target=_blank&title=link&text=${resource.features.dlr_title}&url=${resource.features.dlr_identifier_handle}`;
   }
@@ -46,7 +47,7 @@ const postToItsLearning = (itsLearningReturnUrl: string, html: string) => {
 };
 const embedToItsLearning = async (resource: Resource, mode: string, width: number, height: number) => {
   const searchParams = new URLSearchParams(window.location.search);
-  const itsLearningReturnUrl = searchParams.get('itsLearningReturnUrl');
+  const itsLearningReturnUrl = searchParams.get(LMSParametersName.ItsLearningReturnUrl);
 
   if (itsLearningReturnUrl) {
     if (mode === 'link') {
