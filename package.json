@@ -18,7 +18,7 @@
     "date-fns": "^2.21.3",
     "deepmerge": "^4.2.2",
     "env-cmd": "^10.1.0",
-    "formik": "^2.2.6",
+    "formik": "^2.2.7",
     "i18next": "^20.2.4",
     "i18next-browser-languagedetector": "^6.1.1",
     "logrocket": "^1.2.0",
