@@ -54,9 +54,9 @@ const StyledLine = styled.div`
   justify-content: space-between;
 `;
 
-const StyledCard = styled(Card)`
+const StyledUserRoles = styled.div`
   max-width: ${StyleWidths.width3};
-  margin-top: 1rem;
+  margin-top: 2rem;
 `;
 
 const StyledButton = styled(Button)`
@@ -249,48 +249,46 @@ const RoleSetter = () => {
       )}
       {searchError && <ErrorBanner userNeedsToBeLoggedIn={true} error={searchError} />}
       {institutionUser && (
-        <StyledCard data-testid="inst-user-card">
-          <CardContent>
-            <Typography variant="h3">
-              {t('administrative.roles_for_user')} {institutionUser}
-            </Typography>
-            <List>
-              {createListItem(
-                t('administrative.roles.publisher'),
-                t('administrative.role_description.publisher'),
-                isPublisher,
-                handleChangeIsPublisher,
-                InstitutionProfilesNames.publisher
-              )}
-              {createListItem(
-                t('administrative.roles.editor'),
-                t('administrative.role_description.editor'),
-                isEditor,
-                handleChangeIsEditor,
-                InstitutionProfilesNames.editor
-              )}
-              {createListItem(
-                t('administrative.roles.curator'),
-                t('administrative.role_description.curator'),
-                isCurator,
-                handleChangeIsCurator,
-                InstitutionProfilesNames.curator
-              )}
-              {createListItem(
-                t('administrative.roles.administrator'),
-                t('administrative.role_description.administrator'),
-                isAdministrator,
-                handleChangeIsAdministrator,
-                InstitutionProfilesNames.administrator
-              )}
-            </List>
-            {changesSaved && (
-              <Typography color="primary" variant="body2" data-testid="inst-user-roles-saved">
-                {t('administrative.roles_changed')}
-              </Typography>
+        <StyledUserRoles data-testid="inst-user-card">
+          <Typography variant="h3">
+            {t('administrative.roles_for_user')} {institutionUser}
+          </Typography>
+          <List>
+            {createListItem(
+              t('administrative.roles.publisher'),
+              t('administrative.role_description.publisher'),
+              isPublisher,
+              handleChangeIsPublisher,
+              InstitutionProfilesNames.publisher
             )}
-          </CardContent>
-        </StyledCard>
+            {createListItem(
+              t('administrative.roles.editor'),
+              t('administrative.role_description.editor'),
+              isEditor,
+              handleChangeIsEditor,
+              InstitutionProfilesNames.editor
+            )}
+            {createListItem(
+              t('administrative.roles.curator'),
+              t('administrative.role_description.curator'),
+              isCurator,
+              handleChangeIsCurator,
+              InstitutionProfilesNames.curator
+            )}
+            {createListItem(
+              t('administrative.roles.administrator'),
+              t('administrative.role_description.administrator'),
+              isAdministrator,
+              handleChangeIsAdministrator,
+              InstitutionProfilesNames.administrator
+            )}
+          </List>
+          {changesSaved && (
+            <Typography color="primary" variant="body2" data-testid="inst-user-roles-saved">
+              {t('administrative.roles_changed')}
+            </Typography>
+          )}
+        </StyledUserRoles>
       )}
       {roleChangeError && <ErrorBanner userNeedsToBeLoggedIn={true} error={roleChangeError} />}
     </>
