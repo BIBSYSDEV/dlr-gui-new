@@ -6,7 +6,7 @@ import { format } from 'date-fns';
 import { TFunction, useTranslation } from 'react-i18next';
 import { getCitationFromCrossCite } from '../../api/resourceApi';
 import styled from 'styled-components';
-import BBEmbedButtons from '../../components/embedComponents/BBEmbedButtons';
+import EmbedButtons from '../../components/embedComponents/EmbedButtons';
 
 const StyledTextAndButtonWrapper = styled.div`
   display: block;
@@ -132,7 +132,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
           </StyledButton>
         </StyledInformationWrapper>
       </StyledTextAndButtonWrapper>
-      <BBEmbedButtons resource={resource} />
+      <EmbedButtons resource={resource} />
     </>
   );
 };

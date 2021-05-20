@@ -86,7 +86,7 @@ const embedToEdx = (resource: Resource, mode: string) => {
     id: resource.identifier,
     title: resource.features.dlr_title,
     handle: resource.features.dlr_identifier_handle,
-    mode: mode, // embed size ('560x315' or 'link')
+    mode: mode, // ex.: embed size ('560x315' or 'link')
     embedCode: `<iframe src="${FRONTEND_URL}/content/${resource.identifier}?width={width}&height={height}&showLicense={showLicense}&showNewVersion={showNewVersion}" style="border: none;" width="{iframeWidth}" height="{iframeHeight}" mozallowfullscreen="true" webkitallowfullscreen="true" allowfullscreen="true" ></iframe>`,
   };
 

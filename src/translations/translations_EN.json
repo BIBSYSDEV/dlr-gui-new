@@ -97,6 +97,17 @@
     "tags": "Tags"
   },
   "delivered_by": "Delivered by",
+  "embed": {
+    "embed_in_blackboard": "Embed in blackboard",
+    "embed_in_canvas": "Embed in Canvas",
+    "embed_in_edx": "Embed in EDX",
+    "embed_in_its_learning": "Embed in Its Learning",
+    "insert_into_canvas": "Insert into Canvas",
+    "large": "Large",
+    "link": "Link",
+    "medium": "Medium",
+    "small": "Small"
+  },
   "error": {
     "401_page": "You are not authorized for this",
     "403_page": "You must be logged in for using this feature",

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Resource } from '../../types/resource.types';
 import { embed } from '../../utils/iframe_utils';
 import { LMSTypes } from '../../types/lms.types';
+import { useTranslation } from 'react-i18next';
 
 const StyledGrid = styled(Grid)`
   margin-top: 2rem;
@@ -14,22 +15,27 @@ const StyledButtons = styled(Button)`
   margin-top: 1rem;
 `;
 
-const horizontalMarks = [
-  { value: 560, label: 'liten' },
-  { value: 640, label: 'medium' },
-  { value: 853, label: 'stor' },
-];
-const verticalMarks = [
-  { value: 315, label: 'liten' },
-  { value: 360, label: 'medium' },
-  { value: 480, label: 'stor' },
-];
+const small = {
+  horizontal: 560,
+  vertical: 315,
+};
 
-interface BBEmbedButtonsProps {
+const medium = {
+  horizontal: 640,
+  vertical: 360,
+};
+
+const large = {
+  horizontal: 853,
+  vertical: 480,
+};
+
+interface EmbedButtonsProps {
   resource: Resource;
 }
 
-const BBEmbedButtons: FC<BBEmbedButtonsProps> = ({ resource }) => {
+const EmbedButtons: FC<EmbedButtonsProps> = ({ resource }) => {
+  const { t } = useTranslation();
   const searchParams = new URLSearchParams(window.location.search);
   const bbShowEmbedButton = searchParams.get('bbShowEmbedButton') === 'true';
   const showCanvasEmbed = searchParams.get('canvasShowEmbedButton');
@@ -46,37 +52,40 @@ const BBEmbedButtons: FC<BBEmbedButtonsProps> = ({ resource }) => {
 
   return (
     <StyledGrid container spacing={2} alignItems="baseline">
+      <Grid item xs={12} sm={5}>
+        <Typography>
+          {bbShowEmbedButton && t('embed.embed_in_blackboard')}
+          {showCanvasEmbed && t('embed.embed_in_canvas')}
+          {showItsLearningEmbed && t('embed.embed_in_its_learning')}
+          {showEdxEmbed && t('embed.embed_in_edx')}
+        </Typography>
+      </Grid>
       {(bbShowEmbedButton || showCanvasEmbed || showItsLearningEmbed || showEdxEmbed) && (
-        <>
-          <Grid item xs={12} sm={5}>
-            <Typography>Bygg inn i Blackboard</Typography>
-          </Grid>
-          <Grid item xs={12} sm={7}>
-            {!showEdxEmbed && (
-              <StyledButtons variant="outlined" color="primary" onClick={() => embed(resource, 'link', lmsPlatform)}>
-                lenke
-              </StyledButtons>
-            )}
-            <StyledButtons
-              variant="outlined"
-              color="primary"
-              onClick={() => embed(resource, `${horizontalMarks[0].value}x${verticalMarks[0].value}`, lmsPlatform)}>
-              liten
+        <Grid item xs={12} sm={7}>
+          {!showEdxEmbed && (
+            <StyledButtons variant="outlined" color="primary" onClick={() => embed(resource, 'link', lmsPlatform)}>
+              {t('embed.link')}
             </StyledButtons>
-            <StyledButtons
-              variant="outlined"
-              color="primary"
-              onClick={() => embed(resource, `${horizontalMarks[1].value}x${verticalMarks[1].value}`, lmsPlatform)}>
-              medium
-            </StyledButtons>
-            <StyledButtons
-              variant="outlined"
-              color="primary"
-              onClick={() => embed(resource, `${horizontalMarks[2].value}x${verticalMarks[2].value}`, lmsPlatform)}>
-              stor
-            </StyledButtons>
-          </Grid>
-        </>
+          )}
+          <StyledButtons
+            variant="outlined"
+            color="primary"
+            onClick={() => embed(resource, `${small.horizontal}x${small.vertical}`, lmsPlatform)}>
+            {t('embed.small')}
+          </StyledButtons>
+          <StyledButtons
+            variant="outlined"
+            color="primary"
+            onClick={() => embed(resource, `${medium.horizontal}x${medium.vertical}`, lmsPlatform)}>
+            {t('embed.medium')}
+          </StyledButtons>
+          <StyledButtons
+            variant="outlined"
+            color="primary"
+            onClick={() => embed(resource, `${large.horizontal}x${large.vertical}`, lmsPlatform)}>
+            {t('embed.large')}
+          </StyledButtons>
+        </Grid>
       )}
       {showCanvasLinkEmbed && (
         <>
@@ -85,7 +94,7 @@ const BBEmbedButtons: FC<BBEmbedButtonsProps> = ({ resource }) => {
               variant="outlined"
               color="primary"
               onClick={() => embed(resource, 'canvasShowEmbedLinkButton', lmsPlatform)}>
-              Sett inn i Canvas
+              {t('embed.insert_into_canvas')}
             </StyledButtons>
           </Grid>
         </>
@@ -94,4 +103,4 @@ const BBEmbedButtons: FC<BBEmbedButtonsProps> = ({ resource }) => {
   );
 };
 
-export default BBEmbedButtons;
+export default EmbedButtons;
