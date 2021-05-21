@@ -184,12 +184,14 @@ const RoleSetter = () => {
     <ListItem>
       <StyledLine>
         <div>
-          <Typography variant="h4">{title}</Typography>
+          <Typography variant="h4" id={title}>
+            {title}
+          </Typography>
           <Typography variant="body2">{description}</Typography>
         </div>
         <Switch
           data-testid={`inst-user-${role}-switch`}
-          inputProps={{ 'aria-label': `${t('administrative.toggle')} ${title}` }}
+          inputProps={{ 'aria-labelledby': `${title}` }}
           checked={value}
           color="primary"
           onChange={onChangeHandler}
