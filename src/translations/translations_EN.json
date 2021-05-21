@@ -30,7 +30,9 @@
     "who_got_access": "Who got access"
   },
   "administrative" : {
-    "page_heading": "Administrative",
+    "cannot_change_own_roles": "You cannot change your own roles",
+    "no_access_to_view_user": "You do not have access to view roles for ",
+    "page_heading": "Administration",
     "role_header": {
       "administrators": "Administrators",
       "curators": "Curators",

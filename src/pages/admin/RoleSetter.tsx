@@ -1,16 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Button,
-  Card,
-  CardContent,
-  CircularProgress,
-  List,
-  ListItem,
-  Switch,
-  TextField,
-  Typography,
-} from '@material-ui/core';
+import { Button, CircularProgress, List, ListItem, Switch, TextField, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import {
   getRolesForInstitutionUser,
@@ -23,6 +13,9 @@ import { InstitutionProfilesNames } from '../../types/user.types';
 import { StyleWidths } from '../../themes/mainTheme';
 import { ErrorMessage, Field, FieldProps, Form, Formik } from 'formik';
 import * as Yup from 'yup';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../state/rootReducer';
+import { StatusCode } from '../../utils/constants';
 
 const StyledSearchWrapper = styled.div`
   display: flex;
@@ -77,7 +70,8 @@ const emptyInstitutionUserSearchFormValues: InstitutionUserSearchFormValues = {
 
 const RoleSetter = () => {
   const { t } = useTranslation();
-  const [institutionUser, setInstitutionUser] = useState<string>('');
+  const [institutionUser, setInstitutionUser] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [isAdministrator, setIsAdministrator] = useState(false);
   const [isCurator, setIsCurator] = useState(false);
@@ -86,6 +80,8 @@ const RoleSetter = () => {
   const [searchError, setSearchError] = useState<Error>();
   const [roleChangeError, setRoleChangeError] = useState<Error>();
   const [changesSaved, setChangesSaved] = useState(false);
+  const user = useSelector((state: RootState) => state.user);
+  const [noAccessWarning, setNoAccessWarning] = useState(false);
 
   const handleSearchForUser = async (values: InstitutionUserSearchFormValues) => {
     try {
@@ -93,6 +89,13 @@ const RoleSetter = () => {
       setSearchError(undefined);
       setIsSearching(true);
       setInstitutionUser('');
+      setIsCurator(false);
+      setIsAdministrator(false);
+      setIsPublisher(false);
+      setIsEditor(false);
+      setSearchTerm(values.email);
+
+      setNoAccessWarning(false);
       const institutionUser = (await getRolesForInstitutionUser(values.email)).data;
       setInstitutionUser(institutionUser.user);
       institutionUser.profiles.forEach((profile) => {
@@ -114,7 +117,8 @@ const RoleSetter = () => {
         }
       });
     } catch (error) {
-      setSearchError(error);
+      if (error.response.status === StatusCode.UNAUTHORIZED) setNoAccessWarning(true);
+      else setSearchError(error);
     } finally {
       setIsSearching(false);
     }
@@ -189,14 +193,26 @@ const RoleSetter = () => {
           </Typography>
           <Typography variant="body2">{description}</Typography>
         </div>
-        <Switch
-          data-testid={`inst-user-${role}-switch`}
-          inputProps={{ 'aria-labelledby': `${title}` }}
-          checked={value}
-          color="primary"
-          onChange={onChangeHandler}
-          name="publisher"
-        />
+        {user.id === institutionUser ? (
+          value ? (
+            <Typography variant="body1" color="primary">
+              {t('common.yes')}
+            </Typography>
+          ) : (
+            <Typography variant="body1" color="primary">
+              {t('common.no')}
+            </Typography>
+          )
+        ) : (
+          <Switch
+            data-testid={`inst-user-${role}-switch`}
+            inputProps={{ 'aria-labelledby': `${title}` }}
+            checked={value}
+            color="primary"
+            onChange={onChangeHandler}
+            name="publisher"
+          />
+        )}
       </StyledLine>
     </ListItem>
   );
@@ -214,7 +230,7 @@ const RoleSetter = () => {
         onSubmit={handleSearchForUser}
         initialValues={emptyInstitutionUserSearchFormValues}
         validationSchema={validationSchema}>
-        {({ isValid, dirty }) => (
+        {({ isValid, dirty, values }) => (
           <Form>
             <StyledSearchWrapper>
               <StyledInputWrapper>
@@ -244,17 +260,29 @@ const RoleSetter = () => {
           </Form>
         )}
       </Formik>
+      {noAccessWarning && (
+        <Typography variant={'body1'} color="secondary">
+          {t('administrative.no_access_to_view_user')} {searchTerm}
+        </Typography>
+      )}
       {isSearching && (
         <StyledProgressWrapper>
           <CircularProgress />
         </StyledProgressWrapper>
       )}
       {searchError && <ErrorBanner userNeedsToBeLoggedIn={true} error={searchError} />}
+
       {institutionUser && (
         <StyledUserRoles data-testid="inst-user-card">
           <Typography variant="h3">
             {t('administrative.roles_for_user')} {institutionUser}
           </Typography>
+          {user.id === institutionUser && (
+            <Typography variant="body1" color={'primary'}>
+              {t('administrative.cannot_change_own_roles')}
+            </Typography>
+          )}
+
           <List>
             {createListItem(
               t('administrative.roles.publisher'),
