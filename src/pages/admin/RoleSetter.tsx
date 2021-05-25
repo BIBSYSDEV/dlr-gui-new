@@ -47,6 +47,11 @@ const StyledLine = styled.div`
   justify-content: space-between;
 `;
 
+const StyledLineAction = styled.div`
+  min-width: 4rem;
+  margin-left: 1rem;
+`;
+
 const StyledUserRoles = styled.div`
   max-width: ${StyleWidths.width3};
   margin-top: 2rem;
@@ -178,6 +183,7 @@ const RoleSetter = () => {
     }
   };
 
+  //TODO more tests! (own roles, no access, etc)
   const createListItem = (
     title: string,
     description: string,
@@ -193,26 +199,28 @@ const RoleSetter = () => {
           </Typography>
           <Typography variant="body2">{description}</Typography>
         </div>
-        {user.id === institutionUser ? (
-          value ? (
-            <Typography variant="body1" color="primary">
-              {t('common.yes')}
-            </Typography>
+        <StyledLineAction>
+          {user.id === institutionUser ? (
+            value ? (
+              <Typography variant="body1" color="primary" data-testid={`inst-user-${role}-text`}>
+                {t('common.yes')}
+              </Typography>
+            ) : (
+              <Typography variant="body1" color="primary" data-testid={`inst-user-${role}-text`}>
+                {t('common.no')}
+              </Typography>
+            )
           ) : (
-            <Typography variant="body1" color="primary">
-              {t('common.no')}
-            </Typography>
-          )
-        ) : (
-          <Switch
-            data-testid={`inst-user-${role}-switch`}
-            inputProps={{ 'aria-labelledby': `${title}` }}
-            checked={value}
-            color="primary"
-            onChange={onChangeHandler}
-            name="publisher"
-          />
-        )}
+            <Switch
+              data-testid={`inst-user-${role}-switch`}
+              inputProps={{ 'aria-labelledby': `${title}` }}
+              checked={value}
+              color="primary"
+              onChange={onChangeHandler}
+              name="publisher"
+            />
+          )}
+        </StyledLineAction>
       </StyledLine>
     </ListItem>
   );
@@ -261,7 +269,7 @@ const RoleSetter = () => {
         )}
       </Formik>
       {noAccessWarning && (
-        <Typography variant={'body1'} color="secondary">
+        <Typography variant={'body1'} color="secondary" data-testid="inst-user-search-no-access">
           {t('administrative.no_access_to_view_user')} {searchTerm}
         </Typography>
       )}

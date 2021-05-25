@@ -124,6 +124,21 @@ export const mockInstitutionUser = {
   ],
 };
 
+export const mockInstitutionUserYourself = {
+  time: '2021-05-17T08:13:35.538Z',
+  user: 'test@test.com',
+  institution: 'unit',
+  profiles: [
+    { name: 'dlr_institution_administrator' },
+    { name: 'dlr_institution_editor' },
+    { name: 'dlr_institution_publisher' },
+    { name: 'dlr_institution_user' },
+    { name: 'dlr_institution_user_authenticated' },
+  ],
+};
+
+export const mockOtherinstitutionUser = 'test@otherinstitution.com';
+
 export const mockCreatorOrContributorAuthoritiesResponse: AuthorityResponse = {
   identifier: '12321321',
   features: {

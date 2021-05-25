@@ -25,8 +25,10 @@ import {
   mockFacets,
   mockInstitutionAuthorities,
   mockInstitutionUser,
+  mockInstitutionUserYourself,
   mockLicenses,
   mockMyResources,
+  mockOtherinstitutionUser,
   mockPrepareUpload,
   mockResource,
   mockResourceEvents,
@@ -221,6 +223,20 @@ export const interceptRequestsOnMock = () => {
     .reply(200, mockCuratorList);
 
   //inst-user-roles
+  mock
+    .onGet(
+      new RegExp(
+        `${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations/users/${mockInstitutionUserYourself.user}`
+      )
+    )
+    .reply(200, mockInstitutionUserYourself);
+  mock
+    .onGet(
+      new RegExp(
+        `${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations/users/${mockOtherinstitutionUser}`
+      )
+    )
+    .reply(401);
   mock
     .onGet(
       new RegExp(`${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations/users/.*`)

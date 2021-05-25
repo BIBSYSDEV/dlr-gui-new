@@ -1,4 +1,10 @@
-import { mockAdminList, mockCuratorList, mockEditorList, mockMyResources } from '../../src/api/mockdata';
+import {
+  mockAdminList,
+  mockCuratorList,
+  mockEditorList,
+  mockOtherinstitutionUser,
+  mockUser,
+} from '../../src/api/mockdata';
 import { InstitutionProfilesNames } from '../../src/types/user.types';
 
 context('Actions', () => {
@@ -36,5 +42,28 @@ context('Actions', () => {
 
     cy.get(`[data-testid=inst-user-${InstitutionProfilesNames.curator}-switch]`).click();
     cy.get(`[data-testid=inst-user-${InstitutionProfilesNames.publisher}-switch]`).click();
+  });
+
+  it('cannot change your own roles', () => {
+    cy.get('[data-testid=admin-link]').click();
+    cy.get(`[data-testid=inst-user-search-input]`).type(mockUser.id);
+    cy.get(`[data-testid=inst-user-search-button]`).click();
+    cy.get(`[data-testid=inst-user-card]`).should('exist');
+    cy.get(`[data-testid=inst-user-${InstitutionProfilesNames.administrator}-switch]`).should('not.exist');
+    cy.get(`[data-testid=inst-user-${InstitutionProfilesNames.editor}-switch]`).should('not.exist');
+    cy.get(`[data-testid=inst-user-${InstitutionProfilesNames.publisher}-switch]`).should('not.exist');
+    cy.get(`[data-testid=inst-user-${InstitutionProfilesNames.curator}-switch]`).should('not.exist');
+    cy.get(`[data-testid=inst-user-${InstitutionProfilesNames.administrator}-text`).should('exist');
+    cy.get(`[data-testid=inst-user-${InstitutionProfilesNames.editor}-text`).should('exist');
+    cy.get(`[data-testid=inst-user-${InstitutionProfilesNames.publisher}-text`).should('exist');
+    cy.get(`[data-testid=inst-user-${InstitutionProfilesNames.curator}-text`).should('exist');
+  });
+
+  it('cannot view users from other institutions', () => {
+    cy.get('[data-testid=admin-link]').click();
+    cy.get(`[data-testid=inst-user-search-input]`).type(mockOtherinstitutionUser);
+    cy.get(`[data-testid=inst-user-search-button]`).click();
+    cy.get(`[data-testid=inst-user-card]`).should('not.exist');
+    cy.get(`[data-testid=inst-user-search-no-access`).should('exist');
   });
 });
