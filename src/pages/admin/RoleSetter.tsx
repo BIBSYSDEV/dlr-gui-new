@@ -183,7 +183,6 @@ const RoleSetter = () => {
     }
   };
 
-  //TODO more tests! (own roles, no access, etc)
   const createListItem = (
     title: string,
     description: string,
