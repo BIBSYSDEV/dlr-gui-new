@@ -212,7 +212,7 @@ const RoleSetter = () => {
           ) : (
             <Switch
               data-testid={`inst-user-${role}-switch`}
-              inputProps={{ 'aria-labelledby': `${title}` }}
+              inputProps={{ 'aria-labelledby': title }}
               checked={value}
               color="primary"
               onChange={onChangeHandler}
