@@ -58,6 +58,7 @@ export enum Colors {
   AuthorityBadge = 'rgb(11, 55, 26)',
   UnitGrey2_10percent = 'rgb(151,151, 151,0.1)',
   UnitTurquoise_20percent = 'rgba(121,203,220,0.2)',
+  UnitTurquoise_30percent = 'rgba(121,203,220,0.3)',
 }
 
 export enum StyleWidths {
