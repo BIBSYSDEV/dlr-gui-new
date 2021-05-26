@@ -104,6 +104,10 @@ const StyledHeader = styled.div`
 `;
 
 const StyledChip: any = styled(Chip)`
+  max-width: 13rem;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.lg - 1 + 'px'}) {
+    max-width: ${StyleWidths.width3};
+  }
   margin-right: 0.5rem;
   margin-top: 0.5rem;
 `;
