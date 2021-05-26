@@ -11,6 +11,7 @@ import Forbidden from './pages/errorpages/Forbidden';
 import Sitemap from './pages/sitemap/Sitemap';
 import SearchExplainer from './pages/infopages/SearchExplainer';
 import AdminPage from './pages/admin/AdminPage';
+import MainContentView from './pages/content_view/MainContentView';
 
 const Explore = lazy(() => import('./pages/dashboard/Explore'));
 const EditResourcePage = lazy(() => import('./pages/edit_resource/EditResourcePage'));
@@ -24,6 +25,7 @@ const AppRoutes = () => {
       <Switch>
         <Route exact path="/" component={Explore} />
         <Route exact path="/resource/:identifier" component={ResourcePage} />
+        <Route exact path="/resource/:resourceIdentifier/content/main" component={MainContentView} />
         <Route exact path="/resources/user/current" render={(props) => <MyResources id={user.id} {...props} />} />
         <Route
           exact
