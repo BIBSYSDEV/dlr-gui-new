@@ -285,4 +285,4 @@ export const CompareCreators = (creatorA: Creator, creatorB: Creator): number =>
   }
 };
 
-export const TAGS_MAX_LENGTH = 25;
+export const TAGS_MAX_LENGTH = 30;

@@ -2,7 +2,7 @@ import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Chip, CircularProgress, Grid, TextField } from '@material-ui/core';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import { Resource } from '../../../types/resource.types';
+import { Resource, TAGS_MAX_LENGTH } from '../../../types/resource.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -155,6 +155,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                         onChange={handleChange}
                         fullWidth
                         data-testid="resource-tags-input"
+                        inputProps={{ ...params.inputProps, maxLength: TAGS_MAX_LENGTH }}
                         InputProps={{
                           ...params.InputProps,
                           endAdornment: (
