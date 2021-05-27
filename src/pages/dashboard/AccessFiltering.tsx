@@ -3,6 +3,9 @@ import { Checkbox, FormControlLabel } from '@material-ui/core';
 import { QueryObject, SearchParameters } from '../../types/search.types';
 import { useHistory, useLocation } from 'react-router-dom';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
+import HelperTextPopover from '../../components/HelperTextPopover';
+import Typography from '@material-ui/core/Typography';
+import { useTranslation } from 'react-i18next';
 
 interface AccoessFilteringProps {
   queryObject: QueryObject;
@@ -12,6 +15,8 @@ interface AccoessFilteringProps {
 const AccessFiltering: FC<AccoessFilteringProps> = ({ queryObject, setQueryObject }) => {
   const location = useLocation();
   const history = useHistory();
+  const { t } = useTranslation();
+
   const changeSelected = (event: any) => {
     setQueryObject((prevState) => ({
       ...prevState,
@@ -28,21 +33,29 @@ const AccessFiltering: FC<AccoessFilteringProps> = ({ queryObject, setQueryObjec
   };
 
   return (
-    <FormControlLabel
-      data-testid="access-checkbox-label"
-      control={
-        <Checkbox
-          data-testid={`access-filtering-checkbox`}
-          color="default"
-          checked={queryObject.showInaccessible}
-          name={'access'}
-        />
-      }
-      label={'Vis også ressurser jeg ikke har tilgang til'}
-      onChange={(event) => {
-        changeSelected(event);
-      }}
-    />
+    <div>
+      <FormControlLabel
+        data-testid="access-checkbox-label"
+        control={
+          <Checkbox
+            data-testid={`access-filtering-checkbox`}
+            color="default"
+            checked={queryObject.showInaccessible}
+            name={'access'}
+          />
+        }
+        label={t('dashboard.access_filter')}
+        onChange={(event) => {
+          changeSelected(event);
+        }}
+      />
+      <HelperTextPopover
+        ariaButtonLabel={t('explanation_text.access_filtering_label')}
+        popoverId={'access-filtering-explainer'}>
+        <Typography>{`${t('explanation_text.access_filtering')} `}</Typography>
+        {/*//TODO: husk tekst på at man kan spørre om tilgang når funksjonaliteten er på plass*/}
+      </HelperTextPopover>
+    </div>
   );
 };
 
