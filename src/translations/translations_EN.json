@@ -126,6 +126,10 @@
     "tags": "Tags"
   },
   "delivered_by": "Delivered by",
+  "embed": {
+    "copy_embed_code": "Copy embed code",
+    "embed_code": "Embed code"
+  },
   "error": {
     "401_page": "You are not authorized for this",
     "403_page": "You must be logged in for using this feature",

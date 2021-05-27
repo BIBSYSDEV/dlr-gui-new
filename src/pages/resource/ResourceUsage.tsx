@@ -138,11 +138,11 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
         </StyledInformationWrapper>
       </StyledTextAndButtonWrapper>
       <StyledTextAndButtonWrapper>
-        <Typography variant="caption">{t('Innbyggingskode')}</Typography>
+        <Typography variant="caption">{t('embed.embed_code')}</Typography>
         <StyledInformationWrapper>
           <StyledTypography variant="body1">{iframeText}</StyledTypography>
           <StyledButton color="primary" variant="outlined" onClick={() => handleCopyButtonClick(iframeText)}>
-            {t('kopier innebyggingskode').toUpperCase()}
+            {t('embed.copy_embed_code').toUpperCase()}
           </StyledButton>
         </StyledInformationWrapper>
       </StyledTextAndButtonWrapper>

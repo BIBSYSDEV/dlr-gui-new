@@ -126,6 +126,10 @@
     "tags": "Emneord"
   },
   "delivered_by": "Levert av",
+  "embed": {
+    "copy_embed_code": "Kopier innebyggingskode",
+    "embed_code": "Innebyggingskode"
+  },
   "error": {
     "401_page": "Du er ikke autorisert for dette",
     "403_page": "Du må være pålogget for å benytte denne funksjonaliteten",
