@@ -12,6 +12,7 @@ import { Colors, StyleWidths } from '../themes/mainTheme';
 import { format } from 'date-fns';
 import { getStyledFileTypeIcon } from './FileTypeIcon';
 import { Link } from '@material-ui/core';
+import ResourceTypeInfo from './ResourceTypeInfo';
 
 interface Props {
   backgroundColor: string;
@@ -76,6 +77,11 @@ const StyledLink = styled(Link)`
   color: ${Colors.PrimaryText};
 `;
 
+const StyledResourceTypeInfoWrapper = styled.div`
+  background: ${Colors.Brighten50Percent};
+  border: 1px solid ${Colors.Darken10Percent};
+`;
+
 interface ResourceListItemProps {
   resource: Resource;
   handleDelete?: () => void;
@@ -106,6 +112,9 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
             resourceOrContentIdentifier={resource.identifier}
             alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
           />
+          <StyledResourceTypeInfoWrapper>
+            <ResourceTypeInfo resource={resource} />
+          </StyledResourceTypeInfoWrapper>
         </StyledThumbnailWrapper>
         <StyledMetaDataColumn>
           <Typography gutterBottom variant="h4">
