@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Resource, ResourceCreationType, TAGS_MAX_LENGTH } from '../types/resource.types';
+import { Resource } from '../types/resource.types';
 import Thumbnail from './Thumbnail';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
@@ -10,7 +10,7 @@ import { Chip } from '@material-ui/core';
 import CClogoImage from './CClogoImage';
 import Link from '@material-ui/core/Link';
 import { SearchParameters } from '../types/search.types';
-import { getStyledFileTypeIcon } from './FileTypeIcon';
+import ResourceTypeInfo from './ResourceTypeInfo';
 
 const StyledListItem: any = styled.li`
   width: 100%;
@@ -39,16 +39,6 @@ const StyledThumbnailWrapper = styled.div`
   background-color: ${Colors.DescriptionPageGradientColor1};
 `;
 
-const StyledThumbnailMetadata = styled.div`
-  display: flex;
-  align-items: center;
-  height: 1.5rem;
-`;
-
-const StyledFileTypeIcon = styled.span`
-  margin: 0.7rem 0.3rem 0.5rem 0.5rem;
-`;
-
 const StyledTimeCreatedTypography = styled(Typography)`
   min-width: 6rem;
 `;
@@ -71,12 +61,6 @@ const StyledMaxOneLineTypography = styled(Typography)`
 
 const StyledLicense = styled.div`
   margin-top: 1rem;
-`;
-
-const StyledFileName = styled(Typography)`
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
 `;
 
 const StyledSecondColumn = styled.div`
@@ -133,16 +117,7 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
             resourceOrContentIdentifier={resource.identifier}
             alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
           />
-          <StyledThumbnailMetadata>
-            {resource.features.dlr_type && (
-              <StyledFileTypeIcon>{getStyledFileTypeIcon(resource.features.dlr_type)}</StyledFileTypeIcon>
-            )}
-            <StyledFileName display="inline" variant="body2">
-              {t(`resource.type.${resource.features.dlr_type?.toLowerCase()}`)}
-              {resource.features.dlr_content_type === ResourceCreationType.LINK &&
-                ' (' + t('resource.metadata.link') + ')'}
-            </StyledFileName>
-          </StyledThumbnailMetadata>
+          <ResourceTypeInfo resource={resource} />
         </StyledThumbnailWrapper>
 
         <StyledLicense>
@@ -187,7 +162,6 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
               {resource.tags.map((tag, index) => (
                 <StyledChip
                   component="a"
-                  title={tag.length > TAGS_MAX_LENGTH ? tag : ''}
                   href={`/?${SearchParameters.tag}=${tag}`}
                   key={index}
                   clickable

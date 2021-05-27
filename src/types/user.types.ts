@@ -15,6 +15,17 @@ export const emptyUser: User = {
   issuer: '',
 };
 
+export interface institutionUser {
+  institution: string;
+  profiles: profileName[];
+  time: string;
+  user: string;
+}
+
+export interface profileName {
+  name: InstitutionProfilesNames;
+}
+
 export interface UserRoleFromInstitution {
   object?: string;
   time?: string;
@@ -57,4 +68,5 @@ export enum UserInstitution {
   BI = 'BI',
   Unit = 'unit',
   UiT = 'UiT',
+  USN = 'USN',
 }

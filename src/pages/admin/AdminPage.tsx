@@ -9,11 +9,18 @@ import { InstitutionProfilesNames } from '../../types/user.types';
 import styled from 'styled-components';
 import { Colors } from '../../themes/mainTheme';
 import AdminRoute from '../../utils/routes/AdminRoute';
+import RoleSetter from './RoleSetter';
 
 const StyledWrapper = styled(Grid)`
   background-color: ${Colors.UnitTurquoise_20percent};
-  padding: 1rem;
+  padding: 1rem 1rem 2rem 1rem;
   margin-top: 2rem;
+`;
+
+const StyledWrapper2 = styled(Grid)`
+  background-color: ${Colors.UnitTurquoise_30percent};
+  padding: 1rem;
+  margin-bottom: 2rem;
 `;
 
 const AdminPage = () => {
@@ -66,20 +73,23 @@ const AdminPage = () => {
       {loadingError && <ErrorBanner userNeedsToBeLoggedIn={true} error={loadingError} />}
       <PageHeader>{t('administrative.page_heading')}</PageHeader>
       <StyledWrapper>
+        <RoleSetter />
+      </StyledWrapper>
+      <StyledWrapper2>
         <Typography gutterBottom variant="h2">
           {t('administrative.roles_heading')}
         </Typography>
         <Grid container spacing={6}>
-          {RoleCard(t('administrative.role_headers.administrators'), administrators, 'administrator-list')}
-          {RoleCard(t('administrative.role_headers.curators'), curators, 'curator-list')}
-          {RoleCard(t('administrative.role_headers.editors'), editors, 'editor-list')}
+          {RoleCard(t('administrative.role_header.administrators'), administrators, 'administrator-list')}
+          {RoleCard(t('administrative.role_header.curators'), curators, 'curator-list')}
+          {RoleCard(t('administrative.role_header.editors'), editors, 'editor-list')}
         </Grid>
-      </StyledWrapper>
-      {isLoadingUsers && (
-        <StyledProgressWrapper>
-          <CircularProgress />
-        </StyledProgressWrapper>
-      )}
+        {isLoadingUsers && (
+          <StyledProgressWrapper>
+            <CircularProgress />
+          </StyledProgressWrapper>
+        )}
+      </StyledWrapper2>
     </StyledContentWrapperLarge>
   );
 };

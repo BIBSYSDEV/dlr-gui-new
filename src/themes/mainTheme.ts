@@ -20,6 +20,8 @@ export enum Colors {
   Secondary = 'rgba(147, 10, 10, 1)',
   Background = '#ffffff',
   Box = '#f5f5f5',
+  Darken10Percent = 'rgba(0, 0, 0, 0.1)',
+  Brighten50Percent = 'rgba(255, 255, 255, 0.5)',
   HoverTextFieldFilled = '#F5F5F5',
   Link = '#06f',
   Separator = '#3d4349',
@@ -58,6 +60,7 @@ export enum Colors {
   AuthorityBadge = 'rgb(11, 55, 26)',
   UnitGrey2_10percent = 'rgb(151,151, 151,0.1)',
   UnitTurquoise_20percent = 'rgba(121,203,220,0.2)',
+  UnitTurquoise_30percent = 'rgba(121,203,220,0.3)',
 }
 
 export enum StyleWidths {
