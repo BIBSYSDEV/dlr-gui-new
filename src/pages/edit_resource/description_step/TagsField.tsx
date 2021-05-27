@@ -93,6 +93,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
       await Promise.all(promiseArray);
       setFieldValue('tags', tagArray);
       values.tags = tagArray;
+      values.isFresh = false;
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
     } catch (error) {
       setSaveError(error);
@@ -109,6 +110,12 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
   return (
     <StyledSchemaPartColored color={Colors.DescriptionPageGradientColor3}>
       <StyledContentWrapper>
+        {values.isFresh && values.features.dlr_content_type === 'link' && values.tags && values.tags.length > 0 && (
+          <Typography>{t('explanation_text.tags_link_fresh_warning')}</Typography>
+        )}
+        {!values.isFresh && values.features.dlr_content_type === 'link' && values.tags && values.tags.length > 0 && (
+          <Typography>{t('explanation_text.tags_link_old_warning')}</Typography>
+        )}
         <Field name={'tags'}>
           {({ field }: FieldProps) => (
             <Grid container alignItems="center" spacing={2}>
@@ -183,7 +190,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
             </Grid>
           )}
         </Field>
-        {tagSearchError && <ErrorBanner error={tagSearchError}></ErrorBanner>}
+        {tagSearchError && <ErrorBanner error={tagSearchError} />}
         {saveError && <ErrorBanner userNeedsToBeLoggedIn={true} error={saveError} />}
       </StyledContentWrapper>
     </StyledSchemaPartColored>

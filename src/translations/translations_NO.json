@@ -166,6 +166,8 @@
     "tags_helper_text_edit_resource1": "Skriv inn emneordet etterfulgt av enter så kan du skrive inn neste emneord. Man kan legge til og slette emneord etter at en ressurs er publisert",
     "tags_helper_text_edit_resource2": "Gode valg av emneord sørger for at det er lettere for andre å finne ressursen din ",
     "tags_helper_text_example": "Eksempel: En ressurs med tittel \"Det sympatiske nervesystemet\" kan for ha emneord \"syk130\", \"sykepleie\", \"helsefag\", \"nervesystemet\" og \"helse\"",
+    "tags_link_fresh_warning": "Emneord har blitt generert automatisk fra lenka. Se over at de stemmer",
+    "tags_link_old_warning": "Noen av emneordene kan ha blitt generert automatisk. Se over at de stemmer",
     "title_helper_aria_label": "Vis tittel forklaring",
     "title_helper_text": "Fyll inn en tittel som hjelper andre å finne ressursen din"
   },

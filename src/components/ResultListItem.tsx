@@ -88,8 +88,13 @@ const StyledHeader = styled.div`
 `;
 
 const StyledChip: any = styled(Chip)`
+  height: auto;
   margin-right: 0.5rem;
   margin-top: 0.5rem;
+`;
+
+const StyledChipTypography = styled(Typography)`
+  white-space: normal;
 `;
 
 const StyledLink = styled(Link)`
@@ -161,7 +166,7 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
                   key={index}
                   clickable
                   size="medium"
-                  label={tag}
+                  label={<StyledChipTypography>{tag}</StyledChipTypography>}
                 />
               ))}
             </div>

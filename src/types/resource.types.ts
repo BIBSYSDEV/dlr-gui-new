@@ -23,6 +23,7 @@ export interface Resource {
   accessWrite?: string[];
   contents: ResourceContents;
   licenses: License[];
+  isFresh?: boolean; //indicates that the resource has been just generated without the user leaving the form and the tags are untouched
 }
 
 export const emptyResource: Resource = {
@@ -283,3 +284,5 @@ export const CompareCreators = (creatorA: Creator, creatorB: Creator): number =>
     return 0;
   }
 };
+
+export const TAGS_MAX_LENGTH = 30;
