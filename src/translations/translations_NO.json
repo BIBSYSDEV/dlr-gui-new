@@ -136,7 +136,7 @@
   },
   "explanation_text": {
     "access_filtering_label": "Vis andre ressurser forklaring",
-    "access_filtering": "Resultatlista vil inneholde ressurser du ikke har tilgang til å vise.",
+    "access_filtering": "Hvis valgt, vil resultatlista også inneholde ressurser du ikke har tilgang til å vise.",
     "contributor_helper_aria_label" : "Vis bigradsyter forklaring",
     "contributor_helper_text1" : "Andre som har bidratt med ressursen, men som ikke trenger å krediteres av de som tar i bruk ressursen",
     "contributor_helper_text2" : "Som Kurator kan du verifisere bidragsytere. Det er ikke mulig å endre navnet på en verifisert bidragsyter. Om det er feil verfisert bidragsyter, må denne slettes og legges inn på ny",
