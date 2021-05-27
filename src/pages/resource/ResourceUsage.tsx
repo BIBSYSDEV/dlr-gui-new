@@ -6,18 +6,10 @@ import { format } from 'date-fns';
 import { TFunction, useTranslation } from 'react-i18next';
 import { getCitationFromCrossCite } from '../../api/resourceApi';
 import styled from 'styled-components';
+import { Grid } from '@material-ui/core';
 
-const StyledTextAndButtonWrapper = styled.div`
-  display: block;
-  margin-top: 2rem;
-`;
-
-const StyledInformationWrapper = styled.div`
-  display: flex;
-  align-items: flex-start;
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 1 + 'px'}) {
-    display: block;
-  }
+const StyledGridContainer = styled(Grid)`
+  margin-top: 1rem;
 `;
 
 const StyledTypography = styled(Typography)`
@@ -120,33 +112,34 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   };
 
   return (
-    <>
-      <StyledTextAndButtonWrapper>
+    <StyledGridContainer container spacing={3}>
+      <Grid item xs={12} sm={8}>
         <Typography variant="caption">{t('citation.citation_link')}</Typography>
-        <StyledInformationWrapper>
-          <StyledTypography variant="body1">
-            {citationPreTitle}
-            <i>{citationTitle}</i>
-            {citationPostTitle}
-          </StyledTypography>
-          <StyledButton
-            color="primary"
-            variant="outlined"
-            onClick={() => handleCopyButtonClick(citationPreTitle + citationTitle + citationPostTitle)}>
-            {t('citation.copy_citation').toUpperCase()}
-          </StyledButton>
-        </StyledInformationWrapper>
-      </StyledTextAndButtonWrapper>
-      <StyledTextAndButtonWrapper>
+        <StyledTypography variant="body1">
+          {citationPreTitle}
+          <i>{citationTitle}</i>
+          {citationPostTitle}
+        </StyledTypography>
+      </Grid>
+      <Grid item xs={12} sm={4}>
+        <StyledButton
+          color="primary"
+          variant="outlined"
+          onClick={() => handleCopyButtonClick(citationPreTitle + citationTitle + citationPostTitle)}>
+          {t('citation.copy_citation').toUpperCase()}
+        </StyledButton>
+      </Grid>
+      <Grid item xs={12} sm={8}>
         <Typography variant="caption">{t('embed.embed_code')}</Typography>
-        <StyledInformationWrapper>
-          <StyledTypography variant="body1">{iframeText}</StyledTypography>
-          <StyledButton color="primary" variant="outlined" onClick={() => handleCopyButtonClick(iframeText)}>
-            {t('embed.copy_embed_code').toUpperCase()}
-          </StyledButton>
-        </StyledInformationWrapper>
-      </StyledTextAndButtonWrapper>
-    </>
+
+        <StyledTypography variant="body1">{iframeText}</StyledTypography>
+      </Grid>
+      <Grid item xs={12} sm={4}>
+        <StyledButton color="primary" variant="outlined" onClick={() => handleCopyButtonClick(iframeText)}>
+          {t('embed.copy_embed_code').toUpperCase()}
+        </StyledButton>
+      </Grid>
+    </StyledGridContainer>
   );
 };
 
