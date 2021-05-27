@@ -80,7 +80,7 @@ const StyledList = styled(List)`
 
 const StyledResultListHeaderWrapper = styled.div`
   display: flex;
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
     flex-direction: column;
     align-items: flex-start;
   }
@@ -191,7 +191,7 @@ const Explore = () => {
                   <Typography variant="h2">
                     {t('common.result')} ({searchResult.numFound})
                   </Typography>
-                  <AccessFiltering queryObject={queryObject} setQueryObject={setQueryObject} />
+                  {user.id && <AccessFiltering queryObject={queryObject} setQueryObject={setQueryObject} />}
                 </StyledResultListHeaderWrapper>
                 <StyledList>
                   {resources &&
