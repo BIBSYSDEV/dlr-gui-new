@@ -78,10 +78,8 @@ const StyledLink = styled(Link)`
 `;
 
 const StyledResourceTypeInfoWrapper = styled.div`
-  background: rgba(255, 255, 255, 0.5);
-  border-style: solid;
-  border-width: 1px;
-  border-color: rgba(0, 0, 0, 0.1);
+  background: ${Colors.Brighten50Percent};
+  border: 1px solid ${Colors.Darken10Percent};
 `;
 
 interface ResourceListItemProps {
