@@ -26,10 +26,7 @@ const StyledFormControl: any = styled(FormControl)`
 `;
 
 const StyledChip = styled(Chip)`
-  max-width: 13rem;
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.lg - 1 + 'px'}) {
-    max-width: ${StyleWidths.width3};
-  }
+  height: auto;
   && {
     margin: 1rem 0.5rem 0 0;
     background-color: ${Colors.ChipBackground};
@@ -39,6 +36,10 @@ const StyledChip = styled(Chip)`
       background-color: ${Colors.ChipBackgroundFocus};
     }
   }
+`;
+const StyledChipTypography = styled(Typography)`
+  white-space: normal;
+  color: white;
 `;
 
 const StyledCancelIcon = styled(CancelIcon)`
@@ -180,7 +181,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
               key={index}
               deleteIcon={<StyledCancelIcon data-testid={`tag-filter-delete-${tag}`} />}
               data-testid={`filter-tag-chip-${index}`}
-              label={tag}
+              label={<StyledChipTypography>{tag}</StyledChipTypography>}
               onDelete={() => handleDelete(tag)}
               variant="outlined"
             />

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Resource, ResourceCreationType } from '../types/resource.types';
+import { Resource, ResourceCreationType, TAGS_MAX_LENGTH } from '../types/resource.types';
 import Thumbnail from './Thumbnail';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
@@ -104,12 +104,13 @@ const StyledHeader = styled.div`
 `;
 
 const StyledChip: any = styled(Chip)`
-  max-width: 13rem;
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.lg - 1 + 'px'}) {
-    max-width: ${StyleWidths.width3};
-  }
+  height: auto;
   margin-right: 0.5rem;
   margin-top: 0.5rem;
+`;
+
+const StyledChipTypography = styled(Typography)`
+  white-space: normal;
 `;
 
 const StyledLink = styled(Link)`
@@ -186,11 +187,12 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
               {resource.tags.map((tag, index) => (
                 <StyledChip
                   component="a"
+                  title={tag.length > TAGS_MAX_LENGTH ? tag : ''}
                   href={`/?${SearchParameters.tag}=${tag}`}
                   key={index}
                   clickable
                   size="medium"
-                  label={tag}
+                  label={<StyledChipTypography>{tag}</StyledChipTypography>}
                 />
               ))}
             </div>

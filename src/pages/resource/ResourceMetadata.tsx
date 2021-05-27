@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Resource } from '../../types/resource.types';
 import { StyledContentWrapperMedium, StyledSchemaPartColored } from '../../components/styled/Wrappers';
-import { Colors, StyleWidths } from '../../themes/mainTheme';
+import { Colors } from '../../themes/mainTheme';
 import { Chip, Grid, Typography } from '@material-ui/core';
 import { format } from 'date-fns';
 import styled from 'styled-components';
@@ -9,10 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { SearchParameters } from '../../types/search.types';
 
 const StyledChip: any = styled(Chip)`
-  max-width: 13rem;
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.md - 1 + 'px'}) {
-    max-width: ${StyleWidths.width3};
-  }
+  height: auto;
   && {
     margin: 0.5rem 0.5rem 0 0;
     background-color: ${Colors.ChipBackground};
@@ -22,6 +19,11 @@ const StyledChip: any = styled(Chip)`
       background-color: ${Colors.ChipBackgroundFocus};
     }
   }
+`;
+
+const StyledChipTypography = styled(Typography)`
+  white-space: normal;
+  color: white;
 `;
 
 const StyledFeatureWrapper = styled.div`
@@ -108,7 +110,7 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource }) => {
                     component="a"
                     key={index}
                     size="medium"
-                    label={tag}
+                    label={<StyledChipTypography>{tag}</StyledChipTypography>}
                     data-testid={`tag-chip-${index}`}
                     clickable
                   />
