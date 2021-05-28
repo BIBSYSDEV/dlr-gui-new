@@ -463,7 +463,10 @@
     "logged_in_as": "Logged in as"
   },
   "work_list" : {
+    "aria_label_tabs": "Tabs for my work lists",
+    "doi_request_list" : "DOI requests",
     "page_title" : "Work list",
-    "page_requirements": "You must be curator or editor for accessing this feature"
+    "page_requirements": "You must be curator or editor for accessing this feature",
+    "reports" : "Reports"
   }
 }

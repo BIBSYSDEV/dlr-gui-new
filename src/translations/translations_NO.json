@@ -463,7 +463,10 @@
     "logged_in_as": "Logget på som"
   },
   "work_list" : {
+    "aria_label_tabs": "Faner for mine arbeidslister",
+    "doi_request_list" : "DOI forespørsler",
     "page_title" : "Arbeidsliste",
-    "page_requirements": "Du må være kurator eller redaktør for å få tilgang til denne funksjonaliteten"
+    "page_requirements": "Du må være kurator eller redaktør for å få tilgang til denne funksjonaliteten",
+    "reports" : "Rapporteringer"
   }
 }

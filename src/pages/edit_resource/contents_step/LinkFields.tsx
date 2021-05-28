@@ -31,7 +31,7 @@ const LinkFields = () => {
   const { values } = useFormikContext<Resource>();
 
   return (
-    <StyledSchemaPartColored color={Colors.ContentsPageGradientColor1}>
+    <StyledSchemaPartColored color={Colors.DLRColdGreen1}>
       <StyledContentWrapper>
         <Typography variant="h3">{t('resource.metadata.link')}</Typography>
         <LinkWrapper>
