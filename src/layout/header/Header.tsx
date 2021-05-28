@@ -74,6 +74,11 @@ const Header = () => {
             <Typography variant="button">{t('resource.my_resources')}</Typography>
           </MenuItem>
         )}
+        {(user.institutionAuthorities?.isCurator || user.institutionAuthorities?.isEditor) && (
+          <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/worklist">
+            <Typography variant="button">{t('work_list.page_title')}</Typography>
+          </MenuItem>
+        )}
         {user.institutionAuthorities?.isAdministrator && (
           <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/admin">
             <Typography variant="button">{t('administrative.page_heading')}</Typography>
@@ -91,6 +96,11 @@ const Header = () => {
         {user.id && (
           <Button color="primary" component={RouterLink} data-testid="my-resources-link" to="/resources/user/current">
             <Typography variant="button">{t('resource.my_resources')}</Typography>
+          </Button>
+        )}
+        {(user.institutionAuthorities?.isCurator || user.institutionAuthorities?.isEditor) && (
+          <Button color="primary" component={RouterLink} data-testid="work-list-link" to="/worklist">
+            <Typography variant="button">{t('work_list.page_title')}</Typography>
           </Button>
         )}
         {user.institutionAuthorities?.isAdministrator && (

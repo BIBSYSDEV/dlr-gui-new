@@ -461,5 +461,9 @@
   },
   "user": {
     "logged_in_as": "Logged in as"
+  },
+  "work_list" : {
+    "page_title" : "Work list",
+    "page_requirements": "You must be curator or editor for accessing this feature"
   }
 }
