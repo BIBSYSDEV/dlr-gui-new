@@ -98,7 +98,7 @@ const StyledChipTypography = styled(Typography)`
 `;
 
 const StyledLink = styled(Link)`
-  color: ${Colors.PrimaryText};
+  color: ${Colors.Primary};
 `;
 
 interface ResultListItemProps {
