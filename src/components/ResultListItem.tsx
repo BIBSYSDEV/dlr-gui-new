@@ -97,10 +97,6 @@ const StyledChipTypography = styled(Typography)`
   white-space: normal;
 `;
 
-const StyledLink = styled(Link)`
-  color: ${Colors.Primary};
-`;
-
 interface ResultListItemProps {
   resource: Resource;
 }
@@ -131,7 +127,7 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
         <div>
           <StyledHeader>
             <StyledMaxTwoLinesTypography variant="h4">
-              <StyledLink href={`/resource/${resource.identifier}`}>{resource.features.dlr_title}</StyledLink>
+              <Link href={`/resource/${resource.identifier}`}>{resource.features.dlr_title}</Link>
             </StyledMaxTwoLinesTypography>
             <StyledTimeCreatedTypography variant="body1">
               {format(new Date(resource.features.dlr_time_created), 'dd.MM.yyyy')}

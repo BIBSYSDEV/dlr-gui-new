@@ -23,7 +23,7 @@ export enum Colors {
   Darken10Percent = 'rgba(0, 0, 0, 0.1)',
   Brighten50Percent = 'rgba(255, 255, 255, 0.5)',
   HoverTextFieldFilled = '#F5F5F5',
-  Link = '#06f',
+  Link = 'rgba(99, 34, 107, 1)',
   Separator = '#3d4349',
   PrimaryText = 'rgba(0,0,0,0.87)',
   InitialText = 'rgba(0, 0, 0, 1)',
