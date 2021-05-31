@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { Resource } from '../../types/resource.types';
 import { Grid } from '@material-ui/core';
-import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Colors } from '../../themes/mainTheme';
 import {
@@ -44,7 +43,6 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
   isPreview = false,
   mainFileBeingUploaded = false,
 }) => {
-
   return (
     resource && (
       <StyledPresentationWrapper>
