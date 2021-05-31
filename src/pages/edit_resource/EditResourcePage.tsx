@@ -19,6 +19,7 @@ import {
   ResourceCreationType,
   ResourceFeatureNames,
   ResourceFeatureTypes,
+  TAGS_MAX_LENGTH,
 } from '../../types/resource.types';
 import {
   createContributor,
@@ -125,13 +126,13 @@ const EditResourcePage = () => {
   };
 
   const saveResourceDLRType = async (
-    tempResouce: Resource,
+    tempResource: Resource,
     resourceIdentifier: string,
     dlrType: ResourceFeatureTypes
   ) => {
     try {
       await postResourceFeature(resourceIdentifier, ResourceFeatureNames.Type, dlrType);
-      tempResouce.features.dlr_type = dlrType;
+      tempResource.features.dlr_type = dlrType;
     } catch (error) {
       setResourceInitError(error);
     }
@@ -230,8 +231,12 @@ const EditResourcePage = () => {
         licenses: [emptyLicense],
         contents: tempContents,
       };
+      resource.isFresh = true;
       await setDLRType(resourceCreationType, responseWithCalculatedDefaults, resource, startingResource);
       await setCreator(resource, startingResource.identifier, user.name);
+      if (resource.tags) {
+        resource.tags = resource.tags.filter((tag) => tag.length < TAGS_MAX_LENGTH);
+      }
       await setTags(resource, startingResource.identifier);
 
       if (!resource.features.dlr_access) {
@@ -342,7 +347,7 @@ const EditResourcePage = () => {
         resource.creators = (await creatorWithAuthoritiesPromise) as Creator[];
         resource.contributors = (await contributorWithAuthoritiesPromise) as Contributor[];
       }
-      resource.tags = (await tagsPromise).data;
+      resource.tags = (await tagsPromise).data.filter((tag) => tag.length <= TAGS_MAX_LENGTH);
       resource.contents = await contentsPromise;
       resource.licenses = (await licensesPromise).data;
       if (!resource.features.dlr_type) resource.features.dlr_type = '';
