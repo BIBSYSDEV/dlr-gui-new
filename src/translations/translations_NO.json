@@ -128,8 +128,10 @@
   },
   "delivered_by": "Levert av",
   "embed": {
+    "copy_embed_code": "Kopier innebyggingskode",
     "embed_in_blackboard": "Bygg inn i Blackboard",
     "embed_in_canvas": "Bygg inn i Canvas",
+    "embed_code": "Innebyggingskode for hovedinnhold",
     "embed_in_edx": "Bygg inn i EDX",
     "embed_in_its_learning": "Bygg inn i its learning",
     "insert_into_canvas": "Sett inn i Canvas",
