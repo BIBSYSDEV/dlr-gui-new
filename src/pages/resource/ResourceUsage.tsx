@@ -7,6 +7,7 @@ import { TFunction, useTranslation } from 'react-i18next';
 import { getCitationFromCrossCite } from '../../api/resourceApi';
 import styled from 'styled-components';
 import { Grid } from '@material-ui/core';
+import EmbedButtons from './EmbedButtons';
 
 const StyledGridContainer = styled(Grid)`
   margin-top: 1rem;
@@ -145,6 +146,11 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
           <StyledButton color="primary" variant="outlined" onClick={() => handleCopyButtonClick(iframeText)}>
             {t('embed.copy_embed_code').toUpperCase()}
           </StyledButton>
+        </Grid>
+      </StyledGridContainer>
+      <StyledGridContainer container spacing={3}>
+        <Grid item xs={12}>
+          <EmbedButtons resource={resource} />
         </Grid>
       </StyledGridContainer>
     </>

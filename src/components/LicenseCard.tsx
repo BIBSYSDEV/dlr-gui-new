@@ -12,18 +12,12 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-  color: ${Colors.Primary};
-  text-decoration: underline;
-  :hover {
-    font-weight: 600;
-  }
-  :focus {
-    font-weight: 600;
-  }
-  font-weight: 500;
   margin-top: 1rem;
   display: flex;
   align-items: flex-start;
+  & .MuiTypography-body1 {
+    color: ${Colors.Link};
+  }
 `;
 
 interface LicenseProps {
