@@ -20,6 +20,8 @@ export enum Colors {
   Secondary = 'rgba(147, 10, 10, 1)',
   Background = '#ffffff',
   Box = '#f5f5f5',
+  Darken10Percent = 'rgba(0, 0, 0, 0.1)',
+  Brighten50Percent = 'rgba(255, 255, 255, 0.5)',
   HoverTextFieldFilled = '#F5F5F5',
   Link = '#06f',
   Separator = '#3d4349',

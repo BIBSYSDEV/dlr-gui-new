@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { SearchParameters } from '../../types/search.types';
 
 const StyledChip: any = styled(Chip)`
+  height: auto;
   && {
     margin: 0.5rem 0.5rem 0 0;
     background-color: ${Colors.ChipBackground};
@@ -18,6 +19,11 @@ const StyledChip: any = styled(Chip)`
       background-color: ${Colors.ChipBackgroundFocus};
     }
   }
+`;
+
+const StyledChipTypography = styled(Typography)`
+  white-space: normal;
+  color: white;
 `;
 
 const StyledFeatureWrapper = styled.div`
@@ -104,7 +110,7 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource }) => {
                     component="a"
                     key={index}
                     size="medium"
-                    label={tag}
+                    label={<StyledChipTypography>{tag}</StyledChipTypography>}
                     data-testid={`tag-chip-${index}`}
                     clickable
                   />
