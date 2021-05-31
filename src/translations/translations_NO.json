@@ -127,6 +127,17 @@
     "tags": "Emneord"
   },
   "delivered_by": "Levert av",
+  "embed": {
+    "embed_in_blackboard": "Bygg inn i Blackboard",
+    "embed_in_canvas": "Bygg inn i Canvas",
+    "embed_in_edx": "Bygg inn i EDX",
+    "embed_in_its_learning": "Bygg inn i its learning",
+    "insert_into_canvas": "Sett inn i Canvas",
+    "large": "Stor",
+    "link": "Lenke",
+    "medium": "Medium",
+    "small": "Liten"
+  },
   "error": {
     "401_page": "Du er ikke autorisert for dette",
     "403_page": "Du må være pålogget for å benytte denne funksjonaliteten",
