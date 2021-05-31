@@ -401,6 +401,10 @@
       "resource_is_text_file": "This resource is a text file"
     },
     "published_resources": "Published",
+    "reporting": {
+      "report_resource" : "Report resource",
+      "report_text_label" : "Describe the reason for reporting the resource"
+    },
     "search_for_resources": "Search for resources",
     "start_with_link_to_resource": "Start registration with a link",
     "start_with_uploading_file": "Upload file if the resource is to be published on the Internet for the first time",
