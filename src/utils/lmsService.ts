@@ -1,11 +1,10 @@
 import { Resource } from '../types/resource.types';
-import { FRONTEND_URL } from './constants';
 import { LMSTypes } from '../types/lms.types';
 import { LMSParametersName } from '../types/LMSParameters';
 
 const createEmbedUrlParam = (resource: Resource, width: number | string, height: number) => {
   return encodeURIComponent(
-    `${FRONTEND_URL}/content/${resource.identifier}?showNewVersion=true&showLicense=true&width=${width}&height=${height}`
+    `${window.location.origin}/resource/${resource.identifier}/content/main?width=${width}&height=${height}`
   );
 };
 
@@ -15,7 +14,7 @@ const embedToBlackBoard = (resource: Resource, mode: string) => {
     title: resource.features.dlr_title,
     handle: resource.features.dlr_identifier_handle,
     mode,
-    embedCode: `<iframe src="${FRONTEND_URL}/content/${resource.identifier}?width={width}&height={height}&showLicense={showLicense}&showNewVersion={showNewVersion}" style="border: none;" width="{iframeWidth}" height="{iframeHeight}" mozallowfullscreen="true" webkitallowfullscreen="true" allowfullscreen="true" ></iframe>`,
+    embedCode: `<iframe src="${window.location.origin}/resource/${resource.identifier}/content/main?width={width}&height={height}" style="border: none;" width="{iframeWidth}" height="{iframeHeight}" allowfullscreen="true" ></iframe>`,
   };
   window.parent.postMessage(data, '*');
 };
@@ -24,14 +23,20 @@ const embedToCanvas = (resource: Resource, mode: string, height: number, width: 
   const searchParams = new URLSearchParams(window.location.search);
   const canvasReturnUrl = searchParams.get(LMSParametersName.CanvasLaunchPresentationReturnUrl);
   if (mode === 'link') {
-    window.location.href = `${canvasReturnUrl}?return_type=url&target=_blank&title=link&text=${resource.features.dlr_title}&url=${resource.features.dlr_identifier_handle}`;
+    window.location.href = `${canvasReturnUrl}?return_type=url&target=_blank&title=link&text=${resource.features.dlr_title.replaceAll(
+      '"',
+      ''
+    )}&url=${resource.features.dlr_identifier_handle}`;
   }
   if (mode === 'canvasShowEmbedLinkButton') {
     const urlParam = createEmbedUrlParam(resource, 'full', 315);
-    window.location.href = `${canvasReturnUrl}?return_type=lti_launch_url&title=${resource.features.dlr_title}&url=${urlParam}`;
+    window.location.href = `${canvasReturnUrl}?return_type=lti_launch_url&title=${resource.features.dlr_title.replaceAll(
+      '"',
+      ''
+    )}&url=${urlParam}`;
   } else {
     const urlParam = createEmbedUrlParam(resource, width, height);
-    window.location.href = `${canvasReturnUrl}?return_type=iframe&allowfullscreen=true&webkitallowfullscreen=true&mozallowfullscreen=true&width=${width}px&height=${height}px&url=${urlParam}`;
+    window.location.href = `${canvasReturnUrl}?return_type=iframe&allowfullscreen=true&width=${width}px&height=${height}px&url=${urlParam}`;
   }
 };
 
@@ -57,12 +62,12 @@ const embedToItsLearning = async (resource: Resource, mode: string, width: numbe
     if (mode === 'link') {
       postToItsLearning(
         itsLearningReturnUrl,
-        `<a href="${resource.features.dlr_identifier_handle}">${resource.features.dlr_title}</a>`
+        `<a href="${resource.features.dlr_identifier_handle}">${resource.features.dlr_title.replaceAll('"', '')}</a>`
       );
     } else {
       postToItsLearning(
         itsLearningReturnUrl,
-        `<iframe src="${FRONTEND_URL}/content/${resource.identifier}?showNewVersion=true&showLicense=true&width=${width}&height=${height}&useFeideSso=true" style="border: none;" width="${width}" height="${height}" mozallowfullscreen="true" webkitallowfullscreen="true" allowfullscreen="true"></iframe>`
+        `<iframe src="${window.location.origin}/content/${resource.identifier}/content/main?width=${width}&height=${height}&useFeideSso=true" style="border: none;" width="${width}" height="${height}" allowfullscreen="true"></iframe>`
       );
     }
   } else {
@@ -78,7 +83,7 @@ const embedToEdx = (resource: Resource, mode: string) => {
     title: resource.features.dlr_title,
     handle: resource.features.dlr_identifier_handle,
     mode: mode, // ex.: embed size ('560x315' or 'link')
-    embedCode: `<iframe src="${FRONTEND_URL}/content/${resource.identifier}?width={width}&height={height}&showLicense={showLicense}&showNewVersion={showNewVersion}" style="border: none;" width="{iframeWidth}" height="{iframeHeight}" mozallowfullscreen="true" webkitallowfullscreen="true" allowfullscreen="true" ></iframe>`,
+    embedCode: `<iframe src="${window.location.origin}/content/${resource.identifier}/content/main?width={width}&height={height}" style="border: none;" width="{iframeWidth}" height="{iframeHeight}" allowfullscreen="true" ></iframe>`,
   };
 
   window.parent.postMessage(data, '*');
