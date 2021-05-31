@@ -26,7 +26,8 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   const [reportText, setReportText] = useState('');
 
   const handleReport = () => {
-    console.log('report');
+    console.log('hepp');
+    setShowReportDialog(false);
   };
 
   const cancelReport = () => {
@@ -49,14 +50,14 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
           maxWidth={'sm'}
           fullWidth
           open={showReportDialog}
-          aria-labelledby="alert-dialog-title"
-          data-testid={`delete-confirm-dialog`}>
-          <DialogTitle id="alert-dialog-title">{t('report_resource')}</DialogTitle>
+          aria-labelledby="dialog-title"
+          data-testid={`report-dialog`}>
+          <DialogTitle id="report-dialog-title">{t('resource.reporting.report_resource')}</DialogTitle>
           <DialogContent>
             <TextField
               id="report-text"
               fullWidth
-              label={t('report_text')}
+              label={t('resource.reporting.report_text_label')}
               onChange={(event) => {
                 setReportText(event.target.value);
               }}
@@ -71,6 +72,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
               {t('common.cancel')}
             </Button>
             <Button
+              disabled={!reportText}
               data-testid={`report-dialog-report-button`}
               onClick={handleReport}
               color="primary"
@@ -79,7 +81,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
               {t('common.report')}
             </Button>
           </DialogActions>
-        </Dialog>{' '}
+        </Dialog>
       </StyledActionContentWrapper>
     </>
   );
