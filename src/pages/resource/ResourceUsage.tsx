@@ -54,7 +54,11 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   const [citationPostTitle, setCitationPostTitle] = useState('');
   const mountedRef = useRef(true);
 
-  const iframeText = `<iframe title="${resource.features.dlr_title}" src="${window.location.origin}/resource/${resource.identifier}/content/main?navbar=false&footer=false" width="640px" height="360px" style="border: none;" allowfullscreen="true"></iframe>`;
+  const iframeText = `<iframe title="${resource.features.dlr_title.replaceAll('"', '')}" src="${
+    window.location.origin
+  }/resource/${
+    resource.identifier
+  }/content/main?navbar=false&footer=false" width="640px" height="360px" style="border: none;" allowfullscreen="true"></iframe>`;
 
   useEffect(() => {
     const getCitation = async () => {
@@ -112,34 +116,38 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   };
 
   return (
-    <StyledGridContainer container spacing={3}>
-      <Grid item xs={12} sm={8}>
-        <Typography variant="caption">{t('citation.citation_link')}</Typography>
-        <StyledTypography variant="body1">
-          {citationPreTitle}
-          <i>{citationTitle}</i>
-          {citationPostTitle}
-        </StyledTypography>
-      </Grid>
-      <Grid item xs={12} sm={4}>
-        <StyledButton
-          color="primary"
-          variant="outlined"
-          onClick={() => handleCopyButtonClick(citationPreTitle + citationTitle + citationPostTitle)}>
-          {t('citation.copy_citation').toUpperCase()}
-        </StyledButton>
-      </Grid>
-      <Grid item xs={12} sm={8}>
-        <Typography variant="caption">{t('embed.embed_code')}</Typography>
+    <>
+      <StyledGridContainer container spacing={3}>
+        <Grid item xs={12} sm={8}>
+          <Typography variant="caption">{t('citation.citation_link')}</Typography>
+          <StyledTypography variant="body1">
+            {citationPreTitle}
+            <i>{citationTitle}</i>
+            {citationPostTitle}
+          </StyledTypography>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <StyledButton
+            color="primary"
+            variant="outlined"
+            onClick={() => handleCopyButtonClick(citationPreTitle + citationTitle + citationPostTitle)}>
+            {t('citation.copy_citation').toUpperCase()}
+          </StyledButton>
+        </Grid>
+      </StyledGridContainer>
+      <StyledGridContainer container spacing={3}>
+        <Grid item xs={12} sm={8}>
+          <Typography variant="caption">{t('embed.embed_code')}</Typography>
 
-        <StyledTypography variant="body1">{iframeText}</StyledTypography>
-      </Grid>
-      <Grid item xs={12} sm={4}>
-        <StyledButton color="primary" variant="outlined" onClick={() => handleCopyButtonClick(iframeText)}>
-          {t('embed.copy_embed_code').toUpperCase()}
-        </StyledButton>
-      </Grid>
-    </StyledGridContainer>
+          <StyledTypography variant="body1">{iframeText}</StyledTypography>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <StyledButton color="primary" variant="outlined" onClick={() => handleCopyButtonClick(iframeText)}>
+            {t('embed.copy_embed_code').toUpperCase()}
+          </StyledButton>
+        </Grid>
+      </StyledGridContainer>
+    </>
   );
 };
 

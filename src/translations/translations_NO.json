@@ -128,7 +128,7 @@
   "delivered_by": "Levert av",
   "embed": {
     "copy_embed_code": "Kopier innebyggingskode",
-    "embed_code": "Innebyggingskode"
+    "embed_code": "Innebyggingskode for hovedinnhold"
   },
   "error": {
     "401_page": "Du er ikke autorisert for dette",
