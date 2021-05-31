@@ -187,7 +187,7 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
   };
 
   return (
-    <StyledSchemaPartColored color={Colors.ContentsPageGradientColor2}>
+    <StyledSchemaPartColored color={Colors.DLRColdGreen2}>
       <StyledContentWrapper>
         <LargeParagraphSpace>
           <Typography variant="h3" paragraph>

@@ -46,7 +46,11 @@ const Sitemap = () => {
     },
     {
       href: '/search-helper',
-      description: `${t('Tips til søk etter ressurser')}`,
+      description: `${t('search_tricks.page_title')}`,
+    },
+    {
+      href: '/worklist',
+      description: `${t('work_list.page_title')} (${t('work_list.page_requirements')})`,
     },
   ].sort((a, b) => a.description.localeCompare(b.description));
 

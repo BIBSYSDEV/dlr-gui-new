@@ -95,7 +95,7 @@ const FileFields: FC<FileFieldsProps> = ({
   };
 
   return (
-    <StyledSchemaPartColored color={Colors.ContentsPageGradientColor1}>
+    <StyledSchemaPartColored color={Colors.DLRColdGreen1}>
       <StyledContentWrapper>
         <Typography variant="h3">{t('resource.metadata.main_file')}</Typography>
         <MainFileWrapper>
