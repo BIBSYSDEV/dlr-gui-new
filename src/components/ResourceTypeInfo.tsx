@@ -30,12 +30,15 @@ const ResourceTypeInfo: FC<ResourceTypeInfoProps> = ({ resource }) => {
   return (
     <StyledThumbnailMetadataWrapper>
       {resource.features.dlr_type && (
-        <StyledFileTypeIcon>{getStyledFileTypeIcon(resource.features.dlr_type)}</StyledFileTypeIcon>
+        <>
+          <StyledFileTypeIcon>{getStyledFileTypeIcon(resource.features.dlr_type)}</StyledFileTypeIcon>
+          <StyledFileName display="inline" variant="body2">
+            {t(`resource.type.${resource.features.dlr_type?.toLowerCase()}`)}
+            {resource.features.dlr_content_type === ResourceCreationType.LINK &&
+              ' (' + t('resource.metadata.link') + ')'}
+          </StyledFileName>
+        </>
       )}
-      <StyledFileName display="inline" variant="body2">
-        {t(`resource.type.${resource.features.dlr_type?.toLowerCase()}`)}
-        {resource.features.dlr_content_type === ResourceCreationType.LINK && ' (' + t('resource.metadata.link') + ')'}
-      </StyledFileName>
     </StyledThumbnailMetadataWrapper>
   );
 };

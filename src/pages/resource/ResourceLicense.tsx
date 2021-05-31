@@ -9,7 +9,9 @@ import { Colors } from '../../themes/mainTheme';
 import i18next from 'i18next';
 
 const StyledLink = styled(Link)`
-  color: ${Colors.Primary};
+  & .MuiTypography-body1 {
+    color: ${Colors.Link};
+  }
   margin-left: -0.3rem;
   display: flex;
   align-items: flex-start;
