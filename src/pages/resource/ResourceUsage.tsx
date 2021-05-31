@@ -7,9 +7,11 @@ import { TFunction, useTranslation } from 'react-i18next';
 import { getCitationFromCrossCite } from '../../api/resourceApi';
 import styled from 'styled-components';
 
+const StyledUsageWrapper = styled.div`
+  margin-bottom: 2rem;
+`;
 const StyledTextAndButtonWrapper = styled.div`
   display: block;
-  margin-top: 2rem;
 `;
 
 const StyledInformationWrapper = styled.div`
@@ -117,19 +119,24 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   };
 
   return (
-    <StyledTextAndButtonWrapper>
-      <Typography variant="caption">{t('citation.citation_link')}</Typography>
-      <StyledInformationWrapper>
-        <StyledTypography variant="body1">
-          {citationPreTitle}
-          <i>{citationTitle}</i>
-          {citationPostTitle}
-        </StyledTypography>
-        <StyledButton color="primary" variant="outlined" onClick={() => handleCopyButtonClick()}>
-          {t('citation.copy_citation').toUpperCase()}
-        </StyledButton>
-      </StyledInformationWrapper>
-    </StyledTextAndButtonWrapper>
+    <StyledUsageWrapper>
+      <Typography variant="h2" gutterBottom>
+        {t('common.usage')}
+      </Typography>
+      <StyledTextAndButtonWrapper>
+        <Typography variant="caption">{t('citation.citation_link')}</Typography>
+        <StyledInformationWrapper>
+          <StyledTypography variant="body1">
+            {citationPreTitle}
+            <i>{citationTitle}</i>
+            {citationPostTitle}
+          </StyledTypography>
+          <StyledButton color="primary" variant="outlined" onClick={() => handleCopyButtonClick()}>
+            {t('citation.copy_citation').toUpperCase()}
+          </StyledButton>
+        </StyledInformationWrapper>
+      </StyledTextAndButtonWrapper>
+    </StyledUsageWrapper>
   );
 };
 

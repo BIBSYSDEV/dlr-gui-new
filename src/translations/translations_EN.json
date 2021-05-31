@@ -76,6 +76,7 @@
     "retrieved_from": "Retrieved from"
   },
   "common": {
+    "actions": "Actions",
     "all_changes_saved": "All changes saved",
     "back": "Back",
     "cancel": "Cancel",
@@ -102,6 +103,7 @@
     "possible_options": "Possible licenses",
     "publish": "Publish",
     "remove": "Remove",
+    "report": "Report",
     "result": "Result",
     "search": "Search",
     "save": "Save",

@@ -76,6 +76,7 @@
     "retrieved_from": "Hentet fra"
   },
   "common": {
+    "actions": "Handlinger",
     "all_changes_saved": "Alle endringer er lagret",
     "back": "Tilbake",
     "cancel": "Avbryt",
@@ -102,6 +103,7 @@
     "possible_options": "Mulige lisenser",
     "publish": "Publiser",
     "remove": "Fjern",
+    "report": "Rapporér",
     "result": "Resultat",
     "search": "Søk",
     "save": "Lagre",

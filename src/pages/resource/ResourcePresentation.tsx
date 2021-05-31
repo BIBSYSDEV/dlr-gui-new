@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Resource } from '../../types/resource.types';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Colors } from '../../themes/mainTheme';
@@ -14,6 +14,7 @@ import ResourceUsage from './ResourceUsage';
 import ResourceContents from './ResourceContents';
 import ResourceLicense from './ResourceLicense';
 import ContentPreview from '../../components/ContentPreview';
+import ResourceActions from './ResourceActions';
 
 const PreviewComponentWrapper = styled.div`
   margin: 1rem 0;
@@ -43,7 +44,6 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
   isPreview = false,
   mainFileBeingUploaded = false,
 }) => {
-  const { t } = useTranslation();
 
   return (
     resource && (
@@ -72,8 +72,8 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
         </StyledSchemaPartColored>
         <StyledSchemaPartColored color={Colors.DLRYellow3}>
           <StyledContentWrapperMedium>
-            <Typography variant="h2">{t('common.usage')}</Typography>
             <ResourceUsage resource={resource} />
+            <ResourceActions resource={resource} />
           </StyledContentWrapperMedium>
         </StyledSchemaPartColored>
       </StyledPresentationWrapper>
