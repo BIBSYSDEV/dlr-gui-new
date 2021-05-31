@@ -1,7 +1,9 @@
 import { authenticatedApiRequest } from './api';
 import { API_PATHS } from '../utils/constants';
+import { AxiosResponse } from 'axios';
+import { WorklistDOIRequest } from '../types/Worklist.types';
 
-export const getWorkListItemDOI = () => {
+export const getWorkListItemDOI = (): Promise<AxiosResponse<WorklistDOIRequest[]>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendWorklistsPath}/worklists/types/dlr_resource_identifier_doi_request`),
     method: 'GET',

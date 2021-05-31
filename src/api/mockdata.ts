@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Course, CourseSeason, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
 import { Content } from '../types/content.types';
 import { AuthorityResponse, AuthoritySearchResponse } from '../types/authority.types';
+import { WorklistDOIRequest, WorklistDOIRequestType } from '../types/Worklist.types';
 
 export const mockResource: Resource = deepmerge(emptyResource, {
   identifier: 'resource-123',
@@ -598,3 +599,41 @@ export const mockFacets = {
     },
   ],
 };
+
+export const mockWorkListRequestDOI: WorklistDOIRequest[] = [
+  {
+    identifier: '21341234',
+    resourceIdentifier: mockResource.identifier,
+    submitter: 'epost@epost.no',
+    institution: 'unit',
+    submittedDate: '2021-04-28T11:23:34.250Z',
+    type: WorklistDOIRequestType.DOIRequest,
+    description:
+      'description description descriptiondescriptiondescription description description description description description',
+    state: 'string',
+    stateDate: '2021-04-28T11:23:34.250Z',
+  },
+  {
+    identifier: '524352435',
+    resourceIdentifier: mockResource.identifier,
+    submitter: 'epost@epost.no',
+    institution: 'unit',
+    submittedDate: '2021-04-28T11:23:34.250Z',
+    type: WorklistDOIRequestType.DOIRequest,
+    description: 'short',
+    state: 'string',
+    stateDate: '2021-04-28T11:23:34.250Z',
+  },
+  {
+    identifier: '435246687',
+    resourceIdentifier: mockResource.identifier,
+    submitter: 'somebody@email.com',
+    institution: 'unit',
+    submittedDate: '2021-04-28T11:23:34.250Z',
+    type: WorklistDOIRequestType.DOIRequest,
+    description:
+      'long long longlonglonglong longlong longlonglong long long long long long long longlonglonglong longlongv longlonglong longlonglong longvlong longlonglong longlonglong longv longlonglong longlonglong long long longlonglonglong longlong longlonglong long long long long long long longlonglonglong longlongv longlonglong longlonglong longvlong longlonglong longlonglong longv longlonglong longlonglong long long longlonglonglong longlong longlonglong long long long long long long longlonglonglong longlongv longlonglong longlonglong longvlong longlonglong longlonglong longv longlonglong longlonglong',
+    state: 'string',
+    stateDate: '2021-04-28T11:23:34.250Z',
+  },
+];

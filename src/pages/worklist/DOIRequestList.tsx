@@ -3,28 +3,62 @@ import { CircularProgress, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { getWorkListItemDOI } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';
+import { WorklistDOIRequest } from '../../types/Worklist.types';
+import DOIRequestItem from './DOIRequestItem';
+import { getResource } from '../../api/resourceApi';
+import { Resource } from '../../types/resource.types';
+import { AxiosResponse } from 'axios';
+import styled from 'styled-components';
+
+const StyledUl = styled.ul`
+  list-style: none; /* Remove list bullets */
+  padding: 0;
+  margin: 0;
+`;
 
 const DOIRequestList = () => {
   const { t } = useTranslation();
   const [isLoading, setIsloading] = useState(false);
   const [loadingError, setLoadingError] = useState<Error>();
-  const [worklistDoi, setWorklistDoi] = useState<any>([]);
+  const [workListDoi, setWorkListDoi] = useState<WorklistDOIRequest[]>([]);
 
   useEffect(() => {
-    const fetchWorklisDoi = async () => {
+    const fetchWorkLisDoi = async () => {
       try {
         setIsloading(true);
         setLoadingError(undefined);
-        const worklistDoiResponse = await getWorkListItemDOI();
-        setWorklistDoi(worklistDoiResponse.data);
+        const workListDoiResponse = await getWorkListItemDOI();
+        const resourcePromises: Promise<AxiosResponse<Resource>>[] = [];
+        workListDoiResponse.data.forEach((work) => {
+          resourcePromises.push(getResource(work.resourceIdentifier));
+        });
+        const resources = await Promise.all(resourcePromises);
+        const newWorkList = workListDoiResponse.data.map((work, index) => {
+          if (resources[index].data.identifier === work.resourceIdentifier) {
+            work.resource = resources[index].data;
+          } else {
+            const correspondingResource = resources.find((resource) => resource.data.identifier === work.identifier);
+            work.resource = correspondingResource?.data;
+          }
+          return work;
+        });
+        setWorkListDoi(newWorkList);
       } catch (error) {
         setLoadingError(error);
       } finally {
         setIsloading(false);
       }
     };
-    fetchWorklisDoi();
+    fetchWorkLisDoi();
   }, []);
+
+  const deleteRequest = (ResourceIdentifier: string) => {
+    const work = workListDoi.filter((work) => work.resourceIdentifier !== ResourceIdentifier);
+  };
+
+  const createDOI = (ResourceIdentifier: string) => {
+    const work = workListDoi.find((work) => work.resourceIdentifier === ResourceIdentifier);
+  };
 
   return (
     <>
@@ -36,7 +70,18 @@ const DOIRequestList = () => {
           <Typography gutterBottom variant="h2">
             {t('work_list.doi_request_list')}
           </Typography>
-          {JSON.stringify(worklistDoi)}
+          <StyledUl>
+            {workListDoi.map((work, index) => (
+              <div key={index}>
+                <DOIRequestItem
+                  createDOI={createDOI}
+                  deleteRequest={deleteRequest}
+                  key={index}
+                  workListRequestDOI={work}
+                />
+              </div>
+            ))}
+          </StyledUl>
         </>
       )}
     </>
