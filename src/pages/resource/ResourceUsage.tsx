@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import { TFunction, useTranslation } from 'react-i18next';
 import { getCitationFromCrossCite } from '../../api/resourceApi';
 import styled from 'styled-components';
+import EmbedButtons from './EmbedButtons';
 
 const StyledUsageWrapper = styled.div`
   margin-bottom: 2rem;
@@ -136,6 +137,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
           </StyledButton>
         </StyledInformationWrapper>
       </StyledTextAndButtonWrapper>
+      <EmbedButtons resource={resource} />
     </StyledUsageWrapper>
   );
 };
