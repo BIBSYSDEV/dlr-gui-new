@@ -4,6 +4,8 @@ import { Colors, StyleWidths } from '../../themes/mainTheme';
 import { WorklistDOIRequest } from '../../types/Worklist.types';
 import { Button, CircularProgress, Grid, Link, Typography } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   backgroundColor: string;
@@ -28,6 +30,7 @@ interface DOIRequestItemProps {
 const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, deleteRequest, createDOI }) => {
   const [isBusy, setIsBusy] = useState(false);
   const [showLongText, setShowLongText] = useState(false);
+  const { t } = useTranslation();
   return (
     <StyledListItemWrapper>
       <Grid container spacing={3}>
@@ -41,21 +44,21 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, deleteReq
               </Typography>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Typography variant="caption">Submitter</Typography>
+              <Typography variant="caption">{t('work_list.submitter')}</Typography>
               <Typography>{workListRequestDOI.submitter}</Typography>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Typography variant="caption">Submitted</Typography>
-              <Typography>{workListRequestDOI.submittedDate}</Typography>
+              <Typography variant="caption">{t('work_list.submitted')}</Typography>
+              <Typography>{format(new Date(workListRequestDOI.submittedDate), 'dd.MM.yyyy')}</Typography>
             </Grid>
 
             <Grid item xs={12}>
-              <Typography variant="caption">Comments</Typography>
+              <Typography variant="caption">{t('work_list.comment')}</Typography>
               {workListRequestDOI.description.length >= 150 && !showLongText && (
                 <>
                   <Typography>{workListRequestDOI.description.slice(0, 150)}...</Typography>
                   <Button color="primary" onClick={() => setShowLongText(true)}>
-                    Les mer
+                    {t('work_list.read_more')}
                   </Button>
                 </>
               )}
@@ -63,7 +66,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, deleteReq
                 <>
                   <Typography>{workListRequestDOI.description}</Typography>
                   <Button color="primary" onClick={() => setShowLongText(false)}>
-                    Skjul
+                    {t('work_list.hide')}
                   </Button>
                 </>
               )}
@@ -79,7 +82,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, deleteReq
               setIsBusy(true);
               createDOI(workListRequestDOI.resourceIdentifier);
             }}>
-            Lag DOI
+            {t('work_list.create_doi')}
           </Button>
         </Grid>
 
@@ -92,7 +95,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, deleteReq
               setIsBusy(true);
               deleteRequest(workListRequestDOI.resourceIdentifier);
             }}>
-            Slett forespørsel
+            {t('work_list.delete_request')}
           </Button>
         </Grid>
         {isBusy && <CircularProgress size="1rem" />}

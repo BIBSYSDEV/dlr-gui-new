@@ -464,9 +464,16 @@
   },
   "work_list" : {
     "aria_label_tabs": "Tabs for my work lists",
+    "comment": "Comment",
+    "create_doi": "Create DOI",
+    "delete_request": "Delete request",
     "doi_request_list" : "DOI requests",
+    "hide": "Hide",
     "page_title" : "Work list",
     "page_requirements": "You must be curator or editor for accessing this feature",
-    "reports" : "Reports"
+    "read_more": "Read more",
+    "reports" : "Reports",
+    "submitted": "Submitted",
+    "submitter" :"Submitter"
   }
 }

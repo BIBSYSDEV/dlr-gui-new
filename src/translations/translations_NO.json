@@ -464,9 +464,16 @@
   },
   "work_list" : {
     "aria_label_tabs": "Faner for mine arbeidslister",
+    "comment": "Kommentar",
+    "create_doi": "Opprett DOI",
+    "delete_request": "Slett forespørsel",
     "doi_request_list" : "DOI forespørsler",
+    "hide": "Skjul",
     "page_title" : "Arbeidsliste",
     "page_requirements": "Du må være kurator eller redaktør for å få tilgang til denne funksjonaliteten",
-    "reports" : "Rapporteringer"
+    "read_more": "Les mer",
+    "reports" : "Rapporteringer",
+    "submitted": "Rapportert",
+    "submitter" :"Rapportert av"
   }
 }
