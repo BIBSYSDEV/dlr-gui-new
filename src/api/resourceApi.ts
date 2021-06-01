@@ -392,3 +392,12 @@ export const getCitationFromCrossCite = (dlr_identifier_doi: string): Promise<Ax
 export const getTextFileContents = (url: string): Promise<AxiosResponse<string>> => {
   return axios.get(url);
 };
+
+export const reportResource = async (resourceId: string, description: string): Promise<AxiosResponse<string>> => {
+  const data = encodeURI(`dlr_resource_complaint_description=${description}`);
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesFeedbacksPath}/feedbacks/resources/${resourceId}/complaints`),
+    method: 'POST',
+    data,
+  });
+};
