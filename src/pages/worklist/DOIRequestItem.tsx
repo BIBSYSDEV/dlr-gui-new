@@ -2,7 +2,19 @@ import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
 import { WorklistDOIRequest } from '../../types/Worklist.types';
-import { Button, CircularProgress, Grid, Link, Typography } from '@material-ui/core';
+import {
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
@@ -23,14 +35,16 @@ const StyledListItemWrapper: any = styled.li<Props>`
 
 interface DOIRequestItemProps {
   workListRequestDOI: WorklistDOIRequest;
-  deleteRequest: (ResourceIdentifier: string) => void;
+  deleteRequest: (ResourceIdentifier: string, comment: string) => void;
   createDOI: (ResourceIdentifier: string) => void;
 }
 
 const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, deleteRequest, createDOI }) => {
   const [isBusy, setIsBusy] = useState(false);
   const [showLongText, setShowLongText] = useState(false);
+  const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
   const { t } = useTranslation();
+
   return (
     <StyledListItemWrapper>
       <Grid container spacing={3}>
@@ -74,32 +88,62 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, deleteReq
             </Grid>
           </Grid>
         </Grid>
-        <Grid item>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => {
-              setIsBusy(true);
-              createDOI(workListRequestDOI.resourceIdentifier);
-            }}>
-            {t('work_list.create_doi')}
-          </Button>
-        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Grid container>
+            <Grid item xs={5}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => {
+                  setIsBusy(true);
+                  createDOI(workListRequestDOI.resourceIdentifier);
+                }}>
+                {t('work_list.create_doi')}
+              </Button>
+            </Grid>
 
-        <Grid item>
+            <Grid item xs={6}>
+              <Button
+                startIcon={<DeleteIcon />}
+                variant="outlined"
+                color="secondary"
+                onClick={() => {
+                  setShowConfirmDeleteDialog(true);
+                }}>
+                {t('work_list.delete_request')}
+              </Button>
+            </Grid>
+            {isBusy && (
+              <Grid xs={1} item justify="flex-end" alignItems="center">
+                <CircularProgress size="1rem" />
+              </Grid>
+            )}
+          </Grid>
+        </Grid>
+      </Grid>
+      <Dialog
+        open={showConfirmDeleteDialog}
+        onClose={() => setShowConfirmDeleteDialog(false)}
+        aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">{t('work_list.delete_request')}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Here you can write a comment to why the request is being dismissed.</DialogContentText>
+          <TextField autoFocus margin="dense" id="name" label="Email Address" multiline fullWidth />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShowConfirmDeleteDialog(false)}>Cancel</Button>
           <Button
             startIcon={<DeleteIcon />}
-            variant="outlined"
-            color="secondary"
             onClick={() => {
               setIsBusy(true);
-              deleteRequest(workListRequestDOI.resourceIdentifier);
-            }}>
-            {t('work_list.delete_request')}
+              setShowConfirmDeleteDialog(false);
+              deleteRequest(workListRequestDOI.resourceIdentifier, '');
+            }}
+            color="secondary">
+            Delete
           </Button>
-        </Grid>
-        {isBusy && <CircularProgress size="1rem" />}
-      </Grid>
+        </DialogActions>
+      </Dialog>
     </StyledListItemWrapper>
   );
 };

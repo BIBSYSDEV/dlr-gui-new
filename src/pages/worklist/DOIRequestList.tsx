@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CircularProgress, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import { getWorkListItemDOI } from '../../api/workListApi';
+import { getWorkListItemDOI, refuseDoiRequest } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';
 import { WorklistDOIRequest } from '../../types/Worklist.types';
 import DOIRequestItem from './DOIRequestItem';
@@ -18,14 +18,14 @@ const StyledUl = styled.ul`
 
 const DOIRequestList = () => {
   const { t } = useTranslation();
-  const [isLoading, setIsloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState<Error>();
   const [workListDoi, setWorkListDoi] = useState<WorklistDOIRequest[]>([]);
 
   useEffect(() => {
     const fetchWorkLisDoi = async () => {
       try {
-        setIsloading(true);
+        setIsLoading(true);
         setLoadingError(undefined);
         const workListDoiResponse = await getWorkListItemDOI();
         const resourcePromises: Promise<AxiosResponse<Resource>>[] = [];
@@ -46,18 +46,30 @@ const DOIRequestList = () => {
       } catch (error) {
         setLoadingError(error);
       } finally {
-        setIsloading(false);
+        setIsLoading(false);
       }
     };
     fetchWorkLisDoi();
   }, []);
 
-  const deleteRequest = (ResourceIdentifier: string) => {
-    const work = workListDoi.filter((work) => work.resourceIdentifier !== ResourceIdentifier);
+  const deleteRequest = async (ResourceIdentifier: string, comment: string) => {
+    try {
+      await refuseDoiRequest(ResourceIdentifier, comment);
+      setWorkListDoi((prevState) => prevState.filter((work) => work.resourceIdentifier !== ResourceIdentifier));
+    } catch (error) {
+      //somehow force a new rendering
+    }
   };
 
-  const createDOI = (ResourceIdentifier: string) => {
-    const work = workListDoi.find((work) => work.resourceIdentifier === ResourceIdentifier);
+  const createDOI = async (ResourceIdentifier: string) => {
+    try {
+      const work = workListDoi.find((work) => work.resourceIdentifier === ResourceIdentifier);
+      if (work) {
+        await createDOI(work.resourceIdentifier);
+      }
+    } catch (error) {
+      //somehow force a new rendering
+    }
   };
 
   return (
@@ -76,7 +88,7 @@ const DOIRequestList = () => {
                 <DOIRequestItem
                   createDOI={createDOI}
                   deleteRequest={deleteRequest}
-                  key={index}
+                  key={work.identifier}
                   workListRequestDOI={work}
                 />
               </div>
