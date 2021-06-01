@@ -6,11 +6,20 @@ import { format } from 'date-fns';
 import { TFunction, useTranslation } from 'react-i18next';
 import { getCitationFromCrossCite } from '../../api/resourceApi';
 import styled from 'styled-components';
-import { Grid } from '@material-ui/core';
 import EmbedButtons from './EmbedButtons';
 
-const StyledGridContainer = styled(Grid)`
-  margin-top: 1rem;
+const StyledUsageWrapper = styled.div`
+  margin-bottom: 2rem;
+`;
+const StyledTextAndButtonWrapper = styled.div`
+  display: block;
+`;
+
+const StyledInformationWrapper = styled.div`
+  display: flex;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 1 + 'px'}) {
+    display: block;
+  }
 `;
 
 const StyledTypography = styled(Typography)`
@@ -20,7 +29,7 @@ const StyledTypography = styled(Typography)`
 `;
 
 const StyledButton = styled(Button)`
-  min-width: 12rem;
+  min-width: 10rem;
 `;
 
 const generateCitationStringPreTitle = (resource: Resource): string => {
@@ -54,12 +63,6 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   const [citationTitle, setCitationTitle] = useState('');
   const [citationPostTitle, setCitationPostTitle] = useState('');
   const mountedRef = useRef(true);
-
-  const iframeText = `<iframe title="${resource.features.dlr_title.replaceAll('"', '')}" src="${
-    window.location.origin
-  }/resource/${
-    resource.identifier
-  }/content/main?navbar=false&footer=false" width="640px" height="360px" style="border: none;" allowfullscreen="true"></iframe>`;
 
   useEffect(() => {
     const getCitation = async () => {
@@ -100,14 +103,14 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
     };
   }, []);
 
-  const handleCopyButtonClick = (text: string) => {
+  const handleCopyButtonClick = () => {
     try {
       //requires HTTPS connection or localhost in order to work.
-      navigator.clipboard.writeText(text);
+      navigator.clipboard.writeText(citationPreTitle + citationTitle + citationPostTitle);
     } catch (_error) {
       //Hacky workaround in case of no HTTPS connection
       const textField = document.createElement('textarea');
-      textField.innerText = text;
+      textField.innerText = citationPreTitle + citationTitle + citationPostTitle;
       document.body.appendChild(textField);
       textField.select();
       //execCommand is deprecated but copy command is still widely supported
@@ -117,43 +120,25 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   };
 
   return (
-    <>
-      <StyledGridContainer container spacing={3}>
-        <Grid item xs={12} sm={8}>
-          <Typography variant="caption">{t('citation.citation_link')}</Typography>
+    <StyledUsageWrapper>
+      <Typography variant="h2" gutterBottom>
+        {t('common.usage')}
+      </Typography>
+      <StyledTextAndButtonWrapper>
+        <Typography variant="caption">{t('citation.citation_link')}</Typography>
+        <StyledInformationWrapper>
           <StyledTypography variant="body1">
             {citationPreTitle}
             <i>{citationTitle}</i>
             {citationPostTitle}
           </StyledTypography>
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <StyledButton
-            color="primary"
-            variant="outlined"
-            onClick={() => handleCopyButtonClick(citationPreTitle + citationTitle + citationPostTitle)}>
+          <StyledButton color="primary" variant="outlined" onClick={() => handleCopyButtonClick()}>
             {t('citation.copy_citation').toUpperCase()}
           </StyledButton>
-        </Grid>
-      </StyledGridContainer>
-      <StyledGridContainer container spacing={3}>
-        <Grid item xs={12} sm={8}>
-          <Typography variant="caption">{t('embed.embed_code')}</Typography>
-
-          <StyledTypography variant="body1">{iframeText}</StyledTypography>
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <StyledButton color="primary" variant="outlined" onClick={() => handleCopyButtonClick(iframeText)}>
-            {t('embed.copy_embed_code').toUpperCase()}
-          </StyledButton>
-        </Grid>
-      </StyledGridContainer>
-      <StyledGridContainer container spacing={3}>
-        <Grid item xs={12}>
-          <EmbedButtons resource={resource} />
-        </Grid>
-      </StyledGridContainer>
-    </>
+        </StyledInformationWrapper>
+      </StyledTextAndButtonWrapper>
+      <EmbedButtons resource={resource} />
+    </StyledUsageWrapper>
   );
 };
 
