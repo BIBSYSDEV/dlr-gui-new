@@ -7,6 +7,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { DialogActions, DialogContent, TextField, Typography } from '@material-ui/core';
 import ReportProblemIcon from '@material-ui/icons/ReportProblem';
+import { reportResource } from '../../api/resourceApi';
+import ErrorBanner from '../../components/ErrorBanner';
 
 const StyledButton = styled(Button)`
   min-width: 10rem;
@@ -24,10 +26,16 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   const { t } = useTranslation();
   const [showReportDialog, setShowReportDialog] = useState(false);
   const [reportText, setReportText] = useState('');
+  const [sendReportError, setSendReportError] = useState<Error>();
 
-  const handleReport = () => {
-    console.log('hepp');
-    setShowReportDialog(false);
+  const handleReport = async () => {
+    setSendReportError(undefined);
+    try {
+      await reportResource(resource.identifier, reportText);
+      setShowReportDialog(false);
+    } catch (error) {
+      setSendReportError(error);
+    }
   };
 
   const cancelReport = () => {
@@ -81,6 +89,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
               {t('common.report')}
             </Button>
           </DialogActions>
+          {sendReportError && <ErrorBanner error={sendReportError} />}
         </Dialog>
       </StyledActionContentWrapper>
     </>
