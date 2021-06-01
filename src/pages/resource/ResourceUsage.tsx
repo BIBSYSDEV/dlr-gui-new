@@ -118,6 +118,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
 
   return (
     <>
+      <Typography variant="h2">{t('common.usage')}</Typography>
       <StyledGridContainer container spacing={3}>
         <Grid item xs={12} sm={8}>
           <Typography variant="caption">{t('citation.citation_link')}</Typography>
