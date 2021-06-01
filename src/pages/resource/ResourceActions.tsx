@@ -48,6 +48,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
       <Typography variant="h2">{t('common.actions')}</Typography>
       <StyledActionContentWrapper>
         <StyledButton
+          data-testid={`report-resource-button`}
           color="primary"
           startIcon={<ReportProblemIcon fontSize="large" />}
           variant="outlined"
@@ -65,6 +66,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
             <TextField
               id="report-text"
               fullWidth
+              inputProps={{ 'data-testid': 'report-dialog-input' }}
               label={t('resource.reporting.report_text_label')}
               onChange={(event) => {
                 setReportText(event.target.value);
@@ -81,7 +83,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
             </Button>
             <Button
               disabled={!reportText}
-              data-testid={`report-dialog-report-button`}
+              data-testid={`report-dialog-submit-button`}
               onClick={handleReport}
               color="primary"
               variant="contained"
