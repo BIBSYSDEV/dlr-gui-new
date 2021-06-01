@@ -7,7 +7,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { DialogActions, DialogContent, TextField, Typography } from '@material-ui/core';
 import ReportProblemIcon from '@material-ui/icons/ReportProblem';
-import { reportResource } from '../../api/resourceApi';
+import { reportResource } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';
 
 const StyledButton = styled(Button)`
