@@ -3,6 +3,7 @@ export enum LMSParametersName {
   Navbar = 'navbar',
   Sidebar = ' sidebar', // can be ignored
   Carousel = 'carousel', //can be ignored
+  Footer = 'footer', //does not exist in old DLR
 
   BBIframeResize = 'bbIframeResize',
   BBShowEmbedButton = 'bbShowEmbedButton',

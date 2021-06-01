@@ -127,6 +127,19 @@
     "tags": "Tags"
   },
   "delivered_by": "Delivered by",
+  "embed": {
+    "copy_embed_code": "Copy embed code",
+    "embed_in_blackboard": "Embed in blackboard",
+    "embed_in_canvas": "Embed in Canvas",
+    "embed_code": "Embed code for main content",
+    "embed_in_edx": "Embed in EDX",
+    "embed_in_its_learning": "Embed in its learning",
+    "insert_into_canvas": "Insert into Canvas",
+    "large": "Large",
+    "link": "Link",
+    "medium": "Medium",
+    "small": "Small"
+  },
   "error": {
     "401_page": "You are not authorized for this",
     "403_page": "You must be logged in for using this feature",
@@ -461,5 +474,12 @@
   },
   "user": {
     "logged_in_as": "Logged in as"
+  },
+  "work_list" : {
+    "aria_label_tabs": "Tabs for my work lists",
+    "doi_request_list" : "DOI requests",
+    "page_title" : "Work list",
+    "page_requirements": "You must be curator or editor for accessing this feature",
+    "reports" : "Reports"
   }
 }

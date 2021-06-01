@@ -2,7 +2,7 @@ import React from 'react';
 import '@uppy/core/dist/style.css';
 import '@uppy/status-bar/dist/style.css';
 import styled from 'styled-components';
-import { Link as MuiLink, Typography } from '@material-ui/core';
+import { Link, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { useFormikContext } from 'formik';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
@@ -31,7 +31,7 @@ const LinkFields = () => {
   const { values } = useFormikContext<Resource>();
 
   return (
-    <StyledSchemaPartColored color={Colors.ContentsPageGradientColor1}>
+    <StyledSchemaPartColored color={Colors.DLRColdGreen1}>
       <StyledContentWrapper>
         <Typography variant="h3">{t('resource.metadata.link')}</Typography>
         <LinkWrapper>
@@ -40,14 +40,14 @@ const LinkFields = () => {
           </ThumbnailWrapper>
           <LinkMetadata>
             <Typography variant="overline">{t('resource.metadata.link')}</Typography>
-            <MuiLink
+            <Link
               href={values.features.dlr_content}
               target="_blank"
               rel="noreferrer noopener"
               data-testid="content-step-link"
               display="block">
               {values.features.dlr_content}
-            </MuiLink>
+            </Link>
           </LinkMetadata>
         </LinkWrapper>
       </StyledContentWrapper>

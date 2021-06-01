@@ -39,6 +39,7 @@ const AppContent: FC<LMSServiceProps> = ({ mainContentRef, userError }) => {
   const searchParams = new URLSearchParams(window.location.search);
   const forceAuthentication = searchParams.get(LMSParametersName.ForceAuthentication) === 'true';
   const navbar = searchParams.get(LMSParametersName.Navbar) !== 'false';
+  const footer = searchParams.get(LMSParametersName.Footer) !== 'false';
 
   if (user.id.length === 0 && forceAuthentication) {
     window.location.href = getPackedUrlForFeideLogin();
@@ -52,7 +53,7 @@ const AppContent: FC<LMSServiceProps> = ({ mainContentRef, userError }) => {
       <StyledContent tabIndex={-1} ref={mainContentRef} role="main" id="content">
         <AppRoutes />
       </StyledContent>
-      <Footer />
+      {footer && <Footer />}
     </StyledApp>
   );
 };

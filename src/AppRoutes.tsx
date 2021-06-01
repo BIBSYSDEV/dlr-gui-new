@@ -12,6 +12,7 @@ import Sitemap from './pages/sitemap/Sitemap';
 import SearchExplainer from './pages/infopages/SearchExplainer';
 import AdminPage from './pages/admin/AdminPage';
 import MainContentView from './pages/content_view/MainContentView';
+import WorkListPage from './pages/worklist/WorkListPage';
 
 const Explore = lazy(() => import('./pages/dashboard/Explore'));
 const EditResourcePage = lazy(() => import('./pages/edit_resource/EditResourcePage'));
@@ -44,6 +45,17 @@ const AppRoutes = () => {
           exact
           path="/editresource/:identifier"
           render={(props) => <EditResourcePage id={user.id} {...props} key={uuidv4()} />}
+        />
+        <Route
+          exact
+          path="/worklist"
+          render={(props) => (
+            <WorkListPage
+              isEditor={user.institutionAuthorities?.isEditor}
+              isCurator={user.institutionAuthorities?.isCurator}
+              {...props}
+            />
+          )}
         />
         <Route exact path="/forbidden" component={Forbidden} />
         <Route exact path="/search-helper" component={SearchExplainer} />
