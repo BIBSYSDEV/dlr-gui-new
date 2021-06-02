@@ -80,7 +80,9 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Typography variant="h3">
-                <Link href={`/resource/${workListRequestDOI.resourceIdentifier}`}>
+                <Link
+                  href={`/resource/${workListRequestDOI.resourceIdentifier}`}
+                  data-testid={`doi-request-item-title-${workListRequestDOI.resourceIdentifier}`}>
                   {workListRequestDOI.resource?.features.dlr_title ?? workListRequestDOI.resourceIdentifier}
                 </Link>
               </Typography>
@@ -121,6 +123,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
             <Grid item xs={5}>
               <Button
                 variant="outlined"
+                data-testid={`create-doi-button-${workListRequestDOI.resourceIdentifier}`}
                 color="primary"
                 onClick={() => {
                   contactApiForDoi(workListRequestDOI.resourceIdentifier);
@@ -134,6 +137,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
                 startIcon={<DeleteIcon />}
                 variant="outlined"
                 color="secondary"
+                data-testid={`show-delete-dialog-${workListRequestDOI.resourceIdentifier}`}
                 onClick={() => {
                   setShowConfirmDeleteDialog(true);
                 }}>
@@ -161,8 +165,11 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
             id="name"
             label="Email Address"
             multiline
+            rows={4}
             fullWidth
+            required
             value={deleteComment}
+            inputProps={{ 'data-testid': `delete-doi-request-comment-${workListRequestDOI.resourceIdentifier}` }}
             onChange={(event) => setDeleteComment(event.target.value)}
           />
         </DialogContent>
@@ -170,6 +177,8 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
           <Button onClick={() => setShowConfirmDeleteDialog(false)}>Cancel</Button>
           <Button
             startIcon={<DeleteIcon />}
+            disabled={deleteComment.length < 3}
+            data-testid={`confirm-delete-doi-button-${workListRequestDOI.resourceIdentifier}`}
             onClick={() => {
               setShowConfirmDeleteDialog(false);
               deleteRequest(workListRequestDOI.resourceIdentifier, deleteComment);
