@@ -61,7 +61,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
           maxWidth={'sm'}
           fullScreen={useFullScreen}
           open={showReportDialog}
-          aria-labelledby="dialog-title"
+          aria-labelledby="report-dialog-title"
           data-testid={`report-dialog`}>
           <DialogTitle id="report-dialog-title">{t('resource.reporting.report_resource')}</DialogTitle>
           <DialogContent>
