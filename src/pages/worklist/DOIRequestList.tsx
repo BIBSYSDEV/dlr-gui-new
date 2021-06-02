@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CircularProgress, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import { getWorkListItemDOI, refuseDoiRequest } from '../../api/workListApi';
+import { getWorkListItemDOI } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';
 import { WorklistDOIRequest } from '../../types/Worklist.types';
 import DOIRequestItem from './DOIRequestItem';
@@ -52,26 +52,6 @@ const DOIRequestList = () => {
     fetchWorkLisDoi();
   }, []);
 
-  const deleteRequest = async (ResourceIdentifier: string, comment: string) => {
-    try {
-      await refuseDoiRequest(ResourceIdentifier, comment);
-      setWorkListDoi((prevState) => prevState.filter((work) => work.resourceIdentifier !== ResourceIdentifier));
-    } catch (error) {
-      //somehow force a new rendering
-    }
-  };
-
-  const createDOI = async (ResourceIdentifier: string) => {
-    try {
-      const work = workListDoi.find((work) => work.resourceIdentifier === ResourceIdentifier);
-      if (work) {
-        await createDOI(work.resourceIdentifier);
-      }
-    } catch (error) {
-      //somehow force a new rendering
-    }
-  };
-
   return (
     <>
       {loadingError && <ErrorBanner userNeedsToBeLoggedIn={true} error={loadingError} />}
@@ -85,12 +65,7 @@ const DOIRequestList = () => {
           <StyledUl>
             {workListDoi.map((work, index) => (
               <div key={index}>
-                <DOIRequestItem
-                  createDOI={createDOI}
-                  deleteRequest={deleteRequest}
-                  key={work.identifier}
-                  workListRequestDOI={work}
-                />
+                <DOIRequestItem setWorkListDoi={setWorkListDoi} key={work.identifier} workListRequestDOI={work} />
               </div>
             ))}
           </StyledUl>

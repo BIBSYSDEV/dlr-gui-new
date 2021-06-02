@@ -615,7 +615,7 @@ export const mockWorkListRequestDOI: WorklistDOIRequest[] = [
   },
   {
     identifier: '524352435',
-    resourceIdentifier: mockResource.identifier,
+    resourceIdentifier: '34789257',
     submitter: 'epost@epost.no',
     institution: 'unit',
     submittedDate: '2021-04-28T11:23:34.250Z',
@@ -626,7 +626,7 @@ export const mockWorkListRequestDOI: WorklistDOIRequest[] = [
   },
   {
     identifier: '435246687',
-    resourceIdentifier: mockResource.identifier,
+    resourceIdentifier: '74876547',
     submitter: 'somebody@email.com',
     institution: 'unit',
     submittedDate: '2021-04-28T11:23:34.250Z',

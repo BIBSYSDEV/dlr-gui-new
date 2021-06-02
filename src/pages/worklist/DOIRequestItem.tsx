@@ -18,6 +18,8 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
+import { createDOI, refuseDoiRequest } from '../../api/workListApi';
+import ErrorBanner from '../../components/ErrorBanner';
 
 interface Props {
   backgroundColor: string;
@@ -35,15 +37,41 @@ const StyledListItemWrapper: any = styled.li<Props>`
 
 interface DOIRequestItemProps {
   workListRequestDOI: WorklistDOIRequest;
-  deleteRequest: (ResourceIdentifier: string, comment: string) => void;
-  createDOI: (ResourceIdentifier: string) => void;
+  setWorkListDoi: React.Dispatch<React.SetStateAction<WorklistDOIRequest[]>>;
 }
 
-const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, deleteRequest, createDOI }) => {
+const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkListDoi }) => {
   const [isBusy, setIsBusy] = useState(false);
   const [showLongText, setShowLongText] = useState(false);
   const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
+  const [updateError, setUpdateError] = useState<Error>();
+  const [deleteComment, setDeleteComment] = useState('');
   const { t } = useTranslation();
+
+  const deleteRequest = async (ResourceIdentifier: string, comment: string) => {
+    try {
+      setIsBusy(true);
+      setUpdateError(undefined);
+      await refuseDoiRequest(ResourceIdentifier, comment);
+      setWorkListDoi((prevState) => prevState.filter((work) => work.resourceIdentifier !== ResourceIdentifier));
+    } catch (error) {
+      setUpdateError(error);
+    } finally {
+      setIsBusy(false);
+    }
+  };
+
+  const contactApiForDoi = async (ResourceIdentifier: string) => {
+    try {
+      setIsBusy(true);
+      setUpdateError(undefined);
+      await createDOI(ResourceIdentifier);
+      setWorkListDoi((prevState) => prevState.filter((work) => work.resourceIdentifier !== ResourceIdentifier));
+    } catch (error) {
+      setUpdateError(error);
+      setIsBusy(false);
+    }
+  };
 
   return (
     <StyledListItemWrapper>
@@ -95,8 +123,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, deleteReq
                 variant="outlined"
                 color="primary"
                 onClick={() => {
-                  setIsBusy(true);
-                  createDOI(workListRequestDOI.resourceIdentifier);
+                  contactApiForDoi(workListRequestDOI.resourceIdentifier);
                 }}>
                 {t('work_list.create_doi')}
               </Button>
@@ -114,7 +141,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, deleteReq
               </Button>
             </Grid>
             {isBusy && (
-              <Grid xs={1} item justify="flex-end" alignItems="center">
+              <Grid xs={1} item>
                 <CircularProgress size="1rem" />
               </Grid>
             )}
@@ -128,22 +155,31 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, deleteReq
         <DialogTitle id="form-dialog-title">{t('work_list.delete_request')}</DialogTitle>
         <DialogContent>
           <DialogContentText>Here you can write a comment to why the request is being dismissed.</DialogContentText>
-          <TextField autoFocus margin="dense" id="name" label="Email Address" multiline fullWidth />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Email Address"
+            multiline
+            fullWidth
+            value={deleteComment}
+            onChange={(event) => setDeleteComment(event.target.value)}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setShowConfirmDeleteDialog(false)}>Cancel</Button>
           <Button
             startIcon={<DeleteIcon />}
             onClick={() => {
-              setIsBusy(true);
               setShowConfirmDeleteDialog(false);
-              deleteRequest(workListRequestDOI.resourceIdentifier, '');
+              deleteRequest(workListRequestDOI.resourceIdentifier, deleteComment);
             }}
             color="secondary">
             Delete
           </Button>
         </DialogActions>
       </Dialog>
+      {updateError && <ErrorBanner />}
     </StyledListItemWrapper>
   );
 };
