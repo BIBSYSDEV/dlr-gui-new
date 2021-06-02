@@ -5,10 +5,11 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { DialogActions, DialogContent, TextField, Typography } from '@material-ui/core';
+import { DialogActions, DialogContent, TextField, Typography, useMediaQuery } from '@material-ui/core';
 import ReportProblemIcon from '@material-ui/icons/ReportProblem';
 import { reportResource } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';
+import { DeviceWidths } from '../../themes/mainTheme';
 
 const StyledButton = styled(Button)`
   min-width: 10rem;
@@ -27,6 +28,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   const [showReportDialog, setShowReportDialog] = useState(false);
   const [reportText, setReportText] = useState('');
   const [sendReportError, setSendReportError] = useState<Error>();
+  const useFullScreen = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
 
   const handleReport = async () => {
     setSendReportError(undefined);
@@ -57,7 +59,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
         </StyledButton>
         <Dialog
           maxWidth={'sm'}
-          fullWidth
+          fullScreen={useFullScreen}
           open={showReportDialog}
           aria-labelledby="dialog-title"
           data-testid={`report-dialog`}>
@@ -66,6 +68,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
             <TextField
               id="report-text"
               fullWidth
+              required
               inputProps={{ 'data-testid': 'report-dialog-input' }}
               label={t('resource.reporting.report_text_label')}
               onChange={(event) => {
