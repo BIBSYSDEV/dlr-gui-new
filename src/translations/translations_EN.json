@@ -465,6 +465,7 @@
   "work_list" : {
     "aria_label_tabs": "Tabs for my work lists",
     "comment": "Comment",
+    "comment_explanation" : "Write a comment to why the request is being dismissed",
     "create_doi": "Create DOI",
     "delete_request": "Delete request",
     "doi_request_list" : "DOI requests",

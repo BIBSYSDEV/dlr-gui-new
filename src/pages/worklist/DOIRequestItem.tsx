@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
-import { Colors, StyleWidths } from '../../themes/mainTheme';
+import { Colors, DeviceWidths, StyleWidths } from '../../themes/mainTheme';
 import { WorklistDOIRequest } from '../../types/Worklist.types';
 import {
   Button,
@@ -14,6 +14,7 @@ import {
   Link,
   TextField,
   Typography,
+  useMediaQuery,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { format } from 'date-fns';
@@ -46,6 +47,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
   const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
   const [updateError, setUpdateError] = useState<Error>();
   const [deleteComment, setDeleteComment] = useState('');
+  const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
   const { t } = useTranslation();
 
   const deleteRequest = async (ResourceIdentifier: string, comment: string) => {
@@ -153,17 +155,18 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
         </Grid>
       </Grid>
       <Dialog
+        fullScreen={fullScreenDialog}
         open={showConfirmDeleteDialog}
         onClose={() => setShowConfirmDeleteDialog(false)}
         aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">{t('work_list.delete_request')}</DialogTitle>
         <DialogContent>
-          <DialogContentText>Here you can write a comment to why the request is being dismissed.</DialogContentText>
+          <DialogContentText>{t('work_list.comment_explanation')}.</DialogContentText>
           <TextField
             autoFocus
             margin="dense"
-            id="name"
-            label="Email Address"
+            id="comment-text-field"
+            label={t('work_list.comment')}
             multiline
             rows={4}
             fullWidth
@@ -177,14 +180,14 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
           <Button onClick={() => setShowConfirmDeleteDialog(false)}>Cancel</Button>
           <Button
             startIcon={<DeleteIcon />}
-            disabled={deleteComment.length < 3}
+            disabled={deleteComment.length < 1}
             data-testid={`confirm-delete-doi-button-${workListRequestDOI.resourceIdentifier}`}
             onClick={() => {
               setShowConfirmDeleteDialog(false);
               deleteRequest(workListRequestDOI.resourceIdentifier, deleteComment);
             }}
             color="secondary">
-            Delete
+            {t('common.delete')}
           </Button>
         </DialogActions>
       </Dialog>

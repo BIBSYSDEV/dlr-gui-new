@@ -465,6 +465,7 @@
   "work_list" : {
     "aria_label_tabs": "Faner for mine arbeidslister",
     "comment": "Kommentar",
+    "comment_explanation" : "Skriv en kommentar hvorfor forespørselen blir avvist",
     "create_doi": "Opprett DOI",
     "delete_request": "Slett forespørsel",
     "doi_request_list" : "DOI forespørsler",
