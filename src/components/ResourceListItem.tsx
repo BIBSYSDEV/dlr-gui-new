@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Resource, ResourceCreationType } from '../types/resource.types';
+import { Resource } from '../types/resource.types';
 import Thumbnail from './Thumbnail';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
@@ -10,7 +10,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { useHistory } from 'react-router-dom';
 import { Colors, StyleWidths } from '../themes/mainTheme';
 import { format } from 'date-fns';
-import { getStyledFileTypeIcon } from './FileTypeIcon';
 import { Link } from '@material-ui/core';
 import ResourceTypeInfo from './ResourceTypeInfo';
 
@@ -54,9 +53,6 @@ const StyledActions: any = styled.div`
   margin-bottom: 1rem;
 `;
 
-const StyledResourceTypeTypography = styled(Typography)`
-  margin: 0.5rem 0 1rem 0;
-`;
 const StyledThumbnailWrapper = styled.div`
   margin-bottom: 1rem;
   margin-right: 1rem;
@@ -69,12 +65,6 @@ const StyledActionButton = styled(Button)`
   &:first-of-type {
     margin-left: 0;
   }
-`;
-const StyledFileTypeIcon = styled.span`
-  margin: 0.5rem 0.3rem 0.5rem 0.5rem;
-`;
-const StyledLink = styled(Link)`
-  color: ${Colors.PrimaryText};
 `;
 
 const StyledResourceTypeInfoWrapper = styled.div`
@@ -119,19 +109,11 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
         <StyledMetaDataColumn>
           <Typography gutterBottom variant="h4">
             {resource.features.dlr_status_published ? (
-              <StyledLink href={`/resource/${resource.identifier}`}>{`${resource.features.dlr_title}`}</StyledLink>
+              <Link href={`/resource/${resource.identifier}`}>{`${resource.features.dlr_title}`}</Link>
             ) : (
               resource.features.dlr_title
             )}
           </Typography>
-          {resource.features.dlr_type && (
-            <StyledFileTypeIcon>{getStyledFileTypeIcon(resource.features.dlr_type)}</StyledFileTypeIcon>
-          )}
-          <StyledResourceTypeTypography variant="body2">
-            {resource.features.dlr_content_type === ResourceCreationType.FILE
-              ? t('resource.metadata.file')
-              : t('resource.metadata.link')}
-          </StyledResourceTypeTypography>
           {resource.features.dlr_status_published
             ? resource.features.dlr_time_published && (
                 <Typography variant="body1" color="textPrimary">
