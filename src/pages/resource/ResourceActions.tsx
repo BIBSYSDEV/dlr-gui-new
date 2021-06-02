@@ -10,6 +10,7 @@ import ReportProblemIcon from '@material-ui/icons/ReportProblem';
 import { reportResource } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';
 import { DeviceWidths } from '../../themes/mainTheme';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 const StyledButton = styled(Button)`
   min-width: 10rem;
@@ -17,6 +18,11 @@ const StyledButton = styled(Button)`
 
 const StyledActionContentWrapper = styled.div`
   margin-top: 1rem;
+`;
+
+const StyledAlert = styled(Alert)`
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 `;
 
 interface ResourceUsageProps {
@@ -28,13 +34,16 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   const [showReportDialog, setShowReportDialog] = useState(false);
   const [reportText, setReportText] = useState('');
   const [sendReportError, setSendReportError] = useState<Error>();
+  const [sendReportSuccess, setSendReportSuccess] = useState(false);
   const useFullScreen = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
 
   const handleReport = async () => {
     setSendReportError(undefined);
+    setSendReportSuccess(false);
     try {
       await reportResource(resource.identifier, reportText);
       setShowReportDialog(false);
+      setSendReportSuccess(true);
     } catch (error) {
       setSendReportError(error);
     }
@@ -57,8 +66,14 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
           onClick={() => setShowReportDialog(true)}>
           {t('common.report').toUpperCase()}
         </StyledButton>
+        {sendReportSuccess && (
+          <StyledAlert severity="info">
+            <AlertTitle>{t('resource.reporting.report_sent_feedback')}</AlertTitle>
+          </StyledAlert>
+        )}
         <Dialog
           maxWidth={'sm'}
+          fullWidth
           fullScreen={useFullScreen}
           open={showReportDialog}
           aria-labelledby="report-dialog-title"

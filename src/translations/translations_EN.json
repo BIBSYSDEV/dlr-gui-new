@@ -416,6 +416,7 @@
     "published_resources": "Published",
     "reporting": {
       "report_resource" : "Report resource",
+      "report_sent_feedback": "Report sent",
       "report_text_label" : "Describe the reason for reporting the resource"
     },
     "search_for_resources": "Search for resources",
