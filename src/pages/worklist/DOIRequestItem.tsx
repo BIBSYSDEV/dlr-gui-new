@@ -195,7 +195,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
             fullWidth
             required
             value={deleteComment}
-            inputProps={{ 'data-testid': `delete-doi-request-comment-${workListRequestDOI.resourceIdentifier}` }}
+            inputProps={{ 'data-testid': `delete-doi-request-comment` }}
             onChange={(event) => setDeleteComment(event.target.value)}
           />
         </DialogContent>
@@ -204,7 +204,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
           <Button
             startIcon={<DeleteIcon />}
             disabled={deleteComment.length < 1}
-            data-testid={`confirm-delete-doi-button-${workListRequestDOI.resourceIdentifier}`}
+            data-testid={`confirm-delete-doi-button`}
             onClick={() => {
               setShowConfirmDeleteDialog(false);
               handleDeleteDoiRequest(workListRequestDOI.resourceIdentifier, deleteComment);
@@ -223,7 +223,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
         <DialogTitle id="form-dialog-title">{t('work_list.are_you_sure')}?</DialogTitle>
         <DialogActions>
           <Button
-            data-testid={`confirm-create-doi-button-${workListRequestDOI.resourceIdentifier}`}
+            data-testid={`confirm-create-doi-button`}
             variant="contained"
             onClick={() => {
               setShowConfirmCreateDOIDialog(false);
