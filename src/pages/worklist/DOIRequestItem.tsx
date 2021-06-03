@@ -91,26 +91,37 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
             </Grid>
             <Grid item xs={12} sm={6}>
               <Typography variant="caption">{t('work_list.submitter')}</Typography>
-              <Typography>{workListRequestDOI.submitter}</Typography>
+              <Typography data-testid={`doi-request-item-submitter-${workListRequestDOI.resourceIdentifier}`}>
+                {workListRequestDOI.submitter}
+              </Typography>
             </Grid>
             <Grid item xs={12} sm={6}>
               <Typography variant="caption">{t('work_list.submitted')}</Typography>
-              <Typography>{format(new Date(workListRequestDOI.submittedDate), 'dd.MM.yyyy')}</Typography>
+              <Typography data-testid={`doi-request-item-submitted-${workListRequestDOI.resourceIdentifier}`}>
+                {format(new Date(workListRequestDOI.submittedDate), 'dd.MM.yyyy')}
+              </Typography>
             </Grid>
 
             <Grid item xs={12}>
               <Typography variant="caption">{t('work_list.comment')}</Typography>
               {workListRequestDOI.description.length >= 150 && !showLongText && (
                 <>
-                  <Typography>{workListRequestDOI.description.slice(0, 150)}...</Typography>
-                  <Button color="primary" onClick={() => setShowLongText(true)}>
+                  <Typography data-testid={`doi-request-item-comment-short-${workListRequestDOI.resourceIdentifier}`}>
+                    {workListRequestDOI.description.slice(0, 150)}...
+                  </Typography>
+                  <Button
+                    data-testid={`doi-request-item-comment-read-more-button-${workListRequestDOI.resourceIdentifier}`}
+                    color="primary"
+                    onClick={() => setShowLongText(true)}>
                     {t('work_list.read_more')}
                   </Button>
                 </>
               )}
               {workListRequestDOI.description.length >= 150 && showLongText && (
                 <>
-                  <Typography>{workListRequestDOI.description}</Typography>
+                  <Typography data-testid={`doi-request-item-comment-long-${workListRequestDOI.resourceIdentifier}`}>
+                    {workListRequestDOI.description}
+                  </Typography>
                   <Button
                     aria-label={t('work_list.shorten_comments')}
                     color="primary"
@@ -119,7 +130,11 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
                   </Button>
                 </>
               )}
-              {workListRequestDOI.description.length < 150 && <Typography>{workListRequestDOI.description}</Typography>}
+              {workListRequestDOI.description.length < 150 && (
+                <Typography data-testid={`doi-request-item-comment-long-${workListRequestDOI.resourceIdentifier}`}>
+                  {workListRequestDOI.description}
+                </Typography>
+              )}
             </Grid>
           </Grid>
         </Grid>

@@ -1,13 +1,36 @@
-import { mockResource } from '../../src/api/mockdata';
+import { mockResource, mockWorkListRequestDOI } from '../../src/api/mockdata';
 
 context('Actions', () => {
   beforeEach(() => {
     cy.visit(`/worklist`);
   });
 
-  it('shows resource title as a link', () => {
+  it('shows resource title as a link, submitter and submitted date', () => {
     cy.get('[data-testid=doi-tab]').click();
     cy.get(`[data-testid=doi-request-item-title-${mockResource.identifier}]`).contains(mockResource.features.dlr_title);
+    cy.get(`[data-testid=doi-request-item-submitter-${mockResource.identifier}]`).contains(
+      mockWorkListRequestDOI[0].submitter
+    );
+    cy.get(`[data-testid=doi-request-item-submitted-${mockResource.identifier}]`).contains('28.04.2021');
+  });
+
+  it('shortens long comments', () => {
+    cy.get('[data-testid=doi-tab]').click();
+    cy.get(`[data-testid=doi-request-item-comment-short-${mockWorkListRequestDOI[2].resourceIdentifier}]`).should(
+      'exist'
+    );
+    cy.get(`[data-testid=doi-request-item-comment-long-${mockWorkListRequestDOI[2].resourceIdentifier}]`).should(
+      'not.exist'
+    );
+    cy.get(
+      `[data-testid=doi-request-item-comment-read-more-button-${mockWorkListRequestDOI[2].resourceIdentifier}]`
+    ).click();
+    cy.get(`[data-testid=doi-request-item-comment-short-${mockWorkListRequestDOI[2].resourceIdentifier}]`).should(
+      'not.exist'
+    );
+    cy.get(`[data-testid=doi-request-item-comment-long-${mockWorkListRequestDOI[2].resourceIdentifier}]`).should(
+      'exist'
+    );
   });
 
   it('removes listitem after creating DOI', () => {
