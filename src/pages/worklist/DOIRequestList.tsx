@@ -62,11 +62,15 @@ const DOIRequestList = () => {
           <Typography gutterBottom variant="h2">
             {t('work_list.doi_request_list')}
           </Typography>
-          <StyledUl>
-            {workListDoi.map((work) => (
-              <DOIRequestItem setWorkListDoi={setWorkListDoi} key={work.identifier} workListRequestDOI={work} />
-            ))}
-          </StyledUl>
+          {workListDoi.length > 0 ? (
+            <StyledUl>
+              {workListDoi.map((work) => (
+                <DOIRequestItem setWorkListDoi={setWorkListDoi} key={work.identifier} workListRequestDOI={work} />
+              ))}
+            </StyledUl>
+          ) : (
+            <Typography>{t('work_list.no_doi_requests')}</Typography>
+          )}
         </>
       )}
     </>

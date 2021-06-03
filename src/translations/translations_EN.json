@@ -484,6 +484,7 @@
     "delete_request": "Delete request",
     "doi_request_list" : "DOI requests",
     "hide": "Hide",
+    "no_doi_requests": "There are currently no DOI requests",
     "page_title" : "Work list",
     "page_requirements": "You must be curator or editor for accessing this feature",
     "read_more": "Read the entire comment",

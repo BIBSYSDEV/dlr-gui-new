@@ -484,6 +484,7 @@
     "delete_request": "Slett forespørsel",
     "doi_request_list" : "DOI forespørsler",
     "hide": "Skjul",
+    "no_doi_requests": "Fortiden finnes det ingen DOI forespørsler",
     "page_title" : "Arbeidsliste",
     "page_requirements": "Du må være kurator eller redaktør for å få tilgang til denne funksjonaliteten",
     "read_more": "Les hele kommentaren",
