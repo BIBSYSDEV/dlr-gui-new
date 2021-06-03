@@ -23,7 +23,7 @@ import { createDOI, refuseDoiRequest } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';
 
 const StyledButton = styled(Button)`
-  min-width: 10rem;
+  min-width: 7rem;
 `;
 
 interface Props {
