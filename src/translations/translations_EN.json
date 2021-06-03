@@ -485,8 +485,9 @@
     "hide": "Hide",
     "page_title" : "Work list",
     "page_requirements": "You must be curator or editor for accessing this feature",
-    "read_more": "Read more",
+    "read_more": "Read the entire comment",
     "reports" : "Reports",
+    "shorten_comments": "Shorten the comment",
     "submitted": "Submitted",
     "submitter" :"Submitter"
   }

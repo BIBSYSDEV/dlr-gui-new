@@ -63,10 +63,8 @@ const DOIRequestList = () => {
             {t('work_list.doi_request_list')}
           </Typography>
           <StyledUl>
-            {workListDoi.map((work, index) => (
-              <div key={index}>
-                <DOIRequestItem setWorkListDoi={setWorkListDoi} key={work.identifier} workListRequestDOI={work} />
-              </div>
+            {workListDoi.map((work) => (
+              <DOIRequestItem setWorkListDoi={setWorkListDoi} key={work.identifier} workListRequestDOI={work} />
             ))}
           </StyledUl>
         </>

@@ -50,7 +50,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
   const { t } = useTranslation();
 
-  const deleteRequest = async (ResourceIdentifier: string, comment: string) => {
+  const handleDeleteDoiRequest = async (ResourceIdentifier: string, comment: string) => {
     try {
       setIsBusy(true);
       setUpdateError(undefined);
@@ -63,7 +63,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
     }
   };
 
-  const contactApiForDoi = async (ResourceIdentifier: string) => {
+  const handleCreateDoi = async (ResourceIdentifier: string) => {
     try {
       setIsBusy(true);
       setUpdateError(undefined);
@@ -111,7 +111,10 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
               {workListRequestDOI.description.length >= 150 && showLongText && (
                 <>
                   <Typography>{workListRequestDOI.description}</Typography>
-                  <Button color="primary" onClick={() => setShowLongText(false)}>
+                  <Button
+                    aria-label={t('work_list.shorten_comments')}
+                    color="primary"
+                    onClick={() => setShowLongText(false)}>
                     {t('work_list.hide')}
                   </Button>
                 </>
@@ -121,20 +124,20 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
           </Grid>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <Grid container>
-            <Grid item xs={5}>
+          <Grid container spacing={1}>
+            <Grid item xs={12} md={5}>
               <Button
                 variant="outlined"
                 data-testid={`create-doi-button-${workListRequestDOI.resourceIdentifier}`}
                 color="primary"
                 onClick={() => {
-                  contactApiForDoi(workListRequestDOI.resourceIdentifier);
+                  handleCreateDoi(workListRequestDOI.resourceIdentifier);
                 }}>
                 {t('work_list.create_doi')}
               </Button>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={11} md={6}>
               <Button
                 startIcon={<DeleteIcon />}
                 variant="outlined"
@@ -184,7 +187,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
             data-testid={`confirm-delete-doi-button-${workListRequestDOI.resourceIdentifier}`}
             onClick={() => {
               setShowConfirmDeleteDialog(false);
-              deleteRequest(workListRequestDOI.resourceIdentifier, deleteComment);
+              handleDeleteDoiRequest(workListRequestDOI.resourceIdentifier, deleteComment);
             }}
             color="secondary">
             {t('common.delete')}
