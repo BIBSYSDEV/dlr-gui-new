@@ -39,3 +39,12 @@ export const requestDOIFromCurator = (resourceIdentifier: string, comment: strin
     data: data,
   });
 };
+
+export const reportResource = async (resourceId: string, description: string): Promise<AxiosResponse<string>> => {
+  const data = encodeURI(`dlr_resource_complaint_description=${description}`);
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesFeedbacksPath}/feedbacks/resources/${resourceId}/complaints`),
+    method: 'POST',
+    data,
+  });
+};

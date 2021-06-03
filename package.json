@@ -16,7 +16,7 @@
     "date-fns": "^2.22.1",
     "deepmerge": "^4.2.2",
     "env-cmd": "^10.1.0",
-    "formik": "^2.2.8",
+    "formik": "^2.2.9",
     "i18next": "^20.3.1",
     "i18next-browser-languagedetector": "^6.1.1",
     "moment": "^2.29.1",
@@ -34,7 +34,7 @@
   "devDependencies": {
     "@types/history": "^4.7.8",
     "@types/jest": "^26.0.23",
-    "@types/node": "^15.6.1",
+    "@types/node": "^15.9.0",
     "@types/react": "^17.0.9",
     "@types/react-dom": "^17.0.6",
     "@types/react-redux": "^7.1.16",

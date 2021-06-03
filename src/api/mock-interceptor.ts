@@ -273,6 +273,9 @@ export const interceptRequestsOnMock = () => {
     .reply(200, mockInstitutionAuthorities);
   mock.onGet(new RegExp(`${API_PATHS.guiBackendLoginPath}/logout`)).reply(200);
 
+  //REPORT RESOURCE
+  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesFeedbacksPath}/feedbacks/resources/.*`)).reply(202);
+
   //TOKEN
   mock.onGet(new RegExp(`${API_PATHS.guiBackendLoginPath}/anonymous.*`)).reply(200, mockToken);
   mock.onGet(new RegExp(`${API_PATHS.guiBackendAuthPath}/tokens/jwts/`)).reply(200, { exp: 999999999 });
