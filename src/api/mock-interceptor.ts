@@ -38,6 +38,7 @@ import {
   mockText,
   mockToken,
   mockUser,
+  mockWorkListRequestDOI,
 } from './mockdata';
 
 // AXIOS INTERCEPTOR
@@ -53,6 +54,18 @@ export const interceptRequestsOnMock = () => {
 
   //Get text content file:
   mock.onGet(new RegExp('textfilepath')).reply(200, mockText);
+
+  //WORK LIST
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendWorklistsPath}/worklists/types/dlr_resource_identifier_doi_request`))
+    .reply(200, mockWorkListRequestDOI);
+  mock
+    .onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/identifiers/doi/requests/current/refusals`))
+    .reply(201);
+  mock
+    .onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/identifiers/doi/requests/current/approvals`))
+    .reply(201);
+  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/identifiers/doi/requests`)).reply(201);
 
   //AUTHORITY
   mock
