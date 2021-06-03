@@ -22,6 +22,10 @@ import { useTranslation } from 'react-i18next';
 import { createDOI, refuseDoiRequest } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';
 
+const StyledButton = styled(Button)`
+  min-width: 10rem;
+`;
+
 interface Props {
   backgroundColor: string;
 }
@@ -142,7 +146,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
         <Grid item xs={12} sm={4}>
           <Grid container spacing={1}>
             <Grid item xs={12} md={5}>
-              <Button
+              <StyledButton
                 variant="outlined"
                 data-testid={`create-doi-button-${workListRequestDOI.resourceIdentifier}`}
                 color="primary"
@@ -150,11 +154,11 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
                   setShowConfirmCreateDOIDialog(true);
                 }}>
                 {t('work_list.create_doi')}
-              </Button>
+              </StyledButton>
             </Grid>
 
             <Grid item xs={11} md={6}>
-              <Button
+              <StyledButton
                 startIcon={<DeleteIcon />}
                 variant="outlined"
                 color="secondary"
@@ -163,7 +167,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
                   setShowConfirmDeleteDialog(true);
                 }}>
                 {t('work_list.delete_request')}
-              </Button>
+              </StyledButton>
             </Grid>
             {isBusy && (
               <Grid xs={1} item>
