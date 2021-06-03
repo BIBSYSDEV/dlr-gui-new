@@ -42,7 +42,7 @@ const RequestDOI: FC<RequestDOIProps> = ({ resource, setRequestSentSuccess }) =>
   return (
     <>
       <Button color="primary" variant="outlined" onClick={() => setShowRequestDOIDialog(true)}>
-        Request DOI
+        {t('resource.doi.request_doi')}
       </Button>
       <Dialog
         maxWidth={'sm'}
@@ -51,10 +51,11 @@ const RequestDOI: FC<RequestDOIProps> = ({ resource, setRequestSentSuccess }) =>
         open={showRequestDOIDialog}
         aria-labelledby="DOI-dialog-title"
         data-testid={`DOI-dialog`}>
-        <DialogTitle id="report-dialog-title">{t('Forespør DOI')}</DialogTitle>
+        <DialogTitle id="report-dialog-title">{t('resource.doi.request_doi_long')}</DialogTitle>
         <DialogContent>
-          <Typography>{t('Skriv inn relevant informasjon om forespørselen')}</Typography>
+          <Typography>{t('resource.doi.write_comment')}</Typography>
           <TextField
+            required
             multiline
             rows={4}
             id="DOI-comment-text-field"
@@ -62,11 +63,15 @@ const RequestDOI: FC<RequestDOIProps> = ({ resource, setRequestSentSuccess }) =>
             value={DOIComment}
             onChange={(event) => setDOIComment(event.target.value)}
             inputProps={{ 'data-testid': 'DOI-dialog-input' }}
-            label={t('Kommentar')}
+            label={t('resource.doi.comment')}
           />
         </DialogContent>
         <DialogActions>
+          <Button data-testid={`DOI-dialog-cancel-button`} onClick={() => setShowRequestDOIDialog(false)}>
+            {t('common.cancel')}
+          </Button>
           <Button
+            disabled={!DOIComment}
             autoFocus
             variant="contained"
             data-testid={`report-dialog-submit-button`}
@@ -74,10 +79,7 @@ const RequestDOI: FC<RequestDOIProps> = ({ resource, setRequestSentSuccess }) =>
             onClick={() => {
               askForDoi();
             }}>
-            Be om DOI
-          </Button>
-          <Button data-testid={`DOI-dialog-cancel-button`} onClick={() => setShowRequestDOIDialog(false)}>
-            {t('common.cancel')}
+            {t('resource.doi.request_doi')}
           </Button>
         </DialogActions>
         {doiRequestFailureError && <ErrorBanner error={doiRequestFailureError} />}
