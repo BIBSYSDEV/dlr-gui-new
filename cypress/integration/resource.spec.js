@@ -92,4 +92,27 @@ context('Actions', () => {
     cy.get('[data-testid=report-dialog-submit-button]').click();
     cy.get('[data-testid=report-dialog]').should('not.exist');
   });
+
+  it('is possible to request DOI', () => {
+    const publishedTestPost = mockMyResources[0];
+    cy.visit(`/resource/${publishedTestPost.identifier}]`);
+    cy.get('[data-testid=request-doi-button').click();
+    cy.get(`[data-testid=doi-dialog-submit-button]`).should('be.disabled');
+    cy.get('[data-testid=doi-dialog-input]').type('some text');
+    cy.get('[data-testid=doi-dialog-cancel-button]').click();
+    cy.get('[data-testid=doi-dialog]').should('not.exist');
+    cy.get('[data-testid=request-doi-button').click();
+    cy.get('[data-testid=doi-dialog-input]').type('some text');
+    cy.get(`[data-testid=doi-dialog-submit-button]`).click();
+    cy.get('[data-testid=doi-dialog]').should('not.exist');
+    cy.get('[data-testid=request-sent-info]').should('exist');
+  });
+
+  it("is not possible to request DOI for other people's resources", () => {
+    cy.get('[data-testid=request-doi-button').should('not.exist');
+    const publishedTestPost = mockMyResources[0];
+    cy.get('[data-testid=request-doi-button').should('not.exist');
+    cy.visit(`/resource/${publishedTestPost.identifier}]`);
+    cy.get('[data-testid=request-doi-button').should('exist');
+  });
 });

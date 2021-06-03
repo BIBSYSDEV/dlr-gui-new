@@ -44,7 +44,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
         </Grid>
         {requestSentSuccess && (
           <StyledAlert severity="info">
-            <AlertTitle>{t('resource.reporting.report_sent_feedback')}</AlertTitle>
+            <AlertTitle data-testid="request-sent-info">{t('resource.reporting.report_sent_feedback')}</AlertTitle>
           </StyledAlert>
         )}
       </StyledActionContentWrapper>

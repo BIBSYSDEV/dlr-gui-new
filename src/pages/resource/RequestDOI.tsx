@@ -41,7 +41,11 @@ const RequestDOI: FC<RequestDOIProps> = ({ resource, setRequestSentSuccess }) =>
 
   return (
     <>
-      <Button color="primary" variant="outlined" onClick={() => setShowRequestDOIDialog(true)}>
+      <Button
+        data-testid="request-doi-button"
+        color="primary"
+        variant="outlined"
+        onClick={() => setShowRequestDOIDialog(true)}>
         {t('resource.doi.request_doi')}
       </Button>
       <Dialog
@@ -62,19 +66,19 @@ const RequestDOI: FC<RequestDOIProps> = ({ resource, setRequestSentSuccess }) =>
             fullWidth
             value={DOIComment}
             onChange={(event) => setDOIComment(event.target.value)}
-            inputProps={{ 'data-testid': 'DOI-dialog-input' }}
+            inputProps={{ 'data-testid': 'doi-dialog-input' }}
             label={t('resource.doi.comment')}
           />
         </DialogContent>
         <DialogActions>
-          <Button data-testid={`DOI-dialog-cancel-button`} onClick={() => setShowRequestDOIDialog(false)}>
+          <Button data-testid={`doi-dialog-cancel-button`} onClick={() => setShowRequestDOIDialog(false)}>
             {t('common.cancel')}
           </Button>
           <Button
             disabled={!DOIComment}
             autoFocus
             variant="contained"
-            data-testid={`report-dialog-submit-button`}
+            data-testid={`doi-dialog-submit-button`}
             color="primary"
             onClick={() => {
               askForDoi();
