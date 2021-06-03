@@ -23,7 +23,7 @@ const DOIRequestList = () => {
   const [workListDoi, setWorkListDoi] = useState<WorklistDOIRequest[]>([]);
 
   useEffect(() => {
-    const fetchWorkLisDOI = async () => {
+    const fetchWorkListDOI = async () => {
       try {
         setIsLoading(true);
         setLoadingError(undefined);
@@ -49,7 +49,7 @@ const DOIRequestList = () => {
         setIsLoading(false);
       }
     };
-    fetchWorkLisDOI();
+    fetchWorkListDOI();
   }, []);
 
   return (
