@@ -1,5 +1,6 @@
 import { authenticatedApiRequest } from './api';
 import { API_PATHS } from '../utils/constants';
+import { AxiosResponse } from 'axios';
 
 export const getWorkListItemDOI = () => {
   return authenticatedApiRequest({
@@ -35,5 +36,14 @@ export const requestDOIFromCurator = (resourceIdentifier: string, comment: strin
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/identifiers/doi/requests`),
     method: 'POST',
     data: data,
+  });
+};
+
+export const reportResource = async (resourceId: string, description: string): Promise<AxiosResponse<string>> => {
+  const data = encodeURI(`dlr_resource_complaint_description=${description}`);
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesFeedbacksPath}/feedbacks/resources/${resourceId}/complaints`),
+    method: 'POST',
+    data,
   });
 };
