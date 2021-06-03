@@ -45,6 +45,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
   const [isBusy, setIsBusy] = useState(false);
   const [showLongText, setShowLongText] = useState(false);
   const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
+  const [showConfirmCreateDOIDialog, setShowConfirmCreateDOIDialog] = useState(false);
   const [updateError, setUpdateError] = useState<Error>();
   const [deleteComment, setDeleteComment] = useState('');
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
@@ -146,7 +147,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
                 data-testid={`create-doi-button-${workListRequestDOI.resourceIdentifier}`}
                 color="primary"
                 onClick={() => {
-                  handleCreateDoi(workListRequestDOI.resourceIdentifier);
+                  setShowConfirmCreateDOIDialog(true);
                 }}>
                 {t('work_list.create_doi')}
               </Button>
@@ -195,7 +196,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setShowConfirmDeleteDialog(false)}>Cancel</Button>
+          <Button onClick={() => setShowConfirmDeleteDialog(false)}>{t('common.cancel')}</Button>
           <Button
             startIcon={<DeleteIcon />}
             disabled={deleteComment.length < 1}
@@ -207,6 +208,27 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
             color="secondary">
             {t('common.delete')}
           </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        fullScreen={fullScreenDialog}
+        open={showConfirmCreateDOIDialog}
+        onClose={() => setShowConfirmCreateDOIDialog(false)}
+        aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">{t('work_list.are_you_sure')}?</DialogTitle>
+        <DialogActions>
+          <Button
+            data-testid={`confirm-create-doi-button-${workListRequestDOI.resourceIdentifier}`}
+            variant="contained"
+            onClick={() => {
+              setShowConfirmCreateDOIDialog(false);
+              handleCreateDoi(workListRequestDOI.resourceIdentifier);
+            }}
+            color="primary">
+            {t('work_list.create_doi')}
+          </Button>
+          <Button onClick={() => setShowConfirmCreateDOIDialog(false)}>{t('common.cancel')}</Button>
         </DialogActions>
       </Dialog>
       {updateError && <ErrorBanner />}

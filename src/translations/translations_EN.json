@@ -476,6 +476,7 @@
     "logged_in_as": "Logged in as"
   },
   "work_list" : {
+    "are_you_sure": "Are you sure you want to create a DOI",
     "aria_label_tabs": "Tabs for my work lists",
     "comment": "Comment",
     "comment_explanation" : "Write a comment to why the request is being dismissed",

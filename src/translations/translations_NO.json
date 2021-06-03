@@ -476,6 +476,7 @@
     "logged_in_as": "Logget på som"
   },
   "work_list" : {
+    "are_you_sure": "Er du sikker på at du ønsker å opprette DOI",
     "aria_label_tabs": "Faner for mine arbeidslister",
     "comment": "Kommentar",
     "comment_explanation" : "Skriv en kommentar hvorfor forespørselen blir avvist",

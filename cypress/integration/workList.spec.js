@@ -37,6 +37,7 @@ context('Actions', () => {
     cy.get('[data-testid=doi-tab]').click();
     cy.get(`[data-testid=doi-request-item-title-${mockResource.identifier}]`).should('exist');
     cy.get(`[data-testid=create-doi-button-${mockResource.identifier}]`).click();
+    cy.get(`[data-testid=confirm-create-doi-button-${mockResource.identifier}]`).click();
     cy.get(`[data-testid=doi-request-item-title-${mockResource.identifier}]`).should('not.exist');
   });
 
