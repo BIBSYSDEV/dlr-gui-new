@@ -77,4 +77,19 @@ context('Actions', () => {
     cy.get('[data-testid=step-navigation-4]').click();
     cy.get('[data-testid=resource-title]').contains(newTitle);
   });
+
+  it('can report a resource', () => {
+    cy.get('[data-testid=report-resource-button').click();
+    cy.get('[data-testid=report-dialog]').should('exist');
+    cy.get(`[data-testid=report-dialog-submit-button]`).should('be.disabled');
+    cy.get('[data-testid=report-dialog-input]').type('some text');
+
+    cy.get('[data-testid=report-dialog-cancel-button]').click();
+    cy.get('[data-testid=report-dialog]').should('not.exist');
+
+    cy.get('[data-testid=report-resource-button').click();
+    cy.get('[data-testid=report-dialog-input]').type('some new text');
+    cy.get('[data-testid=report-dialog-submit-button]').click();
+    cy.get('[data-testid=report-dialog]').should('not.exist');
+  });
 });
