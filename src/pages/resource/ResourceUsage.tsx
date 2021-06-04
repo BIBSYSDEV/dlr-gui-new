@@ -6,8 +6,22 @@ import { format } from 'date-fns';
 import { TFunction, useTranslation } from 'react-i18next';
 import { getCitationFromCrossCite } from '../../api/resourceApi';
 import styled from 'styled-components';
-import { Grid } from '@material-ui/core';
+import { Grid, Link } from '@material-ui/core';
 import EmbedButtons from './EmbedButtons';
+import { Alert, AlertTitle } from '@material-ui/lab';
+import ShareIcon from '@material-ui/icons/Share';
+import {
+  FacebookShareButton,
+  LinkedinShareButton,
+  TwitterShareButton,
+  RedditShareButton,
+  EmailShareButton,
+  FacebookIcon,
+  TwitterIcon,
+  LinkedinIcon,
+  RedditIcon,
+  EmailIcon,
+} from 'react-share';
 
 const StyledGridContainer = styled(Grid)`
   margin-top: 1rem;
@@ -53,6 +67,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   const [citationPreTitle, setCitationPreTitle] = useState('');
   const [citationTitle, setCitationTitle] = useState('');
   const [citationPostTitle, setCitationPostTitle] = useState('');
+  const [showCopiedLinkToClipboardInformation, setShowCopiedLinkToClipboardInformation] = useState(false);
   const mountedRef = useRef(true);
 
   const iframeText = `<iframe title="${resource.features.dlr_title.replaceAll('"', '')}" src="${
@@ -116,10 +131,54 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
     }
   };
 
+  const shareLink = async () => {
+    setShowCopiedLinkToClipboardInformation(false);
+    if (resource.features.dlr_identifier_handle) {
+      try {
+        const data = { url: resource.features.dlr_identifier_handle, title: resource.features.dlr_title };
+        const userAgent = navigator.userAgent;
+        if (userAgent.match(/Android/) || !userAgent.match(/Opera|OPR\//)) {
+          //navigator.share() works for chrome, edge and safari
+          //firefox causes exception and Opera browsers crashes completely
+          await navigator.share(data);
+        } else {
+          handleCopyButtonClick(resource.features.dlr_identifier_handle);
+          setShowCopiedLinkToClipboardInformation(true);
+        }
+      } catch (error) {
+        handleCopyButtonClick(resource.features.dlr_identifier_handle);
+        setShowCopiedLinkToClipboardInformation(true);
+      }
+    }
+  };
+
   return (
     <>
       <Typography variant="h2">{t('common.usage')}</Typography>
       <StyledGridContainer container spacing={3}>
+        {resource.features.dlr_identifier_handle && (
+          <>
+            <Grid item xs={12} sm={8}>
+              <Typography variant="caption">Benytt handle for lenkedeling</Typography>
+              <Typography>
+                <Link href={resource.features.dlr_identifier_handle}>{resource.features.dlr_identifier_handle}</Link>
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Button startIcon={<ShareIcon />} color="primary" variant="outlined" onClick={shareLink}>
+                {t('Del lenke').toUpperCase()}
+              </Button>
+            </Grid>
+            {showCopiedLinkToClipboardInformation && (
+              <Grid item xs={12}>
+                <Alert severity="success" variant="filled">
+                  <AlertTitle>{t('Kopiert til utklippstavle')}</AlertTitle>
+                </Alert>
+              </Grid>
+            )}
+          </>
+        )}
+
         <Grid item xs={12} sm={8}>
           <Typography variant="caption">{t('citation.citation_link')}</Typography>
           <StyledTypography variant="body1">
@@ -147,6 +206,51 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
           <StyledButton color="primary" variant="outlined" onClick={() => handleCopyButtonClick(iframeText)}>
             {t('embed.copy_embed_code').toUpperCase()}
           </StyledButton>
+        </Grid>
+      </StyledGridContainer>
+      <StyledGridContainer>
+        <Grid item xs={12} sm={8}>
+          <Typography variant="caption" gutterBottom>
+            {t('Del på sosiale medier')}
+          </Typography>
+          <Grid container spacing={1}>
+            <Grid item>
+              <FacebookShareButton
+                quote={resource.features.dlr_title}
+                url={resource.features.dlr_identifier_handle ?? ''}>
+                <FacebookIcon size={32} round />
+              </FacebookShareButton>
+            </Grid>
+            <Grid item>
+              <TwitterShareButton
+                url={resource.features.dlr_identifier_handle ?? ''}
+                title={resource.features.dlr_title}>
+                <TwitterIcon size={32} round />
+              </TwitterShareButton>
+            </Grid>
+            <Grid item>
+              <LinkedinShareButton url={resource.features.dlr_identifier_handle ?? ''}>
+                <LinkedinIcon size={32} round />
+              </LinkedinShareButton>
+            </Grid>
+            <Grid item>
+              <RedditShareButton
+                url={resource.features.dlr_identifier_handle ?? ''}
+                title={resource.features.dlr_title}
+                windowWidth={660}
+                windowHeight={460}>
+                <RedditIcon size={32} round />
+              </RedditShareButton>
+            </Grid>
+            <Grid item>
+              <EmailShareButton
+                url={resource.features.dlr_identifier_handle ?? ''}
+                subject={resource.features.dlr_title}
+                body="body">
+                <EmailIcon size={32} round />
+              </EmailShareButton>
+            </Grid>
+          </Grid>
         </Grid>
       </StyledGridContainer>
       <StyledGridContainer container spacing={3}>
