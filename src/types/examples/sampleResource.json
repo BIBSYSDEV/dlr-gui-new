@@ -22,19 +22,10 @@
     "dlr_title_alternative": "Undervisning i kunnskapsbasert praksis - læringsutbyttebeskrivelser og ressurser",
     "dlr_type": "Text"
   },
-  "subjects": [
-    "Helsefag",
-    "Medisinske Fag"
-  ],
+  "subjects": ["Helsefag", "Medisinske Fag"],
   "courses": [],
-  "tags": [
-    "Kunnskapsbasert praksis",
-    "Læringsutbyttebeskrivelser",
-    "Studenter"
-  ],
-  "types": [
-    "learning"
-  ],
+  "tags": ["Kunnskapsbasert praksis", "Læringsutbyttebeskrivelser", "Studenter"],
+  "types": ["learning"],
   "projects": [],
   "funders": [],
   "geographicalCoverages": [],
@@ -85,8 +76,5 @@
     }
   ],
   "accessRead": [],
-  "accessWrite": [
-    "nro@hvl.no"
-  ]
+  "accessWrite": ["nro@hvl.no"]
 }
-
