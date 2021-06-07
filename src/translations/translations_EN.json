@@ -423,7 +423,7 @@
     "share": {
       "copied_to_clipboard": "Copied to clipboard",
       "share_doi": "Use DOI for link sharing",
-      "share_handle":"Use handle for link sharing",
+      "share_handle": "Use handle for link sharing",
       "share_link": "Link sharing",
       "share_social_medias": "Share on social medias and though email"
     },
