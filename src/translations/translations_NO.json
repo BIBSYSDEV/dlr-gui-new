@@ -152,7 +152,7 @@
   "explanation_text": {
     "access_filtering_label": "Vis andre ressurser forklaring",
     "access_filtering": "Hvis valgt, vil resultatlista også inneholde ressurser du ikke har tilgang til å vise.",
-    "contributor_helper_aria_label" : "Vis bigradsyter forklaring",
+    "contributor_helper_aria_label" : "Vis bidragsyter forklaring",
     "contributor_helper_text1" : "Andre som har bidratt med ressursen, men som ikke trenger å krediteres av de som tar i bruk ressursen",
     "contributor_helper_text2" : "Som Kurator kan du verifisere bidragsytere. Det er ikke mulig å endre navnet på en verifisert bidragsyter. Om det er feil verfisert bidragsyter, må denne slettes og legges inn på ny",
     "creator_helper_aria_label": "Vis opphaver forklaring",
@@ -183,7 +183,7 @@
     "tags_helper_text": "Emneord benyttes for å beskrive innholdet i en ressurs. Et emneord kan bestå av ett eller flere ord, f.eks \"optisk illusjon\" ",
     "tags_helper_text_edit_resource1": "Skriv inn emneordet etterfulgt av enter så kan du skrive inn neste emneord. Man kan legge til og slette emneord etter at en ressurs er publisert",
     "tags_helper_text_edit_resource2": "Gode valg av emneord sørger for at det er lettere for andre å finne ressursen din ",
-    "tags_helper_text_example": "Eksempel: En ressurs med tittel \"Det sympatiske nervesystemet\" kan for ha emneord \"syk130\", \"sykepleie\", \"helsefag\", \"nervesystemet\" og \"helse\"",
+    "tags_helper_text_example": "Eksempel: En ressurs med tittel \"Det sympatiske nervesystemet\" kan ha emneord: \"syk130\", \"sykepleie\", \"helsefag\", \"nervesystemet\" og \"helse\"",
     "tags_link_fresh_warning": "Emneord har blitt generert automatisk fra lenka. Se over at de stemmer",
     "tags_link_old_warning": "Noen av emneordene kan ha blitt generert automatisk. Se over at de stemmer",
     "title_helper_aria_label": "Vis tittel forklaring",
@@ -192,8 +192,8 @@
   "feedback": {
     "form_errors": "Det er feil i skjema. Disse må rettes før ressursen kan publiseres",
     "required_field": "Påkrevd felt",
-    "valid_url": "Input må være en gyldig URL",
-    "valid_email": "Input må være en gyldig epost",
+    "valid_url": "Inndata må være en gyldig URL",
+    "valid_email": "Inndata må være en gyldig epost",
     "published_warning": "Ressursen er publisert. Alle felter som endres blir lagret og publisert på nytt umiddelbart etter endring."
   },
   "illustration_alts_tags": {
@@ -238,7 +238,7 @@
       "sa": "SA - Bearbeidelser må deles på samme vilkår",
       "zero": "Zero - Dette verket er markert som dedikert til public domain (offentlig eie)"
     },
-    "published_with": "Published with",
+    "published_with": "Publisert med",
     "questions": {
       "commercial": "Kan andre bruke ressursen for kommersielle formål?",
       "contains_other_peoples_work": "Inneholder ressursen andres arbeid?",
@@ -415,7 +415,7 @@
     },
     "published_resources": "Publisert",
     "reporting": {
-      "report_resource" : "Raport ressurs",
+      "report_resource" : "Rapportér ressurs",
       "report_sent_feedback": "Rapportèring sendt inn",
       "report_text_label" : "Beskriv årsak for rapportéring"
     },
@@ -495,7 +495,7 @@
     "page_title" : "Arbeidsliste",
     "page_requirements": "Du må være kurator eller redaktør for å få tilgang til denne funksjonaliteten",
     "read_more": "Les hele kommentaren",
-    "reports" : "Rapporteringer",
+    "reports" : "Rapportéringer",
     "shorten_comments": "Forkort kommentaren",
     "submitted": "Meldt inn",
     "submitter" :"Meldt inn av"
