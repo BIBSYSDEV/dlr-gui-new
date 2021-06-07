@@ -29,7 +29,7 @@
     "show_list": "Show list",
     "who_got_access": "Who got access"
   },
-  "administrative" : {
+  "administrative": {
     "cannot_change_own_roles": "You cannot change your own roles",
     "no_access_to_view_user": "You do not have access to view roles for ",
     "page_heading": "Administration",
@@ -38,13 +38,13 @@
       "curators": "Curators",
       "editors": "Editors"
     },
-    "role_description" : {
+    "role_description": {
       "administrator": "Assign roles to affiliated institution",
       "curator": "Access to assign DOIs and to edit and publish all resources",
       "editor": "Access to manage reports and edit and publish all resources",
       "publisher": "Access to publish and edit own resources"
     },
-    "roles" : {
+    "roles": {
       "administrator": "Administrator",
       "curator": "Curator",
       "editor": "Editor",
@@ -152,9 +152,9 @@
   "explanation_text": {
     "access_filtering_label": "Show other results explanation",
     "access_filtering": "If selected, the result list will also contain content you do not have access to view",
-    "contributor_helper_aria_label" : "Show contributor explanation",
-    "contributor_helper_text1" : "Others who have contributed to the resource but does not need to be credited in future usage of the resource",
-    "contributor_helper_text2" : "It is not possible to change the name of the contributor after it has been verified",
+    "contributor_helper_aria_label": "Show contributor explanation",
+    "contributor_helper_text1": "Others who have contributed to the resource but does not need to be credited in future usage of the resource",
+    "contributor_helper_text2": "It is not possible to change the name of the contributor after it has been verified",
     "creator_helper_aria_label": "Show creator explanation",
     "creator_helper_example": "Examples: lecturers, teachers, authors og creators of the resource can be submitted here",
     "creator_helper_text1": "The person, company, or organization who is the rights holder",
@@ -178,7 +178,7 @@
     "resource_type_examples_simulation": "3D-model, game, VR etc",
     "resource_type_helper_text": "Set the resource type according to the main resource content",
     "search_input_helper_aria_label": "Show search explanation",
-    "search_input_helper_text" : "Special characters *, ?, and ~ are supported. More information about search terms is available at",
+    "search_input_helper_text": "Special characters *, ?, and ~ are supported. More information about search terms is available at",
     "tags_helper_aria_label": "Show tags explanation",
     "tags_helper_text": "Tags describes the contents of a resource. A single tag may consist of one or multiple words, for example \"optical illusion\"",
     "tags_helper_text_edit_resource1": "Write your first tag and then press enter and then type your next tag. It is possible to add or remove tags after publication of your resource",
@@ -396,7 +396,7 @@
       "submitter_email": "Submitter email"
     },
     "my_resources": "My resources",
-    "my_publication_tabs" : "Tabs for my resources",
+    "my_publication_tabs": "Tabs for my resources",
     "new_registration": "New registration",
     "no_published_resources": "You have no published resources",
     "no_unpublished_resources": "You have no unpublished resources",
@@ -415,9 +415,9 @@
     },
     "published_resources": "Published",
     "reporting": {
-      "report_resource" : "Report resource",
+      "report_resource": "Report resource",
       "report_sent_feedback": "Report sent",
-      "report_text_label" : "Describe the reason for reporting the resource"
+      "report_text_label": "Describe the reason for reporting the resource"
     },
     "search_for_resources": "Search for resources",
     "start_with_link_to_resource": "Start registration with a link",
@@ -446,15 +446,15 @@
     "question_mark1": "Question mark (?) is used as single wildcard to replace one character in the search term",
     "question_mark2": "t?ck",
     "question_mark3": "will match \"tick\", and \"tock\" - but not \"trick\"",
-    "search_field" : {
+    "search_field": {
       "contributor_id": "Contributor identifier",
       "contributor_name": "Contributor name",
-      "creator_id":  "Creator identifier",
-      "creator_name":  "Creator name",
+      "creator_id": "Creator identifier",
+      "creator_name": "Creator name",
       "institution": "Institution",
-      "resource_description":  "Resource description",
-      "resource_id":  "Resource identifier",
-      "resource_title" : "Resource title",
+      "resource_description": "Resource description",
+      "resource_id": "Resource identifier",
+      "resource_title": "Resource title",
       "tags": "Tags"
     },
     "search_field_title": "Search field",
@@ -482,22 +482,22 @@
   "user": {
     "logged_in_as": "Logged in as"
   },
-  "work_list" : {
+  "work_list": {
     "are_you_sure": "Are you sure you want to create a DOI",
     "aria_label_tabs": "Tabs for my work lists",
     "comment": "Comment",
-    "comment_explanation" : "Write a comment to why the request is being dismissed",
+    "comment_explanation": "Write a comment to why the request is being dismissed",
     "create_doi": "Create DOI",
     "delete_request": "Delete request",
-    "doi_request_list" : "DOI requests",
+    "doi_request_list": "DOI requests",
     "hide": "Hide",
     "no_doi_requests": "There are currently no DOI requests",
-    "page_title" : "Work list",
+    "page_title": "Work list",
     "page_requirements": "You must be curator or editor for accessing this feature",
     "read_more": "Read the entire comment",
-    "reports" : "Reports",
+    "reports": "Reports",
     "shorten_comments": "Shorten the comment",
     "submitted": "Submitted",
-    "submitter" :"Submitter"
+    "submitter": "Submitter"
   }
 }
