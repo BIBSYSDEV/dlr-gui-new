@@ -51,15 +51,8 @@ interface ResourceTypeFieldProps {
 
 const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) => {
   const [savingResourceTypeError, setSavingResourceTypeError] = useState<Error>();
-  const {
-    values,
-    setFieldTouched,
-    setFieldValue,
-    handleChange,
-    resetForm,
-    setTouched,
-    touched,
-  } = useFormikContext<Resource>();
+  const { values, setFieldTouched, setFieldValue, handleChange, resetForm, setTouched, touched } =
+    useFormikContext<Resource>();
   const { t } = useTranslation();
 
   const saveResourceType = async (event: any) => {
