@@ -420,6 +420,13 @@
       "report_text_label" : "Beskriv årsak for rapportéring"
     },
     "search_for_resources": "Søk etter ressurser",
+    "share": {
+      "copied_to_clipboard": "Kopiert til utklippstavle",
+      "share_doi": "Benytt DOI for lenkedeling",
+      "share_handle":"Benytt handle for lenkedeling",
+      "share_link": "Del lenke",
+      "share_social_medias": "Del på sosiale medier og epost"
+    },
     "start_with_link_to_resource": "Start registrering med en lenke",
     "start_with_uploading_file": "Last opp fil hvis ressursen skal publiseres på Internett for første gang",
     "submit_link": "Start registrering",

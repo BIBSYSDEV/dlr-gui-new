@@ -10,18 +10,7 @@ import { Grid, Link } from '@material-ui/core';
 import EmbedButtons from './EmbedButtons';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import ShareIcon from '@material-ui/icons/Share';
-import {
-  FacebookShareButton,
-  LinkedinShareButton,
-  TwitterShareButton,
-  RedditShareButton,
-  EmailShareButton,
-  FacebookIcon,
-  TwitterIcon,
-  LinkedinIcon,
-  RedditIcon,
-  EmailIcon,
-} from 'react-share';
+import SocialMediaSharing from '../../components/SocialMediaSharing';
 
 const StyledGridContainer = styled(Grid)`
   margin-top: 1rem;
@@ -69,6 +58,26 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   const [citationPostTitle, setCitationPostTitle] = useState('');
   const [showCopiedLinkToClipboardInformation, setShowCopiedLinkToClipboardInformation] = useState(false);
   const mountedRef = useRef(true);
+
+  const generatePreferredURL = (): string => {
+    if (resource.features.dlr_identifier_doi) {
+      return resource.features.dlr_identifier_doi;
+    } else if (resource.features.dlr_identifier_handle) {
+      return resource.features.dlr_identifier_handle;
+    } else {
+      return `${window.location.origin}/resource/${resource.identifier}`;
+    }
+  };
+
+  const generateLinkSharingText = (): string => {
+    if (resource.features.dlr_identifier_doi) {
+      return t('resource.share.share_doi');
+    } else if (resource.features.dlr_identifier_handle) {
+      return t('resource.share.share_handle');
+    } else {
+      return t('resource.share.share_link');
+    }
+  };
 
   const iframeText = `<iframe title="${resource.features.dlr_title.replaceAll('"', '')}" src="${
     window.location.origin
@@ -135,18 +144,18 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
     setShowCopiedLinkToClipboardInformation(false);
     if (resource.features.dlr_identifier_handle) {
       try {
-        const data = { url: resource.features.dlr_identifier_handle, title: resource.features.dlr_title };
+        const data = { url: generatePreferredURL(), title: resource.features.dlr_title };
         const userAgent = navigator.userAgent;
         if (userAgent.match(/Android/) || !userAgent.match(/Opera|OPR\//)) {
           //navigator.share() works for chrome, edge and safari
           //firefox causes exception and Opera browsers crashes completely
           await navigator.share(data);
         } else {
-          handleCopyButtonClick(resource.features.dlr_identifier_handle);
+          handleCopyButtonClick(generatePreferredURL());
           setShowCopiedLinkToClipboardInformation(true);
         }
       } catch (error) {
-        handleCopyButtonClick(resource.features.dlr_identifier_handle);
+        handleCopyButtonClick(generatePreferredURL());
         setShowCopiedLinkToClipboardInformation(true);
       }
     }
@@ -159,20 +168,20 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
         {resource.features.dlr_identifier_handle && (
           <>
             <Grid item xs={12} sm={8}>
-              <Typography variant="caption">Benytt handle for lenkedeling</Typography>
+              <Typography variant="caption">{generateLinkSharingText()}</Typography>
               <Typography>
-                <Link href={resource.features.dlr_identifier_handle}>{resource.features.dlr_identifier_handle}</Link>
+                <Link href={generatePreferredURL()}>{generatePreferredURL()}</Link>
               </Typography>
             </Grid>
             <Grid item xs={12} sm={4}>
               <Button startIcon={<ShareIcon />} color="primary" variant="outlined" onClick={shareLink}>
-                {t('Del lenke').toUpperCase()}
+                {t('resource.share.share_link').toUpperCase()}
               </Button>
             </Grid>
             {showCopiedLinkToClipboardInformation && (
               <Grid item xs={12}>
                 <Alert severity="success" variant="filled">
-                  <AlertTitle>{t('Kopiert til utklippstavle')}</AlertTitle>
+                  <AlertTitle>{t('resource.share.copied_to_clipboard')}</AlertTitle>
                 </Alert>
               </Grid>
             )}
@@ -211,46 +220,9 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
       <StyledGridContainer>
         <Grid item xs={12} sm={8}>
           <Typography variant="caption" gutterBottom>
-            {t('Del på sosiale medier')}
+            {t('resource.share.share_social_medias')}
           </Typography>
-          <Grid container spacing={1}>
-            <Grid item>
-              <FacebookShareButton
-                quote={resource.features.dlr_title}
-                url={resource.features.dlr_identifier_handle ?? ''}>
-                <FacebookIcon size={32} round />
-              </FacebookShareButton>
-            </Grid>
-            <Grid item>
-              <TwitterShareButton
-                url={resource.features.dlr_identifier_handle ?? ''}
-                title={resource.features.dlr_title}>
-                <TwitterIcon size={32} round />
-              </TwitterShareButton>
-            </Grid>
-            <Grid item>
-              <LinkedinShareButton url={resource.features.dlr_identifier_handle ?? ''}>
-                <LinkedinIcon size={32} round />
-              </LinkedinShareButton>
-            </Grid>
-            <Grid item>
-              <RedditShareButton
-                url={resource.features.dlr_identifier_handle ?? ''}
-                title={resource.features.dlr_title}
-                windowWidth={660}
-                windowHeight={460}>
-                <RedditIcon size={32} round />
-              </RedditShareButton>
-            </Grid>
-            <Grid item>
-              <EmailShareButton
-                url={resource.features.dlr_identifier_handle ?? ''}
-                subject={resource.features.dlr_title}
-                body="body">
-                <EmailIcon size={32} round />
-              </EmailShareButton>
-            </Grid>
-          </Grid>
+          <SocialMediaSharing resourceTitle={resource.features.dlr_title} url={generatePreferredURL()} />
         </Grid>
       </StyledGridContainer>
       <StyledGridContainer container spacing={3}>
