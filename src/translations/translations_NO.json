@@ -317,7 +317,7 @@
     },
     "delete_resource_confirmation": "Vil du virkelig slette",
     "delete_resource_description": "Slettingen vil være permament og ressursen kan ikke gjenopprettes",
-    "doi" : {
+    "doi": {
       "comment": "Kommentar",
       "request_doi": "Be om DOI",
       "request_doi_long": "Be om Document Object Identifier (DOI)",
