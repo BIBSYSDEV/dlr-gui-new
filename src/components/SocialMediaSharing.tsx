@@ -32,12 +32,12 @@ const SocialMediaSharing: FC<SocialMediaSharingProps> = ({ resourceTitle, url })
         </TwitterShareButton>
       </Grid>
       <Grid item>
-        <LinkedinShareButton url={url}>
+        <LinkedinShareButton url={url} title={resourceTitle}>
           <LinkedinIcon size={32} round />
         </LinkedinShareButton>
       </Grid>
       <Grid item>
-        <RedditShareButton url={url} title={resourceTitle} windowWidth={660} windowHeight={460}>
+        <RedditShareButton url={url} title={resourceTitle}>
           <RedditIcon size={32} round />
         </RedditShareButton>
       </Grid>
