@@ -15,6 +15,8 @@ import { requestDOIFromCurator } from '../../api/workListApi';
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
 
+const DialogTitleId = 'doi-dialog-title';
+
 interface RequestDOIProps {
   resource: Resource;
   setRequestSentSuccess: (success: boolean) => void;
@@ -25,17 +27,17 @@ const RequestDOI: FC<RequestDOIProps> = ({ resource, setRequestSentSuccess }) =>
   const [showRequestDOIDialog, setShowRequestDOIDialog] = useState(false);
   const [DOIComment, setDOIComment] = useState('');
   const useFullScreen = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
-  const [doiRequestFailureError, setDoiRequestFailureError] = useState<Error | undefined>();
+  const [DOIRequestFailureError, setDOIRequestFailureError] = useState<Error | undefined>();
 
   const askForDoi = async () => {
     try {
       setRequestSentSuccess(false);
-      setDoiRequestFailureError(undefined);
+      setDOIRequestFailureError(undefined);
       await requestDOIFromCurator(resource.identifier, DOIComment);
       setRequestSentSuccess(true);
       setShowRequestDOIDialog(false);
     } catch (error) {
-      setDoiRequestFailureError(error);
+      setDOIRequestFailureError(error);
     }
   };
 
@@ -53,16 +55,16 @@ const RequestDOI: FC<RequestDOIProps> = ({ resource, setRequestSentSuccess }) =>
         fullWidth
         fullScreen={useFullScreen}
         open={showRequestDOIDialog}
-        aria-labelledby="DOI-dialog-title"
-        data-testid={`DOI-dialog`}>
-        <DialogTitle id="report-dialog-title">{t('resource.doi.request_doi_long')}</DialogTitle>
+        aria-labelledby={DialogTitleId}
+        data-testid={`doi-dialog`}>
+        <DialogTitle id={DialogTitleId}>{t('resource.doi.request_doi_long')}</DialogTitle>
         <DialogContent>
           <Typography>{t('resource.doi.write_comment')}</Typography>
           <TextField
             required
             multiline
             rows={4}
-            id="DOI-comment-text-field"
+            id="doi-comment-text-field"
             fullWidth
             value={DOIComment}
             onChange={(event) => setDOIComment(event.target.value)}
@@ -71,22 +73,20 @@ const RequestDOI: FC<RequestDOIProps> = ({ resource, setRequestSentSuccess }) =>
           />
         </DialogContent>
         <DialogActions>
-          <Button data-testid={`doi-dialog-cancel-button`} onClick={() => setShowRequestDOIDialog(false)}>
+          <Button data-testid="doi-dialog-cancel-button" onClick={() => setShowRequestDOIDialog(false)}>
             {t('common.cancel')}
           </Button>
           <Button
             disabled={!DOIComment}
             autoFocus
             variant="contained"
-            data-testid={`doi-dialog-submit-button`}
+            data-testid="doi-dialog-submit-button"
             color="primary"
-            onClick={() => {
-              askForDoi();
-            }}>
+            onClick={() => askForDoi()}>
             {t('resource.doi.request_doi')}
           </Button>
         </DialogActions>
-        {doiRequestFailureError && <ErrorBanner error={doiRequestFailureError} />}
+        {DOIRequestFailureError && <ErrorBanner error={DOIRequestFailureError} />}
       </Dialog>
     </>
   );

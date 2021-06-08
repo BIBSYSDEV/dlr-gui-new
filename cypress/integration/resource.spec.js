@@ -109,7 +109,6 @@ context('Actions', () => {
   });
 
   it("is not possible to request DOI for other people's resources", () => {
-    cy.get('[data-testid=request-doi-button').should('not.exist');
     const publishedTestPost = mockMyResources[0];
     cy.get('[data-testid=request-doi-button').should('not.exist');
     cy.visit(`/resource/${publishedTestPost.identifier}]`);

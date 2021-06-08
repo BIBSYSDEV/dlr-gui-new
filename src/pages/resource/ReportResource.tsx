@@ -59,7 +59,7 @@ const ReportResource: FC<ReportResourceProps> = ({ resource, setRequestSentSucce
         fullScreen={useFullScreen}
         open={showReportDialog}
         aria-labelledby="report-dialog-title"
-        data-testid={`report-dialog`}>
+        data-testid="report-dialog">
         <DialogTitle id="report-dialog-title">{t('resource.reporting.report_resource')}</DialogTitle>
         <DialogContent>
           <TextField
@@ -68,9 +68,7 @@ const ReportResource: FC<ReportResourceProps> = ({ resource, setRequestSentSucce
             required
             inputProps={{ 'data-testid': 'report-dialog-input' }}
             label={t('resource.reporting.report_text_label')}
-            onChange={(event) => {
-              setReportText(event.target.value);
-            }}
+            onChange={(event) => setReportText(event.target.value)}
             multiline
             rows={4}
             variant="outlined"
@@ -78,12 +76,12 @@ const ReportResource: FC<ReportResourceProps> = ({ resource, setRequestSentSucce
           />
         </DialogContent>
         <DialogActions>
-          <Button data-testid={`report-dialog-cancel-button`} onClick={cancelReport} color="default">
+          <Button data-testid="report-dialog-cancel-button" onClick={cancelReport} color="default">
             {t('common.cancel')}
           </Button>
           <Button
             disabled={!reportText}
-            data-testid={`report-dialog-submit-button`}
+            data-testid="report-dialog-submit-button"
             onClick={handleReport}
             color="primary"
             variant="contained"
