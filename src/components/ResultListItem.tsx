@@ -133,7 +133,9 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
         <div>
           <StyledHeader>
             <StyledMaxTwoLinesTypography variant="h4">
-              <Link href={generateURL(resource)}>{resource.features.dlr_title}</Link>
+              <Link data-testid={`link-to-resource-${resource.identifier}`} href={generateURL(resource)}>
+                {resource.features.dlr_title}
+              </Link>
             </StyledMaxTwoLinesTypography>
             <StyledTimeCreatedTypography variant="body1">
               {format(new Date(resource.features.dlr_time_created), 'dd.MM.yyyy')}
