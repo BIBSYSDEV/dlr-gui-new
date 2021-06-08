@@ -317,6 +317,12 @@
     },
     "delete_resource_confirmation": "Vil du virkelig slette",
     "delete_resource_description": "Slettingen vil være permament og ressursen kan ikke gjenopprettes",
+    "doi": {
+      "comment": "Kommentar",
+      "request_doi": "Be om DOI",
+      "request_doi_long": "Be om Document Object Identifier (DOI)",
+      "write_comment": "Skriv inn relevant informasjon om forespørselen"
+    },
     "edit_resource": "Rediger ressurs",
     "fields_required": "Felter markert med * er påkrevd",
     "files_and_license": {
