@@ -426,6 +426,13 @@
       "report_text_label": "Describe the reason for reporting the resource"
     },
     "search_for_resources": "Search for resources",
+    "share": {
+      "copied_to_clipboard": "Copied to clipboard",
+      "share_doi": "Use DOI for link sharing",
+      "share_handle": "Use handle for link sharing",
+      "share_link": "Link sharing",
+      "share_social_medias": "Share on social medias and though email"
+    },
     "start_with_link_to_resource": "Start registration with a link",
     "start_with_uploading_file": "Upload file if the resource is to be published on the Internet for the first time",
     "submit_link": "Start registration",
