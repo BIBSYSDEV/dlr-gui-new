@@ -7,6 +7,7 @@ import { format } from 'date-fns';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { SearchParameters } from '../../types/search.types';
+import { getLMSSearchParams } from '../../utils/lmsService';
 
 const StyledChip: any = styled(Chip)`
   height: auto;
@@ -106,7 +107,9 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource }) => {
                 </Typography>
                 {resource.tags.map((tag, index) => (
                   <StyledChip
-                    href={`/?${SearchParameters.tag}=${tag}`}
+                    href={`/?${SearchParameters.tag}=${tag}${
+                      getLMSSearchParams().toString().length > 0 ? `&${getLMSSearchParams()}` : ''
+                    }`}
                     component="a"
                     key={index}
                     size="medium"

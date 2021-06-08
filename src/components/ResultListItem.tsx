@@ -11,6 +11,7 @@ import CClogoImage from './CClogoImage';
 import Link from '@material-ui/core/Link';
 import { SearchParameters } from '../types/search.types';
 import ResourceTypeInfo from './ResourceTypeInfo';
+import { getLMSSearchParams } from '../utils/lmsService';
 
 const StyledListItem: any = styled.li`
   width: 100%;
@@ -97,6 +98,11 @@ const StyledChipTypography = styled(Typography)`
   white-space: normal;
 `;
 
+const generateURL = (resource: Resource) => {
+  const LMSSearchParams = getLMSSearchParams();
+  return `/resource/${resource.identifier}${LMSSearchParams.toString().length > 0 ? `?${LMSSearchParams}` : ''}`;
+};
+
 interface ResultListItemProps {
   resource: Resource;
 }
@@ -127,7 +133,7 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
         <div>
           <StyledHeader>
             <StyledMaxTwoLinesTypography variant="h4">
-              <Link href={`/resource/${resource.identifier}`}>{resource.features.dlr_title}</Link>
+              <Link href={generateURL(resource)}>{resource.features.dlr_title}</Link>
             </StyledMaxTwoLinesTypography>
             <StyledTimeCreatedTypography variant="body1">
               {format(new Date(resource.features.dlr_time_created), 'dd.MM.yyyy')}
