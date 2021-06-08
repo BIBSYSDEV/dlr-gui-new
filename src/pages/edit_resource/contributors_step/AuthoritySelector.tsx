@@ -23,6 +23,7 @@ import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
 import { DeviceWidths } from '../../../themes/mainTheme';
 import useDebounce from '../../../utils/useDebounce';
+import { useMediaQuery } from '@material-ui/core';
 
 const StyledDialog = styled(Dialog)`
   min-width: 80vw;
@@ -88,7 +89,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   const [error, setError] = useState<Error | null>(null);
   const [page, setPage] = useState(1);
   const { t } = useTranslation();
-  const fullScreenDialog = window.screen.height < DeviceWidths.sm;
+  const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
   const debouncedSearchTerm = useDebounce(authorityInputSearchValue, 500);
   const mountedRef = useRef(true);
 

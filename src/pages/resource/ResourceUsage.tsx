@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { CompareCreators, Resource } from '../../types/resource.types';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -6,8 +6,11 @@ import { format } from 'date-fns';
 import { TFunction, useTranslation } from 'react-i18next';
 import { getCitationFromCrossCite } from '../../api/resourceApi';
 import styled from 'styled-components';
-import { Grid } from '@material-ui/core';
+import { Grid, Link } from '@material-ui/core';
 import EmbedButtons from './EmbedButtons';
+import { Alert, AlertTitle } from '@material-ui/lab';
+import ShareIcon from '@material-ui/icons/Share';
+import SocialMediaSharing from '../../components/SocialMediaSharing';
 
 const StyledGridContainer = styled(Grid)`
   margin-top: 1rem;
@@ -44,6 +47,22 @@ const generateCitationStringPostTitle = (resource: Resource, t: TFunction<'trans
   }
 };
 
+const generatePreferredURL = (resource: Resource): string => {
+  if (resource.features.dlr_identifier_doi) {
+    return resource.features.dlr_identifier_doi;
+  } else if (resource.features.dlr_identifier_handle) {
+    return resource.features.dlr_identifier_handle;
+  } else {
+    return `${window.location.origin}/resource/${resource.identifier}`;
+  }
+};
+
+const generateIframeText = (resource: Resource) => {
+  return `<iframe title="${resource.features.dlr_title.replaceAll('"', '')}" src="${window.location.origin}/resource/${
+    resource.identifier
+  }/content/main?navbar=false&footer=false" width="640px" height="360px" style="border: none;" allowfullscreen="true"></iframe>`;
+};
+
 interface ResourceUsageProps {
   resource: Resource;
 }
@@ -53,13 +72,18 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   const [citationPreTitle, setCitationPreTitle] = useState('');
   const [citationTitle, setCitationTitle] = useState('');
   const [citationPostTitle, setCitationPostTitle] = useState('');
+  const [showCopiedLinkToClipboardInformation, setShowCopiedLinkToClipboardInformation] = useState(false);
   const mountedRef = useRef(true);
 
-  const iframeText = `<iframe title="${resource.features.dlr_title.replaceAll('"', '')}" src="${
-    window.location.origin
-  }/resource/${
-    resource.identifier
-  }/content/main?navbar=false&footer=false" width="640px" height="360px" style="border: none;" allowfullscreen="true"></iframe>`;
+  const generateLinkSharingText = useCallback(() => {
+    if (resource.features.dlr_identifier_doi) {
+      return t('resource.share.share_doi');
+    } else if (resource.features.dlr_identifier_handle) {
+      return t('resource.share.share_handle');
+    } else {
+      return t('resource.share.share_link');
+    }
+  }, [resource.features.dlr_identifier_doi, resource.features.dlr_identifier_handle, t]);
 
   useEffect(() => {
     const getCitation = async () => {
@@ -116,10 +140,50 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
     }
   };
 
+  const shareLink = async () => {
+    setShowCopiedLinkToClipboardInformation(false);
+    if (resource.features.dlr_identifier_handle) {
+      try {
+        const data = { url: generatePreferredURL(resource), title: resource.features.dlr_title };
+        const userAgent = navigator.userAgent;
+        if (userAgent.match(/Android/) || !userAgent.match(/Opera|OPR\//)) {
+          //navigator.share() works for chrome, edge and safari
+          //firefox causes exception and Opera browsers crashes completely
+          await navigator.share(data);
+        } else {
+          handleCopyButtonClick(generatePreferredURL(resource));
+          setShowCopiedLinkToClipboardInformation(true);
+        }
+      } catch (error) {
+        handleCopyButtonClick(generatePreferredURL(resource));
+        setShowCopiedLinkToClipboardInformation(true);
+      }
+    }
+  };
+
   return (
     <>
       <Typography variant="h2">{t('common.usage')}</Typography>
       <StyledGridContainer container spacing={3}>
+        <Grid item xs={12} sm={8}>
+          <Typography variant="caption">{generateLinkSharingText()}</Typography>
+          <Typography>
+            <Link href={generatePreferredURL(resource)}>{generatePreferredURL(resource)}</Link>
+          </Typography>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Button startIcon={<ShareIcon />} color="primary" variant="outlined" onClick={shareLink}>
+            {t('resource.share.share_link').toUpperCase()}
+          </Button>
+        </Grid>
+        {showCopiedLinkToClipboardInformation && (
+          <Grid item xs={12}>
+            <Alert severity="success" variant="filled">
+              <AlertTitle>{t('resource.share.copied_to_clipboard')}</AlertTitle>
+            </Alert>
+          </Grid>
+        )}
+
         <Grid item xs={12} sm={8}>
           <Typography variant="caption">{t('citation.citation_link')}</Typography>
           <StyledTypography variant="body1">
@@ -141,12 +205,23 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
         <Grid item xs={12} sm={8}>
           <Typography variant="caption">{t('embed.embed_code')}</Typography>
 
-          <StyledTypography variant="body1">{iframeText}</StyledTypography>
+          <StyledTypography variant="body1">{generateIframeText(resource)}</StyledTypography>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <StyledButton color="primary" variant="outlined" onClick={() => handleCopyButtonClick(iframeText)}>
+          <StyledButton
+            color="primary"
+            variant="outlined"
+            onClick={() => handleCopyButtonClick(generateIframeText(resource))}>
             {t('embed.copy_embed_code').toUpperCase()}
           </StyledButton>
+        </Grid>
+      </StyledGridContainer>
+      <StyledGridContainer>
+        <Grid item xs={12} sm={8}>
+          <Typography variant="caption" gutterBottom>
+            {t('resource.share.share_social_medias')}
+          </Typography>
+          <SocialMediaSharing resourceTitle={resource.features.dlr_title} url={generatePreferredURL(resource)} />
         </Grid>
       </StyledGridContainer>
       <StyledGridContainer container spacing={3}>

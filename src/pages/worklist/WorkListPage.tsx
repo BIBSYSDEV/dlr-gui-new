@@ -5,14 +5,12 @@ import { PageHeader } from '../../components/PageHeader';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Grid, Tab, Typography } from '@material-ui/core';
-import { Colors } from '../../themes/mainTheme';
 import DOIRequestList from './DOIRequestList';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 
 const StyledWrapper = styled(Grid)`
-  background-color: ${Colors.DLRColdGreen1};
   padding: 1rem 1rem 2rem 1rem;
   margin-top: 2rem;
 `;

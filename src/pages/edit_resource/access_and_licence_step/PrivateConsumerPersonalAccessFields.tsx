@@ -45,7 +45,8 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
   const [containsInvalidEmail, setContainsInvalidEmail] = useState(false);
 
   const savePersonConsumerAccess = async () => {
-    const emailRegex = /(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
+    const emailRegex =
+      /(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
     const accessUsers = personAccessTextFieldValue.split(/[,;\s]/g);
     let errorList = '';
     const alreadySavedEmails: string[] = [];

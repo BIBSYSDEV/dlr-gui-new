@@ -29,7 +29,7 @@
     "show_list": "Vis liste",
     "who_got_access": "Hvem har tilgang"
   },
-  "administrative" : {
+  "administrative": {
     "cannot_change_own_roles": "Det er ikke tilgang til å endre egne roller",
     "no_access_to_view_user": "Du har ikke tilgang til å se roller for ",
     "page_heading": "Administrasjon",
@@ -38,13 +38,13 @@
       "curators": "Kuratorer",
       "editors": "Redaktører"
     },
-    "role_description" : {
+    "role_description": {
       "administrator": "Tilgang til å tildele roller innenfor egen institusjon",
       "curator": "Tilgang til å tildele DOI og alle redigerings- og publiseringsmuligheter",
       "editor": "Tilgang til Rapporteingsbehandling og har alle redigerings- og publiseringsmuligheter",
       "publisher": "Tilgang  til å publisere og redigere egne ressurser"
     },
-    "roles" : {
+    "roles": {
       "administrator": "Administrator",
       "curator": "Kurator",
       "editor": "Redaktør",
@@ -152,9 +152,9 @@
   "explanation_text": {
     "access_filtering_label": "Vis andre ressurser forklaring",
     "access_filtering": "Hvis valgt, vil resultatlista også inneholde ressurser du ikke har tilgang til å vise.",
-    "contributor_helper_aria_label" : "Vis bigradsyter forklaring",
-    "contributor_helper_text1" : "Andre som har bidratt med ressursen, men som ikke trenger å krediteres av de som tar i bruk ressursen",
-    "contributor_helper_text2" : "Som Kurator kan du verifisere bidragsytere. Det er ikke mulig å endre navnet på en verifisert bidragsyter. Om det er feil verfisert bidragsyter, må denne slettes og legges inn på ny",
+    "contributor_helper_aria_label": "Vis bidragsyter forklaring",
+    "contributor_helper_text1": "Andre som har bidratt med ressursen, men som ikke trenger å krediteres av de som tar i bruk ressursen",
+    "contributor_helper_text2": "Som Kurator kan du verifisere bidragsytere. Det er ikke mulig å endre navnet på en verifisert bidragsyter. Om det er feil verfisert bidragsyter, må denne slettes og legges inn på ny",
     "creator_helper_aria_label": "Vis opphaver forklaring",
     "creator_helper_example": "Eksempelvis: forelesere, undervisere, forfattere og skaperne av ressursen kan føres opp her",
     "creator_helper_text1": "Personen, firmaet eller organisasjonen som eier rettighetene til ressursen.",
@@ -178,12 +178,12 @@
     "resource_type_examples_simulation": "3D-modell, spill, VR e.l.",
     "resource_type_helper_text": "Velg ressurstype som stemmer best overens med innholdet",
     "search_input_helper_aria_label": "Vis søkeinformasjon",
-    "search_input_helper_text" : "Søketegn *, ? og ~ støttes. Mer informasjon om søketekst finner du på",
+    "search_input_helper_text": "Søketegn *, ? og ~ støttes. Mer informasjon om søketekst finner du på",
     "tags_helper_aria_label": "Vis emneord forklaring",
     "tags_helper_text": "Emneord benyttes for å beskrive innholdet i en ressurs. Et emneord kan bestå av ett eller flere ord, f.eks \"optisk illusjon\" ",
     "tags_helper_text_edit_resource1": "Skriv inn emneordet etterfulgt av enter så kan du skrive inn neste emneord. Man kan legge til og slette emneord etter at en ressurs er publisert",
     "tags_helper_text_edit_resource2": "Gode valg av emneord sørger for at det er lettere for andre å finne ressursen din ",
-    "tags_helper_text_example": "Eksempel: En ressurs med tittel \"Det sympatiske nervesystemet\" kan for ha emneord \"syk130\", \"sykepleie\", \"helsefag\", \"nervesystemet\" og \"helse\"",
+    "tags_helper_text_example": "Eksempel: En ressurs med tittel \"Det sympatiske nervesystemet\" kan ha emneord: \"syk130\", \"sykepleie\", \"helsefag\", \"nervesystemet\" og \"helse\"",
     "tags_link_fresh_warning": "Emneord har blitt generert automatisk fra lenka. Se over at de stemmer",
     "tags_link_old_warning": "Noen av emneordene kan ha blitt generert automatisk. Se over at de stemmer",
     "title_helper_aria_label": "Vis tittel forklaring",
@@ -192,8 +192,8 @@
   "feedback": {
     "form_errors": "Det er feil i skjema. Disse må rettes før ressursen kan publiseres",
     "required_field": "Påkrevd felt",
-    "valid_url": "Input må være en gyldig URL",
-    "valid_email": "Input må være en gyldig epost",
+    "valid_url": "Inndata må være en gyldig URL",
+    "valid_email": "Inndata må være en gyldig epost",
     "published_warning": "Ressursen er publisert. Alle felter som endres blir lagret og publisert på nytt umiddelbart etter endring."
   },
   "illustration_alts_tags": {
@@ -238,7 +238,7 @@
       "sa": "SA - Bearbeidelser må deles på samme vilkår",
       "zero": "Zero - Dette verket er markert som dedikert til public domain (offentlig eie)"
     },
-    "published_with": "Published with",
+    "published_with": "Publisert med",
     "questions": {
       "commercial": "Kan andre bruke ressursen for kommersielle formål?",
       "contains_other_peoples_work": "Inneholder ressursen andres arbeid?",
@@ -317,6 +317,12 @@
     },
     "delete_resource_confirmation": "Vil du virkelig slette",
     "delete_resource_description": "Slettingen vil være permament og ressursen kan ikke gjenopprettes",
+    "doi": {
+      "comment": "Kommentar",
+      "request_doi": "Be om DOI",
+      "request_doi_long": "Be om Document Object Identifier (DOI)",
+      "write_comment": "Skriv inn relevant informasjon om forespørselen"
+    },
     "edit_resource": "Rediger ressurs",
     "fields_required": "Felter markert med * er påkrevd",
     "files_and_license": {
@@ -396,7 +402,7 @@
       "submitter_email": "Registrators epost"
     },
     "my_resources": "Mine ressurser",
-    "my_publication_tabs" : "Faner for mine ressurser",
+    "my_publication_tabs": "Faner for mine ressurser",
     "new_registration": "Ny registering",
     "no_published_resources": "Du har ingen publiserte ressurser",
     "no_unpublished_resources": "Du har ingen upubliserte ressurser",
@@ -415,11 +421,18 @@
     },
     "published_resources": "Publisert",
     "reporting": {
-      "report_resource" : "Raport ressurs",
+      "report_resource": "Rapportér ressurs",
       "report_sent_feedback": "Rapportèring sendt inn",
-      "report_text_label" : "Beskriv årsak for rapportéring"
+      "report_text_label": "Beskriv årsak for rapportéring"
     },
     "search_for_resources": "Søk etter ressurser",
+    "share": {
+      "copied_to_clipboard": "Kopiert til utklippstavle",
+      "share_doi": "Benytt DOI for lenkedeling",
+      "share_handle": "Benytt handle for lenkedeling",
+      "share_link": "Del lenke",
+      "share_social_medias": "Del på sosiale medier og epost"
+    },
     "start_with_link_to_resource": "Start registrering med en lenke",
     "start_with_uploading_file": "Last opp fil hvis ressursen skal publiseres på Internett for første gang",
     "submit_link": "Start registrering",
@@ -446,15 +459,15 @@
     "question_mark1": "Spørsmålstegn (?) kan brukes for å erstatte en bokstav",
     "question_mark2": "b?k",
     "question_mark3": "gir treff på både \"bok\" og \"bak\" men ikke \"brekk\"",
-    "search_field" : {
-      "creator_id":  "Opphaver-id",
-      "creator_name":  "Opphavernavn",
+    "search_field": {
+      "creator_id": "Opphaver-id",
+      "creator_name": "Opphavernavn",
       "contributor_id": "Bidragsyter-id",
       "contributor_name": "Bidragsyternavn",
       "institution": "Institusjon",
-      "resource_description":  "Ressursbeskrivelse",
-      "resource_id":  "Ressurs-id",
-      "resource_title" : "Ressurstittel",
+      "resource_description": "Ressursbeskrivelse",
+      "resource_id": "Ressurs-id",
+      "resource_title": "Ressurstittel",
       "tags": "Emneord"
     },
     "search_field_title": "Søkefelt",
@@ -482,11 +495,22 @@
   "user": {
     "logged_in_as": "Logget på som"
   },
-  "work_list" : {
+  "work_list": {
+    "are_you_sure": "Er du sikker på at du ønsker å opprette DOI",
     "aria_label_tabs": "Faner for mine arbeidslister",
-    "doi_request_list" : "DOI forespørsler",
-    "page_title" : "Arbeidsliste",
+    "comment": "Kommentar",
+    "comment_explanation": "Skriv en kommentar hvorfor forespørselen blir avvist",
+    "create_doi": "Opprett DOI",
+    "delete_request": "Slett forespørsel",
+    "doi_request_list": "DOI forespørsler",
+    "hide": "Skjul",
+    "no_doi_requests": "For tiden finnes det ingen DOI forespørsler",
+    "page_title": "Arbeidsliste",
     "page_requirements": "Du må være kurator eller redaktør for å få tilgang til denne funksjonaliteten",
-    "reports" : "Rapporteringer"
+    "read_more": "Les hele kommentaren",
+    "reports": "Rapportéringer",
+    "shorten_comments": "Forkort kommentaren",
+    "submitted": "Meldt inn",
+    "submitter": "Meldt inn av"
   }
 }

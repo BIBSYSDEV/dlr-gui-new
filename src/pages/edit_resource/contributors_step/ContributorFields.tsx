@@ -107,15 +107,8 @@ const generateContributorTypesTranslated = (t: any) => {
 
 const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
-  const {
-    values,
-    handleBlur,
-    resetForm,
-    handleChange,
-    setFieldTouched,
-    setTouched,
-    touched,
-  } = useFormikContext<Resource>();
+  const { values, handleBlur, resetForm, handleChange, setFieldTouched, setTouched, touched } =
+    useFormikContext<Resource>();
   const [addContributorError, setAddContributorError] = useState<Error>();
   const [updateContributorError, setUpdateContributorError] = useState<Error>();
   const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
