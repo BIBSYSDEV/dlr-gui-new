@@ -111,15 +111,10 @@ export const embed = async (resource: Resource, mode: string, lmsPlatform: LMSTy
 export const getLMSSearchParams = () => {
   const searchParams = new URLSearchParams(window.location.search);
   const newSearchParams = new URLSearchParams();
-  if (searchParams.get(LMSParametersName.Navbar) === 'false') newSearchParams.append(LMSParametersName.Navbar, 'false');
-  if (searchParams.get(LMSParametersName.Footer) === 'false') newSearchParams.append(LMSParametersName.Footer, 'false');
-  if (searchParams.get(LMSParametersName.BBShowEmbedButton) === 'true')
-    newSearchParams.append(LMSParametersName.BBShowEmbedButton, 'true');
-  if (searchParams.get(LMSParametersName.EdxShowEmbedButton) === 'true')
-    newSearchParams.append(LMSParametersName.EdxShowEmbedButton, 'true');
-  if (searchParams.get(LMSParametersName.ItsLearningShowEmbedButton) === 'true')
-    newSearchParams.append(LMSParametersName.ItsLearningShowEmbedButton, 'true');
-  const ItsLearningReturnUrl = searchParams.get(LMSParametersName.ItsLearningReturnUrl);
-  if (ItsLearningReturnUrl) newSearchParams.append(LMSParametersName.ItsLearningReturnUrl, ItsLearningReturnUrl);
+  searchParams.forEach((value, key) => {
+    if (Object.values(LMSParametersName).includes(key as LMSParametersName)) {
+      newSearchParams.append(key, value);
+    }
+  });
   return newSearchParams;
 };
