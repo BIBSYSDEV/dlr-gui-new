@@ -184,6 +184,23 @@ export enum ResourceFeatureTypes {
   video = 'Video',
 }
 
+export enum LegacyResourceFeatureTypes {
+  AudioVisual = 'audioVisual',
+  Collection = 'collection',
+  DataPaper = 'dataPaper',
+  Dataset = 'dataset',
+  Event = 'event',
+  InteractiveResource = 'interactiveResource',
+  Model = 'model',
+  Other = 'other',
+  PhysicalObject = 'PhysicalObject',
+  Service = 'service',
+  Software = 'software',
+  Sound = 'sound',
+  Text = 'text',
+  Workflow = 'workflow',
+}
+
 //Note! This is also the presentation order for the type-filter
 export const DefaultResourceTypes: ResourceFeatureTypes[] = [
   ResourceFeatureTypes.video,
