@@ -437,13 +437,26 @@
     "start_with_uploading_file": "Upload file if the resource is to be published on the Internet for the first time",
     "submit_link": "Start registration",
     "type": {
-      "resource_type": "Resource type",
       "audio": "Audio",
+      "audiovisual": "Audio visual",
+      "collection": "Collection",
+      "datapaper": "Data paper",
+      "dataset": "Dataset",
       "document": "Document",
+      "event": "Event",
       "image": "Image",
+      "InteractiveResource": "Interactive resource",
+      "model": "Model",
+      "other": "Other",
+      "physicalobject": "Physical object",
       "presentation": "Presentation",
+      "resource_type": "Resource type",
       "simulation": "Simulation",
-      "video": "Video"
+      "Service": "Service",
+      "software": "Software",
+      "text": "Text",
+      "video": "Video",
+      "workflow": "Workflow"
     },
     "unpublished_resources": "Started"
   },
