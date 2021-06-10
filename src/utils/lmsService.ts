@@ -107,3 +107,14 @@ export const embed = async (resource: Resource, mode: string, lmsPlatform: LMSTy
       break;
   }
 };
+
+export const getLMSSearchParams = () => {
+  const searchParams = new URLSearchParams(window.location.search);
+  const newSearchParams = new URLSearchParams();
+  searchParams.forEach((value, key) => {
+    if (Object.values(LMSParametersName).includes(key as LMSParametersName)) {
+      newSearchParams.append(key, value);
+    }
+  });
+  return newSearchParams;
+};
