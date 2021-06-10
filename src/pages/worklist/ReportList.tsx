@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { CircularProgress, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import { getWorkListItemDOI } from '../../api/workListApi';
-import ErrorBanner from '../../components/ErrorBanner';
-import { WorklistRequest } from '../../types/Worklist.types';
-import DOIRequestItem from './DOIRequestItem';
-import { getResource } from '../../api/resourceApi';
-import { Resource } from '../../types/resource.types';
+import { getWorkListReports } from '../../api/workListApi';
 import { AxiosResponse } from 'axios';
+import { Resource } from '../../types/resource.types';
+import { getResource } from '../../api/resourceApi';
+import { CircularProgress, Typography } from '@material-ui/core';
 import styled from 'styled-components';
+import ErrorBanner from '../../components/ErrorBanner';
+import ReportRequestListItem from './ReportRequestListItem';
+import { WorklistRequest } from '../../types/Worklist.types';
 
 const StyledUl = styled.ul`
   list-style: none; /* Remove list bullets */
@@ -16,24 +16,31 @@ const StyledUl = styled.ul`
   margin: 0;
 `;
 
-const DOIRequestList = () => {
+//TODO: cypress tests, DOI must also be updated and verified
+//TODO: ReportRequestListItem needs delete resource functionality
+//TODO: ReportRequestListItem needs delete request functionality
+//TODO: Icons on DOI request must match report request.
+//TODO: Utils function for fetching and adding resource to workList object
+//TODO: mockData and mockInterceptor must be updated for new report requests
+
+const ReportList = () => {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState<Error>();
-  const [workListDoi, setWorkListDoi] = useState<WorklistRequest[]>([]);
+  const [workListReport, setWorkListReport] = useState<WorklistRequest[]>([]);
 
   useEffect(() => {
-    const fetchWorkListDOI = async () => {
+    const fetchWorkReport = async () => {
       try {
         setIsLoading(true);
         setLoadingError(undefined);
-        const workListDoiResponse = await getWorkListItemDOI();
+        const workListReportResponse = await getWorkListReports();
         const resourcePromises: Promise<AxiosResponse<Resource>>[] = [];
-        workListDoiResponse.data.forEach((work) => {
+        workListReportResponse.data.forEach((work) => {
           resourcePromises.push(getResource(work.resourceIdentifier));
         });
         const resources = await Promise.all(resourcePromises);
-        const newWorkList = workListDoiResponse.data.map((work, index) => {
+        const newWorkList = workListReportResponse.data.map((work, index) => {
           if (resources[index].data.identifier === work.resourceIdentifier) {
             work.resource = resources[index].data;
           } else {
@@ -42,14 +49,15 @@ const DOIRequestList = () => {
           }
           return work;
         });
-        setWorkListDoi(newWorkList);
+
+        setWorkListReport(newWorkList);
       } catch (error) {
         setLoadingError(error);
       } finally {
         setIsLoading(false);
       }
     };
-    fetchWorkListDOI();
+    fetchWorkReport();
   }, []);
 
   return (
@@ -59,15 +67,14 @@ const DOIRequestList = () => {
         <CircularProgress />
       ) : (
         <>
-          <Typography gutterBottom variant="h2">
-            {t('work_list.doi_request_list')}
-          </Typography>
-          {workListDoi.length > 0 ? (
-            <StyledUl>
-              {workListDoi.map((work) => (
-                <DOIRequestItem setWorkListDoi={setWorkListDoi} key={work.identifier} workListRequestDOI={work} />
+          {workListReport.length > 0 ? (
+            <>
+              {workListReport.map((work) => (
+                <StyledUl>
+                  <ReportRequestListItem reportWorkListRequest={work} setWorkListReport={setWorkListReport} />
+                </StyledUl>
               ))}
-            </StyledUl>
+            </>
           ) : (
             <Typography>{t('work_list.no_doi_requests')}</Typography>
           )}
@@ -77,4 +84,4 @@ const DOIRequestList = () => {
   );
 };
 
-export default DOIRequestList;
+export default ReportList;

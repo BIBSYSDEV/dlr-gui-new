@@ -9,6 +9,7 @@ import DOIRequestList from './DOIRequestList';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
+import ReportList from './ReportList';
 
 const StyledWrapper = styled(Grid)`
   padding: 1rem 1rem 2rem 1rem;
@@ -50,6 +51,11 @@ const WorkListPage = () => {
               <DOIRequestList />
             </StyledWrapper>
           </StyledTabPanel>
+          <StyledTabPanel value={ReportsTab}>
+            <StyledWrapper>
+              <ReportList />
+            </StyledWrapper>
+          </StyledTabPanel>
         </TabContext>
       )}
       {user.institutionAuthorities?.isCurator && !user.institutionAuthorities.isEditor && (
@@ -58,6 +64,14 @@ const WorkListPage = () => {
             {t('work_list.doi_request_list')}
           </Typography>
           <DOIRequestList />
+        </StyledWrapper>
+      )}
+      {user.institutionAuthorities?.isEditor && !user.institutionAuthorities.isCurator && (
+        <StyledWrapper>
+          <Typography variant="h2" gutterBottom>
+            {t('work_list.reports')}
+          </Typography>
+          <ReportList />
         </StyledWrapper>
       )}
     </StyledContentWrapperLarge>
