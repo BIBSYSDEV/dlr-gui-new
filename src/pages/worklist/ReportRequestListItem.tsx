@@ -149,7 +149,7 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
             variant="contained"
             onClick={() => {
               setShowDeleteRequestDialog(false);
-              handleDeleteReportRequest(reportWorkListRequest.identifier);
+              handleDeleteReportRequest();
             }}
             color="secondary">
             Slett rapportering
