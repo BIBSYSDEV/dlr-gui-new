@@ -142,22 +142,20 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
 
   const shareLink = async () => {
     setShowCopiedLinkToClipboardInformation(false);
-    if (resource.features.dlr_identifier_handle) {
-      try {
-        const data = { url: generatePreferredURL(resource), title: resource.features.dlr_title };
-        const userAgent = navigator.userAgent;
-        if (userAgent.match(/Android/) || !userAgent.match(/Opera|OPR\//)) {
-          //navigator.share() works for chrome, edge and safari
-          //firefox causes exception and Opera browsers crashes completely
-          await navigator.share(data);
-        } else {
-          handleCopyButtonClick(generatePreferredURL(resource));
-          setShowCopiedLinkToClipboardInformation(true);
-        }
-      } catch (error) {
+    try {
+      const data = { url: generatePreferredURL(resource), title: resource.features.dlr_title };
+      const userAgent = navigator.userAgent;
+      if (userAgent.match(/Android/) || !userAgent.match(/Opera|OPR\//)) {
+        //navigator.share() works for chrome, edge and safari
+        //firefox causes exception and Opera browsers crashes completely
+        await navigator.share(data);
+      } else {
         handleCopyButtonClick(generatePreferredURL(resource));
         setShowCopiedLinkToClipboardInformation(true);
       }
+    } catch (error) {
+      handleCopyButtonClick(generatePreferredURL(resource));
+      setShowCopiedLinkToClipboardInformation(true);
     }
   };
 
