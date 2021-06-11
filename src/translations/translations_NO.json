@@ -507,6 +507,7 @@
     "no_doi_requests": "For tiden finnes det ingen DOI forespørsler",
     "page_title": "Arbeidsliste",
     "page_requirements": "Du må være kurator eller redaktør for å få tilgang til denne funksjonaliteten",
+    "possible_deleted": "Denne ressursen kan allerede være slettet",
     "read_more": "Les hele kommentaren",
     "reports": "Rapportéringer",
     "shorten_comments": "Forkort kommentaren",

@@ -28,7 +28,7 @@ const ReportsTab = 'ReportsTab';
 const WorkListPage = () => {
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.user);
-  const [tabValue, setTabValue] = useState(DOIRequestTab);
+  const [tabValue, setTabValue] = useState(ReportsTab);
 
   const handleTabChange = (event: React.ChangeEvent<unknown>, newValue: string) => {
     setTabValue(newValue);

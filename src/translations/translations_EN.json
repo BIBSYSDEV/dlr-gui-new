@@ -507,6 +507,7 @@
     "no_doi_requests": "There are currently no DOI requests",
     "page_title": "Work list",
     "page_requirements": "You must be curator or editor for accessing this feature",
+    "possible_deleted": "This resource may already been deleted",
     "read_more": "Read the entire comment",
     "reports": "Reports",
     "shorten_comments": "Shorten the comment",

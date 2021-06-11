@@ -23,6 +23,11 @@ const WorkListRequestMetaDataViewer: FC<WorkListRequestMetaDataViewerProps> = ({
           </Link>
         </Typography>
       </Grid>
+      {!workListRequest.resource?.features.dlr_title && (
+        <Grid item xs={12}>
+          <Typography>{t('work_list.possible_deleted')}</Typography>
+        </Grid>
+      )}
       <Grid item xs={12} sm={6}>
         <Typography variant="caption">{t('work_list.submitter')}</Typography>
         <Typography data-testid={`request-item-submitter-${workListRequest.resourceIdentifier}`}>

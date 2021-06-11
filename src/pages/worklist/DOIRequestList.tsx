@@ -5,10 +5,8 @@ import { getWorkListItemDOI } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';
 import { WorklistRequest } from '../../types/Worklist.types';
 import DOIRequestItem from './DOIRequestItem';
-import { getResource } from '../../api/resourceApi';
-import { Resource } from '../../types/resource.types';
-import { AxiosResponse } from 'axios';
 import styled from 'styled-components';
+import { getWorkListWithResourceAttached } from '../../utils/workList';
 
 const StyledUl = styled.ul`
   list-style: none; /* Remove list bullets */
@@ -28,21 +26,8 @@ const DOIRequestList = () => {
         setIsLoading(true);
         setLoadingError(undefined);
         const workListDoiResponse = await getWorkListItemDOI();
-        const resourcePromises: Promise<AxiosResponse<Resource>>[] = [];
-        workListDoiResponse.data.forEach((work) => {
-          resourcePromises.push(getResource(work.resourceIdentifier));
-        });
-        const resources = await Promise.all(resourcePromises);
-        const newWorkList = workListDoiResponse.data.map((work, index) => {
-          if (resources[index].data.identifier === work.resourceIdentifier) {
-            work.resource = resources[index].data;
-          } else {
-            const correspondingResource = resources.find((resource) => resource.data.identifier === work.identifier);
-            work.resource = correspondingResource?.data;
-          }
-          return work;
-        });
-        setWorkListDoi(newWorkList);
+        const workListTotal = await getWorkListWithResourceAttached(workListDoiResponse.data);
+        setWorkListDoi(workListTotal);
       } catch (error) {
         setLoadingError(error);
       } finally {
