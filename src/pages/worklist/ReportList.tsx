@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getWorkListReports } from '../../api/workListApi';
-import { AxiosResponse } from 'axios';
-import { Resource } from '../../types/resource.types';
-import { getResource } from '../../api/resourceApi';
 import { CircularProgress, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import ErrorBanner from '../../components/ErrorBanner';
 import ReportRequestListItem from './ReportRequestListItem';
 import { WorklistRequest } from '../../types/Worklist.types';
+import { getWorkListWithResourceAttached } from '../../utils/workList';
 
 const StyledUl = styled.ul`
   list-style: none; /* Remove list bullets */
@@ -17,11 +15,9 @@ const StyledUl = styled.ul`
 `;
 
 //TODO: cypress tests, DOI must also be updated and verified
-//TODO: ReportRequestListItem needs delete resource functionality
-//TODO: ReportRequestListItem needs delete request functionality
 //TODO: Icons on DOI request must match report request.
-//TODO: Utils function for fetching and adding resource to workList object
 //TODO: mockData and mockInterceptor must be updated for new report requests
+//TODO: translations in ReportRequestListItem
 
 const ReportList = () => {
   const { t } = useTranslation();
@@ -35,22 +31,8 @@ const ReportList = () => {
         setIsLoading(true);
         setLoadingError(undefined);
         const workListReportResponse = await getWorkListReports();
-        const resourcePromises: Promise<AxiosResponse<Resource>>[] = [];
-        workListReportResponse.data.forEach((work) => {
-          resourcePromises.push(getResource(work.resourceIdentifier));
-        });
-        const resources = await Promise.all(resourcePromises);
-        const newWorkList = workListReportResponse.data.map((work, index) => {
-          if (resources[index].data.identifier === work.resourceIdentifier) {
-            work.resource = resources[index].data;
-          } else {
-            const correspondingResource = resources.find((resource) => resource.data.identifier === work.identifier);
-            work.resource = correspondingResource?.data;
-          }
-          return work;
-        });
-
-        setWorkListReport(newWorkList);
+        const workListTotal = await getWorkListWithResourceAttached(workListReportResponse.data);
+        setWorkListReport(workListTotal);
       } catch (error) {
         setLoadingError(error);
       } finally {
@@ -68,13 +50,15 @@ const ReportList = () => {
       ) : (
         <>
           {workListReport.length > 0 ? (
-            <>
+            <StyledUl>
               {workListReport.map((work) => (
-                <StyledUl>
-                  <ReportRequestListItem reportWorkListRequest={work} setWorkListReport={setWorkListReport} />
-                </StyledUl>
+                <ReportRequestListItem
+                  key={work.identifier}
+                  reportWorkListRequest={work}
+                  setWorkListReport={setWorkListReport}
+                />
               ))}
-            </>
+            </StyledUl>
           ) : (
             <Typography>{t('work_list.no_doi_requests')}</Typography>
           )}
