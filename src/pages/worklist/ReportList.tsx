@@ -15,7 +15,6 @@ const StyledUl = styled.ul`
 `;
 
 //TODO: cypress tests, DOI must also be updated and verified
-//TODO: Icons on DOI request must match report request.
 //TODO: mockData and mockInterceptor must be updated for new report requests
 //TODO: translations in ReportRequestListItem
 

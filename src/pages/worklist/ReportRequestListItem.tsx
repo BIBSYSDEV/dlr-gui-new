@@ -103,7 +103,7 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
                   startIcon={<EditIcon />}
                   variant="outlined"
                   color="primary">
-                  Rediger ressurs
+                  {t('resource.edit_resource')}
                 </Button>
               </Grid>
               <Grid item xs={12}>
@@ -114,7 +114,7 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
                   endIcon={isDeletingResource && <CircularProgress size="1rem" />}
                   variant="outlined"
                   color="secondary">
-                  Slett ressurs
+                  {t('work_list.delete_resource')}
                 </Button>
               </Grid>
               <Grid item xs={12}>
@@ -125,7 +125,7 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
                   endIcon={isDeletingRequest && <CircularProgress size="1rem" />}
                   variant="outlined"
                   color="secondary">
-                  Slett rapportering
+                  {t('work_list.delete_report')}
                 </Button>
               </Grid>
             </Grid>
@@ -138,9 +138,9 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
         aria-labelledby="form-dialog-title"
         fullScreen={fullScreenDialog}
         open={showDeleteRequestDialog}>
-        <DialogTitle id="form-dialog-title">Slett rapportering</DialogTitle>
+        <DialogTitle id="form-dialog-title"> {t('work_list.delete_report')}</DialogTitle>
         <DialogContent>
-          <Typography>Dette sletter rapporteringen og ikke selve ressursen</Typography>
+          <Typography>{'work_list.delete_report_info'}</Typography>
         </DialogContent>
         <DialogActions>
           <Button
@@ -152,7 +152,7 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
               handleDeleteReportRequest();
             }}
             color="secondary">
-            Slett rapportering
+            {t('work_list.delete_report')}
           </Button>
           <Button onClick={() => setShowDeleteRequestDialog(false)}>{t('common.cancel')}</Button>
         </DialogActions>
@@ -163,14 +163,14 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
         fullScreen={fullScreenDialog}
         open={showDeleteResourceDialog}>
         <DialogTitle id="form-dialog-title">
-          Slett
+          {t('common.delete')}
           {reportWorkListRequest.resource?.features.dlr_title
             ? ` "${reportWorkListRequest.resource.features.dlr_title}"`
-            : ' ressursen'}
+            : ` ${t('resource.metadata.resource').toLowerCase()}`}
           ?
         </DialogTitle>
         <DialogContent>
-          <Typography>NB! Dette sletter selve ressursen permanent</Typography>
+          <Typography>{t('work_list.delete_resource_warning')}</Typography>
         </DialogContent>
         <DialogActions>
           <Button
@@ -182,7 +182,7 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
               handleDeleteResource();
             }}
             color="secondary">
-            Slett ressurs
+            {t('work_list.delete_resource')}
           </Button>
           <Button onClick={() => setShowDeleteResourceDialog(false)}>{t('common.cancel')}</Button>
         </DialogActions>
