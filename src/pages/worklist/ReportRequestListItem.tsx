@@ -140,7 +140,7 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
         open={showDeleteRequestDialog}>
         <DialogTitle id="form-dialog-title"> {t('work_list.delete_report')}</DialogTitle>
         <DialogContent>
-          <Typography>{'work_list.delete_report_info'}</Typography>
+          <Typography>{t('work_list.delete_report_info')}</Typography>
         </DialogContent>
         <DialogActions>
           <Button

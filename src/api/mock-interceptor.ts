@@ -69,7 +69,7 @@ export const interceptRequestsOnMock = () => {
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/identifiers/doi/requests`)).reply(201);
   mock
     .onPost(
-      new RegExp(`${API_PATHS.guiBackendResourcesPath}/worklists/types/dlr_resource_complaint/items/.*/completion`)
+      new RegExp(`${API_PATHS.guiBackendWorklistsPath}/worklists/types/dlr_resource_complaint/items/.*/completion`)
     )
     .reply(201);
   mock
