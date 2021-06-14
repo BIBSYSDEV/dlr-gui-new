@@ -637,3 +637,41 @@ export const mockWorkListRequestDOI: WorklistRequest[] = [
     stateDate: '2021-04-28T11:23:34.250Z',
   },
 ];
+
+export const mockWorkListReportResource: WorklistRequest[] = [
+  {
+    identifier: '21341234',
+    resourceIdentifier: mockResource.identifier,
+    submitter: 'epost@epost.no',
+    institution: 'unit',
+    submittedDate: '2021-04-28T11:23:34.250Z',
+    type: WorkListRequestType.ReportComplaint,
+    description:
+      'description description descriptiondescriptiondescription description description description description description',
+    state: 'string',
+    stateDate: '2021-04-28T11:23:34.250Z',
+  },
+  {
+    identifier: '524352435',
+    resourceIdentifier: '34789257',
+    submitter: 'epost@epost.no',
+    institution: 'unit',
+    submittedDate: '2021-04-28T11:23:34.250Z',
+    type: WorkListRequestType.ReportComplaint,
+    description: 'short',
+    state: 'string',
+    stateDate: '2021-04-28T11:23:34.250Z',
+  },
+  {
+    identifier: '435246687',
+    resourceIdentifier: '74876547',
+    submitter: 'somebody@email.com',
+    institution: 'unit',
+    submittedDate: '2021-04-28T11:23:34.250Z',
+    type: WorkListRequestType.ReportComplaint,
+    description:
+      'long long longlonglonglong longlong longlonglong long long long long long long longlonglonglong longlongv longlonglong longlonglong longvlong longlonglong longlonglong longv longlonglong longlonglong long long longlonglonglong longlong longlonglong long long long long long long longlonglonglong longlongv longlonglong longlonglong longvlong longlonglong longlonglong longv longlonglong longlonglong long long longlonglonglong longlong longlonglong long long long long long long longlonglonglong longlongv longlonglong longlonglong longvlong longlonglong longlonglong longv longlonglong longlonglong',
+    state: 'string',
+    stateDate: '2021-04-28T11:23:34.250Z',
+  },
+];
