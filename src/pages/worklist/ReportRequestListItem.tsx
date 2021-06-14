@@ -98,6 +98,7 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
             <Grid container spacing={1}>
               <Grid item xs={10}>
                 <Button
+                  data-testid={`edit-resource-${reportWorkListRequest.resourceIdentifier}`}
                   disabled={disableAllButtons}
                   href={`/editresource/${reportWorkListRequest.resourceIdentifier}`}
                   startIcon={<EditIcon />}
@@ -108,6 +109,7 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
               </Grid>
               <Grid item xs={12}>
                 <Button
+                  data-testid={`show-delete-resource-dialog-${reportWorkListRequest.resourceIdentifier}`}
                   disabled={disableAllButtons}
                   onClick={() => setShowDeleteResourceDialog(true)}
                   startIcon={<DeleteIcon />}
@@ -119,6 +121,7 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
               </Grid>
               <Grid item xs={12}>
                 <Button
+                  data-testid={`show-delete-report-dialog-${reportWorkListRequest.resourceIdentifier}`}
                   disabled={disableAllButtons}
                   onClick={() => setShowDeleteRequestDialog(true)}
                   startIcon={<BlockIcon />}

@@ -46,4 +46,23 @@ context('Actions', () => {
     cy.get(`[data-testid=confirm-delete-doi-button]`).click();
     cy.get(`[data-testid=request-item-title-${mockResource.identifier}]`).should('not.exist');
   });
+
+  it('is possible to delete resource from report list', () => {
+    cy.get(`[data-testid=request-item-title-${mockResource.identifier}]`).should('exist');
+    cy.get(`[data-testid=show-delete-resource-dialog-${mockResource.identifier}]`).click();
+    cy.get(`[data-testid=confirm-delete-button]`).click();
+    cy.get(`[data-testid=request-item-title-${mockResource.identifier}]`).should('not.exist');
+  });
+  it('is possible to reject report request', () => {
+    cy.get(`[data-testid=request-item-title-${mockResource.identifier}]`).should('exist');
+    cy.get(`[data-testid=show-delete-report-dialog-${mockResource.identifier}]`).click();
+    cy.get(`[data-testid=confirm-delete-button]`).click();
+    cy.get(`[data-testid=request-item-title-${mockResource.identifier}]`).should('not.exist');
+  });
+
+  it('is possible to edit a reported resource', () => {
+    cy.get(`[data-testid=request-item-title-${mockResource.identifier}]`).should('exist');
+    cy.get(`[data-testid=edit-resource-${mockResource.identifier}]`).click();
+    cy.get('[data-testid=dlr-title-input]').should('exist');
+  });
 });
