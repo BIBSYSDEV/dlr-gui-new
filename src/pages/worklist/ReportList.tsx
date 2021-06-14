@@ -14,8 +14,6 @@ const StyledUl = styled.ul`
   margin: 0;
 `;
 
-//TODO: cypress tests, DOI must also be updated and verified
-
 const ReportList = () => {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
