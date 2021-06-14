@@ -44,6 +44,9 @@ const ReportList = () => {
         <CircularProgress />
       ) : (
         <>
+          <Typography gutterBottom variant="h2">
+            {t('work_list.reports')}
+          </Typography>
           {workListReport.length > 0 ? (
             <StyledUl>
               {workListReport.map((work) => (
