@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Colors, DeviceWidths, StyleWidths } from '../../themes/mainTheme';
 import { WorklistRequest } from '../../types/Worklist.types';
@@ -77,6 +77,15 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
     }
   };
 
+  useEffect(() => {
+    debugger;
+    const hasAuthorities = workListRequestDOI.resource?.creators?.map((creator) => {
+      console.log(creator);
+      return !!creator.authorities;
+    });
+    console.log(hasAuthorities);
+  }, []);
+
   return (
     <StyledListItemWrapper>
       <Grid container spacing={3}>
@@ -85,7 +94,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
         </Grid>
         <Grid item xs={12} sm={4}>
           <Grid container spacing={1}>
-            <Grid item xs={10}>
+            <Grid item xs={12}>
               <Button
                 href={`/editresource/${workListRequestDOI.resourceIdentifier}`}
                 startIcon={<EditIcon />}
@@ -95,7 +104,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
                 {t('resource.edit_resource')}
               </Button>
             </Grid>
-            <Grid item xs={10}>
+            <Grid item xs={12}>
               <Button
                 disabled={!canCreateDOI}
                 data-testid={`create-doi-button-${workListRequestDOI.resourceIdentifier}`}
@@ -107,7 +116,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
                 {t('work_list.create_doi')}
               </Button>
             </Grid>
-            <Grid item xs={10}>
+            <Grid item xs={12}>
               <Button
                 variant="outlined"
                 color="secondary"
