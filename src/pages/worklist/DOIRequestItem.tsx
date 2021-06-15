@@ -12,6 +12,7 @@ import {
   DialogTitle,
   Grid,
   TextField,
+  Typography,
   useMediaQuery,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -21,6 +22,7 @@ import ErrorBanner from '../../components/ErrorBanner';
 import WorkListRequestMetaDataViewer from './WorkListRequestMetaDataViewer';
 import EditIcon from '@material-ui/icons/Edit';
 import BlockIcon from '@material-ui/icons/Block';
+import { getAuthoritiesForResourceCreatorOrContributor } from '../../api/authoritiesApi';
 
 interface Props {
   backgroundColor: string;
@@ -43,9 +45,11 @@ interface DOIRequestItemProps {
 
 const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkListDoi }) => {
   const [isCreatingDOi, setIsCreatingDOi] = useState(false);
+  const [busySearchingForAuthorities, setBusySearchingForAuthorities] = useState(false);
   const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
   const [showConfirmCreateDOIDialog, setShowConfirmCreateDOIDialog] = useState(false);
   const [updateError, setUpdateError] = useState<Error>();
+  const [searchingForAuthoritiesError, setSearchingForAuthoritiesError] = useState<Error>();
   const [deleteComment, setDeleteComment] = useState('');
   const [canCreateDOI, setCanCreateDOI] = useState(false);
   const [isDeletingRequest, setIsDeletingRequest] = useState(false);
@@ -78,12 +82,32 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
   };
 
   useEffect(() => {
-    debugger;
-    const hasAuthorities = workListRequestDOI.resource?.creators?.map((creator) => {
-      console.log(creator);
-      return !!creator.authorities;
-    });
-    console.log(hasAuthorities);
+    const isCreatorsVerified = async () => {
+      if (workListRequestDOI.resource?.creators) {
+        try {
+          setBusySearchingForAuthorities(true);
+          setSearchingForAuthoritiesError(undefined);
+          const promiseArray: Promise<any>[] = [];
+          workListRequestDOI.resource.creators.map((creator) => {
+            promiseArray.push(
+              getAuthoritiesForResourceCreatorOrContributor(workListRequestDOI.resourceIdentifier, creator.identifier)
+            );
+          });
+          const authoritiesArray = await Promise.all(promiseArray);
+          authoritiesArray.map((cratorAuth) => {
+            if (cratorAuth.length > 0) {
+              setCanCreateDOI(true);
+            }
+          });
+        } catch (error) {
+          setSearchingForAuthoritiesError(error);
+        } finally {
+          setBusySearchingForAuthorities(false);
+        }
+      }
+    };
+
+    isCreatorsVerified();
   }, []);
 
   return (
@@ -105,11 +129,17 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
               </Button>
             </Grid>
             <Grid item xs={12}>
+              {!busySearchingForAuthorities && !canCreateDOI && (
+                <Typography variant="overline" gutterBottom>
+                  Verifiser autoriteter for å opprette DOI
+                </Typography>
+              )}
               <Button
                 disabled={!canCreateDOI}
                 data-testid={`create-doi-button-${workListRequestDOI.resourceIdentifier}`}
                 variant="outlined"
                 color="primary"
+                endIcon={busySearchingForAuthorities && <CircularProgress size="1rem" />}
                 onClick={() => {
                   setShowConfirmCreateDOIDialog(true);
                 }}>
@@ -136,6 +166,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
             <CircularProgress size="1rem" />
           </Grid>
         )}
+        {searchingForAuthoritiesError && <span>Error!</span>}
       </Grid>
       <Dialog
         fullScreen={fullScreenDialog}
