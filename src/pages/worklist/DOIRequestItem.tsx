@@ -12,7 +12,6 @@ import {
   DialogTitle,
   Grid,
   TextField,
-  Typography,
   useMediaQuery,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';

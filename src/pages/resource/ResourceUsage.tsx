@@ -63,6 +63,11 @@ const generateIframeText = (resource: Resource) => {
   }/content/main?navbar=false&footer=false" width="640px" height="360px" style="border: none;" allowfullscreen="true"></iframe>`;
 };
 
+const userAgentIsNotOperaForDesktop = () => {
+  const userAgent = navigator.userAgent;
+  return userAgent.match(/Android/) || !userAgent.match(/Opera|OPR\//);
+};
+
 interface ResourceUsageProps {
   resource: Resource;
 }
@@ -142,22 +147,19 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
 
   const shareLink = async () => {
     setShowCopiedLinkToClipboardInformation(false);
-    if (resource.features.dlr_identifier_handle) {
-      try {
-        const data = { url: generatePreferredURL(resource), title: resource.features.dlr_title };
-        const userAgent = navigator.userAgent;
-        if (userAgent.match(/Android/) || !userAgent.match(/Opera|OPR\//)) {
-          //navigator.share() works for chrome, edge and safari
-          //firefox causes exception and Opera browsers crashes completely
-          await navigator.share(data);
-        } else {
-          handleCopyButtonClick(generatePreferredURL(resource));
-          setShowCopiedLinkToClipboardInformation(true);
-        }
-      } catch (error) {
+    try {
+      const data = { url: generatePreferredURL(resource), title: resource.features.dlr_title };
+      if (userAgentIsNotOperaForDesktop()) {
+        //navigator.share() works for chrome, edge and safari
+        //firefox causes exception and Opera browsers crashes completely
+        await navigator.share(data);
+      } else {
         handleCopyButtonClick(generatePreferredURL(resource));
         setShowCopiedLinkToClipboardInformation(true);
       }
+    } catch (error) {
+      handleCopyButtonClick(generatePreferredURL(resource));
+      setShowCopiedLinkToClipboardInformation(true);
     }
   };
 
@@ -178,7 +180,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
         </Grid>
         {showCopiedLinkToClipboardInformation && (
           <Grid item xs={12}>
-            <Alert severity="success" variant="filled">
+            <Alert severity="success" variant="outlined">
               <AlertTitle>{t('resource.share.copied_to_clipboard')}</AlertTitle>
             </Alert>
           </Grid>

@@ -85,10 +85,10 @@ const MyResources = () => {
             <List>
               {!isLoadingMyResources &&
                 resourcesPublished.length > 0 &&
-                resourcesPublished.map((resource: Resource, index: number) => (
+                resourcesPublished.map((resource: Resource) => (
                   <ResourceListItem
                     data-testid={`my-published-resources-${resource.identifier}`}
-                    key={index}
+                    key={resource.identifier}
                     resource={resource}
                     fallbackInstitution={institution}
                     backgroundColor={Colors.UnitTurquoise_20percent}
@@ -106,10 +106,10 @@ const MyResources = () => {
             <List>
               {!isLoadingMyResources &&
                 resourcesUnpublished.length > 0 &&
-                resourcesUnpublished.map((resource: Resource, index: number) => (
+                resourcesUnpublished.map((resource: Resource) => (
                   <ResourceListItem
                     data-testid={`my-unpublished-resources-${resource.identifier}`}
-                    key={index}
+                    key={resource.identifier}
                     resource={resource}
                     backgroundColor={Colors.UnitGrey2_10percent}
                     fallbackInstitution={institution}

@@ -58,7 +58,7 @@ const ReportList = () => {
               ))}
             </StyledUl>
           ) : (
-            <Typography>{t('work_list.no_doi_requests')}</Typography>
+            <Typography>{t('work_list.no_report_requests')}</Typography>
           )}
         </>
       )}

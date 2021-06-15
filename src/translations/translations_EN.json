@@ -523,6 +523,7 @@
     "doi_request_list": "DOI requests",
     "hide": "Hide",
     "no_doi_requests": "There are currently no DOI requests",
+    "no_report_requests": "There are currently no reports",
     "page_title": "Work list",
     "page_requirements": "You must be curator or editor for accessing this feature",
     "possible_deleted": "This resource may already been deleted",
