@@ -93,12 +93,13 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
               getAuthoritiesForResourceCreatorOrContributor(workListRequestDOI.resourceIdentifier, creator.identifier)
             );
           });
-          const authoritiesArray = await Promise.all(promiseArray);
-          authoritiesArray.map((cratorAuth) => {
-            if (cratorAuth.length > 0) {
+          const creatorAuthoritiesArray = await Promise.all(promiseArray);
+          for (let i = 0; i < creatorAuthoritiesArray.length; i++) {
+            if (creatorAuthoritiesArray[i].length > 0) {
               setCanCreateDOI(true);
+              break;
             }
-          });
+          }
         } catch (error) {
           setSearchingForAuthoritiesError(error);
         } finally {
