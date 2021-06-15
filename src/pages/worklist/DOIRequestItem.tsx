@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import { Colors, DeviceWidths, StyleWidths } from '../../themes/mainTheme';
-import { WorklistDOIRequest } from '../../types/Worklist.types';
+import { WorklistRequest } from '../../types/Worklist.types';
 import {
   Button,
   CircularProgress,
@@ -11,16 +11,14 @@ import {
   DialogContentText,
   DialogTitle,
   Grid,
-  Link,
   TextField,
-  Typography,
   useMediaQuery,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { createDOI, refuseDoiRequest } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';
+import WorkListRequestMetaDataViewer from './WorkListRequestMetaDataViewer';
 
 const StyledButton = styled(Button)`
   min-width: 7rem;
@@ -41,13 +39,12 @@ const StyledListItemWrapper: any = styled.li<Props>`
 `;
 
 interface DOIRequestItemProps {
-  workListRequestDOI: WorklistDOIRequest;
-  setWorkListDoi: React.Dispatch<React.SetStateAction<WorklistDOIRequest[]>>;
+  workListRequestDOI: WorklistRequest;
+  setWorkListDoi: React.Dispatch<React.SetStateAction<WorklistRequest[]>>;
 }
 
 const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkListDoi }) => {
   const [isBusy, setIsBusy] = useState(false);
-  const [showLongText, setShowLongText] = useState(false);
   const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
   const [showConfirmCreateDOIDialog, setShowConfirmCreateDOIDialog] = useState(false);
   const [updateError, setUpdateError] = useState<Error>();
@@ -84,64 +81,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
     <StyledListItemWrapper>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={8}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Typography variant="h3">
-                <Link
-                  href={`/resource/${workListRequestDOI.resourceIdentifier}`}
-                  data-testid={`doi-request-item-title-${workListRequestDOI.resourceIdentifier}`}>
-                  {workListRequestDOI.resource?.features.dlr_title ?? workListRequestDOI.resourceIdentifier}
-                </Link>
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography variant="caption">{t('work_list.submitter')}</Typography>
-              <Typography data-testid={`doi-request-item-submitter-${workListRequestDOI.resourceIdentifier}`}>
-                {workListRequestDOI.submitter}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography variant="caption">{t('work_list.submitted')}</Typography>
-              <Typography data-testid={`doi-request-item-submitted-${workListRequestDOI.resourceIdentifier}`}>
-                {format(new Date(workListRequestDOI.submittedDate), 'dd.MM.yyyy')}
-              </Typography>
-            </Grid>
-
-            <Grid item xs={12}>
-              <Typography variant="caption">{t('work_list.comment')}</Typography>
-              {workListRequestDOI.description.length >= 150 && !showLongText && (
-                <>
-                  <Typography data-testid={`doi-request-item-comment-short-${workListRequestDOI.resourceIdentifier}`}>
-                    {workListRequestDOI.description.slice(0, 150)}...
-                  </Typography>
-                  <Button
-                    data-testid={`doi-request-item-comment-read-more-button-${workListRequestDOI.resourceIdentifier}`}
-                    color="primary"
-                    onClick={() => setShowLongText(true)}>
-                    {t('work_list.read_more')}
-                  </Button>
-                </>
-              )}
-              {workListRequestDOI.description.length >= 150 && showLongText && (
-                <>
-                  <Typography data-testid={`doi-request-item-comment-long-${workListRequestDOI.resourceIdentifier}`}>
-                    {workListRequestDOI.description}
-                  </Typography>
-                  <Button
-                    aria-label={t('work_list.shorten_comments')}
-                    color="primary"
-                    onClick={() => setShowLongText(false)}>
-                    {t('work_list.hide')}
-                  </Button>
-                </>
-              )}
-              {workListRequestDOI.description.length < 150 && (
-                <Typography data-testid={`doi-request-item-comment-long-${workListRequestDOI.resourceIdentifier}`}>
-                  {workListRequestDOI.description}
-                </Typography>
-              )}
-            </Grid>
-          </Grid>
+          <WorkListRequestMetaDataViewer workListRequest={workListRequestDOI} />
         </Grid>
         <Grid item xs={12} sm={4}>
           <Grid container spacing={1}>

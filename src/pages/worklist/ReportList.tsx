@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { CircularProgress, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import { getWorkListItemDOI } from '../../api/workListApi';
-import ErrorBanner from '../../components/ErrorBanner';
-import { WorklistRequest } from '../../types/Worklist.types';
-import DOIRequestItem from './DOIRequestItem';
+import { getWorkListReports } from '../../api/workListApi';
+import { CircularProgress, Typography } from '@material-ui/core';
 import styled from 'styled-components';
+import ErrorBanner from '../../components/ErrorBanner';
+import ReportRequestListItem from './ReportRequestListItem';
+import { WorklistRequest } from '../../types/Worklist.types';
 import { getWorkListWithResourceAttached } from '../../utils/workList';
 
 const StyledUl = styled.ul`
@@ -14,27 +14,27 @@ const StyledUl = styled.ul`
   margin: 0;
 `;
 
-const DOIRequestList = () => {
+const ReportList = () => {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState<Error>();
-  const [workListDoi, setWorkListDoi] = useState<WorklistRequest[]>([]);
+  const [workListReport, setWorkListReport] = useState<WorklistRequest[]>([]);
 
   useEffect(() => {
-    const fetchWorkListDOI = async () => {
+    const fetchWorkReport = async () => {
       try {
         setIsLoading(true);
         setLoadingError(undefined);
-        const workListDoiResponse = await getWorkListItemDOI();
-        const workListTotal = await getWorkListWithResourceAttached(workListDoiResponse.data);
-        setWorkListDoi(workListTotal);
+        const workListReportResponse = await getWorkListReports();
+        const workListTotal = await getWorkListWithResourceAttached(workListReportResponse.data);
+        setWorkListReport(workListTotal);
       } catch (error) {
         setLoadingError(error);
       } finally {
         setIsLoading(false);
       }
     };
-    fetchWorkListDOI();
+    fetchWorkReport();
   }, []);
 
   return (
@@ -45,16 +45,20 @@ const DOIRequestList = () => {
       ) : (
         <>
           <Typography gutterBottom variant="h2">
-            {t('work_list.doi_request_list')}
+            {t('work_list.reports')}
           </Typography>
-          {workListDoi.length > 0 ? (
+          {workListReport.length > 0 ? (
             <StyledUl>
-              {workListDoi.map((work) => (
-                <DOIRequestItem setWorkListDoi={setWorkListDoi} key={work.identifier} workListRequestDOI={work} />
+              {workListReport.map((work) => (
+                <ReportRequestListItem
+                  key={work.identifier}
+                  reportWorkListRequest={work}
+                  setWorkListReport={setWorkListReport}
+                />
               ))}
             </StyledUl>
           ) : (
-            <Typography>{t('work_list.no_doi_requests')}</Typography>
+            <Typography>{t('work_list.no_report_requests')}</Typography>
           )}
         </>
       )}
@@ -62,4 +66,4 @@ const DOIRequestList = () => {
   );
 };
 
-export default DOIRequestList;
+export default ReportList;
