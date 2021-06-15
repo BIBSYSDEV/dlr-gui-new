@@ -37,6 +37,14 @@ const StyledSchemaPartNoBottomPadding = styled.div`
   align-items: center;
 `;
 
+const StyledHeavyWeightTypography = styled(Typography)`
+  font-weight: bold;
+  margin-top: 1rem;
+`;
+const StyledTypography = styled(Typography)`
+  margin-top: 1rem;
+`;
+
 const extraRestrictionRadio = 'extra-restriction';
 const commercialRadio = 'commersial';
 const modifyAndBuildRadio = 'change-and-build';
@@ -408,7 +416,14 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           </AccordionRadioGroup>
         )}
 
-        <Typography>{recommendedLicense}</Typography>
+        {values.licenses[0].features && recommendedLicense === values.licenses[0].features.dlr_license_code ? (
+          <StyledTypography>{t('license.got_recommended_license')}.</StyledTypography>
+        ) : (
+          <StyledHeavyWeightTypography>
+            {t('license.recommended_license_is', { license: recommendedLicense })}.
+          </StyledHeavyWeightTypography>
+        )}
+
         {savingLicenseError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingLicenseError} />}
       </StyledContentWrapper>
     </StyledSchemaPartNoBottomPadding>

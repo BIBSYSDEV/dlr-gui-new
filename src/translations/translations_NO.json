@@ -215,6 +215,7 @@
     "commercial_purposes": "Kommersielle formål",
     "external_page": "Ekstern side",
     "extra_restrictions": "Ekstra restriksjoner",
+    "got_recommended_license": "Du har anbefalt lisens basert på valgene i dette skjemaet",
     "license_information": "Lisensinformasjon",
     "modify_and_build": "Endre og bygge videre på",
     "modify_and_build_options": {
@@ -270,6 +271,7 @@
     },
     "radio_information": "Svar på spørsmålene for å få hjelp til å velge lisens eller velg lisens direkte fra nedtrekksmenyen",
     "read_more": "Les mer om ",
+    "recommended_license_is": "Anbefalt lisens basert på dine valg i dette skjemaet er {{license}}. NB! du har overstyrt valget",
     "restriction_options": {
       "bi-opphaver-bi": "Ja, den kan kun brukes internt på BI",
       "CC_BY_4_0": "Nei, jeg ønsker at ressursen blir brukt og delt",
