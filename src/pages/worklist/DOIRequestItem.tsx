@@ -12,6 +12,7 @@ import {
   DialogTitle,
   Grid,
   TextField,
+  Typography,
   useMediaQuery,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -126,12 +127,12 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
                 {t('resource.edit_resource')}
               </Button>
             </Grid>
+            {!busySearchingForAuthorities && !canCreateDOI && (
+              <Grid item xs={12}>
+                <Typography variant="body2">{t('work_list.doi_verify_resource')}</Typography>
+              </Grid>
+            )}
             <Grid item xs={12}>
-              {!busySearchingForAuthorities && !canCreateDOI && (
-                <Typography variant="overline" gutterBottom>
-                  Verifiser autoriteter for å opprette DOI
-                </Typography>
-              )}
               <Button
                 disabled={!canCreateDOI}
                 data-testid={`create-doi-button-${workListRequestDOI.resourceIdentifier}`}
