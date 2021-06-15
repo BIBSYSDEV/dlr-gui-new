@@ -89,7 +89,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
           setSearchingForAuthoritiesError(undefined);
           const promiseArray: Promise<any>[] = [];
           workListRequestDOI.resource.creators.map((creator) => {
-            promiseArray.push(
+            return promiseArray.push(
               getAuthoritiesForResourceCreatorOrContributor(workListRequestDOI.resourceIdentifier, creator.identifier)
             );
           });
@@ -106,9 +106,8 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
         }
       }
     };
-
     isCreatorsVerified();
-  }, []);
+  }, [workListRequestDOI]);
 
   return (
     <StyledListItemWrapper>
