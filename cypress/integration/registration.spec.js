@@ -383,4 +383,25 @@ context('Actions', () => {
     cy.get(`[data-testid=change-master-content-thumbnail-button]`).click();
     cy.get(`[data-testid=revert-thumbnail-button]`).click();
   });
+
+  it('lets the uesr know if their license matches the licenseWizard recommendation or not', () => {
+    const testLink = 'http://www.test.com';
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-link]').click();
+    cy.get('[data-testid=new-resource-link-input]').type(testLink);
+    cy.get('[data-testid=new-resource-link-submit-button]').click();
+
+    cy.get('[data-testid=step-navigation-3]').click();
+    cy.get('[data-testid=contains-other-peoples-work-option-no] input').click();
+    cy.get('[data-testid=resource-restriction-option-yes] input').click();
+    cy.get('[data-testid=commercial-use-option-yes] input').click();
+    cy.get('[data-testid=modify-and-build-option-share_alike] input').click();
+    cy.get('[data-testid=licence-field]').contains('CC BY-SA 4.0');
+    cy.get('[data-testid=recommended-license]').contains('Du har anbefalt lisens basert på valgene i dette skjemaet');
+    cy.get('[data-testid=licence-field]').click();
+    cy.get(`[data-testid=license-option-${licenses[0].identifier}`).click();
+    cy.get('[data-testid=recommended-license]').contains(
+      'Anbefalt lisens basert på dine valg i dette skjemaet er CC BY-SA 4.0'
+    );
+  });
 });

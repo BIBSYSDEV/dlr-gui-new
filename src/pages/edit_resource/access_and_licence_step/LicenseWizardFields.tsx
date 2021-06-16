@@ -417,9 +417,9 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
         )}
 
         {values.licenses[0].features && recommendedLicense === values.licenses[0].features.dlr_license_code ? (
-          <StyledTypography>{t('license.got_recommended_license')}.</StyledTypography>
+          <StyledTypography data-testid="recommended-license">{t('license.got_recommended_license')}.</StyledTypography>
         ) : (
-          <StyledHeavyWeightTypography>
+          <StyledHeavyWeightTypography data-testid="recommended-license">
             {t('license.recommended_license_is', { license: recommendedLicense })}.
           </StyledHeavyWeightTypography>
         )}

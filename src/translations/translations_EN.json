@@ -271,7 +271,7 @@
     },
     "radio_information": "Answer the questions below to receive a license suggestion, or pick a license directly from the drop-down menu below",
     "read_more": "Read more about",
-    "recommended_license_is": "Based on your choices in this form, the recommended license is {{license}}. Notice! you have overruled this",
+    "recommended_license_is": "Based on your choices in this form, the recommended license is {{license}}. Notice! the recommendation is overruled with another license",
     "restriction_options": {
       "bi-opphaver-bi": "Yes, it can only be used internally at BI",
       "CC_BY_4_0": "No, I want the resource to be used and shared",
