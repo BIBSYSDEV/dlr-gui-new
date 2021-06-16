@@ -13,6 +13,7 @@ import SearchExplainer from './pages/infopages/SearchExplainer';
 import AdminPage from './pages/admin/AdminPage';
 import MainContentView from './pages/content_view/MainContentView';
 import WorkListPage from './pages/worklist/WorkListPage';
+import ProfilePage from './pages/profile/ProfilePage';
 
 const Explore = lazy(() => import('./pages/dashboard/Explore'));
 const EditResourcePage = lazy(() => import('./pages/edit_resource/EditResourcePage'));
@@ -33,6 +34,7 @@ const AppRoutes = () => {
           path="/admin"
           render={(props) => <AdminPage isAdmin={user.institutionAuthorities?.isAdministrator} {...props} />}
         />
+        <Route exact path="/profile" render={(props) => <ProfilePage id={user.id} {...props} />} />
         <Route exact path="/privacy-policy" component={PrivacyPolicy} />
         {/* CreatorRoutes */}
         <Route

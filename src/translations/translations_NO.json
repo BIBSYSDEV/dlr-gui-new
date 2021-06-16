@@ -284,6 +284,9 @@
     "description": "Beskrivelse",
     "heading": "Personvernerklæring"
   },
+  "profile": {
+    "profile": "Profil"
+  },
   "resource": {
     "access_types": {
       "open": "Offentlig",
