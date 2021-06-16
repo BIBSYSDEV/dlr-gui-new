@@ -97,7 +97,8 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
           for (let i = 0; i < creatorAuthoritiesArray.length; i++) {
             if (creatorAuthoritiesArray[i].length > 0) {
               setCanCreateDOI(true);
-              break;
+            } else {
+              setCanCreateDOI(false);
             }
           }
         } catch (error) {
