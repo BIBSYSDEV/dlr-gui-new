@@ -9,7 +9,7 @@ const languageMenuId = 'language-menu';
 
 const ChangeLanguageButton: FC = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -29,6 +29,7 @@ const ChangeLanguageButton: FC = () => {
   return (
     <>
       <Button
+        data-testid="language-button"
         aria-controls={languageMenuId}
         startIcon={<LanguageIcon />}
         endIcon={open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
@@ -36,8 +37,12 @@ const ChangeLanguageButton: FC = () => {
         {i18n.language.toUpperCase()}
       </Button>
       <Menu id={languageMenuId} anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem onClick={() => setLanguage('nob')}>Norsk - bokmål</MenuItem>
-        <MenuItem onClick={() => setLanguage('eng')}>English</MenuItem>
+        <MenuItem data-testid="nb-no-button" onClick={() => setLanguage('nb-no')}>
+          {`${t('localization.norwegian_bokmaal')} `} (<abbr>{t('localization.norwegian_language_code')}</abbr>)
+        </MenuItem>
+        <MenuItem data-testid="eng-button" onClick={() => setLanguage('eng')}>
+          {`${t('localization.english')} `}(<abbr>{t('localization.english_language_code')}</abbr>)
+        </MenuItem>
       </Menu>
     </>
   );

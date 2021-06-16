@@ -45,7 +45,7 @@ const StyledSecondaryButtonBar = styled.div`
 `;
 
 const StyledLanguageButtonWrapper = styled.div`
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.md - 1 + 'px'}) {
     width: 100%;
     display: flex;
     justify-content: flex-end;
