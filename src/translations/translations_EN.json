@@ -464,7 +464,8 @@
       "video": "Video",
       "workflow": "Workflow"
     },
-    "unpublished_resources": "Started"
+    "unpublished_resources": "Started",
+    "views": "visninger"
   },
   "search_tricks": {
     "asterisk1": "Asterisk (*) is used as wildcard to replace one or more characters in the search term. t*ck will match \"tick\", \"tock\", and \"trick\"",

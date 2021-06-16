@@ -5,6 +5,7 @@ import {
   mockLicenses,
   mockMyResources,
   mockResource,
+  mockResourceStatistics,
   mockTags,
   mockText,
 } from '../../src/api/mockdata';
@@ -28,6 +29,10 @@ context('Actions', () => {
     cy.get('[data-testid=resource-time-published]').contains('06.11.2020');
     cy.get('[data-testid=resource-tags]').contains(mockTags[0]);
     cy.get('[data-testid=resource-license]').contains(mockLicenses[0].features.dlr_license_code);
+  });
+
+  it('can show views', () => {
+    cy.get('[data-testid=resource-views]').contains(mockResourceStatistics.features.dlr_statistics_delivery_count);
   });
 
   it('shows a resources content', () => {

@@ -36,6 +36,10 @@ const StyledCaption = styled(Typography)`
   display: block;
 `;
 
+const StyledBoldTypography = styled(Typography)`
+  font-weight: 700;
+`;
+
 interface ResourceMetadataProps {
   resource: Resource;
 }
@@ -105,11 +109,9 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource }) => {
               </Typography>
             )}
             {views && (
-              <Typography gutterBottom variant="body2">
-                <b>
-                  {views} {t('visninger')}
-                </b>
-              </Typography>
+              <StyledBoldTypography gutterBottom variant="body2" data-testid="resource-views">
+                {views} {t('resource.views')}
+              </StyledBoldTypography>
             )}
 
             {resource.features.dlr_description && (
