@@ -283,8 +283,8 @@
   "localization": {
     "english": "English",
     "english_language_code": "ENG",
-    "norwegian_bokmaal": "Norwegian - Bokmål",
-    "norwegian_language_code": "NOB"
+    "norwegian_bokmaal": "Norsk - Bokmål",
+    "norwegian_language_code": "nb-NO"
   },
   "privacy_policy": {
     "description": "Description",
