@@ -52,6 +52,10 @@ const Sitemap = () => {
       href: '/worklist',
       description: `${t('work_list.page_title')} (${t('work_list.page_requirements')})`,
     },
+    {
+      href: '/profile',
+      description: `${t('profile.profile')} (${t('common.must_be_logged_in').toLowerCase()})`,
+    },
   ].sort((a, b) => a.description.localeCompare(b.description));
 
   return (

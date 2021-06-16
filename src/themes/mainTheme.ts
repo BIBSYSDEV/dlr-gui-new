@@ -45,6 +45,7 @@ export enum Colors {
   DLRYellow1 = 'rgba(242,229,189,0.2)',
   DLRYellow2 = 'rgba(242,229,189,0.3)',
   DLRYellow3 = 'rgba(242,229,189,0.4)',
+  DLRYellow4 = 'rgba(242,229,189,0.5)',
   DLRColdGreen1 = 'rgba(42,191,164,0.10)',
   DLRColdGreen2 = 'rgba(42,191,164,0.25)',
   LicenseAccessPageGradientColor1 = 'rgba(68,242,193,0.10)',

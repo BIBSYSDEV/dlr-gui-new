@@ -17,6 +17,7 @@ import {
   mockCourses,
   mockCreatedResourceWithContents,
   mockCreateUpload,
+  mockCreatorOrContributorAuthoritiesResponse,
   mockCreators,
   mockCuratorList,
   mockDefaultContent,
@@ -38,6 +39,7 @@ import {
   mockText,
   mockToken,
   mockUser,
+  mockWorkListReportResource,
   mockWorkListRequestDOI,
 } from './mockdata';
 
@@ -66,6 +68,14 @@ export const interceptRequestsOnMock = () => {
     .onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/identifiers/doi/requests/current/approvals`))
     .reply(201);
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/identifiers/doi/requests`)).reply(201);
+  mock
+    .onPost(
+      new RegExp(`${API_PATHS.guiBackendWorklistsPath}/worklists/types/dlr_resource_complaint/items/.*/completion`)
+    )
+    .reply(201);
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendWorklistsPath}/worklists/types/dlr_resource_complaint`))
+    .reply(200, mockWorkListReportResource);
 
   //AUTHORITY
   mock
@@ -74,6 +84,9 @@ export const interceptRequestsOnMock = () => {
   mock
     .onGet(new RegExp(`${API_PATHS.guiBackendAuthoritiesPath}/authorities/search.*`))
     .reply(200, mockAuthoritySearchResponse);
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/resource-123/creators/.*/authorities`))
+    .reply((config) => loggedReply(config, 200, [mockCreatorOrContributorAuthoritiesResponse]));
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*/authorities`)).reply(200, []);
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*/authorities`)).reply(201);
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*/authorities`)).reply(201);
