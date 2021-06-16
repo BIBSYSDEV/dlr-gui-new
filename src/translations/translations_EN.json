@@ -284,6 +284,9 @@
     "description": "Description",
     "heading": "Privacy policy"
   },
+  "profile": {
+    "profile": "Profile"
+  },
   "resource": {
     "access_types": {
       "open": "Open",
