@@ -5,7 +5,7 @@ import { FieldNames, Resource } from '../../../types/resource.types';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { deleteResourceLicense, setResourceLicense } from '../../../api/resourceApi';
 import { InstitutionLicenseProviders, License } from '../../../types/license.types';
-import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
+import { StyledContentWrapper } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import ErrorBanner from '../../../components/ErrorBanner';
 import LicenseCard from '../../../components/LicenseCard';
@@ -16,6 +16,14 @@ import LicensePopoverExplanation from '../../../components/LicensePopoverExplana
 
 const StyledInlineWrapper = styled.div`
   display: flex;
+  align-items: center;
+`;
+
+const StyledSchemaPartLessTopPadding = styled.div`
+  background-color: ${Colors.LicenseAccessPageGradientColor3};
+  padding: 1rem 1rem 2rem 1rem;
+  display: flex;
+  flex-direction: column;
   align-items: center;
 `;
 
@@ -68,7 +76,7 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
   };
 
   return (
-    <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor3}>
+    <StyledSchemaPartLessTopPadding>
       <StyledContentWrapper>
         {licenses && (
           <StyledInlineWrapper>
@@ -123,7 +131,7 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
           <LicenseCard license={values.licenses[0]} />
         )}
       </StyledContentWrapper>
-    </StyledSchemaPartColored>
+    </StyledSchemaPartLessTopPadding>
   );
 };
 
