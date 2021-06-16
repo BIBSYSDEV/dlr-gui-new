@@ -146,6 +146,11 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
                 {t('work_list.create_doi')}
               </Button>
             </Grid>
+            {searchingForAuthoritiesError && (
+              <Grid item xs={12}>
+                <ErrorBanner userNeedsToBeLoggedIn={true} error={searchingForAuthoritiesError}></ErrorBanner>
+              </Grid>
+            )}
             <Grid item xs={12}>
               <Button
                 variant="outlined"
@@ -166,7 +171,6 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
             <CircularProgress size="1rem" />
           </Grid>
         )}
-        {searchingForAuthoritiesError && <span>Error!</span>}
       </Grid>
       <Dialog
         fullScreen={fullScreenDialog}

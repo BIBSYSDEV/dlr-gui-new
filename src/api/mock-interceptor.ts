@@ -17,6 +17,7 @@ import {
   mockCourses,
   mockCreatedResourceWithContents,
   mockCreateUpload,
+  mockCreatorOrContributorAuthoritiesResponse,
   mockCreators,
   mockCuratorList,
   mockDefaultContent,
@@ -83,6 +84,9 @@ export const interceptRequestsOnMock = () => {
   mock
     .onGet(new RegExp(`${API_PATHS.guiBackendAuthoritiesPath}/authorities/search.*`))
     .reply(200, mockAuthoritySearchResponse);
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/resource-123/creators/.*/authorities`))
+    .reply((config) => loggedReply(config, 200, [mockCreatorOrContributorAuthoritiesResponse]));
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*/authorities`)).reply(200, []);
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*/authorities`)).reply(201);
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*/authorities`)).reply(201);

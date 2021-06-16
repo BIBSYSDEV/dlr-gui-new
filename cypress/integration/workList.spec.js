@@ -65,4 +65,6 @@ context('Actions', () => {
     cy.get(`[data-testid=edit-resource-${mockResource.identifier}]`).click();
     cy.get('[data-testid=dlr-title-input]').should('exist');
   });
+
+  //TODO: test create doi-button
 });
