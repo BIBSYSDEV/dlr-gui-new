@@ -53,6 +53,12 @@ const StyledLanguageButtonWrapper = styled.div`
   }
 `;
 
+const StyledLanguageButtonUserIsNotLoggedInVariant = styled.div`
+  width: 85%;
+  display: flex;
+  justify-content: flex-end;
+`;
+
 const Header = () => {
   const user = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
@@ -125,9 +131,15 @@ const Header = () => {
           </Button>
         )}
       </StyledSecondaryButtonBar>
-      <StyledLanguageButtonWrapper>
-        <ChangeLanguageButton />
-      </StyledLanguageButtonWrapper>
+      {user.id ? (
+        <StyledLanguageButtonWrapper>
+          <ChangeLanguageButton />
+        </StyledLanguageButtonWrapper>
+      ) : (
+        <StyledLanguageButtonUserIsNotLoggedInVariant>
+          <ChangeLanguageButton />
+        </StyledLanguageButtonUserIsNotLoggedInVariant>
+      )}
 
       <StyledSecondaryButtonBar>
         {user.id ? (
