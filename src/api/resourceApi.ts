@@ -7,6 +7,7 @@ import {
   ResourceContents,
   ResourceCreationType,
   ResourceEvent,
+  ResourceStatistic,
 } from '../types/resource.types';
 import { AccessTypes, License } from '../types/license.types';
 import { Content, emptyResourceContent, LinkMetadataFilename } from '../types/content.types';
@@ -104,16 +105,16 @@ export const postResourceFeature = async (resourceIdentifier: string, feature: s
   });
 };
 
-export const getResource = (identifier: string): Promise<AxiosResponse<Resource>> => {
+export const getResource = (resourceIdentifier: string): Promise<AxiosResponse<Resource>> => {
   return authenticatedApiRequest({
-    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}`),
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}`),
     method: 'GET',
   });
 };
 
-export const getResourceDefaults = (identifier: string): Promise<AxiosResponse<Resource>> => {
+export const getResourceDefaults = (resourceIdentifier: string): Promise<AxiosResponse<Resource>> => {
   return authenticatedApiRequest({
-    url: encodeURI(`${API_PATHS.guiBackendDefaultsPath}/resources/${identifier}`),
+    url: encodeURI(`${API_PATHS.guiBackendDefaultsPath}/resources/${resourceIdentifier}`),
     method: 'GET',
   });
 };
@@ -125,9 +126,9 @@ export const updateSearchIndex = (resourceIdentifier: string) => {
   });
 };
 
-export const getResourceTags = (identifier: string): Promise<AxiosResponse<string[]>> => {
+export const getResourceTags = (resourceIdentifier: string): Promise<AxiosResponse<string[]>> => {
   return authenticatedApiRequest({
-    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/tags/types/tag`),
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/tags/types/tag`),
     method: 'GET',
   });
 };
@@ -149,9 +150,9 @@ export const postTag = (resourceIdentifier: string, tag: string): Promise<AxiosR
   });
 };
 
-export const getResourceContributors = (identifier: string): Promise<AxiosResponse<Contributor[]>> => {
+export const getResourceContributors = (resourceIdentifier: string): Promise<AxiosResponse<Contributor[]>> => {
   return authenticatedApiRequest({
-    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/contributors`),
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contributors`),
     method: 'GET',
   });
 };
@@ -191,9 +192,9 @@ export const putContributorFeature = (
   });
 };
 
-export const getResourceCreators = (identifier: string): Promise<AxiosResponse<Creator[]>> => {
+export const getResourceCreators = (resourceIdentifier: string): Promise<AxiosResponse<Creator[]>> => {
   return authenticatedApiRequest({
-    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/creators`),
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/creators`),
     method: 'GET',
   });
 };
@@ -233,9 +234,9 @@ export const putResourceCreatorFeature = (
   });
 };
 
-export const getResourceLicenses = (identifier: string): Promise<AxiosResponse<License[]>> => {
+export const getResourceLicenses = (resourceIdentifier: string): Promise<AxiosResponse<License[]>> => {
   return authenticatedApiRequest({
-    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/licenses`),
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/licenses`),
     method: 'GET',
   });
 };
@@ -249,9 +250,9 @@ export const deleteResourceContent = (resourceIdentifier: string, contentIdentif
   });
 };
 
-export const getResourceContents = async (identifier: string): Promise<ResourceContents> => {
+export const getResourceContents = async (resourceIdentifier: string): Promise<ResourceContents> => {
   const contentResponse = await authenticatedApiRequest({
-    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${identifier}/contents`),
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contents`),
     method: 'GET',
   });
   const resourceContent: ResourceContents = emptyResourceContent;
@@ -391,4 +392,11 @@ export const getCitationFromCrossCite = (dlr_identifier_doi: string): Promise<Ax
 
 export const getTextFileContents = (url: string): Promise<AxiosResponse<string>> => {
   return axios.get(url);
+};
+
+export const getResourceViews = (resourceIdentifier: string): Promise<AxiosResponse<ResourceStatistic>> => {
+  return axios({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesStatisticsPath}/statistics/resources/${resourceIdentifier}`),
+    method: 'GET',
+  });
 };
