@@ -14,6 +14,7 @@ import { Colors } from '../../themes/mainTheme';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ChangeLanguageButton from './ChangeLanguageButton';
+import AvatarButton from './AvatarButton';
 
 const StyledPageHeader = styled.div`
   display: flex;
@@ -93,6 +94,11 @@ const Header = () => {
             <Typography variant="button">{t('administrative.page_heading')}</Typography>
           </MenuItem>
         )}
+        {user.id && (
+          <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/profile">
+            <Typography variant="button">Profile</Typography>
+          </MenuItem>
+        )}
         <MenuItem onClick={handleBurgerMenuClose}>{user.id ? <Logout /> : <LoginButton />}</MenuItem>
       </Menu>
       <Logo />
@@ -126,7 +132,7 @@ const Header = () => {
       <StyledSecondaryButtonBar>
         {user.id ? (
           <Typography variant="body1">
-            {user.name} <Logout />
+            <AvatarButton />
           </Typography>
         ) : (
           <LoginButton variant="outlined" />

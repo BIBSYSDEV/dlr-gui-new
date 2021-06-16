@@ -1,9 +1,9 @@
 import { authenticatedApiRequest } from './api';
 import { API_PATHS } from '../utils/constants';
 import { AxiosResponse } from 'axios';
-import { WorklistDOIRequest } from '../types/Worklist.types';
+import { WorklistRequest } from '../types/Worklist.types';
 
-export const getWorkListItemDOI = (): Promise<AxiosResponse<WorklistDOIRequest[]>> => {
+export const getWorkListItemDOI = (): Promise<AxiosResponse<WorklistRequest[]>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendWorklistsPath}/worklists/types/dlr_resource_identifier_doi_request`),
     method: 'GET',
@@ -46,5 +46,28 @@ export const reportResource = async (resourceId: string, description: string): P
     url: encodeURI(`${API_PATHS.guiBackendResourcesFeedbacksPath}/feedbacks/resources/${resourceId}/complaints`),
     method: 'POST',
     data,
+  });
+};
+
+export const getWorkListReports = (): Promise<AxiosResponse<WorklistRequest[]>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendWorklistsPath}/worklists/types/dlr_resource_complaint`),
+    method: 'GET',
+  });
+};
+
+export const refuseComplaintReport = (workListIdentifier: string) => {
+  return authenticatedApiRequest({
+    url: encodeURI(
+      `${API_PATHS.guiBackendWorklistsPath}/worklists/types/dlr_resource_complaint/items/${workListIdentifier}/completion`
+    ),
+    method: 'POST',
+  });
+};
+
+export const getWorkListItemsExpired = (): Promise<AxiosResponse<WorklistRequest[]>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendWorklistsPath}/worklists/types/dlr_resource_expired`),
+    method: 'GET',
   });
 };
