@@ -96,7 +96,7 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
           </Grid>
           <Grid item xs={12} sm={4}>
             <Grid container spacing={1}>
-              <Grid item xs={10}>
+              <Grid item xs={12}>
                 <Button
                   data-testid={`edit-resource-${reportWorkListRequest.resourceIdentifier}`}
                   disabled={disableAllButtons}

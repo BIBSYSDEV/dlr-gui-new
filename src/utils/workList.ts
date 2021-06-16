@@ -1,12 +1,14 @@
 import { Resource } from '../types/resource.types';
-import { getResource } from '../api/resourceApi';
+import { getResource, getResourceCreators } from '../api/resourceApi';
 import { WorklistRequest } from '../types/Worklist.types';
 
 const getResourceAndIgnoreFailure = async (resourceIdentifier: string): Promise<Resource | undefined> => {
   try {
-    const resourceResponse = await getResource(resourceIdentifier);
-    return resourceResponse.data;
-  } catch (_error) {
+    const resource = (await getResource(resourceIdentifier)).data;
+    const resourceCreators = (await getResourceCreators(resourceIdentifier)).data;
+    resource.creators = resourceCreators;
+    return resource;
+  } catch (error) {
     return undefined;
   }
 };

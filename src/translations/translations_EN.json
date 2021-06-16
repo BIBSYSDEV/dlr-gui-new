@@ -524,6 +524,7 @@
     "delete_resource": "Delete resource",
     "delete_resource_warning": "Warning! This will delete the resource permanently",
     "doi_request_list": "DOI requests",
+    "doi_verify_resource": "Verify creator(s) to create DOI",
     "hide": "Hide",
     "no_doi_requests": "There are currently no DOI requests",
     "no_report_requests": "There are currently no reports",

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Colors, DeviceWidths, StyleWidths } from '../../themes/mainTheme';
 import { WorklistRequest } from '../../types/Worklist.types';
@@ -12,6 +12,7 @@ import {
   DialogTitle,
   Grid,
   TextField,
+  Typography,
   useMediaQuery,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -19,10 +20,9 @@ import { useTranslation } from 'react-i18next';
 import { createDOI, refuseDoiRequest } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';
 import WorkListRequestMetaDataViewer from './WorkListRequestMetaDataViewer';
-
-const StyledButton = styled(Button)`
-  min-width: 7rem;
-`;
+import EditIcon from '@material-ui/icons/Edit';
+import BlockIcon from '@material-ui/icons/Block';
+import { getAuthoritiesForResourceCreatorOrContributor } from '../../api/authoritiesApi';
 
 interface Props {
   backgroundColor: string;
@@ -44,38 +44,72 @@ interface DOIRequestItemProps {
 }
 
 const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkListDoi }) => {
-  const [isBusy, setIsBusy] = useState(false);
+  const [isCreatingDOi, setIsCreatingDOi] = useState(false);
+  const [busySearchingForAuthorities, setBusySearchingForAuthorities] = useState(false);
   const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
   const [showConfirmCreateDOIDialog, setShowConfirmCreateDOIDialog] = useState(false);
   const [updateError, setUpdateError] = useState<Error>();
+  const [searchingForAuthoritiesError, setSearchingForAuthoritiesError] = useState<Error>();
   const [deleteComment, setDeleteComment] = useState('');
+  const [canCreateDOI, setCanCreateDOI] = useState(false);
+  const [isDeletingRequest, setIsDeletingRequest] = useState(false);
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
   const { t } = useTranslation();
 
   const handleDeleteDoiRequest = async (ResourceIdentifier: string, comment: string) => {
     try {
-      setIsBusy(true);
+      setIsDeletingRequest(true);
       setUpdateError(undefined);
       await refuseDoiRequest(ResourceIdentifier, comment);
       setWorkListDoi((prevState) => prevState.filter((work) => work.resourceIdentifier !== ResourceIdentifier));
     } catch (error) {
       setUpdateError(error);
     } finally {
-      setIsBusy(false);
+      setIsDeletingRequest(false);
     }
   };
 
   const handleCreateDoi = async (ResourceIdentifier: string) => {
     try {
-      setIsBusy(true);
+      setIsCreatingDOi(true);
       setUpdateError(undefined);
       await createDOI(ResourceIdentifier);
       setWorkListDoi((prevState) => prevState.filter((work) => work.resourceIdentifier !== ResourceIdentifier));
     } catch (error) {
       setUpdateError(error);
-      setIsBusy(false);
+      setIsCreatingDOi(false);
     }
   };
+
+  useEffect(() => {
+    const isCreatorsVerified = async () => {
+      if (workListRequestDOI.resource?.creators) {
+        try {
+          setBusySearchingForAuthorities(true);
+          setSearchingForAuthoritiesError(undefined);
+          const promiseArray: Promise<any>[] = [];
+          workListRequestDOI.resource.creators.map((creator) => {
+            return promiseArray.push(
+              getAuthoritiesForResourceCreatorOrContributor(workListRequestDOI.resourceIdentifier, creator.identifier)
+            );
+          });
+          const creatorAuthoritiesArray = await Promise.all(promiseArray);
+          for (let i = 0; i < creatorAuthoritiesArray.length; i++) {
+            if (creatorAuthoritiesArray[i].length > 0) {
+              setCanCreateDOI(true);
+            } else {
+              setCanCreateDOI(false);
+            }
+          }
+        } catch (error) {
+          setSearchingForAuthoritiesError(error);
+        } finally {
+          setBusySearchingForAuthorities(false);
+        }
+      }
+    };
+    isCreatorsVerified();
+  }, [workListRequestDOI]);
 
   return (
     <StyledListItemWrapper>
@@ -85,37 +119,59 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
         </Grid>
         <Grid item xs={12} sm={4}>
           <Grid container spacing={1}>
-            <Grid item xs={12} md={5}>
-              <StyledButton
+            <Grid item xs={12}>
+              <Button
+                href={`/editresource/${workListRequestDOI.resourceIdentifier}`}
+                startIcon={<EditIcon />}
                 variant="outlined"
+                data-testid={`edit-resoirce-button-${workListRequestDOI.resourceIdentifier}`}
+                color="primary">
+                {t('resource.edit_resource')}
+              </Button>
+            </Grid>
+            {!busySearchingForAuthorities && !canCreateDOI && (
+              <Grid item xs={12}>
+                <Typography variant="body2">{t('work_list.doi_verify_resource')}</Typography>
+              </Grid>
+            )}
+            <Grid item xs={12}>
+              <Button
+                disabled={!canCreateDOI}
                 data-testid={`create-doi-button-${workListRequestDOI.resourceIdentifier}`}
+                variant="outlined"
                 color="primary"
+                endIcon={busySearchingForAuthorities && <CircularProgress size="1rem" />}
                 onClick={() => {
                   setShowConfirmCreateDOIDialog(true);
                 }}>
                 {t('work_list.create_doi')}
-              </StyledButton>
+              </Button>
             </Grid>
-
-            <Grid item xs={11} md={6}>
-              <StyledButton
-                startIcon={<DeleteIcon />}
+            {searchingForAuthoritiesError && (
+              <Grid item xs={12}>
+                <ErrorBanner userNeedsToBeLoggedIn={true} error={searchingForAuthoritiesError}></ErrorBanner>
+              </Grid>
+            )}
+            <Grid item xs={12}>
+              <Button
                 variant="outlined"
                 color="secondary"
                 data-testid={`show-delete-dialog-${workListRequestDOI.resourceIdentifier}`}
+                startIcon={<BlockIcon />}
+                endIcon={isDeletingRequest && <CircularProgress size="1rem" />}
                 onClick={() => {
                   setShowConfirmDeleteDialog(true);
                 }}>
                 {t('work_list.delete_request')}
-              </StyledButton>
+              </Button>
             </Grid>
-            {isBusy && (
-              <Grid xs={1} item>
-                <CircularProgress size="1rem" />
-              </Grid>
-            )}
           </Grid>
         </Grid>
+        {isCreatingDOi && (
+          <Grid xs={1} item>
+            <CircularProgress size="1rem" />
+          </Grid>
+        )}
       </Grid>
       <Dialog
         fullScreen={fullScreenDialog}

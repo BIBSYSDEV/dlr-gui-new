@@ -602,7 +602,7 @@ export const mockFacets = {
 
 export const mockWorkListRequestDOI: WorklistRequest[] = [
   {
-    identifier: '21341234',
+    identifier: '123',
     resourceIdentifier: mockResource.identifier,
     submitter: 'epost@epost.no',
     institution: 'unit',
@@ -614,8 +614,8 @@ export const mockWorkListRequestDOI: WorklistRequest[] = [
     stateDate: '2021-04-28T11:23:34.250Z',
   },
   {
-    identifier: '524352435',
-    resourceIdentifier: '34789257',
+    identifier: '234',
+    resourceIdentifier: '1234',
     submitter: 'epost@epost.no',
     institution: 'unit',
     submittedDate: '2021-04-28T11:23:34.250Z',
@@ -625,8 +625,8 @@ export const mockWorkListRequestDOI: WorklistRequest[] = [
     stateDate: '2021-04-28T11:23:34.250Z',
   },
   {
-    identifier: '435246687',
-    resourceIdentifier: '74876547',
+    identifier: '567',
+    resourceIdentifier: '5678',
     submitter: 'somebody@email.com',
     institution: 'unit',
     submittedDate: '2021-04-28T11:23:34.250Z',

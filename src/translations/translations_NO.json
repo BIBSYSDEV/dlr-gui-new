@@ -524,6 +524,7 @@
     "delete_resource": "Slett ressurs",
     "delete_resource_warning": "NB! Dette sletter selve ressursen permanent",
     "doi_request_list": "DOI forespørsler",
+    "doi_verify_resource": "Verifiser opphaver(e) for å opprette DOI",
     "hide": "Skjul",
     "no_doi_requests": "For tiden finnes det ingen DOI forespørsler",
     "no_report_requests": "For tiden finnes det ingen rapporteringer",

@@ -65,4 +65,9 @@ context('Actions', () => {
     cy.get(`[data-testid=edit-resource-${mockResource.identifier}]`).click();
     cy.get('[data-testid=dlr-title-input]').should('exist');
   });
+
+  it('should disable create-doi-button for resources without verified creators', () => {
+    cy.get('[data-testid=doi-tab]').click();
+    cy.get(`[data-testid=create-doi-button-1234]`).should('exist').should('be.disabled');
+  });
 });
