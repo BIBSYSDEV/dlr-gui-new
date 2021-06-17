@@ -118,41 +118,45 @@ const UserInformation = () => {
               </StyledMetadataInformationWrapper>
             </Grid>
 
-            <Grid item>
-              <Typography variant="h3">{t('profile.your_roles')}</Typography>
+            <Grid item xs={12}>
+              <Grid container>
+                <Grid item>
+                  <Typography variant="h3">{t('profile.your_roles')}</Typography>
 
-              <List>
-                {user.institutionAuthorities?.isPublisher && (
-                  <RolesDescriptionListItem
-                    role={t('administrative.roles.publisher')}
-                    description={t('administrative.roles.publisher_description')}
-                  />
-                )}
-                {user.institutionAuthorities?.isAdministrator && (
-                  <RolesDescriptionListItem
-                    role={t('administrative.roles.administrator')}
-                    description={t('administrative.roles.administrator_description')}
-                  />
-                )}
-                {user.institutionAuthorities?.isCurator && (
-                  <RolesDescriptionListItem
-                    role={t('administrative.roles.curator')}
-                    description={t('administrative.roles.curator_description')}
-                  />
-                )}
-                {user.institutionAuthorities?.isEditor && (
-                  <RolesDescriptionListItem
-                    role={t('administrative.roles.editor')}
-                    description={t('administrative.roles.editor_description')}
-                  />
-                )}
-                {hasOnlyReadAccess(user) && (
-                  <RolesDescriptionListItem
-                    role={t('administrative.roles.only_read_access')}
-                    description={t('administrative.roles.only_read_access_description')}
-                  />
-                )}
-              </List>
+                  <List>
+                    {user.institutionAuthorities?.isPublisher && (
+                      <RolesDescriptionListItem
+                        role={t('administrative.roles.publisher')}
+                        description={t('administrative.roles.publisher_description')}
+                      />
+                    )}
+                    {user.institutionAuthorities?.isAdministrator && (
+                      <RolesDescriptionListItem
+                        role={t('administrative.roles.administrator')}
+                        description={t('administrative.roles.administrator_description')}
+                      />
+                    )}
+                    {user.institutionAuthorities?.isCurator && (
+                      <RolesDescriptionListItem
+                        role={t('administrative.roles.curator')}
+                        description={t('administrative.roles.curator_description')}
+                      />
+                    )}
+                    {user.institutionAuthorities?.isEditor && (
+                      <RolesDescriptionListItem
+                        role={t('administrative.roles.editor')}
+                        description={t('administrative.roles.editor_description')}
+                      />
+                    )}
+                    {hasOnlyReadAccess(user) && (
+                      <RolesDescriptionListItem
+                        role={t('administrative.roles.only_read_access')}
+                        description={t('administrative.roles.only_read_access_description')}
+                      />
+                    )}
+                  </List>
+                </Grid>
+              </Grid>
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h3">{t('profile.your_groups')}</Typography>
