@@ -54,7 +54,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
           </StyledContentWrapperMedium>
         </StyledSchemaPart>
 
-        <ResourceMetadata resource={resource} />
+        <ResourceMetadata resource={resource} isPreview={isPreview} />
 
         <StyledSchemaPartColored color={Colors.DLRYellow2}>
           <StyledContentWrapperMedium>

@@ -42,9 +42,10 @@ const StyledBoldTypography = styled(Typography)`
 
 interface ResourceMetadataProps {
   resource: Resource;
+  isPreview?: boolean;
 }
 
-const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource }) => {
+const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource, isPreview = false }) => {
   const { t } = useTranslation();
   const [views, setViews] = useState('');
   const sortedContributorList = resource.contributors.sort((contributorA, contributorB) => {
@@ -108,7 +109,7 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource }) => {
                 {format(new Date(resource.features.dlr_time_created), 'dd.MM.yyyy')}
               </Typography>
             )}
-            {views && (
+            {views && !isPreview && (
               <StyledBoldTypography gutterBottom variant="body2" data-testid="resource-views">
                 {views} {t('resource.views')}
               </StyledBoldTypography>
