@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Chip, CircularProgress, Divider, Grid, List, ListItem, ListItemText, Typography } from '@material-ui/core';
+import { Chip, CircularProgress, Grid, List, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import { Colors } from '../../themes/mainTheme';
 import { useSelector } from 'react-redux';
@@ -9,6 +9,8 @@ import { getUserAuthorizationCourses } from '../../api/userApi';
 import { generateCourseSubjectTag, parseCourse } from '../../utils/course.utils';
 import { Course } from '../../types/resourceReadAccess.types';
 import ErrorBanner from '../../components/ErrorBanner';
+import { useTranslation } from 'react-i18next';
+import RolesDescriptionListItem from '../../components/RolesDescriptionListItem';
 
 const StyledHeaderTypography = styled(Typography)`
   margin-bottom: 1rem;
@@ -56,6 +58,7 @@ const hasOnlyReadAccess = (user: User) => {
 };
 
 const UserInformation = () => {
+  const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.user);
   const [courses, setCourses] = useState<Course[]>([]);
   const [errorLoadingCourses, setErrorLoadingCourses] = useState<Error | undefined>();
@@ -96,81 +99,63 @@ const UserInformation = () => {
           <Grid container spacing={3}>
             <Grid item>
               <StyledMetadataInformationWrapper>
-                <Typography variant="caption">Id</Typography>
-                <Typography>{user.id} (feide)</Typography>
+                <Typography variant="caption">{t('common.id')}</Typography>
+                <Typography>
+                  {user.id} {`(${t('profile.feide')})`}
+                </Typography>
               </StyledMetadataInformationWrapper>
             </Grid>
             <Grid item>
               <StyledMetadataInformationWrapper>
-                <Typography variant="caption">Epost</Typography>
+                <Typography variant="caption">{t('common.email')}</Typography>
                 <Typography>{user.email}</Typography>
               </StyledMetadataInformationWrapper>
             </Grid>
             <Grid item>
               <StyledMetadataInformationWrapper>
-                <Typography variant="caption">Institusjon</Typography>
+                <Typography variant="caption">{t('profile.institution')}</Typography>
                 <Typography>{user.institution.toUpperCase()}</Typography>
               </StyledMetadataInformationWrapper>
             </Grid>
 
             <Grid item>
-              <Typography variant="h3">Dine Roller:</Typography>
+              <Typography variant="h3">{t('profile.your_roles')}</Typography>
 
               <List>
                 {user.institutionAuthorities?.isPublisher && (
-                  <ListItem>
-                    <ListItemText
-                      primary="Publisere"
-                      secondary="Brukeren får tilgang til å tildele roller innenfor egen institusjon"
-                    />
-                  </ListItem>
+                  <RolesDescriptionListItem
+                    role={t('administrative.roles.publisher')}
+                    description={t('administrative.roles.publisher_description')}
+                  />
                 )}
                 {user.institutionAuthorities?.isEditor && (
-                  <>
-                    <Divider variant="fullWidth" component="li" />
-                    <ListItem>
-                      <ListItemText
-                        primary="Admin"
-                        secondary="Brukeren får tilgang til å tildele roller innenfor egen institusjon"
-                      />
-                    </ListItem>
-                  </>
+                  <RolesDescriptionListItem
+                    role={t('administrative.roles.administrator')}
+                    description={t('administrative.roles.administrator_description')}
+                  />
                 )}
                 {user.institutionAuthorities?.isCurator && (
-                  <>
-                    <Divider variant="fullWidth" component="li" />
-                    <ListItem>
-                      <ListItemText
-                        primary="Kurator"
-                        secondary="Brukeren får tilgang til å tildele roller innenfor egen institusjon"
-                      />
-                    </ListItem>
-                  </>
+                  <RolesDescriptionListItem
+                    role={t('administrative.roles.curator')}
+                    description={t('administrative.roles.curator_description')}
+                  />
                 )}
                 {user.institutionAuthorities?.isAdministrator && (
-                  <>
-                    <Divider variant="fullWidth" component="li" />
-                    <ListItem>
-                      <ListItemText
-                        primary="Redaktør"
-                        secondary="Brukeren får tilgang til å tildele roller innenfor egen institusjon"
-                      />
-                    </ListItem>
-                    <Divider variant="fullWidth" component="li" />
-                  </>
+                  <RolesDescriptionListItem
+                    role={t('administrative.roles.editor')}
+                    description={t('administrative.roles.editor_description')}
+                  />
                 )}
                 {hasOnlyReadAccess(user) && (
-                  <ListItem>
-                    <ListItemText
-                      primary="Lesetilgang"
-                      secondary="Brukeren har kun lesetilgang til offentlige ressurser og ressurser med bla blah"
-                    />
-                  </ListItem>
+                  <RolesDescriptionListItem
+                    role={t('administrative.roles.only_read_access')}
+                    description={t('administrative.roles.only_read_access_description')}
+                  />
                 )}
               </List>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="h3">Dine gruppetilknytninger:</Typography>
+              <Typography variant="h3">{t('profile.your_groups')}</Typography>
 
               <StyledChipContainer>
                 <StyledChip

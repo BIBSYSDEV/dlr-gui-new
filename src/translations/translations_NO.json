@@ -46,9 +46,15 @@
     },
     "roles": {
       "administrator": "Administrator",
+      "administrator_description": "Brukeren får tilgang til å tildele roller innenfor egen institusjon",
       "curator": "Kurator",
+      "curator_description": "Brukeren får tilgang til å tildele DOI og har alle redigerings- og publiseringsmuligheter",
       "editor": "Redaktør",
-      "publisher": "Utgiver"
+      "editor_description": "Brukeren har tilgang til Rapporteingsbehandling og har alle redigerings- og publiseringsmuligheter",
+      "only_read_access": "Kun lesetilgang",
+      "only_read_access_description": "Brukeren kan kun lese andres ressurser som er offentlige eller som brukeren har fått privat tilgang til",
+      "publisher": "Utgiver",
+      "publisher_description": "Brukeren får tilgang til å publisere og redigere egne ressurser"
     },
     "roles_changed": "Endringer lagret",
     "roles_heading": "Roller",
@@ -85,9 +91,11 @@
     "delete": "Slett",
     "download": "Last ned",
     "edit": "Rediger",
+    "email": "Epost",
     "error": "Feil",
     "finish": "Avslutt",
     "home": "Hjem",
+    "id": "Id",
     "login": "LOGG INN",
     "logout": "Logg ut",
     "must_be_logged_in": "Krever pålogging",
@@ -287,7 +295,11 @@
     "heading": "Personvernerklæring"
   },
   "profile": {
-    "profile": "Profil"
+    "feide": "feide",
+    "institution": "Institusjon",
+    "profile": "Profil",
+    "your_groups": "Dine gruppetilknytninger",
+    "your_roles": "Dine roller"
   },
   "resource": {
     "access_types": {

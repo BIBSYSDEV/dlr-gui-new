@@ -46,9 +46,15 @@
     },
     "roles": {
       "administrator": "Administrator",
+      "administrator_description": "The user is allowed to assign roles on his own institution",
       "curator": "Curator",
+      "curator_description": "The user can assign DOIs and can edit and publish resources",
       "editor": "Editor",
-      "publisher": "Publisher"
+      "editor_description": "The user can process reports, and can edit and publish resources",
+      "only_read_access": "Only read access",
+      "only_read_access_description": "The user can only view public resources or resources the user has been granted private access to",
+      "publisher": "Publisher",
+      "publisher_description": "The user is allowed to edit and publish their own resources"
     },
     "roles_changed": "Changes saved",
     "roles_heading": "Roles",
@@ -85,9 +91,11 @@
     "delete": "Delete",
     "download": "Download",
     "edit": "Edit",
+    "email": "Email",
     "error": "Error",
     "finish": "Finish",
     "home": "Home",
+    "id": "Id",
     "login": "LOGIN",
     "logout": "Logout",
     "must_be_logged_in": "Require login",
@@ -287,7 +295,11 @@
     "heading": "Privacy policy"
   },
   "profile": {
-    "profile": "Profile"
+    "feide": "feide",
+    "institution": "Institution",
+    "profile": "Profile",
+    "your_groups": "Your affiliated groups",
+    "your_roles": "Your roles"
   },
   "resource": {
     "access_types": {
