@@ -395,7 +395,7 @@ export const getTextFileContents = (url: string): Promise<AxiosResponse<string>>
 };
 
 export const getResourceViews = (resourceIdentifier: string): Promise<AxiosResponse<ResourceStatistic>> => {
-  return axios({
+  return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesStatisticsPath}/statistics/resources/${resourceIdentifier}`),
     method: 'GET',
   });
