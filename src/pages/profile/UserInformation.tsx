@@ -102,7 +102,7 @@ const UserInformation = () => {
             <Grid item>
               <StyledMetadataInformationWrapper>
                 <Typography variant="caption">{t('common.id')}</Typography>
-                <Typography>
+                <Typography data-testid="profile-id">
                   {user.id} {`(${t('profile.feide')})`}
                 </Typography>
               </StyledMetadataInformationWrapper>
@@ -110,13 +110,13 @@ const UserInformation = () => {
             <Grid item>
               <StyledMetadataInformationWrapper>
                 <Typography variant="caption">{t('common.email')}</Typography>
-                <Typography>{user.email}</Typography>
+                <Typography data-testid="profile-email">{user.email}</Typography>
               </StyledMetadataInformationWrapper>
             </Grid>
             <Grid item>
               <StyledMetadataInformationWrapper>
                 <Typography variant="caption">{t('profile.institution')}</Typography>
-                <Typography>{user.institution.toUpperCase()}</Typography>
+                <Typography data-testid="profile-institution">{user.institution.toUpperCase()}</Typography>
               </StyledMetadataInformationWrapper>
             </Grid>
 
@@ -128,30 +128,35 @@ const UserInformation = () => {
                   <List>
                     {user.institutionAuthorities?.isPublisher && (
                       <RolesDescriptionListItem
+                        dataTestId="role-publisher"
                         role={t('administrative.roles.publisher')}
                         description={t('administrative.roles.publisher_description')}
                       />
                     )}
                     {user.institutionAuthorities?.isAdministrator && (
                       <RolesDescriptionListItem
+                        dataTestId="role-admin"
                         role={t('administrative.roles.administrator')}
                         description={t('administrative.roles.administrator_description')}
                       />
                     )}
                     {user.institutionAuthorities?.isCurator && (
                       <RolesDescriptionListItem
+                        dataTestId="role-curator"
                         role={t('administrative.roles.curator')}
                         description={t('administrative.roles.curator_description')}
                       />
                     )}
                     {user.institutionAuthorities?.isEditor && (
                       <RolesDescriptionListItem
+                        dataTestId="role-editor"
                         role={t('administrative.roles.editor')}
                         description={t('administrative.roles.editor_description')}
                       />
                     )}
                     {hasOnlyReadAccess(user) && (
                       <RolesDescriptionListItem
+                        dataTestId="role-read-only"
                         role={t('administrative.roles.only_read_access')}
                         description={t('administrative.roles.only_read_access_description')}
                       />
@@ -174,9 +179,9 @@ const UserInformation = () => {
                     <StyledChip
                       key={index}
                       label={
-                        <StyledChipTypography>{`${course.features.code} ${course.features.year} ${t(
-                          `access.season.${course.features.season_nr}`
-                        )}`}</StyledChipTypography>
+                        <StyledChipTypography data-testid={`profile-group-${index}`}>{`${course.features.code} ${
+                          course.features.year
+                        } ${t(`access.season.${course.features.season_nr}`)}`}</StyledChipTypography>
                       }
                     />
                   ))}
