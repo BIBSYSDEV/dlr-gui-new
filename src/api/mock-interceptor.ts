@@ -39,6 +39,7 @@ import {
   mockText,
   mockToken,
   mockUser,
+  mockUserCourses,
   mockWorkListReportResource,
   mockWorkListRequestDOI,
 } from './mockdata';
@@ -285,6 +286,13 @@ export const interceptRequestsOnMock = () => {
     )
     .reply(200, mockInstitutionAuthorities);
   mock.onGet(new RegExp(`${API_PATHS.guiBackendLoginPath}/logout`)).reply(200);
+  mock
+    .onGet(
+      new RegExp(
+        `${API_PATHS.guiBackendUserAuthorizationsPath}/authorizations/users/authorized/profiles/dlr_course_student`
+      )
+    )
+    .reply(200, mockUserCourses);
 
   //REPORT RESOURCE
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesFeedbacksPath}/feedbacks/resources/.*`)).reply(202);

@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import { User } from '../../types/user.types';
 import { getUserAuthorizationCourses } from '../../api/userApi';
-import { generateCourseSubjectTag, parseCourse } from '../../utils/course.utils';
+import { parseCourse } from '../../utils/course.utils';
 import { Course } from '../../types/resourceReadAccess.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import { useTranslation } from 'react-i18next';
@@ -93,7 +93,9 @@ const UserInformation = () => {
 
   return (
     <>
-      <StyledHeaderTypography variant="h2">{user.name}</StyledHeaderTypography>
+      <StyledHeaderTypography variant="h2" data-testid="profile-name">
+        {user.name}
+      </StyledHeaderTypography>
       <StyledGridContainer container spacing={10}>
         <Grid item xs={12}>
           <Grid container spacing={3}>
@@ -171,7 +173,11 @@ const UserInformation = () => {
                   .map((course, index) => (
                     <StyledChip
                       key={index}
-                      label={<StyledChipTypography>{generateCourseSubjectTag(course, user)}</StyledChipTypography>}
+                      label={
+                        <StyledChipTypography>{`${course.features.code} ${course.features.year} ${t(
+                          `access.season.${course.features.season_nr}`
+                        )}`}</StyledChipTypography>
+                      }
                     />
                   ))}
               </StyledChipContainer>
