@@ -70,7 +70,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
         </StyledSchemaPartColored>
         <StyledSchemaPartColored color={Colors.DLRYellow3}>
           <StyledContentWrapperMedium>
-            <ResourceUsage resource={resource} />
+            <ResourceUsage resource={resource} isPreview={isPreview} />
           </StyledContentWrapperMedium>
         </StyledSchemaPartColored>
         {!isPreview && (

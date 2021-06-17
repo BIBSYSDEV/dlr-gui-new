@@ -70,9 +70,10 @@ const userAgentIsNotOperaForDesktop = () => {
 
 interface ResourceUsageProps {
   resource: Resource;
+  isPreview?: boolean;
 }
 
-const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
+const ResourceUsage: FC<ResourceUsageProps> = ({ resource, isPreview = false }) => {
   const { t } = useTranslation();
   const [citationPreTitle, setCitationPreTitle] = useState('');
   const [citationTitle, setCitationTitle] = useState('');
@@ -173,8 +174,9 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
             <Link href={generatePreferredURL(resource)}>{generatePreferredURL(resource)}</Link>
           </Typography>
         </Grid>
+        <pre>{!isPreview && 'per'}</pre>
         <Grid item xs={12} sm={4}>
-          <Button startIcon={<ShareIcon />} color="primary" variant="outlined" onClick={shareLink}>
+          <Button startIcon={<ShareIcon />} color="primary" variant="outlined" onClick={shareLink} disabled={isPreview}>
             {t('resource.share.share_link').toUpperCase()}
           </Button>
         </Grid>
@@ -198,6 +200,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
           <StyledButton
             color="primary"
             variant="outlined"
+            disabled={isPreview}
             onClick={() => handleCopyButtonClick(citationPreTitle + citationTitle + citationPostTitle)}>
             {t('citation.copy_citation').toUpperCase()}
           </StyledButton>
@@ -213,19 +216,22 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
           <StyledButton
             color="primary"
             variant="outlined"
+            disabled={isPreview}
             onClick={() => handleCopyButtonClick(generateIframeText(resource))}>
             {t('embed.copy_embed_code').toUpperCase()}
           </StyledButton>
         </Grid>
       </StyledGridContainer>
-      <StyledGridContainer>
-        <Grid item xs={12} sm={8}>
-          <Typography variant="caption" gutterBottom>
-            {t('resource.share.share_social_medias')}
-          </Typography>
-          <SocialMediaSharing resourceTitle={resource.features.dlr_title} url={generatePreferredURL(resource)} />
-        </Grid>
-      </StyledGridContainer>
+      {!isPreview && (
+        <StyledGridContainer>
+          <Grid item xs={12} sm={8}>
+            <Typography variant="caption" gutterBottom>
+              {t('resource.share.share_social_medias')}
+            </Typography>
+            <SocialMediaSharing resourceTitle={resource.features.dlr_title} url={generatePreferredURL(resource)} />
+          </Grid>
+        </StyledGridContainer>
+      )}
       <StyledGridContainer container spacing={3}>
         <Grid item xs={12}>
           <EmbedButtons resource={resource} />
