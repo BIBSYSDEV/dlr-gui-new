@@ -12,6 +12,7 @@ import { useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
 import { StyledCancelButton, StyledConfirmButton } from '../../../components/styled/StyledButtons';
 import { StyledFieldsWrapper } from '../../../components/styled/Wrappers';
+import { generateCourseSubjectTag } from '../../../utils/course.utils';
 
 const StyledCourseAutocomplete: any = styled(Autocomplete)`
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
@@ -45,12 +46,6 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
   const [courseAutocompleteValue, setCourseAutocompleteValue] = useState<Course | null>(null);
   const [courseAutocompleteTypedValue, setCourseAutocompleteTypedValue] = useState('');
 
-  const generateCourseSubjectTag = (course: Course): string => {
-    return `${course.features.code} :: ${user.institution.toLowerCase()} :: ${course.features.year} :: ${
-      course.features.season_nr
-    }`;
-  };
-
   const addCourseConsumerAccess = async (course: Course) => {
     if (course) {
       try {
@@ -58,7 +53,7 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
         setSavePrivateAccessNetworkError(undefined);
         await postCourseConsumerAccess(values.identifier, course);
         addPrivateAccess({
-          subject: generateCourseSubjectTag(course),
+          subject: generateCourseSubjectTag(course, user),
           profiles: [{ name: ResourceReadAccessNames.Course }],
         });
         setCourseAutocompleteValue(null);
@@ -96,7 +91,7 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
             options={sortCourses()}
             groupBy={(course: Course) => course.features.code?.[0].toUpperCase()}
             getOptionDisabled={(course: Course) => {
-              const courseSubject = generateCourseSubjectTag(course);
+              const courseSubject = generateCourseSubjectTag(course, user);
               return privateAccessList.findIndex((access) => access.subject.includes(courseSubject)) > -1;
             }}
             inputValue={courseAutocompleteTypedValue}
