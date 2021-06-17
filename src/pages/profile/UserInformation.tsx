@@ -128,7 +128,7 @@ const UserInformation = () => {
                     description={t('administrative.roles.publisher_description')}
                   />
                 )}
-                {user.institutionAuthorities?.isEditor && (
+                {user.institutionAuthorities?.isAdministrator && (
                   <RolesDescriptionListItem
                     role={t('administrative.roles.administrator')}
                     description={t('administrative.roles.administrator_description')}
@@ -140,7 +140,7 @@ const UserInformation = () => {
                     description={t('administrative.roles.curator_description')}
                   />
                 )}
-                {user.institutionAuthorities?.isAdministrator && (
+                {user.institutionAuthorities?.isEditor && (
                   <RolesDescriptionListItem
                     role={t('administrative.roles.editor')}
                     description={t('administrative.roles.editor_description')}
