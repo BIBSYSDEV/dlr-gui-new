@@ -397,7 +397,9 @@ context('Actions', () => {
     cy.get('[data-testid=commercial-use-option-yes] input').click();
     cy.get('[data-testid=modify-and-build-option-share_alike] input').click();
     cy.get('[data-testid=licence-field]').contains('CC BY-SA 4.0');
-    cy.get('[data-testid=recommended-license]').contains('Du har anbefalt lisens basert på valgene i dette skjemaet');
+    cy.get('[data-testid=recommended-license]').contains(
+      'Anbefalt lisens basert på valgene i dette skjemaet stemmer overens med valgt lisens'
+    );
     cy.get('[data-testid=licence-field]').click();
     cy.get(`[data-testid=license-option-${licenses[0].identifier}`).click();
     cy.get('[data-testid=recommended-license]').contains(
