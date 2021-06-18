@@ -102,7 +102,7 @@ const Header = () => {
         )}
         {user.id && (
           <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/profile">
-            <Typography variant="button">Profile</Typography>
+            <Typography variant="button">{t('profile.profile')}</Typography>
           </MenuItem>
         )}
         <MenuItem onClick={handleBurgerMenuClose}>{user.id ? <Logout /> : <LoginButton />}</MenuItem>

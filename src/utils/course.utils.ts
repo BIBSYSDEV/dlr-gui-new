@@ -3,7 +3,10 @@ import { User } from '../types/user.types';
 
 export const parseCourse = (subject: string): Course | null => {
   const courseString = subject.split('::');
-  //subject[0]: courseCode, subject[1]: institution, subject[2]: year, subject[3]: Season
+  //subject[0]: courseCode,
+  //subject[1]: institution,
+  // subject[2]: year,
+  // subject[3]: Season
   if (courseString[0]?.trim().length > 0 && courseString[2]?.trim().length > 0 && courseString[3]?.trim().length > 0) {
     return {
       features: {
