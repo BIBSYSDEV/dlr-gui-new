@@ -34,6 +34,7 @@ import {
   mockResource,
   mockResourceEvents,
   mockResourceReadAccess,
+  mockResourceStatistics,
   mockTags,
   mockTagSuggestions,
   mockText,
@@ -56,6 +57,11 @@ export const interceptRequestsOnMock = () => {
 
   //Get text content file:
   mock.onGet(new RegExp('textfilepath')).reply(200, mockText);
+
+  //statistics
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendResourcesStatisticsPath}/statistics/resources/*.`))
+    .reply(200, mockResourceStatistics);
 
   //WORK LIST
   mock
