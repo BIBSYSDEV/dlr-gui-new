@@ -68,3 +68,10 @@ export const getUserAuthorizationsInstitution = async (): Promise<InstitutionAut
 
   return institutionAuthorities;
 };
+
+export const getUserAuthorizationCourses = (): Promise<AxiosResponse<string[]>> => {
+  return authenticatedApiRequest({
+    url: `${API_PATHS.guiBackendUserAuthorizationsPath}/authorizations/users/authorized/profiles/dlr_course_student`,
+    method: 'GET',
+  });
+};

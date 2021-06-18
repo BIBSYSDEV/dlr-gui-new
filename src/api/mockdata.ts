@@ -682,3 +682,9 @@ export const mockWorkListReportResource: WorklistRequest[] = [
     stateDate: '2021-04-28T11:23:34.250Z',
   },
 ];
+
+export const mockUserCourses = [
+  'ACIT4015 :: oslomet :: 2021 :: 1',
+  'ACIT4050 :: oslomet :: 2021 :: 1',
+  'ACIT4090 :: oslomet :: 2021 :: 1',
+];

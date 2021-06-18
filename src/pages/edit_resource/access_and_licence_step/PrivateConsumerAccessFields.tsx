@@ -1,11 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Course,
-  CourseSeason,
-  ResourceReadAccess,
-  ResourceReadAccessNames,
-} from '../../../types/resourceReadAccess.types';
+import { Course, ResourceReadAccess, ResourceReadAccessNames } from '../../../types/resourceReadAccess.types';
 import styled from 'styled-components';
 import { Chip, CircularProgress, List, ListItem, ListItemText, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -28,6 +23,7 @@ import { Colors } from '../../../themes/mainTheme';
 import CancelIcon from '@material-ui/icons/Cancel';
 import PrivateConsumerCourseAccessFields from './PrivateConsumerCourseAccessFields';
 import PrivateConsumerPersonalAccessFields from './PrivateConsumerPersonalAccessFields';
+import { parseCourse } from '../../../utils/course.utils';
 
 const StyledPrivateAccessFields = styled.div`
   margin-top: 2.5rem;
@@ -118,26 +114,6 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
     };
     getPrivateAccessList();
   }, [values.identifier, forceRefresh]);
-
-  const parseCourse = (subject: string): Course | null => {
-    const courseString = subject.split('::');
-    //subject[0]: courseCode, subject[1]: institution, subject[2]: year, subject[3]: Season
-    if (
-      courseString[0]?.trim().length > 0 &&
-      courseString[2]?.trim().length > 0 &&
-      courseString[3]?.trim().length > 0
-    ) {
-      return {
-        features: {
-          code: courseString[0].trim(),
-          year: courseString[2].trim(),
-          season_nr: courseString[3].trim() as CourseSeason,
-        },
-      };
-    } else {
-      return null;
-    }
-  };
 
   const deleteAccess = async (access: ResourceReadAccess) => {
     try {
