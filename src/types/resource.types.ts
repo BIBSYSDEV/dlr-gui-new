@@ -303,3 +303,11 @@ export const CompareCreators = (creatorA: Creator, creatorB: Creator): number =>
 };
 
 export const TAGS_MAX_LENGTH = 30;
+
+export interface ResourceStatistic {
+  features: ResourceStatisticFeatures;
+  identifier: string;
+}
+export interface ResourceStatisticFeatures {
+  dlr_statistics_delivery_count?: string;
+}

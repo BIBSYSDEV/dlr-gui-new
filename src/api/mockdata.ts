@@ -1,4 +1,4 @@
-import { Contributor, Creator, emptyResource, Resource } from '../types/resource.types';
+import { Contributor, Creator, emptyResource, Resource, ResourceStatistic } from '../types/resource.types';
 import deepmerge from 'deepmerge';
 import { User } from '../types/user.types';
 import { License } from '../types/license.types';
@@ -638,6 +638,13 @@ export const mockWorkListRequestDOI: WorklistRequest[] = [
   },
 ];
 
+export const mockResourceStatistics: ResourceStatistic = {
+  identifier: '49cb9dda-aaaa-4300-9b21-c2ff3bc0dd23',
+  features: {
+    dlr_statistics_delivery_count: '112',
+  },
+};
+
 export const mockWorkListReportResource: WorklistRequest[] = [
   {
     identifier: '21341234',
@@ -674,4 +681,10 @@ export const mockWorkListReportResource: WorklistRequest[] = [
     state: 'string',
     stateDate: '2021-04-28T11:23:34.250Z',
   },
+];
+
+export const mockUserCourses = [
+  'ACIT4015 :: oslomet :: 2021 :: 1',
+  'ACIT4050 :: oslomet :: 2021 :: 1',
+  'ACIT4090 :: oslomet :: 2021 :: 1',
 ];

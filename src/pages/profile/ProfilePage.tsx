@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Grid } from '@material-ui/core';
 import { Colors } from '../../themes/mainTheme';
+import UserInformation from './UserInformation';
 
 const StyledWrapper = styled(Grid)`
   background-color: ${Colors.DLRYellow1};
@@ -19,7 +20,9 @@ const ProfilePage = () => {
   return (
     <StyledContentWrapperLarge>
       <PageHeader>{t('profile.profile')}</PageHeader>
-      <StyledWrapper>Functionality coming soon...</StyledWrapper>
+      <StyledWrapper>
+        <UserInformation />
+      </StyledWrapper>
     </StyledContentWrapperLarge>
   );
 };

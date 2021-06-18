@@ -46,9 +46,15 @@
     },
     "roles": {
       "administrator": "Administrator",
+      "administrator_description": "The user is allowed to assign roles on his own institution",
       "curator": "Curator",
+      "curator_description": "The user can assign DOIs and can edit and publish resources",
       "editor": "Editor",
-      "publisher": "Publisher"
+      "editor_description": "The user can process reports, and can edit and publish resources",
+      "only_read_access": "Only read access",
+      "only_read_access_description": "The user can only view public resources or resources the user has been granted private access to",
+      "publisher": "Publisher",
+      "publisher_description": "The user is allowed to edit and publish their own resources"
     },
     "roles_changed": "Changes saved",
     "roles_heading": "Roles",
@@ -85,9 +91,11 @@
     "delete": "Delete",
     "download": "Download",
     "edit": "Edit",
+    "email": "Email",
     "error": "Error",
     "finish": "Finish",
     "home": "Home",
+    "id": "Id",
     "login": "LOGIN",
     "logout": "Logout",
     "must_be_logged_in": "Require login",
@@ -215,6 +223,7 @@
     "commercial_purposes": "Commercial purposes",
     "external_page": "External site",
     "extra_restrictions": "Extra restrictions",
+    "got_recommended_license": "The recommended license based on choice in this form matches the selected license",
     "license_information": "License information",
     "modify_and_build": "Modify and build upon",
     "modify_and_build_options": {
@@ -270,6 +279,7 @@
     },
     "radio_information": "Answer the questions below to receive a license suggestion, or pick a license directly from the drop-down menu below",
     "read_more": "Read more about",
+    "recommended_license_is": "Based on your choices in this form, the recommended license is {{license}}. Notice! the recommendation is overruled with another license",
     "restriction_options": {
       "bi-opphaver-bi": "Yes, it can only be used internally at BI",
       "CC_BY_4_0": "No, I want the resource to be used and shared",
@@ -280,12 +290,22 @@
     },
     "selected_license": "Selected license"
   },
+  "localization": {
+    "english": "English",
+    "english_language_code": "ENG",
+    "norwegian_bokmaal": "Norsk - Bokmål",
+    "norwegian_language_code": "nb-NO"
+  },
   "privacy_policy": {
     "description": "Description",
     "heading": "Privacy policy"
   },
   "profile": {
-    "profile": "Profile"
+    "feide": "feide",
+    "institution": "Institution",
+    "profile": "Profile",
+    "your_groups": "Your affiliated groups",
+    "your_roles": "Your roles"
   },
   "resource": {
     "access_types": {
@@ -462,7 +482,8 @@
       "video": "Video",
       "workflow": "Workflow"
     },
-    "unpublished_resources": "Started"
+    "unpublished_resources": "Started",
+    "views": "views"
   },
   "search_tricks": {
     "asterisk1": "Asterisk (*) is used as wildcard to replace one or more characters in the search term. t*ck will match \"tick\", \"tock\", and \"trick\"",

@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { FormControlLabel, FormLabel, Radio, Typography } from '@material-ui/core';
-import { StyledContentWrapper, StyledRadioGroup, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
+import { StyledContentWrapper, StyledRadioGroup } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import { useTranslation } from 'react-i18next';
 import { RootState } from '../../../state/rootReducer';
@@ -29,6 +29,22 @@ const StyledFormControlLabelDetail = styled.div`
   font-size: 0.75rem;
 `;
 
+const StyledSchemaPartNoBottomPadding = styled.div`
+  background-color: ${Colors.LicenseAccessPageGradientColor3};
+  padding: 2rem 1rem 0rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const StyledHeavyWeightTypography = styled(Typography)`
+  font-weight: bold;
+  margin-top: 1rem;
+`;
+const StyledTypography = styled(Typography)`
+  margin-top: 1rem;
+`;
+
 const extraRestrictionRadio = 'extra-restriction';
 const commercialRadio = 'commersial';
 const modifyAndBuildRadio = 'change-and-build';
@@ -51,6 +67,31 @@ enum ModifyAndBuildOptions {
 
 const commercialPurposes = [CommercialOptions.yes, CommercialOptions.NC];
 
+const calculatePreferredLicense = (
+  restrictedValue: string,
+  commercialValue: string,
+  modifyAndBuildValue: string
+): string => {
+  if (restrictedValue === LicenseRestrictionOptions.yes || restrictedValue === '') {
+    let licenseCode = 'CC BY';
+    if (commercialValue === CommercialOptions.NC) {
+      licenseCode += '-NC';
+    }
+    if (modifyAndBuildValue === ModifyAndBuildOptions.ND) {
+      licenseCode += '-ND';
+    } else if (modifyAndBuildValue === ModifyAndBuildOptions.SA) {
+      licenseCode += '-SA';
+    }
+    licenseCode += ' 4.0';
+    if (commercialValue === '' && modifyAndBuildValue === '') {
+      licenseCode = Licenses.CC_BY_NC_ND;
+    }
+    return licenseCode;
+  } else {
+    return restrictedValue;
+  }
+};
+
 interface LicenseWizardFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
   licenses: License[];
@@ -71,9 +112,16 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   const [savingResourceRestrictionError, setSavingResourceRestrictionError] = useState<Error>();
   const [savingOthersCanModifyAndBuildUponError, setSavingOthersCanModifyAndBuildUponError] = useState<Error>();
   const [savingCanBeUsedCommerciallyError, setSavingCanBeUsedCommerciallyError] = useState<Error>();
-  const [savingAccesTypeError, setSavingAccesTypeError] = useState<Error>();
+  const [savingAccessTypeError, setSavingAccessTypeError] = useState<Error>();
   const [expandModifyAndBuildOption, setExpandModifyAndBuildOption] = useState(
     !!values.features.dlr_licensehelper_others_can_modify_and_build_upon
+  );
+  const [recommendedLicense, setRecommendedLicenes] = useState(
+    calculatePreferredLicense(
+      values.features.dlr_licensehelper_resource_restriction,
+      values.features.dlr_licensehelper_can_be_used_commercially,
+      values.features.dlr_licensehelper_others_can_modify_and_build_upon
+    )
   );
 
   const licenseRestrictions = [
@@ -84,40 +132,25 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   ];
 
   const setAccessTypePrivate = async () => {
-    setSavingAccesTypeError(undefined);
+    setSavingAccessTypeError(undefined);
     try {
       await putAccessType(values.identifier, AccessTypes.private);
     } catch (error) {
-      setSavingAccesTypeError(error);
+      setSavingAccessTypeError(error);
     }
     values.features.dlr_access = AccessTypes.private;
   };
 
-  const calculatePreferredLicense = async (
+  const savePreferredLicense = async (
     restrictedValue: string,
     commercialValue: string,
     modifyAndBuildValue: string
   ) => {
-    if (restrictedValue === LicenseRestrictionOptions.yes || restrictedValue === '') {
-      let licenseCode = 'CC BY';
-      if (commercialValue === CommercialOptions.NC) {
-        licenseCode += '-NC';
-      }
-      if (modifyAndBuildValue === ModifyAndBuildOptions.ND) {
-        licenseCode += '-ND';
-      } else if (modifyAndBuildValue === ModifyAndBuildOptions.SA) {
-        licenseCode += '-SA';
-      }
-      licenseCode += ' 4.0';
-      if (commercialValue === '' && modifyAndBuildValue === '') {
-        licenseCode = Licenses.CC_BY_NC_ND;
-      }
-      await saveLicense(licenseCode);
-    } else {
-      await saveLicense(restrictedValue);
-      if (restrictedValue === Licenses.BI || restrictedValue === Licenses.NTNU) {
-        await setAccessTypePrivate();
-      }
+    const preferredLicense = calculatePreferredLicense(restrictedValue, commercialValue, modifyAndBuildValue);
+    setRecommendedLicenes(preferredLicense);
+    await saveLicense(preferredLicense);
+    if (preferredLicense === Licenses.BI || preferredLicense === Licenses.NTNU) {
+      await setAccessTypePrivate();
     }
   };
 
@@ -173,7 +206,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
         );
       }
       promiseArray.push(
-        calculatePreferredLicense(
+        savePreferredLicense(
           event.target.value,
           values.features.dlr_licensehelper_can_be_used_commercially,
           values.features.dlr_licensehelper_others_can_modify_and_build_upon
@@ -197,7 +230,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
         postResourceFeature(values.identifier, ResourceFeatureNames.CanBeUsedCommercially, event.target.value)
       );
       promiseArray.push(
-        calculatePreferredLicense(
+        savePreferredLicense(
           values.features.dlr_licensehelper_resource_restriction,
           event.target.value,
           values.features.dlr_licensehelper_others_can_modify_and_build_upon
@@ -222,7 +255,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
         postResourceFeature(values.identifier, ResourceFeatureNames.OthersCanModifyAndBuildUpon, event.target.value)
       );
       promiseArray.push(
-        calculatePreferredLicense(
+        savePreferredLicense(
           values.features.dlr_licensehelper_resource_restriction,
           values.features.dlr_licensehelper_can_be_used_commercially,
           event.target.value
@@ -237,7 +270,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   };
 
   return (
-    <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor3}>
+    <StyledSchemaPartNoBottomPadding>
       <StyledContentWrapper>
         <AccordionRadioGroup
           ariaDescription={extraRestrictionRadio}
@@ -288,7 +321,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           {savingResourceRestrictionError && (
             <ErrorBanner userNeedsToBeLoggedIn={true} error={savingResourceRestrictionError} />
           )}{' '}
-          {savingAccesTypeError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingAccesTypeError} />}
+          {savingAccessTypeError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingAccessTypeError} />}
         </AccordionRadioGroup>
         {values.features.dlr_licensehelper_resource_restriction === LicenseRestrictionOptions.yes && (
           <AccordionRadioGroup
@@ -383,9 +416,17 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           </AccordionRadioGroup>
         )}
 
+        {values.licenses[0].features && recommendedLicense === values.licenses[0].features.dlr_license_code ? (
+          <StyledTypography data-testid="recommended-license">{t('license.got_recommended_license')}.</StyledTypography>
+        ) : (
+          <StyledHeavyWeightTypography data-testid="recommended-license">
+            {t('license.recommended_license_is', { license: recommendedLicense })}.
+          </StyledHeavyWeightTypography>
+        )}
+
         {savingLicenseError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingLicenseError} />}
       </StyledContentWrapper>
-    </StyledSchemaPartColored>
+    </StyledSchemaPartNoBottomPadding>
   );
 };
 
