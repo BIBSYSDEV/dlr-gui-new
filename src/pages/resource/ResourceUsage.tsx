@@ -174,11 +174,12 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, isPreview = false }) 
             <Link href={generatePreferredURL(resource)}>{generatePreferredURL(resource)}</Link>
           </Typography>
         </Grid>
-        <pre>{!isPreview && 'per'}</pre>
         <Grid item xs={12} sm={4}>
-          <Button startIcon={<ShareIcon />} color="primary" variant="outlined" onClick={shareLink} disabled={isPreview}>
-            {t('resource.share.share_link').toUpperCase()}
-          </Button>
+          {!isPreview && (
+            <Button startIcon={<ShareIcon />} color="primary" variant="outlined" onClick={shareLink}>
+              {t('resource.share.share_link').toUpperCase()}
+            </Button>
+          )}
         </Grid>
         {showCopiedLinkToClipboardInformation && (
           <Grid item xs={12}>
@@ -197,13 +198,14 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, isPreview = false }) 
           </StyledTypography>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <StyledButton
-            color="primary"
-            variant="outlined"
-            disabled={isPreview}
-            onClick={() => handleCopyButtonClick(citationPreTitle + citationTitle + citationPostTitle)}>
-            {t('citation.copy_citation').toUpperCase()}
-          </StyledButton>
+          {!isPreview && (
+            <StyledButton
+              color="primary"
+              variant="outlined"
+              onClick={() => handleCopyButtonClick(citationPreTitle + citationTitle + citationPostTitle)}>
+              {t('citation.copy_citation').toUpperCase()}
+            </StyledButton>
+          )}
         </Grid>
       </StyledGridContainer>
       <StyledGridContainer container spacing={3}>
@@ -213,13 +215,14 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, isPreview = false }) 
           <StyledTypography variant="body1">{generateIframeText(resource)}</StyledTypography>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <StyledButton
-            color="primary"
-            variant="outlined"
-            disabled={isPreview}
-            onClick={() => handleCopyButtonClick(generateIframeText(resource))}>
-            {t('embed.copy_embed_code').toUpperCase()}
-          </StyledButton>
+          {!isPreview && (
+            <StyledButton
+              color="primary"
+              variant="outlined"
+              onClick={() => handleCopyButtonClick(generateIframeText(resource))}>
+              {t('embed.copy_embed_code').toUpperCase()}
+            </StyledButton>
+          )}
         </Grid>
       </StyledGridContainer>
       {!isPreview && (
