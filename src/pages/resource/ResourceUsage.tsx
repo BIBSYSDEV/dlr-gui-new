@@ -175,7 +175,11 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, isPreview = false }) 
         <Grid item xs={12} sm={8}>
           <Typography variant="caption">{generateLinkSharingText()}</Typography>
           <Typography>
-            <Link href={generatePreferredURL(resource)}>{generatePreferredURL(resource)}</Link>
+            {isPreview ? (
+              generatePreferredURL(resource)
+            ) : (
+              <Link href={generatePreferredURL(resource)}>{generatePreferredURL(resource)}</Link>
+            )}
           </Typography>
         </Grid>
         <Grid item xs={12} sm={4}>
