@@ -13,6 +13,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { Colors } from '../../themes/mainTheme';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import ChangeLanguageButton from './ChangeLanguageButton';
 import AvatarButton from './AvatarButton';
 
 const StyledPageHeader = styled.div`
@@ -42,6 +43,20 @@ const StyledSecondaryButtonBar = styled.div`
   @media (min-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
     display: contents;
   }
+`;
+
+const StyledLanguageButtonWrapper = styled.div`
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.md - 1 + 'px'}) {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+`;
+
+const StyledLanguageButtonUserIsNotLoggedInVariant = styled.div`
+  width: 85%;
+  display: flex;
+  justify-content: flex-end;
 `;
 
 const Header = () => {
@@ -93,6 +108,7 @@ const Header = () => {
         <MenuItem onClick={handleBurgerMenuClose}>{user.id ? <Logout /> : <LoginButton />}</MenuItem>
       </Menu>
       <Logo />
+
       <StyledSecondaryButtonBar>
         {user.id && (
           <Button component={RouterLink} data-testid="new-registration-link" to="/registration" startIcon={<AddIcon />}>
@@ -114,6 +130,18 @@ const Header = () => {
             <Typography variant="button">{t('administrative.page_heading')}</Typography>
           </Button>
         )}
+      </StyledSecondaryButtonBar>
+      {user.id ? (
+        <StyledLanguageButtonWrapper>
+          <ChangeLanguageButton />
+        </StyledLanguageButtonWrapper>
+      ) : (
+        <StyledLanguageButtonUserIsNotLoggedInVariant>
+          <ChangeLanguageButton />
+        </StyledLanguageButtonUserIsNotLoggedInVariant>
+      )}
+
+      <StyledSecondaryButtonBar>
         {user.id ? (
           <Typography variant="body1">
             <AvatarButton />

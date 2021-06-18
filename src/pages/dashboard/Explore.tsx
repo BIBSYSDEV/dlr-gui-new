@@ -169,7 +169,7 @@ const Explore = () => {
   return (
     <StyledContentWrapperLarge>
       {!user.id && <LoginReminder />}
-      <PageHeader>{t('dashboard.explore')}</PageHeader>
+      <PageHeader testId="page-title">{t('dashboard.explore')}</PageHeader>
       <SearchInput setQueryObject={setQueryObject} queryObject={queryObject} />
       {searchError && <ErrorBanner error={searchError} />}
       {!searchResult && isSearching && (
