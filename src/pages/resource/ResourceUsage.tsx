@@ -22,6 +22,10 @@ const StyledTypography = styled(Typography)`
   }
 `;
 
+const StyledCaptionWithGutterTypography = styled(Typography)`
+  margin-bottom: 0.5rem;
+`;
+
 const StyledButton = styled(Button)`
   min-width: 12rem;
 `;
@@ -228,9 +232,9 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, isPreview = false }) 
       {!isPreview && (
         <StyledGridContainer>
           <Grid item xs={12} sm={8}>
-            <Typography variant="caption" gutterBottom>
+            <StyledCaptionWithGutterTypography variant="caption" display="block">
               {t('resource.share.share_social_medias')}
-            </Typography>
+            </StyledCaptionWithGutterTypography>
             <SocialMediaSharing resourceTitle={resource.features.dlr_title} url={generatePreferredURL(resource)} />
           </Grid>
         </StyledGridContainer>
