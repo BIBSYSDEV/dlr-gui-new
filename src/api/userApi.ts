@@ -1,6 +1,9 @@
 import { API_PATHS } from '../utils/constants';
 import Axios, { AxiosResponse } from 'axios';
 import {
+  AppFeature,
+  AppValue,
+  EmailNotificationStatus,
   emptyInstitutionAuthorities,
   InstitutionAuthorities,
   InstitutionProfilesNames,
@@ -73,5 +76,22 @@ export const getUserAuthorizationCourses = (): Promise<AxiosResponse<string[]>> 
   return authenticatedApiRequest({
     url: `${API_PATHS.guiBackendUserAuthorizationsPath}/authorizations/users/authorized/profiles/dlr_course_student`,
     method: 'GET',
+  });
+};
+
+export const getEmailNotificationStatus = async () => {
+  const appSettingResponse: AxiosResponse<EmailNotificationStatus[]> = await authenticatedApiRequest({
+    url: `${API_PATHS.guiBackendUserSettingsPath}/settings/users/authorized/apps/dlr_learning`,
+    method: 'GET',
+  });
+  return appSettingResponse.data[0].feature === AppFeature.Email && appSettingResponse.data[0].value === AppValue.True;
+};
+
+export const putEmailNotificationStatus = async (status: boolean) => {
+  const data = encodeURI(`value=${status}`);
+  return authenticatedApiRequest({
+    url: `${API_PATHS.guiBackendUserSettingsPath}/settings/users/authorized/apps/dlr_learning/features/email_notification`,
+    method: 'PUT',
+    data,
   });
 };

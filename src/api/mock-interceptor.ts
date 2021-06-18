@@ -23,6 +23,7 @@ import {
   mockDefaultContent,
   mockDefaultResource,
   mockEditorList,
+  mockEmailNotificationStatusResponse,
   mockFacets,
   mockInstitutionAuthorities,
   mockInstitutionUser,
@@ -299,6 +300,16 @@ export const interceptRequestsOnMock = () => {
       )
     )
     .reply(200, mockUserCourses);
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendUserSettingsPath}/settings/users/authorized/apps/dlr_learning`))
+    .reply(200, mockEmailNotificationStatusResponse);
+  mock
+    .onPut(
+      new RegExp(
+        `${API_PATHS.guiBackendUserSettingsPath}/settings/users/authorized/apps/dlr_learning/features/email_notification`
+      )
+    )
+    .reply(201);
 
   //REPORT RESOURCE
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesFeedbacksPath}/feedbacks/resources/.*`)).reply(202);

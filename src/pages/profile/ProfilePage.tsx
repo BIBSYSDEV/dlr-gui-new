@@ -4,25 +4,42 @@ import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
 import { PageHeader } from '../../components/PageHeader';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Grid } from '@material-ui/core';
 import { Colors } from '../../themes/mainTheme';
 import UserInformation from './UserInformation';
+import EmailNotificationSetting from './EmailNotificationSetting';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../state/rootReducer';
 
-const StyledWrapper = styled(Grid)`
+const StyledWrapperWithTopMargin = styled.div`
   background-color: ${Colors.DLRYellow1};
   padding: 1rem 1rem 2rem 1rem;
   margin-top: 2rem;
 `;
 
+interface Props {
+  color: string;
+}
+
+const ColoringWrapper = styled.div<Props>`
+  background-color: ${(props) => props.color};
+  padding: 1rem 1rem 2rem 1rem;
+`;
+
 const ProfilePage = () => {
   const { t } = useTranslation();
+  const user = useSelector((state: RootState) => state.user);
 
   return (
     <StyledContentWrapperLarge>
       <PageHeader>{t('profile.profile')}</PageHeader>
-      <StyledWrapper>
+      <StyledWrapperWithTopMargin>
         <UserInformation />
-      </StyledWrapper>
+      </StyledWrapperWithTopMargin>
+      {(user.institutionAuthorities?.isEditor || user.institutionAuthorities?.isCurator) && (
+        <ColoringWrapper color={Colors.DLRYellow2}>
+          <EmailNotificationSetting />
+        </ColoringWrapper>
+      )}
     </StyledContentWrapperLarge>
   );
 };

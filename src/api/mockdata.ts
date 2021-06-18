@@ -1,6 +1,6 @@
 import { Contributor, Creator, emptyResource, Resource, ResourceStatistic } from '../types/resource.types';
 import deepmerge from 'deepmerge';
-import { User } from '../types/user.types';
+import { AppFeature, AppType, AppValue, EmailNotificationStatus, User } from '../types/user.types';
 import { License } from '../types/license.types';
 import { v4 as uuidv4 } from 'uuid';
 import { Course, CourseSeason, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
@@ -687,4 +687,14 @@ export const mockUserCourses = [
   'ACIT4015 :: oslomet :: 2021 :: 1',
   'ACIT4050 :: oslomet :: 2021 :: 1',
   'ACIT4090 :: oslomet :: 2021 :: 1',
+];
+
+export const mockEmailNotificationStatusResponse: EmailNotificationStatus[] = [
+  {
+    user: mockUser.id,
+    app: AppType.DLR,
+    feature: AppFeature.Email,
+    value: AppValue.False,
+    time: '2021-06-18T08:23:26.942Z',
+  },
 ];
