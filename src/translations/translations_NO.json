@@ -282,6 +282,12 @@
     },
     "selected_license": "Valgt lisens"
   },
+  "localization": {
+    "english": "English",
+    "english_language_code": "ENG",
+    "norwegian_bokmaal": "Norsk - bokmål",
+    "norwegian_language_code": "nb-NO"
+  },
   "privacy_policy": {
     "description": "Beskrivelse",
     "heading": "Personvernerklæring"
