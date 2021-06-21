@@ -26,8 +26,8 @@ const StyledSwitch = styled(Switch)`
 `;
 
 //TODO: cypress-tests
-//TODO: translations
-//TODO: aria-labels & WCAG
+
+const emailNotificationLabel = 'email-notification-label';
 
 const EmailNotificationSetting = () => {
   const [wantsToBeNotifiedByEmail, setWantsToBeNotifiedByEmail] = useState(false);
@@ -82,8 +82,11 @@ const EmailNotificationSetting = () => {
           {loadingEmailNotificationSettingError && (
             <ErrorBanner userNeedsToBeLoggedIn={true} error={loadingEmailNotificationSettingError} />
           )}
-          <StyledSwitchTypography>{t('profile.receive_notifications_email')}</StyledSwitchTypography>
+          <StyledSwitchTypography id={emailNotificationLabel}>
+            {t('profile.receive_notifications_email')}
+          </StyledSwitchTypography>
           <StyledSwitch
+            inputProps={{ 'aria-labelledby': emailNotificationLabel }}
             checked={wantsToBeNotifiedByEmail}
             name="email"
             onChange={handleEmailSwitchChange}
