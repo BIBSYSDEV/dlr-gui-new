@@ -4,6 +4,7 @@ import { CircularProgress, Switch, Typography } from '@material-ui/core';
 import { getEmailNotificationStatus, putEmailNotificationStatus } from '../../api/userApi';
 import ErrorBanner from '../../components/ErrorBanner';
 import { Error } from '@material-ui/icons';
+import { useTranslation } from 'react-i18next';
 
 const StyledBoxWrapper = styled.div`
   display: box;
@@ -28,16 +29,13 @@ const StyledSwitch = styled(Switch)`
 //TODO: translations
 //TODO: aria-labels & WCAG
 
-const sleep = (ms: number) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
-
 const EmailNotificationSetting = () => {
   const [wantsToBeNotifiedByEmail, setWantsToBeNotifiedByEmail] = useState(false);
   const [loadingEmailNotificationSettingError, setLoadingEmailNotificationSettingError] = useState<Error | undefined>();
   const [savingEmailNotificationSettingError, setSavingEmailNotificationSettingError] = useState<Error | undefined>();
   const [loadingEmailNotificationSetting, setLoadingEmailNotificationSetting] = useState(false);
   const [savingEmailNotificationSetting, setSavingEmailNotificationSetting] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const getEmailNotificationFromApi = async () => {
@@ -46,7 +44,6 @@ const EmailNotificationSetting = () => {
         setLoadingEmailNotificationSettingError(undefined);
         const status = await getEmailNotificationStatus();
         setWantsToBeNotifiedByEmail(status);
-        await sleep(1000);
       } catch (error) {
         setLoadingEmailNotificationSettingError(error);
       } finally {
@@ -63,7 +60,6 @@ const EmailNotificationSetting = () => {
       setSavingEmailNotificationSetting(true);
       await putEmailNotificationStatus(status);
       setWantsToBeNotifiedByEmail(status);
-      await sleep(1000);
     } catch (error) {
       setSavingEmailNotificationSettingError(error);
     } finally {
@@ -75,7 +71,7 @@ const EmailNotificationSetting = () => {
     <>
       <StyledBoxWrapper>
         <Typography gutterBottom variant="h3">
-          Varsler
+          {t('profile.notifications')}
         </Typography>
       </StyledBoxWrapper>
 
@@ -86,7 +82,7 @@ const EmailNotificationSetting = () => {
           {loadingEmailNotificationSettingError && (
             <ErrorBanner userNeedsToBeLoggedIn={true} error={loadingEmailNotificationSettingError} />
           )}
-          <StyledSwitchTypography>Motta varsler på epost</StyledSwitchTypography>
+          <StyledSwitchTypography>{t('profile.receive_notifications_email')}</StyledSwitchTypography>
           <StyledSwitch
             checked={wantsToBeNotifiedByEmail}
             name="email"

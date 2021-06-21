@@ -303,7 +303,9 @@
   "profile": {
     "feide": "feide",
     "institution": "Institution",
+    "notifications": "Notifications",
     "profile": "Profile",
+    "receive_notifications_email":"Receive notifications on email",
     "your_groups": "Your affiliated groups",
     "your_roles": "Your roles"
   },

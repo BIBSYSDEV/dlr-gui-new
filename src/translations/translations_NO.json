@@ -303,7 +303,9 @@
   "profile": {
     "feide": "feide",
     "institution": "Institusjon",
+    "notifications": "Varsler",
     "profile": "Profil",
+    "receive_notifications_email":"Motta varsler på epost",
     "your_groups": "Dine gruppetilknytninger",
     "your_roles": "Dine roller"
   },
