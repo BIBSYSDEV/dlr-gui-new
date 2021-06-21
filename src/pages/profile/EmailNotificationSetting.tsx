@@ -5,6 +5,7 @@ import { getEmailNotificationStatus, putEmailNotificationStatus } from '../../ap
 import ErrorBanner from '../../components/ErrorBanner';
 import { Error } from '@material-ui/icons';
 import { useTranslation } from 'react-i18next';
+import { Colors } from '../../themes/mainTheme';
 
 const StyledBoxWrapper = styled.div`
   display: box;
@@ -21,11 +22,16 @@ const StyledSwitchTypography = styled(Typography)`
   margin-right: 1rem;
 `;
 
-const StyledSwitch = styled(Switch)`
+const StyledSwitch: any = styled(Switch)`
   margin-right: 1rem;
-`;
 
-//TODO: cypress-tests
+  .Mui-focusVisible {
+    background-color: ${Colors.BlackOpaque25};
+  }
+  .Mui-focusVisible.Mui-checked {
+    background-color: ${Colors.PrimaryOpaque20};
+  }
+`;
 
 const emailNotificationLabel = 'email-notification-label';
 
@@ -82,11 +88,13 @@ const EmailNotificationSetting = () => {
           {loadingEmailNotificationSettingError && (
             <ErrorBanner userNeedsToBeLoggedIn={true} error={loadingEmailNotificationSettingError} />
           )}
+
           <StyledSwitchTypography id={emailNotificationLabel}>
             {t('profile.receive_notifications_email')}
           </StyledSwitchTypography>
+
           <StyledSwitch
-            inputProps={{ 'aria-labelledby': emailNotificationLabel }}
+            inputProps={{ 'aria-labelledby': emailNotificationLabel, 'data-testid': 'email-notifications-checkbox' }}
             checked={wantsToBeNotifiedByEmail}
             name="email"
             onChange={handleEmailSwitchChange}

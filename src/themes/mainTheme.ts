@@ -17,6 +17,7 @@ declare module '@material-ui/core/styles/createPalette' {
 
 export enum Colors {
   Primary = 'rgba(99, 34, 107, 1)',
+  PrimaryOpaque20 = 'rgba(99, 34, 107, 0.20)',
   Secondary = 'rgba(147, 10, 10, 1)',
   Background = '#ffffff',
   Box = '#f5f5f5',
@@ -27,6 +28,7 @@ export enum Colors {
   Separator = '#3d4349',
   PrimaryText = 'rgba(0,0,0,0.87)',
   InitialText = 'rgba(0, 0, 0, 1)',
+  BlackOpaque25 = 'rgba(0, 0, 0, 0.25)',
   SecondaryText = '#44515d',
   LightHeaderText = 'rgba(0,0,0,0.29)',
   Panel = '#A9D8B8',
