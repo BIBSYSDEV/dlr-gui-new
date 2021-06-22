@@ -7,12 +7,12 @@ import HelperTextPopover from '../../components/HelperTextPopover';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
 
-interface AccoessFilteringProps {
+interface AccessFilteringProps {
   queryObject: QueryObject;
   setQueryObject: Dispatch<SetStateAction<QueryObject>>;
 }
 
-const AccessFiltering: FC<AccoessFilteringProps> = ({ queryObject, setQueryObject }) => {
+const AccessFiltering: FC<AccessFilteringProps> = ({ queryObject, setQueryObject }) => {
   const location = useLocation();
   const history = useHistory();
   const { t } = useTranslation();
@@ -34,6 +34,10 @@ const AccessFiltering: FC<AccoessFilteringProps> = ({ queryObject, setQueryObjec
 
   return (
     <div>
+      {/**
+         original label:
+         label={t('dashboard.access_filter')}
+         **/}
       <FormControlLabel
         data-testid="access-checkbox-label"
         control={
@@ -44,7 +48,7 @@ const AccessFiltering: FC<AccoessFilteringProps> = ({ queryObject, setQueryObjec
             name={'access'}
           />
         }
-        label={t('dashboard.access_filter')}
+        label={t('dashboard.access_filter_limited')}
         onChange={(event) => {
           changeSelected(event);
         }}
@@ -52,7 +56,11 @@ const AccessFiltering: FC<AccoessFilteringProps> = ({ queryObject, setQueryObjec
       <HelperTextPopover
         ariaButtonLabel={t('explanation_text.access_filtering_label')}
         popoverId={'access-filtering-explainer'}>
-        <Typography>{`${t('explanation_text.access_filtering')} `}</Typography>
+        {/**
+         original label:
+         <Typography>{`${t('explanation_text.access_filtering')} `}</Typography>
+         **/}
+        <Typography>{`${t('explanation_text.access_filtering_limited')} `}</Typography>
         {/*//TODO: husk tekst på at man kan spørre om tilgang når funksjonaliteten er på plass*/}
       </HelperTextPopover>
     </div>
