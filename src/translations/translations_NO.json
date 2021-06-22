@@ -125,6 +125,7 @@
   "confirm_before_publishing_title": "Se over at ressursen ser riktig ut før du publiserer.",
   "dashboard": {
     "access_filter": "Vis også ressurser jeg ikke har tilgang til",
+    "access_filter_limited": "Vis også ressurser med begrenset tilgang",
     "close_popover": "Trykk escape for å lukke denne boksen",
     "enabled": "aktive",
     "enter_tags": "Søk og velg emneord fra listen for å filtrere",
@@ -160,6 +161,7 @@
   "explanation_text": {
     "access_filtering_label": "Vis andre ressurser forklaring",
     "access_filtering": "Hvis valgt, vil resultatlista også inneholde ressurser du ikke har tilgang til å vise.",
+    "access_filtering_limited": "Hvis valgt, vil resultatlista også inneholde ressurser med begrenset tilgang. Noen av disse ressursene vil du ikke ha tilgang til.",
     "contributor_helper_aria_label": "Vis bidragsyter forklaring",
     "contributor_helper_text1": "Andre som har bidratt med ressursen, men som ikke trenger å krediteres av de som tar i bruk ressursen",
     "contributor_helper_text2": "Som Kurator kan du verifisere bidragsytere. Det er ikke mulig å endre navnet på en verifisert bidragsyter. Om det er feil verfisert bidragsyter, må denne slettes og legges inn på ny",
