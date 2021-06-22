@@ -6,6 +6,8 @@ import ErrorBanner from '../../components/ErrorBanner';
 import { Error } from '@material-ui/icons';
 import { useTranslation } from 'react-i18next';
 import { Colors } from '../../themes/mainTheme';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../state/rootReducer';
 
 const StyledBoxWrapper = styled.div`
   display: box;
@@ -20,6 +22,7 @@ const StyledFlexWrapper = styled.div`
 
 //with yellow background it's impossible to see the default focus styling for Material-ui Switch.
 const StyledSwitch: any = styled(Switch)`
+  margin-left: 1.5rem;
   .Mui-focusVisible {
     background-color: ${Colors.BlackOpaque25};
   }
@@ -36,6 +39,7 @@ const StyledFormControlLabel = styled(FormControlLabel)`
 const emailNotificationLabel = 'email-notification-label';
 
 const EmailNotificationSetting = () => {
+  const user = useSelector((state: RootState) => state.user);
   const [wantsToBeNotifiedByEmail, setWantsToBeNotifiedByEmail] = useState(false);
   const [loadingEmailNotificationSettingError, setLoadingEmailNotificationSettingError] = useState<Error | undefined>();
   const [savingEmailNotificationSettingError, setSavingEmailNotificationSettingError] = useState<Error | undefined>();
@@ -102,7 +106,14 @@ const EmailNotificationSetting = () => {
                 color="primary"
               />
             }
-            label={t('profile.receive_notifications_email')}
+            label={
+              <>
+                <Typography> {`${t('profile.receive_notifications_email')} ${user.email}`}</Typography>
+                {(user.institutionAuthorities?.isCurator || user.institutionAuthorities?.isEditor) && (
+                  <Typography variant="body2">{t('profile.receive_notifications_email_details')}</Typography>
+                )}
+              </>
+            }
           />
 
           {savingEmailNotificationSetting && <CircularProgress size="1.5rem" />}

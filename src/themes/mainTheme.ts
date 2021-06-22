@@ -29,6 +29,7 @@ export enum Colors {
   PrimaryText = 'rgba(0,0,0,0.87)',
   InitialText = 'rgba(0, 0, 0, 1)',
   BlackOpaque25 = 'rgba(0, 0, 0, 0.25)',
+  WhiteOpaque1 = 'rgba(255, 255, 255, 0.01)',
   SecondaryText = '#44515d',
   LightHeaderText = 'rgba(0,0,0,0.29)',
   Panel = '#A9D8B8',
