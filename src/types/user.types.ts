@@ -70,3 +70,25 @@ export enum UserInstitution {
   UiT = 'UiT',
   USN = 'USN',
 }
+
+export interface EmailNotificationStatus {
+  user: string;
+  app: AppType;
+  feature: AppFeature;
+  value: AppValue;
+  time: string;
+}
+
+export enum AppType {
+  DLR = 'dlr_learning',
+  BIRD = 'dlr_research',
+}
+
+export enum AppFeature {
+  Email = 'email_notification',
+}
+
+export enum AppValue {
+  False = 'false',
+  True = 'true',
+}
