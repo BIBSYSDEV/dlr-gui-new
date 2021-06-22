@@ -35,7 +35,7 @@ const AccessFiltering: FC<AccessFilteringProps> = ({ queryObject, setQueryObject
   return (
     <div>
       {/**
-         original label:
+       original label for when SMILE-847 gets implemented:
          label={t('dashboard.access_filter')}
          **/}
       <FormControlLabel
@@ -57,7 +57,7 @@ const AccessFiltering: FC<AccessFilteringProps> = ({ queryObject, setQueryObject
         ariaButtonLabel={t('explanation_text.access_filtering_label')}
         popoverId={'access-filtering-explainer'}>
         {/**
-         original label:
+         original label for when SMILE-847 gets implemented:
          <Typography>{`${t('explanation_text.access_filtering')} `}</Typography>
          **/}
         <Typography>{`${t('explanation_text.access_filtering_limited')} `}</Typography>
