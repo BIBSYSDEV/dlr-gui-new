@@ -305,7 +305,7 @@
     "institution": "Institution",
     "notifications": "Notifications",
     "profile": "Profile",
-    "receive_notifications_email":"Send notifications from DLR as email to",
+    "receive_notifications_email":"Receive email notifications from DLR to {{email}}",
     "receive_notifications_email_details": "For instance: notifications about DOI requests and reported resources",
     "your_groups": "Your affiliated groups",
     "your_roles": "Your roles"

@@ -305,7 +305,7 @@
     "institution": "Institusjon",
     "notifications": "Varsler",
     "profile": "Profil",
-    "receive_notifications_email":"Send varsler fra DLR som epost til",
+    "receive_notifications_email":"Motta epost-varsler fra DLR til {{email}}",
     "receive_notifications_email_details": "For eksempel varsel om DOI forepørsler og rapporterte ressurser",
     "your_groups": "Dine gruppetilknytninger",
     "your_roles": "Dine roller"
