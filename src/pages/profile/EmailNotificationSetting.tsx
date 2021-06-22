@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { CircularProgress, Switch, Typography } from '@material-ui/core';
+import { CircularProgress, FormControlLabel, Switch, Typography } from '@material-ui/core';
 import { getEmailNotificationStatus, putEmailNotificationStatus } from '../../api/userApi';
 import ErrorBanner from '../../components/ErrorBanner';
 import { Error } from '@material-ui/icons';
@@ -18,19 +18,19 @@ const StyledFlexWrapper = styled.div`
   align-items: center;
 `;
 
-const StyledSwitchTypography = styled(Typography)`
-  margin-right: 1rem;
-`;
-
+//with yellow background it's impossible to see the default focus styling for Material-ui Switch.
 const StyledSwitch: any = styled(Switch)`
-  margin-right: 1rem;
-
   .Mui-focusVisible {
     background-color: ${Colors.BlackOpaque25};
   }
   .Mui-focusVisible.Mui-checked {
     background-color: ${Colors.PrimaryOpaque20};
   }
+`;
+
+const StyledFormControlLabel = styled(FormControlLabel)`
+  margin-right: 1rem;
+  margin-left: 0;
 `;
 
 const emailNotificationLabel = 'email-notification-label';
@@ -88,18 +88,23 @@ const EmailNotificationSetting = () => {
           {loadingEmailNotificationSettingError && (
             <ErrorBanner userNeedsToBeLoggedIn={true} error={loadingEmailNotificationSettingError} />
           )}
-
-          <StyledSwitchTypography id={emailNotificationLabel}>
-            {t('profile.receive_notifications_email')}
-          </StyledSwitchTypography>
-
-          <StyledSwitch
-            inputProps={{ 'aria-labelledby': emailNotificationLabel, 'data-testid': 'email-notifications-checkbox' }}
-            checked={wantsToBeNotifiedByEmail}
-            name="email"
-            onChange={handleEmailSwitchChange}
-            color="primary"
+          <StyledFormControlLabel
+            labelPlacement="start"
+            control={
+              <StyledSwitch
+                inputProps={{
+                  'aria-labelledby': emailNotificationLabel,
+                  'data-testid': 'email-notifications-checkbox',
+                }}
+                checked={wantsToBeNotifiedByEmail}
+                onChange={handleEmailSwitchChange}
+                name="email"
+                color="primary"
+              />
+            }
+            label={t('profile.receive_notifications_email')}
           />
+
           {savingEmailNotificationSetting && <CircularProgress size="1.5rem" />}
           {savingEmailNotificationSettingError && (
             <ErrorBanner userNeedsToBeLoggedIn={true} error={savingEmailNotificationSettingError} />
