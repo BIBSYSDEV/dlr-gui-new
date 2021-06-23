@@ -27,6 +27,8 @@ const StyledResourceActionBar = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   margin-top: 2rem;
+  padding-right: 1rem;
+  align-items: center;
 `;
 
 const StyledContentWrapperLargeWithBottomMargin = styled(StyledContentWrapperLarge)`
@@ -92,7 +94,7 @@ const ResourcePage = () => {
             color="primary"
             data-testid={`edit-resource-button`}
             onClick={handleClickEditButton}>
-            {t('common.edit').toUpperCase()}
+            {t('common.edit')}
           </Button>
         </StyledResourceActionBar>
       )}

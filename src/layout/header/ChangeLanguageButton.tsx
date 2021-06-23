@@ -34,7 +34,7 @@ const ChangeLanguageButton: FC = () => {
         startIcon={<LanguageIcon />}
         endIcon={open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         onClick={handleClick}>
-        {i18n.language.toUpperCase()}
+        {i18n.language}
       </Button>
       <Menu id={languageMenuId} anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         <MenuItem data-testid="nb-no-button" onClick={() => setLanguage('nb-no')}>

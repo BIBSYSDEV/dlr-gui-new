@@ -138,7 +138,7 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
             size="large"
             variant="outlined"
             onClick={handleClickEditButton}>
-            {t('common.edit').toUpperCase()}
+            {t('common.edit')}
           </StyledActionButton>
           {handleDelete && (
             <>
@@ -149,7 +149,7 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
                 size="large"
                 variant="outlined"
                 onClick={() => setShowConfirmDialog(true)}>
-                {t('common.delete').toUpperCase()}
+                {t('common.delete')}
               </StyledActionButton>
               <ConfirmDeleteDialog
                 data-testid={`delete-my-resource-confirm-dialog-${resource.identifier}`}

@@ -263,7 +263,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                             onClick={() => {
                               removeCreator(creator.identifier, arrayHelpers, index);
                             }}>
-                            {t('common.remove').toUpperCase()}
+                            {t('common.remove')}
                           </StyledDeleteButton>
                         </StyledButtonWrapper>
                       )}
@@ -283,7 +283,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                 onClick={() => {
                   addCreator(arrayHelpers);
                 }}>
-                {t('resource.add_creator').toUpperCase()}
+                {t('resource.add_creator')}
               </Button>
               {addCreatorError && <ErrorBanner userNeedsToBeLoggedIn={true} error={addCreatorError} />}
             </>

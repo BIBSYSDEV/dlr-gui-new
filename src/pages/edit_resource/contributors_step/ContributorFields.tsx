@@ -335,7 +335,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                           onClick={() => {
                             removeContributor(contributor.features.dlr_contributor_identifier, arrayHelpers, index);
                           }}>
-                          {t('common.remove').toUpperCase()}
+                          {t('common.remove')}
                         </StyledDeleteButton>
                       </StyledButtonWrapper>
                     </StyledButtonRowWrapper>
@@ -353,7 +353,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                 onClick={() => {
                   addContributor(arrayHelpers);
                 }}>
-                {t('resource.add_contributor').toUpperCase()}
+                {t('resource.add_contributor')}
               </Button>
               {addContributorError && <ErrorBanner userNeedsToBeLoggedIn={true} error={addContributorError} />}
             </>

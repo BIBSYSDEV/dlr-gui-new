@@ -211,7 +211,7 @@ export default createMuiTheme({
     },
     MuiButton: {
       root: {
-        textTransform: 'none',
+        textTransform: 'uppercase',
       },
       label: {
         height: '100%',
