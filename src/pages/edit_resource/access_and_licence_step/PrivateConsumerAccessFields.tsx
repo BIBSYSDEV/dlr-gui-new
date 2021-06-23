@@ -252,7 +252,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
             onClick={(event) => {
               handleAddAccessButtonClick(event);
             }}>
-            {t('access.add_access')}
+            {t('access.add_access').toUpperCase()}
           </StyledAddAccessButton>
         </StyledAccessButtonWrapper>
       )}

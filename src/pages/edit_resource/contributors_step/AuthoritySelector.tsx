@@ -229,7 +229,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
             variant="contained"
             onClick={handleClose}
             color="primary">
-            {t('common.close')}
+            {t('common.close').toUpperCase()}
           </Button>
         </DialogActions>
       </StyledDialog>

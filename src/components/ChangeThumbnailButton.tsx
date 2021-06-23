@@ -183,7 +183,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
         onClick={(event) => {
           handleThumbnailClick(event);
         }}>
-        {t('thumbnail.change_thumbnail')}
+        {t('thumbnail.change_thumbnail').toUpperCase()}
       </Button>
       {fileInputIsBusy && <StyledCircularProgress size="1rem" aria-label={t('thumbnail.busy_changing')} />}
       <Popover
