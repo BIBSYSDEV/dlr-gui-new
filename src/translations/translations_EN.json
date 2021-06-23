@@ -125,6 +125,7 @@
   "confirm_before_publishing_title": "Please reread before you publish the resource.",
   "dashboard": {
     "access_filter": "Also show resources I do not have access to",
+    "access_filter_limited": "Also show resources with limited access",
     "close_popover": "Press escape to close this box",
     "enabled": "enabled",
     "enter_tags": "Search and select tag for filtering",
@@ -160,6 +161,7 @@
   "explanation_text": {
     "access_filtering_label": "Show other results explanation",
     "access_filtering": "If selected, the result list will also contain content you do not have access to view",
+    "access_filtering_limited": "If selected, the result list will also contain content with private access. Some which you may not have access to.",
     "contributor_helper_aria_label": "Show contributor explanation",
     "contributor_helper_text1": "Others who have contributed to the resource but does not need to be credited in future usage of the resource",
     "contributor_helper_text2": "It is not possible to change the name of the contributor after it has been verified",
@@ -303,7 +305,10 @@
   "profile": {
     "feide": "feide",
     "institution": "Institution",
+    "notifications": "Notifications",
     "profile": "Profile",
+    "receive_notifications_email":"Receive email notifications from DLR to {{email}}",
+    "receive_notifications_email_details": "For instance: notifications about DOI requests and reported resources",
     "your_groups": "Your affiliated groups",
     "your_roles": "Your roles"
   },
