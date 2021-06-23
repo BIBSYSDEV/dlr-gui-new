@@ -50,6 +50,16 @@ import {
 export const interceptRequestsOnMock = () => {
   const mock = new MockAdapter(Axios);
 
+  const mockGetDelayedAndLogged = (pathPattern: string, statusCode: number, mockedResponse: any) => {
+    mock.onGet(new RegExp(pathPattern)).reply((config) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(loggedReply(config, statusCode, mockedResponse));
+        }, 1000);
+      });
+    });
+  };
+
   const loggedReply = (config: AxiosRequestConfig, statusCode: number, mockedResult: unknown) => {
     /* eslint-disable no-console */
     console.log('MOCKED API-CALL: ', config.url);
@@ -92,17 +102,16 @@ export const interceptRequestsOnMock = () => {
   mock
     .onGet(new RegExp(`${API_PATHS.guiBackendAuthoritiesPath}/authorities/search.*`))
     .reply(200, mockAuthoritySearchResponse);
-  mock
-    .onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/resource-123/creators/.*/authorities`))
-    .reply((config) => loggedReply(config, 200, [mockCreatorOrContributorAuthoritiesResponse]));
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*/authorities`)).reply(200, []);
+
+  mockGetDelayedAndLogged(`${API_PATHS.guiBackendResourcesPath}/resources/resource-123/creators/.*/authorities`, 200, [
+    mockCreatorOrContributorAuthoritiesResponse,
+  ]);
+  mockGetDelayedAndLogged(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*/authorities`, 200, []);
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*/authorities`)).reply(201);
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*/authorities`)).reply(201);
 
   // SEARCH
-  mock
-    .onGet(new RegExp(`${API_PATHS.guiBackendResourcesSearchPath}/resources/search.*`))
-    .reply((config) => loggedReply(config, 200, mockSearchResults));
+  mockGetDelayedAndLogged(`${API_PATHS.guiBackendResourcesSearchPath}/resources/search.*`, 200, mockSearchResults);
 
   //TAG-SEARCH
   mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesSearchPath}/suggestions/tags.*`)).reply((config) => {

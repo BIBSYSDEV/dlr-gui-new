@@ -46,6 +46,7 @@ interface DOIRequestItemProps {
 const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkListDoi }) => {
   const [isCreatingDOi, setIsCreatingDOi] = useState(false);
   const [busySearchingForAuthorities, setBusySearchingForAuthorities] = useState(false);
+  const [hasSearchedForAuthorities, setHasSearchedForAuthorities] = useState(false);
   const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
   const [showConfirmCreateDOIDialog, setShowConfirmCreateDOIDialog] = useState(false);
   const [updateError, setUpdateError] = useState<Error>();
@@ -105,11 +106,12 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
           setSearchingForAuthoritiesError(error);
         } finally {
           setBusySearchingForAuthorities(false);
+          setHasSearchedForAuthorities(true);
         }
       }
     };
     isCreatorsVerified();
-  }, [workListRequestDOI]);
+  }, [workListRequestDOI.resourceIdentifier]);
 
   return (
     <StyledListItemWrapper>
@@ -126,10 +128,10 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
                 variant="outlined"
                 data-testid={`edit-resoirce-button-${workListRequestDOI.resourceIdentifier}`}
                 color="primary">
-                {t('resource.edit_resource')}
+                {t('resource.edit_resource').toUpperCase()}
               </Button>
             </Grid>
-            {!busySearchingForAuthorities && !canCreateDOI && (
+            {hasSearchedForAuthorities && !canCreateDOI && (
               <Grid item xs={12}>
                 <Typography variant="body2">{t('work_list.doi_verify_resource')}</Typography>
               </Grid>
@@ -144,7 +146,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
                 onClick={() => {
                   setShowConfirmCreateDOIDialog(true);
                 }}>
-                {t('work_list.create_doi')}
+                {t('work_list.create_doi').toUpperCase()}
               </Button>
             </Grid>
             {searchingForAuthoritiesError && (
@@ -162,7 +164,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
                 onClick={() => {
                   setShowConfirmDeleteDialog(true);
                 }}>
-                {t('work_list.delete_request')}
+                {t('work_list.delete_request').toUpperCase()}
               </Button>
             </Grid>
           </Grid>
