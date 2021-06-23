@@ -95,7 +95,6 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
   const [courses, setCourses] = useState<Course[]>([]);
   const [waitingForCourses, setWaitingForCourses] = useState(false);
   const [busyFetchingPrivateAccess, setBusyFetchingPrivateAccess] = useState(false);
-  const [hasFetchedPrivateAccess, setHasFetchedPrivateAccess] = useState(false);
   const [showCourseAutoComplete, setShowCourseAutocomplete] = useState(false);
   const mountedRef = useRef(true);
 
@@ -129,7 +128,6 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
         setNetworkError(error);
       } finally {
         setBusyFetchingPrivateAccess(false);
-        setHasFetchedPrivateAccess(true);
       }
     };
     getPrivateAccessList();
