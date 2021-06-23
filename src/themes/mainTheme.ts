@@ -281,7 +281,6 @@ export default createMuiTheme({
       root: {
         height: 'auto',
         fontSize: '1rem',
-        fontWeigh: '400',
       },
       colorPrimary: {
         backgroundColor: Colors.ChipBackground,
