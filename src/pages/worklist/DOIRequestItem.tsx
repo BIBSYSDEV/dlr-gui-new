@@ -111,7 +111,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
       }
     };
     isCreatorsVerified();
-  }, [workListRequestDOI.resourceIdentifier]);
+  }, [workListRequestDOI]);
 
   return (
     <StyledListItemWrapper>
