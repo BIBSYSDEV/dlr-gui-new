@@ -27,9 +27,8 @@ const StyledResourceActionBar = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   margin-top: 2rem;
-  margin-left: auto;
-  margin-right: auto;
   padding-right: 1rem;
+  align-items: center;
 `;
 
 const StyledContentWrapperLargeWithBottomMargin = styled(StyledContentWrapperLarge)`
