@@ -34,10 +34,12 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
   const [savingAccessTypeError, setSavingAccessTypeError] = useState<Error>();
   const [forceRefreshInPrivateConsumerAccessFields, setForceRefreshInPrivateConsumerAccessFields] = useState(false);
   const [disabledUserInput, setDisabledUserInput] = useState(false);
+  const [busySavingResourceAccessType, setBusySavingResourceAccessType] = useState(false);
   const [disabledHelperText, setDisabledHelperText] = useState('');
 
   const saveResourceAccessType = async (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (event.target.value.length > 0) {
+      setBusySavingResourceAccessType(true);
       setAllChangesSaved(false);
       try {
         if (event.target.value in AccessTypes) {
@@ -58,6 +60,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
         setSavingAccessTypeError(error);
       } finally {
         setAllChangesSaved(true);
+        setBusySavingResourceAccessType(false);
       }
     }
   };
@@ -137,7 +140,10 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
           </Field>
         </StyledFieldWrapper>
         {values.features.dlr_access === AccessTypes.private && (
-          <PrivateConsumerAccessFields forceRefresh={forceRefreshInPrivateConsumerAccessFields} />
+          <PrivateConsumerAccessFields
+            busySavingResourceAccessType={busySavingResourceAccessType}
+            forceRefresh={forceRefreshInPrivateConsumerAccessFields}
+          />
         )}
       </StyledContentWrapper>
     </StyledSchemaPartColored>
