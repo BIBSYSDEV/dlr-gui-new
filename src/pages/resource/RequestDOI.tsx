@@ -48,7 +48,7 @@ const RequestDOI: FC<RequestDOIProps> = ({ resource, setRequestSentSuccess }) =>
         color="primary"
         variant="outlined"
         onClick={() => setShowRequestDOIDialog(true)}>
-        {t('resource.doi.request_doi').toUpperCase()}
+        {t('resource.doi.request_doi')}
       </Button>
       <Dialog
         maxWidth={'sm'}

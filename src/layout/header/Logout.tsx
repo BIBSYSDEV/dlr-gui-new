@@ -18,7 +18,7 @@ const Logout = () => {
 
   return (
     <Button color="primary" variant="contained" data-testid="logout-button" onClick={handleLogout}>
-      {t('common.logout').toUpperCase()}
+      {t('common.logout')}
     </Button>
   );
 };

@@ -104,7 +104,7 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
                   startIcon={<EditIcon />}
                   variant="outlined"
                   color="primary">
-                  {t('resource.edit_resource').toUpperCase()}
+                  {t('resource.edit_resource')}
                 </Button>
               </Grid>
               <Grid item xs={12}>
@@ -116,7 +116,7 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
                   endIcon={isDeletingResource && <CircularProgress size="1rem" />}
                   variant="outlined"
                   color="secondary">
-                  {t('work_list.delete_resource').toUpperCase()}
+                  {t('work_list.delete_resource')}
                 </Button>
               </Grid>
               <Grid item xs={12}>
@@ -128,7 +128,7 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
                   endIcon={isDeletingRequest && <CircularProgress size="1rem" />}
                   variant="outlined"
                   color="secondary">
-                  {t('work_list.delete_report').toUpperCase()}
+                  {t('work_list.delete_report')}
                 </Button>
               </Grid>
             </Grid>

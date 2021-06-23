@@ -42,7 +42,7 @@ const AuthorityListItem: FC<AuthorityListItemProps> = ({ authority, handleSelect
             variant="outlined"
             data-testid={`add-verify-authority-${authority.id}`}
             onClick={() => handleSelectedAuthorityChange(authority)}>
-            {t('common.select').toUpperCase()}
+            {t('common.select')}
           </Button>
         </ListItemSecondaryAction>
       </ListItem>

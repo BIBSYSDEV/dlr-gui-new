@@ -261,7 +261,7 @@ const RoleSetter = () => {
                 variant="contained"
                 type="submit"
                 color="primary">
-                {t('administrative.search_user').toUpperCase()}
+                {t('administrative.search_user')}
               </StyledButton>
             </StyledSearchWrapper>
           </Form>

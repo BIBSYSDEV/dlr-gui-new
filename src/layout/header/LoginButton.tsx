@@ -21,7 +21,7 @@ const LoginButton: FC<LoginButtonProps> = ({ variant }) => {
 
   return (
     <Button color="primary" variant={variant} data-testid="menu-login-button" onClick={handleLogin}>
-      {t('common.login').toUpperCase()}
+      {t('common.login')}
     </Button>
   );
 };

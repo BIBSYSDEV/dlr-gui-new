@@ -61,7 +61,7 @@ const LinkResourceForm: FC<LinkResourceFormProps> = ({ handleSubmit }) => {
               data-testid="new-resource-link-submit-button"
               disabled={!isValid || !dirty}
               type="submit">
-              {t('resource.submit_link').toUpperCase()}
+              {t('resource.submit_link')}
             </Button>
           </StyledInputBox>
         </Form>

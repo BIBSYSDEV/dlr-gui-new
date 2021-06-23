@@ -107,7 +107,7 @@ const SearchInput: FC<SearchInputProps> = ({ setQueryObject, queryObject }) => {
             color="primary"
             variant="contained"
             type="submit">
-            {t('common.search').toUpperCase()}
+            {t('common.search')}
           </StyledButton>
           <HelperTextPopover
             ariaButtonLabel={t('explanation_text.search_input_helper_aria_label')}

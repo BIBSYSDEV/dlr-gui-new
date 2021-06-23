@@ -128,7 +128,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
                 variant="outlined"
                 data-testid={`edit-resoirce-button-${workListRequestDOI.resourceIdentifier}`}
                 color="primary">
-                {t('resource.edit_resource').toUpperCase()}
+                {t('resource.edit_resource')}
               </Button>
             </Grid>
             {hasSearchedForAuthorities && !canCreateDOI && (
@@ -146,7 +146,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
                 onClick={() => {
                   setShowConfirmCreateDOIDialog(true);
                 }}>
-                {t('work_list.create_doi').toUpperCase()}
+                {t('work_list.create_doi')}
               </Button>
             </Grid>
             {searchingForAuthoritiesError && (
@@ -164,7 +164,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
                 onClick={() => {
                   setShowConfirmDeleteDialog(true);
                 }}>
-                {t('work_list.delete_request').toUpperCase()}
+                {t('work_list.delete_request')}
               </Button>
             </Grid>
           </Grid>

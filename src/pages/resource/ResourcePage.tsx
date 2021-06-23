@@ -94,7 +94,7 @@ const ResourcePage = () => {
             color="primary"
             data-testid={`edit-resource-button`}
             onClick={handleClickEditButton}>
-            {t('common.edit').toUpperCase()}
+            {t('common.edit')}
           </Button>
         </StyledResourceActionBar>
       )}
