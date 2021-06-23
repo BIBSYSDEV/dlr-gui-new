@@ -50,7 +50,7 @@ import {
 export const interceptRequestsOnMock = () => {
   const mock = new MockAdapter(Axios);
 
-  const mockGetDelayedAndLogged = (pathPattern: string, statusCode: number, mockedResponse: any, delay: number) => {
+  const mockGetDelayedAndLogged = (pathPattern: string, statusCode: number, mockedResponse: any, delay = 0) => {
     mock.onGet(new RegExp(pathPattern)).reply((config) => {
       return new Promise((resolve) => {
         setTimeout(() => {
@@ -103,27 +103,18 @@ export const interceptRequestsOnMock = () => {
     .onGet(new RegExp(`${API_PATHS.guiBackendAuthoritiesPath}/authorities/search.*`))
     .reply(200, mockAuthoritySearchResponse);
 
-  mockGetDelayedAndLogged(
-    `${API_PATHS.guiBackendResourcesPath}/resources/resource-123/creators/.*/authorities`,
-    200,
-    [mockCreatorOrContributorAuthoritiesResponse],
-    1000
-  );
-  mockGetDelayedAndLogged(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*/authorities`, 200, [], 1000);
+  mockGetDelayedAndLogged(`${API_PATHS.guiBackendResourcesPath}/resources/resource-123/creators/.*/authorities`, 200, [
+    mockCreatorOrContributorAuthoritiesResponse,
+  ]);
+  mockGetDelayedAndLogged(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*/authorities`, 200, []);
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*/authorities`)).reply(201);
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*/authorities`)).reply(201);
 
   // SEARCH
-  mockGetDelayedAndLogged(`${API_PATHS.guiBackendResourcesSearchPath}/resources/search.*`, 200, mockSearchResults, 500);
+  mockGetDelayedAndLogged(`${API_PATHS.guiBackendResourcesSearchPath}/resources/search.*`, 200, mockSearchResults);
 
   //TAG-SEARCH
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesSearchPath}/suggestions/tags.*`)).reply((config) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(loggedReply(config, 200, mockTagSuggestions));
-      }, 1000);
-    });
-  });
+  mockGetDelayedAndLogged(`${API_PATHS.guiBackendResourcesSearchPath}/suggestions/tags.*`, 200, mockTagSuggestions);
 
   //FILE UPLOAD | CONTENTS
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesContentPath}.*${FileApiPaths.CREATE}`)).reply(() => {
