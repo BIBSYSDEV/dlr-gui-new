@@ -34,14 +34,15 @@ const ChangeLanguageButton: FC = () => {
         startIcon={<LanguageIcon />}
         endIcon={open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         onClick={handleClick}>
-        {i18n.language.toUpperCase()}
+        {t('localization.language')}
       </Button>
       <Menu id={languageMenuId} anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem data-testid="nb-no-button" onClick={() => setLanguage('nb-no')}>
-          {`${t('localization.norwegian_bokmaal')} `} (<abbr>{t('localization.norwegian_language_code')}</abbr>)
+        <MenuItem data-testid="nb-no-button" onClick={() => setLanguage('nob')}>
+          {`${t('localization.norwegian_bokmaal')} `} (
+          <abbr>{t('localization.norwegian_bokmaal_language_code').toUpperCase()}</abbr>)
         </MenuItem>
         <MenuItem data-testid="eng-button" onClick={() => setLanguage('eng')}>
-          {`${t('localization.english')} `}(<abbr>{t('localization.english_language_code')}</abbr>)
+          {`${t('localization.english')} `}(<abbr>{t('localization.english_language_code').toUpperCase()}</abbr>)
         </MenuItem>
       </Menu>
     </>
