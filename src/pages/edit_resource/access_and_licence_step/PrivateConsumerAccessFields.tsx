@@ -73,12 +73,16 @@ const StyledAddAccessButton = styled(Button)`
   margin-top: 1rem;
 `;
 
-//if private ResourceReadAccess is added outside the component, then forcerefresh must change to a new value in order to add new private access chips
+//if private ResourceReadAccess is added outside the component, then forceRefresh must change to a new value in order to add new private access chips
 interface PrivateConsumerAccessFieldsProps {
   forceRefresh: boolean | undefined;
+  busySavingResourceAccessType: boolean;
 }
 
-const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ forceRefresh = false }) => {
+const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
+  forceRefresh = false,
+  busySavingResourceAccessType,
+}) => {
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.user);
   const { values } = useFormikContext<Resource>();
@@ -87,30 +91,46 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
   const [showAddAccessPopover, setShowAddAccessPopover] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [showPersonAccessField, setShowPersonAccessField] = useState(false);
-  const [savePrivateAccessNetworkError, setSavePrivateAccessNetworkError] = useState<Error | undefined>();
+  const [networkError, setNetworkError] = useState<Error>();
   const [courses, setCourses] = useState<Course[]>([]);
   const [waitingForCourses, setWaitingForCourses] = useState(false);
+  const [busyFetchingPrivateAccess, setBusyFetchingPrivateAccess] = useState(false);
+  const [hasFetchedPrivateAccess, setHasFetchedPrivateAccess] = useState(false);
   const [showCourseAutoComplete, setShowCourseAutocomplete] = useState(false);
   const mountedRef = useRef(true);
 
   const addInstitutionPrivateConsumerAccess = async () => {
-    await postCurrentUserInstitutionConsumerAccess(values.identifier);
-    if (privateAccessList.findIndex((privateAccess) => privateAccess.subject === user.institution) === -1) {
-      setPrivateAccessList((prevState) => [
-        ...prevState,
-        {
-          subject: user.institution,
-          profiles: [{ name: ResourceReadAccessNames.Institution }],
-        },
-      ]);
+    try {
+      setNetworkError(undefined);
+      await postCurrentUserInstitutionConsumerAccess(values.identifier);
+      if (privateAccessList.findIndex((privateAccess) => privateAccess.subject === user.institution) === -1) {
+        setPrivateAccessList((prevState) => [
+          ...prevState,
+          {
+            subject: user.institution,
+            profiles: [{ name: ResourceReadAccessNames.Institution }],
+          },
+        ]);
+      }
+    } catch (error) {
+      setNetworkError(error);
     }
   };
 
   useEffect(() => {
     const getPrivateAccessList = async () => {
-      const resourceReadAccessListResponse = await getResourceReaders(values.identifier);
-      if (!mountedRef.current) return null;
-      setPrivateAccessList(resourceReadAccessListResponse.data);
+      try {
+        setBusyFetchingPrivateAccess(true);
+        setNetworkError(undefined);
+        const resourceReadAccessListResponse = await getResourceReaders(values.identifier);
+        if (!mountedRef.current) return null;
+        setPrivateAccessList(resourceReadAccessListResponse.data);
+      } catch (error) {
+        setNetworkError(error);
+      } finally {
+        setBusyFetchingPrivateAccess(false);
+        setHasFetchedPrivateAccess(true);
+      }
     };
     getPrivateAccessList();
   }, [values.identifier, forceRefresh]);
@@ -137,17 +157,17 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
       }
       if (deleteAPISuccessful) {
         setPrivateAccessList((prevState) => prevState.filter((accessState) => accessState !== access));
-        setSavePrivateAccessNetworkError(undefined);
+        setNetworkError(undefined);
       }
     } catch (error) {
       try {
         const resourceReadAccessListResponse = await getResourceReaders(values.identifier);
         if (resourceReadAccessListResponse.data.length === privateAccessList.length) {
-          setSavePrivateAccessNetworkError(undefined);
+          setNetworkError(undefined);
         }
         setPrivateAccessList(resourceReadAccessListResponse.data);
       } catch (error) {
-        setSavePrivateAccessNetworkError(error);
+        setNetworkError(error);
       }
     } finally {
       setUpdatingPrivateAccessList(false);
@@ -191,10 +211,10 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
       if (courses.length === 0) {
         const courseResponse = await getCoursesForInstitution(user.institution);
         setCourses(courseResponse);
-        setSavePrivateAccessNetworkError(undefined);
+        setNetworkError(undefined);
       }
     } catch (error) {
-      setSavePrivateAccessNetworkError(error);
+      setNetworkError(error);
     } finally {
       setWaitingForCourses(false);
       setShowCourseAutocomplete(true);
@@ -216,7 +236,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
   return (
     <StyledPrivateAccessFields>
       {privateAccessList.length > 0 && <Typography variant="subtitle1">{`${t('access.who_got_access')}:`}</Typography>}
-      {privateAccessList.length === 0 && (
+      {privateAccessList.length === 0 && !busyFetchingPrivateAccess && !busySavingResourceAccessType && (
         <Typography color="secondary" variant="subtitle1">
           {t('access.no_one_has_read_access')}
         </Typography>
@@ -237,11 +257,9 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
             }}
           />
         ))}
-        {updatingPrivateAccessList && <CircularProgress />}
+        {(updatingPrivateAccessList || busyFetchingPrivateAccess) && <CircularProgress />}
       </StyledChipWrapper>
-      {savePrivateAccessNetworkError && (
-        <ErrorBanner userNeedsToBeLoggedIn={true} error={savePrivateAccessNetworkError} />
-      )}
+      {networkError && <ErrorBanner userNeedsToBeLoggedIn={true} error={networkError} />}
       {!values.features.dlr_status_published && (
         <StyledAccessButtonWrapper>
           <StyledAddAccessButton
@@ -274,7 +292,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
             data-testid="add-institution-consumer-access"
             disabled={hasInstitutionPrivateAccess()}
             onClick={() => {
-              setSavePrivateAccessNetworkError(undefined);
+              setNetworkError(undefined);
               setShowCourseAutocomplete(false);
               setShowPersonAccessField(false);
               addInstitutionPrivateConsumerAccess();
@@ -288,7 +306,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
             data-testid="add-course-consumer-access"
             onClick={() => {
               setShowPersonAccessField(false);
-              setSavePrivateAccessNetworkError(undefined);
+              setNetworkError(undefined);
               handlePopoverCourseClick();
             }}>
             <ListItemText primary={t('access.course_code')} />
@@ -297,7 +315,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
             button
             data-testid="add-person-consumer-access"
             onClick={() => {
-              setSavePrivateAccessNetworkError(undefined);
+              setNetworkError(undefined);
               setShowCourseAutocomplete(false);
               setShowPersonAccessField(true);
               handlePopoverClose();
@@ -311,7 +329,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
           privateAccessList={privateAccessList}
           setShowPersonAccessField={setShowPersonAccessField}
           setUpdatingPrivateAccessList={setUpdatingPrivateAccessList}
-          setSavePrivateAccessNetworkError={setSavePrivateAccessNetworkError}
+          setSavePrivateAccessNetworkError={setNetworkError}
           addPrivateAccess={(newPrivateAccess) => setPrivateAccessList((prevState) => [...prevState, newPrivateAccess])}
         />
       )}
@@ -319,7 +337,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({ for
       {showCourseAutoComplete && (
         <PrivateConsumerCourseAccessFields
           setShowCourseAutocomplete={setShowCourseAutocomplete}
-          setSavePrivateAccessNetworkError={setSavePrivateAccessNetworkError}
+          setSavePrivateAccessNetworkError={setNetworkError}
           setUpdatingPrivateAccessList={setUpdatingPrivateAccessList}
           privateAccessList={privateAccessList}
           addPrivateAccess={(newPrivateAccess) => setPrivateAccessList((prevState) => [...prevState, newPrivateAccess])}
