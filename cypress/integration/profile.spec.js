@@ -24,4 +24,10 @@ context('Action', () => {
     cy.get(`[data-testid=profile-group-1]`).contains(subject2);
     cy.get(`[data-testid=profile-group-2]`).contains(subject3);
   });
+
+  it('is possible to toggle email notifications on and off', () => {
+    cy.get(`[data-testid=email-notifications-checkbox]`).should('not.be.checked');
+    cy.get(`[data-testid=email-notifications-checkbox]`).click();
+    cy.get(`[data-testid=email-notifications-checkbox]`).should('be.checked');
+  });
 });
