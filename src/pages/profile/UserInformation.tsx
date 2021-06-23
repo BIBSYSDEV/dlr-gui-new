@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Chip, CircularProgress, Grid, List, Typography } from '@material-ui/core';
 import styled from 'styled-components';
-import { Colors } from '../../themes/mainTheme';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import { User } from '../../types/user.types';
@@ -25,21 +24,9 @@ const StyledGridContainer = styled(Grid)`
 `;
 
 const StyledChip = styled(Chip)`
-  height: auto;
   && {
     margin: 1rem 0.5rem 0 0;
-    background-color: ${Colors.ChipBackground};
-    color: ${Colors.Background};
-    &:focus {
-      color: ${Colors.PrimaryText};
-      background-color: ${Colors.ChipBackgroundFocus};
-    }
   }
-`;
-const StyledChipTypography = styled(Typography)`
-  white-space: normal;
-  color: white;
-  padding: 0.25rem;
 `;
 
 const StyledChipContainer = styled.div`
@@ -169,20 +156,17 @@ const UserInformation = () => {
               <Typography variant="h3">{t('profile.your_groups')}</Typography>
 
               <StyledChipContainer>
-                <StyledChip
-                  variant="outlined"
-                  label={<StyledChipTypography>{user.institution.toUpperCase()}</StyledChipTypography>}
-                />
+                <StyledChip color="primary" label={user.institution.toUpperCase()} />
                 {courses
                   .filter((course) => !!course)
                   .map((course, index) => (
                     <StyledChip
                       key={index}
-                      label={
-                        <StyledChipTypography data-testid={`profile-group-${index}`}>{`${course.features.code} ${
-                          course.features.year
-                        } ${t(`access.season.${course.features.season_nr}`)}`}</StyledChipTypography>
-                      }
+                      color="primary"
+                      data-testid={`profile-group-${index}`}
+                      label={`${course.features.code} ${course.features.year} ${t(
+                        `access.season.${course.features.season_nr}`
+                      )}`}
                     />
                   ))}
               </StyledChipContainer>

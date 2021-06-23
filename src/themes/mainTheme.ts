@@ -1,4 +1,4 @@
-import { createMuiTheme, emphasize } from '@material-ui/core';
+import { createMuiTheme, emphasize, fade } from '@material-ui/core';
 import { barlowRegular, CrimsonTextRegular, LibreFranklinRegular } from './fonts';
 
 // Extend Palette type to allow custom colors
@@ -280,6 +280,8 @@ export default createMuiTheme({
     MuiChip: {
       root: {
         height: 'auto',
+        fontSize: '1rem',
+        fontWeigh: '400',
       },
       colorPrimary: {
         backgroundColor: Colors.ChipBackground,
@@ -288,17 +290,22 @@ export default createMuiTheme({
       label: {
         whiteSpace: 'normal',
         color: 'inherit',
-        padding: '1rem',
-        fontSize: '1rem',
+        padding: '0.4rem',
       },
       clickableColorPrimary: {
         '&:hover, &:focus': {
-          backgroundColor: emphasize(Colors.ChipBackground, 0.08),
+          backgroundColor: emphasize(Colors.ChipBackground, 0.2),
         },
       },
       deletableColorPrimary: {
         '&:focus': {
-          backgroundColor: emphasize(Colors.ChipBackground, 0.2),
+          backgroundColor: emphasize(Colors.ChipBackground, 0.3),
+        },
+      },
+      deleteIconColorPrimary: {
+        color: fade(Colors.Background, 0.7),
+        '&:hover, &:active': {
+          color: Colors.Background,
         },
       },
     },

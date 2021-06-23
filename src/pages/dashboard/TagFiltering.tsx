@@ -5,7 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { QueryObject, SearchParameters } from '../../types/search.types';
-import { Colors, StyleWidths } from '../../themes/mainTheme';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import HelperTextPopover from '../../components/HelperTextPopover';
@@ -14,6 +13,7 @@ import useDebounce from '../../utils/useDebounce';
 import ErrorBanner from '../../components/ErrorBanner';
 import { useHistory, useLocation } from 'react-router-dom';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
+import { StyleWidths } from '../../themes/mainTheme';
 
 const minimumTagLength = 1;
 
@@ -26,24 +26,9 @@ const StyledFormControl: any = styled(FormControl)`
 `;
 
 const StyledChip = styled(Chip)`
-  height: auto;
   && {
     margin: 1rem 0.5rem 0 0;
-    background-color: ${Colors.ChipBackground};
-    color: ${Colors.Background};
-    &:focus {
-      color: ${Colors.PrimaryText};
-      background-color: ${Colors.ChipBackgroundFocus};
-    }
   }
-`;
-const StyledChipTypography = styled(Typography)`
-  white-space: normal;
-  color: white;
-`;
-
-const StyledCancelIcon = styled(CancelIcon)`
-  color: ${Colors.ChipIconBackground};
 `;
 
 const StyledChipContainer = styled.div`
@@ -179,11 +164,11 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           {queryObject.tags.map((tag, index) => (
             <StyledChip
               key={index}
-              deleteIcon={<StyledCancelIcon data-testid={`tag-filter-delete-${tag}`} />}
+              color="primary"
+              deleteIcon={<CancelIcon data-testid={`tag-filter-delete-${tag}`} />}
               data-testid={`filter-tag-chip-${index}`}
-              label={<StyledChipTypography>{tag}</StyledChipTypography>}
+              label={tag}
               onDelete={() => handleDelete(tag)}
-              variant="outlined"
             />
           ))}
         </StyledChipContainer>
