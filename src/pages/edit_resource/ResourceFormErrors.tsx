@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Typography } from '@material-ui/core';
-import { StyledContentWrapper, StyledSchemaPartColored } from '../../components/styled/Wrappers';
+import { StyledContentWrapperMedium, StyledSchemaPartColored } from '../../components/styled/Wrappers';
 import { Colors } from '../../themes/mainTheme';
 import WarningIcon from '@material-ui/icons/Warning';
 import { useFormikContext } from 'formik';
@@ -19,77 +19,92 @@ const StyledPanel = styled.div`
 
 const StyledWarningIcon = styled(WarningIcon)`
   vertical-align: text-bottom;
+  margin-right: 1rem;
 `;
+
+const StyledWarningTypography = styled(Typography)`
+  margin-bottom: 1rem;
+`;
+
+const StyledHeaderTypography = styled(Typography)`
+  margin-bottom: 2rem;
+`;
+
+//TODO: translations
+//TODO: ref to fields
 
 const ResourceFormErrors = () => {
   const { t } = useTranslation();
   const { errors } = useFormikContext<Resource>();
 
   return (
-    <StyledPanel data-testid="form-errors-panel">
-      <StyledSchemaPartColored color={Colors.DangerLight}>
-        <StyledContentWrapper>
-          <Typography gutterBottom variant={'h5'} component="h2">
+    <StyledPanel id="styled-panel" data-testid="form-errors-panel">
+      <StyledSchemaPartColored
+        id="styled-schema-part-colored"
+        data-testid="form-errors-panel"
+        color={Colors.DangerLight}>
+        <StyledContentWrapperMedium id="styled-content-wrapper">
+          <StyledHeaderTypography gutterBottom variant="h2">
             {t('feedback.form_errors')}
-          </Typography>
+          </StyledHeaderTypography>
           {errors.features?.dlr_title && (
-            <Typography gutterBottom>
+            <StyledWarningTypography>
               <StyledWarningIcon />
-              Ressurstittel er {errors.features?.dlr_title.toLowerCase()}
-            </Typography>
+              Feltet tittel er obligatorisk og må fylles ut.
+            </StyledWarningTypography>
           )}
           {errors.features?.dlr_type && (
-            <Typography gutterBottom>
+            <StyledWarningTypography>
               <StyledWarningIcon />
-              Ressurstype kan kun være noen av forslagene
-            </Typography>
+              Ressurstype er obligatorisk og kan kun være noen av forslagene i nedtrekkslista
+            </StyledWarningTypography>
           )}
           {errors.creators && (
             <>
               {Array.isArray(errors.creators) && errors.creators.length > 1 ? (
-                <Typography gutterBottom>
+                <StyledWarningTypography>
                   <StyledWarningIcon />
                   Alle felt for opphavernavn må fylles ut, eller slette tomme felt.
-                </Typography>
+                </StyledWarningTypography>
               ) : (
-                <Typography gutterBottom>
+                <StyledWarningTypography>
                   <StyledWarningIcon />
-                  Det må minst være én opphaver utfylt.
-                </Typography>
+                  Minst en opphaver er obligatorisk og må fylles ut
+                </StyledWarningTypography>
               )}
             </>
           )}
           {errors.contributors && (
-            <Typography gutterBottom>
+            <StyledWarningTypography>
               <StyledWarningIcon />
-              Alle felt for bidragsytertype og navn på bidragsyter må fylles ut, eventuelt slette unødvendige felt
-            </Typography>
+              Alle felt for navn og type på bidragsyter må fylles ut, eventuelt slette unødvendige felt
+            </StyledWarningTypography>
           )}
           {errors.contents && (
-            <Typography gutterBottom>
+            <StyledWarningTypography>
               <StyledWarningIcon />
-              Filtittel på hovedfil må være fylt ut.
-            </Typography>
+              Filtittel på hovedfil er obligatorisk og må fylles ut.
+            </StyledWarningTypography>
           )}
           {errors.features?.dlr_licensehelper_contains_other_peoples_work && (
-            <Typography gutterBottom>
+            <StyledWarningTypography>
               <StyledWarningIcon />
               Spørsmålet "Inneholder ressursen andres arbeid?" må besvares
-            </Typography>
+            </StyledWarningTypography>
           )}
           {errors.features?.dlr_licensehelper_usage_cleared_with_owner && (
-            <Typography gutterBottom>
+            <StyledWarningTypography>
               <StyledWarningIcon />
               Spørsmålet "Er arbeidet rettighetsklarert?" må besvares
-            </Typography>
+            </StyledWarningTypography>
           )}
           {errors.licenses && (
-            <Typography gutterBottom>
+            <StyledWarningTypography>
               <StyledWarningIcon />
-              Du må velge en lisens
-            </Typography>
+              Lisens mangler og må velges
+            </StyledWarningTypography>
           )}
-        </StyledContentWrapper>
+        </StyledContentWrapperMedium>
       </StyledSchemaPartColored>
     </StyledPanel>
   );
