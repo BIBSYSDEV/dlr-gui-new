@@ -1,20 +1,10 @@
-import React, { ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styled from 'styled-components';
 import { Typography } from '@material-ui/core';
-
-interface PublicationAccordionProps {
-  headerLabel: string;
-  icon: ReactNode;
-  expanded: boolean;
-  onChange: (event: React.ChangeEvent<any>, isExpanded: boolean) => void;
-  ariaControls: string;
-  children?: ReactNode;
-  dataTestId?: string;
-}
 
 const StyledPublicationAccordion = styled(Accordion)`
   width: 50rem;
@@ -38,7 +28,17 @@ const StyledAccordionDetails = styled(AccordionDetails)`
   flex-direction: column;
 `;
 
-const PublicationAccordion: React.FC<PublicationAccordionProps> = ({
+interface StartRegistrationMethodAccordionProps {
+  headerLabel: string;
+  icon: ReactNode;
+  expanded: boolean;
+  onChange: (event: React.ChangeEvent<any>, isExpanded: boolean) => void;
+  ariaControls: string;
+  children?: ReactNode;
+  dataTestId?: string;
+}
+
+const StartRegistrationMethodAccordion: FC<StartRegistrationMethodAccordionProps> = ({
   headerLabel,
   icon,
   expanded,
@@ -58,4 +58,4 @@ const PublicationAccordion: React.FC<PublicationAccordionProps> = ({
   );
 };
 
-export default PublicationAccordion;
+export default StartRegistrationMethodAccordion;

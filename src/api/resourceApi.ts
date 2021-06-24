@@ -13,6 +13,7 @@ import { AccessTypes, License } from '../types/license.types';
 import { Content, emptyResourceContent, LinkMetadataFilename } from '../types/content.types';
 import { authenticatedApiRequest } from './api';
 import { FacetResponse, QueryObject, SearchParameters, SearchResult } from '../types/search.types';
+import { KalturaPresentation } from '../pages/edit_resource/KalturaRegistration';
 
 enum APISearchParameters {
   FacetInstitution = 'facet_institution::',
@@ -397,6 +398,13 @@ export const getTextFileContents = (url: string): Promise<AxiosResponse<string>>
 export const getResourceViews = (resourceIdentifier: string): Promise<AxiosResponse<ResourceStatistic>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesStatisticsPath}/statistics/resources/${resourceIdentifier}`),
+    method: 'GET',
+  });
+};
+
+export const getMyKalturaPresentations = (): Promise<AxiosResponse<KalturaPresentation[]>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations`),
     method: 'GET',
   });
 };

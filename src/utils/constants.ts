@@ -38,5 +38,6 @@ export const API_PATHS = {
   guiBackendResourcesFeedbacksPath: '/dlr-gui-backend-resources-feedbacks/v1',
   guiBackendDefaultsPath: '/dlr-gui-backend-resources-defaults/v1',
   guiBackendMediasitePath: '/dlr-gui-backend-mediasite/v1',
+  guiBackendKalturaPath: '/dlr-gui-backend-kaltura/v1',
   depotApiPath: '/dlr-depot-api/v1',
 };

@@ -47,6 +47,7 @@ import { createUppy } from '../../utils/uppy-config';
 import { useUppy } from '@uppy/react';
 import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
 import { getAuthoritiesForResourceCreatorOrContributor } from '../../api/authoritiesApi';
+import KalturaRegistration from './KalturaRegistration';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -54,6 +55,11 @@ const StyledEditPublication = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+`;
+
+const StyledTypography = styled(Typography)`
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 `;
 
 const StyledProgressWrapper = styled.div`
@@ -371,10 +377,16 @@ const EditResourcePage = () => {
           uppy={mainFileHandler}
         />
         {fileUploadError && <ErrorBanner userNeedsToBeLoggedIn={true} error={fileUploadError} />}
-        <Typography style={{ margin: '2rem 2rem' }}>{t('common.or')}</Typography>
+        <StyledTypography>{t('common.or')}</StyledTypography>
         <LinkRegistration
           expanded={expanded === 'link-panel'}
           onChange={handleChange('link-panel')}
+          onSubmit={onSubmitLink}
+        />
+        <StyledTypography>{t('common.or')}</StyledTypography>
+        <KalturaRegistration
+          expanded={expanded === 'kaltura-panel'}
+          onChange={handleChange('kaltura-panel')}
           onSubmit={onSubmitLink}
         />
       </StyledEditPublication>

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import PublishIcon from '@material-ui/icons/Publish';
 
 import { Uppy } from '../../types/file.types';
-import PublicationAccordion from './PublicationAccordion';
+import StartRegistrationMethodAccordion from './StartRegistrationMethodAccordion';
 import UppyDashboard from '../../components/UppyDashboard';
 
 interface FileRegistrationProps {
@@ -16,7 +16,7 @@ const FileRegistration: FC<FileRegistrationProps> = ({ uppy, expanded, onChange 
   const { t } = useTranslation();
 
   return (
-    <PublicationAccordion
+    <StartRegistrationMethodAccordion
       dataTestId="new-resource-file"
       headerLabel={t('resource.start_with_uploading_file')}
       icon={<PublishIcon />}
@@ -28,7 +28,7 @@ const FileRegistration: FC<FileRegistrationProps> = ({ uppy, expanded, onChange 
           <UppyDashboard uppy={uppy} />
         </>
       ) : null}
-    </PublicationAccordion>
+    </StartRegistrationMethodAccordion>
   );
 };
 
