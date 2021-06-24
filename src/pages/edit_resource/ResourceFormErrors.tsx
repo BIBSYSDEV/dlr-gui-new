@@ -30,8 +30,6 @@ const StyledHeaderTypography = styled(Typography)`
   margin-bottom: 2rem;
 `;
 
-//TODO: ref to fields
-
 const ApostropheEncoding = '&#39;';
 
 const ResourceFormErrors = () => {
@@ -49,10 +47,12 @@ const ResourceFormErrors = () => {
             {t('feedback.form_errors')}
           </StyledHeaderTypography>
           {errors.features?.dlr_title && (
-            <StyledWarningTypography>
-              <StyledWarningIcon />
-              {t('feedback.warning_box.resource_title')}.
-            </StyledWarningTypography>
+            <>
+              <StyledWarningTypography>
+                <StyledWarningIcon />
+                {t('feedback.warning_box.resource_title')}.
+              </StyledWarningTypography>
+            </>
           )}
           {errors.features?.dlr_type && (
             <StyledWarningTypography>
