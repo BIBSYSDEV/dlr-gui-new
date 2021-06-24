@@ -51,7 +51,7 @@ const ReportResource: FC<ReportResourceProps> = ({ resource, setRequestSentSucce
         startIcon={<ReportProblemIcon fontSize="large" />}
         variant="outlined"
         onClick={() => setShowReportDialog(true)}>
-        {t('common.report').toUpperCase()}
+        {t('common.report')}
       </StyledButton>
       <Dialog
         maxWidth={'sm'}
