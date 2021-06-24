@@ -30,8 +30,9 @@ const StyledHeaderTypography = styled(Typography)`
   margin-bottom: 2rem;
 `;
 
-//TODO: translations
 //TODO: ref to fields
+
+const ApostropheEncoding = '&#39;';
 
 const ResourceFormErrors = () => {
   const { t } = useTranslation();
@@ -50,13 +51,13 @@ const ResourceFormErrors = () => {
           {errors.features?.dlr_title && (
             <StyledWarningTypography>
               <StyledWarningIcon />
-              Feltet tittel er obligatorisk og må fylles ut.
+              {t('feedback.warning_box.resource_title')}.
             </StyledWarningTypography>
           )}
           {errors.features?.dlr_type && (
             <StyledWarningTypography>
               <StyledWarningIcon />
-              Ressurstype er obligatorisk og kan kun være noen av forslagene i nedtrekkslista
+              {t('feedback.warning_box.type')}.
             </StyledWarningTypography>
           )}
           {errors.creators && (
@@ -64,12 +65,12 @@ const ResourceFormErrors = () => {
               {Array.isArray(errors.creators) && errors.creators.length > 1 ? (
                 <StyledWarningTypography>
                   <StyledWarningIcon />
-                  Alle felt for opphavernavn må fylles ut, eller slette tomme felt.
+                  {t('feedback.warning_box.creator_plural')}.
                 </StyledWarningTypography>
               ) : (
                 <StyledWarningTypography>
                   <StyledWarningIcon />
-                  Minst en opphaver er obligatorisk og må fylles ut
+                  {t('feedback.warning_box.creator_singular')}.
                 </StyledWarningTypography>
               )}
             </>
@@ -77,31 +78,36 @@ const ResourceFormErrors = () => {
           {errors.contributors && (
             <StyledWarningTypography>
               <StyledWarningIcon />
-              Alle felt for navn og type på bidragsyter må fylles ut, eventuelt slette unødvendige felt
+              {t('feedback.warning_box.contributor')}.
             </StyledWarningTypography>
           )}
           {errors.contents && (
             <StyledWarningTypography>
               <StyledWarningIcon />
-              Filtittel på hovedfil er obligatorisk og må fylles ut.
+              {t('feedback.warning_box.file_title')}.
             </StyledWarningTypography>
           )}
           {errors.features?.dlr_licensehelper_contains_other_peoples_work && (
             <StyledWarningTypography>
               <StyledWarningIcon />
-              Spørsmålet "Inneholder ressursen andres arbeid?" må besvares
+              {t('feedback.warning_box.question_must_be_answered', {
+                question: t('license.questions.contains_other_peoples_work'),
+              }).replace(ApostropheEncoding, "'")}
             </StyledWarningTypography>
           )}
           {errors.features?.dlr_licensehelper_usage_cleared_with_owner && (
             <StyledWarningTypography>
               <StyledWarningIcon />
-              Spørsmålet "Er arbeidet rettighetsklarert?" må besvares
+              {t('feedback.warning_box.question_must_be_answered', {
+                question: t('license.questions.usage_cleared_with_owner'),
+              })}
+              .
             </StyledWarningTypography>
           )}
           {errors.licenses && (
             <StyledWarningTypography>
               <StyledWarningIcon />
-              Lisens mangler og må velges
+              {t('feedback.warning_box.license')}
             </StyledWarningTypography>
           )}
         </StyledContentWrapperMedium>
