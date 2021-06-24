@@ -293,10 +293,11 @@
     "selected_license": "Selected license"
   },
   "localization": {
+    "language": "Language",
     "english": "English",
     "english_language_code": "ENG",
     "norwegian_bokmaal": "Norsk - Bokmål",
-    "norwegian_language_code": "nb-NO"
+    "norwegian_bokmaal_language_code": "NOB"
   },
   "privacy_policy": {
     "description": "Description",
