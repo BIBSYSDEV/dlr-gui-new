@@ -74,7 +74,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
 
   return (
     <StartRegistrationMethodAccordion
-      headerLabel={t('Start med å velge en video fra din kalture-konto')}
+      headerLabel={t('Start med å velge en video fra din Kaltura-konto(translate)')}
       icon={<VideocamIcon className="icon" />}
       expanded={expanded}
       onChange={onChange}
@@ -89,10 +89,10 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
             result.map((resultItem) => (
               <StyledResultItem>
                 <StyledImage src={resultItem.thumbnailUrl} />
-                <a href={resultItem.thumbnailUrl}>
+                <a href={resultItem.url}>
                   <Typography> {resultItem.title}</Typography>
                 </a>
-                <Button variant="outlined">Bruk</Button>
+                <Button variant="outlined">{t('common.use')}</Button>
               </StyledResultItem>
             ))
           )}

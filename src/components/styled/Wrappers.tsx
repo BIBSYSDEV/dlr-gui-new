@@ -19,6 +19,16 @@ export const StyledProgressWrapper = styled.div`
   padding: 2rem;
 `;
 
+export const StyledFullpageProgressWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const StyledNormalTextPreWrapped = styled(NormalText)`
   white-space: pre-wrap;
 `;

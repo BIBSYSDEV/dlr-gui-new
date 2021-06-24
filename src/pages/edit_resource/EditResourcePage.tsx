@@ -45,7 +45,7 @@ import { emptyLicense } from '../../types/license.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import { createUppy } from '../../utils/uppy-config';
 import { useUppy } from '@uppy/react';
-import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
+import { StyledContentWrapperLarge, StyledFullpageProgressWrapper } from '../../components/styled/Wrappers';
 import { getAuthoritiesForResourceCreatorOrContributor } from '../../api/authoritiesApi';
 import KalturaRegistration from './KalturaRegistration';
 
@@ -60,16 +60,6 @@ const StyledEditPublication = styled.div`
 const StyledTypography = styled(Typography)`
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
-`;
-
-const StyledProgressWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  min-height: 100vh;
-  padding: 0;
-  margin: 0;
-  align-items: center;
-  justify-content: center;
 `;
 
 interface EditResourcePageParamTypes {
@@ -392,9 +382,9 @@ const EditResourcePage = () => {
       </StyledEditPublication>
     </StyledContentWrapperLarge>
   ) : isLoadingResource ? (
-    <StyledProgressWrapper>
+    <StyledFullpageProgressWrapper>
       <CircularProgress />
-    </StyledProgressWrapper>
+    </StyledFullpageProgressWrapper>
   ) : resourceInitError ? (
     <ErrorBanner userNeedsToBeLoggedIn={true} error={resourceInitError} />
   ) : formikInitResource ? (
