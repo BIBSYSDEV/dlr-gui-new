@@ -19,7 +19,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/rootReducer';
 import { useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
-import { Colors } from '../../../themes/mainTheme';
 import CancelIcon from '@material-ui/icons/Cancel';
 import PrivateConsumerCourseAccessFields from './PrivateConsumerCourseAccessFields';
 import PrivateConsumerPersonalAccessFields from './PrivateConsumerPersonalAccessFields';
@@ -37,31 +36,10 @@ const StyledChip = styled(Chip)`
   && {
     margin-top: 1rem;
     margin-right: 0.5rem;
-    height: 100%;
-    color: ${Colors.Background};
-    background-color: ${Colors.ChipAccessBackground};
-
-    &:focus {
-      color: ${Colors.PrimaryText} !important;
-      background-color: ${Colors.ChipAccessBackgroundFocus};
-      color: ${Colors.PrimaryText};
-      color: ${Colors.PrimaryText} !important;
+    .MuiChip-label {
+      font-weight: 900;
     }
   }
-`;
-
-const StyledCancelIcon = styled(CancelIcon)`
-  color: ${Colors.ChipAccessIconBackground};
-  &:hover {
-    color: ${Colors.ChipAccessIconHoverBackground};
-  }
-`;
-
-const StyledChipLabelTypography = styled(Typography)`
-  padding: 0.3rem;
-  white-space: normal;
-  color: inherit;
-  font-weight: 900;
 `;
 
 const StyledAccessButtonWrapper = styled.div`
@@ -245,11 +223,9 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
             data-testid={`private-consumer-access-chip-${index}`}
             key={index}
             disabled={values.features.dlr_status_published}
-            deleteIcon={<StyledCancelIcon data-testid={`delete-private-consumer-access-chip-${index}`} />}
-            label={
-              <StyledChipLabelTypography variant="subtitle1">{generateChipLabel(access)}</StyledChipLabelTypography>
-            }
-            variant="outlined"
+            deleteIcon={<CancelIcon data-testid={`delete-private-consumer-access-chip-${index}`} />}
+            label={generateChipLabel(access)}
+            color="primary"
             onDelete={() => {
               deleteAccess(access);
             }}
