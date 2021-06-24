@@ -222,6 +222,38 @@ export default createMuiTheme({
         backgroundColor: Colors.Box,
       },
     },
+    MuiChip: {
+      root: {
+        height: 'auto',
+        fontSize: '1rem',
+      },
+      colorPrimary: {
+        backgroundColor: Colors.ChipBackground,
+        color: Colors.Background,
+      },
+      label: {
+        whiteSpace: 'normal',
+        color: 'inherit',
+        paddingTop: '0.2rem',
+        paddingBottom: '0.4rem',
+      },
+      clickableColorPrimary: {
+        '&:hover, &:focus': {
+          backgroundColor: emphasize(Colors.ChipBackground, 0.2),
+        },
+      },
+      deletableColorPrimary: {
+        '&:focus': {
+          backgroundColor: emphasize(Colors.ChipBackground, 0.3),
+        },
+      },
+      deleteIconColorPrimary: {
+        color: fade(Colors.Background, 0.7),
+        '&:hover, &:active': {
+          color: Colors.Background,
+        },
+      },
+    },
     MuiCssBaseline: {
       '@global': {
         '@font-face': [barlowRegular, LibreFranklinRegular, CrimsonTextRegular],
@@ -274,37 +306,6 @@ export default createMuiTheme({
           fontWeight: '600',
           color: Colors.StepperSelected,
           visibility: 'visible',
-        },
-      },
-    },
-    MuiChip: {
-      root: {
-        height: 'auto',
-        fontSize: '1rem',
-      },
-      colorPrimary: {
-        backgroundColor: Colors.ChipBackground,
-        color: Colors.Background,
-      },
-      label: {
-        whiteSpace: 'normal',
-        color: 'inherit',
-        padding: '0.4rem',
-      },
-      clickableColorPrimary: {
-        '&:hover, &:focus': {
-          backgroundColor: emphasize(Colors.ChipBackground, 0.2),
-        },
-      },
-      deletableColorPrimary: {
-        '&:focus': {
-          backgroundColor: emphasize(Colors.ChipBackground, 0.3),
-        },
-      },
-      deleteIconColorPrimary: {
-        color: fade(Colors.Background, 0.7),
-        '&:hover, &:active': {
-          color: Colors.Background,
         },
       },
     },
