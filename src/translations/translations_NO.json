@@ -207,13 +207,13 @@
     "valid_email": "Inndata må være en gyldig epost",
     "warning_box": {
       "contributor": "Alle felt for navn og type på bidragsyter må fylles ut, eventuelt slette unødvendige felt",
-      "creator_singular": "Minst en opphaver er obligatorisk og må fylles ut",
-      "creator_plural": " Alle felt for opphavernavn må fylles ut, eller slette tomme felt",
+      "creator_singular": "Ressursen må ha minst en opphaver fylt ut",
+      "creator_plural": " Alle felt for opphavernavn må fylles ut, eller tomme felt kan slettes",
       "file_title": "Filtittel på hovedfil er obligatorisk og må fylles ut",
-      "license": "Lisens mangler og må velges",
+      "license": "Lisens er obligatorisk og må velges",
       "question_must_be_answered": "Spørsmålet \"{{question}}\" må besvares",
       "resource_title": "Ressurstittel er obligatorisk og må fylles ut",
-      "type": "Ressurstype er obligatorisk og kan kun være noen av forslagene i nedtrekkslista"
+      "type": "Ressurstype er obligatorisk og må fylles ut"
     }
   },
   "illustration_alts_tags": {

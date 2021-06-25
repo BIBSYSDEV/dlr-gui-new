@@ -207,13 +207,13 @@
     "valid_url": "Input must be a valid URL",
     "warning_box": {
       "contributor": "Contributor name and type is required for all contributors. Fill all contributor fields or delete unnecessary fields",
-      "creator_singular": "At least one creator is mandatory and must contain text",
+      "creator_singular": "The resource require at least one creator filled out",
       "creator_plural": "All creator fields must contains text. Fill all creator fields or delete unnecessary fields",
-      "file_title": "File title on main file is required and must contain text",
-      "license": "License is missing and must be selected",
+      "file_title": "File title on main file is required and must be filled out",
+      "license": "License is required and must be selected",
       "question_must_be_answered": "The question \"{{question}}\" must be answered",
-      "resource_title": "Resource title is required and must contain text",
-      "type": "Resource type is required and can only be one of the valid suggestions in the drop down menu"
+      "resource_title": "Resource title is required and must be filled out",
+      "type": "Resource type is required and must be filled out"
     }
   },
   "illustration_alts_tags": {
