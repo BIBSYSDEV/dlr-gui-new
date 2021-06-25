@@ -73,7 +73,7 @@ const StyledButtonRowWrapper = styled.div`
 `;
 
 const StyledButtonWrapper = styled.div`
-  min-width: 6.3rem;
+  min-width: 8rem;
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 1 + 'px'}) {
     margin-left: 1rem;
   }
@@ -257,6 +257,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                         <StyledButtonWrapper>
                           <StyledDeleteButton
                             color="secondary"
+                            variant="outlined"
                             startIcon={<DeleteIcon fontSize="large" />}
                             size="large"
                             data-testid={`creator-delete-button-${index}`}

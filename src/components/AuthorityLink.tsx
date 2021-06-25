@@ -19,6 +19,7 @@ const AuthorityLink: FC<AuthorityLinkProps> = ({ authority }) => {
   const { t } = useTranslation();
   return (
     <Button
+      variant="outlined"
       size="small"
       data-testid="authority-link-button"
       target="_blank"
