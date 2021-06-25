@@ -12,6 +12,7 @@ import Link from '@material-ui/core/Link';
 import { SearchParameters } from '../types/search.types';
 import ResourceTypeInfo from './ResourceTypeInfo';
 import { getLMSSearchParams } from '../utils/lmsService';
+import { localeSort, StringArrayToSetStringArray } from '../utils/StringArray';
 
 const StyledListItem: any = styled.li`
   width: 100%;
@@ -158,7 +159,7 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
         <div>
           {resource.tags && resource.tags.length !== 0 && (
             <div data-testid="resource-tags">
-              {resource.tags.map((tag, index) => (
+              {StringArrayToSetStringArray(localeSort(resource.tags)).map((tag, index) => (
                 <StyledChip
                   component="a"
                   href={`/?${SearchParameters.tag}=${tag}`}
