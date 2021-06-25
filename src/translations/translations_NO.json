@@ -206,9 +206,9 @@
     "valid_url": "Inndata må være en gyldig URL",
     "valid_email": "Inndata må være en gyldig epost",
     "warning_box": {
-      "contributor": "Alle felt for navn og type på bidragsyter må fylles ut, fjern eventuelt unødvendige felt",
+      "contributor": "Alle felt for navn og type på bidragsyter må fylles ut. Fjern eventuelt unødvendige felt",
       "creator_singular": "Ressursen må ha minst en opphaver fylt ut",
-      "creator_plural": " Alle felt for opphavernavn må fylles ut, eller tomme felt kan slettes",
+      "creator_plural": " Alle felt for opphavernavn må fylles ut. Fjern eventuelt unødvendige felt",
       "file_title": "Filtittel på hovedfil er obligatorisk og må fylles ut",
       "license": "Lisens er obligatorisk og må velges",
       "question_must_be_answered": "Spørsmålet \"{{question}}\" må besvares",
