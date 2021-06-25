@@ -217,6 +217,10 @@
     "oslomet": "OsloMet",
     "uib": "UiB"
   },
+  "kaltura": {
+    "my_resources" : "My Kaltura resources",
+    "choose_a_resource": "Choose a resource from the list"
+  },
   "license": {
     "commercial_options": {
       "yes": "Yes, the material can be used for commercial purposes",

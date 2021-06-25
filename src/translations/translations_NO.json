@@ -217,6 +217,10 @@
     "oslomet": "OsloMet",
     "uib": "UiB"
   },
+  "kaltura": {
+    "my_resources" : "Mine ressurser i Kaltura",
+    "choose_a_resource": "Velg en ressurs fra listen"
+  },
   "license": {
     "commercial_options": {
       "yes": "Ja, materialet kan brukes for kommersielle formål",
