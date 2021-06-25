@@ -1,11 +1,13 @@
-export const StringArrayToSetStringArray = (a: string[]): string[] => {
+//Does not mutate input stringArray
+export const StringArrayToSetStringArray = (stringArray: string[]): string[] => {
   const seen = new Set();
-  return a.filter((item) => {
-    const k = item.trim().toLowerCase();
-    return seen.has(k) ? false : seen.add(k);
+  return stringArray.filter((element) => {
+    const key = element.trim().toLowerCase();
+    return seen.has(key) ? false : seen.add(key);
   });
 };
 
-export const localeSort = (array: string[]): string[] => {
-  return array.sort((elementA, elementB) => elementA.localeCompare(elementB));
+//Does not mutate input stringArray
+export const localeSort = (stringArray: string[]): string[] => {
+  return stringArray.sort((elementA, elementB) => elementA.localeCompare(elementB));
 };
