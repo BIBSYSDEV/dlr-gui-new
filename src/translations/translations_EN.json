@@ -218,8 +218,10 @@
     "uib": "UiB"
   },
   "kaltura": {
+    "choose_a_resource": "Choose a resource from the list",
     "my_resources" : "My Kaltura resources",
-    "choose_a_resource": "Choose a resource from the list"
+    "show_my_resources" : "Show my resources from Kaltura",
+    "start_with_kaltura_resource" : "Start with a kaltura resource"
   },
   "license": {
     "commercial_options": {

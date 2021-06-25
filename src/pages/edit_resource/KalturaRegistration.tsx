@@ -20,6 +20,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
+import { KalturaPresentation } from '../../types/resource.types';
 
 const FormDialogTitleId = 'kaltura-dialog-title';
 
@@ -64,21 +65,10 @@ const StyledImage: any = styled.img`
   max-width: 7.85rem;
 `;
 
-export interface KalturaPresentation {
-  id: string;
-  title: string;
-  timeRecorded: string;
-  downloadUrl: string;
-  url: string;
-  thumbnailUrl: string;
-  institution: string;
-  dlrContentIdentifier: string;
-}
-
 interface KalturaRegistrationProps {
   expanded: boolean;
   onChange: (event: React.ChangeEvent<any>, isExpanded: boolean) => void;
-  onSubmit: (id: string) => void;
+  onSubmit: (kalturaPresentation: KalturaPresentation) => void;
 }
 
 const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange, onSubmit }) => {
@@ -106,16 +96,16 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
     setOpen(false);
   };
 
-  const handleUseResource = (kalturaResourceId: string) => {
-    console.log('valgt: ' + kalturaResourceId);
+  const handleUseResource = (kalturaPresentation: KalturaPresentation) => {
     setOpen(false);
+    onSubmit(kalturaPresentation);
   };
 
   return (
     <>
       <StartRegistrationMethodAccordion
-        headerLabel={t('Start med å velge en video fra din Kaltura-konto(translate)')}
-        icon={<VideocamIcon className="icon" />}
+        headerLabel={t('kaltura.start_with_kaltura_resource')}
+        icon={<VideocamIcon className="icon" />} //TODO:Kalturalogo
         expanded={expanded}
         onChange={onChange}
         ariaControls="resource-method-link"
@@ -127,7 +117,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
             fullWidth
             color="primary"
             onClick={handleClickOpen}>
-            {t('VIS MINE KALTURA-RESSURSER (i18n)')}
+            {t('kaltura.show_my_resources')}
           </Button>
         </StyledBody>
       </StartRegistrationMethodAccordion>
@@ -158,8 +148,8 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                         <Typography> {resultItem.title}</Typography>
                       </Link>
                     </Grid>
-                    <Grid item xs={12} sm={2} alignItems="center">
-                      <Button variant="outlined" onClick={() => handleUseResource(resultItem.id)}>
+                    <Grid item container xs={12} sm={2} alignItems="center">
+                      <Button variant="outlined" onClick={() => handleUseResource(resultItem)}>
                         {t('common.use')}
                       </Button>
                     </Grid>

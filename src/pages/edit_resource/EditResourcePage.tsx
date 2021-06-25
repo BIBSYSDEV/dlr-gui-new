@@ -15,6 +15,7 @@ import {
   CreatorFeatureAttributes,
   DefaultResourceTypes,
   emptyResource,
+  KalturaPresentation,
   Resource,
   ResourceCreationType,
   ResourceFeatureNames,
@@ -96,6 +97,21 @@ const EditResourcePage = () => {
     try {
       setIsLoadingResource(true);
       const createResourceResponse = await createResource(ResourceCreationType.LINK, url);
+      await getResourceInit(createResourceResponse, ResourceCreationType.LINK);
+    } catch (error) {
+      setResourceInitError(error);
+      setIsLoadingResource(false);
+    }
+  };
+
+  const onSubmitKalturaResource = async (kalturaResource: KalturaPresentation) => {
+    setShowForm(true);
+    try {
+      setIsLoadingResource(true);
+      const createResourceResponse = await createResource(ResourceCreationType.LINK, kalturaResource.url);
+      //TODO: Funker dette ?
+      //tittel må iallefall med på noe vis
+      //TODO : hva med kall til kaltura-import ?
       await getResourceInit(createResourceResponse, ResourceCreationType.LINK);
     } catch (error) {
       setResourceInitError(error);
@@ -377,7 +393,7 @@ const EditResourcePage = () => {
         <KalturaRegistration
           expanded={expanded === 'kaltura-panel'}
           onChange={handleChange('kaltura-panel')}
-          onSubmit={onSubmitLink}
+          onSubmit={onSubmitKalturaResource}
         />
       </StyledEditPublication>
     </StyledContentWrapperLarge>

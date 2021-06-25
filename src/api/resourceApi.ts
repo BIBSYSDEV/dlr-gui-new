@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import {
   Contributor,
   Creator,
+  KalturaPresentation,
   Resource,
   ResourceContents,
   ResourceCreationType,
@@ -13,7 +14,6 @@ import { AccessTypes, License } from '../types/license.types';
 import { Content, emptyResourceContent, LinkMetadataFilename } from '../types/content.types';
 import { authenticatedApiRequest } from './api';
 import { FacetResponse, QueryObject, SearchParameters, SearchResult } from '../types/search.types';
-import { KalturaPresentation } from '../pages/edit_resource/KalturaRegistration';
 
 enum APISearchParameters {
   FacetInstitution = 'facet_institution::',
@@ -408,3 +408,21 @@ export const getMyKalturaPresentations = (): Promise<AxiosResponse<KalturaPresen
     method: 'GET',
   });
 };
+
+//TODO: hva brukes denne til ?
+// export const postKalturaPresentationImport = (
+//   kalturaPresentation: KalturaPresentation
+// ): Promise<AxiosResponse<String>> => {
+//   const data = encodeURI(
+//     `identifier=${
+//       kalturaPresentation.resourceId
+//     }&identifierContent=${contentId}&kalturaPresentationId=${kalturaPresentationId}&downloadUrl=${encodeURIComponent(
+//       downloadUrl
+//     )}&title=${encodeURIComponent(title)}`
+//   );
+//   return authenticatedApiRequest({
+//     url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations/import`),
+//     method: 'POST',
+//     data: data,
+//   });
+// };
