@@ -19,7 +19,7 @@ export const StyledProgressWrapper = styled.div`
   padding: 2rem;
 `;
 
-export const StyledFullpageProgressWrapper = styled.div`
+export const StyledFullPageProgressWrapper = styled.div`
   display: flex;
   width: 100%;
   min-height: 100vh;

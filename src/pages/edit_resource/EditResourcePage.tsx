@@ -45,7 +45,7 @@ import { emptyLicense } from '../../types/license.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import { createUppy } from '../../utils/uppy-config';
 import { useUppy } from '@uppy/react';
-import { StyledContentWrapperLarge, StyledFullpageProgressWrapper } from '../../components/styled/Wrappers';
+import { StyledContentWrapperLarge, StyledFullPageProgressWrapper } from '../../components/styled/Wrappers';
 import { getAuthoritiesForResourceCreatorOrContributor } from '../../api/authoritiesApi';
 import KalturaRegistration from './KalturaRegistration';
 
@@ -382,9 +382,9 @@ const EditResourcePage = () => {
       </StyledEditPublication>
     </StyledContentWrapperLarge>
   ) : isLoadingResource ? (
-    <StyledFullpageProgressWrapper>
+    <StyledFullPageProgressWrapper>
       <CircularProgress />
-    </StyledFullpageProgressWrapper>
+    </StyledFullPageProgressWrapper>
   ) : resourceInitError ? (
     <ErrorBanner userNeedsToBeLoggedIn={true} error={resourceInitError} />
   ) : formikInitResource ? (

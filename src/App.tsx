@@ -10,7 +10,7 @@ import i18next from 'i18next';
 import ErrorBanner from './components/ErrorBanner';
 import LoginRedirectPage from './pages/LoginRedirectPage';
 import AppContent from './AppContent';
-import { StyledFullpageProgressWrapper } from './components/styled/Wrappers';
+import { StyledFullPageProgressWrapper } from './components/styled/Wrappers';
 
 const isLoggedInTokenExpired = () => {
   if (localStorage.tokenExpiry) {
@@ -100,9 +100,9 @@ const App = () => {
           {!isLoadingUser && hasValidToken ? (
             <AppContent mainContentRef={mainContentRef} userError={userError} />
           ) : (
-            <StyledFullpageProgressWrapper>
+            <StyledFullPageProgressWrapper>
               <CircularProgress />
-            </StyledFullpageProgressWrapper>
+            </StyledFullPageProgressWrapper>
           )}
         </Route>
       </Switch>
