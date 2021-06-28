@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { SearchParameters } from '../../types/search.types';
 import { getLMSSearchParams } from '../../utils/lmsService';
 import { getResourceViews } from '../../api/resourceApi';
+import { localeSort, StringArrayToSetStringArray } from '../../utils/StringArray';
 
 const StyledChip: any = styled(Chip)`
   && {
@@ -117,7 +118,7 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource, isPreview = fal
                 <Typography gutterBottom variant="h2">
                   {t('resource.metadata.tags')}
                 </Typography>
-                {resource.tags.map((tag, index) => (
+                {StringArrayToSetStringArray(localeSort(resource.tags)).map((tag, index) => (
                   <StyledChip
                     href={`/?${SearchParameters.tag}=${tag}${
                       getLMSSearchParams().toString().length > 0 ? `&${getLMSSearchParams()}` : ''
