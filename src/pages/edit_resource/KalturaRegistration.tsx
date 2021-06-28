@@ -2,7 +2,6 @@ import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import StartRegistrationMethodAccordion from './StartRegistrationMethodAccordion';
-import VideocamIcon from '@material-ui/icons/Videocam';
 import { getMyKalturaPresentations } from '../../api/resourceApi';
 import {
   Button,
@@ -21,6 +20,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import { KalturaPresentation } from '../../types/resource.types';
+import kalturaLogo from '../../resources/images/Kaltura_Sun_black_small.png';
 
 const FormDialogTitleId = 'kaltura-dialog-title';
 
@@ -105,7 +105,8 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
     <>
       <StartRegistrationMethodAccordion
         headerLabel={t('kaltura.start_with_kaltura_resource')}
-        icon={<VideocamIcon className="icon" />} //TODO:Kalturalogo
+        icon={<img height="24px" src={kalturaLogo} alt="Kaltura logo" />}
+        //TODO: lag en 24px versjon av logo
         expanded={expanded}
         onChange={onChange}
         ariaControls="resource-method-link"
