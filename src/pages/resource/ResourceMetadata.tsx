@@ -9,23 +9,12 @@ import { useTranslation } from 'react-i18next';
 import { SearchParameters } from '../../types/search.types';
 import { getLMSSearchParams } from '../../utils/lmsService';
 import { getResourceViews } from '../../api/resourceApi';
+import { localeSort, StringArrayToSetStringArray } from '../../utils/StringArray';
 
 const StyledChip: any = styled(Chip)`
-  height: auto;
   && {
     margin: 0.5rem 0.5rem 0 0;
-    background-color: ${Colors.ChipBackground};
-    color: ${Colors.Background};
-    &:focus {
-      color: ${Colors.PrimaryText};
-      background-color: ${Colors.ChipBackgroundFocus};
-    }
   }
-`;
-
-const StyledChipTypography = styled(Typography)`
-  white-space: normal;
-  color: white;
 `;
 
 const StyledFeatureWrapper = styled.div`
@@ -129,7 +118,7 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource, isPreview = fal
                 <Typography gutterBottom variant="h2">
                   {t('resource.metadata.tags')}
                 </Typography>
-                {resource.tags.map((tag, index) => (
+                {StringArrayToSetStringArray(localeSort(resource.tags)).map((tag, index) => (
                   <StyledChip
                     href={`/?${SearchParameters.tag}=${tag}${
                       getLMSSearchParams().toString().length > 0 ? `&${getLMSSearchParams()}` : ''
@@ -137,7 +126,8 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource, isPreview = fal
                     component="a"
                     key={index}
                     size="medium"
-                    label={<StyledChipTypography>{tag}</StyledChipTypography>}
+                    color="primary"
+                    label={tag}
                     data-testid={`tag-chip-${index}`}
                     clickable
                   />

@@ -241,7 +241,7 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
               onClick={() => {
                 deleteContent(content, index);
               }}>
-              {t('common.remove').toUpperCase()}
+              {t('common.remove')}
             </Button>
             {errorIndex === index && <ErrorBanner userNeedsToBeLoggedIn={true} />}
           </LargeParagraphSpace>

@@ -185,7 +185,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, isPreview = false }) 
         <Grid item xs={12} sm={4}>
           {!isPreview && (
             <Button startIcon={<ShareIcon />} color="primary" variant="outlined" onClick={shareLink}>
-              {t('resource.share.share_link').toUpperCase()}
+              {t('resource.share.share_link')}
             </Button>
           )}
         </Grid>
@@ -211,7 +211,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, isPreview = false }) 
               color="primary"
               variant="outlined"
               onClick={() => handleCopyButtonClick(citationPreTitle + citationTitle + citationPostTitle)}>
-              {t('citation.copy_citation').toUpperCase()}
+              {t('citation.copy_citation')}
             </StyledButton>
           )}
         </Grid>
@@ -228,7 +228,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, isPreview = false }) 
               color="primary"
               variant="outlined"
               onClick={() => handleCopyButtonClick(generateIframeText(resource))}>
-              {t('embed.copy_embed_code').toUpperCase()}
+              {t('embed.copy_embed_code')}
             </StyledButton>
           )}
         </Grid>
