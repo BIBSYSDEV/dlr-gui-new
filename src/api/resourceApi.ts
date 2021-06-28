@@ -409,20 +409,15 @@ export const getMyKalturaPresentations = (): Promise<AxiosResponse<KalturaPresen
   });
 };
 
-//TODO: hva brukes denne til ?
-// export const postKalturaPresentationImport = (
-//   kalturaPresentation: KalturaPresentation
-// ): Promise<AxiosResponse<String>> => {
-//   const data = encodeURI(
-//     `identifier=${
-//       kalturaPresentation.resourceId
-//     }&identifierContent=${contentId}&kalturaPresentationId=${kalturaPresentationId}&downloadUrl=${encodeURIComponent(
-//       downloadUrl
-//     )}&title=${encodeURIComponent(title)}`
-//   );
-//   return authenticatedApiRequest({
-//     url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations/import`),
-//     method: 'POST',
-//     data: data,
-//   });
-// };
+export const postKalturaPresentationImport = (resource: Resource, kalturaPresentation: KalturaPresentation) => {
+  const data = encodeURI(
+    `identifier=${resource.identifier}&identifierContent=${resource.contents.masterContent.identifier}
+    &kalturaPresentationId=${kalturaPresentation.id}&downloadUrl=${encodeURIComponent(kalturaPresentation.downloadUrl)}
+    &title=${encodeURIComponent(kalturaPresentation.title)}`
+  );
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations/import`),
+    method: 'POST',
+    data: data,
+  });
+};

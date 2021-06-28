@@ -321,4 +321,5 @@ export interface KalturaPresentation {
   thumbnailUrl: string;
   institution: string;
   dlrContentIdentifier: string;
+  description: string;
 }

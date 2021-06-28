@@ -32,6 +32,7 @@ import {
   getResourceDefaults,
   getResourceLicenses,
   getResourceTags,
+  postKalturaPresentationImport,
   postResourceCreator,
   postResourceFeature,
   postTag,
@@ -108,11 +109,12 @@ const EditResourcePage = () => {
     setShowForm(true);
     try {
       setIsLoadingResource(true);
+      //TODO : MOCK API - CYPRESS_TESTS
+      //TODO: SPLIT getResourceInit
+      //TODO: placement "use" button for kaltura
+
       const createResourceResponse = await createResource(ResourceCreationType.LINK, kalturaResource.url);
-      //TODO: Funker dette ?
-      //tittel må iallefall med på noe vis
-      //TODO : hva med kall til kaltura-import ?
-      await getResourceInit(createResourceResponse, ResourceCreationType.LINK);
+      await getResourceInit(createResourceResponse, ResourceCreationType.LINK, kalturaResource);
     } catch (error) {
       setResourceInitError(error);
       setIsLoadingResource(false);
@@ -206,7 +208,11 @@ const EditResourcePage = () => {
     await saveResourceDLRType(tempResource, startingResource.identifier, resourceDLRType);
   }
 
-  const getResourceInit = async (startingResource: Resource, resourceCreationType: ResourceCreationType) => {
+  const getResourceInit = async (
+    startingResource: Resource,
+    resourceCreationType: ResourceCreationType,
+    kalturaResource?: KalturaPresentation
+  ) => {
     try {
       setShowForm(true);
       startingResource.features.dlr_title = startingResource.features.dlr_title ?? '';
@@ -265,6 +271,13 @@ const EditResourcePage = () => {
         );
         resource.contents.masterContent.features.dlr_content_title =
           resource.contents.masterContent.features.dlr_content;
+      }
+
+      if (kalturaResource) {
+        await postKalturaPresentationImport(resource, kalturaResource);
+        resource.features.dlr_title = kalturaResource.title;
+        resource.features.dlr_description = kalturaResource.description;
+        resource.features.dlr_type = 'Audiovisual';
       }
 
       setFormikInitResource(resource);
