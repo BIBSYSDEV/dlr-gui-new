@@ -67,11 +67,13 @@ const StyledChipLabelTypography = styled(Typography)`
 
 const StyledAccessButtonWrapper = styled.div`
   margin-top: 2.5rem;
-  display: block;
+  display: flex;
+  align-items: baseline;
 `;
 
 const StyledAddAccessButton = styled(Button)`
   margin-top: 1rem;
+  margin-right: 1rem;
 `;
 
 //if private ResourceReadAccess is added outside the component, then forceRefresh must change to a new value in order to add new private access chips
@@ -263,26 +265,24 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
       </StyledChipWrapper>
       {networkError && <ErrorBanner userNeedsToBeLoggedIn={true} error={networkError} />}
       {!values.features.dlr_status_published && (
-        <>
-          <StyledAccessButtonWrapper>
-            <StyledAddAccessButton
-              data-testid="add-private-consumer-access-button"
-              startIcon={<AddIcon />}
-              color="primary"
-              variant="outlined"
-              onClick={(event) => {
-                handleAddAccessButtonClick(event);
-              }}>
-              {t('access.add_access')}
-            </StyledAddAccessButton>
-          </StyledAccessButtonWrapper>
+        <StyledAccessButtonWrapper>
+          <StyledAddAccessButton
+            data-testid="add-private-consumer-access-button"
+            startIcon={<AddIcon />}
+            color="primary"
+            variant="outlined"
+            onClick={(event) => {
+              handleAddAccessButtonClick(event);
+            }}>
+            {t('access.add_access')}
+          </StyledAddAccessButton>
           <HelperTextPopover ariaButtonLabel={'explain private access options'} popoverId={'private-access-explainer'}>
             <Typography>
               Du kan kun legge til emnekoder hvis institusjonen din er knyttet opp til de hos FS og brukeren din har
               tilgang til funksjonaliteten.
             </Typography>
           </HelperTextPopover>
-        </>
+        </StyledAccessButtonWrapper>
       )}
 
       <Popover
