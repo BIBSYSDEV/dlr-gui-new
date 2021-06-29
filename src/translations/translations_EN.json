@@ -202,10 +202,20 @@
   },
   "feedback": {
     "form_errors": "There are errors in the form. They have to be corrected before the resource can be published",
+    "published_warning": "The resource is published. Changes to any field will be saved and published instantly.",
     "required_field": "Required field",
     "valid_email": "Input must be a valid email",
     "valid_url": "Input must be a valid URL",
-    "published_warning": "The resource is published. Changes to any field will be saved and published instantly."
+    "warning_box": {
+      "contributor": "Contributor name and type is required for all contributors. Fill all contributor fields or delete unnecessary fields",
+      "creator_singular": "The resource require at least one creator filled out",
+      "creator_plural": "All creator fields must contains text. Fill all creator fields or delete unnecessary fields",
+      "file_title": "File title on main file is required and must be filled out",
+      "license": "License is required and must be selected",
+      "question_must_be_answered": "The question \"{{question}}\" must be answered",
+      "resource_title": "Resource title is required and must be filled out",
+      "type": "Resource type is required and must be filled out"
+    }
   },
   "illustration_alts_tags": {
     "browsing_resource": "A woman is browsing for resources"

@@ -15,6 +15,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ChangeLanguageButton from './ChangeLanguageButton';
 import AvatarButton from './AvatarButton';
+import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 
 const StyledPageHeader = styled.div`
   display: flex;
@@ -87,6 +88,7 @@ const Header = () => {
         )}
         {user.id && (
           <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/resources/user/current">
+            <DescriptionOutlinedIcon />
             <Typography variant="button">{t('resource.my_resources')}</Typography>
           </MenuItem>
         )}
@@ -116,7 +118,11 @@ const Header = () => {
           </Button>
         )}
         {user.id && (
-          <Button color="primary" component={RouterLink} data-testid="my-resources-link" to="/resources/user/current">
+          <Button
+            startIcon={<DescriptionOutlinedIcon />}
+            component={RouterLink}
+            data-testid="my-resources-link"
+            to="/resources/user/current">
             <Typography variant="button">{t('resource.my_resources')}</Typography>
           </Button>
         )}
