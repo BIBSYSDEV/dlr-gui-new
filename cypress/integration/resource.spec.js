@@ -10,7 +10,7 @@ import {
   mockText,
 } from '../../src/api/mockdata';
 import { SearchParameters } from '../../src/types/search.types';
-import { resourcePath } from '../../src/AppRoutes';
+import { resourcePath } from '../../src/utils/constants';
 
 context('Actions', () => {
   beforeEach(() => {

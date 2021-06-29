@@ -3,7 +3,7 @@ import { Button, Grid, Link, Typography } from '@material-ui/core';
 import { WorklistRequest } from '../../types/Worklist.types';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
-import { resourcePath } from '../../AppRoutes';
+import { resourcePath } from '../../utils/constants';
 
 interface WorkListRequestMetaDataViewerProps {
   workListRequest: WorklistRequest;

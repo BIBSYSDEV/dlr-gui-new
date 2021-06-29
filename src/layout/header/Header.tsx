@@ -16,7 +16,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ChangeLanguageButton from './ChangeLanguageButton';
 import AvatarButton from './AvatarButton';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
-import { resourcePath } from '../../AppRoutes';
+import { resourcePath } from '../../utils/constants';
 
 const StyledPageHeader = styled.div`
   display: flex;

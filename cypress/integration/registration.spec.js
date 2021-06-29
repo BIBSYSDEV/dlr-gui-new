@@ -1,7 +1,7 @@
 import { mockContent, mockContents, mockDefaultResource, mockMyResources } from '../../src/api/mockdata';
 import { licenses } from '../../src/utils/testfiles/licenses';
 import { ResourceFeatureTypes } from '../../src/types/resource.types';
-import { resourcePath } from '../../src/AppRoutes';
+import { resourcePath } from '../../src/utils/constants';
 
 context('Actions', () => {
   beforeEach(() => {

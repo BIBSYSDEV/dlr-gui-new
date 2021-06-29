@@ -13,7 +13,7 @@ import { SearchParameters } from '../types/search.types';
 import ResourceTypeInfo from './ResourceTypeInfo';
 import { getLMSSearchParams } from '../utils/lmsService';
 import { localeSort, StringArrayToSetStringArray } from '../utils/StringArray';
-import { resourcePath } from '../AppRoutes';
+import { resourcePath } from '../utils/constants';
 
 const StyledListItem: any = styled.li`
   width: 100%;

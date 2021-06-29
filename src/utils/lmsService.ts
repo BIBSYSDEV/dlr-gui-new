@@ -1,7 +1,7 @@
 import { Resource } from '../types/resource.types';
 import { LMSTypes } from '../types/lms.types';
 import { LMSParametersName } from '../types/LMSParameters';
-import { resourcePath } from '../AppRoutes';
+import { resourcePath } from './constants';
 
 const createEmbedUrlParam = (resource: Resource, width: number | string, height: number) => {
   return encodeURIComponent(

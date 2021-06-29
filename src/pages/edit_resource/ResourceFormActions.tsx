@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { useFormikContext } from 'formik';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { resourcePath } from '../../AppRoutes';
+import { resourcePath } from '../../utils/constants';
 
 const PageWidthThresholdForButtons = '45rem';
 

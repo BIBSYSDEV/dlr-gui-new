@@ -11,7 +11,7 @@ import EmbedButtons from './EmbedButtons';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import ShareIcon from '@material-ui/icons/Share';
 import SocialMediaSharing from '../../components/SocialMediaSharing';
-import { resourcePath } from '../../AppRoutes';
+import { resourcePath } from '../../utils/constants';
 
 const StyledGridContainer = styled(Grid)`
   margin-top: 1rem;

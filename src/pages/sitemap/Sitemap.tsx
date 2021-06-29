@@ -5,10 +5,9 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
 import { StyledContentWrapper } from '../../components/styled/Wrappers';
-import { API_PATHS, API_URL } from '../../utils/constants';
+import { API_PATHS, API_URL, resourcePath } from '../../utils/constants';
 import { List, ListItem } from '@material-ui/core';
 import { handleLogout } from '../../layout/header/Logout';
-import { resourcePath } from '../../AppRoutes';
 
 const StyledTypography = styled(Typography)`
   margin-top: 2rem;

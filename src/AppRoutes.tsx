@@ -14,12 +14,11 @@ import AdminPage from './pages/admin/AdminPage';
 import MainContentView from './pages/content_view/MainContentView';
 import WorkListPage from './pages/worklist/WorkListPage';
 import ProfilePage from './pages/profile/ProfilePage';
+import { resourcePath } from './utils/constants';
 
 const Explore = lazy(() => import('./pages/dashboard/Explore'));
 const EditResourcePage = lazy(() => import('./pages/edit_resource/EditResourcePage'));
 const NotFound = lazy(() => import('./pages/errorpages/NotFound'));
-
-export const resourcePath = '/resources';
 
 const AppRoutes = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -34,7 +33,7 @@ const AppRoutes = () => {
           path="/resource/:resourceIdentifier/content/main"
           to={`${resourcePath}/:resourceIdentifier/content/main`}
         />
-        <Route exact path={`${resourcePath}}/:identifier`} component={ResourcePage} />
+        <Route exact path={`${resourcePath}/:identifier`} component={ResourcePage} />
         <Route exact path={`${resourcePath}/:resourceIdentifier/content/main`} component={MainContentView} />
         <Route
           exact

@@ -1,4 +1,4 @@
-import { resourcePath } from '../../src/AppRoutes';
+import { resourcePath } from '../../src/utils/constants';
 
 context('Actions', () => {
   beforeEach(() => {

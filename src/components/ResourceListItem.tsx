@@ -12,7 +12,7 @@ import { Colors, StyleWidths } from '../themes/mainTheme';
 import { format } from 'date-fns';
 import { Link } from '@material-ui/core';
 import ResourceTypeInfo from './ResourceTypeInfo';
-import { resourcePath } from '../AppRoutes';
+import { resourcePath } from '../utils/constants';
 
 interface Props {
   backgroundColor: string;
