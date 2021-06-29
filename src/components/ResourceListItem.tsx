@@ -109,7 +109,7 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
         <StyledMetaDataColumn>
           <Typography gutterBottom variant="h4">
             {resource.features.dlr_status_published ? (
-              <Link href={`/resource/${resource.identifier}`}>{`${resource.features.dlr_title}`}</Link>
+              <Link href={`/resources/${resource.identifier}`}>{`${resource.features.dlr_title}`}</Link>
             ) : (
               resource.features.dlr_title
             )}

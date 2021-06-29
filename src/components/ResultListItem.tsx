@@ -96,7 +96,7 @@ const StyledChip: any = styled(Chip)`
 
 const generateURL = (resource: Resource) => {
   const LMSSearchParams = getLMSSearchParams();
-  return `/resource/${resource.identifier}${LMSSearchParams.toString().length > 0 ? `?${LMSSearchParams}` : ''}`;
+  return `/resources/${resource.identifier}${LMSSearchParams.toString().length > 0 ? `?${LMSSearchParams}` : ''}`;
 };
 
 interface ResultListItemProps {

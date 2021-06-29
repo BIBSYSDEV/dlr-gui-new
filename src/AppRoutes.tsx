@@ -26,14 +26,14 @@ const AppRoutes = () => {
     <Suspense fallback={<DelayedFallback />}>
       <Switch>
         <Route exact path="/" component={Explore} />
-        <Redirect exact path="/resources/:identifier" to="/resource/:identifier" />
+        <Redirect exact path="/resource/:identifier" to="/resources/:identifier" />
         <Redirect
           exact
-          path="/resources/:resourceIdentifier/content/main"
-          to="/resource/:resourceIdentifier/content/main"
+          path="/resource/:resourceIdentifier/content/main"
+          to="/resources/:resourceIdentifier/content/main"
         />
-        <Route exact path="/resource/:identifier" component={ResourcePage} />
-        <Route exact path="/resource/:resourceIdentifier/content/main" component={MainContentView} />
+        <Route exact path="/resources/:identifier" component={ResourcePage} />
+        <Route exact path="/resources/:resourceIdentifier/content/main" component={MainContentView} />
         <Route exact path="/resources/user/current" render={(props) => <MyResources id={user.id} {...props} />} />
         <Route
           exact

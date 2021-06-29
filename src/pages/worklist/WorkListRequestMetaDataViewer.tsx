@@ -17,7 +17,7 @@ const WorkListRequestMetaDataViewer: FC<WorkListRequestMetaDataViewerProps> = ({
       <Grid item xs={12}>
         <Typography variant="h3">
           <Link
-            href={`/resource/${workListRequest.resourceIdentifier}`}
+            href={`/resources/${workListRequest.resourceIdentifier}`}
             data-testid={`request-item-title-${workListRequest.resourceIdentifier}`}>
             {workListRequest.resource?.features.dlr_title ?? workListRequest.resourceIdentifier}
           </Link>
