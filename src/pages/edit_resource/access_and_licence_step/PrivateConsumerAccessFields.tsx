@@ -276,11 +276,14 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
             }}>
             {t('access.add_access')}
           </StyledAddAccessButton>
-          <HelperTextPopover ariaButtonLabel={'explain private access options'} popoverId={'private-access-explainer'}>
-            <Typography>
-              Du kan kun legge til emnekoder hvis institusjonen din er knyttet opp til de hos FS og brukeren din har
-              tilgang til funksjonaliteten.
+          <HelperTextPopover
+            ariaButtonLabel={t('explanation_text.private_access_aria_label')}
+            popoverId={'private-access-explainer'}>
+            <Typography gutterBottom>{t('explanation_text.private_access_multiple_types_possible')}.</Typography>
+            <Typography gutterBottom variant="body2">
+              {t('explanation_text.private_access_example')}.
             </Typography>
+            <Typography variant="body2">{t('explanation_text.private_access_course_code_restrictions')}.</Typography>
           </HelperTextPopover>
         </StyledAccessButtonWrapper>
       )}

@@ -86,7 +86,7 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
     <>
       {isDevelopInstance() && (
         <StyledTypography>
-          <b>NB! Du er nå på utviklingsserveren og emnene nedenfor er testemner. </b>
+          <b>{t('access.develop_server_warning')}. </b>
         </StyledTypography>
       )}
       {courses.length > 0 && (
