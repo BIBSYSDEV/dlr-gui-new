@@ -30,7 +30,7 @@ const AvatarButton = () => {
       </Button>
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={open} onClose={handleClose}>
         <MenuItem onClick={handleClose} component={Link} to="/profile">
-          {t('profile.profile')}
+          {t('profile.profile').toUpperCase()}
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <Logout />

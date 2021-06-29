@@ -4,6 +4,8 @@ export const BIBSYS_AUTHORITY_URL = 'https://authority.bibsys.no/authority/rest/
 export const MICROSOFT_DOCUMENT_VIEWER = 'https://view.officeapps.live.com/op/embed.aspx';
 export const DEV_API_URL = 'https://api-dev.dlr.aws.unit.no';
 
+export const resourcePath = '/resources';
+
 export enum StatusCode {
   OK = 200,
   CREATED = 201,

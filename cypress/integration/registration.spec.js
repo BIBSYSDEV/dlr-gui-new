@@ -1,6 +1,7 @@
 import { mockContent, mockContents, mockDefaultResource, mockMyResources } from '../../src/api/mockdata';
 import { licenses } from '../../src/utils/testfiles/licenses';
 import { ResourceFeatureTypes } from '../../src/types/resource.types';
+import { resourcePath } from '../../src/utils/constants';
 
 context('Actions', () => {
   beforeEach(() => {
@@ -59,7 +60,7 @@ context('Actions', () => {
     cy.get('[data-testid=resource-title]').contains(mockTitle);
     cy.get('[data-testid=resource-description]').contains(mockDescription);
     cy.get('[data-testid=resource-publish-button]').click();
-    cy.url().should('include', `/resource/${mockDefaultResource.identifier}`);
+    cy.url().should('include', `${resourcePath}/${mockDefaultResource.identifier}`);
   });
 
   it('runs a minimal registration with errors', () => {

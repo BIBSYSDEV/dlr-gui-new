@@ -235,13 +235,14 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
             </SmallParagraphSpace>
             <Button
               color="secondary"
+              variant="outlined"
               startIcon={<DeleteIcon fontSize="large" />}
               size="large"
               data-testid={`additional-file-${content.identifier}-delete-button`}
               onClick={() => {
                 deleteContent(content, index);
               }}>
-              {t('common.remove').toUpperCase()}
+              {t('common.remove')}
             </Button>
             {errorIndex === index && <ErrorBanner userNeedsToBeLoggedIn={true} />}
           </LargeParagraphSpace>

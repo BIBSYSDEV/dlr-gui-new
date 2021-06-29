@@ -12,6 +12,8 @@ import Link from '@material-ui/core/Link';
 import { SearchParameters } from '../types/search.types';
 import ResourceTypeInfo from './ResourceTypeInfo';
 import { getLMSSearchParams } from '../utils/lmsService';
+import { localeSort, StringArrayToSetStringArray } from '../utils/StringArray';
+import { resourcePath } from '../utils/constants';
 
 const StyledListItem: any = styled.li`
   width: 100%;
@@ -89,18 +91,13 @@ const StyledHeader = styled.div`
 `;
 
 const StyledChip: any = styled(Chip)`
-  height: auto;
   margin-right: 0.5rem;
   margin-top: 0.5rem;
 `;
 
-const StyledChipTypography = styled(Typography)`
-  white-space: normal;
-`;
-
 const generateURL = (resource: Resource) => {
   const LMSSearchParams = getLMSSearchParams();
-  return `/resource/${resource.identifier}${LMSSearchParams.toString().length > 0 ? `?${LMSSearchParams}` : ''}`;
+  return `${resourcePath}/${resource.identifier}${LMSSearchParams.toString().length > 0 ? `?${LMSSearchParams}` : ''}`;
 };
 
 interface ResultListItemProps {
@@ -163,14 +160,14 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
         <div>
           {resource.tags && resource.tags.length !== 0 && (
             <div data-testid="resource-tags">
-              {resource.tags.map((tag, index) => (
+              {StringArrayToSetStringArray(localeSort(resource.tags)).map((tag, index) => (
                 <StyledChip
                   component="a"
                   href={`/?${SearchParameters.tag}=${tag}`}
                   key={index}
                   clickable
                   size="medium"
-                  label={<StyledChipTypography>{tag}</StyledChipTypography>}
+                  label={tag}
                 />
               ))}
             </div>

@@ -22,21 +22,11 @@ const StyledChip = styled(Chip)`
     margin-top: 1rem;
     margin-bottom: 1rem;
     margin-right: 0.5rem;
-    background-color: ${Colors.ChipBackground};
-    color: ${Colors.Background};
-    &:focus {
-      color: ${Colors.PrimaryText};
-      background-color: ${Colors.ChipBackgroundFocus};
-    }
   }
 `;
 
 const StyledAutoCompleteWrapper = styled.div`
   flex-grow: 4;
-`;
-
-const StyledCancelIcon = styled(CancelIcon)`
-  color: ${Colors.ChipIconBackground};
 `;
 
 interface TagsFieldProps {
@@ -138,7 +128,8 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                     renderTags={(value: any, getTagProps: any) =>
                       value.map((option: any, index: number) => (
                         <StyledChip
-                          deleteIcon={<StyledCancelIcon />}
+                          color="primary"
+                          deleteIcon={<CancelIcon />}
                           data-testid={`tag-chip-${index}`}
                           label={option}
                           {...getTagProps({ index })}

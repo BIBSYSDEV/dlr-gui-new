@@ -51,7 +51,7 @@ const ReportResource: FC<ReportResourceProps> = ({ resource, setRequestSentSucce
         startIcon={<ReportProblemIcon fontSize="large" />}
         variant="outlined"
         onClick={() => setShowReportDialog(true)}>
-        {t('common.report').toUpperCase()}
+        {t('common.report')}
       </StyledButton>
       <Dialog
         maxWidth={'sm'}
@@ -76,7 +76,7 @@ const ReportResource: FC<ReportResourceProps> = ({ resource, setRequestSentSucce
           />
         </DialogContent>
         <DialogActions>
-          <Button data-testid="report-dialog-cancel-button" onClick={cancelReport} color="default">
+          <Button variant="outlined" data-testid="report-dialog-cancel-button" onClick={cancelReport} color="primary">
             {t('common.cancel')}
           </Button>
           <Button

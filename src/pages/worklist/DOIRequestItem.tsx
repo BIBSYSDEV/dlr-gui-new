@@ -46,6 +46,7 @@ interface DOIRequestItemProps {
 const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkListDoi }) => {
   const [isCreatingDOi, setIsCreatingDOi] = useState(false);
   const [busySearchingForAuthorities, setBusySearchingForAuthorities] = useState(false);
+  const [hasSearchedForAuthorities, setHasSearchedForAuthorities] = useState(false);
   const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
   const [showConfirmCreateDOIDialog, setShowConfirmCreateDOIDialog] = useState(false);
   const [updateError, setUpdateError] = useState<Error>();
@@ -105,6 +106,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
           setSearchingForAuthoritiesError(error);
         } finally {
           setBusySearchingForAuthorities(false);
+          setHasSearchedForAuthorities(true);
         }
       }
     };
@@ -129,7 +131,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
                 {t('resource.edit_resource')}
               </Button>
             </Grid>
-            {!busySearchingForAuthorities && !canCreateDOI && (
+            {hasSearchedForAuthorities && !canCreateDOI && (
               <Grid item xs={12}>
                 <Typography variant="body2">{t('work_list.doi_verify_resource')}</Typography>
               </Grid>
