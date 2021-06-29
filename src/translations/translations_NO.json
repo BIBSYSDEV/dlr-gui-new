@@ -310,8 +310,8 @@
     "norwegian_bokmaal_language_code": "NOB"
   },
   "privacy_policy": {
-    "description": "Beskrivelse",
-    "heading": "Personvernerklæring"
+    "heading": "Personvernerklæring",
+    "privacy_policy": "Personvernerklæring"
   },
   "profile": {
     "feide": "feide",
