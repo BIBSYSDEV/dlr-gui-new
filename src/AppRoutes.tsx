@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import PrivacyPolicy from './pages/infopages/PrivacyPolicy';
 import { useSelector } from 'react-redux';
 import ResourcePage from './pages/resource/ResourcePage';
@@ -26,6 +26,12 @@ const AppRoutes = () => {
     <Suspense fallback={<DelayedFallback />}>
       <Switch>
         <Route exact path="/" component={Explore} />
+        <Redirect exact path="/resources/:identifier" to="/resource/:identifier" />
+        <Redirect
+          exact
+          path="/resources/:resourceIdentifier/content/main"
+          to="/resource/:resourceIdentifier/content/main"
+        />
         <Route exact path="/resource/:identifier" component={ResourcePage} />
         <Route exact path="/resource/:resourceIdentifier/content/main" component={MainContentView} />
         <Route exact path="/resources/user/current" render={(props) => <MyResources id={user.id} {...props} />} />
