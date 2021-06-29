@@ -12,6 +12,7 @@ import { Colors, StyleWidths } from '../themes/mainTheme';
 import { format } from 'date-fns';
 import { Link } from '@material-ui/core';
 import ResourceTypeInfo from './ResourceTypeInfo';
+import { resourcePath } from '../utils/constants';
 
 interface Props {
   backgroundColor: string;
@@ -109,7 +110,7 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
         <StyledMetaDataColumn>
           <Typography gutterBottom variant="h4">
             {resource.features.dlr_status_published ? (
-              <Link href={`/resource/${resource.identifier}`}>{`${resource.features.dlr_title}`}</Link>
+              <Link href={`${resourcePath}/${resource.identifier}`}>{`${resource.features.dlr_title}`}</Link>
             ) : (
               resource.features.dlr_title
             )}

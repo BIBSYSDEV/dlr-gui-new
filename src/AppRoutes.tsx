@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import PrivacyPolicy from './pages/infopages/PrivacyPolicy';
 import { useSelector } from 'react-redux';
 import ResourcePage from './pages/resource/ResourcePage';
@@ -14,6 +14,7 @@ import AdminPage from './pages/admin/AdminPage';
 import MainContentView from './pages/content_view/MainContentView';
 import WorkListPage from './pages/worklist/WorkListPage';
 import ProfilePage from './pages/profile/ProfilePage';
+import { resourcePath } from './utils/constants';
 
 const Explore = lazy(() => import('./pages/dashboard/Explore'));
 const EditResourcePage = lazy(() => import('./pages/edit_resource/EditResourcePage'));
@@ -26,9 +27,19 @@ const AppRoutes = () => {
     <Suspense fallback={<DelayedFallback />}>
       <Switch>
         <Route exact path="/" component={Explore} />
-        <Route exact path="/resource/:identifier" component={ResourcePage} />
-        <Route exact path="/resource/:resourceIdentifier/content/main" component={MainContentView} />
-        <Route exact path="/resources/user/current" render={(props) => <MyResources id={user.id} {...props} />} />
+        <Redirect exact path="/resource/:identifier" to={`${resourcePath}/:identifier`} />
+        <Redirect
+          exact
+          path="/resource/:resourceIdentifier/content/main"
+          to={`${resourcePath}/:resourceIdentifier/content/main`}
+        />
+        <Route exact path={`${resourcePath}/:identifier`} component={ResourcePage} />
+        <Route exact path={`${resourcePath}/:resourceIdentifier/content/main`} component={MainContentView} />
+        <Route
+          exact
+          path={`${resourcePath}/user/current`}
+          render={(props) => <MyResources id={user.id} {...props} />}
+        />
         <Route
           exact
           path="/admin"

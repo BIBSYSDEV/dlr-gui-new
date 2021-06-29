@@ -3,6 +3,7 @@ import { Button, Grid, Link, Typography } from '@material-ui/core';
 import { WorklistRequest } from '../../types/Worklist.types';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
+import { resourcePath } from '../../utils/constants';
 
 interface WorkListRequestMetaDataViewerProps {
   workListRequest: WorklistRequest;
@@ -17,7 +18,7 @@ const WorkListRequestMetaDataViewer: FC<WorkListRequestMetaDataViewerProps> = ({
       <Grid item xs={12}>
         <Typography variant="h3">
           <Link
-            href={`/resource/${workListRequest.resourceIdentifier}`}
+            href={`${resourcePath}/${workListRequest.resourceIdentifier}`}
             data-testid={`request-item-title-${workListRequest.resourceIdentifier}`}>
             {workListRequest.resource?.features.dlr_title ?? workListRequest.resourceIdentifier}
           </Link>

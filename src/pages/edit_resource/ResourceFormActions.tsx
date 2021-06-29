@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { useFormikContext } from 'formik';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { resourcePath } from '../../utils/constants';
 
 const PageWidthThresholdForButtons = '45rem';
 
@@ -89,7 +90,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
     setPublishResourceError(undefined);
     try {
       await publishResource(values.identifier);
-      history.push(`/resource/${values.identifier}`);
+      history.push(`${resourcePath}/${values.identifier}`);
     } catch (error) {
       setPublishResourceError(error);
     }
@@ -97,7 +98,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
 
   const handleLeaveForm = async () => {
     values.features.dlr_status_published && updateSearchIndex(values.identifier);
-    history.push('/resources/user/current');
+    history.push(`${resourcePath}/user/current`);
   };
 
   return (
