@@ -235,6 +235,7 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
             </SmallParagraphSpace>
             <Button
               color="secondary"
+              variant="outlined"
               startIcon={<DeleteIcon fontSize="large" />}
               size="large"
               data-testid={`additional-file-${content.identifier}-delete-button`}

@@ -76,7 +76,7 @@ const ReportResource: FC<ReportResourceProps> = ({ resource, setRequestSentSucce
           />
         </DialogContent>
         <DialogActions>
-          <Button data-testid="report-dialog-cancel-button" onClick={cancelReport} color="default">
+          <Button variant="outlined" data-testid="report-dialog-cancel-button" onClick={cancelReport} color="primary">
             {t('common.cancel')}
           </Button>
           <Button

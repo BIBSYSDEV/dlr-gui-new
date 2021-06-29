@@ -62,9 +62,10 @@ const ConfirmDeleteDialog: FC<ConfirmDeleteDialogProps> = ({
       </DialogContent>
       <DialogActions>
         <Button
+          variant="outlined"
           data-testid={`delete-confirm-dialog-abort-button-${resourceIdentifier}`}
           onClick={performAbort}
-          color="default">
+          color="primary">
           {t('common.cancel')}
         </Button>
         {!deleteErrorOccured && (
@@ -72,7 +73,7 @@ const ConfirmDeleteDialog: FC<ConfirmDeleteDialogProps> = ({
             data-testid={`delete-confirm-dialog-confirm-button-${resourceIdentifier}`}
             onClick={performDeletion}
             startIcon={<DeleteIcon />}
-            color="primary"
+            color="secondary"
             variant="contained"
             autoFocus>
             {t('common.delete')}
