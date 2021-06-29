@@ -56,7 +56,7 @@ const StyledTextFieldSizer: any = styled.div<Props>`
   flex-grow: 1;
   width: auto;
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 1 + 'px'}) {
-    width: ${(props) => (props.isCurator ? '27%' : '14rem')};
+    width: ${(props) => (props.isCurator ? '25%' : '14rem')};
     margin-right: 1rem;
   }
 `;
@@ -73,10 +73,7 @@ const StyledButtonRowWrapper = styled.div`
 `;
 
 const StyledButtonWrapper = styled.div`
-  min-width: 6rem;
-  @media (min-width: ${({ theme }) => theme.breakpoints.values.md + 1 + 'px'}) {
-    margin-left: 1rem;
-  }
+  min-width: 7rem;
 `;
 
 interface ContributorFieldsProps {
@@ -329,6 +326,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                       <StyledButtonWrapper>
                         <StyledDeleteButton
                           color="secondary"
+                          variant="outlined"
                           startIcon={<DeleteIcon fontSize="large" />}
                           size="large"
                           data-testid={`contributor-delete-button-${index}`}

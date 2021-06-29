@@ -73,7 +73,11 @@ const RequestDOI: FC<RequestDOIProps> = ({ resource, setRequestSentSuccess }) =>
           />
         </DialogContent>
         <DialogActions>
-          <Button data-testid="doi-dialog-cancel-button" onClick={() => setShowRequestDOIDialog(false)}>
+          <Button
+            variant="outlined"
+            color="primary"
+            data-testid="doi-dialog-cancel-button"
+            onClick={() => setShowRequestDOIDialog(false)}>
             {t('common.cancel')}
           </Button>
           <Button
