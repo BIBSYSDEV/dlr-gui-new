@@ -13,6 +13,7 @@ import { SearchParameters } from '../types/search.types';
 import ResourceTypeInfo from './ResourceTypeInfo';
 import { getLMSSearchParams } from '../utils/lmsService';
 import { localeSort, StringArrayToSetStringArray } from '../utils/StringArray';
+import { resourcePath } from '../utils/constants';
 
 const StyledListItem: any = styled.li`
   width: 100%;
@@ -96,7 +97,7 @@ const StyledChip: any = styled(Chip)`
 
 const generateURL = (resource: Resource) => {
   const LMSSearchParams = getLMSSearchParams();
-  return `/resource/${resource.identifier}${LMSSearchParams.toString().length > 0 ? `?${LMSSearchParams}` : ''}`;
+  return `${resourcePath}/${resource.identifier}${LMSSearchParams.toString().length > 0 ? `?${LMSSearchParams}` : ''}`;
 };
 
 interface ResultListItemProps {

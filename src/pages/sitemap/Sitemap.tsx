@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
 import { StyledContentWrapper } from '../../components/styled/Wrappers';
-import { API_PATHS, API_URL } from '../../utils/constants';
+import { API_PATHS, API_URL, resourcePath } from '../../utils/constants';
 import { List, ListItem } from '@material-ui/core';
 import { handleLogout } from '../../layout/header/Logout';
 
@@ -32,7 +32,7 @@ const Sitemap = () => {
     },
     { href: '#', description: t('common.logout'), onClickFunction: handleLogout },
     {
-      href: '/resources/user/current',
+      href: `${resourcePath}/user/current`,
       description: `${t('resource.my_resources')} (${t('common.must_be_logged_in').toLowerCase()})`,
     },
     { href: '/privacy-policy', description: t('privacy_policy.heading') },
