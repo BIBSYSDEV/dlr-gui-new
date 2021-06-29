@@ -201,10 +201,20 @@
   },
   "feedback": {
     "form_errors": "Det er feil i skjema. Disse må rettes før ressursen kan publiseres",
+    "published_warning": "Ressursen er publisert. Alle felter som endres blir lagret og publisert på nytt umiddelbart etter endring.",
     "required_field": "Påkrevd felt",
     "valid_url": "Inndata må være en gyldig URL",
     "valid_email": "Inndata må være en gyldig epost",
-    "published_warning": "Ressursen er publisert. Alle felter som endres blir lagret og publisert på nytt umiddelbart etter endring."
+    "warning_box": {
+      "contributor": "Alle felt for navn og type på bidragsyter må fylles ut. Fjern eventuelt unødvendige felt",
+      "creator_singular": "Ressursen må ha minst en opphaver fylt ut",
+      "creator_plural": " Alle felt for opphavernavn må fylles ut. Fjern eventuelt unødvendige felt",
+      "file_title": "Filtittel på hovedfil er obligatorisk og må fylles ut",
+      "license": "Lisens er obligatorisk og må velges",
+      "question_must_be_answered": "Spørsmålet \"{{question}}\" må besvares",
+      "resource_title": "Ressurstittel er obligatorisk og må fylles ut",
+      "type": "Ressurstype er obligatorisk og må fylles ut"
+    }
   },
   "illustration_alts_tags": {
     "browsing_resource": "En dame søker etter en ressurs"
