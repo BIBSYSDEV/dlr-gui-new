@@ -19,6 +19,8 @@ const Explore = lazy(() => import('./pages/dashboard/Explore'));
 const EditResourcePage = lazy(() => import('./pages/edit_resource/EditResourcePage'));
 const NotFound = lazy(() => import('./pages/errorpages/NotFound'));
 
+export const resourcePath = '/resources';
+
 const AppRoutes = () => {
   const user = useSelector((state: RootState) => state.user);
 
@@ -26,15 +28,19 @@ const AppRoutes = () => {
     <Suspense fallback={<DelayedFallback />}>
       <Switch>
         <Route exact path="/" component={Explore} />
-        <Redirect exact path="/resource/:identifier" to="/resources/:identifier" />
+        <Redirect exact path="/resource/:identifier" to={`${resourcePath}/:identifier`} />
         <Redirect
           exact
           path="/resource/:resourceIdentifier/content/main"
-          to="/resources/:resourceIdentifier/content/main"
+          to={`${resourcePath}/:resourceIdentifier/content/main`}
         />
-        <Route exact path="/resources/:identifier" component={ResourcePage} />
-        <Route exact path="/resources/:resourceIdentifier/content/main" component={MainContentView} />
-        <Route exact path="/resources/user/current" render={(props) => <MyResources id={user.id} {...props} />} />
+        <Route exact path={`${resourcePath}}/:identifier`} component={ResourcePage} />
+        <Route exact path={`${resourcePath}/:resourceIdentifier/content/main`} component={MainContentView} />
+        <Route
+          exact
+          path={`${resourcePath}/user/current`}
+          render={(props) => <MyResources id={user.id} {...props} />}
+        />
         <Route
           exact
           path="/admin"

@@ -1,8 +1,9 @@
 import { LMSParametersName } from '../../src/types/LMSParameters';
+import { resourcePath } from '../../src/AppRoutes';
 
 context('Actions', () => {
   beforeEach(() => {
-    cy.visit(`/resource/mock-id`);
+    cy.visit(`${resourcePath}/mock-id`);
   });
 
   const commonComponentsDisplayed = () => {
@@ -22,7 +23,7 @@ context('Actions', () => {
   });
 
   it('should render buttons and text when blackboard search params is set', () => {
-    cy.visit(`/resource/mock-id?${LMSParametersName.BBShowEmbedButton}=true`);
+    cy.visit(`${resourcePath}/mock-id?${LMSParametersName.BBShowEmbedButton}=true`);
     commonComponentsDisplayed();
     cy.get('[data-testid=embed-link-button]').should('exist');
     cy.get('[data-testid=embed-canvas-link]').should('not.exist');
@@ -30,7 +31,7 @@ context('Actions', () => {
 
   it('should render buttons and text when canvas search params is set', () => {
     cy.visit(
-      `/resource/mock-id?${LMSParametersName.CanvasShowEmbedButton}=true&${LMSParametersName.CanvasShowEmbedLinkButton}=true&${LMSParametersName.CanvasLaunchPresentationReturnUrl}=https:\\blahblah`
+      `${resourcePath}/mock-id?${LMSParametersName.CanvasShowEmbedButton}=true&${LMSParametersName.CanvasShowEmbedLinkButton}=true&${LMSParametersName.CanvasLaunchPresentationReturnUrl}=https:\\blahblah`
     );
     commonComponentsDisplayed();
     cy.get('[data-testid=embed-link-button]').should('exist');
@@ -39,7 +40,7 @@ context('Actions', () => {
 
   it('should render buttons and text when its learning search params is set', () => {
     cy.visit(
-      `/resource/mock-id?${LMSParametersName.ItsLearningShowEmbedButton}=true&${LMSParametersName.ItsLearningReturnUrl}=https:\\blahblah`
+      `${resourcePath}/mock-id?${LMSParametersName.ItsLearningShowEmbedButton}=true&${LMSParametersName.ItsLearningReturnUrl}=https:\\blahblah`
     );
     commonComponentsDisplayed();
     cy.get('[data-testid=embed-link-button]').should('exist');
@@ -47,7 +48,7 @@ context('Actions', () => {
   });
 
   it('should render buttons and text when edx search params is set', () => {
-    cy.visit(`/resource/mock-id?${LMSParametersName.EdxShowEmbedButton}=true`);
+    cy.visit(`${resourcePath}/mock-id?${LMSParametersName.EdxShowEmbedButton}=true`);
     commonComponentsDisplayed();
     cy.get('[data-testid=embed-link-button]').should('not.exist');
     cy.get('[data-testid=embed-canvas-link]').should('not.exist');

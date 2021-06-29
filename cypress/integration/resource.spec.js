@@ -10,10 +10,11 @@ import {
   mockText,
 } from '../../src/api/mockdata';
 import { SearchParameters } from '../../src/types/search.types';
+import { resourcePath } from '../../src/AppRoutes';
 
 context('Actions', () => {
   beforeEach(() => {
-    cy.visit(`/resource/mock-id`);
+    cy.visit(`${resourcePath}/mock-id`);
   });
 
   it('can preview a text file', () => {
@@ -68,14 +69,14 @@ context('Actions', () => {
     const unpublishedTestPost = mockMyResources[1];
     const newTitle = 'a new title';
 
-    cy.visit(`/resource/${unpublishedTestPost.identifier}]`);
+    cy.visit(`${resourcePath}/${unpublishedTestPost.identifier}]`);
     cy.get('[data-testid=edit-resource-button').click();
     cy.get('[data-testid=step-navigation-0]').click();
     cy.get('[data-testid=dlr-title-input]').clear().type(newTitle);
     cy.get('[data-testid=step-navigation-4]').click();
     cy.get('[data-testid=resource-title]').contains(newTitle);
 
-    cy.visit(`/resource/${publishedTestPost.identifier}]`);
+    cy.visit(`${resourcePath}/${publishedTestPost.identifier}]`);
     cy.get('[data-testid=edit-resource-button').click();
     cy.get('[data-testid=step-navigation-0]').click();
     cy.get('[data-testid=dlr-title-input]').clear().type(newTitle);
@@ -100,7 +101,7 @@ context('Actions', () => {
 
   it('is possible to request DOI', () => {
     const publishedTestPost = mockMyResources[0];
-    cy.visit(`/resource/${publishedTestPost.identifier}]`);
+    cy.visit(`${resourcePath}/${publishedTestPost.identifier}]`);
     cy.get('[data-testid=request-doi-button').click();
     cy.get(`[data-testid=doi-dialog-submit-button]`).should('be.disabled');
     cy.get('[data-testid=doi-dialog-input]').type('some text');
@@ -116,7 +117,7 @@ context('Actions', () => {
   it("is not possible to request DOI for other people's resources", () => {
     const publishedTestPost = mockMyResources[0];
     cy.get('[data-testid=request-doi-button').should('not.exist');
-    cy.visit(`/resource/${publishedTestPost.identifier}]`);
+    cy.visit(`${resourcePath}/${publishedTestPost.identifier}]`);
     cy.get('[data-testid=request-doi-button').should('exist');
   });
 });

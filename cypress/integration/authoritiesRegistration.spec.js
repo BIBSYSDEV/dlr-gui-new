@@ -1,6 +1,8 @@
+import { resourcePath } from '../../src/AppRoutes';
+
 context('Actions', () => {
   beforeEach(() => {
-    cy.visit(`/resource/mock-id`);
+    cy.visit(`${resourcePath}/mock-id`);
   });
 
   it('is for curator users possible to add authorities', () => {

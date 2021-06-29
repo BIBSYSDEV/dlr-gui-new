@@ -16,6 +16,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ChangeLanguageButton from './ChangeLanguageButton';
 import AvatarButton from './AvatarButton';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
+import { resourcePath } from '../../AppRoutes';
 
 const StyledPageHeader = styled.div`
   display: flex;
@@ -87,7 +88,7 @@ const Header = () => {
           </MenuItem>
         )}
         {user.id && (
-          <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/resources/user/current">
+          <MenuItem onClick={handleBurgerMenuClose} component={Link} to={`${resourcePath}/user/current`}>
             <DescriptionOutlinedIcon />
             <Typography variant="button">{t('resource.my_resources')}</Typography>
           </MenuItem>
@@ -122,7 +123,7 @@ const Header = () => {
             startIcon={<DescriptionOutlinedIcon />}
             component={RouterLink}
             data-testid="my-resources-link"
-            to="/resources/user/current">
+            to={`${resourcePath}/user/current`}>
             <Typography variant="button">{t('resource.my_resources')}</Typography>
           </Button>
         )}
