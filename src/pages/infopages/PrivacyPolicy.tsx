@@ -1,24 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import Heading from '../../components/Heading';
-import Card from '../../components/Card';
 
-import { StyledInformationWrapper } from '../../components/styled/Wrappers';
+import { StyledContentWrapper } from '../../components/styled/Wrappers';
 import { Link, List, ListItem } from '@material-ui/core';
-
-const StyledHeading = styled(Heading)`
-  text-align: center;
-  padding-bottom: 1rem;
-`;
+import { PageHeader } from '../../components/PageHeader';
 
 const PrivacyPolicy = () => {
   const { t } = useTranslation();
 
   return (
-    <StyledInformationWrapper data-testid="privacy-policy" aria-label={t('privacy_policy.heading')}>
-      <Card>
-        <StyledHeading>{t('privacy_policy.heading')}</StyledHeading>
+    <StyledContentWrapper>
+      <PageHeader>{t('privacy_policy.heading')}</PageHeader>
+      <nav>
         <List>
           <ListItem>
             <Link
@@ -35,8 +28,8 @@ const PrivacyPolicy = () => {
             </Link>
           </ListItem>
         </List>
-      </Card>
-    </StyledInformationWrapper>
+      </nav>
+    </StyledContentWrapper>
   );
 };
 
