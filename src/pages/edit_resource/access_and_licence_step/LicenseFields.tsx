@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormHelperText, MenuItem, TextField } from '@material-ui/core';
+import { FormHelperText, Grid, MenuItem, TextField } from '@material-ui/core';
 import { FieldNames, Resource } from '../../../types/resource.types';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { deleteResourceLicense, setResourceLicense } from '../../../api/resourceApi';
@@ -13,11 +13,6 @@ import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import CClogoImage from '../../../components/CClogoImage';
 import styled from 'styled-components';
 import LicensePopoverExplanation from '../../../components/LicensePopoverExplanation';
-
-const StyledInlineWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
 
 const StyledSchemaPartLessTopPadding = styled.div`
   background-color: ${Colors.LicenseAccessPageGradientColor3};
@@ -79,53 +74,57 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
     <StyledSchemaPartLessTopPadding>
       <StyledContentWrapper>
         {licenses && (
-          <StyledInlineWrapper>
-            <Field name={LicenceFieldName}>
-              {({ field, meta: { error, touched } }: FieldProps) => (
-                <>
-                  <TextField
-                    id="license-picker"
-                    select
-                    required
-                    label={t('resource.metadata.license')}
-                    variant="filled"
-                    value={field.value.identifier}
-                    error={touched && !!error}
-                    fullWidth
-                    disabled={values.features.dlr_status_published}
-                    data-testid="licence-field"
-                    onClick={() => {
-                      //OnBlur does not work until clicked twice outside selector. Using onClick instead
-                      setFieldTouched(LicenceFieldName, true, true);
-                    }}
-                    onChange={(event) => {
-                      saveField(event);
-                    }}>
-                    {licenses.map((license) => (
-                      <MenuItem
-                        key={license.identifier}
-                        value={license.identifier}
-                        data-testid={`license-option-${license.identifier}`}>
-                        <CClogoImage
-                          textFirst={true}
-                          licenseCode={license.features?.dlr_license_code ?? ''}
-                          showCCImage={true}
-                        />
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                  {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
-                  {savingLicenseError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingLicenseError} />}
-                </>
-              )}
-            </Field>
-            <LicensePopoverExplanation
-              licenseCode={'CC BY SA ND NC CD 1'}
-              showLink={false}
-              showIntroduction={true}
-              showInternalLicenseExplanation={showInternalLicenseExplanation()}
-            />
-          </StyledInlineWrapper>
+          <Grid container spacing={3} alignItems="center">
+            <Grid item xs={10}>
+              <Field name={LicenceFieldName}>
+                {({ field, meta: { error, touched } }: FieldProps) => (
+                  <>
+                    <TextField
+                      id="license-picker"
+                      select
+                      required
+                      label={t('resource.metadata.license')}
+                      variant="filled"
+                      value={field.value.identifier}
+                      error={touched && !!error}
+                      fullWidth
+                      disabled={values.features.dlr_status_published}
+                      data-testid="licence-field"
+                      onClick={() => {
+                        //OnBlur does not work until clicked twice outside selector. Using onClick instead
+                        setFieldTouched(LicenceFieldName, true, true);
+                      }}
+                      onChange={(event) => {
+                        saveField(event);
+                      }}>
+                      {licenses.map((license) => (
+                        <MenuItem
+                          key={license.identifier}
+                          value={license.identifier}
+                          data-testid={`license-option-${license.identifier}`}>
+                          <CClogoImage
+                            textFirst={true}
+                            licenseCode={license.features?.dlr_license_code ?? ''}
+                            showCCImage={true}
+                          />
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                    {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
+                    {savingLicenseError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingLicenseError} />}
+                  </>
+                )}
+              </Field>
+            </Grid>
+            <Grid item xs={2}>
+              <LicensePopoverExplanation
+                licenseCode={'CC BY SA ND NC CD 1'}
+                showLink={false}
+                showIntroduction={true}
+                showInternalLicenseExplanation={showInternalLicenseExplanation()}
+              />
+            </Grid>
+          </Grid>
         )}
         {values.licenses?.[0] && values.licenses?.[0].identifier.length > 1 && (
           <LicenseCard license={values.licenses[0]} />

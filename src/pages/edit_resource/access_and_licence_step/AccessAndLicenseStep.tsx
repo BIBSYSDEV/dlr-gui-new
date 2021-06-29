@@ -13,11 +13,12 @@ import { Alert } from '@material-ui/lab';
 import { useTranslation } from 'react-i18next';
 
 interface AccessAndLicenseStepProps {
+  allChangesSaved: boolean;
   setAllChangesSaved: (value: boolean) => void;
   licenses: License[] | undefined;
 }
 
-const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSaved, licenses }) => {
+const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ allChangesSaved, setAllChangesSaved, licenses }) => {
   const [forceResetInLicenseWizard, setForceResetInLicenseWizard] = useState(false);
   const [containsOtherWorksFieldsSelectedCC, setContainsOtherWorksFieldsSelectedCC] = useState(false);
   const { values } = useFormikContext<Resource>();
@@ -46,6 +47,7 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSave
       />
       {licenses && (
         <LicenseWizardFields
+          allChangesSaved={allChangesSaved}
           forceResetInLicenseWizard={forceResetInLicenseWizard}
           containsOtherWorksFieldsSelectedCC={containsOtherWorksFieldsSelectedCC}
           licenses={licenses}
