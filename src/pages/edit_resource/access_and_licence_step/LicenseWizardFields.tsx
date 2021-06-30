@@ -45,10 +45,6 @@ const StyledTypography = styled(Typography)`
   margin-top: 1rem;
 `;
 
-const StyledLicenseRecommendationPlaceKeeper = styled.div`
-  min-height: 3rem;
-`;
-
 const extraRestrictionRadio = 'extra-restriction';
 const commercialRadio = 'commersial';
 const modifyAndBuildRadio = 'change-and-build';
@@ -420,7 +416,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           </AccordionRadioGroup>
         )}
         {values.licenses[0].features?.dlr_license_code && (
-          <StyledLicenseRecommendationPlaceKeeper>
+          <>
             {allChangesSaved && recommendedLicense === values.licenses[0].features.dlr_license_code && (
               <StyledTypography data-testid="recommended-license">
                 {t('license.got_recommended_license')}.
@@ -432,7 +428,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
               </StyledHeavyWeightTypography>
             )}
             {!allChangesSaved && <CircularProgress size="2rem" />}
-          </StyledLicenseRecommendationPlaceKeeper>
+          </>
         )}
 
         {savingLicenseError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingLicenseError} />}
