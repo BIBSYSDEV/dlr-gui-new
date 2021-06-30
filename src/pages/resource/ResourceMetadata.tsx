@@ -63,7 +63,10 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource, isPreview = fal
             {resource.creators && resource.creators.length !== 0 && (
               <StyledFeatureWrapper data-testid="resource-creators">
                 <Typography variant="h2">
-                  {resource.creators.map((creator) => creator.features.dlr_creator_name).join(', ')}
+                  {resource.creators
+                    .filter((creator) => creator.features.dlr_creator_name)
+                    .map((creator) => creator.features.dlr_creator_name)
+                    .join(', ')}
                 </Typography>
               </StyledFeatureWrapper>
             )}
@@ -72,6 +75,9 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource, isPreview = fal
               <StyledFeatureWrapper data-testid="resource-contributors">
                 <Typography variant="body1" gutterBottom>
                   {sortedContributorList
+                    .filter((contributor) => {
+                      return contributor.features.dlr_contributor_type || contributor.features.dlr_contributor_name;
+                    })
                     .map(
                       (contributor) =>
                         `${t(`resource.contributor_type.${contributor.features.dlr_contributor_type ?? ''}`)}: ${
