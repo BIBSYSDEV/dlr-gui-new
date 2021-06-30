@@ -88,9 +88,9 @@ export const getEmailNotificationStatus = async () => {
     url: `${API_PATHS.guiBackendUserSettingsPath}/settings/users/authorized/apps/dlr_learning`,
     method: 'GET',
   });
-  return (
-    appSettingResponse.data[0].feature === EmailFeature.Email && appSettingResponse.data[0].value === AppValue.True
-  );
+  return appSettingResponse.data[0]
+    ? appSettingResponse.data[0].feature === EmailFeature.Email && appSettingResponse.data[0].value === AppValue.True
+    : false;
 };
 
 export const putEmailNotificationStatus = async (status: boolean) => {

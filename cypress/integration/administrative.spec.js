@@ -13,6 +13,7 @@ context('Actions', () => {
   });
 
   it('can see a list of administrators, curators and editors', () => {
+    cy.get('[data-testid=avatar-button]').click();
     cy.get('[data-testid=admin-link]').click();
     cy.get(`[data-testid=administrator-list]`).contains(mockAdminList[1]);
     cy.get(`[data-testid=editor-list]`).contains(mockEditorList[0]);
@@ -20,6 +21,7 @@ context('Actions', () => {
   });
 
   it('can search for a institution user and set/remove roles', () => {
+    cy.get('[data-testid=avatar-button]').click();
     cy.get('[data-testid=admin-link]').click();
     cy.get(`[data-testid=inst-user-search-button]`).should('be.disabled');
     cy.get(`[data-testid=inst-user-search-input]`).type('afkds');
@@ -45,6 +47,7 @@ context('Actions', () => {
   });
 
   it('cannot change your own roles', () => {
+    cy.get('[data-testid=avatar-button]').click();
     cy.get('[data-testid=admin-link]').click();
     cy.get(`[data-testid=inst-user-search-input]`).type(mockUser.id);
     cy.get(`[data-testid=inst-user-search-button]`).click();
@@ -60,6 +63,7 @@ context('Actions', () => {
   });
 
   it('cannot view users from other institutions', () => {
+    cy.get('[data-testid=avatar-button]').click();
     cy.get('[data-testid=admin-link]').click();
     cy.get(`[data-testid=inst-user-search-input]`).type(mockOtherinstitutionUser);
     cy.get(`[data-testid=inst-user-search-button]`).click();

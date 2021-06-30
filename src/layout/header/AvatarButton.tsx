@@ -25,13 +25,26 @@ const AvatarButton = () => {
 
   return (
     <>
-      <Button onClick={handleClick} endIcon={open ? <ExpandLessIcon /> : <ExpandMoreIcon />}>
+      <Button
+        data-testid="avatar-button"
+        onClick={handleClick}
+        endIcon={open ? <ExpandLessIcon /> : <ExpandMoreIcon />}>
         {user.name}
       </Button>
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={open} onClose={handleClose}>
         <MenuItem onClick={handleClose} component={Link} to="/profile">
           {t('profile.profile').toUpperCase()}
         </MenuItem>
+        {user.institutionAuthorities?.isAdministrator && (
+          <MenuItem data-testid="admin-link" onClick={handleClose} component={Link} to="/admin">
+            {t('administrative.page_heading').toUpperCase()}
+          </MenuItem>
+        )}
+        {(user.institutionAuthorities?.isCurator || user.institutionAuthorities?.isEditor) && (
+          <MenuItem onClick={handleClose} component={Link} to="/worklist">
+            {t('work_list.page_title').toUpperCase()}
+          </MenuItem>
+        )}
         <MenuItem onClick={handleClose}>
           <Logout />
         </MenuItem>
