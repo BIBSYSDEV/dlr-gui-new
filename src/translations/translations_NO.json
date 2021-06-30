@@ -228,6 +228,7 @@
     "uib": "UiB"
   },
   "kaltura": {
+    "already_imported": "Allerede importert",
     "choose_a_resource": "Velg en ressurs fra listen",
     "my_resources" : "Mine ressurser i Kaltura",
     "show_my_resources" : "Vis mine ressurser fra Kaltura",

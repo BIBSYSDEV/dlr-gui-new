@@ -145,13 +145,17 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Link href={resultItem.url} target="_blank">
-                        <Typography> {resultItem.title}</Typography>
+                        <Typography>{resultItem.title}</Typography>
                       </Link>
                     </Grid>
-                    <Grid item container xs={12} sm={2} alignItems="center">
-                      <Button variant="outlined" onClick={() => handleUseResource(resultItem)}>
-                        {t('common.use')}
-                      </Button>
+                    <Grid item xs={12} sm={2}>
+                      {resultItem.dlrContentIdentifier ? (
+                        <Typography variant="caption">{t('kaltura.already_imported')}</Typography>
+                      ) : (
+                        <Button variant="outlined" onClick={() => handleUseResource(resultItem)}>
+                          {t('common.use')}
+                        </Button>
+                      )}
                     </Grid>
                   </Grid>
                 </StyledResultItem>

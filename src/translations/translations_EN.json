@@ -228,6 +228,7 @@
     "uib": "UiB"
   },
   "kaltura": {
+    "already_imported": "Already imported",
     "choose_a_resource": "Choose a resource from the list",
     "my_resources" : "My Kaltura resources",
     "show_my_resources" : "Show my resources from Kaltura",
