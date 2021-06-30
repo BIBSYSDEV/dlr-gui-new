@@ -46,7 +46,7 @@ const StyledTypography = styled(Typography)`
 `;
 
 const StyledLicenseRecommendationPlaceKeeper = styled.div`
-  min-height: 4rem;
+  min-height: 3rem;
 `;
 
 const extraRestrictionRadio = 'extra-restriction';
@@ -100,7 +100,6 @@ interface LicenseWizardFieldsProps {
   allChangesSaved: boolean;
   setAllChangesSaved: (value: boolean) => void;
   licenses: License[];
-  forceResetInLicenseWizard: boolean;
   containsOtherWorksFieldsSelectedCC: boolean;
 }
 
@@ -109,7 +108,6 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   setAllChangesSaved,
   licenses,
   containsOtherWorksFieldsSelectedCC,
-  forceResetInLicenseWizard,
 }) => {
   const { t } = useTranslation();
   const { institution } = useSelector((state: RootState) => state.user);

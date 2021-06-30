@@ -19,7 +19,6 @@ interface AccessAndLicenseStepProps {
 }
 
 const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ allChangesSaved, setAllChangesSaved, licenses }) => {
-  const [forceResetInLicenseWizard, setForceResetInLicenseWizard] = useState(false);
   const [containsOtherWorksFieldsSelectedCC, setContainsOtherWorksFieldsSelectedCC] = useState(false);
   const { values } = useFormikContext<Resource>();
   const { t } = useTranslation();
@@ -37,7 +36,6 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ allChangesSaved, 
       <ContainsOtherWorksFields
         licenses={licenses}
         setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
-        forceResetInLicenseWizard={() => setForceResetInLicenseWizard(!forceResetInLicenseWizard)}
         setHasSelectedCC={(selectedCC) => setContainsOtherWorksFieldsSelectedCC(selectedCC)}
       />
       <AccessFields
@@ -48,7 +46,6 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ allChangesSaved, 
       {licenses && (
         <LicenseWizardFields
           allChangesSaved={allChangesSaved}
-          forceResetInLicenseWizard={forceResetInLicenseWizard}
           containsOtherWorksFieldsSelectedCC={containsOtherWorksFieldsSelectedCC}
           licenses={licenses}
           setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}

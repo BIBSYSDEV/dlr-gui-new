@@ -60,7 +60,6 @@ const StyledFormLabel: any = styled(FormLabel)`
 interface ContainsOtherWorksFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
   licenses: License[] | undefined;
-  forceResetInLicenseWizard: () => void;
   setHasSelectedCC: (value: boolean) => void;
 }
 
@@ -68,7 +67,6 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   setAllChangesSaved,
   licenses,
   setHasSelectedCC,
-  forceResetInLicenseWizard,
 }) => {
   const { institution } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
@@ -91,7 +89,6 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
       setSavingContainsOtherPeoplesWorkError(undefined);
       await postResourceFeature(values.identifier, ResourceFeatureNames.ContainsOtherPeoplesWorks, event.target.value);
       setAllChangesSaved(true);
-      forceResetInLicenseWizard();
     } catch (error) {
       setSavingContainsOtherPeoplesWorkError(error);
     }
@@ -149,7 +146,6 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
       setSavingUsageClearedWithOwnerError(error);
     } finally {
       setAllChangesSaved(true);
-      forceResetInLicenseWizard();
     }
   };
 
