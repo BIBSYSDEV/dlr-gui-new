@@ -48,11 +48,7 @@ const AppRoutes = () => {
         <Route exact path="/profile" render={(props) => <ProfilePage id={user.id} {...props} />} />
         <Route exact path="/privacy-policy" component={PrivacyPolicy} />
         {/* CreatorRoutes */}
-        <Route
-          exact
-          path="/registration"
-          render={(props) => <EditResourcePage id={user.id} {...props} key={uuidv4()} />}
-        />
+        <Route exact path="/registration" render={(props) => <EditResourcePage id={user.id} {...props} />} />
         {/*hack: uuidv4-key is forcing page refresh*/}
         <Route
           exact
