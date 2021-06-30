@@ -11,6 +11,7 @@ import EmbedButtons from './EmbedButtons';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import ShareIcon from '@material-ui/icons/Share';
 import SocialMediaSharing from '../../components/SocialMediaSharing';
+import { resourcePath } from '../../utils/constants';
 
 const StyledGridContainer = styled(Grid)`
   margin-top: 1rem;
@@ -57,12 +58,14 @@ const generatePreferredURL = (resource: Resource): string => {
   } else if (resource.features.dlr_identifier_handle) {
     return resource.features.dlr_identifier_handle;
   } else {
-    return `${window.location.origin}/resource/${resource.identifier}`;
+    return `${window.location.origin}${resourcePath}/${resource.identifier}`;
   }
 };
 
 const generateIframeText = (resource: Resource) => {
-  return `<iframe title="${resource.features.dlr_title.replaceAll('"', '')}" src="${window.location.origin}/resource/${
+  return `<iframe title="${resource.features.dlr_title.replaceAll('"', '')}" src="${
+    window.location.origin
+  }${resourcePath}/${
     resource.identifier
   }/content/main?navbar=false&footer=false" width="640px" height="360px" style="border: none;" allowfullscreen="true"></iframe>`;
 };

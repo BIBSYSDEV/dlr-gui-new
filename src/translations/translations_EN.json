@@ -318,8 +318,8 @@
     "norwegian_bokmaal_language_code": "NOB"
   },
   "privacy_policy": {
-    "description": "Description",
-    "heading": "Privacy policy"
+    "heading": "Privacy policy",
+    "privacy_policy": "Privacy policy"
   },
   "profile": {
     "feide": "feide",
