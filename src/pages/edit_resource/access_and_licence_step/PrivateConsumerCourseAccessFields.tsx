@@ -12,7 +12,7 @@ import { useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
 import { StyledCancelButton, StyledConfirmButton } from '../../../components/styled/StyledButtons';
 import { StyledFieldsWrapper } from '../../../components/styled/Wrappers';
-import { generateCourseSubjectTag } from '../../../utils/course.utils';
+import { generateCourseSubjectTag, isDevelopInstance } from '../../../utils/course.utils';
 
 const StyledCourseAutocomplete: any = styled(Autocomplete)`
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
@@ -21,6 +21,10 @@ const StyledCourseAutocomplete: any = styled(Autocomplete)`
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     width: 100%;
   }
+`;
+
+const StyledTypography = styled(Typography)`
+  margin-top: 2rem;
 `;
 
 interface PrivateConsumerCourseAccessFieldsProps {
@@ -80,6 +84,11 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
 
   return (
     <>
+      {isDevelopInstance() && (
+        <StyledTypography>
+          <b>{t('access.develop_server_warning')}. </b>
+        </StyledTypography>
+      )}
       {courses.length > 0 && (
         <StyledFieldsWrapper>
           <StyledCourseAutocomplete

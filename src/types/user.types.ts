@@ -5,6 +5,7 @@ export interface User {
   issuer: string;
   name: string;
   institutionAuthorities?: InstitutionAuthorities;
+  appFeature?: AppFeature;
 }
 
 export const emptyUser: User = {
@@ -74,7 +75,7 @@ export enum UserInstitution {
 export interface EmailNotificationStatus {
   user: string;
   app: AppType;
-  feature: AppFeature;
+  feature: EmailFeature;
   value: AppValue;
   time: string;
 }
@@ -84,7 +85,7 @@ export enum AppType {
   BIRD = 'dlr_research',
 }
 
-export enum AppFeature {
+export enum EmailFeature {
   Email = 'email_notification',
 }
 
@@ -92,3 +93,32 @@ export enum AppValue {
   False = 'false',
   True = 'true',
 }
+
+export interface AppFeature {
+  hasFeatureShareResourceWithCourseStudents: boolean;
+  hasFeatureNewResourceFromKaltura: boolean;
+  hasFeatureNewResourceFromMediaSite: boolean;
+}
+
+export interface AppFeatureResponse {
+  object: AppfeatureEnum;
+  time: string;
+  user: string;
+  profiles: AppProfileName[];
+}
+
+export enum AppfeatureEnum {
+  DLR_APP_FEATURE_SHARE_LEARNING_RESOURCE_WITH_COURSE_STUDENTS = 'dlr_app_feature_share_learning_resource_with_course_students',
+  DLR_APP_FEATURE_NEW_LEARNING_RESOURCE_FROM_KALTURA = 'dlr_app_feature_new_learning_resource_from_kaltura',
+  DLR_APP_FEATURE_NEW_LEARNING_RESOURCE_FROM_MEDIASITE = 'dlr_app_feature_new_learning_resource_from_mediasite',
+}
+
+interface AppProfileName {
+  name: string;
+}
+
+export const emptyAppFeature: AppFeature = {
+  hasFeatureShareResourceWithCourseStudents: false,
+  hasFeatureNewResourceFromKaltura: false,
+  hasFeatureNewResourceFromMediaSite: false,
+};

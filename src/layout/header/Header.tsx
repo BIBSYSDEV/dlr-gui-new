@@ -127,16 +127,6 @@ const Header = () => {
             <Typography variant="button">{t('resource.my_resources')}</Typography>
           </Button>
         )}
-        {(user.institutionAuthorities?.isCurator || user.institutionAuthorities?.isEditor) && (
-          <Button color="primary" component={RouterLink} data-testid="work-list-link" to="/worklist">
-            <Typography variant="button">{t('work_list.page_title')}</Typography>
-          </Button>
-        )}
-        {user.institutionAuthorities?.isAdministrator && (
-          <Button color="primary" component={RouterLink} data-testid="admin-link" to="/admin">
-            <Typography variant="button">{t('administrative.page_heading')}</Typography>
-          </Button>
-        )}
       </StyledSecondaryButtonBar>
       {user.id ? (
         <StyledLanguageButtonWrapper>

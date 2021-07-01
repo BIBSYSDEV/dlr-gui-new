@@ -22,7 +22,8 @@ import { Resource } from '../../../types/resource.types';
 import CancelIcon from '@material-ui/icons/Cancel';
 import PrivateConsumerCourseAccessFields from './PrivateConsumerCourseAccessFields';
 import PrivateConsumerPersonalAccessFields from './PrivateConsumerPersonalAccessFields';
-import { parseCourse } from '../../../utils/course.utils';
+import { isDevelopInstance, parseCourse } from '../../../utils/course.utils';
+import HelperTextPopover from '../../../components/HelperTextPopover';
 
 const StyledPrivateAccessFields = styled.div`
   margin-top: 2.5rem;
@@ -44,11 +45,13 @@ const StyledChip = styled(Chip)`
 
 const StyledAccessButtonWrapper = styled.div`
   margin-top: 2.5rem;
-  display: block;
+  display: flex;
+  align-items: baseline;
 `;
 
 const StyledAddAccessButton = styled(Button)`
   margin-top: 1rem;
+  margin-right: 1rem;
 `;
 
 //if private ResourceReadAccess is added outside the component, then forceRefresh must change to a new value in order to add new private access chips
@@ -108,8 +111,23 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
         setBusyFetchingPrivateAccess(false);
       }
     };
+    const getSelectableCourses = async () => {
+      if (isDevelopInstance() || user.appFeature?.hasFeatureShareResourceWithCourseStudents) {
+        setWaitingForCourses(true);
+        try {
+          const courseResponse = await getCoursesForInstitution(user.institution);
+          setCourses(courseResponse);
+          setNetworkError(undefined);
+        } catch (error) {
+          setNetworkError(error);
+        } finally {
+          setWaitingForCourses(false);
+        }
+      }
+    };
     getPrivateAccessList();
-  }, [values.identifier, forceRefresh]);
+    getSelectableCourses();
+  }, [values.identifier, forceRefresh, user.appFeature?.hasFeatureShareResourceWithCourseStudents, user.institution]);
 
   const deleteAccess = async (access: ResourceReadAccess) => {
     try {
@@ -182,19 +200,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
   const handlePopoverCourseClick = async () => {
     setShowAddAccessPopover(false);
     setAnchorEl(null);
-    setWaitingForCourses(true);
-    try {
-      if (courses.length === 0) {
-        const courseResponse = await getCoursesForInstitution(user.institution);
-        setCourses(courseResponse);
-        setNetworkError(undefined);
-      }
-    } catch (error) {
-      setNetworkError(error);
-    } finally {
-      setWaitingForCourses(false);
-      setShowCourseAutocomplete(true);
-    }
+    setShowCourseAutocomplete(true);
   };
 
   const hasInstitutionPrivateAccess = (): boolean => {
@@ -246,6 +252,15 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
             }}>
             {t('access.add_access')}
           </StyledAddAccessButton>
+          <HelperTextPopover
+            ariaButtonLabel={t('explanation_text.private_access_aria_label')}
+            popoverId={'private-access-explainer'}>
+            <Typography gutterBottom>{t('explanation_text.private_access_multiple_types_possible')}.</Typography>
+            <Typography gutterBottom variant="body2">
+              {t('explanation_text.private_access_example')}.
+            </Typography>
+            <Typography variant="body2">{t('explanation_text.private_access_course_code_restrictions')}.</Typography>
+          </HelperTextPopover>
         </StyledAccessButtonWrapper>
       )}
 
@@ -278,6 +293,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
           <ListItem
             button
             data-testid="add-course-consumer-access"
+            disabled={courses.length === 0 && !waitingForCourses}
             onClick={() => {
               setShowPersonAccessField(false);
               setNetworkError(undefined);

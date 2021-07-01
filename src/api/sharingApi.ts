@@ -1,5 +1,5 @@
 import { authenticatedApiRequest } from './api';
-import { API_PATHS } from '../utils/constants';
+import { API_PATHS, DEV_API_URL } from '../utils/constants';
 import { AxiosResponse } from 'axios';
 import { Course, ResourceReadAccess } from '../types/resourceReadAccess.types';
 import moment from 'moment/moment';
@@ -63,17 +63,18 @@ export const deleteCourseConsumerAccess = (resourceIdentifier: string, course: C
 export const getCoursesForInstitution = async (institution: string): Promise<Course[]> => {
   try {
     const response = await authenticatedApiRequest({
-      url: `${API_PATHS.guiBackendTeachingPath}/teachings/institutions/${institution}?after=${moment(new Date()).format(
-        'YYYY-MM-DDTHH:mm:ss.SSSZ'
-      )}`,
+      url: `${API_PATHS.guiBackendTeachingPath}/teachings/institutions/${institution.toLowerCase()}?after=${moment(
+        new Date()
+      ).format('YYYY-MM-DDTHH:mm:ss.SSSZ')}`,
       method: 'GET',
     });
     return await response.data;
   } catch (error) {
-    if (process.env.REACT_APP_API_URL === 'https://api-dev.dlr.aws.unit.no') {
+    if (process.env.REACT_APP_API_URL === DEV_API_URL) {
       return JSON.parse(JSON.stringify(coursesAtOsloMet));
     } else {
-      throw error;
+      //The api-throws error if there is no courses associated with the institution.
+      return [];
     }
   }
 };

@@ -218,6 +218,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
                           <ErrorBanner userNeedsToBeLoggedIn={true} />
                         )}
                         <AccessAndLicenseStep
+                          allChangesSaved={allChangesSaved}
                           setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
                           licenses={licenses}
                         />

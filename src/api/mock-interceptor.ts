@@ -8,6 +8,7 @@ import {
   createMockContributor,
   createMockCreator,
   mockAdminList,
+  mockAppFeatureResponse,
   mockAuthoritySearchResponse,
   mockAuthoritySearchResponse2,
   mockCompleteUpload,
@@ -313,6 +314,13 @@ export const interceptRequestsOnMock = () => {
       )
     )
     .reply(201);
+  mock
+    .onGet(
+      new RegExp(
+        `${API_PATHS.guiBackendUserAuthorizationsPath}/authorizations/users/authorized/profiles/dlr_app_feature_user`
+      )
+    )
+    .reply(200, mockAppFeatureResponse);
 
   //REPORT RESOURCE
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesFeedbacksPath}/feedbacks/resources/.*`)).reply(202);

@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { FormControlLabel, FormLabel, Radio, Typography } from '@material-ui/core';
+import { CircularProgress, FormControlLabel, FormLabel, Radio, Typography } from '@material-ui/core';
 import { StyledContentWrapper, StyledRadioGroup } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import { useTranslation } from 'react-i18next';
@@ -93,17 +93,17 @@ const calculatePreferredLicense = (
 };
 
 interface LicenseWizardFieldsProps {
+  allChangesSaved: boolean;
   setAllChangesSaved: (value: boolean) => void;
   licenses: License[];
-  forceResetInLicenseWizard: boolean;
   containsOtherWorksFieldsSelectedCC: boolean;
 }
 
 const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
+  allChangesSaved,
   setAllChangesSaved,
   licenses,
   containsOtherWorksFieldsSelectedCC,
-  forceResetInLicenseWizard,
 }) => {
   const { t } = useTranslation();
   const { institution } = useSelector((state: RootState) => state.user);
@@ -415,13 +415,20 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
             )}
           </AccordionRadioGroup>
         )}
-
-        {values.licenses[0].features && recommendedLicense === values.licenses[0].features.dlr_license_code ? (
-          <StyledTypography data-testid="recommended-license">{t('license.got_recommended_license')}.</StyledTypography>
-        ) : (
-          <StyledHeavyWeightTypography data-testid="recommended-license">
-            {t('license.recommended_license_is', { license: recommendedLicense })}.
-          </StyledHeavyWeightTypography>
+        {values.licenses[0].features?.dlr_license_code && (
+          <>
+            {allChangesSaved && recommendedLicense === values.licenses[0].features.dlr_license_code && (
+              <StyledTypography data-testid="recommended-license">
+                {t('license.got_recommended_license')}.
+              </StyledTypography>
+            )}
+            {allChangesSaved && recommendedLicense !== values.licenses[0].features.dlr_license_code && (
+              <StyledHeavyWeightTypography data-testid="recommended-license">
+                {t('license.recommended_license_is', { license: recommendedLicense })}.
+              </StyledHeavyWeightTypography>
+            )}
+            {!allChangesSaved && <CircularProgress size="2rem" />}
+          </>
         )}
 
         {savingLicenseError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingLicenseError} />}

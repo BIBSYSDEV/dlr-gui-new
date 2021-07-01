@@ -13,12 +13,12 @@ import { Alert } from '@material-ui/lab';
 import { useTranslation } from 'react-i18next';
 
 interface AccessAndLicenseStepProps {
+  allChangesSaved: boolean;
   setAllChangesSaved: (value: boolean) => void;
   licenses: License[] | undefined;
 }
 
-const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSaved, licenses }) => {
-  const [forceResetInLicenseWizard, setForceResetInLicenseWizard] = useState(false);
+const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ allChangesSaved, setAllChangesSaved, licenses }) => {
   const [containsOtherWorksFieldsSelectedCC, setContainsOtherWorksFieldsSelectedCC] = useState(false);
   const { values } = useFormikContext<Resource>();
   const { t } = useTranslation();
@@ -36,7 +36,6 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSave
       <ContainsOtherWorksFields
         licenses={licenses}
         setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
-        forceResetInLicenseWizard={() => setForceResetInLicenseWizard(!forceResetInLicenseWizard)}
         setHasSelectedCC={(selectedCC) => setContainsOtherWorksFieldsSelectedCC(selectedCC)}
       />
       <AccessFields
@@ -46,7 +45,7 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ setAllChangesSave
       />
       {licenses && (
         <LicenseWizardFields
-          forceResetInLicenseWizard={forceResetInLicenseWizard}
+          allChangesSaved={allChangesSaved}
           containsOtherWorksFieldsSelectedCC={containsOtherWorksFieldsSelectedCC}
           licenses={licenses}
           setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
