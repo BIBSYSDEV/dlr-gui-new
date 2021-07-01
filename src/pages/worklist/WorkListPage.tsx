@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 import ReportList from './ReportList';
+import OwnershipRequestList from './OwnershipRequestList';
 
 const StyledWrapper = styled(Grid)`
   padding: 1rem 1rem 2rem 1rem;
@@ -24,6 +25,7 @@ const StyledTabPanel = styled(TabPanel)`
 
 const DOIRequestTab = 'DoiRequestTab';
 const ReportsTab = 'ReportsTab';
+const OwnershipRequestTab = 'OwnershipRequestTab';
 
 const WorkListPage = () => {
   const { t } = useTranslation();
@@ -36,26 +38,37 @@ const WorkListPage = () => {
   return (
     <StyledContentWrapperLarge>
       <PageHeader>{t('work_list.page_title')}</PageHeader>
-      {user.institutionAuthorities?.isCurator && user.institutionAuthorities?.isEditor && (
+      {user.institutionAuthorities?.isCurator && (
         <TabContext value={tabValue}>
           <TabList
+            variant="scrollable"
+            scrollButtons="on"
             textColor="primary"
             indicatorColor="primary"
             onChange={handleTabChange}
             aria-label={t('work_list.aria_label_tabs')}>
             <Tab label={t('work_list.reports')} value={ReportsTab} data-testid={'reports-tab'} />
             <Tab label={t('work_list.doi_request_list')} value={DOIRequestTab} data-testid={'doi-tab'} />
+            <Tab label={'Ownership requests'} value={OwnershipRequestTab} data-testid={'ownership-tab'} />
           </TabList>
+
           <StyledTabPanel value={DOIRequestTab}>
             <StyledWrapper>
               <DOIRequestList />
             </StyledWrapper>
           </StyledTabPanel>
-          <StyledTabPanel value={ReportsTab}>
+          <StyledTabPanel value={OwnershipRequestTab}>
             <StyledWrapper>
-              <ReportList />
+              <OwnershipRequestList />
             </StyledWrapper>
           </StyledTabPanel>
+          {user.institutionAuthorities?.isEditor && (
+            <StyledTabPanel value={ReportsTab}>
+              <StyledWrapper>
+                <ReportList />
+              </StyledWrapper>
+            </StyledTabPanel>
+          )}
         </TabContext>
       )}
       {user.institutionAuthorities?.isCurator && !user.institutionAuthorities.isEditor && (
