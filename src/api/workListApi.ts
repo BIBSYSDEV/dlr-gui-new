@@ -100,3 +100,12 @@ export const approveOwnershipRequest = (resourceIdentifier: string, newOwnerId: 
     data: data,
   });
 };
+
+export const requestOwnershipFromCurator = (resourceIdentifier: string, comment: string) => {
+  const data = encodeURI(`comment=${comment}`);
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/owners/requests`),
+    method: 'POST',
+    data: data,
+  });
+};

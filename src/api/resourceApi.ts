@@ -7,12 +7,14 @@ import {
   ResourceContents,
   ResourceCreationType,
   ResourceEvent,
+  ResourceOwner,
   ResourceStatistic,
 } from '../types/resource.types';
 import { AccessTypes, License } from '../types/license.types';
 import { Content, emptyResourceContent, LinkMetadataFilename } from '../types/content.types';
 import { authenticatedApiRequest } from './api';
 import { FacetResponse, QueryObject, SearchParameters, SearchResult } from '../types/search.types';
+import { ResourceAuthorization } from '../types/user.types';
 
 enum APISearchParameters {
   FacetInstitution = 'facet_institution::',
@@ -397,6 +399,24 @@ export const getTextFileContents = (url: string): Promise<AxiosResponse<string>>
 export const getResourceViews = (resourceIdentifier: string): Promise<AxiosResponse<ResourceStatistic>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesStatisticsPath}/statistics/resources/${resourceIdentifier}`),
+    method: 'GET',
+  });
+};
+
+export const getMyUserAuthorizationProfileForResource = (
+  resourceIdentifier: string
+): Promise<AxiosResponse<ResourceAuthorization>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(
+      `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/authorizations/users/authorized`
+    ),
+    method: 'GET',
+  });
+};
+
+export const getResourceOwners = (resourceIdentifier: string): Promise<AxiosResponse<ResourceOwner[]>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/owners`),
     method: 'GET',
   });
 };

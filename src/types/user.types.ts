@@ -122,3 +122,23 @@ export const emptyAppFeature: AppFeature = {
   hasFeatureNewResourceFromKaltura: false,
   hasFeatureNewResourceFromMediaSite: false,
 };
+
+export interface ResourceAuthorization {
+  identifier: string; //resource identifier
+  time: string;
+  user: string;
+  profiles: ResourceAuthorizationProfiles[];
+}
+
+export interface ResourceAuthorizationProfiles {
+  name: ResourceAuthorizationProfilesName;
+}
+
+export enum ResourceAuthorizationProfilesName {
+  ADMIN = 'dlr_resource_administrator',
+  CONSUMER = 'dlr_resource_consumer',
+  CONSUMER_PUBLIC = 'dlr_resource_consumer_public',
+  CURATOR = 'dlr_resource_curator',
+  EDITOR = 'dlr_resource_editor',
+  OWNER = 'dlr_resource_owner',
+}
