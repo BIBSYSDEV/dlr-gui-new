@@ -1,6 +1,6 @@
 import { Contributor, Creator, emptyResource, Resource, ResourceStatistic } from '../types/resource.types';
 import deepmerge from 'deepmerge';
-import { AppFeature, AppType, AppValue, EmailNotificationStatus, User } from '../types/user.types';
+import { EmailFeature, AppType, AppValue, EmailNotificationStatus, User, AppfeatureEnum } from '../types/user.types';
 import { License } from '../types/license.types';
 import { v4 as uuidv4 } from 'uuid';
 import { Course, CourseSeason, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
@@ -693,8 +693,29 @@ export const mockEmailNotificationStatusResponse: EmailNotificationStatus[] = [
   {
     user: mockUser.id,
     app: AppType.DLR,
-    feature: AppFeature.Email,
+    feature: EmailFeature.Email,
     value: AppValue.False,
     time: '2021-06-18T08:23:26.942Z',
+  },
+];
+
+export const mockAppFeatureResponse = [
+  {
+    object: AppfeatureEnum.DLR_APP_FEATURE_NEW_LEARNING_RESOURCE_FROM_KALTURA,
+    profile: [{ name: 'dlr_app_feature_user' }],
+    time: '2021-06-29T07:57:36.108Z',
+    user: mockUser.id,
+  },
+  {
+    object: AppfeatureEnum.DLR_APP_FEATURE_SHARE_LEARNING_RESOURCE_WITH_COURSE_STUDENTS,
+    profile: [{ name: 'dlr_app_feature_user' }],
+    time: '2021-06-29T07:57:36.108Z',
+    user: mockUser.id,
+  },
+  {
+    object: AppfeatureEnum.DLR_APP_FEATURE_NEW_LEARNING_RESOURCE_FROM_MEDIASITE,
+    profile: [{ name: 'dlr_app_feature_user' }],
+    time: '2021-06-29T07:57:36.108Z',
+    user: mockUser.id,
   },
 ];

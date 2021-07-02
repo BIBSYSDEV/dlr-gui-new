@@ -1,7 +1,7 @@
 import { API_PATHS } from '../utils/constants';
 import Axios, { AxiosResponse } from 'axios';
 import {
-  AppFeature,
+  EmailFeature,
   AppValue,
   EmailNotificationStatus,
   emptyInstitutionAuthorities,
@@ -9,6 +9,10 @@ import {
   InstitutionProfilesNames,
   User,
   UserRoleFromInstitution,
+  AppFeatureResponse,
+  emptyAppFeature,
+  AppFeature,
+  AppfeatureEnum,
 } from '../types/user.types';
 import { AuthTokenClaims } from '../types/auth.types';
 import { authenticatedApiRequest } from './api';
@@ -85,7 +89,7 @@ export const getEmailNotificationStatus = async () => {
     method: 'GET',
   });
   return appSettingResponse.data[0]
-    ? appSettingResponse.data[0].feature === AppFeature.Email && appSettingResponse.data[0].value === AppValue.True
+    ? appSettingResponse.data[0].feature === EmailFeature.Email && appSettingResponse.data[0].value === AppValue.True
     : false;
 };
 
@@ -96,4 +100,31 @@ export const putEmailNotificationStatus = async (status: boolean) => {
     method: 'PUT',
     data,
   });
+};
+
+export const getUserAppFeaturesApplication = async () => {
+  const apiResponse: AxiosResponse<AppFeatureResponse[]> = await authenticatedApiRequest({
+    url: encodeURI(
+      `${API_PATHS.guiBackendUserAuthorizationsPath}/authorizations/users/authorized/profiles/dlr_app_feature_user`
+    ),
+    method: 'GET',
+  });
+
+  const appFeature: AppFeature = { ...emptyAppFeature };
+  apiResponse.data.forEach((responseData) => {
+    switch (responseData.object) {
+      case AppfeatureEnum.DLR_APP_FEATURE_SHARE_LEARNING_RESOURCE_WITH_COURSE_STUDENTS:
+        appFeature.hasFeatureShareResourceWithCourseStudents = true;
+        break;
+      case AppfeatureEnum.DLR_APP_FEATURE_NEW_LEARNING_RESOURCE_FROM_KALTURA:
+        appFeature.hasFeatureNewResourceFromKaltura = true;
+        break;
+      case AppfeatureEnum.DLR_APP_FEATURE_NEW_LEARNING_RESOURCE_FROM_MEDIASITE:
+        appFeature.hasFeatureNewResourceFromMediaSite = true;
+        break;
+      default:
+        break;
+    }
+  });
+  return appFeature;
 };

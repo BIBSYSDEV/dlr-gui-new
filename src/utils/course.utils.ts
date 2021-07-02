@@ -1,5 +1,6 @@
 import { Course, CourseSeason } from '../types/resourceReadAccess.types';
 import { User } from '../types/user.types';
+import { DEV_API_URL } from './constants';
 
 export const parseCourse = (subject: string): Course | null => {
   const courseString = subject.split('::');
@@ -24,4 +25,9 @@ export const generateCourseSubjectTag = (course: Course, user: User): string => 
   return `${course.features.code} :: ${user.institution.toLowerCase()} :: ${course.features.year} :: ${
     course.features.season_nr
   }`;
+};
+
+//function used by components that is rendering mock courses as demonstration on develop instance
+export const isDevelopInstance = (): boolean => {
+  return process.env.REACT_APP_API_URL === DEV_API_URL;
 };

@@ -2,7 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from './state/userSlice';
-import { getAnonymousWebToken, getUserAuthorizationsInstitution, getUserData } from './api/userApi';
+import {
+  getAnonymousWebToken,
+  getUserAppFeaturesApplication,
+  getUserAuthorizationsInstitution,
+  getUserData,
+} from './api/userApi';
 import { RootState } from './state/rootReducer';
 import { CircularProgress } from '@material-ui/core';
 import { USE_MOCK_DATA } from './utils/constants';
@@ -38,9 +43,13 @@ const App = () => {
   useEffect(() => {
     const loadUser = async () => {
       try {
-        const userDataResponse = await getUserData();
-        const institutionAuthorities = await getUserAuthorizationsInstitution();
-        dispatch(setUser({ ...userDataResponse.data, institutionAuthorities: institutionAuthorities }));
+        const userDataPromise = getUserData();
+        const institutionAuthoritiesPromise = getUserAuthorizationsInstitution();
+        const appFeaturePromise = getUserAppFeaturesApplication();
+        const userData = await userDataPromise;
+        const institutionAuthorities = await institutionAuthoritiesPromise;
+        const appFeature = await appFeaturePromise;
+        dispatch(setUser({ ...userData.data, institutionAuthorities: institutionAuthorities, appFeature: appFeature }));
       } catch (error) {
         setUserError(error);
       } finally {
