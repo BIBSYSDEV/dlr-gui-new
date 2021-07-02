@@ -311,3 +311,14 @@ export interface ResourceStatistic {
 export interface ResourceStatisticFeatures {
   dlr_statistics_delivery_count?: string;
 }
+
+export interface ResourceOwner {
+  identifier: string;
+  features: ResourceOwnerFeatures;
+}
+
+export interface ResourceOwnerFeatures {
+  dlr_owner_identifier: string;
+  dlr_owner_subject: string; //feide-id of the owner
+  dlr_owner_timer_created: string; //time the subject got ownership of this resource
+}
