@@ -91,7 +91,7 @@ export const refuseOwnershipRequest = (resourceIdentifier: string, comment: stri
 };
 
 export const approveOwnershipRequest = (resourceIdentifier: string, newOwnerId: string) => {
-  const data = encodeURI(`comment=${newOwnerId}`);
+  const data = encodeURI(`subject=${newOwnerId}`);
   return authenticatedApiRequest({
     url: encodeURI(
       `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/owners/requests/current/approvals`
