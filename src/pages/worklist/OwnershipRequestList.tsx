@@ -3,7 +3,7 @@ import { CircularProgress, Typography } from '@material-ui/core';
 import ErrorBanner from '../../components/ErrorBanner';
 import { WorklistRequest } from '../../types/Worklist.types';
 import { getWorkListItemsOwnership } from '../../api/workListApi';
-import { getWorkListWithResourceAttached } from '../../utils/workList';
+import { getWorkListWithResourceAttached, sortWorkListByDate } from '../../utils/workList';
 import styled from 'styled-components';
 import OwnershipRequestListItem from './OwnershipRequestListItem';
 
@@ -23,8 +23,8 @@ const OwnershipRequestList = () => {
       try {
         setIsLoading(true);
         const workListResponse = await getWorkListItemsOwnership();
-        const workListTotal = await getWorkListWithResourceAttached(workListResponse.data);
-        setWorkListOwnership(workListTotal);
+        const workListTotal = await getWorkListWithResourceAttached(workListResponse.data, true);
+        setWorkListOwnership(sortWorkListByDate(workListTotal));
       } catch (error) {
         setLoadingError(error);
       } finally {

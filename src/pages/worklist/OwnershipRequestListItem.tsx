@@ -20,6 +20,8 @@ import { useTranslation } from 'react-i18next';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { approveOwnershipRequest, refuseOwnershipRequest } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';
+import * as Yup from 'yup';
+import { Formik, Form, Field, FieldProps } from 'formik';
 
 interface Props {
   backgroundColor: string;
@@ -53,6 +55,10 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
   const [isGrantingOwnership, setIsGrantingOwnership] = useState(false);
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
 
+  const EmailSchema = Yup.object().shape({
+    email: Yup.string().email('Invalid email').required('required'),
+  });
+
   const handleDeleteOwnershipRequest = async (ResourceIdentifier: string, comment: string) => {
     try {
       setIsDeletingRequest(true);
@@ -66,11 +72,11 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
     }
   };
 
-  const grantOwnership = async () => {
+  const grantOwnership = async (newOwner: string) => {
     try {
       setIsGrantingOwnership(true);
       setUpdateError(undefined);
-      await approveOwnershipRequest(workListRequestOwnership.resourceIdentifier, workListRequestOwnership.submitter);
+      await approveOwnershipRequest(workListRequestOwnership.resourceIdentifier, newOwner);
       setWorkListOwnership((prevState) =>
         prevState.filter((work) => work.resourceIdentifier !== workListRequestOwnership.resourceIdentifier)
       );
@@ -139,7 +145,7 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
             fullWidth
             required
             value={deleteComment}
-            inputProps={{ 'data-testid': `delete-doi-request-comment` }}
+            inputProps={{ 'data-testid': `delete-ownership-request-comment` }}
             onChange={(event) => setDeleteComment(event.target.value)}
           />
         </DialogContent>
@@ -148,7 +154,7 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
           <Button
             startIcon={<DeleteIcon />}
             disabled={deleteComment.length < 1}
-            data-testid={`confirm-delete-doi-button`}
+            data-testid={`confirm-delete-ownership-button`}
             onClick={() => {
               setShowConfirmDeleteDialog(false);
               handleDeleteOwnershipRequest(workListRequestOwnership.resourceIdentifier, deleteComment);
@@ -167,19 +173,49 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
         <DialogTitle id="form-dialog-title">
           Are you sure you want to grant ownership to {workListRequestOwnership.submitter}?
         </DialogTitle>
-        <DialogActions>
-          <Button
-            data-testid={`confirm-grant-ownership-button`}
-            variant="contained"
-            onClick={() => {
-              setShowConfirmCGrantOwnershipDialog(false);
-              grantOwnership();
-            }}
-            color="primary">
-            Gi eierskap
-          </Button>
-          <Button onClick={() => setShowConfirmCGrantOwnershipDialog(false)}>{t('common.cancel')}</Button>
-        </DialogActions>
+        <Formik
+          initialValues={{ email: workListRequestOwnership.submitter }}
+          validationSchema={EmailSchema}
+          onSubmit={(values) => {
+            setShowConfirmCGrantOwnershipDialog(false);
+            grantOwnership(values.email);
+          }}>
+          {({ errors }) => (
+            <Form>
+              <DialogContent>
+                <DialogContentText>Skriv inn feide-id på den nye eieren.</DialogContentText>
+                <Field name="email">
+                  {({ field }: FieldProps) => (
+                    <TextField
+                      {...field}
+                      autoFocus
+                      margin="dense"
+                      id="comment-text-field"
+                      label={'epost'}
+                      fullWidth
+                      required
+                      type="email"
+                      error={!!errors.email}
+                      helperText={errors.email}
+                      inputProps={{ 'data-testid': `grant-ownership-request-email` }}
+                    />
+                  )}
+                </Field>
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  data-testid={`confirm-grant-ownership-button`}
+                  variant="contained"
+                  disabled={!!errors.email}
+                  type="submit"
+                  color="primary">
+                  Gi eierskap
+                </Button>
+                <Button onClick={() => setShowConfirmCGrantOwnershipDialog(false)}>{t('common.cancel')}</Button>
+              </DialogActions>
+            </Form>
+          )}
+        </Formik>
       </Dialog>
       {updateError && <ErrorBanner />}
     </StyledListItemWrapper>
