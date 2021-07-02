@@ -43,7 +43,7 @@ const WorkListRequestMetaDataViewer: FC<WorkListRequestMetaDataViewerProps> = ({
       </Grid>
       {workListRequest.resourceOwners && workListRequest.resourceOwners.length > 0 && (
         <Grid item xs={12} sm={6}>
-          <Typography variant="caption">Nåværende ressurseier</Typography>
+          <Typography variant="caption">{t('work_list.current_resource_owner')}</Typography>
           <Typography data-testid={`request-item-resource-owner-${workListRequest.resourceIdentifier}`}>
             {workListRequest.resourceOwners.map((resourceOwner) => resourceOwner.features.dlr_owner_subject).join('')}
           </Typography>

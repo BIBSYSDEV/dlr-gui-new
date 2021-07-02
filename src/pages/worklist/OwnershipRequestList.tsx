@@ -6,6 +6,7 @@ import { getWorkListItemsOwnership } from '../../api/workListApi';
 import { getWorkListWithResourceAttached, sortWorkListByDate } from '../../utils/workList';
 import styled from 'styled-components';
 import OwnershipRequestListItem from './OwnershipRequestListItem';
+import { useTranslation } from 'react-i18next';
 
 const StyledUl = styled.ul`
   list-style: none; /* Remove list bullets */
@@ -13,12 +14,13 @@ const StyledUl = styled.ul`
   margin: 0;
 `;
 
-//Todo: translations
 //TODO: cypress tests
 //TODO: work list utils function
 //TODO: refactoring
+//TODO: memory leak
 
 const OwnershipRequestList = () => {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState<Error>();
   const [workListOwnership, setWorkListOwnership] = useState<WorklistRequest[]>([]);
@@ -42,7 +44,7 @@ const OwnershipRequestList = () => {
   return (
     <>
       <Typography gutterBottom variant="h2">
-        Ownership requests
+        {t('work_list.ownership_requests')}
       </Typography>
       {loadingError && <ErrorBanner userNeedsToBeLoggedIn={true} error={loadingError} />}
       {isLoading ? (
@@ -60,7 +62,7 @@ const OwnershipRequestList = () => {
               ))}
             </StyledUl>
           ) : (
-            <Typography>There are no ownership requests</Typography>
+            <Typography>{t('work_list.no_ownership_requests')} </Typography>
           )}
         </>
       )}

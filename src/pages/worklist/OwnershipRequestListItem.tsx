@@ -56,7 +56,7 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
 
   const EmailSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('required'),
+    email: Yup.string().email(t('work_list.invalid_email')).required(t('feedback.required_field')),
   });
 
   const handleDeleteOwnershipRequest = async (ResourceIdentifier: string, comment: string) => {
@@ -103,7 +103,7 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
                 onClick={() => {
                   setShowConfirmCGrantOwnershipDialog(true);
                 }}>
-                Gi eierskap
+                {t('work_list.grant_ownership')}
               </Button>
             </Grid>
             <Grid item xs={12}>
@@ -125,6 +125,11 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
               </Grid>
             )}
           </Grid>
+          {updateError && (
+            <Grid item xs={12}>
+              <ErrorBanner userNeedsToBeLoggedIn={true} error={updateError} />
+            </Grid>
+          )}
         </Grid>
       </Grid>
       <Dialog
@@ -170,9 +175,7 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
         open={showConfirmCGrantOwnershipDialog}
         onClose={() => setShowConfirmCGrantOwnershipDialog(false)}
         aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">
-          Are you sure you want to grant ownership to {workListRequestOwnership.submitter}?
-        </DialogTitle>
+        <DialogTitle id="form-dialog-title">{t('work_list.grant_ownership')}</DialogTitle>
         <Formik
           initialValues={{ email: workListRequestOwnership.submitter }}
           validationSchema={EmailSchema}
@@ -183,7 +186,7 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
           {({ errors }) => (
             <Form>
               <DialogContent>
-                <DialogContentText>Skriv inn feide-id på den nye eieren.</DialogContentText>
+                <DialogContentText>{t('work_list.input_feide_id_of_new_owner')}.</DialogContentText>
                 <Field name="email">
                   {({ field }: FieldProps) => (
                     <TextField
@@ -191,7 +194,7 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
                       autoFocus
                       margin="dense"
                       id="comment-text-field"
-                      label={'epost'}
+                      label={t('work_list.feide_id')}
                       fullWidth
                       required
                       type="email"
@@ -209,7 +212,7 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
                   disabled={!!errors.email}
                   type="submit"
                   color="primary">
-                  Gi eierskap
+                  {t('work_list.grant_ownership')}
                 </Button>
                 <Button onClick={() => setShowConfirmCGrantOwnershipDialog(false)}>{t('common.cancel')}</Button>
               </DialogActions>
@@ -217,7 +220,6 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
           )}
         </Formik>
       </Dialog>
-      {updateError && <ErrorBanner />}
     </StyledListItemWrapper>
   );
 };

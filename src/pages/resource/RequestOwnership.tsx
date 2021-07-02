@@ -48,7 +48,7 @@ const RequestOwnership: FC<RequestOwnershipProps> = ({ resource, setRequestSentS
         color="primary"
         variant="outlined"
         onClick={() => setShowRequestOwnershipDialog(true)}>
-        Be om overføring av eierskap
+        {t('resource.ownership.request_ownership_change')}
       </Button>
       <Dialog
         maxWidth={'sm'}
@@ -57,12 +57,9 @@ const RequestOwnership: FC<RequestOwnershipProps> = ({ resource, setRequestSentS
         open={showRequestOwnershipDialog}
         aria-labelledby={DialogTitleId}
         data-testid={`ownership-dialog`}>
-        <DialogTitle id={DialogTitleId}>Be om overføring av eierskap</DialogTitle>
+        <DialogTitle id={DialogTitleId}>{t('resource.ownership.request_ownership_change')}</DialogTitle>
         <DialogContent>
-          <Typography>
-            Skriv inn relevant informasjon om forespørselen til kurator. Du kan be om at eierskap kan overføres til noen
-            andre enn deg selv.
-          </Typography>
+          <Typography>{t('resource.ownership.ownership_change_description')}</Typography>
           <TextField
             required
             multiline
@@ -72,7 +69,7 @@ const RequestOwnership: FC<RequestOwnershipProps> = ({ resource, setRequestSentS
             value={ownershipComment}
             onChange={(event) => setOwnershipComment(event.target.value)}
             inputProps={{ 'data-testid': 'ownership-dialog-input' }}
-            label="kommentar"
+            label={t('work_list.comment')}
           />
         </DialogContent>
         <DialogActions>
@@ -90,7 +87,7 @@ const RequestOwnership: FC<RequestOwnershipProps> = ({ resource, setRequestSentS
             data-testid="ownership-dialog-submit-button"
             color="primary"
             onClick={() => askForOwnership()}>
-            Send forespørsel
+            {t('resource.ownership.submit_request')}
           </Button>
         </DialogActions>
         {ownershipRequestError && <ErrorBanner userNeedsToBeLoggedIn={true} error={ownershipRequestError} />}
