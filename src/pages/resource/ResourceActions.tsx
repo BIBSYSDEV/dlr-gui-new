@@ -31,8 +31,8 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   const [requestSentSuccess, setRequestSentSuccess] = useState(false);
   const user = useSelector((state: RootState) => state.user);
   const isAuthor = () => resource.features.dlr_submitter_email === user.id;
-  const [isConsumer, setIsConsumer] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
+  const [canRequestChangeInOwnership, setCanRequestChangeInOwnership] = useState(false);
   const [errorLoadingAuthorization, setErrorLoadingAuthorization] = useState<Error | undefined>();
 
   useEffect(() => {
@@ -40,11 +40,12 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
       if (user.id) {
         try {
           const authorizationProfiles = (await getMyUserAuthorizationProfileForResource(resource.identifier)).data;
-          setIsConsumer(
-            authorizationProfiles.profiles.some(
-              (profile) => profile.name === ResourceAuthorizationProfilesName.CONSUMER
-            )
+
+          const isConsumer = authorizationProfiles.profiles.some(
+            (profile) => profile.name === ResourceAuthorizationProfilesName.CONSUMER
           );
+          setCanRequestChangeInOwnership(isConsumer && !!user.institutionAuthorities?.isPublisher);
+
           setIsOwner(
             authorizationProfiles.profiles.some((profile) => profile.name === ResourceAuthorizationProfilesName.OWNER)
           );
@@ -54,7 +55,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
       }
     };
     fetchAuthorization();
-  }, [resource.identifier, user.id]);
+  }, [resource.identifier, user.id, user.institutionAuthorities?.isPublisher]);
 
   return (
     <>
@@ -69,7 +70,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
               <RequestDOI setRequestSentSuccess={setRequestSentSuccess} resource={resource} />
             </Grid>
           )}
-          {isConsumer && (
+          {canRequestChangeInOwnership && (
             <Grid item>
               <RequestOwnership setRequestSentSuccess={setRequestSentSuccess} resource={resource} />
             </Grid>

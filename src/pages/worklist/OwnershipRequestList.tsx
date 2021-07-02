@@ -13,6 +13,11 @@ const StyledUl = styled.ul`
   margin: 0;
 `;
 
+//Todo: translations
+//TODO: cypress tests
+//TODO: work list utils function
+//TODO: refactoring
+
 const OwnershipRequestList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState<Error>();
