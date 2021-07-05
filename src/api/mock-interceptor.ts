@@ -29,6 +29,7 @@ import {
   mockInstitutionAuthorities,
   mockInstitutionUser,
   mockInstitutionUserYourself,
+  mockKalturaPresentations,
   mockLicenses,
   mockMyResources,
   mockOtherinstitutionUser,
@@ -324,6 +325,12 @@ export const interceptRequestsOnMock = () => {
 
   //REPORT RESOURCE
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesFeedbacksPath}/feedbacks/resources/.*`)).reply(202);
+
+  //KALTURA
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations`))
+    .reply(200, mockKalturaPresentations);
+  mock.onPost(new RegExp(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations/import`)).reply(202);
 
   //TOKEN
   mock.onGet(new RegExp(`${API_PATHS.guiBackendLoginPath}/anonymous.*`)).reply(200, mockToken);

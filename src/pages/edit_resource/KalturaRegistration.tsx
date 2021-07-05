@@ -108,8 +108,8 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
         icon={<img height="24px" src={kalturaLogo} alt="Kaltura logo" />}
         expanded={expanded}
         onChange={onChange}
-        ariaControls="resource-method-link"
-        dataTestId="new-resource-link">
+        ariaControls="resource-method-kaltura"
+        dataTestId="new-resource-kaltura">
         <StyledBody>
           <Button
             data-testid="open-kaltura-dialog-button"
@@ -152,7 +152,10 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                       {resultItem.dlrContentIdentifier ? (
                         <Typography variant="caption">{t('kaltura.already_imported')}</Typography>
                       ) : (
-                        <Button variant="outlined" onClick={() => handleUseResource(resultItem)}>
+                        <Button
+                          variant="outlined"
+                          data-testid={`use-kaltura-link-button-${resultItem.id}`}
+                          onClick={() => handleUseResource(resultItem)}>
                           {t('common.use')}
                         </Button>
                       )}
