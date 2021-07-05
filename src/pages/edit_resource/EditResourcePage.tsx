@@ -231,7 +231,12 @@ const EditResourcePage = () => {
       );
 
       const responseWithCalculatedDefaults = (await getResourceDefaults(startingResource.identifier)).data;
+      if (kalturaResource) {
+        responseWithCalculatedDefaults.features.dlr_title = kalturaResource.title;
+        responseWithCalculatedDefaults.features.dlr_description = kalturaResource.description;
+      }
       await saveCalculatedFields(responseWithCalculatedDefaults);
+
       const tempResource = deepmerge(emptyResource, startingResource);
       const tempContents = startingResource.contents;
       const resource: Resource = {
@@ -250,7 +255,11 @@ const EditResourcePage = () => {
         contents: tempContents,
       };
       resource.isFresh = true;
-      await setDLRType(resourceCreationType, responseWithCalculatedDefaults, resource, startingResource);
+      if (kalturaResource) {
+        await saveResourceDLRType(resource, startingResource.identifier, ResourceFeatureTypes.video);
+      } else {
+        await setDLRType(resourceCreationType, responseWithCalculatedDefaults, resource, startingResource);
+      }
       await setCreator(resource, startingResource.identifier, user.name);
       if (resource.tags) {
         resource.tags = resource.tags.filter((tag) => tag.length < TAGS_MAX_LENGTH);
@@ -275,9 +284,6 @@ const EditResourcePage = () => {
 
       if (kalturaResource) {
         await postKalturaPresentationImport(resource, kalturaResource);
-        resource.features.dlr_title = kalturaResource.title;
-        resource.features.dlr_description = kalturaResource.description;
-        resource.features.dlr_type = 'Audiovisual';
       }
 
       setFormikInitResource(resource);

@@ -411,9 +411,7 @@ export const getMyKalturaPresentations = (): Promise<AxiosResponse<KalturaPresen
 
 export const postKalturaPresentationImport = (resource: Resource, kalturaPresentation: KalturaPresentation) => {
   const data = encodeURI(
-    `identifier=${resource.identifier}&identifierContent=${resource.contents.masterContent.identifier}
-    &kalturaPresentationId=${kalturaPresentation.id}&downloadUrl=${encodeURIComponent(kalturaPresentation.downloadUrl)}
-    &title=${encodeURIComponent(kalturaPresentation.title)}`
+    `identifier=${resource.identifier}&identifierContent=${resource.contents.masterContent.identifier}&kalturaPresentationId=${kalturaPresentation.id}&downloadUrl=${kalturaPresentation.downloadUrl}&title=${kalturaPresentation.title}`
   );
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations/import`),
