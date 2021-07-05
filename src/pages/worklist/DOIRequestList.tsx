@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { CircularProgress, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { getWorkListItemDOI } from '../../api/workListApi';
@@ -19,22 +19,34 @@ const DOIRequestList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState<Error>();
   const [workListDoi, setWorkListDoi] = useState<WorklistRequest[]>([]);
+  const mountedRef = useRef(true);
 
   useEffect(() => {
     const fetchWorkListDOI = async () => {
       try {
+        if (!mountedRef.current) return null;
         setIsLoading(true);
         setLoadingError(undefined);
         const workListDoiResponse = await getWorkListItemDOI();
         const workListTotal = await getWorkListWithResourceAttached(workListDoiResponse.data);
+        if (!mountedRef.current) return null;
         setWorkListDoi(sortWorkListByDate(workListTotal));
       } catch (error) {
+        if (!mountedRef.current) return null;
         setLoadingError(error);
       } finally {
-        setIsLoading(false);
+        if (mountedRef.current) {
+          setIsLoading(false);
+        }
       }
     };
     fetchWorkListDOI();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   return (

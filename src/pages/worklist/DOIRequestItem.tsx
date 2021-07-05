@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Colors, DeviceWidths, StyleWidths } from '../../themes/mainTheme';
 import { WorklistRequest } from '../../types/Worklist.types';
@@ -56,6 +56,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
   const [isDeletingRequest, setIsDeletingRequest] = useState(false);
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
   const { t } = useTranslation();
+  const mountedRef = useRef(true);
 
   const handleDeleteDoiRequest = async (ResourceIdentifier: string, comment: string) => {
     try {
@@ -86,6 +87,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
     const isCreatorsVerified = async () => {
       if (workListRequestDOI.resource?.creators) {
         try {
+          if (!mountedRef.current) return null;
           setBusySearchingForAuthorities(true);
           setSearchingForAuthoritiesError(undefined);
           const promiseArray: Promise<any>[] = [];
@@ -97,21 +99,32 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
           const creatorAuthoritiesArray = await Promise.all(promiseArray);
           for (let i = 0; i < creatorAuthoritiesArray.length; i++) {
             if (creatorAuthoritiesArray[i].length > 0) {
+              if (!mountedRef.current) return null;
               setCanCreateDOI(true);
             } else {
+              if (!mountedRef.current) return null;
               setCanCreateDOI(false);
             }
           }
         } catch (error) {
+          if (!mountedRef.current) return null;
           setSearchingForAuthoritiesError(error);
         } finally {
-          setBusySearchingForAuthorities(false);
-          setHasSearchedForAuthorities(true);
+          if (mountedRef.current) {
+            setBusySearchingForAuthorities(false);
+            setHasSearchedForAuthorities(true);
+          }
         }
       }
     };
     isCreatorsVerified();
   }, [workListRequestDOI]);
+
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
 
   return (
     <StyledListItemWrapper>
@@ -151,7 +164,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
             </Grid>
             {searchingForAuthoritiesError && (
               <Grid item xs={12}>
-                <ErrorBanner userNeedsToBeLoggedIn={true} error={searchingForAuthoritiesError}></ErrorBanner>
+                <ErrorBanner userNeedsToBeLoggedIn={true} error={searchingForAuthoritiesError} />
               </Grid>
             )}
             <Grid item xs={12}>

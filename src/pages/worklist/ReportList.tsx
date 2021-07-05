@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getWorkListReports } from '../../api/workListApi';
 import { CircularProgress, Typography } from '@material-ui/core';
@@ -19,22 +19,34 @@ const ReportList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState<Error>();
   const [workListReport, setWorkListReport] = useState<WorklistRequest[]>([]);
+  const mountedRef = useRef(true);
 
   useEffect(() => {
     const fetchWorkReport = async () => {
       try {
+        if (!mountedRef.current) return null;
         setIsLoading(true);
         setLoadingError(undefined);
         const workListReportResponse = await getWorkListReports();
         const workListTotal = await getWorkListWithResourceAttached(workListReportResponse.data);
+        if (!mountedRef.current) return null;
         setWorkListReport(sortWorkListByDate(workListTotal));
       } catch (error) {
+        if (!mountedRef.current) return null;
         setLoadingError(error);
       } finally {
-        setIsLoading(false);
+        if (mountedRef.current) {
+          setIsLoading(false);
+        }
       }
     };
     fetchWorkReport();
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   return (

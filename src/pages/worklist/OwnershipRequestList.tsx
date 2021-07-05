@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { CircularProgress, Typography } from '@material-ui/core';
 import ErrorBanner from '../../components/ErrorBanner';
 import { WorklistRequest } from '../../types/Worklist.types';
@@ -17,28 +17,41 @@ const StyledUl = styled.ul`
 //TODO: cypress tests
 //TODO: work list utils function
 //TODO: refactoring
-//TODO: memory leak
 
 const OwnershipRequestList = () => {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState<Error>();
   const [workListOwnership, setWorkListOwnership] = useState<WorklistRequest[]>([]);
+  const mountedRef = useRef(true);
 
   useEffect(() => {
     const fetchWorkList = async () => {
       try {
+        if (!mountedRef.current) return null;
         setIsLoading(true);
         const workListResponse = await getWorkListItemsOwnership();
         const workListTotal = await getWorkListWithResourceAttached(workListResponse.data, true);
+        if (!mountedRef.current) return null;
         setWorkListOwnership(sortWorkListByDate(workListTotal));
       } catch (error) {
+        if (!mountedRef.current) return null;
         setLoadingError(error);
       } finally {
-        setIsLoading(false);
+        if (mountedRef.current) {
+          setIsLoading(false);
+        }
       }
     };
-    fetchWorkList();
+    if (mountedRef.current) {
+      fetchWorkList();
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   return (
