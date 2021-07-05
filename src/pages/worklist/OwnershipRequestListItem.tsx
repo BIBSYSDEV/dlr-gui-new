@@ -17,11 +17,11 @@ import {
 import WorkListRequestMetaDataViewer from './WorkListRequestMetaDataViewer';
 import BlockIcon from '@material-ui/icons/Block';
 import { useTranslation } from 'react-i18next';
-import DeleteIcon from '@material-ui/icons/Delete';
 import { approveOwnershipRequest, refuseOwnershipRequest } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';
 import * as Yup from 'yup';
 import { Formik, Form, Field, FieldProps } from 'formik';
+import DeleteRequestDialog from './DeleteRequestDialog';
 
 interface Props {
   backgroundColor: string;
@@ -50,7 +50,6 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
   const [isDeletingRequest, setIsDeletingRequest] = useState(false);
   const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
   const [showConfirmCGrantOwnershipDialog, setShowConfirmCGrantOwnershipDialog] = useState(false);
-  const [deleteComment, setDeleteComment] = useState('');
   const [updateError, setUpdateError] = useState<Error | undefined>();
   const [isGrantingOwnership, setIsGrantingOwnership] = useState(false);
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
@@ -59,12 +58,14 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
     email: Yup.string().email(t('work_list.invalid_email')).required(t('feedback.required_field')),
   });
 
-  const handleDeleteOwnershipRequest = async (ResourceIdentifier: string, comment: string) => {
+  const handleDeleteOwnershipRequest = async (comment: string) => {
     try {
       setIsDeletingRequest(true);
       setUpdateError(undefined);
-      await refuseOwnershipRequest(ResourceIdentifier, comment);
-      setWorkListOwnership((prevState) => prevState.filter((work) => work.resourceIdentifier !== ResourceIdentifier));
+      await refuseOwnershipRequest(workListRequestOwnership.resourceIdentifier, comment);
+      setWorkListOwnership((prevState) =>
+        prevState.filter((work) => work.resourceIdentifier !== workListRequestOwnership.resourceIdentifier)
+      );
     } catch (error) {
       setUpdateError(error);
     } finally {
@@ -132,43 +133,11 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
           )}
         </Grid>
       </Grid>
-      <Dialog
-        fullScreen={fullScreenDialog}
-        open={showConfirmDeleteDialog}
-        onClose={() => setShowConfirmDeleteDialog(false)}
-        aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">{t('work_list.delete_request')}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>{t('work_list.comment_explanation')}.</DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="comment-text-field"
-            label={t('work_list.comment')}
-            multiline
-            rows={4}
-            fullWidth
-            required
-            value={deleteComment}
-            inputProps={{ 'data-testid': `delete-ownership-request-comment` }}
-            onChange={(event) => setDeleteComment(event.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setShowConfirmDeleteDialog(false)}>{t('common.cancel')}</Button>
-          <Button
-            startIcon={<DeleteIcon />}
-            disabled={deleteComment.length < 1}
-            data-testid={`confirm-delete-ownership-button`}
-            onClick={() => {
-              setShowConfirmDeleteDialog(false);
-              handleDeleteOwnershipRequest(workListRequestOwnership.resourceIdentifier, deleteComment);
-            }}
-            color="secondary">
-            {t('common.delete')}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <DeleteRequestDialog
+        showConfirmDeleteDialog={showConfirmDeleteDialog}
+        setShowConfirmDeleteDialog={setShowConfirmDeleteDialog}
+        deleteFunction={handleDeleteOwnershipRequest}
+      />
 
       <Dialog
         fullScreen={fullScreenDialog}

@@ -7,15 +7,11 @@ import {
   CircularProgress,
   Dialog,
   DialogActions,
-  DialogContent,
-  DialogContentText,
   DialogTitle,
   Grid,
-  TextField,
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
 import { useTranslation } from 'react-i18next';
 import { createDOI, refuseDoiRequest } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';
@@ -23,6 +19,7 @@ import WorkListRequestMetaDataViewer from './WorkListRequestMetaDataViewer';
 import EditIcon from '@material-ui/icons/Edit';
 import BlockIcon from '@material-ui/icons/Block';
 import { getAuthoritiesForResourceCreatorOrContributor } from '../../api/authoritiesApi';
+import DeleteRequestDialog from './DeleteRequestDialog';
 
 interface Props {
   backgroundColor: string;
@@ -51,19 +48,20 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
   const [showConfirmCreateDOIDialog, setShowConfirmCreateDOIDialog] = useState(false);
   const [updateError, setUpdateError] = useState<Error>();
   const [searchingForAuthoritiesError, setSearchingForAuthoritiesError] = useState<Error>();
-  const [deleteComment, setDeleteComment] = useState('');
   const [canCreateDOI, setCanCreateDOI] = useState(false);
   const [isDeletingRequest, setIsDeletingRequest] = useState(false);
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
   const { t } = useTranslation();
   const mountedRef = useRef(true);
 
-  const handleDeleteDoiRequest = async (ResourceIdentifier: string, comment: string) => {
+  const handleDeleteDoiRequest = async (comment: string) => {
     try {
       setIsDeletingRequest(true);
       setUpdateError(undefined);
-      await refuseDoiRequest(ResourceIdentifier, comment);
-      setWorkListDoi((prevState) => prevState.filter((work) => work.resourceIdentifier !== ResourceIdentifier));
+      await refuseDoiRequest(workListRequestDOI.resourceIdentifier, comment);
+      setWorkListDoi((prevState) =>
+        prevState.filter((work) => work.resourceIdentifier !== workListRequestDOI.resourceIdentifier)
+      );
     } catch (error) {
       setUpdateError(error);
     } finally {
@@ -188,43 +186,11 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
           </Grid>
         )}
       </Grid>
-      <Dialog
-        fullScreen={fullScreenDialog}
-        open={showConfirmDeleteDialog}
-        onClose={() => setShowConfirmDeleteDialog(false)}
-        aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">{t('work_list.delete_request')}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>{t('work_list.comment_explanation')}.</DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="comment-text-field"
-            label={t('work_list.comment')}
-            multiline
-            rows={4}
-            fullWidth
-            required
-            value={deleteComment}
-            inputProps={{ 'data-testid': `delete-doi-request-comment` }}
-            onChange={(event) => setDeleteComment(event.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setShowConfirmDeleteDialog(false)}>{t('common.cancel')}</Button>
-          <Button
-            startIcon={<DeleteIcon />}
-            disabled={deleteComment.length < 1}
-            data-testid={`confirm-delete-doi-button`}
-            onClick={() => {
-              setShowConfirmDeleteDialog(false);
-              handleDeleteDoiRequest(workListRequestDOI.resourceIdentifier, deleteComment);
-            }}
-            color="secondary">
-            {t('common.delete')}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <DeleteRequestDialog
+        showConfirmDeleteDialog={showConfirmDeleteDialog}
+        setShowConfirmDeleteDialog={setShowConfirmDeleteDialog}
+        deleteFunction={handleDeleteDoiRequest}
+      />
 
       <Dialog
         fullScreen={fullScreenDialog}

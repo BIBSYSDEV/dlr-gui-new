@@ -14,7 +14,6 @@ const StyledUl = styled.ul`
 
 //TODO: cypress tests
 //TODO: work list utils function
-//TODO: refactoring
 
 interface OwnershipRequestListProps {
   isLoading: boolean;
