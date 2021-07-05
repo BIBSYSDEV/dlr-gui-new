@@ -1,6 +1,6 @@
 import { mockMyResources } from '../../src/api/mockdata';
 
-context('Actions', () => {
+context('My resources', () => {
   beforeEach(() => {
     cy.visit('/');
   });

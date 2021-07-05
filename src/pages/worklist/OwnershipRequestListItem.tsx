@@ -169,7 +169,7 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
                       type="email"
                       error={!!errors.email}
                       helperText={errors.email}
-                      inputProps={{ 'data-testid': `grant-ownership-request-email` }}
+                      inputProps={{ 'data-testid': `grant-ownership-request-email-text-field` }}
                     />
                   )}
                 </Field>

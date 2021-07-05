@@ -12,7 +12,7 @@ import {
 import { SearchParameters } from '../../src/types/search.types';
 import { resourcePath } from '../../src/utils/constants';
 
-context('Actions', () => {
+context('Resource', () => {
   beforeEach(() => {
     cy.visit(`${resourcePath}/mock-id`);
   });

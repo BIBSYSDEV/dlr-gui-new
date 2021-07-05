@@ -31,15 +31,32 @@ const getResourceOwnersAndIgnoreFailure = async (
   }
 };
 
-export const getWorkListWithResourceAttached = async (
-  workList: WorklistRequest[],
-  withResourceOwners = false
+export const getWorkListWithResourceAttached = async (workList: WorklistRequest[]): Promise<WorklistRequest[]> => {
+  const resourcePromises: Promise<Resource | undefined>[] = [];
+
+  workList.forEach((work) => {
+    resourcePromises.push(getResourceAndIgnoreFailure(work.resourceIdentifier));
+  });
+  const resources = await Promise.all(resourcePromises);
+
+  return workList.map((work, index) => {
+    if (resources[index]?.identifier === work.resourceIdentifier) {
+      work.resource = resources[index];
+    } else {
+      work.resource = resources.find((resource) => resource?.identifier === work.identifier);
+    }
+    return work;
+  });
+};
+
+export const getWorkListWithResourceAndOwnersAttached = async (
+  workList: WorklistRequest[]
 ): Promise<WorklistRequest[]> => {
   const resourcePromises: Promise<Resource | undefined>[] = [];
   const ownersPromises: Promise<resourceOwnerAndResourceId | undefined>[] = [];
   workList.forEach((work) => {
     resourcePromises.push(getResourceAndIgnoreFailure(work.resourceIdentifier));
-    if (withResourceOwners) ownersPromises.push(getResourceOwnersAndIgnoreFailure(work.resourceIdentifier));
+    ownersPromises.push(getResourceOwnersAndIgnoreFailure(work.resourceIdentifier));
   });
   const resources = await Promise.all(resourcePromises);
   const owners = await Promise.all(ownersPromises);
@@ -50,14 +67,12 @@ export const getWorkListWithResourceAttached = async (
     } else {
       work.resource = resources.find((resource) => resource?.identifier === work.identifier);
     }
-    if (withResourceOwners) {
-      if (owners[index]?.resourceIdentifier === work.resourceIdentifier) {
-        work.resourceOwners = owners[index]?.resourceOwners;
-      } else {
-        work.resourceOwners = owners.find(
-          (ownersWithResourceIdentifier) => ownersWithResourceIdentifier?.resourceIdentifier === work.resourceIdentifier
-        )?.resourceOwners;
-      }
+    if (owners[index]?.resourceIdentifier === work.resourceIdentifier) {
+      work.resourceOwners = owners[index]?.resourceOwners;
+    } else {
+      work.resourceOwners = owners.find(
+        (ownersWithResourceIdentifier) => ownersWithResourceIdentifier?.resourceIdentifier === work.resourceIdentifier
+      )?.resourceOwners;
     }
 
     return work;

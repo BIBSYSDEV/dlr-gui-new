@@ -13,7 +13,11 @@ import ReportList from './ReportList';
 import OwnershipRequestList from './OwnershipRequestList';
 import { WorklistRequest } from '../../types/Worklist.types';
 import { getWorkListItemDOI, getWorkListItemsOwnership, getWorkListReports } from '../../api/workListApi';
-import { getWorkListWithResourceAttached, sortWorkListByDate } from '../../utils/workList';
+import {
+  getWorkListWithResourceAndOwnersAttached,
+  getWorkListWithResourceAttached,
+  sortWorkListByDate,
+} from '../../utils/workList';
 
 const StyledWrapper = styled(Grid)`
   padding: 1rem 1rem 2rem 1rem;
@@ -98,7 +102,7 @@ const WorkListPage = () => {
         setIsLoadingOwnership(true);
         setLoadingOwnershipError(undefined);
         const workListResponse = await getWorkListItemsOwnership();
-        const workListTotal = await getWorkListWithResourceAttached(workListResponse.data, true);
+        const workListTotal = await getWorkListWithResourceAndOwnersAttached(workListResponse.data);
         if (!mountedRef.current) return null;
         setWorkListOwnership(sortWorkListByDate(workListTotal));
       } catch (error) {

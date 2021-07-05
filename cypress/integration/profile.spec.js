@@ -1,6 +1,6 @@
 import { mockUser } from '../../src/api/mockdata';
 
-context('Action', () => {
+context('Profile', () => {
   beforeEach(() => {
     cy.visit(`/profile`);
   });

@@ -12,9 +12,6 @@ const StyledUl = styled.ul`
   margin: 0;
 `;
 
-//TODO: cypress tests
-//TODO: work list utils function
-
 interface OwnershipRequestListProps {
   isLoading: boolean;
   loadingError: Error | undefined;
