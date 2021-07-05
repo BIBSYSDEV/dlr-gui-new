@@ -1,9 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { FC } from 'react';
 import { CircularProgress, Typography } from '@material-ui/core';
 import ErrorBanner from '../../components/ErrorBanner';
 import { WorklistRequest } from '../../types/Worklist.types';
-import { getWorkListItemsOwnership } from '../../api/workListApi';
-import { getWorkListWithResourceAttached, sortWorkListByDate } from '../../utils/workList';
 import styled from 'styled-components';
 import OwnershipRequestListItem from './OwnershipRequestListItem';
 import { useTranslation } from 'react-i18next';
@@ -18,41 +16,20 @@ const StyledUl = styled.ul`
 //TODO: work list utils function
 //TODO: refactoring
 
-const OwnershipRequestList = () => {
+interface OwnershipRequestListProps {
+  isLoading: boolean;
+  loadingError: Error | undefined;
+  workListOwnership: WorklistRequest[];
+  setWorkListOwnership: React.Dispatch<React.SetStateAction<WorklistRequest[]>>;
+}
+
+const OwnershipRequestList: FC<OwnershipRequestListProps> = ({
+  isLoading,
+  loadingError,
+  workListOwnership,
+  setWorkListOwnership,
+}) => {
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadingError, setLoadingError] = useState<Error>();
-  const [workListOwnership, setWorkListOwnership] = useState<WorklistRequest[]>([]);
-  const mountedRef = useRef(true);
-
-  useEffect(() => {
-    const fetchWorkList = async () => {
-      try {
-        if (!mountedRef.current) return null;
-        setIsLoading(true);
-        const workListResponse = await getWorkListItemsOwnership();
-        const workListTotal = await getWorkListWithResourceAttached(workListResponse.data, true);
-        if (!mountedRef.current) return null;
-        setWorkListOwnership(sortWorkListByDate(workListTotal));
-      } catch (error) {
-        if (!mountedRef.current) return null;
-        setLoadingError(error);
-      } finally {
-        if (mountedRef.current) {
-          setIsLoading(false);
-        }
-      }
-    };
-    if (mountedRef.current) {
-      fetchWorkList();
-    }
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      mountedRef.current = false;
-    };
-  }, []);
 
   return (
     <>

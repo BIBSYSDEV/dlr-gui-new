@@ -1,12 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getWorkListReports } from '../../api/workListApi';
 import { CircularProgress, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import ErrorBanner from '../../components/ErrorBanner';
 import ReportRequestListItem from './ReportRequestListItem';
 import { WorklistRequest } from '../../types/Worklist.types';
-import { getWorkListWithResourceAttached, sortWorkListByDate } from '../../utils/workList';
 
 const StyledUl = styled.ul`
   list-style: none; /* Remove list bullets */
@@ -14,40 +12,15 @@ const StyledUl = styled.ul`
   margin: 0;
 `;
 
-const ReportList = () => {
+interface ReportListProps {
+  isLoading: boolean;
+  loadingError: Error | undefined;
+  workListReport: WorklistRequest[];
+  setWorkListReport: React.Dispatch<React.SetStateAction<WorklistRequest[]>>;
+}
+
+const ReportList: FC<ReportListProps> = ({ isLoading, loadingError, workListReport, setWorkListReport }) => {
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadingError, setLoadingError] = useState<Error>();
-  const [workListReport, setWorkListReport] = useState<WorklistRequest[]>([]);
-  const mountedRef = useRef(true);
-
-  useEffect(() => {
-    const fetchWorkReport = async () => {
-      try {
-        if (!mountedRef.current) return null;
-        setIsLoading(true);
-        setLoadingError(undefined);
-        const workListReportResponse = await getWorkListReports();
-        const workListTotal = await getWorkListWithResourceAttached(workListReportResponse.data);
-        if (!mountedRef.current) return null;
-        setWorkListReport(sortWorkListByDate(workListTotal));
-      } catch (error) {
-        if (!mountedRef.current) return null;
-        setLoadingError(error);
-      } finally {
-        if (mountedRef.current) {
-          setIsLoading(false);
-        }
-      }
-    };
-    fetchWorkReport();
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      mountedRef.current = false;
-    };
-  }, []);
 
   return (
     <>
