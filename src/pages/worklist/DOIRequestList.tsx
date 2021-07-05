@@ -6,7 +6,7 @@ import ErrorBanner from '../../components/ErrorBanner';
 import { WorklistRequest } from '../../types/Worklist.types';
 import DOIRequestItem from './DOIRequestItem';
 import styled from 'styled-components';
-import { getWorkListWithResourceAttached } from '../../utils/workList';
+import { getWorkListWithResourceAttached, sortWorkListByDate } from '../../utils/workList';
 
 const StyledUl = styled.ul`
   list-style: none; /* Remove list bullets */
@@ -27,7 +27,7 @@ const DOIRequestList = () => {
         setLoadingError(undefined);
         const workListDoiResponse = await getWorkListItemDOI();
         const workListTotal = await getWorkListWithResourceAttached(workListDoiResponse.data);
-        setWorkListDoi(workListTotal);
+        setWorkListDoi(sortWorkListByDate(workListTotal));
       } catch (error) {
         setLoadingError(error);
       } finally {

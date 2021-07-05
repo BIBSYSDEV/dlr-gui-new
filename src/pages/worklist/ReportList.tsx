@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import ErrorBanner from '../../components/ErrorBanner';
 import ReportRequestListItem from './ReportRequestListItem';
 import { WorklistRequest } from '../../types/Worklist.types';
-import { getWorkListWithResourceAttached } from '../../utils/workList';
+import { getWorkListWithResourceAttached, sortWorkListByDate } from '../../utils/workList';
 
 const StyledUl = styled.ul`
   list-style: none; /* Remove list bullets */
@@ -27,7 +27,7 @@ const ReportList = () => {
         setLoadingError(undefined);
         const workListReportResponse = await getWorkListReports();
         const workListTotal = await getWorkListWithResourceAttached(workListReportResponse.data);
-        setWorkListReport(workListTotal);
+        setWorkListReport(sortWorkListByDate(workListTotal));
       } catch (error) {
         setLoadingError(error);
       } finally {
