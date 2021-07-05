@@ -740,8 +740,52 @@ export const mockKalturaPresentations: KalturaPresentation[] = [
     dlrContentIdentifier: '',
   },
   {
-    id: '423654654',
+    id: '4236546541',
     title: 'Sample Kaltura Title 2',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '4236546542',
+    title: 'Sample Kaltura Title 3',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '42365465444',
+    title: 'Sample Kaltura Title 4',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '4236546544',
+    title: 'Sample Kaltura Title 5',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '42365465446',
+    title: 'Sample Kaltura Title 6',
     timeRecorded: '6421',
     downloadUrl:
       'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',

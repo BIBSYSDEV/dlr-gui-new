@@ -13,11 +13,16 @@ import DialogActions from '@material-ui/core/DialogActions';
 import { KalturaPresentation } from '../../types/resource.types';
 import kalturaLogo from '../../resources/images/Kaltura_Sun_black_icon.png';
 import KalturaListItem from './KalturaListItem';
+import Pagination from '@material-ui/lab/Pagination';
+import { StyledPaginationWrapper } from '../../components/styled/Wrappers';
 
 const FormDialogTitleId = 'kaltura-dialog-title';
 
 const StyledBody = styled.div`
   width: 100%;
+`;
+const StyledDialogContent = styled(DialogContent)`
+  min-height: 90vh;
 `;
 
 const StyledDialogActions = styled(DialogActions)`
@@ -37,6 +42,8 @@ interface KalturaRegistrationProps {
   onSubmit: (kalturaPresentation: KalturaPresentation) => void;
 }
 
+const itemsPrPage = 3;
+
 const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange, onSubmit }) => {
   const { t } = useTranslation();
   const [kalturaResources, setKalturaResources] = useState<KalturaPresentation[]>();
@@ -44,13 +51,24 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
   const [busyGettingKalturaResources, setBusyGettingKalturaResources] = useState(false);
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.md - 1}px)`);
   const [open, setOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [firstItemOnPage, setFirstItemOnPage] = useState<number>();
+  const [lastItemOnPage, setLastItemOnPage] = useState<number>();
+
+  const handlePageChange = (pageValue: number) => {
+    setPage(pageValue);
+    setFirstItemOnPage((pageValue - 1) * itemsPrPage);
+    setLastItemOnPage(pageValue * itemsPrPage);
+  };
 
   const handleClickOpen = async () => {
     setOpen(true);
     try {
       setBusyGettingKalturaResources(true);
       setGetKalturaResourcesError(undefined);
-      setKalturaResources((await getMyKalturaPresentations()).data);
+      const result = (await getMyKalturaPresentations()).data;
+      setKalturaResources(result);
+      setLastItemOnPage(result.length > itemsPrPage ? itemsPrPage : result.length);
     } catch (error) {
       setGetKalturaResourcesError(undefined);
     } finally {
@@ -60,11 +78,13 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
 
   const handleClose = () => {
     setOpen(false);
+    setPage(1);
   };
 
   const handleUseResource = (kalturaPresentation: KalturaPresentation) => {
     setOpen(false);
     onSubmit(kalturaPresentation);
+    setPage(1);
   };
 
   return (
@@ -95,21 +115,66 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
         onClose={handleClose}
         aria-labelledby={FormDialogTitleId}>
         <DialogTitle id={FormDialogTitleId}>{t('kaltura.my_resources')}</DialogTitle>
-        <DialogContent>
+        <StyledDialogContent>
           <DialogContentText>{t('kaltura.choose_a_resource')}. </DialogContentText>
           <StyledList>
             {busyGettingKalturaResources ? (
               <CircularProgress />
             ) : kalturaResources ? (
-              kalturaResources.map((resultItem) => (
+              {kalturaResources.slice(firstItemOnPage, lastItemOnPage).map((resultItem) => (
+
+                  kalturaResources.map((resultItem) => (
                 <KalturaListItem key={resultItem.id} item={resultItem} handleUseResource={handleUseResource} />
               ))
+              <>
+                {kalturaResources.slice(firstItemOnPage, lastItemOnPage).map((resultItem) => (
+                  <StyledResultItem key={resultItem.id}>
+                    <Grid container spacing={1}>
+                      <Grid item xs={12} sm={4}>
+                        <StyledImageWrapper>
+                          <StyledImage src={resultItem.thumbnailUrl} />
+                        </StyledImageWrapper>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Link href={resultItem.url} target="_blank">
+                          <Typography>{resultItem.title}</Typography>
+                        </Link>
+                      </Grid>
+                      <Grid item xs={12} sm={2}>
+                        {resultItem.dlrContentIdentifier ? (
+                          <Typography variant="caption">{t('kaltura.already_imported')}</Typography>
+                        ) : (
+                          <Button
+                            variant="outlined"
+                            data-testid={`use-kaltura-link-button-${resultItem.id}`}
+                            onClick={() => handleUseResource(resultItem)}>
+                            {t('common.use')}
+                          </Button>
+                        )}
+                      </Grid>
+                    </Grid>
+                  </StyledResultItem>
+                ))}
+                {kalturaResources.length > itemsPrPage && (
+                  <StyledPaginationWrapper>
+                    <Typography variant="subtitle2">{t('common.page')}</Typography>
+                    <Pagination
+                      color="primary"
+                      count={Math.ceil(kalturaResources.length / itemsPrPage)}
+                      page={page}
+                      onChange={(_event, value) => {
+                        handlePageChange(value);
+                      }}
+                    />
+                  </StyledPaginationWrapper>
+                )}
+              </>
             ) : (
               <Typography>{t('kaltura.no_resources_found')}</Typography>
             )}
           </StyledList>
           {getKalturaResourcesError && <ErrorBanner userNeedsToBeLoggedIn={true} error={getKalturaResourcesError} />}
-        </DialogContent>
+        </StyledDialogContent>
         <StyledDialogActions>
           <Button data-testid="kalture-dialog-close-button" variant="outlined" onClick={handleClose} color="primary">
             {t('common.close')}

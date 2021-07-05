@@ -14,7 +14,7 @@ import {
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
-import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
+import { StyledContentWrapperLarge, StyledPaginationWrapper } from '../../components/styled/Wrappers';
 import SearchInput from './SearchInput';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Pagination } from '@material-ui/lab';
@@ -52,23 +52,6 @@ const StyledProgressWrapper = styled.div`
   justify-content: center;
   width: 100%;
   margin-top: 3rem;
-`;
-
-const StyledPaginationWrapper = styled.div`
-  margin: 1rem 0 1rem 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  & .MuiPaginationItem-root {
-    border-radius: 0;
-    color: ${Colors.Primary};
-    font-weight: 700;
-  }
-
-  & .Mui-selected {
-    color: ${Colors.Background};
-  }
 `;
 
 const StyledList = styled(List)`
