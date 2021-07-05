@@ -162,7 +162,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
             ) : kalturaResources ? (
               <>
                 {kalturaResources.slice(firstItemOnPage, lastItemOnPage).map((resultItem) => (
-                  <StyledResultItem key={resultItem.id}>
+                  <StyledResultItem key={resultItem.id} data-testid={`kaltura-item-${resultItem.id}`}>
                     <Grid container spacing={1}>
                       <Grid item xs={12} sm={4}>
                         <StyledImageWrapper>
@@ -170,7 +170,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                         </StyledImageWrapper>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Link href={resultItem.url} target="_blank">
+                        <Link href={resultItem.url} target="_blank" data-testid={`kaltura-item-${resultItem.id}-link`}>
                           <Typography>{resultItem.title}</Typography>
                         </Link>
                       </Grid>
@@ -194,6 +194,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                     <Typography variant="subtitle2">{t('common.page')}</Typography>
                     <Pagination
                       color="primary"
+                      data-testid={`kaltura-pagination`}
                       count={Math.ceil(kalturaResources.length / itemsPrPage)}
                       page={page}
                       onChange={(_event, value) => {
