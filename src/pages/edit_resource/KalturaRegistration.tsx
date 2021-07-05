@@ -22,7 +22,7 @@ const StyledBody = styled.div`
   width: 100%;
 `;
 const StyledDialogContent = styled(DialogContent)`
-  min-height: 90vh;
+  height: 70vh;
 `;
 
 const StyledDialogActions = styled(DialogActions)`
@@ -42,7 +42,7 @@ interface KalturaRegistrationProps {
   onSubmit: (kalturaPresentation: KalturaPresentation) => void;
 }
 
-const itemsPrPage = 3;
+const itemsPrPage = 10;
 
 const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange, onSubmit }) => {
   const { t } = useTranslation();
@@ -68,6 +68,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
       setGetKalturaResourcesError(undefined);
       const result = (await getMyKalturaPresentations()).data;
       setKalturaResources(result);
+      setFirstItemOnPage(0);
       setLastItemOnPage(result.length > itemsPrPage ? itemsPrPage : result.length);
     } catch (error) {
       setGetKalturaResourcesError(undefined);
@@ -116,7 +117,11 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
         aria-labelledby={FormDialogTitleId}>
         <DialogTitle id={FormDialogTitleId}>{t('kaltura.my_resources')}</DialogTitle>
         <StyledDialogContent>
-          <DialogContentText>{t('kaltura.choose_a_resource')}. </DialogContentText>
+          {kalturaResources && !busyGettingKalturaResources && (
+            <DialogContentText>
+              Results ({kalturaResources?.length}). {t('kaltura.choose_a_resource')}.
+            </DialogContentText>
+          )}
           <StyledList>
             {busyGettingKalturaResources ? (
               <CircularProgress />
