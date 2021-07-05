@@ -422,4 +422,14 @@ context('Actions', () => {
     cy.get('[data-testid=dlr-title-input]').should('have.value', mockKalturaPresentations[0].title);
     cy.get('[data-testid=resource-type-input] input').should('have.value', ResourceFeatureTypes.video);
   });
+
+  it('can use pagination on Kaltura-list', () => {
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-kaltura]').click();
+    cy.get('[data-testid=open-kaltura-dialog-button]').click();
+    cy.get(`[data-testid=kaltura-item-${mockKalturaPresentations[0].id}]`).should('exist');
+    cy.get(`[data-testid=kaltura-item-${mockKalturaPresentations[10].id}]`).should('not.exist');
+    cy.get(`[data-testid=kaltura-pagination] li:last-of-type button`).click(); //next page
+    cy.get(`[data-testid=kaltura-item-${mockKalturaPresentations[10].id}]`).should('exist');
+  });
 });
