@@ -1,4 +1,11 @@
-import { Contributor, Creator, emptyResource, Resource, ResourceStatistic } from '../types/resource.types';
+import {
+  Contributor,
+  Creator,
+  emptyResource,
+  Resource,
+  ResourceOwner,
+  ResourceStatistic,
+} from '../types/resource.types';
 import deepmerge from 'deepmerge';
 import {
   EmailFeature,
@@ -778,5 +785,16 @@ export const mockWorkListOwnerRequest: WorklistRequest[] = [
       'long long longlonglonglong longlong longlonglong long long long long long long longlonglonglong longlongv longlonglong longlonglong longvlong longlonglong longlonglong longv longlonglong longlonglong long long longlonglonglong longlong longlonglong long long long long long long longlonglonglong longlongv longlonglong longlonglong longvlong longlonglong longlonglong longv longlonglong longlonglong long long longlonglonglong longlong longlonglong long long long long long long longlonglonglong longlongv longlonglong longlonglong longvlong longlonglong longlonglong longv longlonglong longlonglong',
     state: 'string',
     stateDate: '2021-04-28T11:23:34.250Z',
+  },
+];
+
+export const mockResourceOwners: ResourceOwner[] = [
+  {
+    identifier: '1323123',
+    features: {
+      dlr_owner_identifier: '1323123',
+      dlr_owner_subject: mockUser.id,
+      dlr_owner_timer_created: '2021-04-28T11:23:34.250Z',
+    },
   },
 ];

@@ -36,6 +36,7 @@ import {
   mockPrepareUpload,
   mockResource,
   mockResourceEvents,
+  mockResourceOwners,
   mockResourceReadAccess,
   mockResourceStatistics,
   mockTags,
@@ -107,6 +108,7 @@ export const interceptRequestsOnMock = () => {
   mock
     .onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/owners/requests/current/approvals`))
     .reply(201);
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/owners`)).reply(200, mockResourceOwners);
 
   //AUTHORITY
   mock
