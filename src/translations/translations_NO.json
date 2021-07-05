@@ -221,8 +221,13 @@
       "type": "Ressurstype er obligatorisk og må fylles ut"
     }
   },
+  "handle_not_found": {
+    "handle_not_found": "Handle ikke funnet",
+    "this_resource_has_been_deleted": "Desverre har denne ressursen blitt slettet"
+  },
   "illustration_alts_tags": {
-    "browsing_resource": "En dame søker etter en ressurs"
+    "browsing_resource": "En dame søker etter en ressurs",
+    "resource_in_space": "Tegning av en dame med forstørrelses glass som leter etter ressurs som har havnet i verdensrommet"
   },
   "institutions": {
     "bi": "BI",

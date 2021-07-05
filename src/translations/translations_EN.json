@@ -221,8 +221,13 @@
       "type": "Resource type is required and must be filled out"
     }
   },
+  "handle_not_found": {
+    "handle_not_found": "Handle not found",
+    "this_resource_has_been_deleted": "Unfortunately this resource has been deleted"
+  },
   "illustration_alts_tags": {
-    "browsing_resource": "A woman is browsing for resources"
+    "browsing_resource": "A woman is browsing for resources",
+    "resource_in_space": "Drawing of a woman with magnifying glass searching for resource lost in outer space"
   },
   "institutions": {
     "bi": "BI",
