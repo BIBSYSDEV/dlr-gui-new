@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import CreatorPublishedItem from './CreatorPublishedItem';
 import ErrorBanner from '../../components/ErrorBanner';
 import { useTranslation } from 'react-i18next';
+import { StringArrayToSetStringArray } from '../../utils/StringArray';
 
 const SearchWrapper = styled.div`
   margin-top: 2rem;
@@ -48,7 +49,7 @@ const namesOnSeveralFormats = (nameList: string[]): string[] => {
       newNameList.push(newName.trim());
     }
   });
-  return newNameList;
+  return StringArrayToSetStringArray(newNameList);
 };
 
 interface CreatorSearchProps {

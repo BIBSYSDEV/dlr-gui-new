@@ -26,8 +26,9 @@ const StyledGridContainer = styled.div`
   background-color: ${Colors.DLRGray};
   padding: 1rem;
   width: 12.9rem;
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
-    width: 100%;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.lg + 'px'}) {
+    padding: 0.3rem;
+    width: 12rem;
   }
   height: 100%;
 `;
