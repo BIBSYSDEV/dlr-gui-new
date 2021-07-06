@@ -50,7 +50,7 @@ const CreatorPublishedItem: FC<CreatorPublishedItemProps> = ({ resource }) => {
   const { t } = useTranslation();
 
   return (
-    <StyledGridContainer>
+    <StyledGridContainer data-testid="creator-published-item">
       <Grid container spacing={3}>
         <Grid item>
           <StyledThumbnailWrapper>

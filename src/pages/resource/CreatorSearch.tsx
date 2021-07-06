@@ -20,8 +20,6 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `;
 
-//TODO: Cypress tester
-
 /*
 Searchresult may contain the parent resource which is unnecessary.
 If it does not contain parent resource the array is too long.
@@ -143,7 +141,7 @@ const CreatorSearch: FC<CreatorSearchProps> = ({ resource }) => {
     <>
       {(resources.length > 0 || loadingError || isLoading) && (
         <SearchWrapper>
-          <Typography gutterBottom variant="h2">
+          <Typography data-testid="also-published-by-header" gutterBottom variant="h2">
             {displayCreatorNames.join(', ')}{' '}
             {displayCreatorNames.length > 1
               ? t('resource.also_published_by_plural').toLowerCase()
@@ -175,14 +173,18 @@ const CreatorSearch: FC<CreatorSearchProps> = ({ resource }) => {
               </Grid>
               {searchResult?.numFound && searchResult.numFound > 6 && !showEverything && (
                 <ButtonWrapper>
-                  <Button onClick={fetchTheRest} color="primary" variant="outlined">
+                  <Button data-testid="show-all-posts" onClick={fetchTheRest} color="primary" variant="outlined">
                     {t('common.show_more')}
                   </Button>
                 </ButtonWrapper>
               )}
               {showEverything && (
                 <ButtonWrapper>
-                  <Button onClick={() => setShowEverything(false)} color="primary" variant="outlined">
+                  <Button
+                    data-testid="hide-most-posts"
+                    onClick={() => setShowEverything(false)}
+                    color="primary"
+                    variant="outlined">
                     {t('common.hide')}
                   </Button>
                 </ButtonWrapper>
