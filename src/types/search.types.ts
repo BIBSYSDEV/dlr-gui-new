@@ -27,6 +27,7 @@ export interface QueryObject {
   orderBy: string;
   order: Order;
   mine: boolean;
+  creators?: string[];
 }
 
 export enum Order {

@@ -19,6 +19,7 @@ import { RootState } from '../../state/rootReducer';
 import { StyleWidths } from '../../themes/mainTheme';
 import { StyledContentWrapperLarge, StyledProgressWrapper } from '../../components/styled/Wrappers';
 import { PageHeader } from '../../components/PageHeader';
+import CreatorSearch from './CreatorSearch';
 
 const StyledResourceActionBar = styled.div`
   display: flex;
@@ -100,6 +101,7 @@ const ResourcePage = () => {
       )}
       <PageHeader testId="resource-title">{resource.features.dlr_title}</PageHeader>
       <ResourcePresentation resource={resource} isPreview={false} />
+      <CreatorSearch resource={resource} />
     </StyledContentWrapperLargeWithBottomMargin>
   );
 };
