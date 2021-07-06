@@ -164,7 +164,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                 </StyledResultItem>
               ))
             ) : (
-              <Typography>{t('Ingen ressurser funnet')}</Typography>
+              <Typography>{t('kaltura.no_resources_found')}</Typography>
             )}
           </StyledList>
           {getKalturaResourcesError && <ErrorBanner userNeedsToBeLoggedIn={true} error={getKalturaResourcesError} />}

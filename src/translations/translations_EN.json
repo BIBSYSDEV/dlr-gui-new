@@ -236,6 +236,7 @@
     "already_imported": "Already imported",
     "choose_a_resource": "Choose a resource from the list",
     "my_resources" : "My Kaltura resources",
+    "no_resources_found": "No resources found",
     "show_my_resources" : "Show my resources from Kaltura",
     "start_with_kaltura_resource" : "Start with a kaltura resource"
   },
