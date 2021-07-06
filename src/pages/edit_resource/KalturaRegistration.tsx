@@ -144,7 +144,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                       </StyledImageWrapper>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <Link href={resultItem.url} target="_blank">
+                      <Link href={resultItem.url} target="_blank" rel="noopener noreferrer">
                         <Typography>{resultItem.title}</Typography>
                       </Link>
                     </Grid>
