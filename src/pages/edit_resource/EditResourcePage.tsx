@@ -406,7 +406,7 @@ const EditResourcePage = () => {
           onChange={handleChange('link-panel')}
           onSubmit={onSubmitLink}
         />
-        {useKalturaFlag  && (
+        {useKalturaFlag && (
           <>
             <StyledTypography>{t('common.or')}</StyledTypography>
             <KalturaRegistration
