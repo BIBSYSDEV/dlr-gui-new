@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
 import ResourceForm from './ResourceForm';
@@ -83,6 +83,8 @@ const EditResourcePage = () => {
   const [resourceInitError, setResourceInitError] = useState<Error>();
   const [fileUploadError, setFileUploadError] = useState<Error>();
   const [mainFileBeingUploaded, setMainFileBeingUploaded] = useState(false);
+  const location = useLocation();
+  const useKalturaFlag = new URLSearchParams(location.search).get('useKalturaFeature') === 'true' ? true : false;
 
   const user = useSelector((state: RootState) => state.user);
 
@@ -404,12 +406,16 @@ const EditResourcePage = () => {
           onChange={handleChange('link-panel')}
           onSubmit={onSubmitLink}
         />
-        <StyledTypography>{t('common.or')}</StyledTypography>
-        <KalturaRegistration
-          expanded={expanded === 'kaltura-panel'}
-          onChange={handleChange('kaltura-panel')}
-          onSubmit={onSubmitKalturaResource}
-        />
+        {useKalturaFlag && (
+          <>
+            <StyledTypography>{t('common.or')}</StyledTypography>
+            <KalturaRegistration
+              expanded={expanded === 'kaltura-panel'}
+              onChange={handleChange('kaltura-panel')}
+              onSubmit={onSubmitKalturaResource}
+            />
+          </>
+        )}
       </StyledEditPublication>
     </StyledContentWrapperLarge>
   ) : isLoadingResource ? (
