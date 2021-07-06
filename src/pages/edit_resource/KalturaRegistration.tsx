@@ -3,17 +3,8 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import StartRegistrationMethodAccordion from './StartRegistrationMethodAccordion';
 import { getMyKalturaPresentations } from '../../api/resourceApi';
-import {
-  Button,
-  CircularProgress,
-  DialogContent,
-  Grid,
-  Link,
-  List,
-  Typography,
-  useMediaQuery,
-} from '@material-ui/core';
-import { Colors, DeviceWidths, StyleWidths } from '../../themes/mainTheme';
+import { Button, CircularProgress, DialogContent, List, Typography, useMediaQuery } from '@material-ui/core';
+import { DeviceWidths } from '../../themes/mainTheme';
 import ErrorBanner from '../../components/ErrorBanner';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -21,6 +12,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import { KalturaPresentation } from '../../types/resource.types';
 import kalturaLogo from '../../resources/images/Kaltura_Sun_black_icon.png';
+import KalturaListItem from './KalturaListItem';
 
 const FormDialogTitleId = 'kaltura-dialog-title';
 
@@ -37,32 +29,6 @@ const StyledList = styled(List)`
   flex-direction: column;
   align-items: center;
   width: 100%;
-`;
-
-const StyledImageWrapper: any = styled.div`
-  min-height: 5rem;
-  height: 5rem;
-  min-width: 7.85rem;
-  width: 7.85rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid ${Colors.DescriptionPageGradientColor2};
-`;
-
-const StyledResultItem = styled.li`
-  padding: 1rem;
-  width: 100%;
-  max-width: ${StyleWidths.width4};
-  background-color: ${Colors.UnitTurquoise_20percent};
-  margin-bottom: 1rem;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const StyledImage: any = styled.img`
-  max-height: 5rem;
-  max-width: 7.85rem;
 `;
 
 interface KalturaRegistrationProps {
@@ -136,32 +102,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
               <CircularProgress />
             ) : kalturaResources ? (
               kalturaResources.map((resultItem) => (
-                <StyledResultItem key={resultItem.id}>
-                  <Grid container spacing={1}>
-                    <Grid item xs={12} sm={4}>
-                      <StyledImageWrapper>
-                        <StyledImage src={resultItem.thumbnailUrl} />
-                      </StyledImageWrapper>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Link href={resultItem.url} target="_blank" rel="noopener noreferrer">
-                        <Typography>{resultItem.title}</Typography>
-                      </Link>
-                    </Grid>
-                    <Grid item xs={12} sm={2}>
-                      {resultItem.dlrContentIdentifier ? (
-                        <Typography variant="caption">{t('kaltura.already_imported')}</Typography>
-                      ) : (
-                        <Button
-                          variant="outlined"
-                          data-testid={`use-kaltura-link-button-${resultItem.id}`}
-                          onClick={() => handleUseResource(resultItem)}>
-                          {t('common.use')}
-                        </Button>
-                      )}
-                    </Grid>
-                  </Grid>
-                </StyledResultItem>
+                <KalturaListItem key={resultItem.id} item={resultItem} handleUseResource={handleUseResource} />
               ))
             ) : (
               <Typography>{t('kaltura.no_resources_found')}</Typography>
