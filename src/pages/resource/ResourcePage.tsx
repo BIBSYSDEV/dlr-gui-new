@@ -10,13 +10,13 @@ import {
   getResourceLicenses,
   getResourceTags,
 } from '../../api/resourceApi';
-import { Button, CircularProgress } from '@material-ui/core';
+import { Button, CircularProgress, useMediaQuery } from '@material-ui/core';
 import ErrorBanner from '../../components/ErrorBanner';
 import ResourcePresentation from './ResourcePresentation';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
-import { StyleWidths } from '../../themes/mainTheme';
+import { DeviceWidths, StyleWidths } from '../../themes/mainTheme';
 import { StyledContentWrapperLarge, StyledProgressWrapper } from '../../components/styled/Wrappers';
 import { PageHeader } from '../../components/PageHeader';
 import CreatorSearch from './CreatorSearch';
@@ -48,6 +48,7 @@ const ResourcePage = () => {
   const { t } = useTranslation();
   const history = useHistory();
   const user = useSelector((state: RootState) => state.user);
+  const shouldShowSearch = useMediaQuery(`(min-width:${DeviceWidths.md}px)`);
 
   const handleClickEditButton = () => {
     history.push(`/editresource/${resource?.identifier}`);
@@ -101,7 +102,7 @@ const ResourcePage = () => {
       )}
       <PageHeader testId="resource-title">{resource.features.dlr_title}</PageHeader>
       <ResourcePresentation resource={resource} isPreview={false} />
-      <CreatorSearch resource={resource} />
+      {shouldShowSearch && <CreatorSearch resource={resource} />}
     </StyledContentWrapperLargeWithBottomMargin>
   );
 };
