@@ -109,10 +109,6 @@ const EditResourcePage = () => {
     setShowForm(true);
     try {
       setIsLoadingResource(true);
-      //TODO : MOCK API - CYPRESS_TESTS
-      //TODO: SPLIT getResourceInit
-      //TODO: placement "use" button for kaltura
-
       const createResourceResponse = await createResource(ResourceCreationType.LINK, kalturaResource.url);
       await getResourceInit(createResourceResponse, ResourceCreationType.LINK, kalturaResource);
     } catch (error) {
