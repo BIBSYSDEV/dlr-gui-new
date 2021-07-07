@@ -84,7 +84,7 @@ const EditResourcePage = () => {
   const [fileUploadError, setFileUploadError] = useState<Error>();
   const [mainFileBeingUploaded, setMainFileBeingUploaded] = useState(false);
   const location = useLocation();
-  const useKalturaFlag = new URLSearchParams(location.search).get('useKalturaFeature') === 'true' ? true : false;
+  const useKalturaFlag = new URLSearchParams(location.search).get('useKalturaFeature') === 'true' ? true : false; //TODO: remove once ready for prod
 
   const user = useSelector((state: RootState) => state.user);
 
