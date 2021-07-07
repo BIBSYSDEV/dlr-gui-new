@@ -5,7 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
-    "@material-ui/lab": "^4.0.0-alpha.58",
+    "@material-ui/lab": "^4.0.0-alpha.59",
     "@material-ui/styles": "^4.11.4",
     "@reduxjs/toolkit": "^1.6.0",
     "@uppy/aws-s3-multipart": "^1.8.18",
