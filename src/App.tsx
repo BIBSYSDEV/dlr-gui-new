@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from './state/userSlice';
@@ -16,16 +15,7 @@ import i18next from 'i18next';
 import ErrorBanner from './components/ErrorBanner';
 import LoginRedirectPage from './pages/LoginRedirectPage';
 import AppContent from './AppContent';
-
-const StyledProgressWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  min-height: 100vh;
-  padding: 0;
-  margin: 0;
-  align-items: center;
-  justify-content: center;
-`;
+import { StyledFullPageProgressWrapper } from './components/styled/Wrappers';
 
 const isLoggedInTokenExpired = () => {
   if (localStorage.tokenExpiry) {
@@ -119,9 +109,9 @@ const App = () => {
           {!isLoadingUser && hasValidToken ? (
             <AppContent mainContentRef={mainContentRef} userError={userError} />
           ) : (
-            <StyledProgressWrapper>
+            <StyledFullPageProgressWrapper>
               <CircularProgress />
-            </StyledProgressWrapper>
+            </StyledFullPageProgressWrapper>
           )}
         </Route>
       </Switch>

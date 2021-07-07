@@ -1,4 +1,10 @@
-import { mockContent, mockContents, mockDefaultResource, mockMyResources } from '../../src/api/mockdata';
+import {
+  mockContent,
+  mockContents,
+  mockDefaultResource,
+  mockKalturaPresentations,
+  mockMyResources,
+} from '../../src/api/mockdata';
 import { licenses } from '../../src/utils/testfiles/licenses';
 import { ResourceFeatureTypes } from '../../src/types/resource.types';
 import { resourcePath } from '../../src/utils/constants';
@@ -406,5 +412,14 @@ context('Actions', () => {
     cy.get('[data-testid=recommended-license]').contains(
       'Anbefalt lisens basert på dine valg i dette skjemaet er CC BY-SA 4.0'
     );
+  });
+
+  it('starts a registration with a Kaltura video', () => {
+    cy.visit('/registration/?useKalturaFeature=true'); //TODO: remove once ready for prod
+    cy.get('[data-testid=new-resource-kaltura]').click();
+    cy.get('[data-testid=open-kaltura-dialog-button]').click();
+    cy.get(`[data-testid=use-kaltura-link-button-${mockKalturaPresentations[0].id}]`).click();
+    cy.get('[data-testid=dlr-title-input]').should('have.value', mockKalturaPresentations[0].title);
+    cy.get('[data-testid=resource-type-input] input').should('have.value', ResourceFeatureTypes.video);
   });
 });

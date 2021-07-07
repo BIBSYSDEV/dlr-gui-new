@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import {
   Contributor,
   Creator,
+  KalturaPresentation,
   Resource,
   ResourceContents,
   ResourceCreationType,
@@ -398,5 +399,23 @@ export const getResourceViews = (resourceIdentifier: string): Promise<AxiosRespo
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesStatisticsPath}/statistics/resources/${resourceIdentifier}`),
     method: 'GET',
+  });
+};
+
+export const getMyKalturaPresentations = (): Promise<AxiosResponse<KalturaPresentation[]>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations`),
+    method: 'GET',
+  });
+};
+
+export const postKalturaPresentationImport = (resource: Resource, kalturaPresentation: KalturaPresentation) => {
+  const data = encodeURI(
+    `identifier=${resource.identifier}&identifierContent=${resource.contents.masterContent.identifier}&kalturaPresentationId=${kalturaPresentation.id}&downloadUrl=${kalturaPresentation.downloadUrl}&title=${kalturaPresentation.title}`
+  );
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations/import`),
+    method: 'POST',
+    data: data,
   });
 };
