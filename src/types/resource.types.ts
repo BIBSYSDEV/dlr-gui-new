@@ -311,3 +311,15 @@ export interface ResourceStatistic {
 export interface ResourceStatisticFeatures {
   dlr_statistics_delivery_count?: string;
 }
+
+export interface KalturaPresentation {
+  id: string;
+  title: string;
+  timeRecorded: string;
+  downloadUrl: string;
+  url: string;
+  thumbnailUrl: string;
+  institution: string;
+  dlrContentIdentifier: string;
+  description?: string;
+}

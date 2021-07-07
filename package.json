@@ -33,8 +33,8 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
-    "@types/history": "^4.7.8",
-    "@types/jest": "^26.0.23",
+    "@types/history": "^4.7.9",
+    "@types/jest": "^26.0.24",
     "@types/node": "^16.0.0",
     "@types/react": "^17.0.13",
     "@types/react-dom": "^17.0.8",
@@ -45,15 +45,15 @@
     "@types/uuid": "^8.3.1",
     "@types/yup": "^0.29.12",
     "axios-mock-adapter": "^1.19.0",
-    "cypress": "7.6.0",
+    "cypress": "^7.6.0",
     "cypress-file-upload": "^5.0.8",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-cypress": "^2.11.3",
     "eslint-plugin-prettier": "^3.4.0",
-    "husky": "^7.0.0",
+    "husky": "^7.0.1",
     "prettier": "^2.3.2",
     "pretty-quick": "^3.1.1",
-    "start-server-and-test": "^1.12.5",
+    "start-server-and-test": "^1.12.6",
     "typescript": "^4.3.5"
   },
   "scripts": {
