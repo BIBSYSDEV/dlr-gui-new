@@ -33,7 +33,7 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
-    "@types/history": "^4.7.8",
+    "@types/history": "^4.7.9",
     "@types/jest": "^26.0.24",
     "@types/node": "^16.0.0",
     "@types/react": "^17.0.13",
