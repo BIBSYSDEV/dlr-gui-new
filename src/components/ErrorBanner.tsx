@@ -15,17 +15,25 @@ interface ErrorBannerProps {
   userNeedsToBeLoggedIn?: boolean;
   error?: Error;
   customErrorMessage?: string;
+  useFulToTryAgain?: boolean;
 }
 
-const ErrorBanner: FC<ErrorBannerProps> = ({ userNeedsToBeLoggedIn = false, error, customErrorMessage }) => {
+const ErrorBanner: FC<ErrorBannerProps> = ({
+  userNeedsToBeLoggedIn = false,
+  error,
+  customErrorMessage,
+  useFulToTryAgain = true,
+}) => {
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.user);
 
   const getErrorMessage = () => {
     if (userNeedsToBeLoggedIn && user.id.length === 0) {
       return t('error.403_page');
-    } else {
+    } else if (useFulToTryAgain) {
       return t('error.generic');
+    } else {
+      return t('error.generic_try_again_false');
     }
   };
 

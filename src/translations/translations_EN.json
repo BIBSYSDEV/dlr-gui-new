@@ -158,7 +158,8 @@
     "403_page": "You must be logged in for using this feature",
     "404_page": "Got lost? (404-page)",
     "500_page": "Whoops, something went wrong. Try again later",
-    "generic": "Whoops, something went wrong. Try again later"
+    "generic": "Whoops, something went wrong. Try again later",
+    "generic_try_again_false": "Whoops, something went wrong"
   },
   "explanation_text": {
     "access_filtering_label": "Show other results explanation",
@@ -589,6 +590,7 @@
     "no_doi_requests": "There are currently no DOI requests",
     "no_ownership_requests": "There are currently no ownership requests",
     "no_report_requests": "There are currently no reports",
+    "not_possible_to_change_owner_due_to_deleted_resource": "It is not possible to change owner because the resource have been deleted",
     "ownership_requests": "Ownership requests",
     "page_title": "Work list",
     "page_requirements": "You must be curator or editor for accessing this feature",

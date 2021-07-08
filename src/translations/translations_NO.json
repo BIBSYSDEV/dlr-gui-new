@@ -158,7 +158,8 @@
     "403_page": "Du må være pålogget for å benytte denne funksjonaliteten",
     "404_page": "Gått deg vill? (404-page)",
     "500_page": "Ups, noe gikk galt. Prøv igjen senere",
-    "generic": "Ups, noe gikk galt. Prøv igjen senere"
+    "generic": "Ups, noe gikk galt. Prøv igjen senere",
+    "generic_try_again_false": "Ups, noe gikk galt"
   },
   "explanation_text": {
     "access_filtering_label": "Vis andre ressurser forklaring",
@@ -590,6 +591,7 @@
     "no_doi_requests": "For tiden finnes det ingen DOI forespørsler",
     "no_ownership_requests": "For tiden finnes det ingen eierskaps-forespørsler",
     "no_report_requests": "For tiden finnes det ingen rapporteringer",
+    "not_possible_to_change_owner_due_to_deleted_resource": "Det er ikke mulig å endre eierskap på ressurs som er slettet",
     "ownership_requests": "Eierskaps-forespørsler",
     "page_title": "Arbeidsliste",
     "page_requirements": "Du må være kurator eller redaktør for å få tilgang til denne funksjonaliteten",
