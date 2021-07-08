@@ -33,7 +33,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
   const isAuthor = () => resource.features.dlr_submitter_email === user.id;
   const [isOwner, setIsOwner] = useState(false);
   const [canRequestChangeInOwnership, setCanRequestChangeInOwnership] = useState(false);
-  const [errorLoadingAuthorization, setErrorLoadingAuthorization] = useState<Error | undefined>();
+  const [errorLoadingAuthorization, setErrorLoadingAuthorization] = useState<Error>();
 
   useEffect(() => {
     const fetchAuthorization = async () => {

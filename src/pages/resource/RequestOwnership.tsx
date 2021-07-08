@@ -26,7 +26,7 @@ const RequestOwnership: FC<RequestOwnershipProps> = ({ resource, setRequestSentS
   const { t } = useTranslation();
   const [showRequestOwnershipDialog, setShowRequestOwnershipDialog] = useState(false);
   const [ownershipComment, setOwnershipComment] = useState('');
-  const [ownershipRequestError, setOwnershipRequestError] = useState<Error | undefined>();
+  const [ownershipRequestError, setOwnershipRequestError] = useState<Error>();
   const useFullScreen = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
 
   const askForOwnership = async () => {
@@ -66,6 +66,7 @@ const RequestOwnership: FC<RequestOwnershipProps> = ({ resource, setRequestSentS
             rows={4}
             id="ownership-comment-text-field"
             fullWidth
+            variant="outlined"
             value={ownershipComment}
             onChange={(event) => setOwnershipComment(event.target.value)}
             inputProps={{ 'data-testid': 'ownership-dialog-input' }}

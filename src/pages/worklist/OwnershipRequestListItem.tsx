@@ -50,7 +50,7 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
   const [isDeletingRequest, setIsDeletingRequest] = useState(false);
   const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
   const [showConfirmCGrantOwnershipDialog, setShowConfirmCGrantOwnershipDialog] = useState(false);
-  const [updateError, setUpdateError] = useState<Error | undefined>();
+  const [updateError, setUpdateError] = useState<Error>();
   const [isGrantingOwnership, setIsGrantingOwnership] = useState(false);
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
 

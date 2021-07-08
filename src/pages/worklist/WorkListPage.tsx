@@ -45,7 +45,7 @@ const WorkListPage = () => {
   const [loadingErrorReports, setLoadingErrorReports] = useState<Error>();
   const [workListReports, setWorkListReports] = useState<WorklistRequest[]>([]);
   const [isLoadingOwnership, setIsLoadingOwnership] = useState(false);
-  const [loadingOwnershipError, setLoadingOwnershipError] = useState<Error | undefined>();
+  const [loadingOwnershipError, setLoadingOwnershipError] = useState<Error>();
   const [workListOwnership, setWorkListOwnership] = useState<WorklistRequest[]>([]);
   const mountedRef = useRef(true);
 

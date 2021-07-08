@@ -26,7 +26,9 @@ const WorkListRequestMetaDataViewer: FC<WorkListRequestMetaDataViewerProps> = ({
       </Grid>
       {!workListRequest.resource?.features.dlr_title && (
         <Grid item xs={12}>
-          <Typography>{t('work_list.possible_deleted')}</Typography>
+          <Typography>
+            <b>{t('work_list.possible_deleted')}</b>
+          </Typography>
         </Grid>
       )}
       <Grid item xs={12} sm={6}>
@@ -45,7 +47,7 @@ const WorkListRequestMetaDataViewer: FC<WorkListRequestMetaDataViewerProps> = ({
         <Grid item xs={12} sm={6}>
           <Typography variant="caption">{t('work_list.current_resource_owner')}</Typography>
           <Typography data-testid={`request-item-resource-owner-${workListRequest.resourceIdentifier}`}>
-            {workListRequest.resourceOwners.map((resourceOwner) => resourceOwner.features.dlr_owner_subject).join('')}
+            {workListRequest.resourceOwners.map((resourceOwner) => resourceOwner.features.dlr_owner_subject).join(', ')}
           </Typography>
         </Grid>
       )}
