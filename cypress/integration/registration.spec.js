@@ -424,7 +424,7 @@ context('Actions', () => {
   });
 
   it('can use pagination on Kaltura-list', () => {
-    cy.get('[data-testid=new-registration-link]').click();
+    cy.visit('/registration/?useKalturaFeature=true'); //TODO: remove once ready for prod
     cy.get('[data-testid=new-resource-kaltura]').click();
     cy.get('[data-testid=open-kaltura-dialog-button]').click();
     cy.get(`[data-testid=kaltura-item-${mockKalturaPresentations[0].id}]`).should('exist');

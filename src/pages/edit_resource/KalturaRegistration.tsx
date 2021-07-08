@@ -128,12 +128,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
             ) : kalturaResources ? (
               <>
                 {kalturaResources.slice(firstItemOnPage, lastItemOnPage).map((resultItem) => (
-                  <KalturaListItem
-                    key={resultItem.id}
-                    data-testid={`kaltura-item-${resultItem.id}`}
-                    item={resultItem}
-                    handleUseResource={handleUseResource}
-                  />
+                  <KalturaListItem key={resultItem.id} item={resultItem} handleUseResource={handleUseResource} />
                 ))}
                 {kalturaResources.length > itemsPrPage && (
                   <StyledPaginationWrapper>
