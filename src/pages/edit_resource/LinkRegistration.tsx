@@ -3,20 +3,20 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import LinkIcon from '@material-ui/icons/Link';
 import LinkResourceForm, { LinkResourceFormValues } from './LinkResourceForm';
-import PublicationAccordion from './PublicationAccordion';
+import StartRegistrationMethodAccordion from './StartRegistrationMethodAccordion';
 import { urlValidationSchema } from '../../utils/validation/urlValidation';
 
 const StyledBody = styled.div`
   width: 100%;
 `;
 
-interface LinkRegistrationPanelProps {
+interface LinkRegistrationProps {
   expanded: boolean;
   onChange: (event: React.ChangeEvent<any>, isExpanded: boolean) => void;
   onSubmit: (id: string) => void;
 }
 
-const LinkResource: FC<LinkRegistrationPanelProps> = ({ expanded, onChange, onSubmit }) => {
+const LinkRegistration: FC<LinkRegistrationProps> = ({ expanded, onChange, onSubmit }) => {
   const { t } = useTranslation();
 
   const handleSubmit = (values: LinkResourceFormValues) => {
@@ -26,7 +26,7 @@ const LinkResource: FC<LinkRegistrationPanelProps> = ({ expanded, onChange, onSu
   };
 
   return (
-    <PublicationAccordion
+    <StartRegistrationMethodAccordion
       headerLabel={t('resource.start_with_link_to_resource')}
       icon={<LinkIcon className="icon" />}
       expanded={expanded}
@@ -36,8 +36,8 @@ const LinkResource: FC<LinkRegistrationPanelProps> = ({ expanded, onChange, onSu
       <StyledBody>
         <LinkResourceForm handleSubmit={handleSubmit} />
       </StyledBody>
-    </PublicationAccordion>
+    </StartRegistrationMethodAccordion>
   );
 };
 
-export default LinkResource;
+export default LinkRegistration;

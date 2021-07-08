@@ -119,6 +119,7 @@
     "select": "Velg",
     "step": "Trinn",
     "type": "Type",
+    "use": "Bruk",
     "usage": "Bruk",
     "yes": "Ja"
   },
@@ -230,6 +231,14 @@
     "ntnu": "NTNU",
     "oslomet": "OsloMet",
     "uib": "UiB"
+  },
+  "kaltura": {
+    "already_imported": "Allerede importert",
+    "choose_a_resource": "Velg en ressurs fra listen",
+    "my_resources" : "Mine ressurser i Kaltura",
+    "no_resources_found": "Ingen ressurser funnet",
+    "show_my_resources" : "Vis mine ressurser fra Kaltura",
+    "start_with_kaltura_resource" : "Start med en ressurs fra Kaltura"
   },
   "license": {
     "commercial_options": {
