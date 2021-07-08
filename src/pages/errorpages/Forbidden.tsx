@@ -21,7 +21,7 @@ const Forbidden = () => {
 
   return (
     <StyledContentWrapperLarge>
-      <PageHeader data-testid="401">{user.id ? t('error.401_page') : t('error.403_page')}</PageHeader>
+      <PageHeader testId="401">{user.id ? t('error.401_page') : t('error.403_page')}</PageHeader>
       <StyledContentWrapperMedium>
         <StyledImg src={SecureFiles} alt={t('illustration_alts_tags.secure_files')} />
       </StyledContentWrapperMedium>
