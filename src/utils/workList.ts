@@ -87,3 +87,8 @@ export const sortWorkListByDate = (workList: WorklistRequest[]): WorklistRequest
     return dateA.getTime() - dateB.getTime();
   });
 };
+
+//remove possible worklists without resource object
+export const filterWorkListWithoutResources = (workList: WorklistRequest[]): WorklistRequest[] => {
+  return workList.filter((work) => work.resource);
+};

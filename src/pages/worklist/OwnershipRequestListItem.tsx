@@ -82,7 +82,7 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
         prevState.filter((work) => work.resourceIdentifier !== workListRequestOwnership.resourceIdentifier)
       );
     } catch (error) {
-      setUpdateError(new Error(`${t('work_list.not_possible_to_change_owner_due_to_deleted_resource')}`));
+      setUpdateError(error);
     } finally {
       setIsGrantingOwnership(false);
     }
@@ -128,7 +128,7 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
           </Grid>
           {updateError && (
             <Grid item xs={12}>
-              <ErrorBanner useFulToTryAgain={false} userNeedsToBeLoggedIn={true} error={updateError} />
+              <ErrorBanner userNeedsToBeLoggedIn={true} error={updateError} />
             </Grid>
           )}
         </Grid>

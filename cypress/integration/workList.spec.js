@@ -68,7 +68,7 @@ context('Work List', () => {
 
   it('should disable create-doi-button for resources without verified creators', () => {
     cy.get('[data-testid=doi-tab]').click();
-    cy.get(`[data-testid=create-doi-button-1234]`).should('exist').should('be.disabled');
+    cy.get(`[data-testid=create-doi-button-456]`).should('exist').should('be.disabled');
   });
 
   it('renders current resource owner for ownership requests', () => {

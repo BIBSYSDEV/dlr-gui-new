@@ -632,7 +632,7 @@ export const mockWorkListRequestDOI: WorklistRequest[] = [
   },
   {
     identifier: '234',
-    resourceIdentifier: '1234',
+    resourceIdentifier: '456',
     submitter: 'epost@epost.no',
     institution: 'unit',
     submittedDate: '2021-04-28T11:23:34.250Z',
@@ -643,7 +643,7 @@ export const mockWorkListRequestDOI: WorklistRequest[] = [
   },
   {
     identifier: '567',
-    resourceIdentifier: '5678',
+    resourceIdentifier: '123',
     submitter: 'somebody@email.com',
     institution: 'unit',
     submittedDate: '2021-04-28T11:23:34.250Z',

@@ -158,8 +158,8 @@
     "403_page": "You must be logged in for using this feature",
     "404_page": "Got lost? (404-page)",
     "500_page": "Whoops, something went wrong. Try again later",
-    "generic": "Whoops, something went wrong. Try again later",
-    "generic_try_again_false": "Whoops, something went wrong"
+    "error_message": "Error message",
+    "generic": "Whoops, something went wrong. Try again later"
   },
   "explanation_text": {
     "access_filtering_label": "Show other results explanation",

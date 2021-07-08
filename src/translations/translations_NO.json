@@ -158,8 +158,8 @@
     "403_page": "Du må være pålogget for å benytte denne funksjonaliteten",
     "404_page": "Gått deg vill? (404-page)",
     "500_page": "Ups, noe gikk galt. Prøv igjen senere",
-    "generic": "Ups, noe gikk galt. Prøv igjen senere",
-    "generic_try_again_false": "Ups, noe gikk galt"
+    "error_message": "Feilmelding",
+    "generic": "Ups, noe gikk galt. Prøv igjen senere"
   },
   "explanation_text": {
     "access_filtering_label": "Vis andre ressurser forklaring",

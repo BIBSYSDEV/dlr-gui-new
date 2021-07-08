@@ -14,6 +14,7 @@ import OwnershipRequestList from './OwnershipRequestList';
 import { WorklistRequest } from '../../types/Worklist.types';
 import { getWorkListItemDOI, getWorkListItemsOwnership, getWorkListReports } from '../../api/workListApi';
 import {
+  filterWorkListWithoutResources,
   getWorkListWithResourceAndOwnersAttached,
   getWorkListWithResourceAttached,
   sortWorkListByDate,
@@ -68,7 +69,7 @@ const WorkListPage = () => {
         const workListDoiResponse = await getWorkListItemDOI();
         const workListTotal = await getWorkListWithResourceAttached(workListDoiResponse.data);
         if (!mountedRef.current) return null;
-        setWorkListDOIs(sortWorkListByDate(workListTotal));
+        setWorkListDOIs(sortWorkListByDate(filterWorkListWithoutResources(workListTotal)));
       } catch (error) {
         if (!mountedRef.current) return null;
         setLoadingErrorReports(error);
@@ -84,6 +85,7 @@ const WorkListPage = () => {
         setIsLoadingReports(true);
         setLoadingErrorReports(undefined);
         const workListReportResponse = await getWorkListReports();
+        //does not filter out worklist items without resource in case of complaints of harassment or GDPR violations
         const workListTotal = await getWorkListWithResourceAttached(workListReportResponse.data);
         if (!mountedRef.current) return null;
         setWorkListReports(sortWorkListByDate(workListTotal));
@@ -104,7 +106,7 @@ const WorkListPage = () => {
         const workListResponse = await getWorkListItemsOwnership();
         const workListTotal = await getWorkListWithResourceAndOwnersAttached(workListResponse.data);
         if (!mountedRef.current) return null;
-        setWorkListOwnership(sortWorkListByDate(workListTotal));
+        setWorkListOwnership(sortWorkListByDate(filterWorkListWithoutResources(workListTotal)));
       } catch (error) {
         if (!mountedRef.current) return null;
         setLoadingOwnershipError(error);
