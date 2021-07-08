@@ -10,6 +10,9 @@ phases:
       - npm install
   build:
     commands:
+      - cat /proc/sys/fs/inotify/max_user_watches
+      - echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+      - cat /proc/sys/fs/inotify/max_user_watches
       - npm run build
       - npm run test:cypress
 artifacts:
