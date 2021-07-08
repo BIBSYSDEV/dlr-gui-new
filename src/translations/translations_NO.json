@@ -157,7 +157,8 @@
     "403_page": "Du må være pålogget for å benytte denne funksjonaliteten",
     "404_page": "Gått deg vill? (404-page)",
     "500_page": "Ups, noe gikk galt. Prøv igjen senere",
-    "generic": "Ups, noe gikk galt. Prøv igjen senere"
+    "generic": "Ups, noe gikk galt. Prøv igjen senere",
+    "login_for_more_functionality": "Logg på for å få tilgang til mer funksjonalitet"
   },
   "explanation_text": {
     "access_filtering_label": "Vis andre ressurser forklaring",
@@ -227,7 +228,8 @@
   },
   "illustration_alts_tags": {
     "browsing_resource": "En dame søker etter en ressurs",
-    "resource_in_space": "Tegning av en dame med forstørrelses glass som leter etter ressurs som har havnet i verdensrommet"
+    "resource_in_space": "Tegning av en dame med forstørrelses glass som leter etter et dokument som har havnet i verdensrommet",
+    "secure_files": "Tegning av en mann som ser på et dokument som er låst med hengelås"
   },
   "institutions": {
     "bi": "BI",
