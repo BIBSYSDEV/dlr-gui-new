@@ -126,39 +126,14 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
             {busyGettingKalturaResources ? (
               <CircularProgress />
             ) : kalturaResources ? (
-              {kalturaResources.slice(firstItemOnPage, lastItemOnPage).map((resultItem) => (
-
-                  kalturaResources.map((resultItem) => (
-                <KalturaListItem key={resultItem.id} item={resultItem} handleUseResource={handleUseResource} />
-              ))
               <>
                 {kalturaResources.slice(firstItemOnPage, lastItemOnPage).map((resultItem) => (
-                  <StyledResultItem key={resultItem.id} data-testid={`kaltura-item-${resultItem.id}`}>
-                    <Grid container spacing={1}>
-                      <Grid item xs={12} sm={4}>
-                        <StyledImageWrapper>
-                          <StyledImage src={resultItem.thumbnailUrl} />
-                        </StyledImageWrapper>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <Link href={resultItem.url} target="_blank" data-testid={`kaltura-item-${resultItem.id}-link`}>
-                          <Typography>{resultItem.title}</Typography>
-                        </Link>
-                      </Grid>
-                      <Grid item xs={12} sm={2}>
-                        {resultItem.dlrContentIdentifier ? (
-                          <Typography variant="caption">{t('kaltura.already_imported')}</Typography>
-                        ) : (
-                          <Button
-                            variant="outlined"
-                            data-testid={`use-kaltura-link-button-${resultItem.id}`}
-                            onClick={() => handleUseResource(resultItem)}>
-                            {t('common.use')}
-                          </Button>
-                        )}
-                      </Grid>
-                    </Grid>
-                  </StyledResultItem>
+                  <KalturaListItem
+                    key={resultItem.id}
+                    data-testid={`kaltura-item-${resultItem.id}`}
+                    item={resultItem}
+                    handleUseResource={handleUseResource}
+                  />
                 ))}
                 {kalturaResources.length > itemsPrPage && (
                   <StyledPaginationWrapper>
