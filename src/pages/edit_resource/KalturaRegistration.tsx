@@ -62,6 +62,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
   };
 
   const handleClickOpen = async () => {
+    setPage(1);
     setOpen(true);
     try {
       setBusyGettingKalturaResources(true);
@@ -79,13 +80,11 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
 
   const handleClose = () => {
     setOpen(false);
-    setPage(1);
   };
 
   const handleUseResource = (kalturaPresentation: KalturaPresentation) => {
     setOpen(false);
     onSubmit(kalturaPresentation);
-    setPage(1);
   };
 
   return (

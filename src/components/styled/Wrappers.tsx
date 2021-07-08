@@ -3,15 +3,6 @@ import NormalText from '../NormalText';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
 
-export const StyledInformationWrapper = styled.div`
-  width: 60%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    width: 90%;
-  }
-  padding-top: 4rem;
-  padding-bottom: 1rem;
-`;
-
 export const StyledProgressWrapper = styled.div`
   display: flex;
   justify-content: space-around;
