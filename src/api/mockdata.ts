@@ -798,7 +798,8 @@ export const mockResourceOwners: ResourceOwner[] = [
       dlr_owner_timer_created: '2021-04-28T11:23:34.250Z',
     },
   },
-]
+];
+
 export const mockKalturaPresentations: KalturaPresentation[] = [
   {
     id: '54353453453',
