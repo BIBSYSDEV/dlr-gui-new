@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import {
   Contributor,
   Creator,
+  KalturaPresentation,
   Resource,
   ResourceContents,
   ResourceCreationType,
@@ -410,6 +411,11 @@ export const getMyUserAuthorizationProfileForResource = (
     url: encodeURI(
       `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/authorizations/users/authorized`
     ),
+  });
+};
+export const getMyKalturaPresentations = (): Promise<AxiosResponse<KalturaPresentation[]>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations`),
     method: 'GET',
   });
 };
@@ -418,5 +424,15 @@ export const getResourceOwners = (resourceIdentifier: string): Promise<AxiosResp
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/owners`),
     method: 'GET',
+  });
+};
+export const postKalturaPresentationImport = (resource: Resource, kalturaPresentation: KalturaPresentation) => {
+  const data = encodeURI(
+    `identifier=${resource.identifier}&identifierContent=${resource.contents.masterContent.identifier}&kalturaPresentationId=${kalturaPresentation.id}&downloadUrl=${kalturaPresentation.downloadUrl}&title=${kalturaPresentation.title}`
+  );
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations/import`),
+    method: 'POST',
+    data: data,
   });
 };

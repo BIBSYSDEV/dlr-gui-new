@@ -2,6 +2,7 @@ import {
   Contributor,
   Creator,
   emptyResource,
+  KalturaPresentation,
   Resource,
   ResourceOwner,
   ResourceStatistic,
@@ -796,5 +797,29 @@ export const mockResourceOwners: ResourceOwner[] = [
       dlr_owner_subject: mockUser.id,
       dlr_owner_timer_created: '2021-04-28T11:23:34.250Z',
     },
+  },
+]
+export const mockKalturaPresentations: KalturaPresentation[] = [
+  {
+    id: '54353453453',
+    title: 'Sample Kaltura Title 1',
+    timeRecorded: '6420',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/534534545/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/534534545/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/534534545/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '',
+  },
+  {
+    id: '423654654',
+    title: 'Sample Kaltura Title 2',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '54689068054',
   },
 ];

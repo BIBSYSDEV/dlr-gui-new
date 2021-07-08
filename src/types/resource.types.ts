@@ -322,3 +322,14 @@ export interface ResourceOwnerFeatures {
   dlr_owner_subject: string; //feide-id of the owner
   dlr_owner_timer_created: string; //time the subject got ownership of this resource
 }
+export interface KalturaPresentation {
+  id: string;
+  title: string;
+  timeRecorded: string;
+  downloadUrl: string;
+  url: string;
+  thumbnailUrl: string;
+  institution: string;
+  dlrContentIdentifier: string;
+  description?: string;
+}
