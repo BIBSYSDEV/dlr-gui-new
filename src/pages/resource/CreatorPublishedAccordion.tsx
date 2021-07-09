@@ -18,6 +18,7 @@ import CreatorPublishedItem from './CreatorPublishedItem';
 import styled from 'styled-components';
 import ErrorBanner from '../../components/ErrorBanner';
 import { DeviceWidths } from '../../themes/mainTheme';
+import { getLMSSearchParams } from '../../utils/lmsService';
 
 const StyledAccordion = styled(Accordion)`
   margin-top: 1rem;
@@ -87,7 +88,10 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ parentR
   const [loadingError, setLoadingError] = useState<Error | undefined>();
   const [resources, setResources] = useState<Resource[]>([]);
   const [creatorsNames] = useState<string[]>(nameOnSeveralFormats(creator.features.dlr_creator_name ?? ''));
-  const link = `/?${creatorsNames.map((creator) => `${SearchParameters.creator}=${creator}`).join('&')}`;
+  const LMSSearchParams = getLMSSearchParams();
+  const link = `/?${creatorsNames.map((creator) => `${SearchParameters.creator}=${creator}`).join('&')}${
+    LMSSearchParams.toString().length > 0 ? `&${LMSSearchParams}` : ''
+  }`;
   const shouldUseAccordion = useMediaQuery(`(max-width:${DeviceWidths.lg}px)`);
 
   useEffect(() => {
@@ -138,7 +142,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ parentR
           ) : (
             <>
               <StyledTypography variant="subtitle2" gutterBottom>
-                Antall ressurser funnet: {searchResult?.numFound ? searchResult.numFound - 1 : 0}
+                {t('resource.number_of_resources_found')}: {searchResult?.numFound ? searchResult.numFound - 1 : 0}
               </StyledTypography>
               <SearchResultWrapper>
                 {resources.slice(0, 5).map((creatorSearchResult) => (
@@ -157,7 +161,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ parentR
           {searchResult?.numFound && searchResult.numFound > 6 && (
             <StyledTypography>
               <Link data-testid={`show-all-posts-${creator.identifier}`} href={link}>
-                Se flere ressurser
+                {t('resource.browse_by_creator')}
               </Link>
             </StyledTypography>
           )}
@@ -175,7 +179,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ parentR
         ) : (
           <StyledDetails>
             <StyledTypography variant="subtitle2" gutterBottom>
-              Antall ressurser funnet: {searchResult?.numFound ? searchResult.numFound - 1 : 0}
+              {t('resource.number_of_resources_found')}: {searchResult?.numFound ? searchResult.numFound - 1 : 0}
             </StyledTypography>
             <SearchResultWrapper>
               {resources.slice(0, 5).map((creatorSearchResult) => (
@@ -189,7 +193,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ parentR
             {searchResult?.numFound && searchResult.numFound > 6 && (
               <StyledTypography align="right">
                 <Link data-testid={`show-all-posts-${creator.identifier}`} href={link}>
-                  Se flere ressurser
+                  {t('resource.browse_by_creator')}
                 </Link>
               </StyledTypography>
             )}

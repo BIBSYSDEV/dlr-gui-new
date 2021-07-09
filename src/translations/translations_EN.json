@@ -340,6 +340,7 @@
     "add_tags": "Add 4-6 tags. Press enter for adding more tags.",
     "also_published_by_plural": "Have also published",
     "also_published_by_singular": "Has also published",
+    "browse_by_creator": "Browse more resources",
     "contributor_type": {
       "ContactPerson": "Contact person",
       "DataCollector": "Data collector",
@@ -454,6 +455,7 @@
     "new_registration": "New registration",
     "no_published_resources": "You have no published resources",
     "no_unpublished_resources": "You have no unpublished resources",
+    "number_of_resources_found": "Numbers of resources found",
     "preview": {
       "browser_does_not_support_pdf_viewing": "This browser does not support PDF",
       "external_page": "External page",

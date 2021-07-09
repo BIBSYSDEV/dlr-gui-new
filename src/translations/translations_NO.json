@@ -340,6 +340,7 @@
     "add_tags": "Legg inn 4-6 emneord. Trykk enter for å legge inn flere",
     "also_published_by_plural": "Har også publisert",
     "also_published_by_singular": "Har også publisert",
+    "browse_by_creator": "Se flere ressurser",
     "contributor_type": {
       "ContactPerson": "Kontakt person",
       "DataCollector": "Datasamler",
@@ -454,6 +455,7 @@
     "new_registration": "Ny registering",
     "no_published_resources": "Du har ingen publiserte ressurser",
     "no_unpublished_resources": "Du har ingen upubliserte ressurser",
+    "number_of_resources_found": "Antall ressurser funnet",
     "preview": {
       "browser_does_not_support_pdf_viewing": "Nettleseren din støtter ikke PDF",
       "external_page": "Ekstern side",
