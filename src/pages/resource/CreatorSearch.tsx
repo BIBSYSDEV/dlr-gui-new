@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { Resource } from '../../types/resource.types';
 import styled from 'styled-components';
 import CreatorPublishedAccordion from './CreatorPublishedAccordion';
@@ -12,17 +12,13 @@ interface CreatorSearchProps {
 }
 
 const CreatorSearch: FC<CreatorSearchProps> = ({ resource }) => {
-  const [displayCreatorNames] = useState<string[]>(
-    resource.creators
-      .map((creator) => creator.features.dlr_creator_name)
-      .filter((creatorName): creatorName is string => !!creatorName)
-  );
-
   return (
     <>
-      {displayCreatorNames.map((name) => (
-        <StyledCreatorPublishedAccordion key={name} creatorName={name} parentResource={resource} />
-      ))}
+      {resource.creators
+        .filter((creator) => !!creator.features.dlr_creator_name)
+        .map((creator) => (
+          <StyledCreatorPublishedAccordion key={creator.identifier} creator={creator} parentResource={resource} />
+        ))}
     </>
   );
 };

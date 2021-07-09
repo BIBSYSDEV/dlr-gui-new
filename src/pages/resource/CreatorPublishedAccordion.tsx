@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Order, QueryObject, SearchParameters, SearchResult } from '../../types/search.types';
 import { StringArrayToSetStringArray } from '../../utils/StringArray';
 import { searchResources } from '../../api/resourceApi';
-import { Resource } from '../../types/resource.types';
+import { Creator, Resource } from '../../types/resource.types';
 import {
   Accordion,
   AccordionDetails,
@@ -76,17 +76,17 @@ const nameOnSeveralFormats = (name: string) => {
 };
 
 interface CreatorPublishedAccordionProps {
-  creatorName: string;
+  creator: Creator;
   parentResource: Resource;
 }
 
-const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ creatorName, parentResource }) => {
+const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ parentResource, creator }) => {
   const { t } = useTranslation();
   const [searchResult, setSearchResult] = useState<SearchResult | undefined>();
   const [isLoading, setIsLoading] = useState(true);
   const [loadingError, setLoadingError] = useState<Error | undefined>();
   const [resources, setResources] = useState<Resource[]>([]);
-  const [creatorsNames] = useState<string[]>(nameOnSeveralFormats(creatorName));
+  const [creatorsNames] = useState<string[]>(nameOnSeveralFormats(creator.features.dlr_creator_name ?? ''));
   const link = `/?${creatorsNames.map((creator) => `${SearchParameters.creator}=${creator}`).join('&')}`;
   const shouldUseAccordion = useMediaQuery(`(max-width:${DeviceWidths.lg}px)`);
 
@@ -124,9 +124,12 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ creator
   if (shouldUseAccordion) {
     return (
       <StyledAccordion>
-        <AccordionSummary aria-controls="panel1a-content" expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h2" data-testid={`also-published-by-header-${creatorName.split(' ')[0].toLowerCase()}`}>
-            {`${creatorName} ${t('resource.also_published_by_singular').toLowerCase()}`}
+        <AccordionSummary
+          id={`also-published-by-${creator.identifier}`}
+          aria-controls="panel1a-content"
+          expandIcon={<ExpandMoreIcon />}>
+          <Typography variant="h2" data-testid={`also-published-by-header-${creator.identifier}`}>
+            {`${creator.features.dlr_creator_name} ${t('resource.also_published_by_singular').toLowerCase()}`}
           </Typography>
         </AccordionSummary>
         <StyledDetails>
@@ -140,7 +143,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ creator
               <SearchResultWrapper>
                 {resources.slice(0, 5).map((creatorSearchResult) => (
                   <CreatorPublishedItem
-                    testId={`creator-published-item-${creatorName.trim().split(' ')[0].toLowerCase()}`}
+                    testId={`creator-published-item-${creator.identifier}`}
                     key={creatorSearchResult.identifier}
                     resource={creatorSearchResult}
                   />
@@ -153,7 +156,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ creator
 
           {searchResult?.numFound && searchResult.numFound > 6 && (
             <StyledTypography>
-              <Link data-testid={`show-all-posts-${creatorName.trim().split(' ')[0].toLowerCase()}`} href={link}>
+              <Link data-testid={`show-all-posts-${creator.identifier}`} href={link}>
                 Se flere ressurser
               </Link>
             </StyledTypography>
@@ -165,7 +168,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ creator
     return (
       <SearchWrapper>
         <Typography data-testid="also-published-by-header" gutterBottom variant="h2">
-          {`${creatorName} ${t('resource.also_published_by_singular').toLowerCase()}`}
+          {`${creator.features.dlr_creator_name} ${t('resource.also_published_by_singular').toLowerCase()}`}
         </Typography>
         {isLoading ? (
           <CircularProgress />
@@ -177,7 +180,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ creator
             <SearchResultWrapper>
               {resources.slice(0, 5).map((creatorSearchResult) => (
                 <CreatorPublishedItem
-                  testId={`creator-published-item-${creatorName.trim().split(' ')[0].toLowerCase()}`}
+                  testId={`creator-published-item-${creator.identifier}`}
                   key={creatorSearchResult.identifier}
                   resource={creatorSearchResult}
                 />
@@ -185,7 +188,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ creator
             </SearchResultWrapper>
             {searchResult?.numFound && searchResult.numFound > 6 && (
               <StyledTypography align="right">
-                <Link data-testid={`show-all-posts-${creatorName.trim().split(' ')[0].toLowerCase()}`} href={link}>
+                <Link data-testid={`show-all-posts-${creator.identifier}`} href={link}>
                   Se flere ressurser
                 </Link>
               </StyledTypography>
