@@ -27,6 +27,7 @@ export interface QueryObject {
   orderBy: string;
   order: Order;
   mine: boolean;
+  creators?: string[];
 }
 
 export enum Order {
@@ -51,6 +52,7 @@ export const emptyQueryObject: QueryObject = {
 };
 
 export enum SearchParameters {
+  creator = 'creator',
   institution = 'inst',
   tag = 'tag',
   query = 'query',

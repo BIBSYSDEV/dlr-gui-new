@@ -80,6 +80,7 @@ const createQueryFromUrl = (location: any): QueryObject => {
   const institutions = searchTerms.getAll(SearchParameters.institution);
   const resourceTypes = searchTerms.getAll(SearchParameters.resourceType);
   const tags = searchTerms.getAll(SearchParameters.tag).map((tag) => tag.toLowerCase());
+  const creators = searchTerms.getAll(SearchParameters.creator);
   const pageTerm = searchTerms.get(SearchParameters.page);
   const showInaccessibleParameter = searchTerms.get(SearchParameters.showInaccessible);
   const offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
@@ -94,6 +95,7 @@ const createQueryFromUrl = (location: any): QueryObject => {
     institutions: institutions,
     licenses: licenses,
     tags: tags,
+    creators: creators,
     showInaccessible: showInaccessible,
   };
 };
