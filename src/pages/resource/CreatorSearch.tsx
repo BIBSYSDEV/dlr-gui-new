@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Resource } from '../../types/resource.types';
 import { searchResources } from '../../api/resourceApi';
 import { Order, QueryObject, SearchResult } from '../../types/search.types';
-import { Button, CircularProgress, Grid, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import CreatorPublishedItem from './CreatorPublishedItem';
 import ErrorBanner from '../../components/ErrorBanner';
@@ -18,6 +18,14 @@ const ButtonWrapper = styled.div`
   margin-top: 1rem;
   display: flex;
   justify-content: flex-end;
+`;
+
+const SearchResultWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 100%;
 `;
 
 /*
@@ -152,25 +160,21 @@ const CreatorSearch: FC<CreatorSearchProps> = ({ resource }) => {
           ) : (
             <>
               {loadingError && <ErrorBanner error={loadingError} />}
-              <Grid container spacing={3}>
+              <SearchResultWrapper>
                 {showEverything ? (
                   <>
                     {resources.map((creatorSearchResult) => (
-                      <Grid key={creatorSearchResult.identifier} item>
-                        <CreatorPublishedItem key={creatorSearchResult.identifier} resource={creatorSearchResult} />
-                      </Grid>
+                      <CreatorPublishedItem key={creatorSearchResult.identifier} resource={creatorSearchResult} />
                     ))}
                   </>
                 ) : (
                   <>
                     {resources.slice(0, 5).map((creatorSearchResult) => (
-                      <Grid key={creatorSearchResult.identifier} item>
-                        <CreatorPublishedItem key={creatorSearchResult.identifier} resource={creatorSearchResult} />
-                      </Grid>
+                      <CreatorPublishedItem key={creatorSearchResult.identifier} resource={creatorSearchResult} />
                     ))}
                   </>
                 )}
-              </Grid>
+              </SearchResultWrapper>
               {searchResult?.numFound && searchResult.numFound > 6 && !showEverything && (
                 <ButtonWrapper>
                   <Button data-testid="show-all-posts" onClick={fetchTheRest} color="primary" variant="outlined">

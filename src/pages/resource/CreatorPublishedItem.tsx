@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Resource } from '../../types/resource.types';
-import { Grid, Link, Typography } from '@material-ui/core';
+import { Link, Typography } from '@material-ui/core';
 import Thumbnail from '../../components/Thumbnail';
 import ResourceTypeInfo from '../../components/ResourceTypeInfo';
 import styled from 'styled-components';
@@ -12,6 +12,10 @@ import { resourcePath } from '../../utils/constants';
 const StyledThumbnailWrapper = styled.div`
   background-color: ${Colors.DescriptionPageGradientColor1};
   width: 11rem;
+  margin-bottom: 1rem;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.lg + 'px'}) {
+    margin-right: 1rem;
+  }
 `;
 
 const StyledMaxTwoLinesTypography = styled(Typography)`
@@ -26,11 +30,21 @@ const StyledGridContainer = styled.div`
   background-color: ${Colors.DLRGray};
   padding: 1rem;
   width: 12.9rem;
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.lg + 'px'}) {
-    padding: 0.3rem;
-    width: 12rem;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  @media (max-width: 74rem) and (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    margin-left: 0;
+    padding: 1rem;
+    width: 100%;
+    flex-direction: row;
+    align-items: flex-start;
   }
-  height: 100%;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
+    width: 100%;
+  }
+  height: auto;
 `;
 
 const StyledLinkTypography = styled(Typography)`
@@ -51,29 +65,25 @@ const CreatorPublishedItem: FC<CreatorPublishedItemProps> = ({ resource }) => {
 
   return (
     <StyledGridContainer data-testid="creator-published-item">
-      <Grid container spacing={3}>
-        <Grid item>
-          <StyledThumbnailWrapper>
-            <Thumbnail
-              institution={resource.features.dlr_storage_id}
-              resourceOrContentIdentifier={resource.identifier}
-              alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
-            />
-            <ResourceTypeInfo resource={resource} />
-          </StyledThumbnailWrapper>
-        </Grid>
-        <Grid item>
-          <StyledLinkTypography variant="subtitle2" gutterBottom>
-            <Link href={generateURL(resource)}>{resource.features.dlr_title}</Link>
-          </StyledLinkTypography>
-          <Typography gutterBottom variant="body2">
-            {resource.creators.map((creator) => creator.features.dlr_creator_name).join(', ')}
-          </Typography>
-          <StyledMaxTwoLinesTypography variant="body2" gutterBottom>
-            {resource.features.dlr_description}
-          </StyledMaxTwoLinesTypography>
-        </Grid>
-      </Grid>
+      <StyledThumbnailWrapper>
+        <Thumbnail
+          institution={resource.features.dlr_storage_id}
+          resourceOrContentIdentifier={resource.identifier}
+          alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
+        />
+        <ResourceTypeInfo resource={resource} />
+      </StyledThumbnailWrapper>
+      <div>
+        <StyledLinkTypography variant="subtitle2" gutterBottom>
+          <Link href={generateURL(resource)}>{resource.features.dlr_title}</Link>
+        </StyledLinkTypography>
+        <Typography gutterBottom variant="body2">
+          {resource.creators.map((creator) => creator.features.dlr_creator_name).join(', ')}
+        </Typography>
+        <StyledMaxTwoLinesTypography variant="body2" gutterBottom>
+          {resource.features.dlr_description}
+        </StyledMaxTwoLinesTypography>
+      </div>
     </StyledGridContainer>
   );
 };
