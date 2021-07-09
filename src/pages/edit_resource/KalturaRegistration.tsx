@@ -145,17 +145,20 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
               <>
                 <Grid container justifyContent="space-between" style={{ backgroundColor: 'pink' }}>
                   <Grid item xs={6}>
+                    Fyll inn for å avgrense treffliste:
                     <TextField onChange={handleFilterChange} value={filterValue} variant="outlined" />
-                    <Button variant="contained">Filtrer treffliste</Button>
                   </Grid>
                   <Grid item xs={5}>
                     <Checkbox color="default" checked={showAllResources} name="NAVN" />
                     <span>Also show already imported resources</span>
                   </Grid>
                 </Grid>
-                {kalturaResources.slice(firstItemOnPage, lastItemOnPage).map((resultItem) => (
-                  <KalturaListItem key={resultItem.id} item={resultItem} handleUseResource={handleUseResource} />
-                ))}
+                {kalturaResources
+                  .slice(firstItemOnPage, lastItemOnPage)
+                  .filter((item) => item.title.toLowerCase().includes(filterValue.toLowerCase()))
+                  .map((resultItem) => (
+                    <KalturaListItem key={resultItem.id} item={resultItem} handleUseResource={handleUseResource} />
+                  ))}
                 {kalturaResources.length > itemsPrPage && (
                   <StyledPaginationWrapper>
                     <Typography variant="subtitle2">{t('common.page')}</Typography>
