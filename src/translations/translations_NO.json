@@ -108,7 +108,7 @@
     "none": "Ingen",
     "or": "Eller",
     "other_options": "Andre lisenser",
-    "page": "Page",
+    "page": "Side",
     "possible_options": "Mulige lisenser",
     "publish": "Publiser",
     "remove": "Fjern",
@@ -159,7 +159,8 @@
     "404_page": "Gått deg vill? (404-page)",
     "500_page": "Ups, noe gikk galt. Prøv igjen senere",
     "error_message": "Feilmelding",
-    "generic": "Ups, noe gikk galt. Prøv igjen senere"
+    "generic": "Ups, noe gikk galt. Prøv igjen senere",
+    "login_for_more_functionality": "Logg på for å få tilgang til mer funksjonalitet"
   },
   "explanation_text": {
     "access_filtering_label": "Vis andre ressurser forklaring",
@@ -223,8 +224,14 @@
       "type": "Ressurstype er obligatorisk og må fylles ut"
     }
   },
+  "handle_not_found": {
+    "handle_not_found": "Handle ikke funnet",
+    "this_resource_has_been_deleted": "Desverre har denne ressursen blitt slettet"
+  },
   "illustration_alts_tags": {
-    "browsing_resource": "En dame søker etter en ressurs"
+    "browsing_resource": "En dame søker etter en ressurs",
+    "resource_in_space": "Tegning av en dame med forstørrelses glass som leter etter et dokument som har havnet i verdensrommet",
+    "secure_files": "Tegning av en mann som ser på et dokument som er låst med hengelås"
   },
   "institutions": {
     "bi": "BI",
@@ -236,10 +243,10 @@
   "kaltura": {
     "already_imported": "Allerede importert",
     "choose_a_resource": "Velg en ressurs fra listen",
-    "my_resources" : "Mine ressurser i Kaltura",
+    "my_resources": "Mine ressurser i Kaltura",
     "no_resources_found": "Ingen ressurser funnet",
-    "show_my_resources" : "Vis mine ressurser fra Kaltura",
-    "start_with_kaltura_resource" : "Start med en ressurs fra Kaltura"
+    "show_my_resources": "Vis mine ressurser fra Kaltura",
+    "start_with_kaltura_resource": "Start med en ressurs fra Kaltura"
   },
   "license": {
     "commercial_options": {
@@ -333,7 +340,7 @@
     "institution": "Institusjon",
     "notifications": "Varsler",
     "profile": "Profil",
-    "receive_notifications_email":"Motta epost-varsler fra DLR til {{email}}",
+    "receive_notifications_email": "Motta epost-varsler fra DLR til {{email}}",
     "receive_notifications_email_details": "For eksempel varsel om DOI forepørsler og rapporterte ressurser",
     "your_groups": "Dine gruppetilknytninger",
     "your_roles": "Dine roller"

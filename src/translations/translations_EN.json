@@ -159,7 +159,8 @@
     "404_page": "Got lost? (404-page)",
     "500_page": "Whoops, something went wrong. Try again later",
     "error_message": "Error message",
-    "generic": "Whoops, something went wrong. Try again later"
+    "generic": "Whoops, something went wrong. Try again later",
+    "login_for_more_functionality": "Login for access to more functionality"
   },
   "explanation_text": {
     "access_filtering_label": "Show other results explanation",
@@ -223,8 +224,14 @@
       "type": "Resource type is required and must be filled out"
     }
   },
+  "handle_not_found": {
+    "handle_not_found": "Handle not found",
+    "this_resource_has_been_deleted": "Unfortunately this resource has been deleted"
+  },
   "illustration_alts_tags": {
-    "browsing_resource": "A woman is browsing for resources"
+    "browsing_resource": "A woman is browsing for resources",
+    "resource_in_space": "Drawing of a woman with magnifying glass searching for a document lost in outer space",
+    "secure_files": "Drawing of a man looking at a document that is locked with a padlock"
   },
   "institutions": {
     "bi": "BI",
@@ -236,10 +243,10 @@
   "kaltura": {
     "already_imported": "Already imported",
     "choose_a_resource": "Choose a resource from the list",
-    "my_resources" : "My Kaltura resources",
+    "my_resources": "My Kaltura resources",
     "no_resources_found": "No resources found",
-    "show_my_resources" : "Show my resources from Kaltura",
-    "start_with_kaltura_resource" : "Start with a kaltura resource"
+    "show_my_resources": "Show my resources from Kaltura",
+    "start_with_kaltura_resource": "Start with a kaltura resource"
   },
   "license": {
     "commercial_options": {
@@ -333,7 +340,7 @@
     "institution": "Institution",
     "notifications": "Notifications",
     "profile": "Profile",
-    "receive_notifications_email":"Receive email notifications from DLR to {{email}}",
+    "receive_notifications_email": "Receive email notifications from DLR to {{email}}",
     "receive_notifications_email_details": "For instance: notifications about DOI requests and reported resources",
     "your_groups": "Your affiliated groups",
     "your_roles": "Your roles"
