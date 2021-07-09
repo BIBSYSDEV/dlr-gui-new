@@ -9,7 +9,7 @@ import { licenses } from '../../src/utils/testfiles/licenses';
 import { ResourceFeatureTypes } from '../../src/types/resource.types';
 import { resourcePath } from '../../src/utils/constants';
 
-context('Actions', () => {
+context('Registration', () => {
   beforeEach(() => {
     cy.visit('/');
     cy.server();

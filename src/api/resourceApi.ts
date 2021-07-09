@@ -8,12 +8,14 @@ import {
   ResourceContents,
   ResourceCreationType,
   ResourceEvent,
+  ResourceOwner,
   ResourceStatistic,
 } from '../types/resource.types';
 import { AccessTypes, License } from '../types/license.types';
 import { Content, emptyResourceContent, LinkMetadataFilename } from '../types/content.types';
 import { authenticatedApiRequest } from './api';
 import { FacetResponse, QueryObject, SearchParameters, SearchResult } from '../types/search.types';
+import { ResourceAuthorization } from '../types/user.types';
 
 enum APISearchParameters {
   FacetInstitution = 'facet_institution::',
@@ -402,6 +404,15 @@ export const getResourceViews = (resourceIdentifier: string): Promise<AxiosRespo
   });
 };
 
+export const getMyUserAuthorizationProfileForResource = (
+  resourceIdentifier: string
+): Promise<AxiosResponse<ResourceAuthorization>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(
+      `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/authorizations/users/authorized`
+    ),
+  });
+};
 export const getMyKalturaPresentations = (): Promise<AxiosResponse<KalturaPresentation[]>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations`),
@@ -409,6 +420,12 @@ export const getMyKalturaPresentations = (): Promise<AxiosResponse<KalturaPresen
   });
 };
 
+export const getResourceOwners = (resourceIdentifier: string): Promise<AxiosResponse<ResourceOwner[]>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/owners`),
+    method: 'GET',
+  });
+};
 export const postKalturaPresentationImport = (resource: Resource, kalturaPresentation: KalturaPresentation) => {
   const data = encodeURI(
     `identifier=${resource.identifier}&identifierContent=${resource.contents.masterContent.identifier}&kalturaPresentationId=${kalturaPresentation.id}&downloadUrl=${kalturaPresentation.downloadUrl}&title=${kalturaPresentation.title}`

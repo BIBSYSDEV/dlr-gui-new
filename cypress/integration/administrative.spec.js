@@ -7,7 +7,7 @@ import {
 } from '../../src/api/mockdata';
 import { InstitutionProfilesNames } from '../../src/types/user.types';
 
-context('Actions', () => {
+context('Administration', () => {
   beforeEach(() => {
     cy.visit('/');
   });

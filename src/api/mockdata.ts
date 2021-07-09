@@ -4,10 +4,20 @@ import {
   emptyResource,
   KalturaPresentation,
   Resource,
+  ResourceOwner,
   ResourceStatistic,
 } from '../types/resource.types';
 import deepmerge from 'deepmerge';
-import { AppfeatureEnum, AppType, AppValue, EmailFeature, EmailNotificationStatus, User } from '../types/user.types';
+import {
+  EmailFeature,
+  AppType,
+  AppValue,
+  EmailNotificationStatus,
+  User,
+  AppfeatureEnum,
+  ResourceAuthorizationProfilesName,
+  ResourceAuthorization,
+} from '../types/user.types';
 import { License } from '../types/license.types';
 import { v4 as uuidv4 } from 'uuid';
 import { Course, CourseSeason, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
@@ -622,7 +632,7 @@ export const mockWorkListRequestDOI: WorklistRequest[] = [
   },
   {
     identifier: '234',
-    resourceIdentifier: '1234',
+    resourceIdentifier: '456',
     submitter: 'epost@epost.no',
     institution: 'unit',
     submittedDate: '2021-04-28T11:23:34.250Z',
@@ -633,7 +643,7 @@ export const mockWorkListRequestDOI: WorklistRequest[] = [
   },
   {
     identifier: '567',
-    resourceIdentifier: '5678',
+    resourceIdentifier: '123',
     submitter: 'somebody@email.com',
     institution: 'unit',
     submittedDate: '2021-04-28T11:23:34.250Z',
@@ -724,6 +734,69 @@ export const mockAppFeatureResponse = [
     profile: [{ name: 'dlr_app_feature_user' }],
     time: '2021-06-29T07:57:36.108Z',
     user: mockUser.id,
+  },
+];
+
+export const mockAuthorizationProfiles: ResourceAuthorization = {
+  identifier: mockResource.identifier,
+  time: '2021-07-02T10:47:19.490Z',
+  user: mockUser.id,
+  profiles: [
+    { name: ResourceAuthorizationProfilesName.ADMIN },
+    { name: ResourceAuthorizationProfilesName.CONSUMER },
+    { name: ResourceAuthorizationProfilesName.CONSUMER_PUBLIC },
+    { name: ResourceAuthorizationProfilesName.CURATOR },
+    { name: ResourceAuthorizationProfilesName.EDITOR },
+    { name: ResourceAuthorizationProfilesName.OWNER },
+  ],
+};
+
+export const mockWorkListOwnerRequest: WorklistRequest[] = [
+  {
+    identifier: '21341234',
+    resourceIdentifier: mockResource.identifier,
+    submitter: 'epost@epost.no',
+    institution: 'unit',
+    submittedDate: '2021-04-28T11:23:34.250Z',
+    type: WorkListRequestType.OWNERSHIP_REQUEST,
+    description:
+      'description description descriptiondescriptiondescription description description description description description',
+    state: 'string',
+    stateDate: '2021-04-28T11:23:34.250Z',
+  },
+  {
+    identifier: '524352435',
+    resourceIdentifier: '34789257',
+    submitter: 'epost@epost.no',
+    institution: 'unit',
+    submittedDate: '2021-04-28T11:23:34.250Z',
+    type: WorkListRequestType.OWNERSHIP_REQUEST,
+    description: 'short',
+    state: 'string',
+    stateDate: '2021-04-28T11:23:34.250Z',
+  },
+  {
+    identifier: '435246687',
+    resourceIdentifier: '74876547',
+    submitter: 'somebody@email.com',
+    institution: 'unit',
+    submittedDate: '2021-04-28T11:23:34.250Z',
+    type: WorkListRequestType.OWNERSHIP_REQUEST,
+    description:
+      'long long longlonglonglong longlong longlonglong long long long long long long longlonglonglong longlongv longlonglong longlonglong longvlong longlonglong longlonglong longv longlonglong longlonglong long long longlonglonglong longlong longlonglong long long long long long long longlonglonglong longlongv longlonglong longlonglong longvlong longlonglong longlonglong longv longlonglong longlonglong long long longlonglonglong longlong longlonglong long long long long long long longlonglonglong longlongv longlonglong longlonglong longvlong longlonglong longlonglong longv longlonglong longlonglong',
+    state: 'string',
+    stateDate: '2021-04-28T11:23:34.250Z',
+  },
+];
+
+export const mockResourceOwners: ResourceOwner[] = [
+  {
+    identifier: '1323123',
+    features: {
+      dlr_owner_identifier: '1323123',
+      dlr_owner_subject: mockUser.id,
+      dlr_owner_timer_created: '2021-04-28T11:23:34.250Z',
+    },
   },
 ];
 

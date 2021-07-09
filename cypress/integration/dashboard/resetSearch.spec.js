@@ -1,7 +1,7 @@
 import { SearchParameters } from '../../../src/types/search.types';
 import { ResourceFeatureTypes } from '../../../src/types/resource.types';
 
-context('Actions', () => {
+context('Reset search', () => {
   const search = 'bananas';
   const ntnu = 'ntnu';
   const license1 = 'CC BY 4.0';
