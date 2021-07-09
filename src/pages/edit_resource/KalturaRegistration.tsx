@@ -135,7 +135,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
         <StyledDialogContent>
           {kalturaResources && !busyGettingKalturaResources && (
             <DialogContentText>
-              Results ({kalturaResources?.length}). {t('kaltura.choose_a_resource')}.
+              <b>Results ({kalturaResources?.length}).</b> {t('kaltura.choose_a_resource')}.
             </DialogContentText>
           )}
           <StyledList>
