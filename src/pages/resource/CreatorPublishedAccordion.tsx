@@ -129,8 +129,8 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ parentR
     return (
       <StyledAccordion>
         <AccordionSummary
-          id={`also-published-by-${creator.identifier}`}
-          aria-controls="panel1a-content"
+          id={`also-published-by-${creator.identifier}-header`}
+          aria-controls={`also-published-by-${creator.identifier}-content`}
           expandIcon={<ExpandMoreIcon />}>
           <Typography variant="h2" data-testid={`also-published-by-header-${creator.identifier}`}>
             {`${creator.features.dlr_creator_name} ${t('resource.also_published_by_singular').toLowerCase()}`}
