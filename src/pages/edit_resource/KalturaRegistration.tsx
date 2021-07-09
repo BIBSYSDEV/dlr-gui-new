@@ -13,11 +13,16 @@ import DialogActions from '@material-ui/core/DialogActions';
 import { KalturaPresentation } from '../../types/resource.types';
 import kalturaLogo from '../../resources/images/Kaltura_Sun_black_icon.png';
 import KalturaListItem from './KalturaListItem';
+import Pagination from '@material-ui/lab/Pagination';
+import { StyledPaginationWrapper } from '../../components/styled/Wrappers';
 
 const FormDialogTitleId = 'kaltura-dialog-title';
 
 const StyledBody = styled.div`
   width: 100%;
+`;
+const StyledDialogContent = styled(DialogContent)`
+  height: 70vh;
 `;
 
 const StyledDialogActions = styled(DialogActions)`
@@ -37,6 +42,8 @@ interface KalturaRegistrationProps {
   onSubmit: (kalturaPresentation: KalturaPresentation) => void;
 }
 
+const itemsPrPage = 10;
+
 const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange, onSubmit }) => {
   const { t } = useTranslation();
   const [kalturaResources, setKalturaResources] = useState<KalturaPresentation[]>();
@@ -44,13 +51,26 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
   const [busyGettingKalturaResources, setBusyGettingKalturaResources] = useState(false);
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.md - 1}px)`);
   const [open, setOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [firstItemOnPage, setFirstItemOnPage] = useState<number>();
+  const [lastItemOnPage, setLastItemOnPage] = useState<number>();
+
+  const handlePageChange = (pageValue: number) => {
+    setPage(pageValue);
+    setFirstItemOnPage((pageValue - 1) * itemsPrPage);
+    setLastItemOnPage(pageValue * itemsPrPage);
+  };
 
   const handleClickOpen = async () => {
+    setPage(1);
     setOpen(true);
     try {
       setBusyGettingKalturaResources(true);
       setGetKalturaResourcesError(undefined);
-      setKalturaResources((await getMyKalturaPresentations()).data);
+      const result = (await getMyKalturaPresentations()).data;
+      setKalturaResources(result);
+      setFirstItemOnPage(0);
+      setLastItemOnPage(result.length > itemsPrPage ? itemsPrPage : result.length);
     } catch (error) {
       setGetKalturaResourcesError(undefined);
     } finally {
@@ -95,21 +115,41 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
         onClose={handleClose}
         aria-labelledby={FormDialogTitleId}>
         <DialogTitle id={FormDialogTitleId}>{t('kaltura.my_resources')}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>{t('kaltura.choose_a_resource')}. </DialogContentText>
+        <StyledDialogContent>
+          {kalturaResources && !busyGettingKalturaResources && (
+            <DialogContentText>
+              <b>Results ({kalturaResources?.length}).</b> {t('kaltura.choose_a_resource')}.
+            </DialogContentText>
+          )}
           <StyledList>
             {busyGettingKalturaResources ? (
               <CircularProgress />
             ) : kalturaResources ? (
-              kalturaResources.map((resultItem) => (
-                <KalturaListItem key={resultItem.id} item={resultItem} handleUseResource={handleUseResource} />
-              ))
+              <>
+                {kalturaResources.slice(firstItemOnPage, lastItemOnPage).map((resultItem) => (
+                  <KalturaListItem key={resultItem.id} item={resultItem} handleUseResource={handleUseResource} />
+                ))}
+                {kalturaResources.length > itemsPrPage && (
+                  <StyledPaginationWrapper>
+                    <Typography variant="subtitle2">{t('common.page')}</Typography>
+                    <Pagination
+                      color="primary"
+                      data-testid={`kaltura-pagination`}
+                      count={Math.ceil(kalturaResources.length / itemsPrPage)}
+                      page={page}
+                      onChange={(_event, value) => {
+                        handlePageChange(value);
+                      }}
+                    />
+                  </StyledPaginationWrapper>
+                )}
+              </>
             ) : (
               <Typography>{t('kaltura.no_resources_found')}</Typography>
             )}
           </StyledList>
           {getKalturaResourcesError && <ErrorBanner userNeedsToBeLoggedIn={true} error={getKalturaResourcesError} />}
-        </DialogContent>
+        </StyledDialogContent>
         <StyledDialogActions>
           <Button data-testid="kalture-dialog-close-button" variant="outlined" onClick={handleClose} color="primary">
             {t('common.close')}
