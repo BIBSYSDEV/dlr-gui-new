@@ -158,7 +158,8 @@
     "403_page": "You must be logged in for using this feature",
     "404_page": "Got lost? (404-page)",
     "500_page": "Whoops, something went wrong. Try again later",
-    "generic": "Whoops, something went wrong. Try again later"
+    "generic": "Whoops, something went wrong. Try again later",
+    "login_for_more_functionality": "Login for access to more functionality"
   },
   "explanation_text": {
     "access_filtering_label": "Show other results explanation",
@@ -222,8 +223,14 @@
       "type": "Resource type is required and must be filled out"
     }
   },
+  "handle_not_found": {
+    "handle_not_found": "Handle not found",
+    "this_resource_has_been_deleted": "Unfortunately this resource has been deleted"
+  },
   "illustration_alts_tags": {
-    "browsing_resource": "A woman is browsing for resources"
+    "browsing_resource": "A woman is browsing for resources",
+    "resource_in_space": "Drawing of a woman with magnifying glass searching for a document lost in outer space",
+    "secure_files": "Drawing of a man looking at a document that is locked with a padlock"
   },
   "institutions": {
     "bi": "BI",
