@@ -11,7 +11,6 @@ import {
 } from '../../src/api/mockdata';
 import { SearchParameters } from '../../src/types/search.types';
 import { resourcePath } from '../../src/utils/constants';
-import { mockSearchResults } from '../../src/utils/testfiles/search_results';
 
 context('Actions', () => {
   beforeEach(() => {
@@ -123,13 +122,14 @@ context('Actions', () => {
   });
 
   it('renders creator search result list', () => {
-    cy.get('[data-testid=also-published-by-header').contains(
-      mockCreators.map((creator) => creator.features.dlr_creator_name).join(', ')
-    );
-    cy.get('[data-testid=creator-published-item').should('have.length', 5);
-    cy.get('[data-testid=show-all-posts').click();
-    cy.get('[data-testid=creator-published-item').should('have.length', mockSearchResults.resourcesAsJson.length);
-    cy.get('[data-testid=hide-most-posts').click();
-    cy.get('[data-testid=creator-published-item').should('have.length', 5);
+    cy.get('[data-testid=also-published-by-header-creator').contains('Creator Creatorson').click();
+    cy.get('[data-testid=creator-published-item-creator').should('have.length', 5);
+    cy.get('[data-testid=show-all-posts-creator').click();
+
+    cy.location().should((loc) => {
+      expect(loc.search).to.eq(
+        `?${SearchParameters.creator}=Creator%20Creatorson&${SearchParameters.creator}=Creatorson,%20Creator`
+      );
+    });
   });
 });

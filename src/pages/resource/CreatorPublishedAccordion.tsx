@@ -125,7 +125,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ creator
     return (
       <StyledAccordion>
         <AccordionSummary aria-controls="panel1a-content" expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h2" data-testid="also-published-by-header">
+          <Typography variant="h2" data-testid={`also-published-by-header-${creatorName.split(' ')[0].toLowerCase()}`}>
             {`${creatorName} ${t('resource.also_published_by_singular').toLowerCase()}`}
           </Typography>
         </AccordionSummary>
@@ -139,7 +139,11 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ creator
               </StyledTypography>
               <SearchResultWrapper>
                 {resources.slice(0, 5).map((creatorSearchResult) => (
-                  <CreatorPublishedItem key={creatorSearchResult.identifier} resource={creatorSearchResult} />
+                  <CreatorPublishedItem
+                    testId={`creator-published-item-${creatorName.trim().split(' ')[0].toLowerCase()}`}
+                    key={creatorSearchResult.identifier}
+                    resource={creatorSearchResult}
+                  />
                 ))}
               </SearchResultWrapper>
             </>
@@ -149,7 +153,9 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ creator
 
           {searchResult?.numFound && searchResult.numFound > 6 && (
             <StyledTypography>
-              <Link href={link}>Se flere ressurser</Link>
+              <Link data-testid={`show-all-posts-${creatorName.trim().split(' ')[0].toLowerCase()}`} href={link}>
+                Se flere ressurser
+              </Link>
             </StyledTypography>
           )}
         </StyledDetails>
@@ -170,12 +176,18 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ creator
             </StyledTypography>
             <SearchResultWrapper>
               {resources.slice(0, 5).map((creatorSearchResult) => (
-                <CreatorPublishedItem key={creatorSearchResult.identifier} resource={creatorSearchResult} />
+                <CreatorPublishedItem
+                  testId={`creator-published-item-${creatorName.trim().split(' ')[0].toLowerCase()}`}
+                  key={creatorSearchResult.identifier}
+                  resource={creatorSearchResult}
+                />
               ))}
             </SearchResultWrapper>
             {searchResult?.numFound && searchResult.numFound > 6 && (
               <StyledTypography align="right">
-                <Link href={link}>Se flere ressurser</Link>
+                <Link data-testid={`show-all-posts-${creatorName.trim().split(' ')[0].toLowerCase()}`} href={link}>
+                  Se flere ressurser
+                </Link>
               </StyledTypography>
             )}
           </StyledDetails>

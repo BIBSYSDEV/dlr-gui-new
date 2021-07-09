@@ -58,13 +58,14 @@ const generateURL = (resource: Resource) => {
 
 interface CreatorPublishedItemProps {
   resource: Resource;
+  testId?: string;
 }
 
-const CreatorPublishedItem: FC<CreatorPublishedItemProps> = ({ resource }) => {
+const CreatorPublishedItem: FC<CreatorPublishedItemProps> = ({ resource, testId }) => {
   const { t } = useTranslation();
 
   return (
-    <StyledGridContainer data-testid="creator-published-item">
+    <StyledGridContainer data-testid={testId}>
       <StyledThumbnailWrapper>
         <Thumbnail
           institution={resource.features.dlr_storage_id}
