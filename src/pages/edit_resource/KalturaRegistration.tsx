@@ -3,7 +3,17 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import StartRegistrationMethodAccordion from './StartRegistrationMethodAccordion';
 import { getMyKalturaPresentations } from '../../api/resourceApi';
-import { Button, CircularProgress, DialogContent, List, Typography, useMediaQuery } from '@material-ui/core';
+import {
+  Button,
+  Checkbox,
+  CircularProgress,
+  DialogContent,
+  Grid,
+  List,
+  TextField,
+  Typography,
+  useMediaQuery,
+} from '@material-ui/core';
 import { DeviceWidths } from '../../themes/mainTheme';
 import ErrorBanner from '../../components/ErrorBanner';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -15,6 +25,7 @@ import kalturaLogo from '../../resources/images/Kaltura_Sun_black_icon.png';
 import KalturaListItem from './KalturaListItem';
 import Pagination from '@material-ui/lab/Pagination';
 import { StyledPaginationWrapper } from '../../components/styled/Wrappers';
+import { CheckBox, Label } from '@material-ui/icons';
 
 const FormDialogTitleId = 'kaltura-dialog-title';
 
@@ -54,6 +65,8 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
   const [page, setPage] = useState(1);
   const [firstItemOnPage, setFirstItemOnPage] = useState<number>();
   const [lastItemOnPage, setLastItemOnPage] = useState<number>();
+  const [filterValue, setFilterValue] = useState('');
+  const [showAllResources, setShowAllResources] = useState(false);
 
   const handlePageChange = (pageValue: number) => {
     setPage(pageValue);
@@ -85,6 +98,10 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
   const handleUseResource = (kalturaPresentation: KalturaPresentation) => {
     setOpen(false);
     onSubmit(kalturaPresentation);
+  };
+
+  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFilterValue(event.target.value);
   };
 
   return (
@@ -126,6 +143,16 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
               <CircularProgress />
             ) : kalturaResources ? (
               <>
+                <Grid container justifyContent="space-between" style={{ backgroundColor: 'pink' }}>
+                  <Grid item xs={6}>
+                    <TextField onChange={handleFilterChange} value={filterValue} variant="outlined" />
+                    <Button variant="contained">Filtrer treffliste</Button>
+                  </Grid>
+                  <Grid item xs={5}>
+                    <Checkbox color="default" checked={showAllResources} name="NAVN" />
+                    <span>Also show already imported resources</span>
+                  </Grid>
+                </Grid>
                 {kalturaResources.slice(firstItemOnPage, lastItemOnPage).map((resultItem) => (
                   <KalturaListItem key={resultItem.id} item={resultItem} handleUseResource={handleUseResource} />
                 ))}
