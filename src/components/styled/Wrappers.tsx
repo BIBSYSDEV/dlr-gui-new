@@ -1,22 +1,23 @@
 import styled from 'styled-components';
 import NormalText from '../NormalText';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import { StyleWidths } from '../../themes/mainTheme';
-
-export const StyledInformationWrapper = styled.div`
-  width: 60%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
-    width: 90%;
-  }
-  padding-top: 4rem;
-  padding-bottom: 1rem;
-`;
+import { Colors, StyleWidths } from '../../themes/mainTheme';
 
 export const StyledProgressWrapper = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
   padding: 2rem;
+`;
+
+export const StyledFullPageProgressWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const StyledNormalTextPreWrapped = styled(NormalText)`
@@ -80,4 +81,21 @@ export const StyledFieldsWrapper = styled.div`
   }
   align-items: flex-end;
   margin-top: 2.5rem;
+`;
+
+export const StyledPaginationWrapper = styled.div`
+  margin: 1rem 0 1rem 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  & .MuiPaginationItem-root {
+    border-radius: 0;
+    color: ${Colors.Primary};
+    font-weight: 700;
+  }
+
+  & .Mui-selected {
+    color: ${Colors.Background};
+  }
 `;

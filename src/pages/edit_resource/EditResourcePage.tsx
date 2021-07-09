@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
 import ResourceForm from './ResourceForm';
@@ -15,6 +15,7 @@ import {
   CreatorFeatureAttributes,
   DefaultResourceTypes,
   emptyResource,
+  KalturaPresentation,
   Resource,
   ResourceCreationType,
   ResourceFeatureNames,
@@ -31,6 +32,7 @@ import {
   getResourceDefaults,
   getResourceLicenses,
   getResourceTags,
+  postKalturaPresentationImport,
   postResourceCreator,
   postResourceFeature,
   postTag,
@@ -45,8 +47,9 @@ import { emptyLicense } from '../../types/license.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import { createUppy } from '../../utils/uppy-config';
 import { useUppy } from '@uppy/react';
-import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
+import { StyledContentWrapperLarge, StyledFullPageProgressWrapper } from '../../components/styled/Wrappers';
 import { getAuthoritiesForResourceCreatorOrContributor } from '../../api/authoritiesApi';
+import KalturaRegistration from './KalturaRegistration';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -56,14 +59,9 @@ const StyledEditPublication = styled.div`
   align-items: center;
 `;
 
-const StyledProgressWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  min-height: 100vh;
-  padding: 0;
-  margin: 0;
-  align-items: center;
-  justify-content: center;
+const StyledTypography = styled(Typography)`
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 `;
 
 interface EditResourcePageParamTypes {
@@ -85,6 +83,8 @@ const EditResourcePage = () => {
   const [resourceInitError, setResourceInitError] = useState<Error>();
   const [fileUploadError, setFileUploadError] = useState<Error>();
   const [mainFileBeingUploaded, setMainFileBeingUploaded] = useState(false);
+  const location = useLocation();
+  const useKalturaFlag = new URLSearchParams(location.search).get('useKalturaFeature') === 'true' ? true : false; //TODO: remove once ready for prod
 
   const user = useSelector((state: RootState) => state.user);
 
@@ -101,6 +101,18 @@ const EditResourcePage = () => {
       setIsLoadingResource(true);
       const createResourceResponse = await createResource(ResourceCreationType.LINK, url);
       await getResourceInit(createResourceResponse, ResourceCreationType.LINK);
+    } catch (error) {
+      setResourceInitError(error);
+      setIsLoadingResource(false);
+    }
+  };
+
+  const onSubmitKalturaResource = async (kalturaResource: KalturaPresentation) => {
+    setShowForm(true);
+    try {
+      setIsLoadingResource(true);
+      const createResourceResponse = await createResource(ResourceCreationType.LINK, kalturaResource.url);
+      await getResourceInit(createResourceResponse, ResourceCreationType.LINK, kalturaResource);
     } catch (error) {
       setResourceInitError(error);
       setIsLoadingResource(false);
@@ -194,7 +206,11 @@ const EditResourcePage = () => {
     await saveResourceDLRType(tempResource, startingResource.identifier, resourceDLRType);
   }
 
-  const getResourceInit = async (startingResource: Resource, resourceCreationType: ResourceCreationType) => {
+  const getResourceInit = async (
+    startingResource: Resource,
+    resourceCreationType: ResourceCreationType,
+    kalturaResource?: KalturaPresentation
+  ) => {
     try {
       setShowForm(true);
       startingResource.features.dlr_title = startingResource.features.dlr_title ?? '';
@@ -213,7 +229,12 @@ const EditResourcePage = () => {
       );
 
       const responseWithCalculatedDefaults = (await getResourceDefaults(startingResource.identifier)).data;
+      if (kalturaResource) {
+        responseWithCalculatedDefaults.features.dlr_title = kalturaResource.title;
+        responseWithCalculatedDefaults.features.dlr_description = kalturaResource.description;
+      }
       await saveCalculatedFields(responseWithCalculatedDefaults);
+
       const tempResource = deepmerge(emptyResource, startingResource);
       const tempContents = startingResource.contents;
       const resource: Resource = {
@@ -232,7 +253,11 @@ const EditResourcePage = () => {
         contents: tempContents,
       };
       resource.isFresh = true;
-      await setDLRType(resourceCreationType, responseWithCalculatedDefaults, resource, startingResource);
+      if (kalturaResource) {
+        await saveResourceDLRType(resource, startingResource.identifier, ResourceFeatureTypes.video);
+      } else {
+        await setDLRType(resourceCreationType, responseWithCalculatedDefaults, resource, startingResource);
+      }
       await setCreator(resource, startingResource.identifier, user.name);
       if (resource.tags) {
         resource.tags = resource.tags.filter((tag) => tag.length < TAGS_MAX_LENGTH);
@@ -253,6 +278,10 @@ const EditResourcePage = () => {
         );
         resource.contents.masterContent.features.dlr_content_title =
           resource.contents.masterContent.features.dlr_content;
+      }
+
+      if (kalturaResource) {
+        await postKalturaPresentationImport(resource, kalturaResource);
       }
 
       setFormikInitResource(resource);
@@ -371,18 +400,28 @@ const EditResourcePage = () => {
           uppy={mainFileHandler}
         />
         {fileUploadError && <ErrorBanner userNeedsToBeLoggedIn={true} error={fileUploadError} />}
-        <Typography style={{ margin: '2rem 2rem' }}>{t('common.or')}</Typography>
+        <StyledTypography>{t('common.or')}</StyledTypography>
         <LinkRegistration
           expanded={expanded === 'link-panel'}
           onChange={handleChange('link-panel')}
           onSubmit={onSubmitLink}
         />
+        {useKalturaFlag && (
+          <>
+            <StyledTypography>{t('common.or')}</StyledTypography>
+            <KalturaRegistration
+              expanded={expanded === 'kaltura-panel'}
+              onChange={handleChange('kaltura-panel')}
+              onSubmit={onSubmitKalturaResource}
+            />
+          </>
+        )}
       </StyledEditPublication>
     </StyledContentWrapperLarge>
   ) : isLoadingResource ? (
-    <StyledProgressWrapper>
+    <StyledFullPageProgressWrapper>
       <CircularProgress />
-    </StyledProgressWrapper>
+    </StyledFullPageProgressWrapper>
   ) : resourceInitError ? (
     <ErrorBanner userNeedsToBeLoggedIn={true} error={resourceInitError} />
   ) : formikInitResource ? (

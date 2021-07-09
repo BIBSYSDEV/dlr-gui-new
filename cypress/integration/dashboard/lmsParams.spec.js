@@ -2,7 +2,7 @@ import { LMSParametersName } from '../../../src/types/LMSParameters';
 import { SearchParameters } from '../../../src/types/search.types';
 import { mockCreators } from '../../../src/api/mockdata';
 
-context('Actions', () => {
+context('LMS params', () => {
   const search = 'bananas';
   const tag1 = 'digital';
 

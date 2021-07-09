@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { CircularProgress, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import { getWorkListItemDOI } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';
 import { WorklistRequest } from '../../types/Worklist.types';
 import DOIRequestItem from './DOIRequestItem';
 import styled from 'styled-components';
-import { getWorkListWithResourceAttached } from '../../utils/workList';
 
 const StyledUl = styled.ul`
   list-style: none; /* Remove list bullets */
@@ -14,28 +12,15 @@ const StyledUl = styled.ul`
   margin: 0;
 `;
 
-const DOIRequestList = () => {
-  const { t } = useTranslation();
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadingError, setLoadingError] = useState<Error>();
-  const [workListDoi, setWorkListDoi] = useState<WorklistRequest[]>([]);
+interface DOIRequestListProps {
+  isLoading: boolean;
+  loadingError: Error | undefined;
+  workListDOI: WorklistRequest[];
+  setWorkListDoi: React.Dispatch<React.SetStateAction<WorklistRequest[]>>;
+}
 
-  useEffect(() => {
-    const fetchWorkListDOI = async () => {
-      try {
-        setIsLoading(true);
-        setLoadingError(undefined);
-        const workListDoiResponse = await getWorkListItemDOI();
-        const workListTotal = await getWorkListWithResourceAttached(workListDoiResponse.data);
-        setWorkListDoi(workListTotal);
-      } catch (error) {
-        setLoadingError(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchWorkListDOI();
-  }, []);
+const DOIRequestList: FC<DOIRequestListProps> = ({ isLoading, loadingError, workListDOI, setWorkListDoi }) => {
+  const { t } = useTranslation();
 
   return (
     <>
@@ -47,9 +32,9 @@ const DOIRequestList = () => {
           <Typography gutterBottom variant="h2">
             {t('work_list.doi_request_list')}
           </Typography>
-          {workListDoi.length > 0 ? (
+          {workListDOI.length > 0 ? (
             <StyledUl>
-              {workListDoi.map((work) => (
+              {workListDOI.map((work) => (
                 <DOIRequestItem setWorkListDoi={setWorkListDoi} key={work.identifier} workListRequestDOI={work} />
               ))}
             </StyledUl>

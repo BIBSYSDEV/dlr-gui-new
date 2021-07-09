@@ -1,7 +1,7 @@
 import { LMSParametersName } from '../../src/types/LMSParameters';
 import { resourcePath } from '../../src/utils/constants';
 
-context('Actions', () => {
+context('Embed', () => {
   beforeEach(() => {
     cy.visit(`${resourcePath}/mock-id`);
   });

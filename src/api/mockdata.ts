@@ -1,6 +1,23 @@
-import { Contributor, Creator, emptyResource, Resource, ResourceStatistic } from '../types/resource.types';
+import {
+  Contributor,
+  Creator,
+  emptyResource,
+  KalturaPresentation,
+  Resource,
+  ResourceOwner,
+  ResourceStatistic,
+} from '../types/resource.types';
 import deepmerge from 'deepmerge';
-import { EmailFeature, AppType, AppValue, EmailNotificationStatus, User, AppfeatureEnum } from '../types/user.types';
+import {
+  EmailFeature,
+  AppType,
+  AppValue,
+  EmailNotificationStatus,
+  User,
+  AppfeatureEnum,
+  ResourceAuthorizationProfilesName,
+  ResourceAuthorization,
+} from '../types/user.types';
 import { License } from '../types/license.types';
 import { v4 as uuidv4 } from 'uuid';
 import { Course, CourseSeason, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
@@ -615,7 +632,7 @@ export const mockWorkListRequestDOI: WorklistRequest[] = [
   },
   {
     identifier: '234',
-    resourceIdentifier: '1234',
+    resourceIdentifier: '456',
     submitter: 'epost@epost.no',
     institution: 'unit',
     submittedDate: '2021-04-28T11:23:34.250Z',
@@ -626,7 +643,7 @@ export const mockWorkListRequestDOI: WorklistRequest[] = [
   },
   {
     identifier: '567',
-    resourceIdentifier: '5678',
+    resourceIdentifier: '123',
     submitter: 'somebody@email.com',
     institution: 'unit',
     submittedDate: '2021-04-28T11:23:34.250Z',
@@ -717,5 +734,203 @@ export const mockAppFeatureResponse = [
     profile: [{ name: 'dlr_app_feature_user' }],
     time: '2021-06-29T07:57:36.108Z',
     user: mockUser.id,
+  },
+];
+
+export const mockAuthorizationProfiles: ResourceAuthorization = {
+  identifier: mockResource.identifier,
+  time: '2021-07-02T10:47:19.490Z',
+  user: mockUser.id,
+  profiles: [
+    { name: ResourceAuthorizationProfilesName.ADMIN },
+    { name: ResourceAuthorizationProfilesName.CONSUMER },
+    { name: ResourceAuthorizationProfilesName.CONSUMER_PUBLIC },
+    { name: ResourceAuthorizationProfilesName.CURATOR },
+    { name: ResourceAuthorizationProfilesName.EDITOR },
+    { name: ResourceAuthorizationProfilesName.OWNER },
+  ],
+};
+
+export const mockWorkListOwnerRequest: WorklistRequest[] = [
+  {
+    identifier: '21341234',
+    resourceIdentifier: mockResource.identifier,
+    submitter: 'epost@epost.no',
+    institution: 'unit',
+    submittedDate: '2021-04-28T11:23:34.250Z',
+    type: WorkListRequestType.OWNERSHIP_REQUEST,
+    description:
+      'description description descriptiondescriptiondescription description description description description description',
+    state: 'string',
+    stateDate: '2021-04-28T11:23:34.250Z',
+  },
+  {
+    identifier: '524352435',
+    resourceIdentifier: '34789257',
+    submitter: 'epost@epost.no',
+    institution: 'unit',
+    submittedDate: '2021-04-28T11:23:34.250Z',
+    type: WorkListRequestType.OWNERSHIP_REQUEST,
+    description: 'short',
+    state: 'string',
+    stateDate: '2021-04-28T11:23:34.250Z',
+  },
+  {
+    identifier: '435246687',
+    resourceIdentifier: '74876547',
+    submitter: 'somebody@email.com',
+    institution: 'unit',
+    submittedDate: '2021-04-28T11:23:34.250Z',
+    type: WorkListRequestType.OWNERSHIP_REQUEST,
+    description:
+      'long long longlonglonglong longlong longlonglong long long long long long long longlonglonglong longlongv longlonglong longlonglong longvlong longlonglong longlonglong longv longlonglong longlonglong long long longlonglonglong longlong longlonglong long long long long long long longlonglonglong longlongv longlonglong longlonglong longvlong longlonglong longlonglong longv longlonglong longlonglong long long longlonglonglong longlong longlonglong long long long long long long longlonglonglong longlongv longlonglong longlonglong longvlong longlonglong longlonglong longv longlonglong longlonglong',
+    state: 'string',
+    stateDate: '2021-04-28T11:23:34.250Z',
+  },
+];
+
+export const mockResourceOwners: ResourceOwner[] = [
+  {
+    identifier: '1323123',
+    features: {
+      dlr_owner_identifier: '1323123',
+      dlr_owner_subject: mockUser.id,
+      dlr_owner_timer_created: '2021-04-28T11:23:34.250Z',
+    },
+  },
+];
+
+export const mockKalturaPresentations: KalturaPresentation[] = [
+  {
+    id: '54353453453',
+    title: 'Sample Kaltura Title 1',
+    timeRecorded: '6420',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/534534545/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/534534545/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/534534545/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '',
+  },
+  {
+    id: '4236546541',
+    title: 'Sample Kaltura Title 2',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '4236546542',
+    title: 'Sample Kaltura Title 3',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '42365465444',
+    title: 'Sample Kaltura Title 4',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '4236546544',
+    title: 'Sample Kaltura Title 5',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '42365465446',
+    title: 'Sample Kaltura Title 6',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '423654654467',
+    title: 'Sample Kaltura Title 7',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '423654654468',
+    title: 'Sample Kaltura Title 8',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '423654654469',
+    title: 'Sample Kaltura Title 9',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '4236546544610',
+    title: 'Sample Kaltura Title 10',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '4236546544611',
+    title: 'Sample Kaltura Title 11',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '4236546544612',
+    title: 'Sample Kaltura Title 12',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '54689068054',
   },
 ];

@@ -1,4 +1,4 @@
-import { createMuiTheme, emphasize, fade } from '@material-ui/core';
+import { alpha, createTheme, emphasize } from '@material-ui/core';
 import { barlowRegular, CrimsonTextRegular, LibreFranklinRegular } from './fonts';
 
 // Extend Palette type to allow custom colors
@@ -84,7 +84,7 @@ export enum DeviceWidths {
   xl = 1920,
 }
 
-export default createMuiTheme({
+export default createTheme({
   breakpoints: {
     values: {
       xs: DeviceWidths.xs,
@@ -250,7 +250,7 @@ export default createMuiTheme({
         },
       },
       deleteIconColorPrimary: {
-        color: fade(Colors.Background, 0.7),
+        color: alpha(Colors.Background, 0.7),
         '&:hover, &:active': {
           color: Colors.Background,
         },

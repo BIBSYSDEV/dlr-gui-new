@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { Container, Typography } from '@material-ui/core';
 import { Colors } from '../themes/mainTheme';
@@ -14,16 +14,22 @@ const StyledLoginReminder = styled(Container)`
   align-items: center;
 `;
 
-const StyledTypography = styled(Typography)`
+const StyledTypography: any = styled(Typography)`
   margin-bottom: 1rem;
 `;
 
-const LoginReminder = () => {
+interface LoginReminderProps {
+  customMessage?: string;
+}
+
+const LoginReminder: FC<LoginReminderProps> = ({ customMessage }) => {
   const { t } = useTranslation();
 
   return (
     <StyledLoginReminder>
-      <StyledTypography variant="h3">{t('dashboard.login_reminder')}</StyledTypography>
+      <StyledTypography variant="h3" component="span">
+        {customMessage ?? t('dashboard.login_reminder')}
+      </StyledTypography>
       <LoginButton variant="contained" />
     </StyledLoginReminder>
   );

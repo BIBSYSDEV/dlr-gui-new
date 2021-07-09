@@ -109,7 +109,7 @@
     "none": "Ingen",
     "or": "Eller",
     "other_options": "Andre lisenser",
-    "page": "Page",
+    "page": "Side",
     "possible_options": "Mulige lisenser",
     "publish": "Publiser",
     "remove": "Fjern",
@@ -121,6 +121,7 @@
     "show_more": "Vis mer",
     "step": "Trinn",
     "type": "Type",
+    "use": "Bruk",
     "usage": "Bruk",
     "yes": "Ja"
   },
@@ -159,7 +160,9 @@
     "403_page": "Du må være pålogget for å benytte denne funksjonaliteten",
     "404_page": "Gått deg vill? (404-page)",
     "500_page": "Ups, noe gikk galt. Prøv igjen senere",
-    "generic": "Ups, noe gikk galt. Prøv igjen senere"
+    "error_message": "Feilmelding",
+    "generic": "Ups, noe gikk galt. Prøv igjen senere",
+    "login_for_more_functionality": "Logg på for å få tilgang til mer funksjonalitet"
   },
   "explanation_text": {
     "access_filtering_label": "Vis andre ressurser forklaring",
@@ -223,8 +226,14 @@
       "type": "Ressurstype er obligatorisk og må fylles ut"
     }
   },
+  "handle_not_found": {
+    "handle_not_found": "Handle ikke funnet",
+    "this_resource_has_been_deleted": "Desverre har denne ressursen blitt slettet"
+  },
   "illustration_alts_tags": {
-    "browsing_resource": "En dame søker etter en ressurs"
+    "browsing_resource": "En dame søker etter en ressurs",
+    "resource_in_space": "Tegning av en dame med forstørrelses glass som leter etter et dokument som har havnet i verdensrommet",
+    "secure_files": "Tegning av en mann som ser på et dokument som er låst med hengelås"
   },
   "institutions": {
     "bi": "BI",
@@ -232,6 +241,14 @@
     "ntnu": "NTNU",
     "oslomet": "OsloMet",
     "uib": "UiB"
+  },
+  "kaltura": {
+    "already_imported": "Allerede importert",
+    "choose_a_resource": "Velg en ressurs fra listen",
+    "my_resources": "Mine ressurser i Kaltura",
+    "no_resources_found": "Ingen ressurser funnet",
+    "show_my_resources": "Vis mine ressurser fra Kaltura",
+    "start_with_kaltura_resource": "Start med en ressurs fra Kaltura"
   },
   "license": {
     "commercial_options": {
@@ -325,7 +342,7 @@
     "institution": "Institusjon",
     "notifications": "Varsler",
     "profile": "Profil",
-    "receive_notifications_email":"Motta epost-varsler fra DLR til {{email}}",
+    "receive_notifications_email": "Motta epost-varsler fra DLR til {{email}}",
     "receive_notifications_email_details": "For eksempel varsel om DOI forepørsler og rapporterte ressurser",
     "your_groups": "Dine gruppetilknytninger",
     "your_roles": "Dine roller"
@@ -456,6 +473,11 @@
     "no_published_resources": "Du har ingen publiserte ressurser",
     "no_unpublished_resources": "Du har ingen upubliserte ressurser",
     "number_of_resources_found": "Antall ressurser funnet",
+    "ownership": {
+      "request_ownership_change": "Be om overføring av eierskap",
+      "ownership_change_description": "Skriv inn relevant informasjon om forespørselen til kurator. Du kan be om at eierskap kan overføres til noen andre enn deg selv.",
+      "submit_request": "Send forespørsel"
+    },
     "preview": {
       "browser_does_not_support_pdf_viewing": "Nettleseren din støtter ikke PDF",
       "external_page": "Ekstern side",
@@ -566,6 +588,7 @@
     "comment": "Kommentar",
     "comment_explanation": "Skriv en kommentar hvorfor forespørselen blir avvist",
     "create_doi": "Opprett DOI",
+    "current_resource_owner": "Nåværende ressurseier",
     "delete_request": "Slett forespørsel",
     "delete_report": "Slett rapportéring",
     "delete_report_info": "Dette sletter rapportéringen og ikke selve ressursen",
@@ -573,9 +596,16 @@
     "delete_resource_warning": "NB! Dette sletter selve ressursen permanent",
     "doi_request_list": "DOI forespørsler",
     "doi_verify_resource": "Verifiser opphaver(e) for å opprette DOI",
+    "feide_id": "Feide-id",
+    "grant_ownership": "Gi eierskap",
     "hide": "Skjul",
+    "input_feide_id_of_new_owner": "Skriv inn feide-id på den nye eieren",
+    "invalid_email": "Ugyldig epost (feide-id)",
     "no_doi_requests": "For tiden finnes det ingen DOI forespørsler",
+    "no_ownership_requests": "For tiden finnes det ingen eierskaps-forespørsler",
     "no_report_requests": "For tiden finnes det ingen rapporteringer",
+    "not_possible_to_change_owner_due_to_deleted_resource": "Det er ikke mulig å endre eierskap på ressurs som er slettet",
+    "ownership_requests": "Eierskaps-forespørsler",
     "page_title": "Arbeidsliste",
     "page_requirements": "Du må være kurator eller redaktør for å få tilgang til denne funksjonaliteten",
     "possible_deleted": "Denne ressursen kan allerede være slettet",
