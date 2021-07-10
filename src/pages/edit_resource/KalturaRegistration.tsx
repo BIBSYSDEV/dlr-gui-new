@@ -25,7 +25,6 @@ import kalturaLogo from '../../resources/images/Kaltura_Sun_black_icon.png';
 import KalturaListItem from './KalturaListItem';
 import Pagination from '@material-ui/lab/Pagination';
 import { StyledPaginationWrapper } from '../../components/styled/Wrappers';
-import { CheckBox, Label } from '@material-ui/icons';
 
 const FormDialogTitleId = 'kaltura-dialog-title';
 
@@ -58,6 +57,7 @@ const itemsPrPage = 10;
 const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange, onSubmit }) => {
   const { t } = useTranslation();
   const [kalturaResources, setKalturaResources] = useState<KalturaPresentation[]>();
+  const [filteredKalturaResources, setFilteredKalturaResources] = useState<KalturaPresentation[]>();
   const [getKalturaResourcesError, setGetKalturaResourcesError] = useState<Error>();
   const [busyGettingKalturaResources, setBusyGettingKalturaResources] = useState(false);
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.md - 1}px)`);
@@ -82,6 +82,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
       setGetKalturaResourcesError(undefined);
       const result = (await getMyKalturaPresentations()).data;
       setKalturaResources(result);
+      setFilteredKalturaResources(result);
       setFirstItemOnPage(0);
       setLastItemOnPage(result.length > itemsPrPage ? itemsPrPage : result.length);
     } catch (error) {
@@ -102,6 +103,11 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFilterValue(event.target.value);
+    setFilteredKalturaResources(
+      kalturaResources?.filter((item) => item.title.toLowerCase().includes(filterValue.toLowerCase()))
+    );
+    setPage(1);
+    //setLastItemOnPage(result.length > itemsPrPage ? itemsPrPage : result.length);
   };
 
   return (
@@ -133,7 +139,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
         aria-labelledby={FormDialogTitleId}>
         <DialogTitle id={FormDialogTitleId}>{t('kaltura.my_resources')}</DialogTitle>
         <StyledDialogContent>
-          {kalturaResources && !busyGettingKalturaResources && (
+          {filteredKalturaResources && !busyGettingKalturaResources && (
             <DialogContentText>
               <b>Results ({kalturaResources?.length}).</b> {t('kaltura.choose_a_resource')}.
             </DialogContentText>
@@ -141,7 +147,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
           <StyledList>
             {busyGettingKalturaResources ? (
               <CircularProgress />
-            ) : kalturaResources ? (
+            ) : filteredKalturaResources ? (
               <>
                 <Grid container justifyContent="space-between" style={{ backgroundColor: 'pink' }}>
                   <Grid item xs={6}>
@@ -149,23 +155,25 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                     <TextField onChange={handleFilterChange} value={filterValue} variant="outlined" />
                   </Grid>
                   <Grid item xs={5}>
-                    <Checkbox color="default" checked={showAllResources} name="NAVN" />
+                    <Checkbox disabled color="default" checked={showAllResources} name="NAVN" />
                     <span>Also show already imported resources</span>
                   </Grid>
+                  <p>
+                    Viser {filteredKalturaResources.length} av {kalturaResources?.length} poster
+                  </p>
+                  <Button>Nullstill filter</Button>
                 </Grid>
-                {kalturaResources
-                  .slice(firstItemOnPage, lastItemOnPage)
-                  .filter((item) => item.title.toLowerCase().includes(filterValue.toLowerCase()))
-                  .map((resultItem) => (
-                    <KalturaListItem key={resultItem.id} item={resultItem} handleUseResource={handleUseResource} />
-                  ))}
-                {kalturaResources.length > itemsPrPage && (
+
+                {filteredKalturaResources.slice(firstItemOnPage, lastItemOnPage).map((resultItem) => (
+                  <KalturaListItem key={resultItem.id} item={resultItem} handleUseResource={handleUseResource} />
+                ))}
+                {filteredKalturaResources.length > itemsPrPage && (
                   <StyledPaginationWrapper>
                     <Typography variant="subtitle2">{t('common.page')}</Typography>
                     <Pagination
                       color="primary"
                       data-testid={`kaltura-pagination`}
-                      count={Math.ceil(kalturaResources.length / itemsPrPage)}
+                      count={Math.ceil(filteredKalturaResources.length / itemsPrPage)}
                       page={page}
                       onChange={(_event, value) => {
                         handlePageChange(value);
