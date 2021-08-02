@@ -176,13 +176,14 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
                   component="a"
                   href={`/?${SearchParameters.tag}=${tag}`}
                   key={index}
+                  data-testid={`tag-chip-${index}`}
                   clickable
                   size="medium"
                   label={tag}
                 />
               ))}
               {!showAllTags && (
-                <Button onClick={handleShowAllTagsClick} color="primary">
+                <Button data-testid="show-all-tags" onClick={handleShowAllTagsClick} color="primary">
                   {t('resource.show_all_tags')}
                 </Button>
               )}

@@ -150,7 +150,7 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource, isPreview = fal
                   />
                 ))}
                 {!showAllTags && (
-                  <Button onClick={handleShowAllTagsClick} color="primary">
+                  <Button data-testid="show-all-tags" onClick={handleShowAllTagsClick} color="primary">
                     {t('resource.show_all_tags')}
                   </Button>
                 )}
