@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Resource } from '../../types/resource.types';
 import { StyledContentWrapperMedium, StyledSchemaPartColored } from '../../components/styled/Wrappers';
 import { Colors } from '../../themes/mainTheme';
-import { Chip, Grid, Typography } from '@material-ui/core';
+import { Button, Chip, Grid, Typography } from '@material-ui/core';
 import { format } from 'date-fns';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
@@ -29,6 +29,8 @@ const StyledBoldTypography = styled(Typography)`
   font-weight: 700;
 `;
 
+const TagsDisplayThreshold = 8;
+
 interface ResourceMetadataProps {
   resource: Resource;
   isPreview?: boolean;
@@ -37,6 +39,10 @@ interface ResourceMetadataProps {
 const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource, isPreview = false }) => {
   const { t } = useTranslation();
   const [views, setViews] = useState('');
+  const [displayTags, setDisplayTags] = useState(
+    resource.tags ? StringArrayToSetStringArray(localeSort(resource.tags)).slice(0, TagsDisplayThreshold) : []
+  );
+  const [showAllTags, setShowAllTags] = useState(!(resource.tags && resource.tags.length > TagsDisplayThreshold));
   const sortedContributorList = resource.contributors.sort((contributorA, contributorB) => {
     if (contributorA.features.dlr_contributor_type && contributorB.features.dlr_contributor_type) {
       return contributorA.features.dlr_contributor_type.localeCompare(contributorB.features.dlr_contributor_type);
@@ -54,6 +60,11 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource, isPreview = fal
     };
     fetchResourceUsage();
   }, [resource.identifier]);
+
+  const handleShowAllTagsClick = () => {
+    setDisplayTags(resource.tags ? StringArrayToSetStringArray(localeSort(resource.tags)) : []);
+    setShowAllTags(true);
+  };
 
   return (
     <StyledSchemaPartColored color={Colors.DLRYellow1}>
@@ -124,7 +135,7 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource, isPreview = fal
                 <Typography gutterBottom variant="h2">
                   {t('resource.metadata.tags')}
                 </Typography>
-                {StringArrayToSetStringArray(localeSort(resource.tags)).map((tag, index) => (
+                {displayTags.map((tag, index) => (
                   <StyledChip
                     href={`/?${SearchParameters.tag}=${tag}${
                       getLMSSearchParams().toString().length > 0 ? `&${getLMSSearchParams()}` : ''
@@ -138,6 +149,11 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource, isPreview = fal
                     clickable
                   />
                 ))}
+                {!showAllTags && (
+                  <Button onClick={handleShowAllTagsClick} color="primary">
+                    {t('resource.show_all_tags')}
+                  </Button>
+                )}
               </StyledFeatureWrapper>
             )}
           </Grid>
