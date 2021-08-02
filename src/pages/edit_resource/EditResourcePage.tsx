@@ -95,6 +95,17 @@ const EditResourcePage = () => {
   };
   const mainFileHandler = useUppy(createUppy('', false, onCreateFile));
 
+  useEffect(() => {
+    const setupBeforeUnloadListener = () => {
+      window.addEventListener('beforeunload', (ev) => {
+        ev.preventDefault();
+        const uppyState = mainFileHandler.getState();
+        if (!(uppyState.totalProgress === 0 || uppyState.totalProgress === 100)) return (ev.returnValue = ''); //The text displayed to the user is the browser's default text. (no need to add custom text)
+      });
+    };
+    setupBeforeUnloadListener();
+  }, [mainFileHandler]);
+
   const onSubmitLink = async (url: string) => {
     setShowForm(true);
     try {
