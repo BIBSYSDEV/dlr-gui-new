@@ -147,6 +147,17 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
   };
 
   useEffect(() => {
+    const setupBeforeUnloadListener = () => {
+      window.addEventListener('beforeunload', (ev) => {
+        ev.preventDefault();
+        const uppyState = additionalFilesUppy.getState();
+        if (!(uppyState.totalProgress === 0 || uppyState.totalProgress === 100)) return (ev.returnValue = ''); //The text displayed to the user is the browser's default text. (no need to add custom text)
+      });
+    };
+    setupBeforeUnloadListener();
+  }, [additionalFilesUppy]);
+
+  useEffect(() => {
     const getAllLicences = async () => {
       setIsLoadingLicenses(true);
       setLoadingLicensesErrorStatus(StatusCode.ACCEPTED);
