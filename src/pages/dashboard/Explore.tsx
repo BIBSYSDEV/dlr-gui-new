@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { createRef, useCallback, useEffect, useState } from 'react';
 import { CircularProgress, List, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
@@ -54,7 +54,7 @@ const StyledProgressWrapper = styled.div`
   margin-top: 3rem;
 `;
 
-const StyledList = styled(List)`
+const StyledList: any = styled(List)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -99,6 +99,7 @@ const createQueryFromUrl = (location: any): QueryObject => {
 };
 
 const Explore = () => {
+  const startOfList = createRef<HTMLDivElement>();
   const location = useLocation();
   const [queryObject, setQueryObject] = useState<QueryObject>(createQueryFromUrl(location));
   const [page, setPage] = useState(queryObject.offset / 10 + 1);
@@ -111,14 +112,21 @@ const Explore = () => {
   const history = useHistory();
   const [hasPopStateListener, setHasPopStateListener] = useState(false);
 
-  const handlePaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-    setQueryObject((prevState) => ({
-      ...prevState,
-      offset: (Number(value) - 1) * NumberOfResultsPrPage,
-    }));
-    rewriteSearchParams(SearchParameters.page, ['' + value], history, location);
-  };
+  const handlePaginationChange = useCallback(
+    (event: React.ChangeEvent<unknown>, value: number) => {
+      setPage(value);
+      setQueryObject((prevState) => ({
+        ...prevState,
+        offset: (Number(value) - 1) * NumberOfResultsPrPage,
+      }));
+      rewriteSearchParams(SearchParameters.page, ['' + value], history, location);
+
+      if (startOfList && startOfList.current) {
+        startOfList.current.scrollIntoView();
+      }
+    },
+    [history, location, startOfList]
+  );
 
   const triggerSearch = async (queryObject: QueryObject) => {
     try {
@@ -176,7 +184,7 @@ const Explore = () => {
                   </Typography>
                   {user.id && <AccessFiltering queryObject={queryObject} setQueryObject={setQueryObject} />}
                 </StyledResultListHeaderWrapper>
-                <StyledList>
+                <StyledList ref={startOfList}>
                   {resources &&
                     resources.length > 0 &&
                     resources.map((resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
