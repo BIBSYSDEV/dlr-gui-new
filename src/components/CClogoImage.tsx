@@ -54,7 +54,9 @@ interface CClogoImageProps {
 const CClogoImage: FC<CClogoImageProps> = ({ licenseCode, showCCImage = true, textFirst = false }) => {
   return (
     <StyledLogoWrapper>
-      {textFirst && <StyledFirstLicenseCode>{licenseCode}</StyledFirstLicenseCode>}
+      {textFirst && (
+        <StyledFirstLicenseCode>{licenseCode.replace(' 4.0', '').replace('1.0', '')}</StyledFirstLicenseCode>
+      )}
       <StyledImageWrapper>
         {licenseCode.toLowerCase().includes('cc') && showCCImage && <StyledImage src={CCLogo} alt="" />}
         {licenseCode.toLowerCase().includes('by') && <StyledImage src={BY} alt="" />}
@@ -63,7 +65,7 @@ const CClogoImage: FC<CClogoImageProps> = ({ licenseCode, showCCImage = true, te
         {licenseCode.toLowerCase().includes('sa') && <StyledImage src={SA} alt="" />}
         {licenseCode.toLowerCase().includes('1') && <StyledImage src={Zero} alt="" />}
       </StyledImageWrapper>
-      {!textFirst && <StyledLicenseCode>{licenseCode}</StyledLicenseCode>}
+      {!textFirst && <StyledLicenseCode>{licenseCode.replace(' 4.0', '').replace('1.0', '')}</StyledLicenseCode>}
     </StyledLogoWrapper>
   );
 };
