@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { createRef, FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import StartRegistrationMethodAccordion from './StartRegistrationMethodAccordion';
@@ -54,11 +54,15 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
   const [page, setPage] = useState(1);
   const [firstItemOnPage, setFirstItemOnPage] = useState<number>();
   const [lastItemOnPage, setLastItemOnPage] = useState<number>();
+  const startOfList = createRef<HTMLUListElement>();
 
   const handlePageChange = (pageValue: number) => {
     setPage(pageValue);
     setFirstItemOnPage((pageValue - 1) * itemsPrPage);
     setLastItemOnPage(pageValue * itemsPrPage);
+    if (startOfList && startOfList.current) {
+      startOfList.current.scrollIntoView();
+    }
   };
 
   const handleClickOpen = async () => {
@@ -121,7 +125,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
               <b>Results ({kalturaResources?.length}).</b> {t('kaltura.choose_a_resource')}.
             </DialogContentText>
           )}
-          <StyledList>
+          <StyledList ref={startOfList}>
             {busyGettingKalturaResources ? (
               <CircularProgress />
             ) : kalturaResources ? (
