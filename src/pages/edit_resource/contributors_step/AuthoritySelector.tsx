@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, { createRef, FC, useCallback, useEffect, useRef, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
@@ -91,6 +91,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   const { t } = useTranslation();
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
   const debouncedSearchTerm = useDebounce(authorityInputSearchValue, 500);
+  const startOfList = createRef<HTMLUListElement>();
   const mountedRef = useRef(true);
 
   const handleClickOpen = () => {
@@ -105,6 +106,9 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   const handlePageChange = (value: number) => {
     setPage(value);
     searchForAuthorities((value - FirstPage) * AuthorityListLength, debouncedSearchTerm);
+    if (startOfList && startOfList.current) {
+      startOfList.current.scrollIntoView();
+    }
   };
 
   const searchForAuthorities = useCallback((offset: number, searchTerm) => {
@@ -198,7 +202,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
                 <Typography id={ListTitleId} variant="h3">
                   {t('authority.authorities')} ({authoritySearchResponse.numFound}):
                 </Typography>
-                <List aria-labelledby={ListTitleId}>
+                <List ref={startOfList} aria-labelledby={ListTitleId}>
                   {!isLoading &&
                     authoritySearchResponse.results.map((authority, index) => (
                       <AuthorityListItem
@@ -210,7 +214,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
                 </List>
               </StyledListWrapper>
             )}
-            {authoritySearchResponse && authoritySearchResponse.results.length >= AuthorityListLength && (
+            {authoritySearchResponse && authoritySearchResponse.numFound >= AuthorityListLength && (
               <Pagination
                 color="primary"
                 count={Math.ceil(authoritySearchResponse.numFound / AuthorityListLength)}
