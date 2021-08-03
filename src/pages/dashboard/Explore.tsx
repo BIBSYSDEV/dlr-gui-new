@@ -54,7 +54,7 @@ const StyledProgressWrapper = styled.div`
   margin-top: 3rem;
 `;
 
-const StyledList: any = styled(List)`
+const StyledList = styled(List)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -99,7 +99,7 @@ const createQueryFromUrl = (location: any): QueryObject => {
 };
 
 const Explore = () => {
-  const startOfList = createRef<HTMLDivElement>();
+  const startOfList = createRef<HTMLUListElement>();
   const location = useLocation();
   const [queryObject, setQueryObject] = useState<QueryObject>(createQueryFromUrl(location));
   const [page, setPage] = useState(queryObject.offset / 10 + 1);
