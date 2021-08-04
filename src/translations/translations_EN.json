@@ -341,7 +341,7 @@
     "notifications": "Notifications",
     "profile": "Profile",
     "receive_notifications_email": "Receive email notifications from DLR to {{email}}",
-    "receive_notifications_email_details": "For instance: notifications about DOI requests and reported resources",
+    "receive_notifications_email_details": "For instance: notifications about DOI requests",
     "your_groups": "Your affiliated groups",
     "your_roles": "Your roles"
   },

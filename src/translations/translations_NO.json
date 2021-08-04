@@ -341,7 +341,7 @@
     "notifications": "Varsler",
     "profile": "Profil",
     "receive_notifications_email": "Motta epost-varsler fra DLR til {{email}}",
-    "receive_notifications_email_details": "For eksempel varsel om DOI forepørsler og rapporterte ressurser",
+    "receive_notifications_email_details": "For eksempel varsel om DOI forepørsler",
     "your_groups": "Dine gruppetilknytninger",
     "your_roles": "Dine roller"
   },
