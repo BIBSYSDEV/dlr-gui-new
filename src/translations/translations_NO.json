@@ -341,7 +341,9 @@
     "notifications": "Varsler",
     "profile": "Profil",
     "receive_notifications_email": "Motta epost-varsler fra DLR til {{email}}",
-    "receive_notifications_email_details": "For eksempel varsel om DOI forepørsler og rapporterte ressurser",
+    "receive_notifications_email_details_least_privilege": "For eksempel varsel om avviste DOI forepørsler og andre som har delt en ressurs privat til deg",
+    "receive_notifications_email_details_curator": "Som kurator vil du også få varsel om noen forespør DOI eller ber om eierskaps endringer",
+    "receive_notifications_email_details_editor": "Som redaktor vil også få varsel om noen har rapportert en ressurs",
     "your_groups": "Dine gruppetilknytninger",
     "your_roles": "Dine roller"
   },
