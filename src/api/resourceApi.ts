@@ -338,6 +338,13 @@ export const getContentById = (
   });
 };
 
+export const getContentPresentationData = (contentIdentifier: string): Promise<AxiosResponse<Content>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesContentPath}/${contentIdentifier}`),
+    method: 'GET',
+  });
+};
+
 export const getMyResources = (): Promise<AxiosResponse<Resource[]>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/owners/users/current`),

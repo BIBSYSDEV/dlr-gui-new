@@ -31,10 +31,8 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, userResourceAuthoriza
   const [requestSentSuccess, setRequestSentSuccess] = useState(false);
   const user = useSelector((state: RootState) => state.user);
   const isAuthor = () => resource.features.dlr_submitter_email === user.id;
-  const [canRequestChangeInOwnership] = useState(
-    userResourceAuthorization.isConsumer && !!user.institutionAuthorities?.isPublisher
-  );
-
+  const canRequestChangeInOwnership =
+    userResourceAuthorization.isConsumer && !!user.institutionAuthorities?.isPublisher;
   return (
     <>
       <Typography variant="h2">{t('common.actions')}</Typography>
