@@ -341,7 +341,7 @@
     "notifications": "Notifications",
     "profile": "Profile",
     "receive_notifications_email": "Receive email notifications from DLR to {{email}}",
-    "receive_notifications_email_details_least_privilege": "For instance: notifications about rejected DOI requests, or somebody shares a resource privately with you, using your email address",
+    "receive_notifications_email_details_least_privilege": "For instance: notifications about rejected DOI requests, or somebody shares a resource privately with you",
     "receive_notifications_email_details_curator": "As a curator you will also receive notifications when somebody is requesting DOI or requesting ownership changes",
     "receive_notifications_email_details_editor": "As an editor you will also receive notifications when somebody has reported a resource",
     "your_groups": "Your affiliated groups",
