@@ -48,40 +48,50 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
   const [usageURL, setUsageURL] = useState(
     `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${resource.contents.masterContent.identifier}/delivery?jwt=${localStorage.token}`
   );
+  const [contentUnavailable, setContentUnavailable] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);
+      let newDefaultContent: Content | undefined = undefined;
       try {
-        const defaultContentResponse = await getResourceDefaultContent(resource.identifier);
-        const newDefaultContent = defaultContentResponse.data;
-        const newPresentationMode = determinePresentationMode(newDefaultContent);
-
-        if (newPresentationMode === SupportedFileTypes.TwentyThreeVideo && newDefaultContent.features.dlr_content_url) {
-          const twentyThreeVideoResponse = await getTwentyThreeVideoInformation(
-            newDefaultContent.features.dlr_content_url
-          );
-          newDefaultContent.features.dlr_content_url = getSourceFromIframeString(twentyThreeVideoResponse.data.html);
-        }
-        if (newPresentationMode === SupportedFileTypes.Soundcloud && newDefaultContent.features.dlr_content_url) {
-          const contentResponse = await getSoundCloudInformation(newDefaultContent.features.dlr_content_url);
-          newDefaultContent.features.dlr_content_url = getSourceFromIframeString(contentResponse.data.html);
-        }
-        if (newPresentationMode === SupportedFileTypes.Text && newDefaultContent.features.dlr_content_url) {
-          const contentFileResponse = await getTextFileContents(newDefaultContent.features.dlr_content_url);
-          setContentText(contentFileResponse.data);
-        }
-        if (newDefaultContent.features.dlr_content_url) {
-          setUsageURL(newDefaultContent.features.dlr_content_url);
-        }
-        setDefaultContent(newDefaultContent);
-        setPresentationMode(newPresentationMode);
+        newDefaultContent = (await getResourceDefaultContent(resource.identifier)).data;
       } catch (error) {
-        setDefaultContent(null);
-        setPresentationMode(determinePresentationMode(resource.contents.masterContent));
-      } finally {
-        setLoading(false);
+        setContentUnavailable(true);
       }
+      if (newDefaultContent) {
+        try {
+          const newPresentationMode = determinePresentationMode(newDefaultContent);
+
+          if (
+            newPresentationMode === SupportedFileTypes.TwentyThreeVideo &&
+            newDefaultContent.features.dlr_content_url
+          ) {
+            const twentyThreeVideoResponse = await getTwentyThreeVideoInformation(
+              newDefaultContent.features.dlr_content_url
+            );
+            newDefaultContent.features.dlr_content_url = getSourceFromIframeString(twentyThreeVideoResponse.data.html);
+          }
+          if (newPresentationMode === SupportedFileTypes.Soundcloud && newDefaultContent.features.dlr_content_url) {
+            const contentResponse = await getSoundCloudInformation(newDefaultContent.features.dlr_content_url);
+            newDefaultContent.features.dlr_content_url = getSourceFromIframeString(contentResponse.data.html);
+          }
+          if (newPresentationMode === SupportedFileTypes.Text && newDefaultContent.features.dlr_content_url) {
+            const contentFileResponse = await getTextFileContents(newDefaultContent.features.dlr_content_url);
+            setContentText(contentFileResponse.data);
+          }
+          if (newDefaultContent.features.dlr_content_url) {
+            setUsageURL(newDefaultContent.features.dlr_content_url);
+          }
+          setDefaultContent(newDefaultContent);
+          setPresentationMode(newPresentationMode);
+        } catch (error) {
+          setDefaultContent(null);
+          setPresentationMode(determinePresentationMode(resource.contents.masterContent));
+        }
+      }
+
+      setLoading(false);
     };
 
     if (!isPreview || !mainFileBeingUploaded) {
@@ -106,49 +116,55 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
     <>
       {!isLoading && !mainFileBeingUploaded ? (
         <>
-          {presentationMode === resourceType.IMAGE && <StyledImage src={usageURL} alt="Preview of resource" />}
-          {presentationMode === resourceType.VIDEO && <StyledVideo src={usageURL} controls />}
-          {presentationMode === SupportedFileTypes.Audio && (
-            <audio controls>
-              <source
-                src={usageURL}
-                type={
-                  defaultContent?.features.dlr_content_mime_type ??
-                  resource.contents.masterContent.features.dlr_content_mime_type
-                }
-              />
-            </audio>
-          )}
-          {presentationMode === SupportedFileTypes.Document && (
-            <DocumentPreview defaultContent={defaultContent} resource={resource} usageURL={usageURL} />
-          )}
-          {presentationMode === SupportedFileTypes.PDF && (
-            <object data={usageURL} type="application/pdf" height={'100%'} width={'100%'}>
-              <ContentIframe src={usageURL} />
-              <Typography>{t('resource.preview.browser_does_not_support_pdf_viewing')}</Typography>
-              <DownloadButton
-                fileName={resource.contents.masterContent.features.dlr_content}
-                contentURL={usageURL}
-                contentSize={resource.contents.masterContent.features.dlr_content_size}
-              />
-            </object>
-          )}
-          {presentationMode === SupportedFileTypes.Download && (
-            <DownloadButton
-              fileName={resource.contents.masterContent.features.dlr_content}
-              contentURL={usageURL}
-              contentSize={resource.contents.masterContent.features.dlr_content_size}
-            />
-          )}
-          {previewIsRegularIframe() && <ContentIframe src={usageURL} />}
-          {(presentationMode === SupportedFileTypes.LinkSchemeHttp ||
-            presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent) && (
-            <LinkPreviewNotPossible resource={resource} presentationMode={presentationMode} />
-          )}
-          {presentationMode === SupportedFileTypes.Text && (
-            <StyledPaper elevation={2}>
-              <Typography data-testid="text-file-content-typography">{contentText}</Typography>
-            </StyledPaper>
+          {!contentUnavailable ? (
+            <>
+              {presentationMode === resourceType.IMAGE && <StyledImage src={usageURL} alt="Preview of resource" />}
+              {presentationMode === resourceType.VIDEO && <StyledVideo src={usageURL} controls />}
+              {presentationMode === SupportedFileTypes.Audio && (
+                <audio controls>
+                  <source
+                    src={usageURL}
+                    type={
+                      defaultContent?.features.dlr_content_mime_type ??
+                      resource.contents.masterContent.features.dlr_content_mime_type
+                    }
+                  />
+                </audio>
+              )}
+              {presentationMode === SupportedFileTypes.Document && (
+                <DocumentPreview defaultContent={defaultContent} resource={resource} usageURL={usageURL} />
+              )}
+              {presentationMode === SupportedFileTypes.PDF && (
+                <object data={usageURL} type="application/pdf" height={'100%'} width={'100%'}>
+                  <ContentIframe src={usageURL} />
+                  <Typography>{t('resource.preview.browser_does_not_support_pdf_viewing')}</Typography>
+                  <DownloadButton
+                    fileName={resource.contents.masterContent.features.dlr_content}
+                    contentURL={usageURL}
+                    contentSize={resource.contents.masterContent.features.dlr_content_size}
+                  />
+                </object>
+              )}
+              {presentationMode === SupportedFileTypes.Download && (
+                <DownloadButton
+                  fileName={resource.contents.masterContent.features.dlr_content}
+                  contentURL={usageURL}
+                  contentSize={resource.contents.masterContent.features.dlr_content_size}
+                />
+              )}
+              {previewIsRegularIframe() && <ContentIframe src={usageURL} />}
+              {(presentationMode === SupportedFileTypes.LinkSchemeHttp ||
+                presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent) && (
+                <LinkPreviewNotPossible resource={resource} presentationMode={presentationMode} />
+              )}
+              {presentationMode === SupportedFileTypes.Text && (
+                <StyledPaper elevation={2}>
+                  <Typography data-testid="text-file-content-typography">{contentText}</Typography>
+                </StyledPaper>
+              )}
+            </>
+          ) : (
+            <Typography>{t('resource.preview.no_preview_authorization_reasons')}</Typography>
           )}
         </>
       ) : (

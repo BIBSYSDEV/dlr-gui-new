@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useState } from 'react';
-import { Resource } from '../../types/resource.types';
+import React, { FC, useState } from 'react';
+import { Resource, UserAuthorizationProfileForResource } from '../../types/resource.types';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Grid, Typography } from '@material-ui/core';
@@ -8,8 +8,6 @@ import RequestDOI from './RequestDOI';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
-import { getMyUserAuthorizationProfileForResource } from '../../api/resourceApi';
-import { ResourceAuthorizationProfilesName } from '../../types/user.types';
 import RequestOwnership from './RequestOwnership';
 import ErrorBanner from '../../components/ErrorBanner';
 
@@ -24,38 +22,18 @@ const StyledAlert = styled(Alert)`
 
 interface ResourceUsageProps {
   resource: Resource;
+  userResourceAuthorization: UserAuthorizationProfileForResource;
+  errorLoadingAuthorization: Error | undefined;
 }
 
-const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
+const ResourceUsage: FC<ResourceUsageProps> = ({ resource, userResourceAuthorization, errorLoadingAuthorization }) => {
   const { t } = useTranslation();
   const [requestSentSuccess, setRequestSentSuccess] = useState(false);
   const user = useSelector((state: RootState) => state.user);
   const isAuthor = () => resource.features.dlr_submitter_email === user.id;
-  const [isOwner, setIsOwner] = useState(false);
-  const [canRequestChangeInOwnership, setCanRequestChangeInOwnership] = useState(false);
-  const [errorLoadingAuthorization, setErrorLoadingAuthorization] = useState<Error>();
-
-  useEffect(() => {
-    const fetchAuthorization = async () => {
-      if (user.id) {
-        try {
-          const authorizationProfiles = (await getMyUserAuthorizationProfileForResource(resource.identifier)).data;
-
-          const isConsumer = authorizationProfiles.profiles.some(
-            (profile) => profile.name === ResourceAuthorizationProfilesName.CONSUMER
-          );
-          setCanRequestChangeInOwnership(isConsumer && !!user.institutionAuthorities?.isPublisher);
-
-          setIsOwner(
-            authorizationProfiles.profiles.some((profile) => profile.name === ResourceAuthorizationProfilesName.OWNER)
-          );
-        } catch (error) {
-          setErrorLoadingAuthorization(error);
-        }
-      }
-    };
-    fetchAuthorization();
-  }, [resource.identifier, user.id, user.institutionAuthorities?.isPublisher]);
+  const [canRequestChangeInOwnership] = useState(
+    userResourceAuthorization.isConsumer && !!user.institutionAuthorities?.isPublisher
+  );
 
   return (
     <>
@@ -65,7 +43,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
           <Grid item>
             <ReportResource setRequestSentSuccess={setRequestSentSuccess} resource={resource} />
           </Grid>
-          {(isAuthor() || isOwner) && (
+          {(isAuthor() || userResourceAuthorization.isOwner) && (
             <Grid item>
               <RequestDOI setRequestSentSuccess={setRequestSentSuccess} resource={resource} />
             </Grid>

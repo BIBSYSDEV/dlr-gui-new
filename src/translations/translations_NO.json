@@ -477,6 +477,7 @@
       "external_page": "Ekstern side",
       "file_to_big": "Filen er for stor for forhåndsvisning",
       "link_to_content": "Lenke til innhold",
+      "no_preview_authorization_reasons" : "Du har ikke tilgang til forhåndsvisning for denne ressursen",
       "no_preview_security_reasons": "Kan ikke forhåndsvise denne siden av sikkerhetsmessige årsaker",
       "no_preview_support_reasons": "Nettstedet gir ikke mulighet til å la seg forhåndsvises",
       "open_in_new_tag": "Åpne i ny fane",

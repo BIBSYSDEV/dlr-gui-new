@@ -477,6 +477,7 @@
       "external_page": "External page",
       "file_to_big": "The file is too big for preview",
       "link_to_content": "Link to content",
+      "no_preview_authorization_reasons": "You do not have privilege to preview this resource",
       "no_preview_security_reasons": "No preview for this resource exists due to security reasons",
       "no_preview_support_reasons": "The external site does not allow preview",
       "open_in_new_tag": "Open in new tab",

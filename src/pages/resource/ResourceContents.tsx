@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Resource } from '../../types/resource.types';
+import { Resource, UserAuthorizationProfileForResource } from '../../types/resource.types';
 import { StyledFeatureWrapper } from '../../components/styled/Wrappers';
 import { Button, Grid, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
@@ -21,9 +21,10 @@ const StyledGridContainer = styled(Grid)`
 
 interface ResourceContentsProps {
   resource: Resource;
+  userResourceAuthorization: UserAuthorizationProfileForResource;
 }
 
-const ResourceContents: FC<ResourceContentsProps> = ({ resource }) => {
+const ResourceContents: FC<ResourceContentsProps> = ({ resource, userResourceAuthorization }) => {
   const { t } = useTranslation();
   const { institution } = useSelector((state: RootState) => state.user);
 
@@ -57,6 +58,7 @@ const ResourceContents: FC<ResourceContentsProps> = ({ resource }) => {
           data-testid={`file-content-${content.identifier}-download-button`}
           variant="outlined"
           color="primary"
+          disabled={!userResourceAuthorization.isConsumer}
           download={content.features.dlr_content}
           target="_blank"
           rel="noopener norefferer"
