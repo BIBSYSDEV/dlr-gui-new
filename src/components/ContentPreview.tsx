@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { Typography, CircularProgress, Paper } from '@material-ui/core';
 import { Content, resourceType, SupportedFileTypes } from '../types/content.types';
 import styled from 'styled-components';
-import { API_PATHS, API_URL } from '../utils/constants';
 import { determinePresentationMode } from '../utils/mime_type_utils';
 import DownloadButton from './DownloadButton';
 import { getResourceDefaultContent, getTextFileContents } from '../api/resourceApi';
@@ -45,9 +44,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
   );
   const [isLoading, setLoading] = useState(false);
   const [contentText, setContentText] = useState('');
-  const [usageURL, setUsageURL] = useState(
-    `${API_URL}${API_PATHS.guiBackendResourcesContentPath}/${resource.contents.masterContent.identifier}/delivery?jwt=${localStorage.token}`
-  );
+  const [usageURL, setUsageURL] = useState('');
   const [contentUnavailable, setContentUnavailable] = useState(false);
 
   useEffect(() => {
@@ -89,6 +86,8 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
           setDefaultContent(null);
           setPresentationMode(determinePresentationMode(resource.contents.masterContent));
         }
+      } else {
+        setContentUnavailable(true);
       }
 
       setLoading(false);
@@ -138,19 +137,11 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
                 <object data={usageURL} type="application/pdf" height={'100%'} width={'100%'}>
                   <ContentIframe src={usageURL} />
                   <Typography>{t('resource.preview.browser_does_not_support_pdf_viewing')}</Typography>
-                  <DownloadButton
-                    fileName={resource.contents.masterContent.features.dlr_content}
-                    contentURL={usageURL}
-                    contentSize={resource.contents.masterContent.features.dlr_content_size}
-                  />
+                  <DownloadButton content={resource.contents.masterContent} />
                 </object>
               )}
               {presentationMode === SupportedFileTypes.Download && (
-                <DownloadButton
-                  fileName={resource.contents.masterContent.features.dlr_content}
-                  contentURL={usageURL}
-                  contentSize={resource.contents.masterContent.features.dlr_content_size}
-                />
+                <DownloadButton content={resource.contents.masterContent} />
               )}
               {previewIsRegularIframe() && <ContentIframe src={usageURL} />}
               {(presentationMode === SupportedFileTypes.LinkSchemeHttp ||
