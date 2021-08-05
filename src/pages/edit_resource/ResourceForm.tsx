@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
-import { CircularProgress, Typography } from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
 import { getLicenses } from '../../api/resourceApi';
 import { Resource, ResourceCreationType, ResourceFormStep } from '../../types/resource.types';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
@@ -11,7 +11,7 @@ import DescriptionFields from './description_step/DescriptionFields';
 import { Uppy } from '../../types/file.types';
 import ContributorFields from './contributors_step/ContributorFields';
 import CreatorField from './contributors_step/CreatorField';
-import { StyledContentWrapper, StyledContentWrapperLarge, StyledSchemaPart } from '../../components/styled/Wrappers';
+import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
 import PreviewPanel from './preview_step/PreviewPanel';
 import { StatusCode } from '../../utils/constants';
 import { ContainsOtherPeoplesWorkOptions, License } from '../../types/license.types';
@@ -29,6 +29,7 @@ import ScrollToContentButton from '../../components/ScrollToContentButton';
 import { StyleWidths } from '../../themes/mainTheme';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { BaseSchema } from 'yup';
+import SchemaPartTitle from './SchemaPartTitle';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -187,21 +188,21 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
                 <StyledPanelWrapper>
                   <StyledPanel tabIndex={-1} ref={contentRef}>
                     {activeStep === ResourceFormStep.Description && (
-                      <DescriptionFields
-                        setAllChangesSaved={(status: boolean) => {
-                          setAllChangesSaved(status);
-                        }}
-                      />
+                      <>
+                        <SchemaPartTitle stepTitle={t('resource.form_steps.description')} />
+                        <DescriptionFields
+                          setAllChangesSaved={(status: boolean) => {
+                            setAllChangesSaved(status);
+                          }}
+                        />
+                      </>
                     )}
                     {activeStep === ResourceFormStep.Contributors && (
                       <>
-                        <StyledSchemaPart>
-                          <StyledContentWrapper>
-                            <Typography variant="h3" component="h2">
-                              {formikProps.values.features.dlr_title}
-                            </Typography>
-                          </StyledContentWrapper>
-                        </StyledSchemaPart>
+                        <SchemaPartTitle
+                          stepTitle={t('resource.form_steps.contributors')}
+                          resourceTitle={formikProps.values.features.dlr_title}
+                        />
                         <CreatorField setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)} />
                         <ContributorFields
                           setAllChangesSaved={(status: boolean) => {
@@ -217,6 +218,10 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
                         {loadingLicensesErrorStatus !== StatusCode.ACCEPTED && (
                           <ErrorBanner userNeedsToBeLoggedIn={true} />
                         )}
+                        <SchemaPartTitle
+                          stepTitle={t('resource.form_steps.access_and_licence')}
+                          resourceTitle={formikProps.values.features.dlr_title}
+                        />
                         <AccessAndLicenseStep
                           allChangesSaved={allChangesSaved}
                           setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
@@ -226,13 +231,10 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
                     )}
                     {activeStep === ResourceFormStep.Contents && (
                       <div id={fileUploadPanelId}>
-                        <StyledSchemaPart>
-                          <StyledContentWrapper>
-                            <Typography variant="h3" component="h2">
-                              {formikProps.values.features.dlr_title}
-                            </Typography>
-                          </StyledContentWrapper>
-                        </StyledSchemaPart>
+                        <SchemaPartTitle
+                          stepTitle={t('resource.form_steps.contents')}
+                          resourceTitle={formikProps.values.features.dlr_title}
+                        />
                         <ContentsStep
                           uppy={uppy}
                           setAllChangesSaved={setAllChangesSaved}
@@ -246,9 +248,12 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
                       </div>
                     )}
                     {activeStep === ResourceFormStep.Preview && (
-                      <PreviewPanel formikProps={formikProps} mainFileBeingUploaded={mainFileBeingUploaded} />
+                      <>
+                        <SchemaPartTitle stepTitle={t('resource.form_steps.preview')} />
+                        <PreviewPanel formikProps={formikProps} mainFileBeingUploaded={mainFileBeingUploaded} />
+                        {!formikProps.isValid && <ResourceFormErrors />}
+                      </>
                     )}
-                    {activeStep === ResourceFormStep.Preview && !formikProps.isValid && <ResourceFormErrors />}
                     <ResourceFormActions
                       activeStep={activeStep}
                       allChangesSaved={allChangesSaved}
