@@ -21,14 +21,29 @@ interface DescriptionFieldsProps {
 
 const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
-  const { values, handleBlur, resetForm, touched, setTouched } = useFormikContext<Resource>();
+  const { values, handleBlur, resetForm, touched, setTouched, validateField } = useFormikContext<Resource>();
   const [saveErrorFields, setSaveErrorFields] = useState<string[]>([]);
 
   const saveField = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
     setAllChangesSaved(false);
     try {
       const name = '' + event.target.name.split('.').pop();
-      await postResourceFeature(values.identifier, name, event.target.value);
+      const eventTargetValueFirstLetterUpperCase =
+        event.target.value.slice(0, 1).toUpperCase() + event.target.value.slice(1);
+      if (event.target.value !== eventTargetValueFirstLetterUpperCase) {
+        switch (name) {
+          case 'dlr_title':
+            values.features.dlr_title = eventTargetValueFirstLetterUpperCase;
+            break;
+          case 'dlr_description':
+            values.features.dlr_description = eventTargetValueFirstLetterUpperCase;
+            break;
+          default:
+            break;
+        }
+      }
+
+      await postResourceFeature(values.identifier, name, eventTargetValueFirstLetterUpperCase);
       setAllChangesSaved(true);
       setSaveErrorFields([]);
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
@@ -59,6 +74,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
                     inputProps={{ 'data-testid': 'dlr-title-input' }}
                     onBlur={(event) => {
                       handleBlur(event);
+                      validateField(ResourceFeatureNamesFullPath.Title);
                       !error && saveField(event, ResourceFeatureNamesFullPath.Title);
                     }}
                   />
