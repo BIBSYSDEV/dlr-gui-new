@@ -4,8 +4,8 @@ import { Typography } from '@material-ui/core';
 
 const StyledHeader = styled(Typography)`
   border-bottom: 3px solid;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-top: 4.6rem;
+  margin-bottom: 2rem;
   padding-bottom: 0.5rem;
 `;
 
