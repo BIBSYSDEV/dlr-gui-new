@@ -31,6 +31,7 @@ export enum Colors {
   BlackOpaque25 = 'rgba(0, 0, 0, 0.25)',
   WhiteOpaque1 = 'rgba(255, 255, 255, 0.01)',
   SecondaryText = '#44515d',
+  PageHeaderSubtitle = '#737373',
   LightHeaderText = 'rgba(0,0,0,0.29)',
   Panel = '#A9D8B8',
   Disabled = '#bbbbbb',

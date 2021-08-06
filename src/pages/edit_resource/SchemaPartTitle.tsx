@@ -5,20 +5,19 @@ import { StyledContentWrapper, StyledSchemaPart } from '../../components/styled/
 
 interface SchemaPartTitleProps {
   stepTitle: string;
-  resourceTitle?: string;
 }
 
-const SchemaPartTitle: FC<SchemaPartTitleProps> = ({ stepTitle, resourceTitle }) => {
+const SchemaPartTitle: FC<SchemaPartTitleProps> = ({ stepTitle }) => {
   const mediumOrLargerScreen = useMediaQuery(`(min-width:${DeviceWidths.md}px)`);
 
-  if (mediumOrLargerScreen && !resourceTitle) {
+  if (mediumOrLargerScreen) {
     return <></>;
   } else {
     return (
       <StyledSchemaPart>
         <StyledContentWrapper>
           <Typography variant="h3" component="h2">
-            {mediumOrLargerScreen && resourceTitle ? resourceTitle : stepTitle}
+            {stepTitle}
           </Typography>
         </StyledContentWrapper>
       </StyledSchemaPart>

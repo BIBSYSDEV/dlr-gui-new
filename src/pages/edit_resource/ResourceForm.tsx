@@ -2,11 +2,12 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Grid, Typography } from '@material-ui/core';
 import { getLicenses } from '../../api/resourceApi';
 import { Resource, ResourceCreationType, ResourceFormStep } from '../../types/resource.types';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import * as Yup from 'yup';
+import { BaseSchema } from 'yup';
 import DescriptionFields from './description_step/DescriptionFields';
 import { Uppy } from '../../types/file.types';
 import ContributorFields from './contributors_step/ContributorFields';
@@ -26,9 +27,8 @@ import ResourceFormErrors from './ResourceFormErrors';
 import ResourceFormActions from './ResourceFormActions';
 import RequiredFieldInformation from '../../components/RequiredFieldInformation';
 import ScrollToContentButton from '../../components/ScrollToContentButton';
-import { StyleWidths } from '../../themes/mainTheme';
+import { Colors, StyleWidths } from '../../themes/mainTheme';
 import { Alert, AlertTitle } from '@material-ui/lab';
-import { BaseSchema } from 'yup';
 import SchemaPartTitle from './SchemaPartTitle';
 
 const StyledForm = styled(Form)`
@@ -59,6 +59,16 @@ const StyledPanel = styled.div`
   }
 `;
 
+const StyledGridItem = styled(Grid)`
+  &&.MuiGrid-item {
+    padding-top: 0;
+  }
+`;
+
+const StyledPageHeaderSubtitle: any = styled(Typography)`
+  color: ${Colors.PageHeaderSubtitle};
+`;
+
 interface ResourceFormProps {
   resource: Resource;
   uppy: Uppy;
@@ -81,10 +91,10 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
   const [newContent, setNewContent] = useState<Content>();
   const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED);
   const [licenses, setLicenses] = useState<License[]>();
+  const [activeStep, setActiveStep] = useState(ResourceFormStep.Description);
   const additionalFilesUppy = useUppy(additionalCreateFilesUppy(resource.identifier, setNewContent));
   const [newThumbnailContent, setNewThumbnailContent] = useState<Content>();
   const thumbnailUppy = useUppy(createThumbnailFileUppy(resource.identifier, setNewContentAndThumbnail));
-  const [activeStep, setActiveStep] = useState(ResourceFormStep.Description);
   const contentRef = useRef<HTMLDivElement>(null);
   const beforeResourceFormNavigationRef = useRef<HTMLDivElement>(null);
 
@@ -164,7 +174,18 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
   }, []);
   return (
     <StyledContentWrapperLarge>
-      <PageHeader>{t('resource.edit_resource')}</PageHeader>
+      <PageHeader>
+        <Grid container spacing={3} alignItems="baseline">
+          <Grid item>{t('resource.edit_resource')}</Grid>
+          {activeStep !== ResourceFormStep.Description && (
+            <StyledGridItem item>
+              <StyledPageHeaderSubtitle varian="inline" component="p" variant="h3">
+                {resource.features.dlr_title}
+              </StyledPageHeaderSubtitle>
+            </StyledGridItem>
+          )}
+        </Grid>
+      </PageHeader>
       {resource && (
         <>
           {resource.features.dlr_status_published && (
@@ -199,10 +220,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
                     )}
                     {activeStep === ResourceFormStep.Contributors && (
                       <>
-                        <SchemaPartTitle
-                          stepTitle={t('resource.form_steps.contributors')}
-                          resourceTitle={formikProps.values.features.dlr_title}
-                        />
+                        <SchemaPartTitle stepTitle={t('resource.form_steps.contributors')} />
                         <CreatorField setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)} />
                         <ContributorFields
                           setAllChangesSaved={(status: boolean) => {
@@ -218,10 +236,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
                         {loadingLicensesErrorStatus !== StatusCode.ACCEPTED && (
                           <ErrorBanner userNeedsToBeLoggedIn={true} />
                         )}
-                        <SchemaPartTitle
-                          stepTitle={t('resource.form_steps.access_and_licence')}
-                          resourceTitle={formikProps.values.features.dlr_title}
-                        />
+                        <SchemaPartTitle stepTitle={t('resource.form_steps.access_and_licence')} />
                         <AccessAndLicenseStep
                           allChangesSaved={allChangesSaved}
                           setAllChangesSaved={(status: boolean) => setAllChangesSaved(status)}
@@ -231,10 +246,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
                     )}
                     {activeStep === ResourceFormStep.Contents && (
                       <div id={fileUploadPanelId}>
-                        <SchemaPartTitle
-                          stepTitle={t('resource.form_steps.contents')}
-                          resourceTitle={formikProps.values.features.dlr_title}
-                        />
+                        <SchemaPartTitle stepTitle={t('resource.form_steps.contents')} />
                         <ContentsStep
                           uppy={uppy}
                           setAllChangesSaved={setAllChangesSaved}
