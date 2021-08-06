@@ -179,7 +179,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
           <Grid item>{t('resource.edit_resource')}</Grid>
           {activeStep !== ResourceFormStep.Description && (
             <StyledGridItem item>
-              <StyledPageHeaderSubtitle varian="inline" component="p" variant="h3">
+              <StyledPageHeaderSubtitle component="span" variant="h3">
                 {resource.features.dlr_title}
               </StyledPageHeaderSubtitle>
             </StyledGridItem>
