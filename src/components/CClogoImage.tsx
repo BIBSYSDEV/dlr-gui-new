@@ -55,7 +55,7 @@ const CClogoImage: FC<CClogoImageProps> = ({ licenseCode, showCCImage = true, te
   return (
     <StyledLogoWrapper>
       {textFirst && (
-        <StyledFirstLicenseCode>{licenseCode.replace(' 4.0', '').replace('1.0', '')}</StyledFirstLicenseCode>
+        <StyledFirstLicenseCode>{licenseCode.replace(' 4.0', '').replace(' 1.0', '')}</StyledFirstLicenseCode>
       )}
       <StyledImageWrapper>
         {licenseCode.toLowerCase().includes('cc') && showCCImage && <StyledImage src={CCLogo} alt="" />}
@@ -65,7 +65,7 @@ const CClogoImage: FC<CClogoImageProps> = ({ licenseCode, showCCImage = true, te
         {licenseCode.toLowerCase().includes('sa') && <StyledImage src={SA} alt="" />}
         {licenseCode.toLowerCase().includes('1') && <StyledImage src={Zero} alt="" />}
       </StyledImageWrapper>
-      {!textFirst && <StyledLicenseCode>{licenseCode.replace(' 4.0', '').replace('1.0', '')}</StyledLicenseCode>}
+      {!textFirst && <StyledLicenseCode>{licenseCode.replace(' 4.0', '').replace(' 1.0', '')}</StyledLicenseCode>}
     </StyledLogoWrapper>
   );
 };
