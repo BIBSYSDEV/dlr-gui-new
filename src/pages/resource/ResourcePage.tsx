@@ -16,19 +16,15 @@ import ResourcePresentation from './ResourcePresentation';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
-import { StyleWidths } from '../../themes/mainTheme';
 import { StyledContentWrapperLarge, StyledProgressWrapper } from '../../components/styled/Wrappers';
 import { PageHeader } from '../../components/PageHeader';
 
 const StyledResourceActionBar = styled.div`
   display: flex;
   width: 100%;
-  max-width: ${StyleWidths.width4};
   flex-direction: row;
   justify-content: flex-end;
-  margin-top: 2rem;
-  padding-right: 1rem;
-  align-items: center;
+  align-items: flex;
 `;
 
 const StyledContentWrapperLargeWithBottomMargin = styled(StyledContentWrapperLarge)`
@@ -86,6 +82,7 @@ const ResourcePage = () => {
     <ErrorBanner error={resourceLoadingError} />
   ) : (
     <StyledContentWrapperLargeWithBottomMargin>
+      <PageHeader testId="resource-title">{resource.features.dlr_title}</PageHeader>
       {isAuthor() && (
         <StyledResourceActionBar>
           <Button
@@ -98,7 +95,6 @@ const ResourcePage = () => {
           </Button>
         </StyledResourceActionBar>
       )}
-      <PageHeader testId="resource-title">{resource.features.dlr_title}</PageHeader>
       <ResourcePresentation resource={resource} isPreview={false} />
     </StyledContentWrapperLargeWithBottomMargin>
   );

@@ -3,9 +3,12 @@ import styled from 'styled-components';
 import { Typography } from '@material-ui/core';
 
 const StyledHeader = styled(Typography)`
+  margin-top: 4.6rem;
+  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
+    margin-top: 2rem;
+  }
   border-bottom: 3px solid;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   padding-bottom: 0.5rem;
 `;
 
