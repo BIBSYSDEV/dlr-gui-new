@@ -4,7 +4,7 @@ import { DeviceWidths } from '../../themes/mainTheme';
 import { StyledContentWrapper } from '../../components/styled/Wrappers';
 import styled from 'styled-components';
 
-const StyledSchemaPart = styled.div`
+const StyledSchemaPartLessPadding = styled.div`
   padding-bottom: 2rem;
   padding-top: 1rem;
   display: flex;
@@ -28,7 +28,7 @@ const SchemaPartTitle: FC<SchemaPartTitleProps> = ({ stepTitle, error = false })
     return <></>;
   } else {
     return (
-      <StyledSchemaPart>
+      <StyledSchemaPartLessPadding>
         <StyledContentWrapper>
           {!error ? (
             <StyledTypography color="primary" variant="h3" component="h2">
@@ -40,7 +40,7 @@ const SchemaPartTitle: FC<SchemaPartTitleProps> = ({ stepTitle, error = false })
             </StyledTypography>
           )}
         </StyledContentWrapper>
-      </StyledSchemaPart>
+      </StyledSchemaPartLessPadding>
     );
   }
 };
