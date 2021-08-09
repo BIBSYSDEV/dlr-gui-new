@@ -34,10 +34,6 @@ const AccessFiltering: FC<AccessFilteringProps> = ({ queryObject, setQueryObject
 
   return (
     <div>
-      {/**
-       original label for when SMILE-847 gets implemented:
-         label={t('dashboard.access_filter')}
-         **/}
       <FormControlLabel
         data-testid="access-checkbox-label"
         control={
@@ -48,7 +44,7 @@ const AccessFiltering: FC<AccessFilteringProps> = ({ queryObject, setQueryObject
             name={'access'}
           />
         }
-        label={t('dashboard.access_filter_limited')}
+        label={t('dashboard.access_filter')}
         onChange={(event) => {
           changeSelected(event);
         }}
@@ -56,12 +52,7 @@ const AccessFiltering: FC<AccessFilteringProps> = ({ queryObject, setQueryObject
       <HelperTextPopover
         ariaButtonLabel={t('explanation_text.access_filtering_label')}
         popoverId={'access-filtering-explainer'}>
-        {/**
-         original label for when SMILE-847 gets implemented:
-         <Typography>{`${t('explanation_text.access_filtering')} `}</Typography>
-         **/}
-        <Typography>{`${t('explanation_text.access_filtering_limited')} `}</Typography>
-        {/*//TODO: husk tekst på at man kan spørre om tilgang når funksjonaliteten er på plass*/}
+        <Typography>{`${t('explanation_text.access_filtering')} `}</Typography>
       </HelperTextPopover>
     </div>
   );
