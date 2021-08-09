@@ -8,12 +8,15 @@ import {
   ResourceContents,
   ResourceCreationType,
   ResourceEvent,
+  ResourceOwner,
   ResourceStatistic,
+  UserAuthorizationProfileForResource,
 } from '../types/resource.types';
 import { AccessTypes, License } from '../types/license.types';
 import { Content, emptyResourceContent, LinkMetadataFilename } from '../types/content.types';
 import { authenticatedApiRequest } from './api';
 import { FacetResponse, QueryObject, SearchParameters, SearchResult } from '../types/search.types';
+import { ResourceAuthorization, ResourceAuthorizationProfilesName } from '../types/user.types';
 
 enum APISearchParameters {
   FacetInstitution = 'facet_institution::',
@@ -335,6 +338,13 @@ export const getContentById = (
   });
 };
 
+export const getContentPresentationData = (contentIdentifier: string): Promise<AxiosResponse<Content>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesContentPath}/${contentIdentifier}`),
+    method: 'GET',
+  });
+};
+
 export const getMyResources = (): Promise<AxiosResponse<Resource[]>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/owners/users/current`),
@@ -402,6 +412,34 @@ export const getResourceViews = (resourceIdentifier: string): Promise<AxiosRespo
   });
 };
 
+export const getMyUserAuthorizationProfileForResource = async (
+  resourceIdentifier: string
+): Promise<UserAuthorizationProfileForResource> => {
+  const authorizationProfiles: ResourceAuthorization = (
+    await authenticatedApiRequest({
+      url: encodeURI(
+        `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/authorizations/users/authorized`
+      ),
+    })
+  ).data;
+  return {
+    isAdmin: authorizationProfiles.profiles.some((profile) => profile.name === ResourceAuthorizationProfilesName.ADMIN),
+    isConsumerPublic: authorizationProfiles.profiles.some(
+      (profile) => profile.name === ResourceAuthorizationProfilesName.CONSUMER_PUBLIC
+    ),
+    isCurator: authorizationProfiles.profiles.some(
+      (profile) => profile.name === ResourceAuthorizationProfilesName.CURATOR
+    ),
+    isEditor: authorizationProfiles.profiles.some(
+      (profile) => profile.name === ResourceAuthorizationProfilesName.EDITOR
+    ),
+    isOwner: authorizationProfiles.profiles.some((profile) => profile.name === ResourceAuthorizationProfilesName.OWNER),
+    isConsumer: authorizationProfiles.profiles.some(
+      (profile) => profile.name === ResourceAuthorizationProfilesName.CONSUMER
+    ),
+  };
+};
+
 export const getMyKalturaPresentations = (): Promise<AxiosResponse<KalturaPresentation[]>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations`),
@@ -409,6 +447,12 @@ export const getMyKalturaPresentations = (): Promise<AxiosResponse<KalturaPresen
   });
 };
 
+export const getResourceOwners = (resourceIdentifier: string): Promise<AxiosResponse<ResourceOwner[]>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/owners`),
+    method: 'GET',
+  });
+};
 export const postKalturaPresentationImport = (resource: Resource, kalturaPresentation: KalturaPresentation) => {
   const data = encodeURI(
     `identifier=${resource.identifier}&identifierContent=${resource.contents.masterContent.identifier}&kalturaPresentationId=${kalturaPresentation.id}&downloadUrl=${kalturaPresentation.downloadUrl}&title=${kalturaPresentation.title}`

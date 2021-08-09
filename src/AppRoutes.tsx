@@ -15,6 +15,7 @@ import MainContentView from './pages/content_view/MainContentView';
 import WorkListPage from './pages/worklist/WorkListPage';
 import ProfilePage from './pages/profile/ProfilePage';
 import { resourcePath } from './utils/constants';
+import HandleNotFound from './pages/errorpages/HandleNotFound';
 
 const Explore = lazy(() => import('./pages/dashboard/Explore'));
 const EditResourcePage = lazy(() => import('./pages/edit_resource/EditResourcePage'));
@@ -27,6 +28,7 @@ const AppRoutes = () => {
     <Suspense fallback={<DelayedFallback />}>
       <Switch>
         <Route exact path="/" component={Explore} />
+        <Route exact path="/handlenotfound" component={HandleNotFound} />
         <Redirect exact path="/resource/:identifier" to={`${resourcePath}/:identifier`} />
         <Redirect
           exact

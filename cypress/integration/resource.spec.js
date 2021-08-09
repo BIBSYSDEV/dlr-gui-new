@@ -12,7 +12,7 @@ import {
 import { SearchParameters } from '../../src/types/search.types';
 import { resourcePath } from '../../src/utils/constants';
 
-context('Actions', () => {
+context('Resource', () => {
   beforeEach(() => {
     cy.visit(`${resourcePath}/mock-id`);
   });
@@ -119,5 +119,12 @@ context('Actions', () => {
     cy.get('[data-testid=request-doi-button').should('not.exist');
     cy.visit(`${resourcePath}/${publishedTestPost.identifier}]`);
     cy.get('[data-testid=request-doi-button').should('exist');
+  });
+
+  it('is possible to request ownership change', () => {
+    cy.get('[data-testid=request-ownership-button').click();
+    cy.get('[data-testid=ownership-dialog-input]').type('some text');
+    cy.get('[data-testid=ownership-dialog-submit-button').click();
+    cy.get('[data-testid=request-sent-info]').should('exist');
   });
 });

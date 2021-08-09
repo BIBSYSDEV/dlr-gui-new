@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getWorkListReports } from '../../api/workListApi';
 import { CircularProgress, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import ErrorBanner from '../../components/ErrorBanner';
 import ReportRequestListItem from './ReportRequestListItem';
 import { WorklistRequest } from '../../types/Worklist.types';
-import { getWorkListWithResourceAttached } from '../../utils/workList';
 
 const StyledUl = styled.ul`
   list-style: none; /* Remove list bullets */
@@ -14,28 +12,15 @@ const StyledUl = styled.ul`
   margin: 0;
 `;
 
-const ReportList = () => {
-  const { t } = useTranslation();
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadingError, setLoadingError] = useState<Error>();
-  const [workListReport, setWorkListReport] = useState<WorklistRequest[]>([]);
+interface ReportListProps {
+  isLoading: boolean;
+  loadingError: Error | undefined;
+  workListReport: WorklistRequest[];
+  setWorkListReport: React.Dispatch<React.SetStateAction<WorklistRequest[]>>;
+}
 
-  useEffect(() => {
-    const fetchWorkReport = async () => {
-      try {
-        setIsLoading(true);
-        setLoadingError(undefined);
-        const workListReportResponse = await getWorkListReports();
-        const workListTotal = await getWorkListWithResourceAttached(workListReportResponse.data);
-        setWorkListReport(workListTotal);
-      } catch (error) {
-        setLoadingError(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchWorkReport();
-  }, []);
+const ReportList: FC<ReportListProps> = ({ isLoading, loadingError, workListReport, setWorkListReport }) => {
+  const { t } = useTranslation();
 
   return (
     <>

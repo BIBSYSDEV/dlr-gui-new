@@ -1,5 +1,9 @@
-import React, { FC } from 'react';
-import { Resource } from '../../types/resource.types';
+import React, { FC, useEffect, useState } from 'react';
+import {
+  emptyUserAuthorizationProfileForResource,
+  Resource,
+  UserAuthorizationProfileForResource,
+} from '../../types/resource.types';
 import { Grid } from '@material-ui/core';
 import styled from 'styled-components';
 import { Colors } from '../../themes/mainTheme';
@@ -14,6 +18,7 @@ import ResourceContents from './ResourceContents';
 import ResourceLicense from './ResourceLicense';
 import ContentPreview from '../../components/ContentPreview';
 import ResourceActions from './ResourceActions';
+import { getMyUserAuthorizationProfileForResource } from '../../api/resourceApi';
 
 const PreviewComponentWrapper = styled.div`
   margin: 1rem 0;
@@ -43,6 +48,25 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
   isPreview = false,
   mainFileBeingUploaded = false,
 }) => {
+  const [userResourceAuthorization, setUserResourceAuthorization] = useState<UserAuthorizationProfileForResource>(
+    emptyUserAuthorizationProfileForResource
+  );
+  const [errorLoadingAuthorization, setErrorLoadingAuthorization] = useState<Error>();
+
+  useEffect(() => {
+    const fetchUserResourceAuthorization = async () => {
+      try {
+        setErrorLoadingAuthorization(undefined);
+        const userResourceAuthorizationResponse = await getMyUserAuthorizationProfileForResource(resource.identifier);
+        setUserResourceAuthorization(userResourceAuthorizationResponse);
+      } catch (error) {
+        //ignore error
+        setErrorLoadingAuthorization(error);
+      }
+    };
+    fetchUserResourceAuthorization();
+  }, [resource.identifier]);
+
   return (
     resource && (
       <StyledPresentationWrapper>
@@ -60,7 +84,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
           <StyledContentWrapperMedium>
             <Grid container spacing={6}>
               <Grid item xs={12} md={8}>
-                <ResourceContents resource={resource} />
+                <ResourceContents userResourceAuthorization={userResourceAuthorization} resource={resource} />
               </Grid>
               <Grid item xs={12} md={4}>
                 <ResourceLicense resource={resource} />
@@ -76,7 +100,11 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
         {!isPreview && (
           <StyledSchemaPartColored color={Colors.DLRYellow4}>
             <StyledContentWrapperMedium>
-              <ResourceActions resource={resource} />
+              <ResourceActions
+                userResourceAuthorization={userResourceAuthorization}
+                errorLoadingAuthorization={errorLoadingAuthorization}
+                resource={resource}
+              />
             </StyledContentWrapperMedium>
           </StyledSchemaPartColored>
         )}

@@ -1,6 +1,6 @@
 import { resourcePath } from '../../src/utils/constants';
 
-context('Actions', () => {
+context('Authorities registration', () => {
   beforeEach(() => {
     cy.visit(`${resourcePath}/mock-id`);
   });

@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Resource } from '../../types/resource.types';
+import { Resource, UserAuthorizationProfileForResource } from '../../types/resource.types';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Grid, Typography } from '@material-ui/core';
@@ -8,6 +8,8 @@ import RequestDOI from './RequestDOI';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
+import RequestOwnership from './RequestOwnership';
+import ErrorBanner from '../../components/ErrorBanner';
 
 const StyledActionContentWrapper = styled.div`
   margin-top: 1rem;
@@ -20,14 +22,17 @@ const StyledAlert = styled(Alert)`
 
 interface ResourceUsageProps {
   resource: Resource;
+  userResourceAuthorization: UserAuthorizationProfileForResource;
+  errorLoadingAuthorization: Error | undefined;
 }
 
-const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
+const ResourceUsage: FC<ResourceUsageProps> = ({ resource, userResourceAuthorization, errorLoadingAuthorization }) => {
   const { t } = useTranslation();
   const [requestSentSuccess, setRequestSentSuccess] = useState(false);
   const user = useSelector((state: RootState) => state.user);
   const isAuthor = () => resource.features.dlr_submitter_email === user.id;
-
+  const canRequestChangeInOwnership =
+    userResourceAuthorization.isConsumer && !!user.institutionAuthorities?.isPublisher;
   return (
     <>
       <Typography variant="h2">{t('common.actions')}</Typography>
@@ -36,9 +41,14 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
           <Grid item>
             <ReportResource setRequestSentSuccess={setRequestSentSuccess} resource={resource} />
           </Grid>
-          {isAuthor() && (
+          {(isAuthor() || userResourceAuthorization.isOwner) && (
             <Grid item>
               <RequestDOI setRequestSentSuccess={setRequestSentSuccess} resource={resource} />
+            </Grid>
+          )}
+          {canRequestChangeInOwnership && (
+            <Grid item>
+              <RequestOwnership setRequestSentSuccess={setRequestSentSuccess} resource={resource} />
             </Grid>
           )}
         </Grid>
@@ -48,6 +58,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource }) => {
           </StyledAlert>
         )}
       </StyledActionContentWrapper>
+      {errorLoadingAuthorization && <ErrorBanner error={errorLoadingAuthorization} />}
     </>
   );
 };

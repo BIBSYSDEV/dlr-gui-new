@@ -71,3 +71,41 @@ export const getWorkListItemsExpired = (): Promise<AxiosResponse<WorklistRequest
     method: 'GET',
   });
 };
+
+export const getWorkListItemsOwnership = (): Promise<AxiosResponse<WorklistRequest[]>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendWorklistsPath}/worklists/types/dlr_resource_owner_request`),
+    method: 'GET',
+  });
+};
+
+export const refuseOwnershipRequest = (resourceIdentifier: string, comment: string) => {
+  const data = encodeURI(`comment=${comment}`);
+  return authenticatedApiRequest({
+    url: encodeURI(
+      `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/owners/requests/current/refusals`
+    ),
+    method: 'POST',
+    data: data,
+  });
+};
+
+export const approveOwnershipRequest = (resourceIdentifier: string, newOwnerId: string) => {
+  const data = encodeURI(`subject=${newOwnerId}`);
+  return authenticatedApiRequest({
+    url: encodeURI(
+      `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/owners/requests/current/approvals`
+    ),
+    method: 'POST',
+    data: data,
+  });
+};
+
+export const requestOwnershipFromCurator = (resourceIdentifier: string, comment: string) => {
+  const data = encodeURI(`comment=${comment}`);
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/owners/requests`),
+    method: 'POST',
+    data: data,
+  });
+};

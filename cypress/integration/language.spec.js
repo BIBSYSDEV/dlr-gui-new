@@ -1,4 +1,4 @@
-context('Action', () => {
+context('Language', () => {
   beforeEach(() => {
     cy.visit(`/`);
   });

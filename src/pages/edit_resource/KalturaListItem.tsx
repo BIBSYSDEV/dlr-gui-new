@@ -40,7 +40,7 @@ const KalturaListItem: FC<KalturaListItemProps> = ({ item, handleUseResource }) 
   const { t } = useTranslation();
 
   return (
-    <StyledResultItem key={item.id}>
+    <StyledResultItem key={item.id} data-testid={`kaltura-item-${item.id}`}>
       <Grid container spacing={1}>
         <Grid item xs={12} sm={4}>
           <StyledImageWrapper>

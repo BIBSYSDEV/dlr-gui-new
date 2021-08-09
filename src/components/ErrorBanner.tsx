@@ -32,7 +32,11 @@ const ErrorBanner: FC<ErrorBannerProps> = ({ userNeedsToBeLoggedIn = false, erro
   return (
     <StyledAlert severity="error">
       <AlertTitle>{customErrorMessage ?? getErrorMessage()}</AlertTitle>
-      {error && <Typography variant="caption">(Feilmelding: {error.message})</Typography>}
+      {error && (
+        <Typography variant="caption">
+          ( {t('error.error_message')}: {error.message})
+        </Typography>
+      )}
     </StyledAlert>
   );
 };

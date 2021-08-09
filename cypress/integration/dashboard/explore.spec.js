@@ -1,7 +1,7 @@
 import { SearchParameters } from '../../../src/types/search.types';
 import { ResourceFeatureTypes } from '../../../src/types/resource.types';
 
-context('Actions', () => {
+context('Explore', () => {
   const search = 'bananas';
   const ntnu = 'ntnu';
   const bi = 'bi';
