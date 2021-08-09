@@ -5,7 +5,7 @@ import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import TagsField from './TagsField';
 import { postResourceFeature, updateSearchIndex } from '../../../api/resourceApi';
-import { Resource, ResourceFeatureNamesFullPath } from '../../../types/resource.types';
+import { Resource, ResourceFeatureNames, ResourceFeatureNamesFullPath } from '../../../types/resource.types';
 import ErrorBanner from '../../../components/ErrorBanner';
 import ResourceTypeField from './ResourceTypeField';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
@@ -24,18 +24,21 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
   const { values, handleBlur, resetForm, touched, setTouched, validateField } = useFormikContext<Resource>();
   const [saveErrorFields, setSaveErrorFields] = useState<string[]>([]);
 
-  const saveField = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
+  const saveField = async (
+    event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
+    resourceFeatureNamesFullPath: string,
+    resourceFeatureNameShort: string
+  ) => {
     setAllChangesSaved(false);
     try {
-      const name = '' + event.target.name.split('.').pop();
       const eventTargetValueFirstLetterUpperCase =
         event.target.value.slice(0, 1).toUpperCase() + event.target.value.slice(1);
       if (event.target.value !== eventTargetValueFirstLetterUpperCase) {
-        switch (name) {
-          case 'dlr_title':
+        switch (resourceFeatureNameShort) {
+          case ResourceFeatureNames.Title:
             values.features.dlr_title = eventTargetValueFirstLetterUpperCase;
             break;
-          case 'dlr_description':
+          case ResourceFeatureNames.Description:
             values.features.dlr_description = eventTargetValueFirstLetterUpperCase;
             break;
           default:
@@ -43,14 +46,14 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
         }
       }
 
-      await postResourceFeature(values.identifier, name, eventTargetValueFirstLetterUpperCase);
+      await postResourceFeature(values.identifier, resourceFeatureNameShort, eventTargetValueFirstLetterUpperCase);
       setAllChangesSaved(true);
       setSaveErrorFields([]);
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
       values.features.dlr_status_published && updateSearchIndex(values.identifier);
       //todo: remove from array
     } catch (error) {
-      setSaveErrorFields([...saveErrorFields, name]);
+      setSaveErrorFields([...saveErrorFields, resourceFeatureNamesFullPath]);
     }
   };
 
@@ -75,7 +78,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
                     onBlur={(event) => {
                       handleBlur(event);
                       validateField(ResourceFeatureNamesFullPath.Title);
-                      !error && saveField(event, ResourceFeatureNamesFullPath.Title);
+                      !error && saveField(event, ResourceFeatureNamesFullPath.Title, ResourceFeatureNames.Title);
                     }}
                   />
                 </Grid>
@@ -109,7 +112,8 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
                     label={t('resource.metadata.description')}
                     onBlur={(event) => {
                       handleBlur(event);
-                      !error && saveField(event, ResourceFeatureNamesFullPath.Description);
+                      !error &&
+                        saveField(event, ResourceFeatureNamesFullPath.Description, ResourceFeatureNames.Description);
                     }}
                   />
                 </Grid>
