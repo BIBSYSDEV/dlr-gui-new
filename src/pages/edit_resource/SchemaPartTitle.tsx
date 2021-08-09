@@ -1,13 +1,27 @@
 import React, { FC } from 'react';
 import { Typography, useMediaQuery } from '@material-ui/core';
 import { DeviceWidths } from '../../themes/mainTheme';
-import { StyledContentWrapper, StyledSchemaPart } from '../../components/styled/Wrappers';
+import { StyledContentWrapper } from '../../components/styled/Wrappers';
+import styled from 'styled-components';
+
+const StyledSchemaPart = styled.div`
+  padding-bottom: 2rem;
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const StyledTypography: any = styled(Typography)`
+  font-weight: 600;
+`;
 
 interface SchemaPartTitleProps {
   stepTitle: string;
+  error?: boolean;
 }
 
-const SchemaPartTitle: FC<SchemaPartTitleProps> = ({ stepTitle }) => {
+const SchemaPartTitle: FC<SchemaPartTitleProps> = ({ stepTitle, error = false }) => {
   const mediumOrLargerScreen = useMediaQuery(`(min-width:${DeviceWidths.md}px)`);
 
   if (mediumOrLargerScreen) {
@@ -16,9 +30,15 @@ const SchemaPartTitle: FC<SchemaPartTitleProps> = ({ stepTitle }) => {
     return (
       <StyledSchemaPart>
         <StyledContentWrapper>
-          <Typography variant="h3" component="h2">
-            {stepTitle}
-          </Typography>
+          {!error ? (
+            <StyledTypography color="primary" variant="h3" component="h2">
+              {stepTitle}
+            </StyledTypography>
+          ) : (
+            <StyledTypography color="secondary" variant="h3" component="h2">
+              {stepTitle}
+            </StyledTypography>
+          )}
         </StyledContentWrapper>
       </StyledSchemaPart>
     );
