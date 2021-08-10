@@ -11,6 +11,7 @@ import {
   mockAppFeatureResponse,
   mockAuthoritySearchResponse,
   mockAuthoritySearchResponse2,
+  mockAuthorizationProfiles,
   mockCompleteUpload,
   mockContent,
   mockContents,
@@ -36,6 +37,7 @@ import {
   mockPrepareUpload,
   mockResource,
   mockResourceEvents,
+  mockResourceOwners,
   mockResourceReadAccess,
   mockResourceStatistics,
   mockTags,
@@ -44,6 +46,7 @@ import {
   mockToken,
   mockUser,
   mockUserCourses,
+  mockWorkListOwnerRequest,
   mockWorkListReportResource,
   mockWorkListRequestDOI,
 } from './mockdata';
@@ -96,6 +99,17 @@ export const interceptRequestsOnMock = () => {
   mock
     .onGet(new RegExp(`${API_PATHS.guiBackendWorklistsPath}/worklists/types/dlr_resource_complaint`))
     .reply(200, mockWorkListReportResource);
+  mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/owners/requests`)).reply(201);
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendWorklistsPath}/worklists/types/dlr_resource_owner_request`))
+    .reply(200, mockWorkListOwnerRequest);
+  mock
+    .onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/owners/requests/current/refusals`))
+    .reply(201);
+  mock
+    .onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/owners/requests/current/approvals`))
+    .reply(201);
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/owners`)).reply(200, mockResourceOwners);
 
   //AUTHORITY
   mock
@@ -140,6 +154,9 @@ export const interceptRequestsOnMock = () => {
 
   //MY RESOURCES
   mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/authorizations/users/authorized`))
+    .reply(200, mockAuthorizationProfiles);
+  mock
     .onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/owners/users/current`))
     .reply(200, mockMyResources);
 
@@ -153,6 +170,7 @@ export const interceptRequestsOnMock = () => {
   mock
     .onGet(new RegExp(`${API_PATHS.guiBackendResourceDefaultContentPath}/.*/contents/default`))
     .reply(200, mockDefaultContent);
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesContentPath}/.*`)).reply(200, mockDefaultContent);
 
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents/.*/titles`)).reply(200);
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents.*`)).reply(200, mockContent);

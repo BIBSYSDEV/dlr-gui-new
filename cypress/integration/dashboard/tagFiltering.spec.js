@@ -1,6 +1,6 @@
 import { SearchParameters } from '../../../src/types/search.types';
 
-context('Action', () => {
+context('Tag filtering', () => {
   const search = 'bananas';
   const tag1 = 'digital';
 

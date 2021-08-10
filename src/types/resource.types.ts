@@ -312,6 +312,16 @@ export interface ResourceStatisticFeatures {
   dlr_statistics_delivery_count?: string;
 }
 
+export interface ResourceOwner {
+  identifier: string;
+  features: ResourceOwnerFeatures;
+}
+
+export interface ResourceOwnerFeatures {
+  dlr_owner_identifier: string;
+  dlr_owner_subject: string; //feide-id of the owner
+  dlr_owner_timer_created: string; //time the subject got ownership of this resource
+}
 export interface KalturaPresentation {
   id: string;
   title: string;
@@ -323,3 +333,21 @@ export interface KalturaPresentation {
   dlrContentIdentifier: string;
   description?: string;
 }
+
+export interface UserAuthorizationProfileForResource {
+  isOwner: boolean;
+  isConsumer: boolean;
+  isAdmin: boolean;
+  isConsumerPublic: boolean;
+  isCurator: boolean;
+  isEditor: boolean;
+}
+
+export const emptyUserAuthorizationProfileForResource: UserAuthorizationProfileForResource = {
+  isOwner: false,
+  isConsumer: false,
+  isAdmin: false,
+  isConsumerPublic: false,
+  isEditor: false,
+  isCurator: false,
+};

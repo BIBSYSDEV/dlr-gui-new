@@ -1,7 +1,7 @@
 import { SearchParameters } from '../../../src/types/search.types';
 import { ResourceFeatureTypes } from '../../../src/types/resource.types';
 
-context('Actions', () => {
+context('Explore', () => {
   const search = 'bananas';
   const ntnu = 'ntnu';
   const bi = 'bi';
@@ -205,5 +205,11 @@ context('Actions', () => {
     cy.location().should((loc) => {
       expect(loc.search).to.eq(`?${SearchParameters.query}=${search}&${SearchParameters.showInaccessible}=true`);
     });
+  });
+
+  it('does not list endless list of tags on each resultItem unless specified by the user', () => {
+    cy.get('[data-testid=tag-chip-9]').should('not.exist');
+    cy.get('[data-testid=show-all-tags]').click();
+    cy.get('[data-testid=tag-chip-9]').should('exist');
   });
 });

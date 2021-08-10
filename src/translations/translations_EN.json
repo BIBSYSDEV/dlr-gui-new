@@ -158,6 +158,7 @@
     "403_page": "You must be logged in for using this feature",
     "404_page": "Got lost? (404-page)",
     "500_page": "Whoops, something went wrong. Try again later",
+    "error_message": "Error message",
     "generic": "Whoops, something went wrong. Try again later",
     "login_for_more_functionality": "Login for access to more functionality"
   },
@@ -242,10 +243,10 @@
   "kaltura": {
     "already_imported": "Already imported",
     "choose_a_resource": "Choose a resource from the list",
-    "my_resources" : "My Kaltura resources",
+    "my_resources": "My Kaltura resources",
     "no_resources_found": "No resources found",
-    "show_my_resources" : "Show my resources from Kaltura",
-    "start_with_kaltura_resource" : "Start with a kaltura resource"
+    "show_my_resources": "Show my resources from Kaltura",
+    "start_with_kaltura_resource": "Start with a kaltura resource"
   },
   "license": {
     "commercial_options": {
@@ -339,8 +340,10 @@
     "institution": "Institution",
     "notifications": "Notifications",
     "profile": "Profile",
-    "receive_notifications_email":"Receive email notifications from DLR to {{email}}",
-    "receive_notifications_email_details": "For instance: notifications about DOI requests and reported resources",
+    "receive_notifications_email": "Receive email notifications from DLR to {{email}}",
+    "receive_notifications_email_details_least_privilege": "For instance: notifications about rejected DOI requests, or somebody shares a resource privately with you",
+    "receive_notifications_email_details_curator": "As a curator you will also receive notifications when somebody is requesting DOI or requesting ownership changes",
+    "receive_notifications_email_details_editor": "As an editor you will also receive notifications when somebody has reported a resource",
     "your_groups": "Your affiliated groups",
     "your_roles": "Your roles"
   },
@@ -466,11 +469,17 @@
     "new_registration": "New registration",
     "no_published_resources": "You have no published resources",
     "no_unpublished_resources": "You have no unpublished resources",
+    "ownership": {
+      "request_ownership_change": "Request ownership change",
+      "ownership_change_description": "Input relevant information concerning your request. You may request that the ownership is transferred to somebody beside yourself.",
+      "submit_request": "Submit request"
+    },
     "preview": {
       "browser_does_not_support_pdf_viewing": "This browser does not support PDF",
       "external_page": "External page",
       "file_to_big": "The file is too big for preview",
       "link_to_content": "Link to content",
+      "no_preview_authorization_reasons": "You do not have privilege to preview this resource",
       "no_preview_security_reasons": "No preview for this resource exists due to security reasons",
       "no_preview_support_reasons": "The external site does not allow preview",
       "open_in_new_tag": "Open in new tab",
@@ -493,6 +502,7 @@
       "share_link": "Link sharing",
       "share_social_medias": "Share on social medias and though email"
     },
+    "show_all_tags": "Show all tags",
     "start_with_link_to_resource": "Start registration with a link",
     "start_with_uploading_file": "Upload file if the resource is to be published on the Internet for the first time",
     "submit_link": "Start registration",
@@ -576,6 +586,7 @@
     "comment": "Comment",
     "comment_explanation": "Write a comment to why the request is being dismissed",
     "create_doi": "Create DOI",
+    "current_resource_owner": "Current resource owner",
     "delete_request": "Delete request",
     "delete_report": "Delete report",
     "delete_report_info": "This deletes the report and not the actual resource",
@@ -583,9 +594,15 @@
     "delete_resource_warning": "Warning! This will delete the resource permanently",
     "doi_request_list": "DOI requests",
     "doi_verify_resource": "Verify creator(s) to create DOI",
+    "feide_id": "Feide Id",
+    "grant_ownership": "Grant ownership",
     "hide": "Hide",
+    "input_feide_id_of_new_owner": "Input the feide-id of the new owner",
     "no_doi_requests": "There are currently no DOI requests",
+    "no_ownership_requests": "There are currently no ownership requests",
     "no_report_requests": "There are currently no reports",
+    "not_possible_to_change_owner_due_to_deleted_resource": "It is not possible to change owner because the resource have been deleted",
+    "ownership_requests": "Ownership requests",
     "page_title": "Work list",
     "page_requirements": "You must be curator or editor for accessing this feature",
     "possible_deleted": "This resource may already been deleted",
