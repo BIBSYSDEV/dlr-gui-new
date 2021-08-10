@@ -44,8 +44,8 @@ context('Registration', () => {
     cy.get('[data-testid=new-resource-link-input]').type(testLink);
     cy.get('[data-testid=new-resource-link-submit-button]').click();
 
-    const mockTitle = 'mocktitle';
-    const mockDescription = 'mockDescription';
+    const mockTitle = 'Mocktitle';
+    const mockDescription = 'MockDescription';
     cy.get('[data-testid=dlr-title-input]').clear().type(mockTitle);
     cy.get('[data-testid=dlr-description-input]').type(mockDescription);
     cy.get('[data-testid=resource-type-input]').click();
@@ -67,6 +67,34 @@ context('Registration', () => {
     cy.get('[data-testid=resource-description]').contains(mockDescription);
     cy.get('[data-testid=resource-publish-button]').click();
     cy.url().should('include', `${resourcePath}/${mockDefaultResource.identifier}`);
+  });
+
+  it('Changes first letter to uppercase for title, description and creatorname', () => {
+    const testLink = 'http://www.test.com';
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-link]').click();
+    cy.get('[data-testid=new-resource-link-input]').type(testLink);
+    cy.get('[data-testid=new-resource-link-submit-button]').click();
+
+    const mockTitle = 'mocktitle';
+    const mockTitleFirstLetterUpperCase = 'Mocktitle';
+    const mockDescription = 'mockDescription';
+    const mockDescriptionFirstLetterUpperCase = 'MockDescription';
+    const mockCreator = 'mockCreator';
+    const mockCreatorFirstLetterUpperCase = 'MockCreator';
+    cy.get('[data-testid=dlr-title-input]').clear().type(mockTitle);
+    cy.get('[data-testid=dlr-description-input]').type(mockDescription);
+
+    //creators
+    cy.get('[data-testid=step-navigation-1]').click();
+    cy.get('[data-testid=creator-name-field-0]').clear().type(mockCreator);
+
+    //preview
+
+    cy.get('[data-testid=step-navigation-4]').click();
+    cy.get('[data-testid=resource-title]').contains(mockTitleFirstLetterUpperCase);
+    cy.get('[data-testid=resource-description]').contains(mockDescriptionFirstLetterUpperCase);
+    cy.get('[data-testid=resource-creators]').contains(mockCreatorFirstLetterUpperCase);
   });
 
   it('runs a minimal registration with errors', () => {
@@ -202,14 +230,14 @@ context('Registration', () => {
     cy.get('[data-testid=access-dropdown-menu] input').should('have.value', 'private');
 
     cy.get('[data-testid=resource-restriction-option-yes] input').click();
-    cy.get('[data-testid=licence-field]').contains('CC BY-NC-ND 4.0');
+    cy.get('[data-testid=licence-field]').contains('CC BY-NC-ND');
     cy.get('[data-testid=resource-restriction-option-CC_BY_4_0] input').click();
-    cy.get('[data-testid=licence-field]').contains('CC BY 4.0');
+    cy.get('[data-testid=licence-field]').contains('CC BY');
     cy.get('[data-testid=resource-restriction-option-yes] input').click();
-    cy.get('[data-testid=licence-field]').contains('CC BY-NC-ND 4.0');
+    cy.get('[data-testid=licence-field]').contains('CC BY-NC-ND');
 
     cy.get('[data-testid=commercial-use-option-yes] input').click();
-    cy.get('[data-testid=licence-field]').contains('CC BY 4.0');
+    cy.get('[data-testid=licence-field]').contains('CC BY');
     cy.get('[data-testid=commercial-use-option-NC] input').click();
     cy.get('[data-testid=licence-field]').contains('NC');
     cy.get('[data-testid=commercial-use-radio-group] .Mui-checked').should('exist');
@@ -403,14 +431,14 @@ context('Registration', () => {
     cy.get('[data-testid=resource-restriction-option-yes] input').click();
     cy.get('[data-testid=commercial-use-option-yes] input').click();
     cy.get('[data-testid=modify-and-build-option-share_alike] input').click();
-    cy.get('[data-testid=licence-field]').contains('CC BY-SA 4.0');
+    cy.get('[data-testid=licence-field]').contains('CC BY-SA');
     cy.get('[data-testid=recommended-license]').contains(
       'Anbefalt lisens basert på valgene i dette skjemaet stemmer overens med valgt lisens'
     );
     cy.get('[data-testid=licence-field]').click();
     cy.get(`[data-testid=license-option-${licenses[0].identifier}`).click();
     cy.get('[data-testid=recommended-license]').contains(
-      'Anbefalt lisens basert på dine valg i dette skjemaet er CC BY-SA 4.0'
+      'Anbefalt lisens basert på dine valg i dette skjemaet er CC BY-SA'
     );
   });
 
