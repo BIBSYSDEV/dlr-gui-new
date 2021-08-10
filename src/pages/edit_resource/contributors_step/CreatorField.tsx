@@ -1,6 +1,6 @@
 import React, { FC, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextField, Typography } from '@material-ui/core';
+import { TextField, Typography, useMediaQuery } from '@material-ui/core';
 import {
   CompareCreators,
   Creator,
@@ -21,7 +21,7 @@ import {
 } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
-import { Colors } from '../../../themes/mainTheme';
+import { Colors, DeviceWidths } from '../../../themes/mainTheme';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import { StyledDeleteButton } from '../../../components/styled/StyledButtons';
 import HelperTextPopover from '../../../components/HelperTextPopover';
@@ -96,6 +96,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const inputElements = useRef<any>({});
   const user = useSelector((state: RootState) => state.user);
+  const mediumOrLargerScreen = useMediaQuery(`(min-width:${DeviceWidths.md}px)`);
 
   const addCreator = async (arrayHelpers: FieldArrayRenderProps) => {
     setAllChangesSaved(false);
@@ -195,7 +196,9 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
     <StyledSchemaPartColored color={Colors.DLRBlue1}>
       <StyledContentWrapper>
         <HeaderWrapper>
-          <Typography variant="h3">{t('resource.metadata.creator')}</Typography>
+          <Typography variant="h3" component={mediumOrLargerScreen ? 'h2' : 'h3'}>
+            {t('resource.metadata.creator')}
+          </Typography>
           <HelperTextWrapper>
             <HelperTextPopover
               ariaButtonLabel={t('explanation_text.creator_helper_aria_label')}

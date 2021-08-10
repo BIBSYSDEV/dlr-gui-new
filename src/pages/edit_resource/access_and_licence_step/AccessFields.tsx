@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Colors, StyleWidths } from '../../../themes/mainTheme';
+import { Colors, DeviceWidths, StyleWidths } from '../../../themes/mainTheme';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
-import { MenuItem, TextField, Typography } from '@material-ui/core';
+import { MenuItem, TextField, Typography, useMediaQuery } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { Resource, ResourceFeatureNamesFullPath } from '../../../types/resource.types';
@@ -36,6 +36,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
   const [disabledUserInput, setDisabledUserInput] = useState(false);
   const [busySavingResourceAccessType, setBusySavingResourceAccessType] = useState(false);
   const [disabledHelperText, setDisabledHelperText] = useState('');
+  const mediumOrLargerScreen = useMediaQuery(`(min-width:${DeviceWidths.md}px)`);
 
   const saveResourceAccessType = async (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (event.target.value.length > 0) {
@@ -103,7 +104,9 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
   return (
     <StyledSchemaPartColored color={Colors.LicenseAccessPageGradientColor2}>
       <StyledContentWrapper>
-        <Typography variant="h3">{t('resource.metadata.access')}</Typography>
+        <Typography variant="h3" component={mediumOrLargerScreen ? 'h2' : 'h3'}>
+          {t('resource.metadata.access')}
+        </Typography>
         <StyledFieldWrapper>
           <Field name={ResourceFeatureNamesFullPath.Access}>
             {({ field, meta: { error, touched } }: FieldProps) => (

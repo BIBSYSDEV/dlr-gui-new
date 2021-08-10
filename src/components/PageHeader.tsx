@@ -6,6 +6,8 @@ const StyledHeader = styled(Typography)`
   margin-top: 4.6rem;
   @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
     margin-top: 2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
   border-bottom: 3px solid;
   margin-bottom: 2rem;

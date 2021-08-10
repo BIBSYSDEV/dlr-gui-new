@@ -272,6 +272,11 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   return (
     <StyledSchemaPartNoBottomPadding>
       <StyledContentWrapper>
+        <Typography variant="h3" gutterBottom>
+          {t('resource.metadata.license')}
+        </Typography>
+      </StyledContentWrapper>
+      <StyledContentWrapper>
         <AccordionRadioGroup
           ariaDescription={extraRestrictionRadio}
           title={t('license.extra_restrictions')}
