@@ -200,7 +200,11 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
             {authoritySearchResponse && !isLoading && (
               <StyledListWrapper>
                 <Typography id={ListTitleId} variant="h3">
-                  {t('authority.authorities')} ({authoritySearchResponse.numFound}):
+                  {t('authority.authorities')}
+                </Typography>
+                <Typography variant="body1">
+                  {`Viser ${parseInt(authoritySearchResponse.offset) + 1}-${authoritySearchResponse.results.length} av 
+                  ${authoritySearchResponse.numFound}:`}
                 </Typography>
                 <List ref={startOfList} aria-labelledby={ListTitleId}>
                   {!isLoading &&
