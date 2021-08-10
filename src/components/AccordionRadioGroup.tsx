@@ -5,7 +5,6 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
 
-//kommer med en pull fra master
 const StyledRadioBoxWrapper = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
     width: 90%;
@@ -16,6 +15,12 @@ const StyledRadioBoxWrapper = styled.div`
 
 const StyledButton = styled(Button)`
   padding: 0;
+`;
+
+const StyledTypography = styled(Typography)`
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: none;
 `;
 
 interface AccordionRadioGroupProps {
@@ -38,7 +43,7 @@ const AccoridionRadioGroup: FC<AccordionRadioGroupProps> = ({ ariaDescription, t
         onClick={() => setShowRadioDetails(!showRadioDetails)}
         color="primary"
         endIcon={!showRadioDetails ? <ExpandMoreIcon /> : <ExpandLessIcon />}>
-        <Typography variant="h4">{title}</Typography>
+        <StyledTypography>{title}</StyledTypography>
       </StyledButton>
       {showRadioDetails && <div id={ariaDescription}>{children}</div>}
     </StyledRadioBoxWrapper>

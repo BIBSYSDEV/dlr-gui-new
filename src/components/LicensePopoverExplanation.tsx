@@ -147,7 +147,9 @@ const LicensePopoverExplanation: FC<CCExplanationProps> = ({
                 .toLowerCase()}/4.0/deed.no`}
               target="_blank"
               rel="noopener noreferrer">
-              {`${t('license.read_more')} ${licenseCode} (${t('license.external_page').toLowerCase()})`}
+              {`${t('license.read_more')} ${licenseCode.replace(' 4.0', '')} (${t(
+                'license.external_page'
+              ).toLowerCase()})`}
             </Link>
           )}
           {licenseCode.toLowerCase().includes('1') && showLink && (
@@ -155,7 +157,9 @@ const LicensePopoverExplanation: FC<CCExplanationProps> = ({
               href={`https://creativecommons.org/publicdomain/zero/1.0/deed.no`}
               target="_blank"
               rel="noopener noreferrer">
-              {`${t('license.read_more')} ${licenseCode} (${t('license.external_page').toLowerCase()})`}
+              {`${t('license.read_more')} ${licenseCode.replace(' 1.0', '')} (${t(
+                'license.external_page'
+              ).toLowerCase()})`}
             </Link>
           )}
           {showInternalLicenseExplanation && (

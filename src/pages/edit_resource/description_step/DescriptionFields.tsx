@@ -17,9 +17,10 @@ import { StylePopoverTypography } from '../../../components/styled/StyledTypogra
 
 interface DescriptionFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
+  setResourceTitle: (value: string) => void;
 }
 
-const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) => {
+const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved, setResourceTitle }) => {
   const { t } = useTranslation();
   const { values, handleBlur, resetForm, touched, setTouched } = useFormikContext<Resource>();
   const [saveErrorFields, setSaveErrorFields] = useState<string[]>([]);
@@ -33,6 +34,9 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
       setSaveErrorFields([]);
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
       values.features.dlr_status_published && updateSearchIndex(values.identifier);
+      if (name === 'dlr_title') {
+        setResourceTitle(event.target.value);
+      }
       //todo: remove from array
     } catch (error) {
       setSaveErrorFields([...saveErrorFields, name]);

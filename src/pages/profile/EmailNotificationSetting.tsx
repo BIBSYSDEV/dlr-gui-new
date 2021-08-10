@@ -109,8 +109,14 @@ const EmailNotificationSetting = () => {
             label={
               <>
                 <Typography>{t('profile.receive_notifications_email', { email: user.email })}</Typography>
-                {(user.institutionAuthorities?.isCurator || user.institutionAuthorities?.isEditor) && (
-                  <Typography variant="body2">{t('profile.receive_notifications_email_details')}</Typography>
+                <Typography variant="body2">
+                  {t('profile.receive_notifications_email_details_least_privilege')}.
+                </Typography>
+                {user.institutionAuthorities?.isCurator && (
+                  <Typography variant="body2">{t('profile.receive_notifications_email_details_curator')}.</Typography>
+                )}
+                {user.institutionAuthorities?.isEditor && (
+                  <Typography variant="body2">{t('profile.receive_notifications_email_details_editor')}.</Typography>
                 )}
               </>
             }
