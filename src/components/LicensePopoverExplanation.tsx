@@ -157,7 +157,7 @@ const LicensePopoverExplanation: FC<CCExplanationProps> = ({
               href={`https://creativecommons.org/publicdomain/zero/1.0/deed.no`}
               target="_blank"
               rel="noopener noreferrer">
-              {`${t('license.read_more')} ${licenseCode.replace('1.0', '')} (${t(
+              {`${t('license.read_more')} ${licenseCode.replace(' 1.0', '')} (${t(
                 'license.external_page'
               ).toLowerCase()})`}
             </Link>

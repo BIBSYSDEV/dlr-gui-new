@@ -44,7 +44,7 @@ const LicenseCard: FC<LicenseProps> = ({ license }) => {
           )}
           <StyledLink rel="noopener noreferrer" target="_blank" href={license.features?.dlr_license_url_no ?? ''}>
             {`${t('license.read_more')}: `}
-            {license.features?.dlr_license_code?.replace(' 4.0', '').replace('1.0', '') && (
+            {license.features?.dlr_license_code?.replace(' 4.0', '').replace(' 1.0', '') && (
               <CClogoImage licenseCode={license.features.dlr_license_code} />
             )}
           </StyledLink>
@@ -63,7 +63,7 @@ const LicenseCard: FC<LicenseProps> = ({ license }) => {
           )}
           <StyledLink target="_blank" rel="noopener noreferrer" href={license.features?.dlr_license_url_en ?? ''}>
             {`${t('license.read_more')}: `}
-            {license.features?.dlr_license_code?.replace(' 4.0', '').replace('1.0', '') && (
+            {license.features?.dlr_license_code?.replace(' 4.0', '').replace(' 1.0', '') && (
               <CClogoImage licenseCode={license.features.dlr_license_code} />
             )}
           </StyledLink>
