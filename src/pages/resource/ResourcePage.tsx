@@ -18,6 +18,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import { StyledContentWrapperLarge, StyledProgressWrapper } from '../../components/styled/Wrappers';
 import { PageHeader } from '../../components/PageHeader';
+import CreatorSearch from './CreatorSearch';
 
 const StyledResourceActionBar = styled.div`
   display: flex;
@@ -96,6 +97,7 @@ const ResourcePage = () => {
         </StyledResourceActionBar>
       )}
       <ResourcePresentation resource={resource} isPreview={false} />
+      <CreatorSearch resource={resource} />
     </StyledContentWrapperLargeWithBottomMargin>
   );
 };

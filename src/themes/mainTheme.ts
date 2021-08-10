@@ -44,6 +44,7 @@ export enum Colors {
   DescriptionPageGradientColor1 = 'rgba(66, 127, 140,0.10)',
   DescriptionPageGradientColor2 = 'rgba(66,127,140,0.20)',
   DescriptionPageGradientColor3 = 'rgba(66,127,140,0.30)',
+  DLRGray = 'rgba(242, 242, 242, 1)',
   DLRBlue1 = 'rgba(52, 127, 181, 0.1)',
   DLRBlue2 = 'rgba(52, 127, 181, 0.2)',
   DLRYellow1 = 'rgba(242,229,189,0.2)',
