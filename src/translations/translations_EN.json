@@ -95,6 +95,7 @@
     "email": "Email",
     "error": "Error",
     "finish": "Finish",
+    "hide": "Hide",
     "home": "Home",
     "id": "Id",
     "login": "LOGIN",
@@ -117,6 +118,7 @@
     "search": "Search",
     "save": "Save",
     "select": "Select",
+    "show_more": "Show more",
     "step": "Step",
     "type": "Type",
     "use": "Use",
@@ -355,6 +357,9 @@
     "add_contributor": "Add contributor",
     "add_creator": "Add creator",
     "add_tags": "Add 4-6 tags. Press enter for adding more tags.",
+    "also_published_by_plural": "Have also published",
+    "also_published_by_singular": "Has also published",
+    "browse_by_creator": "Browse more resources",
     "contributor_type": {
       "ContactPerson": "Contact person",
       "DataCollector": "Data collector",
@@ -469,6 +474,7 @@
     "new_registration": "New registration",
     "no_published_resources": "You have no published resources",
     "no_unpublished_resources": "You have no unpublished resources",
+    "number_of_resources_found": "Numbers of resources found",
     "ownership": {
       "request_ownership_change": "Request ownership change",
       "ownership_change_description": "Input relevant information concerning your request. You may request that the ownership is transferred to somebody beside yourself.",

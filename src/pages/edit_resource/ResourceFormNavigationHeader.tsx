@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Step, StepButton, StepLabel, Stepper } from '@material-ui/core';
+import { Step, StepButton, StepLabel, Stepper, useMediaQuery } from '@material-ui/core';
 import { getStepLabel, Resource, ResourceFormStep, ResourceFormSteps } from '../../types/resource.types';
 import { useFormikContext } from 'formik';
 import { StyledContentWrapperMedium } from '../../components/styled/Wrappers';
@@ -17,6 +17,7 @@ import CircularFileUploadProgress from '../../components/CircularFileUploadProgr
 import { Uppy } from '../../types/file.types';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
+import { DeviceWidths } from '../../themes/mainTheme';
 
 const StyledStepTypography = styled(Typography)`
   font-size: inherit;
@@ -37,6 +38,7 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
   const noTouchedStep = -1;
   type HighestTouchedTab = ResourceFormStep | typeof noTouchedStep;
   const highestPreviouslyTouchedStepRef = useRef<HighestTouchedTab>(noTouchedStep);
+  const shouldDisplayStepLabels = useMediaQuery(`(min-width:${DeviceWidths.md}px)`);
 
   const valuesRef = useRef(values);
   useEffect(() => {
@@ -98,21 +100,25 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
                     ? `${t(getStepLabel(step))} ${t('common.error')}`
                     : `${t(getStepLabel(step))}`
                 }>
-                <StepLabel error={hasTouchedError(errors, touched, values, index)}>
-                  <StyledStepTypography id={`typography-step-${index}`}>{t(getStepLabel(step))}</StyledStepTypography>
-                  {hasTouchedError(errors, touched, values, index) && (
-                    <Typography color="error" variant="caption">
-                      {t('common.error')}
-                    </Typography>
-                  )}
-                  {step === ResourceFormStep.Contents && (
-                    <CircularFileUploadProgress
-                      uppy={uppy}
-                      isUploadingNewFile={true}
-                      describedById={fileUploadPanelId}
-                    />
-                  )}
-                </StepLabel>
+                {shouldDisplayStepLabels ? (
+                  <StepLabel error={hasTouchedError(errors, touched, values, index)}>
+                    <StyledStepTypography id={`typography-step-${index}`}>{t(getStepLabel(step))}</StyledStepTypography>
+                    {hasTouchedError(errors, touched, values, index) && (
+                      <Typography color="error" variant="caption">
+                        {t('common.error')}
+                      </Typography>
+                    )}
+                    {step === ResourceFormStep.Contents && (
+                      <CircularFileUploadProgress
+                        uppy={uppy}
+                        isUploadingNewFile={true}
+                        describedById={fileUploadPanelId}
+                      />
+                    )}
+                  </StepLabel>
+                ) : (
+                  <StepLabel error={hasTouchedError(errors, touched, values, index)} />
+                )}
               </StepButton>
             </Step>
           );

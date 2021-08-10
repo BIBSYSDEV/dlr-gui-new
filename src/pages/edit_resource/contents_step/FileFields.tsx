@@ -4,12 +4,12 @@ import StatusBarComponent from '@uppy/react/src/StatusBar';
 import '@uppy/core/dist/style.css';
 import '@uppy/status-bar/dist/style.css';
 import styled from 'styled-components';
-import { Paper, TextField, Typography } from '@material-ui/core';
+import { Paper, TextField, Typography, useMediaQuery } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
 import { updateContentTitle, updateSearchIndex } from '../../../api/resourceApi';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
-import { Colors } from '../../../themes/mainTheme';
+import { Colors, DeviceWidths } from '../../../themes/mainTheme';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { ContentFeatureNames, FieldNames, Resource } from '../../../types/resource.types';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
@@ -76,6 +76,7 @@ const FileFields: FC<FileFieldsProps> = ({
   const [saveTitleError, setSaveTitleError] = useState<Error>();
   const [shouldPollNewThumbnail, setShouldPollNewThumbnail] = useState(false);
   const { institution } = useSelector((state: RootState) => state.user);
+  const mediumOrLargerScreen = useMediaQuery(`(min-width:${DeviceWidths.md}px)`);
 
   const saveMainContentsFileName = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setAllChangesSaved(false);
@@ -97,7 +98,9 @@ const FileFields: FC<FileFieldsProps> = ({
   return (
     <StyledSchemaPartColored color={Colors.DLRColdGreen1}>
       <StyledContentWrapper>
-        <Typography variant="h3">{t('resource.metadata.main_file')}</Typography>
+        <Typography variant="h3" component={mediumOrLargerScreen ? 'h2' : 'h3'}>
+          {t('resource.metadata.main_file')}
+        </Typography>
         <MainFileWrapper>
           <MainFileImageWrapper>
             <Thumbnail

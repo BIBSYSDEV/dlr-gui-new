@@ -272,6 +272,11 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   return (
     <StyledSchemaPartNoBottomPadding>
       <StyledContentWrapper>
+        <Typography variant="h3" gutterBottom>
+          {t('resource.metadata.license')}
+        </Typography>
+      </StyledContentWrapper>
+      <StyledContentWrapper>
         <AccordionRadioGroup
           ariaDescription={extraRestrictionRadio}
           title={t('license.extra_restrictions')}
@@ -415,7 +420,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
             )}
           </AccordionRadioGroup>
         )}
-        {values.licenses[0].features?.dlr_license_code && (
+        {values.licenses[0].features?.dlr_license_code && values.features.dlr_licensehelper_resource_restriction && (
           <>
             {allChangesSaved && recommendedLicense === values.licenses[0].features.dlr_license_code && (
               <StyledTypography data-testid="recommended-license">
@@ -424,7 +429,10 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
             )}
             {allChangesSaved && recommendedLicense !== values.licenses[0].features.dlr_license_code && (
               <StyledHeavyWeightTypography data-testid="recommended-license">
-                {t('license.recommended_license_is', { license: recommendedLicense })}.
+                {t('license.recommended_license_is', {
+                  license: recommendedLicense.replace(' 4.0', ''),
+                })}
+                .
               </StyledHeavyWeightTypography>
             )}
             {!allChangesSaved && <CircularProgress size="2rem" />}

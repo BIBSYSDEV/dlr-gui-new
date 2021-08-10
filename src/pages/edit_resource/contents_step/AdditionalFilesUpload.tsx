@@ -7,7 +7,7 @@ import { Resource } from '../../../types/resource.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { UppyFile } from '@uppy/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { Colors, StyleWidths } from '../../../themes/mainTheme';
+import { Colors, DeviceWidths, StyleWidths } from '../../../themes/mainTheme';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
@@ -18,6 +18,7 @@ import ErrorBanner from '../../../components/ErrorBanner';
 import Thumbnail from '../../../components/Thumbnail';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/rootReducer';
+import { useMediaQuery } from '@material-ui/core';
 
 interface AdditionalFilesUploadProps {
   additionalFileUploadUppy: Uppy;
@@ -119,6 +120,7 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
     getIndividualProgress(values.contents.additionalContent, additionalFileUploadUppy)
   );
   const { institution } = useSelector((state: RootState) => state.user);
+  const mediumOrLargerScreen = useMediaQuery(`(min-width:${DeviceWidths.md}px)`);
 
   useEffect(() => {
     additionalFileUploadUppy.on('upload-progress', (file: UppyFile, progress) => {
@@ -190,7 +192,7 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
     <StyledSchemaPartColored color={Colors.DLRColdGreen2}>
       <StyledContentWrapper>
         <LargeParagraphSpace>
-          <Typography variant="h3" paragraph>
+          <Typography variant="h3" gutterBottom component={mediumOrLargerScreen ? 'h2' : 'h3'}>
             {t('resource.files_and_license.additional_files.additional_files')}
           </Typography>
           <Typography variant="overline" paragraph>

@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MenuItem, TextField, Typography } from '@material-ui/core';
+import { MenuItem, TextField, Typography, useMediaQuery } from '@material-ui/core';
 import { Contributor, ContributorFeatureNames, FieldNames, Resource } from '../../../types/resource.types';
 import { ErrorMessage, Field, FieldArray, FieldArrayRenderProps, FieldProps, useFormikContext } from 'formik';
 import Button from '@material-ui/core/Button';
@@ -14,7 +14,7 @@ import styled from 'styled-components';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
-import { Colors } from '../../../themes/mainTheme';
+import { Colors, DeviceWidths } from '../../../themes/mainTheme';
 import ErrorBanner from '../../../components/ErrorBanner';
 import contributorTypeList from '../../../resources/assets/contributorTypeList.json';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
@@ -114,6 +114,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
   );
   const inputElements = useRef<any>({});
   const user = useSelector((state: RootState) => state.user);
+  const mediumOrLargerScreen = useMediaQuery(`(min-width:${DeviceWidths.md}px)`);
 
   useEffect(() => {
     setContributorTypesTranslated(generateContributorTypesTranslated(t));
@@ -219,7 +220,9 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
     <StyledSchemaPartColored color={Colors.DLRBlue2}>
       <StyledContentWrapper>
         <HeaderWrapper>
-          <Typography variant="h3">{t('resource.metadata.contributors')}</Typography>
+          <Typography variant="h3" component={mediumOrLargerScreen ? 'h2' : 'h3'}>
+            {t('resource.metadata.contributors')}
+          </Typography>
           <HelperTextWrapper>
             <HelperTextPopover
               ariaButtonLabel={t('explanation_text.contributor_helper_aria_label')}
