@@ -29,7 +29,7 @@ context('Resource', () => {
     cy.get('[data-testid=resource-time-created]').contains('01.11.2020');
     cy.get('[data-testid=resource-time-published]').contains('06.11.2020');
     cy.get('[data-testid=resource-tags]').contains(mockTags[0]);
-    cy.get('[data-testid=resource-license]').contains(mockLicenses[0].features.dlr_license_code);
+    cy.get('[data-testid=resource-license]').contains(mockLicenses[0].features.dlr_license_code.replace(' 4.0', ''));
   });
 
   it('can show views', () => {
@@ -67,7 +67,7 @@ context('Resource', () => {
   it('shows edit-button', () => {
     const publishedTestPost = mockMyResources[0];
     const unpublishedTestPost = mockMyResources[1];
-    const newTitle = 'a new title';
+    const newTitle = 'A new title';
 
     cy.visit(`${resourcePath}/${unpublishedTestPost.identifier}]`);
     cy.get('[data-testid=edit-resource-button').click();
