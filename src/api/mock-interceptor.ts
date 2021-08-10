@@ -170,6 +170,7 @@ export const interceptRequestsOnMock = () => {
   mock
     .onGet(new RegExp(`${API_PATHS.guiBackendResourceDefaultContentPath}/.*/contents/default`))
     .reply(200, mockDefaultContent);
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendResourcesContentPath}/.*`)).reply(200, mockDefaultContent);
 
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents/.*/titles`)).reply(200);
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/contents.*`)).reply(200, mockContent);

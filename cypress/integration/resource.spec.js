@@ -127,4 +127,10 @@ context('Resource', () => {
     cy.get('[data-testid=ownership-dialog-submit-button').click();
     cy.get('[data-testid=request-sent-info]').should('exist');
   });
+
+  it('does not show extremely long list of tags, unless user clicks on show more', () => {
+    cy.get('[data-testid=tag-chip-9]').should('not.exist');
+    cy.get('[data-testid=show-all-tags]').click();
+    cy.get('[data-testid=tag-chip-9]').should('exist');
+  });
 });
