@@ -38,6 +38,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved, set
         switch (resourceFeatureNameShort) {
           case ResourceFeatureNames.Title:
             values.features.dlr_title = eventTargetValueFirstLetterUpperCase;
+            setResourceTitle(eventTargetValueFirstLetterUpperCase);
             break;
           case ResourceFeatureNames.Description:
             values.features.dlr_description = eventTargetValueFirstLetterUpperCase;
@@ -52,9 +53,6 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved, set
       setSaveErrorFields([]);
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
       values.features.dlr_status_published && updateSearchIndex(values.identifier);
-      if (name === 'dlr_title') {
-        setResourceTitle(event.target.value);
-      }
       //todo: remove from array
     } catch (error) {
       setSaveErrorFields([...saveErrorFields, resourceFeatureNamesFullPath]);

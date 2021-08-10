@@ -60,7 +60,7 @@ context('My resources', () => {
 
   it('can edit a resource', () => {
     const unpublishedTestPost = mockMyResources[1];
-    const newTitle = 'new title';
+    const newTitle = 'New title';
     cy.get('[data-testid=my-resources-link]').click();
     cy.get(`[data-testid=unpublished-tab]`).click();
     cy.get(`[data-testid=edit-resource-button-${unpublishedTestPost.identifier}]`).click();
@@ -71,7 +71,7 @@ context('My resources', () => {
 
   it('can edit a published resource, but license and access is disabled', () => {
     const publishedTestPost = mockMyResources[0];
-    const newTitle = 'new title';
+    const newTitle = 'New title';
     cy.get('[data-testid=my-resources-link]').click();
     cy.get(`[data-testid=edit-resource-button-${publishedTestPost.identifier}]`).click();
     cy.get('[data-testid=dlr-title-input]').clear().type(newTitle);
