@@ -7,9 +7,13 @@ import styled from 'styled-components';
 const StyledSchemaPartLessPadding = styled.div`
   padding-bottom: 2rem;
   padding-top: 1rem;
+  padding-left: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (min-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
+    padding-left: 0;
+  }
 `;
 
 const StyledTypography: any = styled(Typography)`
