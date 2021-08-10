@@ -7,7 +7,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/rootReducer';
-import { Colors } from '../../../themes/mainTheme';
+import { Colors, DeviceWidths } from '../../../themes/mainTheme';
 import {
   StyledContentWrapper,
   StyledRadioBoxWrapper,
@@ -33,7 +33,7 @@ import {
   Licenses,
 } from '../../../types/license.types';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
-import { FormControl, FormHelperText } from '@material-ui/core';
+import { FormControl, FormHelperText, useMediaQuery } from '@material-ui/core';
 
 const StyledOutLinedBox = styled.div`
   display: flex;
@@ -73,6 +73,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   const { values, resetForm, setTouched, touched } = useFormikContext<Resource>();
   const [savingUsageClearedWithOwnerError, setSavingUsageClearedWithOwnerError] = useState<Error>();
   const [savingContainsOtherPeoplesWorkError, setSavingContainsOtherPeoplesWorkError] = useState<Error>();
+  const mediumOrLargerScreen = useMediaQuery(`(min-width:${DeviceWidths.md}px)`);
 
   const LicenseAgreements: string[] = [
     Licenses.CC,
@@ -164,7 +165,10 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
           {({ field, meta: { error, touched } }: FieldProps) => (
             <FormControl component="fieldset" required error={hasError(error, touched)}>
               <StyledFormLabel component="legend" id={otherPeopleWorkId}>
-                <Typography variant="h3" color={hasError(error, touched) ? 'error' : 'initial'}>
+                <Typography
+                  variant="h3"
+                  component={mediumOrLargerScreen ? 'h2' : 'h3'}
+                  color={hasError(error, touched) ? 'error' : 'initial'}>
                   {t('license.questions.contains_other_peoples_work')}
                 </Typography>
               </StyledFormLabel>

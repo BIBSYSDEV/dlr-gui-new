@@ -30,7 +30,7 @@ const LicenseCard: FC<LicenseProps> = ({ license }) => {
 
   return (
     <StyledWrapper>
-      {language.includes('nb') && (
+      {language.includes('nb') || language.includes('nob') ? (
         <>
           {license.features?.dlr_license_code && (
             <Typography variant="subtitle1"> {license.features?.dlr_license_name_no} </Typography>
@@ -44,11 +44,12 @@ const LicenseCard: FC<LicenseProps> = ({ license }) => {
           )}
           <StyledLink rel="noopener noreferrer" target="_blank" href={license.features?.dlr_license_url_no ?? ''}>
             {`${t('license.read_more')}: `}
-            {license.features?.dlr_license_code && <CClogoImage licenseCode={license.features.dlr_license_code} />}
+            {license.features?.dlr_license_code?.replace(' 4.0', '').replace(' 1.0', '') && (
+              <CClogoImage licenseCode={license.features.dlr_license_code} />
+            )}
           </StyledLink>
         </>
-      )}
-      {!language.includes('nb') && (
+      ) : (
         <div lang="en">
           {license.features?.dlr_license_code && (
             <Typography variant="h6">{license.features?.dlr_license_name_en}</Typography>
@@ -62,7 +63,9 @@ const LicenseCard: FC<LicenseProps> = ({ license }) => {
           )}
           <StyledLink target="_blank" rel="noopener noreferrer" href={license.features?.dlr_license_url_en ?? ''}>
             {`${t('license.read_more')}: `}
-            {license.features?.dlr_license_code && <CClogoImage licenseCode={license.features.dlr_license_code} />}
+            {license.features?.dlr_license_code?.replace(' 4.0', '').replace(' 1.0', '') && (
+              <CClogoImage licenseCode={license.features.dlr_license_code} />
+            )}
           </StyledLink>
         </div>
       )}

@@ -4,8 +4,6 @@ import LicenseFields from './LicenseFields';
 import { License } from '../../../types/license.types';
 import LicenseWizardFields from './LicenseWizardFields';
 import ContainsOtherWorksFields from './ContainsOtherWorksFields';
-import { StyledContentWrapper, StyledSchemaPart } from '../../../components/styled/Wrappers';
-import { Typography } from '@material-ui/core';
 import { useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
 import RequiredFieldInformation from '../../../components/RequiredFieldInformation';
@@ -25,13 +23,6 @@ const AccessAndLicenseStep: FC<AccessAndLicenseStepProps> = ({ allChangesSaved, 
 
   return (
     <>
-      <StyledSchemaPart>
-        <StyledContentWrapper>
-          <Typography variant="h3" component="h2">
-            {values.features.dlr_title}
-          </Typography>
-        </StyledContentWrapper>
-      </StyledSchemaPart>
       {values.features.dlr_status_published && <Alert severity="info">{t('license.cannot_change_on_published')}</Alert>}
       <ContainsOtherWorksFields
         licenses={licenses}

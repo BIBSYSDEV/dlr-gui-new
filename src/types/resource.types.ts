@@ -333,3 +333,21 @@ export interface KalturaPresentation {
   dlrContentIdentifier: string;
   description?: string;
 }
+
+export interface UserAuthorizationProfileForResource {
+  isOwner: boolean;
+  isConsumer: boolean;
+  isAdmin: boolean;
+  isConsumerPublic: boolean;
+  isCurator: boolean;
+  isEditor: boolean;
+}
+
+export const emptyUserAuthorizationProfileForResource: UserAuthorizationProfileForResource = {
+  isOwner: false,
+  isConsumer: false,
+  isAdmin: false,
+  isConsumerPublic: false,
+  isEditor: false,
+  isCurator: false,
+};

@@ -29,7 +29,8 @@ interface ResourceLicenseProps {
 const ResourceLicense: FC<ResourceLicenseProps> = ({ resource }) => {
   const { t } = useTranslation();
   const license = resource.licenses[0];
-  const langCode: string = i18next.language.includes('nb') ? langCodes.NO : langCodes.EN;
+  const langCode: string =
+    i18next.language.includes('nb') || i18next.language.includes('nob') ? langCodes.NO : langCodes.EN;
 
   const generateLicenseDescription = () => {
     const description = langCodes.NO

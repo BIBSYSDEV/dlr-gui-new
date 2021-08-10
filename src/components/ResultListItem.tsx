@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Resource } from '../types/resource.types';
 import Thumbnail from './Thumbnail';
 import { useTranslation } from 'react-i18next';
@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import { Colors, StyleWidths } from '../themes/mainTheme';
 import { format } from 'date-fns';
-import { Chip } from '@material-ui/core';
+import { Button, Chip } from '@material-ui/core';
 import CClogoImage from './CClogoImage';
 import Link from '@material-ui/core/Link';
 import { SearchParameters } from '../types/search.types';
@@ -100,12 +100,23 @@ const generateURL = (resource: Resource) => {
   return `${resourcePath}/${resource.identifier}${LMSSearchParams.toString().length > 0 ? `?${LMSSearchParams}` : ''}`;
 };
 
+const TagsDisplayThreshold = 10;
+
 interface ResultListItemProps {
   resource: Resource;
 }
 
 const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
   const { t } = useTranslation();
+  const [displayTags, setDisplayTags] = useState(
+    resource.tags ? StringArrayToSetStringArray(localeSort(resource.tags)).slice(0, TagsDisplayThreshold) : []
+  );
+  const [showAllTags, setShowAllTags] = useState(!(resource.tags && resource.tags.length > TagsDisplayThreshold));
+
+  const handleShowAllTagsClick = () => {
+    setDisplayTags(resource.tags ? StringArrayToSetStringArray(localeSort(resource.tags)) : []);
+    setShowAllTags(true);
+  };
 
   return (
     <StyledListItem data-testid={`list-item-resources-${resource.identifier}`}>
@@ -160,16 +171,22 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
         <div>
           {resource.tags && resource.tags.length !== 0 && (
             <div data-testid="resource-tags">
-              {StringArrayToSetStringArray(localeSort(resource.tags)).map((tag, index) => (
+              {displayTags.map((tag, index) => (
                 <StyledChip
                   component="a"
                   href={`/?${SearchParameters.tag}=${tag}`}
                   key={index}
+                  data-testid={`tag-chip-${index}`}
                   clickable
                   size="medium"
                   label={tag}
                 />
               ))}
+              {!showAllTags && (
+                <Button data-testid="show-all-tags" onClick={handleShowAllTagsClick} color="primary">
+                  {t('resource.show_all_tags')}
+                </Button>
+              )}
             </div>
           )}
         </div>

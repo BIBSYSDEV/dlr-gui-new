@@ -7,8 +7,6 @@ import styled from 'styled-components';
 import { Colors } from '../../themes/mainTheme';
 import UserInformation from './UserInformation';
 import EmailNotificationSetting from './EmailNotificationSetting';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../state/rootReducer';
 
 const StyledWrapperWithTopMargin = styled.div`
   background-color: ${Colors.DLRYellow1};
@@ -23,11 +21,11 @@ interface Props {
 const ColoringWrapper = styled.div<Props>`
   background-color: ${(props) => props.color};
   padding: 1rem 1rem 2rem 1rem;
+  margin-bottom: 2rem;
 `;
 
 const ProfilePage = () => {
   const { t } = useTranslation();
-  const user = useSelector((state: RootState) => state.user);
 
   return (
     <StyledContentWrapperLarge>
@@ -35,11 +33,9 @@ const ProfilePage = () => {
       <StyledWrapperWithTopMargin>
         <UserInformation />
       </StyledWrapperWithTopMargin>
-      {(user.institutionAuthorities?.isEditor || user.institutionAuthorities?.isCurator) && (
-        <ColoringWrapper color={Colors.DLRYellow2}>
-          <EmailNotificationSetting />
-        </ColoringWrapper>
-      )}
+      <ColoringWrapper color={Colors.DLRYellow2}>
+        <EmailNotificationSetting />
+      </ColoringWrapper>
     </StyledContentWrapperLarge>
   );
 };

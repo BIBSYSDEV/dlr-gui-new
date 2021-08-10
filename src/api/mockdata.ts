@@ -377,7 +377,18 @@ export const mockCreateUpload = { uploadId: 'asd', key: 'sfd' };
 export const mockPrepareUpload = { url: 'https://file-upload.com/files/' };
 export const mockCompleteUpload = { location: '16e96cc9-1884-41ac-8448-1e0a3c3838e1' };
 
-export const mockTags: string[] = ['mock tag1', 'mock tag2'];
+export const mockTags: string[] = [
+  'mock tag1',
+  'mock tag2',
+  'mock tag3',
+  'mock tag4',
+  'mock tag5',
+  'mock tag6',
+  'mock tag7',
+  'mock tag8',
+  'mock tag9',
+  'mock tag10',
+];
 
 export const mockResourceEvents = {
   limit: '1000',
