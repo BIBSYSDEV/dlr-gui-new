@@ -181,8 +181,9 @@ const Explore = () => {
                 <StyledResultListHeaderWrapper ref={startOfList}>
                   <Typography variant="h2">{t('common.result')}</Typography>
                   <Typography variant="body1">
-                    {`Viser ${parseInt(searchResult.offset) + 1}-${parseInt(searchResult.offset) + resources.length}`}{' '}
-                    av {searchResult.numFound}
+                    {`${t('common.showing')} ${parseInt(searchResult.offset) + 1}-${
+                      parseInt(searchResult.offset) + resources.length
+                    } ${t('common.of').toLowerCase()} ${searchResult.numFound}`}
                   </Typography>
                   {user.id && <AccessFiltering queryObject={queryObject} setQueryObject={setQueryObject} />}
                 </StyledResultListHeaderWrapper>

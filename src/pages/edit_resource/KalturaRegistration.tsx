@@ -54,7 +54,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
   const [page, setPage] = useState(1);
   const [firstItemOnPage, setFirstItemOnPage] = useState<number>();
   const [lastItemOnPage, setLastItemOnPage] = useState<number>();
-  const startOfList = createRef<HTMLUListElement>();
+  const startOfList = createRef<HTMLDivElement>();
 
   const handlePageChange = (pageValue: number) => {
     setPage(pageValue);
@@ -121,11 +121,15 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
         <DialogTitle id={FormDialogTitleId}>{t('kaltura.my_resources')}</DialogTitle>
         <StyledDialogContent>
           {kalturaResources && !busyGettingKalturaResources && (
-            <DialogContentText>
-              <b>Results ({kalturaResources?.length}).</b> {t('kaltura.choose_a_resource')}.
+            <DialogContentText ref={startOfList}>
+              <b>
+                {`${t('common.result')} ${t('common.showing')} ${firstItemOnPage ? firstItemOnPage + 1 : 0}-
+                ${lastItemOnPage ?? 0} ${t('common.of').toLowerCase()} ${kalturaResources?.length}. `}
+              </b>
+              {t('kaltura.choose_a_resource')}.
             </DialogContentText>
           )}
-          <StyledList ref={startOfList}>
+          <StyledList>
             {busyGettingKalturaResources ? (
               <CircularProgress />
             ) : kalturaResources ? (

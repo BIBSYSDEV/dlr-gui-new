@@ -203,7 +203,9 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
                   {t('authority.authorities')}
                 </Typography>
                 <Typography variant="body1">
-                  {`Viser ${parseInt(authoritySearchResponse.offset) + 1}-${authoritySearchResponse.results.length} av 
+                  {`${t('common.showing')} ${parseInt(authoritySearchResponse.offset) + 1}-${
+                    authoritySearchResponse.results.length
+                  } ${t('common.of').toLowerCase()} 
                   ${authoritySearchResponse.numFound}:`}
                 </Typography>
                 <List aria-labelledby={ListTitleId}>
