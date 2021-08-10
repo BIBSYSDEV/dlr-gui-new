@@ -63,6 +63,14 @@ const StyledPanel = styled.div`
 const StyledGridItem = styled(Grid)`
   &&.MuiGrid-item {
     padding-top: 0;
+    padding-bottom: 0;
+  }
+`;
+
+const StyledGridItemResourceTitle = styled(Grid)`
+  &&.MuiGrid-item {
+    padding-top: 0;
+    padding-bottom: 1rem;
   }
 `;
 
@@ -178,13 +186,13 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
     <StyledContentWrapperLarge>
       <PageHeader>
         <Grid container spacing={3} alignItems="baseline">
-          <Grid item>{t('resource.edit_resource')}</Grid>
+          <StyledGridItem item>{t('resource.edit_resource')}</StyledGridItem>
           {activeStep !== ResourceFormStep.Description && (
-            <StyledGridItem item>
+            <StyledGridItemResourceTitle item>
               <StyledPageHeaderSubtitle component="span" variant="h3">
                 {resourceTitle}
               </StyledPageHeaderSubtitle>
-            </StyledGridItem>
+            </StyledGridItemResourceTitle>
           )}
         </Grid>
       </PageHeader>
