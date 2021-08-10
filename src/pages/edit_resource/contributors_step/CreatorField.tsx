@@ -126,10 +126,20 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
     setAllChangesSaved(false);
     try {
       const name = '' + event.target.name.split('.').pop();
-      if (event.target.value.length > 0) {
+      const eventTargetValueFirstLetterUpperCase =
+        event.target.value.slice(0, 1).toUpperCase() + event.target.value.slice(1);
+      if (event.target.value !== eventTargetValueFirstLetterUpperCase) {
+        values.creators[creatorIndex].features.dlr_creator_name = eventTargetValueFirstLetterUpperCase;
+      }
+      if (eventTargetValueFirstLetterUpperCase.length > 0) {
         setErrorIndex(ErrorIndex.NO_ERRORS);
         setUpdateCreatorError(undefined);
-        await putResourceCreatorFeature(values.identifier, creatorIdentifier, name, event.target.value);
+        await putResourceCreatorFeature(
+          values.identifier,
+          creatorIdentifier,
+          name,
+          eventTargetValueFirstLetterUpperCase
+        );
         resetFormButKeepTouched(touched, resetForm, values, setTouched);
       }
     } catch (error) {
