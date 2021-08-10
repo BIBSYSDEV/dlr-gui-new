@@ -98,7 +98,7 @@
     "hide": "Hide",
     "home": "Home",
     "id": "Id",
-    "login": "LOGIN",
+    "login": "Login",
     "logout": "Logout",
     "must_be_logged_in": "Require login",
     "name": "Name",
@@ -141,6 +141,7 @@
     "filter": "Filter",
     "institutions": "Institutions",
     "licenses": "Licenses",
+    "search_result_no_hits": "The search returned no hits",
     "tags": "Tags"
   },
   "delivered_by": "Delivered by",

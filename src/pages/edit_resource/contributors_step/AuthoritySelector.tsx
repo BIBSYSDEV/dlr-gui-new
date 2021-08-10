@@ -203,10 +203,16 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
                   {t('authority.authorities')}
                 </Typography>
                 <Typography variant="body1">
-                  {`${t('common.showing')} ${parseInt(authoritySearchResponse.offset) + 1}-${
-                    authoritySearchResponse.results.length
-                  } ${t('common.of').toLowerCase()} 
+                  {authoritySearchResponse.results.length > 0 ? (
+                    <>
+                      {`${t('common.showing')} ${parseInt(authoritySearchResponse.offset) + 1}-${
+                        authoritySearchResponse.results.length
+                      } ${t('common.of').toLowerCase()} 
                   ${authoritySearchResponse.numFound}:`}
+                    </>
+                  ) : (
+                    <>{t('dashboard.search_result_no_hits')}</>
+                  )}
                 </Typography>
                 <List aria-labelledby={ListTitleId}>
                   {!isLoading &&

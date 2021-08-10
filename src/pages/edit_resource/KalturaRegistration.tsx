@@ -52,8 +52,8 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.md - 1}px)`);
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const [firstItemOnPage, setFirstItemOnPage] = useState<number>();
-  const [lastItemOnPage, setLastItemOnPage] = useState<number>();
+  const [firstItemOnPage, setFirstItemOnPage] = useState<number>(0);
+  const [lastItemOnPage, setLastItemOnPage] = useState<number>(0);
   const startOfList = createRef<HTMLDivElement>();
 
   const handlePageChange = (pageValue: number) => {
@@ -122,17 +122,25 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
         <StyledDialogContent>
           {kalturaResources && !busyGettingKalturaResources && (
             <DialogContentText ref={startOfList}>
-              <b>
-                {`${t('common.result')} ${t('common.showing')} ${firstItemOnPage ? firstItemOnPage + 1 : 0}-
-                ${lastItemOnPage ?? 0} ${t('common.of').toLowerCase()} ${kalturaResources?.length}. `}
-              </b>
-              {t('kaltura.choose_a_resource')}.
+              <Typography variant="h3">{t('common.result')}</Typography>
+              <Typography>
+                {kalturaResources?.length > 0 ? (
+                  <>
+                    {`${t('common.showing')} ${firstItemOnPage + 1}-${lastItemOnPage} ${t('common.of').toLowerCase()} ${
+                      kalturaResources?.length
+                    }.`}
+                  </>
+                ) : (
+                  <>{t('dashboard.search_result_no_hits')}</>
+                )}
+              </Typography>
+              <Typography>{t('kaltura.choose_a_resource')}.</Typography>
             </DialogContentText>
           )}
           <StyledList>
             {busyGettingKalturaResources ? (
               <CircularProgress />
-            ) : kalturaResources ? (
+            ) : kalturaResources && kalturaResources.length > 0 ? (
               <>
                 {kalturaResources.slice(firstItemOnPage, lastItemOnPage).map((resultItem) => (
                   <KalturaListItem key={resultItem.id} item={resultItem} handleUseResource={handleUseResource} />
