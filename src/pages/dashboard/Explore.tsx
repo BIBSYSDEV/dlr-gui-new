@@ -67,7 +67,7 @@ const StyledResultListHeaderWrapper = styled.div`
     flex-direction: column;
     align-items: flex-start;
   }
-  align-items: center;
+  align-items: baseline;
   width: 100%;
   max-width: ${StyleWidths.width4};
   justify-content: space-between;
@@ -99,7 +99,7 @@ const createQueryFromUrl = (location: any): QueryObject => {
 };
 
 const Explore = () => {
-  const startOfList = createRef<HTMLUListElement>();
+  const startOfList = createRef<HTMLDivElement>();
   const location = useLocation();
   const [queryObject, setQueryObject] = useState<QueryObject>(createQueryFromUrl(location));
   const [page, setPage] = useState(queryObject.offset / 10 + 1);
@@ -178,13 +178,15 @@ const Explore = () => {
               </StyledProgressWrapper>
             ) : (
               <>
-                <StyledResultListHeaderWrapper>
-                  <Typography variant="h2">
-                    {t('common.result')} ({searchResult.numFound})
+                <StyledResultListHeaderWrapper ref={startOfList}>
+                  <Typography variant="h2">{t('common.result')}</Typography>
+                  <Typography variant="body1">
+                    {`Viser ${parseInt(searchResult.offset) + 1}-${parseInt(searchResult.offset) + resources.length}`}{' '}
+                    av {searchResult.numFound}
                   </Typography>
                   {user.id && <AccessFiltering queryObject={queryObject} setQueryObject={setQueryObject} />}
                 </StyledResultListHeaderWrapper>
-                <StyledList ref={startOfList}>
+                <StyledList>
                   {resources &&
                     resources.length > 0 &&
                     resources.map((resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
