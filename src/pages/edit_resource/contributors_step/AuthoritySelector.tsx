@@ -91,7 +91,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   const { t } = useTranslation();
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
   const debouncedSearchTerm = useDebounce(authorityInputSearchValue, 500);
-  const startOfList = createRef<HTMLUListElement>();
+  const startOfList = createRef<HTMLDivElement>();
   const mountedRef = useRef(true);
 
   const handleClickOpen = () => {
@@ -198,7 +198,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
               </StyledProgressWrapper>
             )}
             {authoritySearchResponse && !isLoading && (
-              <StyledListWrapper>
+              <StyledListWrapper ref={startOfList}>
                 <Typography id={ListTitleId} variant="h3">
                   {t('authority.authorities')}
                 </Typography>
@@ -206,7 +206,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
                   {`Viser ${parseInt(authoritySearchResponse.offset) + 1}-${authoritySearchResponse.results.length} av 
                   ${authoritySearchResponse.numFound}:`}
                 </Typography>
-                <List ref={startOfList} aria-labelledby={ListTitleId}>
+                <List aria-labelledby={ListTitleId}>
                   {!isLoading &&
                     authoritySearchResponse.results.map((authority, index) => (
                       <AuthorityListItem
