@@ -36,13 +36,6 @@ const StyledDialogContent = styled(DialogContent)`
   height: 70vh;
 `;
 
-const StyledTextFieldWithMargin = styled(TextField)`
-  margin-left: 1rem;
-`;
-const StyledListInfo = styled.div`
-  align-self: start;
-`;
-
 const StyledFilterBoxWrapper = styled.div`
   display: flex;
   align-items: baseline;
@@ -63,6 +56,13 @@ const StyledResultList = styled.div`
   flex: 1;
 `;
 
+const StyledTextFieldWithMargin = styled(TextField)`
+  margin-left: 1rem;
+`;
+
+const StyledListInfo = styled.div`
+  align-self: start;
+`;
 const StyledGridForFilters = styled(Grid)`
   margin-bottom: 1rem;
 `;
@@ -200,15 +200,16 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                         value={filterValue}
                         placeholder={'Filter'}
                         variant="outlined"
+                        data-testid="filter-text-box"
                       />
                     </StyledFilterBoxWrapper>
                   </Grid>
                   <StyledCheckBoxWrapper item md={5} xs={12}>
                     <FormControlLabel
-                      data-testid={`show-already-imported-FormControlLabel`}
+                      data-testid="show-already-imported-FormControlLabel"
                       control={
                         <Checkbox
-                          data-testid={`show-already-imported-checkbox`}
+                          data-testid="show-already-imported-checkbox"
                           color="default"
                           checked={showAllResources}
                           name="show_already_imported"
