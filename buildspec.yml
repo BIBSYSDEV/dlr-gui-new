@@ -5,6 +5,8 @@ phases:
     runtime-versions:
       nodejs: latest
     commands:
+      - CHOKIDAR_USEPOLLING=false
+      - CI=true
       - env
       - npm i -g npm
       - npm install
@@ -12,7 +14,6 @@ phases:
     commands:
       - cat /proc/sys/fs/inotify/max_user_watches
       - npm run build
-      - CHOKIDAR_USEPOLLING=false
       - npm run test:cypress
       # TODO: Turn on cypress-tests again when problem with filewatchers solved
 artifacts:
