@@ -36,14 +36,24 @@ const StyledDialogContent = styled(DialogContent)`
   height: 70vh;
 `;
 
+const StyledFilterBoxWrapper = styled.div`
+  display: flex;
+  align-items: baseline;
+`;
+
+const StyledCheckBoxWrapper = styled(Grid)`
+  display: flex;
+  align-items: flex-end;
+`;
+
 const StyledResultList = styled.div`
+  margin-bottom: 2rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   background-color: ${Colors.UnitTurquoise_20percent};
-  margin-bottom: 2rem;
   align-items: center;
   flex: 1;
-  padding: 1rem;
 `;
 
 const StyledGridForFilters = styled(Grid)`
@@ -168,9 +178,9 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
               <StyledFullWidth>
                 <StyledGridForFilters container justifyContent="space-between">
                   <Grid item md={7} xs={12}>
-                    <div style={{ display: 'flex', alignItems: 'baseline' }}>
+                    <StyledFilterBoxWrapper>
                       <Typography display="inline" variant="body1">
-                        {t('kaltura.Fyll inn for å filtrer listen')}:
+                        {t('kaltura.fill_filter_box')}:
                       </Typography>
                       <TextField
                         style={{ marginLeft: '1rem' }}
@@ -179,19 +189,19 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                         placeholder={'Filter'}
                         variant="outlined"
                       />
-                    </div>
+                    </StyledFilterBoxWrapper>
                   </Grid>
-                  <Grid item md={5} xs={12} style={{ display: 'flex', alignItems: 'flex-end' }}>
+                  <StyledCheckBoxWrapper item md={5} xs={12}>
                     <FormControlLabel
                       data-testid={`TODO`}
                       control={<Checkbox data-testid={`TODO`} color="default" checked={showAllResources} name="TODO" />}
-                      label={t('kaltura.Also show already imported resources')}
+                      label={t('kaltura.show_already_imported')}
                       onChange={() => setShowAllResources(!showAllResources)}
                     />
-                  </Grid>
+                  </StyledCheckBoxWrapper>
                 </StyledGridForFilters>
                 <div style={{ alignSelf: 'start' }}>
-                  {filteredKalturaResources.length > 0 ? (
+                  {filteredKalturaResources.length > 0 && (
                     <>
                       <Typography variant="h3" display="inline">
                         {`${t('common.showing')} ${firstItemOnPage + 1}${
@@ -204,8 +214,6 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                         </Typography>
                       )}
                     </>
-                  ) : (
-                    <Typography variant="h3">{t('dashboard.search_result_no_hits')}</Typography>
                   )}
                 </div>
               </StyledFullWidth>
@@ -235,7 +243,9 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                 )}
               </>
             ) : (
-              <Typography>{t('kaltura.no_resources_found')}</Typography>
+              <Typography variant="h3" component="p">
+                {t('kaltura.no_resources_found')}
+              </Typography>
             )}
             {getKalturaResourcesError && <ErrorBanner userNeedsToBeLoggedIn={true} error={getKalturaResourcesError} />}
           </StyledResultList>
