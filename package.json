@@ -56,7 +56,7 @@
     "typescript": "^4.3.5"
   },
   "scripts": {
-    "start": "NODE_ENV=test react-scripts -r start",
+    "start": "react-scripts -r start",
     "build": "react-scripts build",
     "test:cypress": "REACT_APP_USE_MOCK=true start-server-and-test http://localhost:3000",
     "test": "cypress run --record --key 4416ddc0-dff5-4deb-ad41-4f6e1491b30b",
