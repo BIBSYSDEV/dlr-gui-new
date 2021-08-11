@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import StartRegistrationMethodAccordion from './StartRegistrationMethodAccordion';
@@ -8,6 +8,7 @@ import {
   Checkbox,
   CircularProgress,
   DialogContent,
+  FormControlLabel,
   Grid,
   List,
   TextField,
@@ -82,7 +83,6 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
       setGetKalturaResourcesError(undefined);
       const result = (await getMyKalturaPresentations()).data;
       setKalturaResources(result);
-      setFilteredKalturaResources(result);
       setFirstItemOnPage(0);
       setLastItemOnPage(result.length > itemsPrPage ? itemsPrPage : result.length);
     } catch (error) {
@@ -101,14 +101,19 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
     onSubmit(kalturaPresentation);
   };
 
-  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFilterValue(event.target.value);
-    setFilteredKalturaResources(
-      kalturaResources?.filter((item) => item.title.toLowerCase().includes(filterValue.toLowerCase()))
-    );
+  useEffect(() => {
+    //run filters
+    let filteredList = kalturaResources;
+    if (!showAllResources) {
+      filteredList = kalturaResources?.filter((item) => !item.dlrContentIdentifier);
+    }
+    if (filterValue) {
+      filteredList = filteredList?.filter((item) => item.title.toLowerCase().includes(filterValue.toLowerCase()));
+    }
+    setFilteredKalturaResources(filteredList);
     setPage(1);
     //setLastItemOnPage(result.length > itemsPrPage ? itemsPrPage : result.length);
-  };
+  }, [showAllResources, kalturaResources, filterValue]);
 
   return (
     <>
@@ -152,11 +157,19 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                 <Grid container justifyContent="space-between" style={{ backgroundColor: 'pink' }}>
                   <Grid item xs={6}>
                     Fyll inn for å avgrense treffliste:
-                    <TextField onChange={handleFilterChange} value={filterValue} variant="outlined" />
+                    <TextField
+                      onChange={(event) => setFilterValue(event.target.value)}
+                      value={filterValue}
+                      variant="outlined"
+                    />
                   </Grid>
                   <Grid item xs={5}>
-                    <Checkbox disabled color="default" checked={showAllResources} name="NAVN" />
-                    <span>Also show already imported resources</span>
+                    <FormControlLabel
+                      data-testid={`TODO`}
+                      control={<Checkbox data-testid={`TODO`} color="default" checked={showAllResources} name="TODO" />}
+                      label={t('Also show already imported resources')}
+                      onChange={() => setShowAllResources(!showAllResources)}
+                    />
                   </Grid>
                   <p>
                     Viser {filteredKalturaResources.length} av {kalturaResources?.length} poster
