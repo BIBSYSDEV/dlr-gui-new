@@ -5,7 +5,7 @@ phases:
     runtime-versions:
       nodejs: latest
     commands:
-      - echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl -p
+      - echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl -p #requires environment set to privileged true in aws build details
       - env
       - npm i -g npm
       - npm install
