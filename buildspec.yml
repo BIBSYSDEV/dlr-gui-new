@@ -7,6 +7,9 @@ phases:
     commands:
       - CHOKIDAR_USEPOLLING=false
       - CI=true
+      - echo fs.inotify.max_user_instances=524288 | tee -a /etc/sysctl.conf && sysctl -p
+      - echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl -p
+      - echo fs.inotify.max_queued_events=524288 | tee -a /etc/sysctl.conf && sysctl -p
       - env
       - npm i -g npm
       - npm install
