@@ -1,5 +1,4 @@
-import React, { createRef, FC, useState } from 'react';
-import React, { FC, useEffect, useState } from 'react';
+import React, { createRef, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import StartRegistrationMethodAccordion from './StartRegistrationMethodAccordion';
@@ -16,7 +15,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
-import { DeviceWidths } from '../../themes/mainTheme';
+import { Colors, DeviceWidths } from '../../themes/mainTheme';
 import ErrorBanner from '../../components/ErrorBanner';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
@@ -25,15 +24,30 @@ import { KalturaPresentation } from '../../types/resource.types';
 import kalturaLogo from '../../resources/images/Kaltura_Sun_black_icon.png';
 import KalturaListItem from './KalturaListItem';
 import Pagination from '@material-ui/lab/Pagination';
-import { StyledPaginationWrapper } from '../../components/styled/Wrappers';
+import { StyledContentWrapper, StyledPaginationWrapper } from '../../components/styled/Wrappers';
 
 const FormDialogTitleId = 'kaltura-dialog-title';
 
-const StyledBody = styled.div`
+const StyledFullWidth = styled.div`
   width: 100%;
 `;
+
 const StyledDialogContent = styled(DialogContent)`
   height: 70vh;
+`;
+
+const StyledResultList = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: ${Colors.UnitTurquoise_20percent};
+  margin-bottom: 2rem;
+  align-items: center;
+  flex: 1;
+  padding: 1rem;
+`;
+
+const StyledGridForFilters = styled(Grid)`
+  margin: 0 1rem 1rem 1rem;
 `;
 
 const StyledDialogActions = styled(DialogActions)`
@@ -65,7 +79,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const startOfList = createRef<HTMLDivElement>();
-  const [firstItemOnPage, setFirstItemOnPage] = useState<number>();
+  const [firstItemOnPage, setFirstItemOnPage] = useState(0);
   const [lastItemOnPage, setLastItemOnPage] = useState<number>();
   const [filterValue, setFilterValue] = useState('');
   const [showAllResources, setShowAllResources] = useState(false);
@@ -87,8 +101,6 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
       setGetKalturaResourcesError(undefined);
       const result = (await getMyKalturaPresentations()).data;
       setKalturaResources(result);
-      setFirstItemOnPage(0);
-      setLastItemOnPage(result.length > itemsPrPage ? itemsPrPage : result.length);
     } catch (error) {
       setGetKalturaResourcesError(undefined);
     } finally {
@@ -107,16 +119,19 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
 
   useEffect(() => {
     //run filters
-    let filteredList = kalturaResources;
-    if (!showAllResources) {
-      filteredList = kalturaResources?.filter((item) => !item.dlrContentIdentifier);
+    if (kalturaResources) {
+      let filteredList = kalturaResources;
+      if (!showAllResources) {
+        filteredList = kalturaResources.filter((item) => !item.dlrContentIdentifier);
+      }
+      if (filterValue) {
+        filteredList = filteredList?.filter((item) => item.title.toLowerCase().includes(filterValue.toLowerCase()));
+      }
+      setFilteredKalturaResources(filteredList);
+      setPage(1);
+      setFirstItemOnPage(0);
+      setLastItemOnPage(filteredList.length > itemsPrPage ? itemsPrPage : filteredList.length);
     }
-    if (filterValue) {
-      filteredList = filteredList?.filter((item) => item.title.toLowerCase().includes(filterValue.toLowerCase()));
-    }
-    setFilteredKalturaResources(filteredList);
-    setPage(1);
-    //setLastItemOnPage(result.length > itemsPrPage ? itemsPrPage : result.length);
   }, [showAllResources, kalturaResources, filterValue]);
 
   return (
@@ -128,7 +143,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
         onChange={onChange}
         ariaControls="resource-method-kaltura"
         dataTestId="new-resource-kaltura">
-        <StyledBody>
+        <StyledFullWidth>
           <Button
             data-testid="open-kaltura-dialog-button"
             variant="contained"
@@ -137,7 +152,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
             onClick={handleClickOpen}>
             {t('kaltura.show_my_resources')}
           </Button>
-        </StyledBody>
+        </StyledFullWidth>
       </StartRegistrationMethodAccordion>
       <Dialog
         maxWidth={'md'}
@@ -148,38 +163,25 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
         aria-labelledby={FormDialogTitleId}>
         <DialogTitle id={FormDialogTitleId}>{t('kaltura.my_resources')}</DialogTitle>
         <StyledDialogContent>
-          {filteredKalturaResources && !busyGettingKalturaResources && (
-            <div ref={startOfList}>
-              <Typography variant="h3">{t('common.result')}</Typography>
-              <Typography>
-                {filteredKalturaResources?.length > 0 ? (
-                  <>
-                    {`${t('common.showing')} ${firstItemOnPage + 1}-${lastItemOnPage} ${t('common.of').toLowerCase()} ${
-                      kalturaResources?.length
-                    }.`}
-                  </>
-                ) : (
-                  <>{t('dashboard.search_result_no_hits')}</>
-                )}
-              </Typography>
-              <Typography>{t('kaltura.choose_a_resource')}.</Typography>
-            </div>
-          )}
-          <StyledList>
-            {busyGettingKalturaResources ? (
-              <CircularProgress />
-            ) : filteredKalturaResources && filteredKalturaResources.length > 0 ? (
-              <>
-                <Grid container justifyContent="space-between" style={{ backgroundColor: 'pink' }}>
-                  <Grid item xs={6}>
-                    Fyll inn for å avgrense treffliste:
-                    <TextField
-                      onChange={(event) => setFilterValue(event.target.value)}
-                      value={filterValue}
-                      variant="outlined"
-                    />
+          <StyledResultList ref={startOfList}>
+            {filteredKalturaResources && kalturaResources && !busyGettingKalturaResources && (
+              <StyledFullWidth>
+                <StyledGridForFilters container justifyContent="space-between">
+                  <Grid item md={7} xs={12}>
+                    <div style={{ display: 'flex', alignItems: 'baseline' }}>
+                      <Typography display="inline" variant="body1">
+                        Fyll inn for å filtrer listen:
+                      </Typography>
+                      <TextField
+                        style={{ marginLeft: '1rem' }}
+                        onChange={(event) => setFilterValue(event.target.value)}
+                        value={filterValue}
+                        placeholder={'Filter'}
+                        variant="outlined"
+                      />
+                    </div>
                   </Grid>
-                  <Grid item xs={5}>
+                  <Grid item md={5} xs={12} style={{ display: 'flex', alignItems: 'flex-end' }}>
                     <FormControlLabel
                       data-testid={`TODO`}
                       control={<Checkbox data-testid={`TODO`} color="default" checked={showAllResources} name="TODO" />}
@@ -187,15 +189,30 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                       onChange={() => setShowAllResources(!showAllResources)}
                     />
                   </Grid>
-                  <p>
-                    Viser {filteredKalturaResources.length} av {kalturaResources?.length} poster
-                  </p>
-                  <Button>Nullstill filter</Button>
-                </Grid>
-
-                {filteredKalturaResources.slice(firstItemOnPage, lastItemOnPage).map((resultItem) => (
-                  <KalturaListItem key={resultItem.id} item={resultItem} handleUseResource={handleUseResource} />
-                ))}
+                </StyledGridForFilters>
+                <div style={{ alignSelf: 'start' }}>
+                  {filteredKalturaResources.length > 0 ? (
+                    <Typography variant="h3">
+                      {`${t('common.showing')} ${firstItemOnPage + 1}-${lastItemOnPage} ${t(
+                        'common.of'
+                      ).toLowerCase()}  ${filteredKalturaResources.length}.`}
+                      {`(${kalturaResources.length - filteredKalturaResources.length} is filtered out)`}
+                    </Typography>
+                  ) : (
+                    <>{t('dashboard.search_result_no_hits')}</>
+                  )}
+                </div>
+              </StyledFullWidth>
+            )}
+            {busyGettingKalturaResources ? (
+              <CircularProgress />
+            ) : filteredKalturaResources && filteredKalturaResources.length > 0 ? (
+              <>
+                <StyledList>
+                  {filteredKalturaResources.slice(firstItemOnPage, lastItemOnPage).map((resultItem) => (
+                    <KalturaListItem key={resultItem.id} item={resultItem} handleUseResource={handleUseResource} />
+                  ))}
+                </StyledList>
                 {filteredKalturaResources.length > itemsPrPage && (
                   <StyledPaginationWrapper>
                     <Typography variant="subtitle2">{t('common.page')}</Typography>
@@ -214,8 +231,8 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
             ) : (
               <Typography>{t('kaltura.no_resources_found')}</Typography>
             )}
-          </StyledList>
-          {getKalturaResourcesError && <ErrorBanner userNeedsToBeLoggedIn={true} error={getKalturaResourcesError} />}
+            {getKalturaResourcesError && <ErrorBanner userNeedsToBeLoggedIn={true} error={getKalturaResourcesError} />}
+          </StyledResultList>
         </StyledDialogContent>
         <StyledDialogActions>
           <Button data-testid="kalture-dialog-close-button" variant="outlined" onClick={handleClose} color="primary">
