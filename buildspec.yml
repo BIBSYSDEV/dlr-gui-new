@@ -12,7 +12,7 @@ phases:
     commands:
       - cat /proc/sys/fs/inotify/max_user_watches
       - npm run build
-      # npm run test:cypress
+      - npm run test:cypress
       # TODO: Turn on cypress-tests again when problem with filewatchers solved
 artifacts:
   files:
