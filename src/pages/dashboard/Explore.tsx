@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { createRef, useCallback, useEffect, useState } from 'react';
 import { CircularProgress, List, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
@@ -67,7 +67,7 @@ const StyledResultListHeaderWrapper = styled.div`
     flex-direction: column;
     align-items: flex-start;
   }
-  align-items: center;
+  align-items: baseline;
   width: 100%;
   max-width: ${StyleWidths.width4};
   justify-content: space-between;
@@ -101,6 +101,7 @@ const createQueryFromUrl = (location: any): QueryObject => {
 };
 
 const Explore = () => {
+  const startOfList = createRef<HTMLDivElement>();
   const location = useLocation();
   const [queryObject, setQueryObject] = useState<QueryObject>(createQueryFromUrl(location));
   const [page, setPage] = useState(queryObject.offset / 10 + 1);
@@ -113,14 +114,21 @@ const Explore = () => {
   const history = useHistory();
   const [hasPopStateListener, setHasPopStateListener] = useState(false);
 
-  const handlePaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-    setQueryObject((prevState) => ({
-      ...prevState,
-      offset: (Number(value) - 1) * NumberOfResultsPrPage,
-    }));
-    rewriteSearchParams(SearchParameters.page, ['' + value], history, location);
-  };
+  const handlePaginationChange = useCallback(
+    (event: React.ChangeEvent<unknown>, value: number) => {
+      setPage(value);
+      setQueryObject((prevState) => ({
+        ...prevState,
+        offset: (Number(value) - 1) * NumberOfResultsPrPage,
+      }));
+      rewriteSearchParams(SearchParameters.page, ['' + value], history, location);
+
+      if (startOfList && startOfList.current) {
+        startOfList.current.scrollIntoView();
+      }
+    },
+    [history, location, startOfList]
+  );
 
   const triggerSearch = async (queryObject: QueryObject) => {
     try {
@@ -172,9 +180,18 @@ const Explore = () => {
               </StyledProgressWrapper>
             ) : (
               <>
-                <StyledResultListHeaderWrapper>
-                  <Typography variant="h2">
-                    {t('common.result')} ({searchResult.numFound})
+                <StyledResultListHeaderWrapper ref={startOfList}>
+                  <Typography variant="h2">{t('common.result')}</Typography>
+                  <Typography variant="body1">
+                    {resources && resources.length > 0 ? (
+                      <>
+                        {`${t('common.showing')} ${parseInt(searchResult.offset) + 1}-${
+                          parseInt(searchResult.offset) + resources.length
+                        } ${t('common.of').toLowerCase()} ${searchResult.numFound}`}
+                      </>
+                    ) : (
+                      <>{t('dashboard.search_result_no_hits')}</>
+                    )}
                   </Typography>
                   {user.id && <AccessFiltering queryObject={queryObject} setQueryObject={setQueryObject} />}
                 </StyledResultListHeaderWrapper>
