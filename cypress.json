@@ -3,5 +3,6 @@
   "viewportHeight": 1000,
   "baseUrl": "http://localhost:3000",
   "video": false,
-  "projectId": "s8gyap"
+  "projectId": "s8gyap",
+  "watchForFileChanges": false
 }
