@@ -36,6 +36,13 @@ const StyledDialogContent = styled(DialogContent)`
   height: 70vh;
 `;
 
+const StyledTextFieldWithMargin = styled(TextField)`
+  margin-left: 1rem;
+`;
+const StyledListInfo = styled.div`
+  align-self: start;
+`;
+
 const StyledFilterBoxWrapper = styled.div`
   display: flex;
   align-items: baseline;
@@ -97,7 +104,13 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
   const handlePageChange = (pageValue: number) => {
     setPage(pageValue);
     setFirstItemOnPage((pageValue - 1) * itemsPrPage);
-    setLastItemOnPage(pageValue * itemsPrPage);
+    filteredKalturaResources &&
+      setLastItemOnPage(
+        filteredKalturaResources.length > itemsPrPage * pageValue
+          ? pageValue * itemsPrPage
+          : filteredKalturaResources?.length
+      );
+
     if (startOfList && startOfList.current) {
       startOfList.current.scrollIntoView();
     }
@@ -106,9 +119,9 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
   const handleClickOpen = async () => {
     setPage(1);
     setOpen(true);
+    setBusyGettingKalturaResources(true);
+    setGetKalturaResourcesError(undefined);
     try {
-      setBusyGettingKalturaResources(true);
-      setGetKalturaResourcesError(undefined);
       const result = (await getMyKalturaPresentations()).data;
       setKalturaResources(result);
     } catch (error) {
@@ -182,8 +195,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                       <Typography display="inline" variant="body1">
                         {t('kaltura.fill_filter_box')}:
                       </Typography>
-                      <TextField
-                        style={{ marginLeft: '1rem' }}
+                      <StyledTextFieldWithMargin
                         onChange={(event) => setFilterValue(event.target.value)}
                         value={filterValue}
                         placeholder={'Filter'}
@@ -193,17 +205,24 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                   </Grid>
                   <StyledCheckBoxWrapper item md={5} xs={12}>
                     <FormControlLabel
-                      data-testid={`TODO`}
-                      control={<Checkbox data-testid={`TODO`} color="default" checked={showAllResources} name="TODO" />}
+                      data-testid={`show-already-imported-FormControlLabel`}
+                      control={
+                        <Checkbox
+                          data-testid={`show-already-imported-checkbox`}
+                          color="default"
+                          checked={showAllResources}
+                          name="show_already_imported"
+                        />
+                      }
                       label={t('kaltura.show_already_imported')}
                       onChange={() => setShowAllResources(!showAllResources)}
                     />
                   </StyledCheckBoxWrapper>
                 </StyledGridForFilters>
-                <div style={{ alignSelf: 'start' }}>
+                <StyledListInfo>
                   {filteredKalturaResources.length > 0 && (
                     <>
-                      <Typography variant="h3" display="inline">
+                      <Typography variant="h3" component="p" display="inline">
                         {`${t('common.showing')} ${firstItemOnPage + 1}${
                           lastItemOnPage !== 1 ? `-${lastItemOnPage}` : ''
                         } ${t('common.of').toLowerCase()} ${filteredKalturaResources.length} `}
@@ -215,7 +234,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                       )}
                     </>
                   )}
-                </div>
+                </StyledListInfo>
               </StyledFullWidth>
             )}
             {busyGettingKalturaResources ? (
