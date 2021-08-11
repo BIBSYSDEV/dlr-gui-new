@@ -20,7 +20,7 @@ const StyledResultItem = styled.li`
   padding: 1rem;
   width: 100%;
   max-width: ${StyleWidths.width4};
-  background-color: white;
+  background-color: ${Colors.Background};
   margin-bottom: 1rem;
   display: flex;
   justify-content: space-between;
