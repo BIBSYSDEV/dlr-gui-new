@@ -107,6 +107,7 @@
     "no": "Nei",
     "no_options": "Ingen treff",
     "none": "Ingen",
+    "of": "Av",
     "or": "Eller",
     "other_options": "Andre lisenser",
     "page": "Side",
@@ -118,6 +119,7 @@
     "search": "Søk",
     "save": "Lagre",
     "select": "Velg",
+    "showing": "Viser",
     "show_more": "Vis mer",
     "step": "Trinn",
     "type": "Type",
@@ -139,6 +141,7 @@
     "filter": "Filter",
     "institutions": "Institusjoner",
     "licenses": "Lisenser",
+    "search_result_no_hits" : "Søket ga ingen treff",
     "tags": "Emneord"
   },
   "delivered_by": "Levert av",

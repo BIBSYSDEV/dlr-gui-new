@@ -1,5 +1,6 @@
 export interface SearchResult {
-  offset: number;
+  offset: string;
+  limit: string;
   numFound: number;
   queryTime: number;
   resourcesAsJson: string[]; // !!!
