@@ -24,7 +24,7 @@ import { KalturaPresentation } from '../../types/resource.types';
 import kalturaLogo from '../../resources/images/Kaltura_Sun_black_icon.png';
 import KalturaListItem from './KalturaListItem';
 import Pagination from '@material-ui/lab/Pagination';
-import { StyledContentWrapper, StyledPaginationWrapper } from '../../components/styled/Wrappers';
+import { StyledPaginationWrapper } from '../../components/styled/Wrappers';
 
 const FormDialogTitleId = 'kaltura-dialog-title';
 
@@ -47,7 +47,7 @@ const StyledResultList = styled.div`
 `;
 
 const StyledGridForFilters = styled(Grid)`
-  margin: 0 1rem 1rem 1rem;
+  margin-bottom: 1rem;
 `;
 
 const StyledDialogActions = styled(DialogActions)`
@@ -170,7 +170,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                   <Grid item md={7} xs={12}>
                     <div style={{ display: 'flex', alignItems: 'baseline' }}>
                       <Typography display="inline" variant="body1">
-                        Fyll inn for å filtrer listen:
+                        {t('kaltura.Fyll inn for å filtrer listen')}:
                       </Typography>
                       <TextField
                         style={{ marginLeft: '1rem' }}
@@ -185,21 +185,27 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                     <FormControlLabel
                       data-testid={`TODO`}
                       control={<Checkbox data-testid={`TODO`} color="default" checked={showAllResources} name="TODO" />}
-                      label={t('Also show already imported resources')}
+                      label={t('kaltura.Also show already imported resources')}
                       onChange={() => setShowAllResources(!showAllResources)}
                     />
                   </Grid>
                 </StyledGridForFilters>
                 <div style={{ alignSelf: 'start' }}>
                   {filteredKalturaResources.length > 0 ? (
-                    <Typography variant="h3">
-                      {`${t('common.showing')} ${firstItemOnPage + 1}-${lastItemOnPage} ${t(
-                        'common.of'
-                      ).toLowerCase()}  ${filteredKalturaResources.length}.`}
-                      {`(${kalturaResources.length - filteredKalturaResources.length} is filtered out)`}
-                    </Typography>
+                    <>
+                      <Typography variant="h3" display="inline">
+                        {`${t('common.showing')} ${firstItemOnPage + 1}${
+                          lastItemOnPage !== 1 ? `-${lastItemOnPage}` : ''
+                        } ${t('common.of').toLowerCase()} ${filteredKalturaResources.length} `}
+                      </Typography>
+                      {kalturaResources.length !== filteredKalturaResources.length && (
+                        <Typography variant="body2" display="inline">
+                          {`(${kalturaResources.length - filteredKalturaResources.length} ${t('is filtered out')})`}
+                        </Typography>
+                      )}
+                    </>
                   ) : (
-                    <>{t('dashboard.search_result_no_hits')}</>
+                    <Typography variant="h3">{t('dashboard.search_result_no_hits')}</Typography>
                   )}
                 </div>
               </StyledFullWidth>
