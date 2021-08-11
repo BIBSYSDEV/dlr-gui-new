@@ -60,7 +60,7 @@
     "start": "react-scripts -r start",
     "build": "react-scripts build",
     "test:cypress": "REACT_APP_USE_MOCK=true start-server-and-test http://localhost:3000",
-    "test": "cypress run --record --key 4416ddc0-dff5-4deb-ad41-4f6e1491b30b --watchAll false",
+    "test": "NODE_ENV=test cypress run --record --key 4416ddc0-dff5-4deb-ad41-4f6e1491b30b",
     "start:development": "env-cmd -f ./.env.development npm run-script start",
     "start:production": "env-cmd -f ./.env.production npm run-script start",
     "build:development": "env-cmd -f ./.env.development npm run-script build",
