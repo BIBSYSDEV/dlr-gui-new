@@ -7,7 +7,6 @@ import { Button, CircularProgress, DialogContent, List, Typography, useMediaQuer
 import { DeviceWidths } from '../../themes/mainTheme';
 import ErrorBanner from '../../components/ErrorBanner';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import { KalturaPresentation } from '../../types/resource.types';
@@ -121,7 +120,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
         <DialogTitle id={FormDialogTitleId}>{t('kaltura.my_resources')}</DialogTitle>
         <StyledDialogContent>
           {kalturaResources && !busyGettingKalturaResources && (
-            <DialogContentText ref={startOfList}>
+            <div ref={startOfList}>
               <Typography variant="h3">{t('common.result')}</Typography>
               <Typography>
                 {kalturaResources?.length > 0 ? (
@@ -135,7 +134,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                 )}
               </Typography>
               <Typography>{t('kaltura.choose_a_resource')}.</Typography>
-            </DialogContentText>
+            </div>
           )}
           <StyledList>
             {busyGettingKalturaResources ? (
