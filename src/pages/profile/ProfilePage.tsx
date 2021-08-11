@@ -21,6 +21,7 @@ interface Props {
 const ColoringWrapper = styled.div<Props>`
   background-color: ${(props) => props.color};
   padding: 1rem 1rem 2rem 1rem;
+  margin-bottom: 2rem;
 `;
 
 const ProfilePage = () => {

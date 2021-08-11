@@ -23,6 +23,7 @@ enum APISearchParameters {
   FacetFileType = 'facet_filetype::',
   FacetTag = 'facet_tag::',
   FacetLicense = 'facet_license::',
+  FacetCreator = 'facet_creator::',
   Filter = 'filter',
   FilterSeparator = '|',
   Order = 'order',
@@ -43,15 +44,23 @@ export const searchResources = ({
   orderBy,
   showInaccessible,
   mine,
+  creators,
 }: QueryObject): Promise<AxiosResponse<SearchResult>> => {
   let url = `${API_PATHS.guiBackendResourcesSearchPath}/resources/search/advanced?query=${query}`;
-  if (institutions.length > 0 || resourceTypes.length > 0 || licenses.length > 0 || tags.length > 0) {
+  if (
+    institutions.length > 0 ||
+    resourceTypes.length > 0 ||
+    licenses.length > 0 ||
+    tags.length > 0 ||
+    (creators && creators.length > 0)
+  ) {
     url += `&${APISearchParameters.Filter}=`;
     const filters: string[] = [];
     institutions.map((institution) => filters.push(APISearchParameters.FacetInstitution + institution));
     resourceTypes.map((resourceType) => filters.push(APISearchParameters.FacetFileType + resourceType));
     licenses.map((license) => filters.push(APISearchParameters.FacetLicense + license));
     tags.map((tag) => filters.push(APISearchParameters.FacetTag + tag));
+    creators?.map((creator) => filters.push(APISearchParameters.FacetCreator + creator));
     if (filters.length > 0) {
       url += filters.join(APISearchParameters.FilterSeparator);
     }

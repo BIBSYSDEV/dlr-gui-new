@@ -5,7 +5,7 @@ import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import TagsField from './TagsField';
 import { postResourceFeature, updateSearchIndex } from '../../../api/resourceApi';
-import { Resource, ResourceFeatureNamesFullPath } from '../../../types/resource.types';
+import { Resource, ResourceFeatureNames, ResourceFeatureNamesFullPath } from '../../../types/resource.types';
 import ErrorBanner from '../../../components/ErrorBanner';
 import ResourceTypeField from './ResourceTypeField';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
@@ -17,25 +17,45 @@ import { StylePopoverTypography } from '../../../components/styled/StyledTypogra
 
 interface DescriptionFieldsProps {
   setAllChangesSaved: (value: boolean) => void;
+  setResourceTitle: (value: string) => void;
 }
 
-const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) => {
+const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved, setResourceTitle }) => {
   const { t } = useTranslation();
-  const { values, handleBlur, resetForm, touched, setTouched } = useFormikContext<Resource>();
+  const { values, handleBlur, resetForm, touched, setTouched, validateField } = useFormikContext<Resource>();
   const [saveErrorFields, setSaveErrorFields] = useState<string[]>([]);
 
-  const saveField = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
+  const saveField = async (
+    event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
+    resourceFeatureNamesFullPath: string,
+    resourceFeatureNameShort: string
+  ) => {
     setAllChangesSaved(false);
     try {
-      const name = '' + event.target.name.split('.').pop();
-      await postResourceFeature(values.identifier, name, event.target.value);
+      const eventTargetValueFirstLetterUpperCase =
+        event.target.value.slice(0, 1).toUpperCase() + event.target.value.slice(1);
+      if (event.target.value !== eventTargetValueFirstLetterUpperCase) {
+        switch (resourceFeatureNameShort) {
+          case ResourceFeatureNames.Title:
+            values.features.dlr_title = eventTargetValueFirstLetterUpperCase;
+            setResourceTitle(eventTargetValueFirstLetterUpperCase);
+            break;
+          case ResourceFeatureNames.Description:
+            values.features.dlr_description = eventTargetValueFirstLetterUpperCase;
+            break;
+          default:
+            break;
+        }
+      }
+
+      await postResourceFeature(values.identifier, resourceFeatureNameShort, eventTargetValueFirstLetterUpperCase);
       setAllChangesSaved(true);
       setSaveErrorFields([]);
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
       values.features.dlr_status_published && updateSearchIndex(values.identifier);
       //todo: remove from array
     } catch (error) {
-      setSaveErrorFields([...saveErrorFields, name]);
+      setSaveErrorFields([...saveErrorFields, resourceFeatureNamesFullPath]);
     }
   };
 
@@ -59,7 +79,8 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
                     inputProps={{ 'data-testid': 'dlr-title-input' }}
                     onBlur={(event) => {
                       handleBlur(event);
-                      !error && saveField(event, ResourceFeatureNamesFullPath.Title);
+                      validateField(ResourceFeatureNamesFullPath.Title);
+                      !error && saveField(event, ResourceFeatureNamesFullPath.Title, ResourceFeatureNames.Title);
                     }}
                   />
                 </Grid>
@@ -93,7 +114,8 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved }) =
                     label={t('resource.metadata.description')}
                     onBlur={(event) => {
                       handleBlur(event);
-                      !error && saveField(event, ResourceFeatureNamesFullPath.Description);
+                      !error &&
+                        saveField(event, ResourceFeatureNamesFullPath.Description, ResourceFeatureNames.Description);
                     }}
                   />
                 </Grid>

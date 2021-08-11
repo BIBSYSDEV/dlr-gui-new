@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { createRef, FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import StartRegistrationMethodAccordion from './StartRegistrationMethodAccordion';
@@ -7,7 +7,6 @@ import { Button, CircularProgress, DialogContent, List, Typography, useMediaQuer
 import { DeviceWidths } from '../../themes/mainTheme';
 import ErrorBanner from '../../components/ErrorBanner';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import { KalturaPresentation } from '../../types/resource.types';
@@ -52,13 +51,17 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.md - 1}px)`);
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const [firstItemOnPage, setFirstItemOnPage] = useState<number>();
-  const [lastItemOnPage, setLastItemOnPage] = useState<number>();
+  const [firstItemOnPage, setFirstItemOnPage] = useState<number>(0);
+  const [lastItemOnPage, setLastItemOnPage] = useState<number>(0);
+  const startOfList = createRef<HTMLDivElement>();
 
   const handlePageChange = (pageValue: number) => {
     setPage(pageValue);
     setFirstItemOnPage((pageValue - 1) * itemsPrPage);
     setLastItemOnPage(pageValue * itemsPrPage);
+    if (startOfList && startOfList.current) {
+      startOfList.current.scrollIntoView();
+    }
   };
 
   const handleClickOpen = async () => {
@@ -117,14 +120,26 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
         <DialogTitle id={FormDialogTitleId}>{t('kaltura.my_resources')}</DialogTitle>
         <StyledDialogContent>
           {kalturaResources && !busyGettingKalturaResources && (
-            <DialogContentText>
-              <b>Results ({kalturaResources?.length}).</b> {t('kaltura.choose_a_resource')}.
-            </DialogContentText>
+            <div ref={startOfList}>
+              <Typography variant="h3">{t('common.result')}</Typography>
+              <Typography>
+                {kalturaResources?.length > 0 ? (
+                  <>
+                    {`${t('common.showing')} ${firstItemOnPage + 1}-${lastItemOnPage} ${t('common.of').toLowerCase()} ${
+                      kalturaResources?.length
+                    }.`}
+                  </>
+                ) : (
+                  <>{t('dashboard.search_result_no_hits')}</>
+                )}
+              </Typography>
+              <Typography>{t('kaltura.choose_a_resource')}.</Typography>
+            </div>
           )}
           <StyledList>
             {busyGettingKalturaResources ? (
               <CircularProgress />
-            ) : kalturaResources ? (
+            ) : kalturaResources && kalturaResources.length > 0 ? (
               <>
                 {kalturaResources.slice(firstItemOnPage, lastItemOnPage).map((resultItem) => (
                   <KalturaListItem key={resultItem.id} item={resultItem} handleUseResource={handleUseResource} />

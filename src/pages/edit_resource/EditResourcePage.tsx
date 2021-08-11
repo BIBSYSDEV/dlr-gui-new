@@ -300,6 +300,14 @@ const EditResourcePage = () => {
 
   //triggers on uppy-events
   useEffect(() => {
+    const setupBeforeUnloadListener = () => {
+      window.addEventListener('beforeunload', (event) => {
+        event.preventDefault();
+        const uppyState = mainFileHandler.getState();
+        if (!(uppyState.totalProgress === 0 || uppyState.totalProgress === 100)) return (event.returnValue = ''); //The text displayed to the user is the browser's default text. (no need to add custom text)
+      });
+    };
+    setupBeforeUnloadListener();
     setFileUploadError(undefined);
     if (mainFileHandler) {
       mainFileHandler.on('upload', () => {
