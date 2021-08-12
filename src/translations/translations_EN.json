@@ -249,10 +249,10 @@
     "already_imported": "Already imported",
     "choose_a_resource": "Choose a resource from the list",
     "fill_filter_box": "Fill in a string to filter the list",
+    "hide_already_imported": "Hide already imported resources",
     "is_filtered_out": "is filtered out",
     "my_resources": "My Kaltura resources",
     "no_resources_found": "No resources found",
-    "show_already_imported": "Also show imported resources",
     "show_my_resources": "Show my resources from Kaltura",
     "start_with_kaltura_resource": "Start with a kaltura resource"
   },

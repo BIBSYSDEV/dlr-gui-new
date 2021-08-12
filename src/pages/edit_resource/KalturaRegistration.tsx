@@ -99,7 +99,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
   const [firstItemOnPage, setFirstItemOnPage] = useState(0);
   const [lastItemOnPage, setLastItemOnPage] = useState<number>();
   const [filterValue, setFilterValue] = useState('');
-  const [showAllResources, setShowAllResources] = useState(false);
+  const [hideImported, setHideImported] = useState(false);
 
   const handlePageChange = (pageValue: number) => {
     setPage(pageValue);
@@ -144,7 +144,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
     //run filters
     if (kalturaResources) {
       let filteredList = kalturaResources;
-      if (!showAllResources) {
+      if (hideImported) {
         filteredList = kalturaResources.filter((item) => !item.dlrContentIdentifier);
       }
       if (filterValue) {
@@ -155,7 +155,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
       setFirstItemOnPage(0);
       setLastItemOnPage(filteredList.length > itemsPrPage ? itemsPrPage : filteredList.length);
     }
-  }, [showAllResources, kalturaResources, filterValue]);
+  }, [hideImported, kalturaResources, filterValue]);
 
   return (
     <>
@@ -212,12 +212,12 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                         <Checkbox
                           data-testid="show-already-imported-checkbox"
                           color="default"
-                          checked={showAllResources}
+                          checked={hideImported}
                           name="show_already_imported"
                         />
                       }
-                      label={t('kaltura.show_already_imported')}
-                      onChange={() => setShowAllResources(!showAllResources)}
+                      label={t('kaltura.hide_already_imported')}
+                      onChange={() => setHideImported(!hideImported)}
                     />
                   </StyledCheckBoxWrapper>
                 </StyledGridForFilters>

@@ -249,10 +249,10 @@
     "already_imported": "Allerede importert",
     "choose_a_resource": "Velg en ressurs fra listen",
     "fill_filter_box": "Fyll inn for å filtrere listen",
+    "hide_already_imported": "Skjul allerede importerte ressurser",
     "is_filtered_out": "er filtrert bort",
     "my_resources": "Mine ressurser i Kaltura",
     "no_resources_found": "Ingen ressurser funnet",
-    "show_already_imported": "Vis også importerte ressurser",
     "show_my_resources": "Vis mine ressurser fra Kaltura",
     "start_with_kaltura_resource": "Start med en ressurs fra Kaltura"
   },
