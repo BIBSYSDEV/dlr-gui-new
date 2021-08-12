@@ -193,14 +193,15 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                   <Grid item md={7} xs={12}>
                     <StyledFilterBoxWrapper>
                       <Typography display="inline" variant="body1">
-                        {t('kaltura.fill_filter_box')}:
+                        <label htmlFor="filter-text-box">{t('kaltura.fill_filter_box')}:</label>
                       </Typography>
                       <StyledTextFieldWithMargin
                         onChange={(event) => setFilterValue(event.target.value)}
                         value={filterValue}
-                        placeholder={'Filter'}
+                        placeholder={t('dashboard.filter')}
                         variant="outlined"
                         data-testid="filter-text-box"
+                        name="filter-text-box"
                       />
                     </StyledFilterBoxWrapper>
                   </Grid>
@@ -230,7 +231,9 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                       </Typography>
                       {kalturaResources.length !== filteredKalturaResources.length && (
                         <Typography variant="body2" display="inline">
-                          {`(${kalturaResources.length - filteredKalturaResources.length} ${t('is filtered out')})`}
+                          {`(${kalturaResources.length - filteredKalturaResources.length} ${t(
+                            'kaltura.is_filtered_out'
+                          )})`}
                         </Typography>
                       )}
                     </>
