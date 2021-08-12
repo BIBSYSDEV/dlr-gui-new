@@ -10,7 +10,7 @@ To use mock data, you need to add this variable to the .env file:<br>
 
 ## AWS Codebuild settings:
 
-Must run on Linux in privileged mode
+Must run on Linux in privileged mode in order to run cypress integration test
 
 ## Available Scripts
 
