@@ -8,6 +8,10 @@ The following environment variables are used in this project.<br>
 To use mock data, you need to add this variable to the .env file:<br>
 `REACT_APP_USE_MOCK=true`
 
+## AWS Codebuild settings:
+
+Must run on Linux in privileged mode
+
 ## Available Scripts
 
 In the project directory, you can run:
