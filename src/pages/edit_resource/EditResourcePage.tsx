@@ -50,6 +50,7 @@ import { useUppy } from '@uppy/react';
 import { StyledContentWrapperLarge, StyledFullPageProgressWrapper } from '../../components/styled/Wrappers';
 import { getAuthoritiesForResourceCreatorOrContributor } from '../../api/authoritiesApi';
 import KalturaRegistration from './KalturaRegistration';
+import institutions from '../../resources/assets/institutions.json';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -87,6 +88,9 @@ const EditResourcePage = () => {
   const useKalturaFlag = new URLSearchParams(location.search).get('useKalturaFeature') === 'true' ? true : false; //TODO: remove once ready for prod
 
   const user = useSelector((state: RootState) => state.user);
+  const [userInstitutionCorrectCapitalization] = useState(
+    institutions.find((institution) => institution.toLowerCase() === user.institution.toLowerCase()) ?? user.institution
+  );
 
   const onCreateFile = (newResource: Resource) => {
     setShowForm(true);
@@ -225,7 +229,7 @@ const EditResourcePage = () => {
         startingResource.identifier,
         contributorResponse.data.features.dlr_contributor_identifier,
         ContributorFeatureNames.Name,
-        user.institution
+        userInstitutionCorrectCapitalization
       );
 
       const responseWithCalculatedDefaults = (await getResourceDefaults(startingResource.identifier)).data;
@@ -244,7 +248,7 @@ const EditResourcePage = () => {
             identifier: contributorResponse.data.identifier,
             features: {
               dlr_contributor_identifier: contributorResponse.data.identifier,
-              dlr_contributor_name: user.institution,
+              dlr_contributor_name: userInstitutionCorrectCapitalization,
               dlr_contributor_type: StartingContributorType,
             },
           },

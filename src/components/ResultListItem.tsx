@@ -14,6 +14,7 @@ import ResourceTypeInfo from './ResourceTypeInfo';
 import { getLMSSearchParams } from '../utils/lmsService';
 import { localeSort, StringArrayToSetStringArray } from '../utils/StringArray';
 import { resourcePath } from '../utils/constants';
+import institutions from '../resources/assets/institutions.json';
 
 const StyledListItem: any = styled.li`
   width: 100%;
@@ -158,7 +159,15 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
 
           {resource.contributors && resource.contributors.length !== 0 && (
             <StyledMaxOneLineTypography variant="body1">
-              {resource.contributors.map((creator) => creator.features.dlr_contributor_name).join(', ')}
+              {resource.contributors
+                .map(
+                  (contributor) =>
+                    institutions.find(
+                      (institution) =>
+                        institution.toLowerCase() === contributor.features.dlr_contributor_name?.toLowerCase()
+                    ) ?? contributor.features.dlr_contributor_name
+                )
+                .join(', ')}
             </StyledMaxOneLineTypography>
           )}
 
