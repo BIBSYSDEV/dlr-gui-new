@@ -201,7 +201,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                         placeholder={t('dashboard.filter')}
                         variant="outlined"
                         data-testid="filter-text-box"
-                        name="filter-text-box"
+                        id="filter-text-box"
                       />
                     </StyledFilterBoxWrapper>
                   </Grid>
