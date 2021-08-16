@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
 import ResourceForm from './ResourceForm';
@@ -84,8 +84,6 @@ const EditResourcePage = () => {
   const [resourceInitError, setResourceInitError] = useState<Error>();
   const [fileUploadError, setFileUploadError] = useState<Error>();
   const [mainFileBeingUploaded, setMainFileBeingUploaded] = useState(false);
-  const location = useLocation();
-  const useKalturaFlag = new URLSearchParams(location.search).get('useKalturaFeature') === 'true' ? true : false; //TODO: remove once ready for prod
 
   const user = useSelector((state: RootState) => state.user);
   const [userInstitutionCorrectCapitalization] = useState(
@@ -418,7 +416,7 @@ const EditResourcePage = () => {
           onChange={handleChange('link-panel')}
           onSubmit={onSubmitLink}
         />
-        {useKalturaFlag && (
+        {user.appFeature?.hasFeatureNewResourceFromKaltura && (
           <>
             <StyledTypography>{t('common.or')}</StyledTypography>
             <KalturaRegistration

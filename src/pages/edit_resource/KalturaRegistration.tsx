@@ -207,13 +207,13 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                   </Grid>
                   <StyledCheckBoxWrapper item md={5} xs={12}>
                     <FormControlLabel
-                      data-testid="show-already-imported-FormControlLabel"
+                      data-testid="hide-already-imported-FormControlLabel"
                       control={
                         <Checkbox
-                          data-testid="show-already-imported-checkbox"
+                          data-testid="hide-already-imported-checkbox"
                           color="default"
                           checked={hideImported}
-                          name="show_already_imported"
+                          name="hide_already_imported"
                         />
                       }
                       label={t('kaltura.hide_already_imported')}
