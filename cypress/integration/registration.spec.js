@@ -455,9 +455,25 @@ context('Registration', () => {
     cy.visit('/registration/?useKalturaFeature=true'); //TODO: remove once ready for prod
     cy.get('[data-testid=new-resource-kaltura]').click();
     cy.get('[data-testid=open-kaltura-dialog-button]').click();
+    cy.get(`[data-testid=show-already-imported-checkbox]`).click(); //viser alle
     cy.get(`[data-testid=kaltura-item-${mockKalturaPresentations[0].id}]`).should('exist');
     cy.get(`[data-testid=kaltura-item-${mockKalturaPresentations[10].id}]`).should('not.exist');
     cy.get(`[data-testid=kaltura-pagination] li:last-of-type button`).click(); //next page
     cy.get(`[data-testid=kaltura-item-${mockKalturaPresentations[10].id}]`).should('exist');
+  });
+
+  it('can use filter on Kaltura-list', () => {
+    cy.visit('/registration/?useKalturaFeature=true'); //TODO: remove once ready for prod
+    cy.get('[data-testid=new-resource-kaltura]').click();
+    cy.get('[data-testid=open-kaltura-dialog-button]').click();
+    cy.get(`[data-testid=kaltura-item-${mockKalturaPresentations[0].id}]`).should('exist');
+    cy.get(`[data-testid=kaltura-item-${mockKalturaPresentations[1].id}]`).should('not.exist');
+    cy.get(`[data-testid=show-already-imported-checkbox]`).click();
+    cy.get(`[data-testid=kaltura-item-${mockKalturaPresentations[8].id}]`).should('exist');
+    cy.get(`[data-testid=filter-text-box]`).type('1');
+    cy.get(`[data-testid=kaltura-item-${mockKalturaPresentations[8].id}]`).should('not.exist');
+    cy.get(`[data-testid=kaltura-item-${mockKalturaPresentations[10].id}]`).should('exist');
+    cy.get(`[data-testid=filter-text-box]`).type('{backspace}');
+    cy.get(`[data-testid=kaltura-item-${mockKalturaPresentations[8].id}]`).should('exist');
   });
 });
