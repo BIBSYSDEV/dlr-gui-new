@@ -36,7 +36,7 @@ interface KalturaListItemProps {
   handleUseResource: (kalturaPresentation: KalturaPresentation) => void;
 }
 
-const KalturaListItem: FC<KalturaListItemProps> = ({ item, handleUseResource }) => {
+const VMSListItem: FC<KalturaListItemProps> = ({ item, handleUseResource }) => {
   const { t } = useTranslation();
 
   return (
@@ -69,4 +69,4 @@ const KalturaListItem: FC<KalturaListItemProps> = ({ item, handleUseResource }) 
   );
 };
 
-export default KalturaListItem;
+export default VMSListItem;

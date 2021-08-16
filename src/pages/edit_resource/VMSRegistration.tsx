@@ -22,7 +22,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import { KalturaPresentation, VideoManagementSystems } from '../../types/resource.types';
 import kalturaLogo from '../../resources/images/Kaltura_Sun_black_icon.png';
-import KalturaListItem from './KalturaListItem';
+import VMSListItem from './VMSListItem';
 import Pagination from '@material-ui/lab/Pagination';
 import { StyledPaginationWrapper } from '../../components/styled/Wrappers';
 
@@ -78,6 +78,23 @@ const StyledList = styled(List)`
   width: 100%;
 `;
 
+const VMSObjects = [
+  {
+    type: VideoManagementSystems.Kaltura,
+    icon: kalturaLogo,
+    icon_alt: 'Kaltura logo',
+    headerLabel: 'kaltura.start_with_kaltura_resource',
+  },
+  {
+    type: VideoManagementSystems.Panopto,
+    icon: kalturaLogo,
+    icon_alt: 'Panopto logo',
+    headerLabel: 'panopto.start_with_panopto_resource',
+  },
+];
+// VMSObjects[VideoManagementSystems.Kaltura] = { name: 'kaltura', icon: 'arne' };
+// VMSObjects[VideoManagementSystems.Panopto] = { name: '2kaltura', icon: 'ar2ne' };
+
 interface LORRegistrationProps {
   expanded: boolean;
   VMS: VideoManagementSystems;
@@ -89,10 +106,11 @@ const itemsPrPage = 10;
 
 const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, onSubmit }) => {
   const { t } = useTranslation();
-  const [kalturaResources, setKalturaResources] = useState<KalturaPresentation[]>();
-  const [filteredKalturaResources, setFilteredKalturaResources] = useState<KalturaPresentation[]>();
-  const [getKalturaResourcesError, setGetKalturaResourcesError] = useState<Error>();
-  const [busyGettingKalturaResources, setBusyGettingKalturaResources] = useState(false);
+  const vmsObject = VMS === VideoManagementSystems.Kaltura ? VMSObjects[0] : VMSObjects[1];
+  const [resources, setResources] = useState<KalturaPresentation[]>(); //TODO
+  const [filteredResources, setFilteredResources] = useState<KalturaPresentation[]>(); //TODO
+  const [getResourcesError, setGetResourcesError] = useState<Error>();
+  const [busyGettingResources, setBusyGettingResources] = useState(false);
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.md - 1}px)`);
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
@@ -105,11 +123,9 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
   const handlePageChange = (pageValue: number) => {
     setPage(pageValue);
     setFirstItemOnPage((pageValue - 1) * itemsPrPage);
-    filteredKalturaResources &&
+    filteredResources &&
       setLastItemOnPage(
-        filteredKalturaResources.length > itemsPrPage * pageValue
-          ? pageValue * itemsPrPage
-          : filteredKalturaResources?.length
+        filteredResources.length > itemsPrPage * pageValue ? pageValue * itemsPrPage : filteredResources?.length
       );
 
     if (startOfList && startOfList.current) {
@@ -120,15 +136,16 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
   const handleClickOpen = async () => {
     setPage(1);
     setOpen(true);
-    setBusyGettingKalturaResources(true);
-    setGetKalturaResourcesError(undefined);
+    setBusyGettingResources(true);
+    setGetResourcesError(undefined);
     try {
       const result = (await getMyKalturaPresentations()).data;
-      setKalturaResources(result);
+      //TODO
+      setResources(result);
     } catch (error) {
-      setGetKalturaResourcesError(undefined);
+      setGetResourcesError(undefined);
     } finally {
-      setBusyGettingKalturaResources(false);
+      setBusyGettingResources(false);
     }
   };
 
@@ -143,26 +160,26 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
 
   useEffect(() => {
     //run filters
-    if (kalturaResources) {
-      let filteredList = kalturaResources;
+    if (resources) {
+      let filteredList = resources;
       if (hideImported) {
-        filteredList = kalturaResources.filter((item) => !item.dlrContentIdentifier);
+        filteredList = resources.filter((item) => !item.dlrContentIdentifier);
       }
       if (filterValue) {
         filteredList = filteredList?.filter((item) => item.title.toLowerCase().includes(filterValue.toLowerCase()));
       }
-      setFilteredKalturaResources(filteredList);
+      setFilteredResources(filteredList);
       setPage(1);
       setFirstItemOnPage(0);
       setLastItemOnPage(filteredList.length > itemsPrPage ? itemsPrPage : filteredList.length);
     }
-  }, [hideImported, kalturaResources, filterValue]);
+  }, [hideImported, resources, filterValue]);
 
   return (
     <>
       <StartRegistrationMethodAccordion
-        headerLabel={t('kaltura.start_with_kaltura_resource')}
-        icon={<img height="24px" src={kalturaLogo} alt="Kaltura logo" />}
+        headerLabel={t(vmsObject.headerLabel)}
+        icon={<img height="24px" src={vmsObject.icon} alt={vmsObject.icon_alt} />}
         expanded={expanded}
         onChange={onChange}
         ariaControls="resource-method-kaltura"
@@ -188,7 +205,7 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
         <DialogTitle id={FormDialogTitleId}>{t('kaltura.my_resources')}</DialogTitle>
         <StyledDialogContent>
           <StyledResultList ref={startOfList}>
-            {filteredKalturaResources && kalturaResources && !busyGettingKalturaResources && (
+            {filteredResources && resources && !busyGettingResources && (
               <StyledFullWidth>
                 <StyledGridForFilters container justifyContent="space-between">
                   <Grid item md={7} xs={12}>
@@ -223,18 +240,16 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
                   </StyledCheckBoxWrapper>
                 </StyledGridForFilters>
                 <StyledListInfo>
-                  {filteredKalturaResources.length > 0 && (
+                  {filteredResources.length > 0 && (
                     <>
                       <Typography variant="h3" component="p" display="inline">
                         {`${t('common.showing')} ${firstItemOnPage + 1}${
                           lastItemOnPage !== 1 ? `-${lastItemOnPage}` : ''
-                        } ${t('common.of').toLowerCase()} ${filteredKalturaResources.length} `}
+                        } ${t('common.of').toLowerCase()} ${filteredResources.length} `}
                       </Typography>
-                      {kalturaResources.length !== filteredKalturaResources.length && (
+                      {resources.length !== filteredResources.length && (
                         <Typography variant="body2" display="inline">
-                          {`(${kalturaResources.length - filteredKalturaResources.length} ${t(
-                            'kaltura.is_filtered_out'
-                          )})`}
+                          {`(${resources.length - filteredResources.length} ${t('kaltura.is_filtered_out')})`}
                         </Typography>
                       )}
                     </>
@@ -242,22 +257,22 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
                 </StyledListInfo>
               </StyledFullWidth>
             )}
-            {busyGettingKalturaResources ? (
+            {busyGettingResources ? (
               <CircularProgress />
-            ) : filteredKalturaResources && filteredKalturaResources.length > 0 ? (
+            ) : filteredResources && filteredResources.length > 0 ? (
               <>
                 <StyledList>
-                  {filteredKalturaResources.slice(firstItemOnPage, lastItemOnPage).map((resultItem) => (
-                    <KalturaListItem key={resultItem.id} item={resultItem} handleUseResource={handleUseResource} />
+                  {filteredResources.slice(firstItemOnPage, lastItemOnPage).map((resultItem) => (
+                    <VMSListItem key={resultItem.id} item={resultItem} handleUseResource={handleUseResource} />
                   ))}
                 </StyledList>
-                {filteredKalturaResources.length > itemsPrPage && (
+                {filteredResources.length > itemsPrPage && (
                   <StyledPaginationWrapper>
                     <Typography variant="subtitle2">{t('common.page')}</Typography>
                     <Pagination
                       color="primary"
-                      data-testid={`kaltura-pagination`}
-                      count={Math.ceil(filteredKalturaResources.length / itemsPrPage)}
+                      data-testid={`vms-pagination`}
+                      count={Math.ceil(filteredResources.length / itemsPrPage)}
                       page={page}
                       onChange={(_event, value) => {
                         handlePageChange(value);
@@ -271,7 +286,7 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
                 {t('kaltura.no_resources_found')}
               </Typography>
             )}
-            {getKalturaResourcesError && <ErrorBanner userNeedsToBeLoggedIn={true} error={getKalturaResourcesError} />}
+            {getResourcesError && <ErrorBanner userNeedsToBeLoggedIn={true} error={getResourcesError} />}
           </StyledResultList>
         </StyledDialogContent>
         <StyledDialogActions>

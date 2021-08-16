@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
 import ResourceForm from './ResourceForm';

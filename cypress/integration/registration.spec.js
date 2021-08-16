@@ -457,7 +457,7 @@ context('Registration', () => {
     cy.get('[data-testid=open-kaltura-dialog-button]').click();
     cy.get(`[data-testid=kaltura-item-${mockKalturaPresentations[0].id}]`).should('exist');
     cy.get(`[data-testid=kaltura-item-${mockKalturaPresentations[10].id}]`).should('not.exist');
-    cy.get(`[data-testid=kaltura-pagination] li:last-of-type button`).click(); //next page
+    cy.get(`[data-testid=vms-pagination] li:last-of-type button`).click(); //next page
     cy.get(`[data-testid=kaltura-item-${mockKalturaPresentations[10].id}]`).should('exist');
   });
 
