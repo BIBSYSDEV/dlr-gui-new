@@ -21,6 +21,7 @@ import {
   ResourceFeatureNames,
   ResourceFeatureTypes,
   TAGS_MAX_LENGTH,
+  VideoManagementSystems,
 } from '../../types/resource.types';
 import {
   createContributor,
@@ -49,7 +50,7 @@ import { createUppy } from '../../utils/uppy-config';
 import { useUppy } from '@uppy/react';
 import { StyledContentWrapperLarge, StyledFullPageProgressWrapper } from '../../components/styled/Wrappers';
 import { getAuthoritiesForResourceCreatorOrContributor } from '../../api/authoritiesApi';
-import KalturaRegistration from './KalturaRegistration';
+import VMSRegistration from './VMSRegistration';
 import institutions from '../../resources/assets/institutions.json';
 
 const StyledEditPublication = styled.div`
@@ -86,6 +87,7 @@ const EditResourcePage = () => {
   const [mainFileBeingUploaded, setMainFileBeingUploaded] = useState(false);
   const location = useLocation();
   const useKalturaFlag = new URLSearchParams(location.search).get('useKalturaFeature') === 'true' ? true : false; //TODO: remove once ready for prod
+  const usePanoptoFlag = new URLSearchParams(location.search).get('usePanoptoFeature') === 'true' ? true : false; //TODO: remove once ready for prod
 
   const user = useSelector((state: RootState) => state.user);
   const [userInstitutionCorrectCapitalization] = useState(
@@ -215,6 +217,7 @@ const EditResourcePage = () => {
     resourceCreationType: ResourceCreationType,
     kalturaResource?: KalturaPresentation
   ) => {
+    //TODO: Handle panopto as well
     try {
       setShowForm(true);
       startingResource.features.dlr_title = startingResource.features.dlr_title ?? '';
@@ -287,7 +290,6 @@ const EditResourcePage = () => {
       if (kalturaResource) {
         await postKalturaPresentationImport(resource, kalturaResource);
       }
-
       setFormikInitResource(resource);
       setResourceInitError(undefined);
     } catch (error) {
@@ -418,12 +420,24 @@ const EditResourcePage = () => {
           onChange={handleChange('link-panel')}
           onSubmit={onSubmitLink}
         />
-        {useKalturaFlag && (
+        {user.appFeature?.hasFeatureNewResourceFromKaltura && (
           <>
             <StyledTypography>{t('common.or')}</StyledTypography>
-            <KalturaRegistration
+            <VMSRegistration
               expanded={expanded === 'kaltura-panel'}
+              VMS={VideoManagementSystems.Kaltura}
               onChange={handleChange('kaltura-panel')}
+              onSubmit={onSubmitKalturaResource}
+            />
+          </>
+        )}
+        {usePanoptoFlag && (
+          <>
+            <StyledTypography>{t('common.or')}</StyledTypography>
+            <VMSRegistration
+              expanded={expanded === 'panopto-panel'}
+              VMS={VideoManagementSystems.Panopto}
+              onChange={handleChange('panopto-panel')}
               onSubmit={onSubmitKalturaResource}
             />
           </>

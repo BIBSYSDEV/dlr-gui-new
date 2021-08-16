@@ -20,7 +20,7 @@ import ErrorBanner from '../../components/ErrorBanner';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-import { KalturaPresentation } from '../../types/resource.types';
+import { KalturaPresentation, VideoManagementSystems } from '../../types/resource.types';
 import kalturaLogo from '../../resources/images/Kaltura_Sun_black_icon.png';
 import KalturaListItem from './KalturaListItem';
 import Pagination from '@material-ui/lab/Pagination';
@@ -78,15 +78,16 @@ const StyledList = styled(List)`
   width: 100%;
 `;
 
-interface KalturaRegistrationProps {
+interface LORRegistrationProps {
   expanded: boolean;
+  VMS: VideoManagementSystems;
   onChange: (event: React.ChangeEvent<any>, isExpanded: boolean) => void;
   onSubmit: (kalturaPresentation: KalturaPresentation) => void;
 }
 
 const itemsPrPage = 10;
 
-const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange, onSubmit }) => {
+const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, onSubmit }) => {
   const { t } = useTranslation();
   const [kalturaResources, setKalturaResources] = useState<KalturaPresentation[]>();
   const [filteredKalturaResources, setFilteredKalturaResources] = useState<KalturaPresentation[]>();
@@ -283,4 +284,4 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
   );
 };
 
-export default KalturaRegistration;
+export default VMSRegistration;

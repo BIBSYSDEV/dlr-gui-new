@@ -201,6 +201,11 @@ export enum LegacyResourceFeatureTypes {
   Workflow = 'workflow',
 }
 
+export enum VideoManagementSystems {
+  Kaltura = 'kaltura',
+  Panopto = 'panopto',
+}
+
 //Note! This is also the presentation order for the type-filter
 export const DefaultResourceTypes: ResourceFeatureTypes[] = [
   ResourceFeatureTypes.video,
