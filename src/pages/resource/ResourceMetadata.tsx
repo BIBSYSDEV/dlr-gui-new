@@ -10,6 +10,7 @@ import { SearchParameters } from '../../types/search.types';
 import { getLMSSearchParams } from '../../utils/lmsService';
 import { getResourceViews } from '../../api/resourceApi';
 import { localeSort, StringArrayToSetStringArray } from '../../utils/StringArray';
+import institutions from '../../resources/assets/institutions.json';
 
 const StyledChip: any = styled(Chip)`
   && {
@@ -92,7 +93,10 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource, isPreview = fal
                     .map(
                       (contributor) =>
                         `${t(`resource.contributor_type.${contributor.features.dlr_contributor_type ?? ''}`)}: ${
-                          contributor.features.dlr_contributor_name
+                          institutions.find(
+                            (institution) =>
+                              institution.toLowerCase() === contributor.features.dlr_contributor_name?.toLowerCase()
+                          ) ?? contributor.features.dlr_contributor_name
                         }`
                     )
                     .join(', ')}
