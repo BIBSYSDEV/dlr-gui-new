@@ -76,14 +76,14 @@ const StyledList = styled(List)`
 
 interface VMSRegistrationProps {
   expanded: boolean;
-  VMS: VideoManagementSystems;
+  vms: VideoManagementSystems;
   onChange: (event: React.ChangeEvent<any>, isExpanded: boolean) => void;
-  onSubmit: (kalturaPresentation: VMSResource) => void;
+  onSubmit: (kalturaPresentation: VMSResource, vms: VideoManagementSystems) => void;
 }
 
 const itemsPrPage = 10;
 
-const VMSRegistration: FC<VMSRegistrationProps> = ({ expanded, VMS, onChange, onSubmit }) => {
+const VMSRegistration: FC<VMSRegistrationProps> = ({ expanded, vms, onChange, onSubmit }) => {
   const { t } = useTranslation();
   const [resources, setResources] = useState<VMSResource[]>();
   const [filteredResources, setFilteredResources] = useState<VMSResource[]>();
@@ -116,10 +116,10 @@ const VMSRegistration: FC<VMSRegistrationProps> = ({ expanded, VMS, onChange, on
     setBusyGettingResources(true);
     setGetResourcesError(undefined);
     try {
-      if (VMS === VideoManagementSystems.Kaltura) {
+      if (vms === VideoManagementSystems.Kaltura) {
         setResources((await getMyKalturaResources()).data);
       }
-      if (VMS === VideoManagementSystems.Panopto) {
+      if (vms === VideoManagementSystems.Panopto) {
         setResources((await getMyPanoptoResources()).data);
       }
     } catch (error) {
@@ -133,9 +133,9 @@ const VMSRegistration: FC<VMSRegistrationProps> = ({ expanded, VMS, onChange, on
     setOpen(false);
   };
 
-  const handleUseResource = (kalturaPresentation: VMSResource) => {
+  const handleUseResource = (vmsResource: VMSResource) => {
     setOpen(false);
-    onSubmit(kalturaPresentation);
+    onSubmit(vmsResource, vms);
   };
 
   useEffect(() => {
@@ -157,10 +157,10 @@ const VMSRegistration: FC<VMSRegistrationProps> = ({ expanded, VMS, onChange, on
 
   return (
     <>
-      {VMS === VideoManagementSystems.Kaltura && (
+      {vms === VideoManagementSystems.Kaltura && (
         <StartRegistrationAccordionKaltura expanded={expanded} onChange={onChange} handleClickOpen={handleClickOpen} />
       )}
-      {VMS === VideoManagementSystems.Panopto && (
+      {vms === VideoManagementSystems.Panopto && (
         <StartRegistrationAccordionPanopto expanded={expanded} onChange={onChange} handleClickOpen={handleClickOpen} />
       )}
       <Dialog
@@ -170,7 +170,7 @@ const VMSRegistration: FC<VMSRegistrationProps> = ({ expanded, VMS, onChange, on
         open={open}
         onClose={handleClose}
         aria-labelledby={FormDialogTitleId}>
-        <DialogTitle id={FormDialogTitleId}>{t(`vms.${VMS}.my_resources`)}</DialogTitle>
+        <DialogTitle id={FormDialogTitleId}>{t(`vms.${vms}.my_resources`)}</DialogTitle>
         <StyledDialogContent>
           <StyledResultList ref={startOfList}>
             {filteredResources && resources && !busyGettingResources && (

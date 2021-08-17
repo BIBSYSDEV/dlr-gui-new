@@ -5,13 +5,13 @@ import panoptoLogo from '../../resources/images/Logo-Panopto-Icon-Black.png';
 import { useTranslation } from 'react-i18next';
 import { StyledFullWidthWrapper } from '../../components/styled/Wrappers';
 
-interface StartRegistrationAccordionKalturaProps {
+interface StartRegistrationAccordionPanoptoProps {
   expanded: boolean;
   handleClickOpen: () => void;
   onChange: (event: React.ChangeEvent<any>, isExpanded: boolean) => void;
 }
 
-const StartRegistrationAccordionPanopto: FC<StartRegistrationAccordionKalturaProps> = ({
+const StartRegistrationAccordionPanopto: FC<StartRegistrationAccordionPanoptoProps> = ({
   expanded,
   handleClickOpen,
   onChange,
@@ -24,11 +24,11 @@ const StartRegistrationAccordionPanopto: FC<StartRegistrationAccordionKalturaPro
       icon={<img height="24px" src={panoptoLogo} alt={t('vms.panopto.logo_alt')} />}
       expanded={expanded}
       onChange={onChange}
-      ariaControls="resource-method-kaltura"
-      dataTestId="new-resource-kaltura">
+      ariaControls="resource-method-panopto"
+      dataTestId="new-resource-panopto">
       <StyledFullWidthWrapper>
         <Button
-          data-testid="open-kaltura-dialog-button"
+          data-testid="open-panopto-dialog-button"
           variant="contained"
           fullWidth
           color="primary"

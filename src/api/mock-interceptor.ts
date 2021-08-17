@@ -30,10 +30,11 @@ import {
   mockInstitutionAuthorities,
   mockInstitutionUser,
   mockInstitutionUserYourself,
-  mockKalturaPresentations,
+  mockKalturaResources,
   mockLicenses,
   mockMyResources,
   mockOtherinstitutionUser,
+  mockPanoptoResources,
   mockPrepareUpload,
   mockResource,
   mockResourceEvents,
@@ -345,10 +346,11 @@ export const interceptRequestsOnMock = () => {
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesFeedbacksPath}/feedbacks/resources/.*`)).reply(202);
 
   //KALTURA
-  mock
-    .onGet(new RegExp(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations`))
-    .reply(200, mockKalturaPresentations);
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations`)).reply(200, mockKalturaResources);
   mock.onPost(new RegExp(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations/import`)).reply(202);
+
+  //PANOPTO
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendPanoptoPath}/panopto/presentations`)).reply(200, mockPanoptoResources);
 
   //TOKEN
   mock.onGet(new RegExp(`${API_PATHS.guiBackendLoginPath}/anonymous.*`)).reply(200, mockToken);

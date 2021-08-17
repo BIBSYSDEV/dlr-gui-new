@@ -112,12 +112,12 @@ const EditResourcePage = () => {
     }
   };
 
-  const onSubmitKalturaResource = async (kalturaResource: VMSResource) => {
+  const onSubmitVMSResource = async (vmsResource: VMSResource, vms: VideoManagementSystems) => {
     setShowForm(true);
     try {
       setIsLoadingResource(true);
-      const createResourceResponse = await createResource(ResourceCreationType.LINK, kalturaResource.url);
-      await getResourceInit(createResourceResponse, ResourceCreationType.LINK, kalturaResource);
+      const createResourceResponse = await createResource(ResourceCreationType.LINK, vmsResource.url);
+      await getResourceInit(createResourceResponse, ResourceCreationType.LINK, vmsResource, vms);
     } catch (error) {
       setResourceInitError(error);
       setIsLoadingResource(false);
@@ -214,9 +214,9 @@ const EditResourcePage = () => {
   const getResourceInit = async (
     startingResource: Resource,
     resourceCreationType: ResourceCreationType,
-    kalturaResource?: VMSResource
+    vmsResource?: VMSResource,
+    vms?: VideoManagementSystems
   ) => {
-    //TODO: Handle panopto as well
     try {
       setShowForm(true);
       startingResource.features.dlr_title = startingResource.features.dlr_title ?? '';
@@ -235,9 +235,9 @@ const EditResourcePage = () => {
       );
 
       const responseWithCalculatedDefaults = (await getResourceDefaults(startingResource.identifier)).data;
-      if (kalturaResource) {
-        responseWithCalculatedDefaults.features.dlr_title = kalturaResource.title;
-        responseWithCalculatedDefaults.features.dlr_description = kalturaResource.description;
+      if (vmsResource) {
+        responseWithCalculatedDefaults.features.dlr_title = vmsResource.title;
+        responseWithCalculatedDefaults.features.dlr_description = vmsResource.description;
       }
       await saveCalculatedFields(responseWithCalculatedDefaults);
 
@@ -259,7 +259,7 @@ const EditResourcePage = () => {
         contents: tempContents,
       };
       resource.isFresh = true;
-      if (kalturaResource) {
+      if (vmsResource) {
         await saveResourceDLRType(resource, startingResource.identifier, ResourceFeatureTypes.video);
       } else {
         await setDLRType(resourceCreationType, responseWithCalculatedDefaults, resource, startingResource);
@@ -286,8 +286,8 @@ const EditResourcePage = () => {
           resource.contents.masterContent.features.dlr_content;
       }
 
-      if (kalturaResource) {
-        await postKalturaPresentationImport(resource, kalturaResource);
+      if (vmsResource && vms === VideoManagementSystems.Kaltura) {
+        await postKalturaPresentationImport(resource, vmsResource);
       }
       setFormikInitResource(resource);
       setResourceInitError(undefined);
@@ -424,23 +424,23 @@ const EditResourcePage = () => {
             <StyledTypography>{t('common.or')}</StyledTypography>
             <VMSRegistration
               expanded={expanded === 'kaltura-panel'}
-              VMS={VideoManagementSystems.Kaltura}
+              vms={VideoManagementSystems.Kaltura}
               onChange={handleChange('kaltura-panel')}
-              onSubmit={onSubmitKalturaResource}
+              onSubmit={onSubmitVMSResource}
             />
           </>
         )}
-        {/*TODO{usePanoptoFlag && (*/}
-        {/*  <>*/}
-        <StyledTypography>{t('common.or')}</StyledTypography>
-        <VMSRegistration
-          expanded={expanded === 'panopto-panel'}
-          VMS={VideoManagementSystems.Panopto}
-          onChange={handleChange('panopto-panel')}
-          onSubmit={onSubmitKalturaResource}
-        />
-        {/*  </>*/}
-        {/*)}*/}
+        {usePanoptoFlag && (
+          <>
+            <StyledTypography>{t('common.or')}</StyledTypography>
+            <VMSRegistration
+              expanded={expanded === 'panopto-panel'}
+              vms={VideoManagementSystems.Panopto}
+              onChange={handleChange('panopto-panel')}
+              onSubmit={onSubmitVMSResource}
+            />
+          </>
+        )}
       </StyledEditPublication>
     </StyledContentWrapperLarge>
   ) : isLoadingResource ? (
