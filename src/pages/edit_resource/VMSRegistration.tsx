@@ -1,8 +1,7 @@
 import React, { createRef, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import StartRegistrationMethodAccordion from './StartRegistrationMethodAccordion';
-import { getMyKalturaPresentations } from '../../api/resourceApi';
+import { getMyKalturaResources, getMyPanoptoResources } from '../../api/resourceApi';
 import {
   Button,
   Checkbox,
@@ -20,17 +19,13 @@ import ErrorBanner from '../../components/ErrorBanner';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-import { KalturaPresentation, VideoManagementSystems } from '../../types/resource.types';
-import kalturaLogo from '../../resources/images/Kaltura_Sun_black_icon.png';
+import { VMSPresentation, VideoManagementSystems } from '../../types/resource.types';
 import VMSListItem from './VMSListItem';
 import Pagination from '@material-ui/lab/Pagination';
-import { StyledPaginationWrapper } from '../../components/styled/Wrappers';
+import { StyledFullWidthWrapper, StyledPaginationWrapper } from '../../components/styled/Wrappers';
+import StartRegistrationAccordionKaltura from './StartRegistrationAccordionKaltura';
 
 const FormDialogTitleId = 'kaltura-dialog-title';
-
-const StyledFullWidth = styled.div`
-  width: 100%;
-`;
 
 const StyledDialogContent = styled(DialogContent)`
   height: 70vh;
@@ -78,20 +73,25 @@ const StyledList = styled(List)`
   width: 100%;
 `;
 
-const VMSObjects = [
-  {
-    type: VideoManagementSystems.Kaltura,
-    icon: kalturaLogo,
-    icon_alt: 'Kaltura logo',
-    headerLabel: 'kaltura.start_with_kaltura_resource',
-  },
-  {
-    type: VideoManagementSystems.Panopto,
-    icon: kalturaLogo,
-    icon_alt: 'Panopto logo',
-    headerLabel: 'panopto.start_with_panopto_resource',
-  },
-];
+// const KalturaData: VMSData = {
+//   type: VideoManagementSystems.Kaltura,
+//   icon: kalturaLogo,
+// };
+
+// const VMSObjects = [
+//   {
+//     type: VideoManagementSystems.Kaltura,
+//     icon: kalturaLogo,
+//     icon_alt: 'Kaltura logo',
+//     headerLabel: 'kaltura.start_with_kaltura_resource',
+//   },
+//   {
+//     type: VideoManagementSystems.Panopto,
+//     icon: kalturaLogo,
+//     icon_alt: 'Panopto logo',
+//     headerLabel: 'panopto.start_with_panopto_resource',
+//   },
+// ];
 // VMSObjects[VideoManagementSystems.Kaltura] = { name: 'kaltura', icon: 'arne' };
 // VMSObjects[VideoManagementSystems.Panopto] = { name: '2kaltura', icon: 'ar2ne' };
 
@@ -99,16 +99,16 @@ interface LORRegistrationProps {
   expanded: boolean;
   VMS: VideoManagementSystems;
   onChange: (event: React.ChangeEvent<any>, isExpanded: boolean) => void;
-  onSubmit: (kalturaPresentation: KalturaPresentation) => void;
+  onSubmit: (kalturaPresentation: VMSPresentation) => void;
 }
 
 const itemsPrPage = 10;
 
 const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, onSubmit }) => {
   const { t } = useTranslation();
-  const vmsObject = VMS === VideoManagementSystems.Kaltura ? VMSObjects[0] : VMSObjects[1];
-  const [resources, setResources] = useState<KalturaPresentation[]>(); //TODO
-  const [filteredResources, setFilteredResources] = useState<KalturaPresentation[]>(); //TODO
+  // const vmsObject = VMS === VideoManagementSystems.Kaltura ? VMSObjects[0] : VMSObjects[1];
+  const [resources, setResources] = useState<VMSPresentation[]>(); //TODO
+  const [filteredResources, setFilteredResources] = useState<VMSPresentation[]>(); //TODO
   const [getResourcesError, setGetResourcesError] = useState<Error>();
   const [busyGettingResources, setBusyGettingResources] = useState(false);
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.md - 1}px)`);
@@ -139,9 +139,12 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
     setBusyGettingResources(true);
     setGetResourcesError(undefined);
     try {
-      const result = (await getMyKalturaPresentations()).data;
-      //TODO
-      setResources(result);
+      if (VMS === VideoManagementSystems.Kaltura) {
+        setResources((await getMyKalturaResources()).data);
+      }
+      if (VMS === VideoManagementSystems.Panopto) {
+        setResources((await getMyPanoptoResources()).data);
+      }
     } catch (error) {
       setGetResourcesError(undefined);
     } finally {
@@ -153,7 +156,7 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
     setOpen(false);
   };
 
-  const handleUseResource = (kalturaPresentation: KalturaPresentation) => {
+  const handleUseResource = (kalturaPresentation: VMSPresentation) => {
     setOpen(false);
     onSubmit(kalturaPresentation);
   };
@@ -177,24 +180,12 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
 
   return (
     <>
-      <StartRegistrationMethodAccordion
-        headerLabel={t(vmsObject.headerLabel)}
-        icon={<img height="24px" src={vmsObject.icon} alt={vmsObject.icon_alt} />}
-        expanded={expanded}
-        onChange={onChange}
-        ariaControls="resource-method-kaltura"
-        dataTestId="new-resource-kaltura">
-        <StyledFullWidth>
-          <Button
-            data-testid="open-kaltura-dialog-button"
-            variant="contained"
-            fullWidth
-            color="primary"
-            onClick={handleClickOpen}>
-            {t('kaltura.show_my_resources')}
-          </Button>
-        </StyledFullWidth>
-      </StartRegistrationMethodAccordion>
+      {VMS === VideoManagementSystems.Kaltura && (
+        <StartRegistrationAccordionKaltura expanded={expanded} onChange={onChange} handleClickOpen={handleClickOpen} />
+      )}
+      {VMS === VideoManagementSystems.Panopto && (
+        <StartRegistrationAccordionKaltura expanded={expanded} onChange={onChange} handleClickOpen={handleClickOpen} />
+      )}
       <Dialog
         maxWidth={'md'}
         fullWidth
@@ -206,7 +197,7 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
         <StyledDialogContent>
           <StyledResultList ref={startOfList}>
             {filteredResources && resources && !busyGettingResources && (
-              <StyledFullWidth>
+              <StyledFullWidthWrapper>
                 <StyledGridForFilters container justifyContent="space-between">
                   <Grid item md={7} xs={12}>
                     <StyledFilterBoxWrapper>
@@ -255,7 +246,7 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
                     </>
                   )}
                 </StyledListInfo>
-              </StyledFullWidth>
+              </StyledFullWidthWrapper>
             )}
             {busyGettingResources ? (
               <CircularProgress />
@@ -290,7 +281,7 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
           </StyledResultList>
         </StyledDialogContent>
         <StyledDialogActions>
-          <Button data-testid="kalture-dialog-close-button" variant="outlined" onClick={handleClose} color="primary">
+          <Button data-testid="vms-dialog-close-button" variant="outlined" onClick={handleClose} color="primary">
             {t('common.close')}
           </Button>
         </StyledDialogActions>

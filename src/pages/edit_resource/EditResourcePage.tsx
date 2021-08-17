@@ -15,7 +15,7 @@ import {
   CreatorFeatureAttributes,
   DefaultResourceTypes,
   emptyResource,
-  KalturaPresentation,
+  VMSPresentation,
   Resource,
   ResourceCreationType,
   ResourceFeatureNames,
@@ -112,7 +112,7 @@ const EditResourcePage = () => {
     }
   };
 
-  const onSubmitKalturaResource = async (kalturaResource: KalturaPresentation) => {
+  const onSubmitKalturaResource = async (kalturaResource: VMSPresentation) => {
     setShowForm(true);
     try {
       setIsLoadingResource(true);
@@ -214,7 +214,7 @@ const EditResourcePage = () => {
   const getResourceInit = async (
     startingResource: Resource,
     resourceCreationType: ResourceCreationType,
-    kalturaResource?: KalturaPresentation
+    kalturaResource?: VMSPresentation
   ) => {
     //TODO: Handle panopto as well
     try {

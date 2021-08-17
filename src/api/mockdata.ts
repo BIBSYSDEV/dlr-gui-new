@@ -2,7 +2,7 @@ import {
   Contributor,
   Creator,
   emptyResource,
-  KalturaPresentation,
+  VMSPresentation,
   Resource,
   ResourceOwner,
   ResourceStatistic,
@@ -811,7 +811,7 @@ export const mockResourceOwners: ResourceOwner[] = [
   },
 ];
 
-export const mockKalturaPresentations: KalturaPresentation[] = [
+export const mockKalturaPresentations: VMSPresentation[] = [
   {
     id: '54353453453',
     title: 'Sample Kaltura Title 1',

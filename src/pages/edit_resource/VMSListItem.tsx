@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Button, Grid, Link, Typography } from '@material-ui/core';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
-import { KalturaPresentation } from '../../types/resource.types';
+import { VMSPresentation } from '../../types/resource.types';
 
 const StyledImageWrapper: any = styled.div`
   min-height: 5rem;
@@ -32,8 +32,8 @@ const StyledImage: any = styled.img`
 `;
 
 interface KalturaListItemProps {
-  item: KalturaPresentation;
-  handleUseResource: (kalturaPresentation: KalturaPresentation) => void;
+  item: VMSPresentation;
+  handleUseResource: (kalturaPresentation: VMSPresentation) => void;
 }
 
 const VMSListItem: FC<KalturaListItemProps> = ({ item, handleUseResource }) => {

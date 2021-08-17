@@ -327,7 +327,7 @@ export interface ResourceOwnerFeatures {
   dlr_owner_subject: string; //feide-id of the owner
   dlr_owner_timer_created: string; //time the subject got ownership of this resource
 }
-export interface KalturaPresentation {
+export interface VMSPresentation {
   id: string;
   title: string;
   timeRecorded: string;
