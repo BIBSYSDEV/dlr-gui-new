@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import placeholderImage from '../resources/images/placeholder.png';
 import BIImage from '../resources/images/institution_logos/bi.png';
 import NTNUImage from '../resources/images/institution_logos/ntnu.png';
-import OsloMetImage from '../resources/images/institution_logos/ntnu.png';
+import OsloMetImage from '../resources/images/institution_logos/oslomet.png';
 import UiBImage from '../resources/images/institution_logos/uib.png';
 import HVLImage from '../resources/images/institution_logos/hvl.png';
 import UnitImage from '../resources/images/institution_logos/unit.png';
