@@ -15,7 +15,7 @@ import {
   CreatorFeatureAttributes,
   DefaultResourceTypes,
   emptyResource,
-  VMSPresentation,
+  VMSResource,
   Resource,
   ResourceCreationType,
   ResourceFeatureNames,
@@ -86,7 +86,7 @@ const EditResourcePage = () => {
   const [fileUploadError, setFileUploadError] = useState<Error>();
   const [mainFileBeingUploaded, setMainFileBeingUploaded] = useState(false);
   const location = useLocation();
-  const usePanoptoFlag = new URLSearchParams(location.search).get('usePanoptoFeature') === 'true' ? true : false; //TODO: remove once ready for prod
+  const usePanoptoFlag = new URLSearchParams(location.search).get('usePanoptoFeature') === 'true'; //TODO: remove once ready for prod
 
   const user = useSelector((state: RootState) => state.user);
   const [userInstitutionCorrectCapitalization] = useState(
@@ -112,7 +112,7 @@ const EditResourcePage = () => {
     }
   };
 
-  const onSubmitKalturaResource = async (kalturaResource: VMSPresentation) => {
+  const onSubmitKalturaResource = async (kalturaResource: VMSResource) => {
     setShowForm(true);
     try {
       setIsLoadingResource(true);
@@ -214,7 +214,7 @@ const EditResourcePage = () => {
   const getResourceInit = async (
     startingResource: Resource,
     resourceCreationType: ResourceCreationType,
-    kalturaResource?: VMSPresentation
+    kalturaResource?: VMSResource
   ) => {
     //TODO: Handle panopto as well
     try {
@@ -430,17 +430,17 @@ const EditResourcePage = () => {
             />
           </>
         )}
-        {usePanoptoFlag && (
-          <>
-            <StyledTypography>{t('common.or')}</StyledTypography>
-            <VMSRegistration
-              expanded={expanded === 'panopto-panel'}
-              VMS={VideoManagementSystems.Panopto}
-              onChange={handleChange('panopto-panel')}
-              onSubmit={onSubmitKalturaResource}
-            />
-          </>
-        )}
+        {/*TODO{usePanoptoFlag && (*/}
+        {/*  <>*/}
+        <StyledTypography>{t('common.or')}</StyledTypography>
+        <VMSRegistration
+          expanded={expanded === 'panopto-panel'}
+          VMS={VideoManagementSystems.Panopto}
+          onChange={handleChange('panopto-panel')}
+          onSubmit={onSubmitKalturaResource}
+        />
+        {/*  </>*/}
+        {/*)}*/}
       </StyledEditPublication>
     </StyledContentWrapperLarge>
   ) : isLoadingResource ? (

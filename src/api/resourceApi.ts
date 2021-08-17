@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import {
   Contributor,
   Creator,
-  VMSPresentation,
+  VMSResource,
   Resource,
   ResourceContents,
   ResourceCreationType,
@@ -449,13 +449,13 @@ export const getMyUserAuthorizationProfileForResource = async (
   };
 };
 
-export const getMyKalturaResources = (): Promise<AxiosResponse<VMSPresentation[]>> => {
+export const getMyKalturaResources = (): Promise<AxiosResponse<VMSResource[]>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations`),
     method: 'GET',
   });
 };
-export const getMyPanoptoResources = (): Promise<AxiosResponse<VMSPresentation[]>> => {
+export const getMyPanoptoResources = (): Promise<AxiosResponse<VMSResource[]>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendPanoptoPath}/panopto/presentations`),
     method: 'GET',
@@ -468,7 +468,7 @@ export const getResourceOwners = (resourceIdentifier: string): Promise<AxiosResp
     method: 'GET',
   });
 };
-export const postKalturaPresentationImport = (resource: Resource, kalturaPresentation: VMSPresentation) => {
+export const postKalturaPresentationImport = (resource: Resource, kalturaPresentation: VMSResource) => {
   const data = encodeURI(
     `identifier=${resource.identifier}&identifierContent=${resource.contents.masterContent.identifier}&kalturaPresentationId=${kalturaPresentation.id}&downloadUrl=${kalturaPresentation.downloadUrl}&title=${kalturaPresentation.title}`
   );

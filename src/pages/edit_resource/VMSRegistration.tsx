@@ -19,11 +19,12 @@ import ErrorBanner from '../../components/ErrorBanner';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-import { VMSPresentation, VideoManagementSystems } from '../../types/resource.types';
+import { VMSResource, VideoManagementSystems } from '../../types/resource.types';
 import VMSListItem from './VMSListItem';
 import Pagination from '@material-ui/lab/Pagination';
 import { StyledFullWidthWrapper, StyledPaginationWrapper } from '../../components/styled/Wrappers';
 import StartRegistrationAccordionKaltura from './StartRegistrationAccordionKaltura';
+import StartRegistrationAccordionPanopto from './StartRegistrationAccordionPanopto';
 
 const FormDialogTitleId = 'kaltura-dialog-title';
 
@@ -73,42 +74,19 @@ const StyledList = styled(List)`
   width: 100%;
 `;
 
-// const KalturaData: VMSData = {
-//   type: VideoManagementSystems.Kaltura,
-//   icon: kalturaLogo,
-// };
-
-// const VMSObjects = [
-//   {
-//     type: VideoManagementSystems.Kaltura,
-//     icon: kalturaLogo,
-//     icon_alt: 'Kaltura logo',
-//     headerLabel: 'kaltura.start_with_kaltura_resource',
-//   },
-//   {
-//     type: VideoManagementSystems.Panopto,
-//     icon: kalturaLogo,
-//     icon_alt: 'Panopto logo',
-//     headerLabel: 'panopto.start_with_panopto_resource',
-//   },
-// ];
-// VMSObjects[VideoManagementSystems.Kaltura] = { name: 'kaltura', icon: 'arne' };
-// VMSObjects[VideoManagementSystems.Panopto] = { name: '2kaltura', icon: 'ar2ne' };
-
 interface LORRegistrationProps {
   expanded: boolean;
   VMS: VideoManagementSystems;
   onChange: (event: React.ChangeEvent<any>, isExpanded: boolean) => void;
-  onSubmit: (kalturaPresentation: VMSPresentation) => void;
+  onSubmit: (kalturaPresentation: VMSResource) => void;
 }
 
 const itemsPrPage = 10;
 
 const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, onSubmit }) => {
   const { t } = useTranslation();
-  // const vmsObject = VMS === VideoManagementSystems.Kaltura ? VMSObjects[0] : VMSObjects[1];
-  const [resources, setResources] = useState<VMSPresentation[]>(); //TODO
-  const [filteredResources, setFilteredResources] = useState<VMSPresentation[]>(); //TODO
+  const [resources, setResources] = useState<VMSResource[]>();
+  const [filteredResources, setFilteredResources] = useState<VMSResource[]>();
   const [getResourcesError, setGetResourcesError] = useState<Error>();
   const [busyGettingResources, setBusyGettingResources] = useState(false);
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.md - 1}px)`);
@@ -156,7 +134,7 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
     setOpen(false);
   };
 
-  const handleUseResource = (kalturaPresentation: VMSPresentation) => {
+  const handleUseResource = (kalturaPresentation: VMSResource) => {
     setOpen(false);
     onSubmit(kalturaPresentation);
   };
@@ -184,7 +162,7 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
         <StartRegistrationAccordionKaltura expanded={expanded} onChange={onChange} handleClickOpen={handleClickOpen} />
       )}
       {VMS === VideoManagementSystems.Panopto && (
-        <StartRegistrationAccordionKaltura expanded={expanded} onChange={onChange} handleClickOpen={handleClickOpen} />
+        <StartRegistrationAccordionPanopto expanded={expanded} onChange={onChange} handleClickOpen={handleClickOpen} />
       )}
       <Dialog
         maxWidth={'md'}
@@ -193,7 +171,7 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
         open={open}
         onClose={handleClose}
         aria-labelledby={FormDialogTitleId}>
-        <DialogTitle id={FormDialogTitleId}>{t('kaltura.my_resources')}</DialogTitle>
+        <DialogTitle id={FormDialogTitleId}>{t(`vms.${VMS}.my_resources`)}</DialogTitle>
         <StyledDialogContent>
           <StyledResultList ref={startOfList}>
             {filteredResources && resources && !busyGettingResources && (
@@ -202,7 +180,7 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
                   <Grid item md={7} xs={12}>
                     <StyledFilterBoxWrapper>
                       <Typography display="inline" variant="body1">
-                        <label htmlFor="filter-text-box">{t('kaltura.fill_filter_box')}:</label>
+                        <label htmlFor="filter-text-box">{t('vms.fill_filter_box')}:</label>
                       </Typography>
                       <StyledTextFieldWithMargin
                         onChange={(event) => setFilterValue(event.target.value)}
@@ -225,7 +203,7 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
                           name="hide_already_imported"
                         />
                       }
-                      label={t('kaltura.hide_already_imported')}
+                      label={t('vms.hide_already_imported')}
                       onChange={() => setHideImported(!hideImported)}
                     />
                   </StyledCheckBoxWrapper>
@@ -240,7 +218,7 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
                       </Typography>
                       {resources.length !== filteredResources.length && (
                         <Typography variant="body2" display="inline">
-                          {`(${resources.length - filteredResources.length} ${t('kaltura.is_filtered_out')})`}
+                          {`(${resources.length - filteredResources.length} ${t('vms.is_filtered_out')})`}
                         </Typography>
                       )}
                     </>
@@ -274,7 +252,7 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
               </>
             ) : (
               <Typography variant="h3" component="p">
-                {t('kaltura.no_resources_found')}
+                {t('vms.no_resources_found')}
               </Typography>
             )}
             {getResourcesError && <ErrorBanner userNeedsToBeLoggedIn={true} error={getResourcesError} />}

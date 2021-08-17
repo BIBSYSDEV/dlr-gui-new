@@ -2,7 +2,7 @@ import {
   Contributor,
   Creator,
   emptyResource,
-  VMSPresentation,
+  VMSResource,
   Resource,
   ResourceOwner,
   ResourceStatistic,
@@ -735,6 +735,12 @@ export const mockAppFeatureResponse = [
     user: mockUser.id,
   },
   {
+    object: AppfeatureEnum.DLR_APP_FEATURE_NEW_LEARNING_RESOURCE_FROM_PANOPTO,
+    profile: [{ name: 'dlr_app_feature_user' }],
+    time: '2021-06-29T07:57:37.108Z',
+    user: mockUser.id,
+  },
+  {
     object: AppfeatureEnum.DLR_APP_FEATURE_SHARE_LEARNING_RESOURCE_WITH_COURSE_STUDENTS,
     profile: [{ name: 'dlr_app_feature_user' }],
     time: '2021-06-29T07:57:36.108Z',
@@ -811,7 +817,7 @@ export const mockResourceOwners: ResourceOwner[] = [
   },
 ];
 
-export const mockKalturaPresentations: VMSPresentation[] = [
+export const mockKalturaPresentations: VMSResource[] = [
   {
     id: '54353453453',
     title: 'Sample Kaltura Title 1',

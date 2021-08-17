@@ -245,17 +245,6 @@
     "oslomet": "OsloMet",
     "uib": "UiB"
   },
-  "kaltura": {
-    "already_imported": "Already imported",
-    "choose_a_resource": "Choose a resource from the list",
-    "fill_filter_box": "Fill in a string to filter the list",
-    "hide_already_imported": "Hide already imported resources",
-    "is_filtered_out": "is filtered out",
-    "my_resources": "My Kaltura resources",
-    "no_resources_found": "No resources found",
-    "show_my_resources": "Show my resources from Kaltura",
-    "start_with_kaltura_resource": "Start with a kaltura resource"
-  },
   "license": {
     "commercial_options": {
       "yes": "Yes, the material can be used for commercial purposes",
@@ -591,6 +580,26 @@
   },
   "user": {
     "logged_in_as": "Logged in as"
+  },
+  "vms": {
+    "already_imported": "Already imported",
+    "choose_a_resource": "Choose a resource from the list",
+    "fill_filter_box": "Fill in a string to filter the list",
+    "hide_already_imported": "Hide already imported resources",
+    "is_filtered_out": "is filtered out",
+    "no_resources_found": "No resources found",
+    "kaltura": {
+      "logo_alt": "Kaltura logo",
+      "my_resources": "My Kaltura resources",
+      "show_my_resources": "Show my resources from Kaltura",
+      "start_with_kaltura_resource": "Start with a Kaltura resource"
+    },
+    "panopto": {
+      "logo_alt": "Panopto logo",
+      "my_resources": "My Panopto resources",
+      "show_my_resources": "Show my resources from Panopto",
+      "start_with_panopto_resource": "Start with a Panopto resource"
+    }
   },
   "work_list": {
     "are_you_sure": "Are you sure you want to create a DOI",
