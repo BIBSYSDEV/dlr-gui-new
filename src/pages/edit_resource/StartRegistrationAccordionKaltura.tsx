@@ -7,7 +7,7 @@ import { StyledFullWidthWrapper } from '../../components/styled/Wrappers';
 
 interface StartRegistrationAccordionKalturaProps {
   expanded: boolean;
-  handleClickOpen: any; //TODO
+  handleClickOpen: () => void;
   onChange: (event: React.ChangeEvent<any>, isExpanded: boolean) => void;
 }
 

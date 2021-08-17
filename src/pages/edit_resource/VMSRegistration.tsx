@@ -74,7 +74,7 @@ const StyledList = styled(List)`
   width: 100%;
 `;
 
-interface LORRegistrationProps {
+interface VMSRegistrationProps {
   expanded: boolean;
   VMS: VideoManagementSystems;
   onChange: (event: React.ChangeEvent<any>, isExpanded: boolean) => void;
@@ -83,7 +83,7 @@ interface LORRegistrationProps {
 
 const itemsPrPage = 10;
 
-const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, onSubmit }) => {
+const VMSRegistration: FC<VMSRegistrationProps> = ({ expanded, VMS, onChange, onSubmit }) => {
   const { t } = useTranslation();
   const [resources, setResources] = useState<VMSResource[]>();
   const [filteredResources, setFilteredResources] = useState<VMSResource[]>();
@@ -105,7 +105,6 @@ const VMSRegistration: FC<LORRegistrationProps> = ({ expanded, VMS, onChange, on
       setLastItemOnPage(
         filteredResources.length > itemsPrPage * pageValue ? pageValue * itemsPrPage : filteredResources?.length
       );
-
     if (startOfList && startOfList.current) {
       startOfList.current.scrollIntoView();
     }
