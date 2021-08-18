@@ -12,6 +12,7 @@ import { Alert, AlertTitle } from '@material-ui/lab';
 import ShareIcon from '@material-ui/icons/Share';
 import SocialMediaSharing from '../../components/SocialMediaSharing';
 import { resourcePath } from '../../utils/constants';
+import { LMSParametersName } from '../../types/LMSParameters';
 
 const StyledGridContainer = styled(Grid)`
   margin-top: 1rem;
@@ -65,9 +66,11 @@ const generatePreferredURL = (resource: Resource): string => {
 const generateIframeText = (resource: Resource) => {
   return `<iframe title="${resource.features.dlr_title.replaceAll('"', '')}" src="${
     window.location.origin
-  }${resourcePath}/${
-    resource.identifier
-  }/content/main?navbar=false&footer=false" width="640px" height="360px" style="border: none;" allowfullscreen="true"></iframe>`;
+  }${resourcePath}/${resource.identifier}/content/main?${LMSParametersName.Navbar}=false&${
+    LMSParametersName.Footer
+  }=false&${
+    LMSParametersName.PollForLogin
+  }=true" width="640px" height="360px" style="border: none;" allowfullscreen="true"></iframe>`;
 };
 
 const userAgentIsNotOperaForDesktop = () => {
