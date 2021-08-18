@@ -5,7 +5,7 @@ import { resourcePath } from './constants';
 
 const createEmbedUrlParam = (resource: Resource, width: number | string, height: number) => {
   return encodeURIComponent(
-    `${window.location.origin}${resourcePath}/${resource.identifier}/content/main?navbar=false&footer=false&width=${width}&height=${height}`
+    `${window.location.origin}${resourcePath}/${resource.identifier}/content/main?${LMSParametersName.Navbar}=false&${LMSParametersName.Footer}=false&width=${width}&height=${height}&${LMSParametersName.PollForLogin}=true`
   );
 };
 
@@ -15,7 +15,7 @@ const embedToBlackBoard = (resource: Resource, mode: string) => {
     title: resource.features.dlr_title,
     handle: resource.features.dlr_identifier_handle,
     mode,
-    embedCode: `<iframe src="${window.location.origin}${resourcePath}/${resource.identifier}/content/main?navbar=false&footer=false&width={width}&height={height}" style="border: none;" width="{iframeWidth}" height="{iframeHeight}" allowfullscreen="true" ></iframe>`,
+    embedCode: `<iframe src="${window.location.origin}${resourcePath}/${resource.identifier}/content/main?${LMSParametersName.Navbar}=false&${LMSParametersName.Footer}=false&width={width}&height={height}&${LMSParametersName.PollForLogin}=true" style="border: none;" width="{iframeWidth}" height="{iframeHeight}" allowfullscreen="true" ></iframe>`,
   };
   window.parent.postMessage(data, '*');
 };
@@ -68,7 +68,7 @@ const embedToItsLearning = async (resource: Resource, mode: string, width: numbe
     } else {
       postToItsLearning(
         itsLearningReturnUrl,
-        `<iframe src="${window.location.origin}${resourcePath}/${resource.identifier}/content/main?navbar=false&footer=false&width=${width}&height=${height}&useFeideSso=true" style="border: none;" width="${width}" height="${height}" allowfullscreen="true"></iframe>`
+        `<iframe src="${window.location.origin}${resourcePath}/${resource.identifier}/content/main?navbar=false&footer=false&width=${width}&height=${height}&useFeideSso=true&${LMSParametersName.PollForLogin}=true" style="border: none;" width="${width}" height="${height}" allowfullscreen="true"></iframe>`
       );
     }
   } else {
@@ -84,7 +84,7 @@ const embedToEdx = (resource: Resource, mode: string) => {
     title: resource.features.dlr_title,
     handle: resource.features.dlr_identifier_handle,
     mode: mode, // ex.: embed size ('560x315' or 'link')
-    embedCode: `<iframe src="${window.location.origin}${resourcePath}/${resource.identifier}/content/main?navbar=false&footer=false&width={width}&height={height}" style="border: none;" width="{iframeWidth}" height="{iframeHeight}" allowfullscreen="true" ></iframe>`,
+    embedCode: `<iframe src="${window.location.origin}${resourcePath}/${resource.identifier}/content/main?navbar=false&footer=false&width={width}&height={height}&${LMSParametersName.PollForLogin}=true" style="border: none;" width="{iframeWidth}" height="{iframeHeight}" allowfullscreen="true" ></iframe>`,
   };
 
   window.parent.postMessage(data, '*');

@@ -32,6 +32,12 @@ const StyledPaper = styled(Paper)`
   overflow: auto;
 `;
 
+const StyledLoginInformationWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 interface ContentPreviewProps {
   resource: Resource;
   isPreview?: boolean;
@@ -159,9 +165,13 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
             </>
           ) : (
             <>
-              <Typography>{t('resource.preview.no_preview_authorization_reasons')}</Typography>
-              {!user.id && <LoginButton variant="contained" />}
-              {user.id && <Typography>Brukeren din har ikke tilgang til denne ressursen</Typography>}
+              <StyledLoginInformationWrapper>
+                {!user.id && (
+                  <Typography gutterBottom>{t('resource.preview.no_preview_authorization_reasons')}</Typography>
+                )}
+                {!user.id && <LoginButton variant="contained" />}
+                {user.id && <Typography>{t('resource.preview.your_user_does_not_have_access')}</Typography>}
+              </StyledLoginInformationWrapper>
             </>
           )}
         </>

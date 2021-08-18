@@ -20,12 +20,12 @@ export const rewriteSearchParams = (
 const ParamsSplitter = 'ZZZZ';
 const ValuePairSplitter = 'WWWW';
 
-//Hacky workaround: this piece of code exists because feide-login deletes all but one search params in the redirect url.
-//In order to retain the search params the valuePairs are concatenated into one big search param.
 export const getPackedUrlCurrentPathForFeideLogin = (): string => {
   return getPackedUrlForFeideLogin(window.location.pathname);
 };
 
+//Hacky workaround: this piece of code exists because feide-login deletes all but one search params in the redirect url.
+//In order to retain the search params the valuePairs are concatenated into one big search param.
 export const getPackedUrlForFeideLogin = (path: string): string => {
   const searchParams = new URLSearchParams(window.location.search);
   const newParamsArray: string[] = [];

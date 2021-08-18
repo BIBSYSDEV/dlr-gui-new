@@ -17,6 +17,7 @@ import LoginRedirectPage from './pages/LoginRedirectPage';
 import AppContent from './AppContent';
 import { StyledFullPageProgressWrapper } from './components/styled/Wrappers';
 import useInterval from './utils/useInterval';
+import { LMSParametersName } from './types/LMSParameters';
 
 const isLoggedInTokenExpired = () => {
   if (localStorage.tokenExpiry) {
@@ -105,7 +106,7 @@ const App = () => {
 
   const pollForLoginInterval = useCallback(() => {
     const searchParams = new URLSearchParams(window.location.search);
-    const shouldPollForLogin = searchParams.get('shouldPollForLogin');
+    const shouldPollForLogin = searchParams.get(LMSParametersName.PollForLogin);
     if (user.id || !shouldPollForLogin || isLoadingUser) {
       return null;
     } else {
