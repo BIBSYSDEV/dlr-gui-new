@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from './state/userSlice';
@@ -16,6 +16,7 @@ import ErrorBanner from './components/ErrorBanner';
 import LoginRedirectPage from './pages/LoginRedirectPage';
 import AppContent from './AppContent';
 import { StyledFullPageProgressWrapper } from './components/styled/Wrappers';
+import useInterval from './utils/useInterval';
 
 const isLoggedInTokenExpired = () => {
   if (localStorage.tokenExpiry) {
@@ -30,6 +31,8 @@ const isTokenAnonymous = () => {
     return localStorage.anonymousToken === 'true';
   } else return false;
 };
+
+const completedDelayMilliSeconds = 3000;
 
 const App = () => {
   const dispatch = useDispatch();
@@ -99,6 +102,23 @@ const App = () => {
       document.documentElement.lang = 'en';
     }
   }, []);
+
+  const pollForLoginInterval = useCallback(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const shouldPollForLogin = searchParams.get('shouldPollForLogin');
+    if (user.id || !shouldPollForLogin || isLoadingUser) {
+      return null;
+    } else {
+      return completedDelayMilliSeconds;
+    }
+  }, [isLoadingUser, user.id]);
+
+  //useInterval exists for pages that embeds more than one DLR iframe, this way the user only needs to log into one of the iframes in order to log into all of them
+  useInterval(() => {
+    if (localStorage.token && !isTokenAnonymous() && !isLoggedInTokenExpired() && !user.id) {
+      window.location.reload();
+    }
+  }, pollForLoginInterval());
 
   return (
     <BrowserRouter>

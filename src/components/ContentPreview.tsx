@@ -8,11 +8,13 @@ import DownloadButton from './DownloadButton';
 import { getResourceDefaultContent, getTextFileContents } from '../api/resourceApi';
 import { Resource } from '../types/resource.types';
 import { getSourceFromIframeString } from '../utils/iframe_utils';
-
 import ContentIframe from './ContentIframe';
 import DocumentPreview from './DocumentPreview';
 import LinkPreviewNotPossible from './LinkPreviewNotPossible';
 import { getSoundCloudInformation, getTwentyThreeVideoInformation } from '../api/externalApi';
+import { useSelector } from 'react-redux';
+import { RootState } from '../state/rootReducer';
+import LoginButton from '../layout/header/LoginButton';
 
 const StyledImage = styled.img`
   max-height: 100%;
@@ -38,6 +40,7 @@ interface ContentPreviewProps {
 
 const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, mainFileBeingUploaded = false }) => {
   const { t } = useTranslation();
+  const user = useSelector((state: RootState) => state.user);
   const [defaultContent, setDefaultContent] = useState<Content | null>(null);
   const [presentationMode, setPresentationMode] = useState<string>(
     determinePresentationMode(resource.contents.masterContent)
@@ -155,7 +158,11 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
               )}
             </>
           ) : (
-            <Typography>{t('resource.preview.no_preview_authorization_reasons')}</Typography>
+            <>
+              <Typography>{t('resource.preview.no_preview_authorization_reasons')}</Typography>
+              {!user.id && <LoginButton variant="contained" />}
+              {user.id && <Typography>Brukeren din har ikke tilgang til denne ressursen</Typography>}
+            </>
           )}
         </>
       ) : (
