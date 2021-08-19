@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { RootState } from './state/rootReducer';
 import { LMSParametersName } from './types/LMSParameters';
-import { getPackedUrlForFeideLogin } from './utils/rewriteSearchParams';
+import { getPackedUrlCurrentPathForFeideLogin } from './utils/rewriteSearchParams';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -42,7 +42,7 @@ const AppContent: FC<LMSServiceProps> = ({ mainContentRef, userError }) => {
   const footer = searchParams.get(LMSParametersName.Footer) !== 'false';
 
   if (user.id.length === 0 && forceAuthentication) {
-    window.location.href = getPackedUrlForFeideLogin();
+    window.location.href = getPackedUrlCurrentPathForFeideLogin();
   }
 
   return (
