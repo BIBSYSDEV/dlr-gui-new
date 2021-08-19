@@ -167,9 +167,11 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
             <>
               <StyledLoginInformationWrapper>
                 {!user.id && (
-                  <Typography gutterBottom>{t('resource.preview.no_preview_authorization_reasons')}</Typography>
+                  <>
+                    <Typography gutterBottom>{t('resource.preview.no_preview_authorization_reasons')}</Typography>
+                    <LoginButton variant="contained" />
+                  </>
                 )}
-                {!user.id && <LoginButton variant="contained" />}
                 {user.id && <Typography>{t('resource.preview.your_user_does_not_have_access')}</Typography>}
               </StyledLoginInformationWrapper>
             </>
