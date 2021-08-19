@@ -34,6 +34,7 @@ import {
   getResourceLicenses,
   getResourceTags,
   postKalturaPresentationImport,
+  postPanoptoPresentationImport,
   postResourceCreator,
   postResourceFeature,
   postTag,
@@ -288,6 +289,9 @@ const EditResourcePage = () => {
 
       if (vmsResource && vms === VideoManagementSystems.Kaltura) {
         await postKalturaPresentationImport(resource, vmsResource);
+      }
+      if (vmsResource && vms === VideoManagementSystems.Panopto) {
+        await postPanoptoPresentationImport(resource, vmsResource);
       }
       setFormikInitResource(resource);
       setResourceInitError(undefined);

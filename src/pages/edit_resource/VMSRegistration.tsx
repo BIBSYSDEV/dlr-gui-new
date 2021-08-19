@@ -26,7 +26,7 @@ import { StyledFullWidthWrapper, StyledPaginationWrapper } from '../../component
 import StartRegistrationAccordionKaltura from './StartRegistrationAccordionKaltura';
 import StartRegistrationAccordionPanopto from './StartRegistrationAccordionPanopto';
 
-const FormDialogTitleId = 'kaltura-dialog-title';
+const FormDialogTitleId = 'vms-dialog-title';
 
 const StyledDialogContent = styled(DialogContent)`
   height: 70vh;
@@ -78,7 +78,7 @@ interface VMSRegistrationProps {
   expanded: boolean;
   vms: VideoManagementSystems;
   onChange: (event: React.ChangeEvent<any>, isExpanded: boolean) => void;
-  onSubmit: (kalturaPresentation: VMSResource, vms: VideoManagementSystems) => void;
+  onSubmit: (vmsResource: VMSResource, vms: VideoManagementSystems) => void;
 }
 
 const itemsPrPage = 10;

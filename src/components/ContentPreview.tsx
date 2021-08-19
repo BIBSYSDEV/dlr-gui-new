@@ -101,6 +101,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
   const previewIsRegularIframe = () => {
     return (
       presentationMode === SupportedFileTypes.Youtube ||
+      presentationMode === SupportedFileTypes.Panopto ||
       presentationMode === SupportedFileTypes.Kaltura ||
       presentationMode === SupportedFileTypes.Vimeo ||
       presentationMode === SupportedFileTypes.Link ||

@@ -468,12 +468,23 @@ export const getResourceOwners = (resourceIdentifier: string): Promise<AxiosResp
     method: 'GET',
   });
 };
-export const postKalturaPresentationImport = (resource: Resource, kalturaPresentation: VMSResource) => {
+export const postKalturaPresentationImport = (resource: Resource, kalturaResource: VMSResource) => {
   const data = encodeURI(
-    `identifier=${resource.identifier}&identifierContent=${resource.contents.masterContent.identifier}&kalturaPresentationId=${kalturaPresentation.id}&downloadUrl=${kalturaPresentation.downloadUrl}&title=${kalturaPresentation.title}`
+    `identifier=${resource.identifier}&identifierContent=${resource.contents.masterContent.identifier}&kalturaPresentationId=${kalturaResource.id}&downloadUrl=${kalturaResource.downloadUrl}&title=${kalturaResource.title}`
   );
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations/import`),
+    method: 'POST',
+    data: data,
+  });
+};
+
+export const postPanoptoPresentationImport = (resource: Resource, panoptoResource: VMSResource) => {
+  const data = encodeURI(
+    `identifier=${resource.identifier}&identifierContent=${resource.contents.masterContent.identifier}&panoptoPresentationId=${panoptoResource.id}&url=${panoptoResource.url}&title=${panoptoResource.title}`
+  );
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendPanoptoPath}/panopto/presentations/import`),
     method: 'POST',
     data: data,
   });

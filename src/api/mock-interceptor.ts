@@ -351,6 +351,7 @@ export const interceptRequestsOnMock = () => {
 
   //PANOPTO
   mock.onGet(new RegExp(`${API_PATHS.guiBackendPanoptoPath}/panopto/presentations`)).reply(200, mockPanoptoResources);
+  mock.onPost(new RegExp(`${API_PATHS.guiBackendPanoptoPath}/panopto/presentations/import`)).reply(202);
 
   //TOKEN
   mock.onGet(new RegExp(`${API_PATHS.guiBackendLoginPath}/anonymous.*`)).reply(200, mockToken);
