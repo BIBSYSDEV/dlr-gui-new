@@ -44,7 +44,7 @@ const VMSListItem: FC<VMSListItemProps> = ({ item, handleUseResource }) => {
       <Grid container spacing={1}>
         <Grid item xs={12} sm={4}>
           <StyledImageWrapper>
-            <StyledImage src={item.thumbnailUrl} /> {/*todo: legg på http ++ hvis det ikke finnes*/}
+            <StyledImage src={item.thumbnailUrl} />
           </StyledImageWrapper>
         </Grid>
         <Grid item xs={12} sm={6}>
