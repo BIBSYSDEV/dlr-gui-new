@@ -20,14 +20,18 @@ export const rewriteSearchParams = (
 const ParamsSplitter = 'ZZZZ';
 const ValuePairSplitter = 'WWWW';
 
+export const getPackedUrlCurrentPathForFeideLogin = (): string => {
+  return getPackedUrlForFeideLogin(window.location.pathname);
+};
+
 //Hacky workaround: this piece of code exists because feide-login deletes all but one search params in the redirect url.
 //In order to retain the search params the valuePairs are concatenated into one big search param.
-export const getPackedUrlForFeideLogin = (): string => {
+export const getPackedUrlForFeideLogin = (path: string): string => {
   const searchParams = new URLSearchParams(window.location.search);
   const newParamsArray: string[] = [];
   searchParams.forEach((value, key) => newParamsArray.push(`${key}${ValuePairSplitter}${value}`));
   const newParams = newParamsArray.length > 0 ? `?${newParamsArray.join(ParamsSplitter)}=t` : '';
-  const originHref = window.location.origin + '/loginRedirect' + window.location.pathname + newParams;
+  const originHref = window.location.origin + '/loginRedirect' + path + newParams;
   return `${API_URL}${API_PATHS.guiBackendLoginPath}/feideLogin?target=${originHref}`;
 };
 

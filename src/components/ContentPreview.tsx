@@ -8,11 +8,13 @@ import DownloadButton from './DownloadButton';
 import { getResourceDefaultContent, getTextFileContents } from '../api/resourceApi';
 import { Resource } from '../types/resource.types';
 import { getSourceFromIframeString } from '../utils/iframe_utils';
-
 import ContentIframe from './ContentIframe';
 import DocumentPreview from './DocumentPreview';
 import LinkPreviewNotPossible from './LinkPreviewNotPossible';
 import { getSoundCloudInformation, getTwentyThreeVideoInformation } from '../api/externalApi';
+import { useSelector } from 'react-redux';
+import { RootState } from '../state/rootReducer';
+import LoginButton from '../layout/header/LoginButton';
 
 const StyledImage = styled.img`
   max-height: 100%;
@@ -30,6 +32,12 @@ const StyledPaper = styled(Paper)`
   overflow: auto;
 `;
 
+const StyledLoginInformationWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 interface ContentPreviewProps {
   resource: Resource;
   isPreview?: boolean;
@@ -38,6 +46,7 @@ interface ContentPreviewProps {
 
 const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, mainFileBeingUploaded = false }) => {
   const { t } = useTranslation();
+  const user = useSelector((state: RootState) => state.user);
   const [defaultContent, setDefaultContent] = useState<Content | null>(null);
   const [presentationMode, setPresentationMode] = useState<string>(
     determinePresentationMode(resource.contents.masterContent)
@@ -155,7 +164,18 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
               )}
             </>
           ) : (
-            <Typography>{t('resource.preview.no_preview_authorization_reasons')}</Typography>
+            <>
+              <StyledLoginInformationWrapper>
+                {user.id ? (
+                  <Typography>{t('resource.preview.your_user_does_not_have_access')}</Typography>
+                ) : (
+                  <>
+                    <Typography gutterBottom>{t('resource.preview.no_preview_authorization_reasons')}</Typography>
+                    <LoginButton variant="contained" />
+                  </>
+                )}
+              </StyledLoginInformationWrapper>
+            </>
           )}
         </>
       ) : (
