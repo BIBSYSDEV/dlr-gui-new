@@ -82,7 +82,7 @@ context('LMS params', () => {
     cy.get(`[data-testid=navigation-back-button]`).should('exist');
   });
 
-  it('uses the back button correctly', () => {
+  it('the back button should take you to starting page unless your editing an existing resource', () => {
     cy.visit('/resources/1234?navbar=false');
     cy.get(`[data-testid=navigation-back-button]`).click();
     cy.location().should((loc) => {
