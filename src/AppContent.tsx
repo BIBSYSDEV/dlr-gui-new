@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from './state/rootReducer';
 import { LMSParametersName } from './types/LMSParameters';
 import { getPackedUrlCurrentPathForFeideLogin } from './utils/rewriteSearchParams';
+import BackButton from './components/BackButton';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -48,7 +49,7 @@ const AppContent: FC<LMSServiceProps> = ({ mainContentRef, userError }) => {
   return (
     <StyledApp>
       <ScrollToContentButton contentRef={mainContentRef} text={t('skip_to_main_content')} />
-      {navbar && <Header />}
+      {navbar ? <Header /> : <BackButton />}
       {userError && <ErrorBanner error={userError} />}
       <StyledContent tabIndex={-1} ref={mainContentRef} role="main" id="content">
         <AppRoutes />
