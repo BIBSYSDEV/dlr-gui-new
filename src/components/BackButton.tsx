@@ -20,7 +20,7 @@ const BackButton = () => {
       ) : (
         <>
           <StyledBackButtonWrapper>
-            <Button href={backHref} color="primary" variant="outlined">
+            <Button data-testid="navigation-back-button" href={backHref} color="primary" variant="outlined">
               {backHref.includes('/resources/user/current')
                 ? t('resource.my_resources')
                 : t('search_tricks.search_for_resource')}
