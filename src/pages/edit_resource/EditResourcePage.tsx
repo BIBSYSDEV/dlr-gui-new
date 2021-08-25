@@ -56,6 +56,7 @@ import institutions from '../../resources/assets/institutions.json';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
+  margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

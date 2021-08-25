@@ -482,7 +482,7 @@ context('Registration', () => {
 
   it('starts a registration with a Panopto video', () => {
     cy.visit('/registration/?usePanoptoFeature=true'); //TODO: remove once ready for prod
-    cy.get('[data-testid=new-registration-link]').click();
+    //cy.get('[data-testid=new-registration-link]').click();
     cy.get('[data-testid=new-resource-panopto]').click();
     cy.get('[data-testid=open-panopto-dialog-button]').click();
     cy.get(`[data-testid=use-vms-link-button-${mockPanoptoResources[0].id}]`).click();
