@@ -487,7 +487,8 @@
       "preview_of_master_content": "Forhåndsvisning av hovedinnhold",
       "preview_is_not_supported_for_file_format": "Forhåndsvisning støttes ikke for dette filformatet",
       "preview_not_implemented": "Forhåndsvisning vil bli implementert senere",
-      "resource_is_text_file": "Denne ressursen er en tekstfil"
+      "resource_is_text_file": "Denne ressursen er en tekstfil",
+      "your_user_does_not_have_access": "Du er ikke autorisert for dette innholdet"
     },
     "published_resources": "Publisert",
     "reporting": {

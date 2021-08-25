@@ -4,6 +4,7 @@ export enum LMSParametersName {
   Sidebar = ' sidebar', // can be ignored
   Carousel = 'carousel', //can be ignored
   Footer = 'footer', //does not exist in old DLR
+  PollForLogin = 'pollForLogin', //used for allowing user to login once for multiple iframes
 
   BBIframeResize = 'bbIframeResize',
   BBShowEmbedButton = 'bbShowEmbedButton',
