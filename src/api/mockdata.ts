@@ -2,7 +2,7 @@ import {
   Contributor,
   Creator,
   emptyResource,
-  KalturaPresentation,
+  VMSResource,
   Resource,
   ResourceOwner,
   ResourceStatistic,
@@ -735,6 +735,12 @@ export const mockAppFeatureResponse = [
     user: mockUser.id,
   },
   {
+    object: AppfeatureEnum.DLR_APP_FEATURE_NEW_LEARNING_RESOURCE_FROM_PANOPTO,
+    profile: [{ name: 'dlr_app_feature_user' }],
+    time: '2021-06-29T07:57:37.108Z',
+    user: mockUser.id,
+  },
+  {
     object: AppfeatureEnum.DLR_APP_FEATURE_SHARE_LEARNING_RESOURCE_WITH_COURSE_STUDENTS,
     profile: [{ name: 'dlr_app_feature_user' }],
     time: '2021-06-29T07:57:36.108Z',
@@ -811,7 +817,32 @@ export const mockResourceOwners: ResourceOwner[] = [
   },
 ];
 
-export const mockKalturaPresentations: KalturaPresentation[] = [
+export const mockPanoptoResources: VMSResource[] = [
+  {
+    id: '54353453453',
+    title: 'Sample Panopto Title 1',
+    timeRecorded: '6420',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/534534545/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/534534545/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/534534545/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '',
+  },
+  {
+    id: '4236546541',
+    title: 'Sample Panopto Title 2',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'unit',
+    dlrContentIdentifier: '54689068054',
+  },
+];
+
+export const mockKalturaResources: VMSResource[] = [
   {
     id: '54353453453',
     title: 'Sample Kaltura Title 1',

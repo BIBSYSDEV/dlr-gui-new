@@ -119,6 +119,9 @@ export const getUserAppFeaturesApplication = async () => {
       case AppfeatureEnum.DLR_APP_FEATURE_NEW_LEARNING_RESOURCE_FROM_KALTURA:
         appFeature.hasFeatureNewResourceFromKaltura = true;
         break;
+      case AppfeatureEnum.DLR_APP_FEATURE_NEW_LEARNING_RESOURCE_FROM_PANOPTO:
+        appFeature.hasFeatureNewResourceFromPanopto = true;
+        break;
       case AppfeatureEnum.DLR_APP_FEATURE_NEW_LEARNING_RESOURCE_FROM_MEDIASITE:
         appFeature.hasFeatureNewResourceFromMediaSite = true;
         break;

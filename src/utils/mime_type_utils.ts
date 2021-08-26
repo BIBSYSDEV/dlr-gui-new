@@ -24,6 +24,8 @@ const documentTypeFromMime = (content: Content): string => {
       return SupportedFileTypes.MediaSite;
     case 'video-service/x-kaltura':
       return SupportedFileTypes.Kaltura;
+    case 'video-service/x-panopto':
+      return SupportedFileTypes.Panopto;
     case 'video-service/x-vimeo':
       return SupportedFileTypes.Vimeo;
     case 'text/html':

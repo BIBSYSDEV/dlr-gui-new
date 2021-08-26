@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
 import ResourceForm from './ResourceForm';
@@ -15,12 +15,13 @@ import {
   CreatorFeatureAttributes,
   DefaultResourceTypes,
   emptyResource,
-  KalturaPresentation,
   Resource,
   ResourceCreationType,
   ResourceFeatureNames,
   ResourceFeatureTypes,
   TAGS_MAX_LENGTH,
+  VideoManagementSystems,
+  VMSResource,
 } from '../../types/resource.types';
 import {
   createContributor,
@@ -33,6 +34,7 @@ import {
   getResourceLicenses,
   getResourceTags,
   postKalturaPresentationImport,
+  postPanoptoPresentationImport,
   postResourceCreator,
   postResourceFeature,
   postTag,
@@ -49,11 +51,12 @@ import { createUppy } from '../../utils/uppy-config';
 import { useUppy } from '@uppy/react';
 import { StyledContentWrapperLarge, StyledFullPageProgressWrapper } from '../../components/styled/Wrappers';
 import { getAuthoritiesForResourceCreatorOrContributor } from '../../api/authoritiesApi';
-import KalturaRegistration from './KalturaRegistration';
+import VMSRegistration from './VMSRegistration';
 import institutions from '../../resources/assets/institutions.json';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
+  margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -84,6 +87,8 @@ const EditResourcePage = () => {
   const [resourceInitError, setResourceInitError] = useState<Error>();
   const [fileUploadError, setFileUploadError] = useState<Error>();
   const [mainFileBeingUploaded, setMainFileBeingUploaded] = useState(false);
+  const location = useLocation();
+  const usePanoptoFlag = new URLSearchParams(location.search).get('usePanoptoFeature') === 'true'; //TODO: remove once ready for prod
 
   const user = useSelector((state: RootState) => state.user);
   const [userInstitutionCorrectCapitalization] = useState(
@@ -109,12 +114,12 @@ const EditResourcePage = () => {
     }
   };
 
-  const onSubmitKalturaResource = async (kalturaResource: KalturaPresentation) => {
+  const onSubmitVMSResource = async (vmsResource: VMSResource, vms: VideoManagementSystems) => {
     setShowForm(true);
     try {
       setIsLoadingResource(true);
-      const createResourceResponse = await createResource(ResourceCreationType.LINK, kalturaResource.url);
-      await getResourceInit(createResourceResponse, ResourceCreationType.LINK, kalturaResource);
+      const createResourceResponse = await createResource(ResourceCreationType.LINK, vmsResource.url);
+      await getResourceInit(createResourceResponse, ResourceCreationType.LINK, vmsResource, vms);
     } catch (error) {
       setResourceInitError(error);
       setIsLoadingResource(false);
@@ -211,7 +216,8 @@ const EditResourcePage = () => {
   const getResourceInit = async (
     startingResource: Resource,
     resourceCreationType: ResourceCreationType,
-    kalturaResource?: KalturaPresentation
+    vmsResource?: VMSResource,
+    vms?: VideoManagementSystems
   ) => {
     try {
       setShowForm(true);
@@ -231,9 +237,9 @@ const EditResourcePage = () => {
       );
 
       const responseWithCalculatedDefaults = (await getResourceDefaults(startingResource.identifier)).data;
-      if (kalturaResource) {
-        responseWithCalculatedDefaults.features.dlr_title = kalturaResource.title;
-        responseWithCalculatedDefaults.features.dlr_description = kalturaResource.description;
+      if (vmsResource) {
+        responseWithCalculatedDefaults.features.dlr_title = vmsResource.title;
+        responseWithCalculatedDefaults.features.dlr_description = vmsResource.description;
       }
       await saveCalculatedFields(responseWithCalculatedDefaults);
 
@@ -255,7 +261,7 @@ const EditResourcePage = () => {
         contents: tempContents,
       };
       resource.isFresh = true;
-      if (kalturaResource) {
+      if (vmsResource) {
         await saveResourceDLRType(resource, startingResource.identifier, ResourceFeatureTypes.video);
       } else {
         await setDLRType(resourceCreationType, responseWithCalculatedDefaults, resource, startingResource);
@@ -282,10 +288,12 @@ const EditResourcePage = () => {
           resource.contents.masterContent.features.dlr_content;
       }
 
-      if (kalturaResource) {
-        await postKalturaPresentationImport(resource, kalturaResource);
+      if (vmsResource && vms === VideoManagementSystems.Kaltura) {
+        await postKalturaPresentationImport(resource, vmsResource);
       }
-
+      if (vmsResource && vms === VideoManagementSystems.Panopto) {
+        await postPanoptoPresentationImport(resource, vmsResource);
+      }
       setFormikInitResource(resource);
       setResourceInitError(undefined);
     } catch (error) {
@@ -419,10 +427,23 @@ const EditResourcePage = () => {
         {user.appFeature?.hasFeatureNewResourceFromKaltura && (
           <>
             <StyledTypography>{t('common.or')}</StyledTypography>
-            <KalturaRegistration
+            <VMSRegistration
               expanded={expanded === 'kaltura-panel'}
+              vms={VideoManagementSystems.Kaltura}
               onChange={handleChange('kaltura-panel')}
-              onSubmit={onSubmitKalturaResource}
+              onSubmit={onSubmitVMSResource}
+            />
+          </>
+        )}
+        {/*{user.appFeature?.hasFeatureNewResourceFromPanopto && ( //TODO: replace once ready for prod */}
+        {usePanoptoFlag && (
+          <>
+            <StyledTypography>{t('common.or')}</StyledTypography>
+            <VMSRegistration
+              expanded={expanded === 'panopto-panel'}
+              vms={VideoManagementSystems.Panopto}
+              onChange={handleChange('panopto-panel')}
+              onSubmit={onSubmitVMSResource}
             />
           </>
         )}

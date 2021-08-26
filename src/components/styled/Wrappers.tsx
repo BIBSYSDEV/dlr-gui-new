@@ -24,6 +24,10 @@ export const StyledNormalTextPreWrapped = styled(NormalText)`
   white-space: pre-wrap;
 `;
 
+export const StyledFullWidthWrapper = styled.div`
+  width: 100%;
+`;
+
 export const StyledSchemaPart = styled.div`
   padding: 2rem 1rem;
   display: flex;
