@@ -41,4 +41,59 @@ context('LMS params', () => {
       );
     });
   });
+
+  it('renders a back button instead of a navigation bar for certain pages', () => {
+    cy.visit('/?navbar=false');
+    cy.get(`[data-testid=navigation-back-button]`).should('not.exist');
+    cy.get(`[data-testid=navigation-bar]`).should('not.exist');
+    cy.visit('/resource/1234?navbar=false');
+    cy.get(`[data-testid=navigation-back-button]`).should('exist');
+    cy.visit('/admin?navbar=true');
+    cy.get(`[data-testid=navigation-back-button]`).should('not.exist');
+    cy.visit('/resource/12344/content/main?navbar=false');
+    cy.get(`[data-testid=navigation-back-button]`).should('not.exist');
+    cy.visit('/resources/12344/content/main?navbar=false');
+    cy.get(`[data-testid=navigation-back-button]`).should('not.exist');
+    cy.visit('/resources/1234?navbar=false');
+    cy.get(`[data-testid=navigation-back-button]`).should('exist');
+    cy.visit('/handlenotfound?navbar=false');
+    cy.get(`[data-testid=navigation-back-button]`).should('exist');
+    cy.visit('/resources/user/current?navbar=false');
+    cy.get(`[data-testid=navigation-back-button]`).should('exist');
+    cy.visit('/resources/user/current?navbar=false');
+    cy.get(`[data-testid=navigation-back-button]`).should('exist');
+    cy.visit('/admin?navbar=false');
+    cy.get(`[data-testid=navigation-back-button]`).should('exist');
+    cy.visit('/profile?navbar=false');
+    cy.get(`[data-testid=navigation-back-button]`).should('exist');
+    cy.visit('/privacy-policy?navbar=false');
+    cy.get(`[data-testid=navigation-back-button]`).should('exist');
+    cy.visit('/registration?navbar=false');
+    cy.get(`[data-testid=navigation-back-button]`).should('exist');
+    cy.visit('/editresource/1234?navbar=false');
+    cy.get(`[data-testid=navigation-back-button]`).should('exist');
+    cy.visit('/worklist?navbar=false');
+    cy.get(`[data-testid=navigation-back-button]`).should('exist');
+    cy.visit('/forbidden?navbar=false');
+    cy.get(`[data-testid=navigation-back-button]`).should('exist');
+    cy.visit('/search-helper?navbar=false');
+    cy.get(`[data-testid=navigation-back-button]`).should('exist');
+    cy.visit('/sitemap?navbar=false');
+    cy.get(`[data-testid=navigation-back-button]`).should('exist');
+  });
+
+  it('the back button should take you to starting page unless your editing an existing resource', () => {
+    cy.visit('/resources/1234?navbar=false');
+    cy.get(`[data-testid=navigation-back-button]`).click();
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq('/');
+      expect(loc.search).to.eq('?navbar=false');
+    });
+    cy.visit('/editresource/1234?navbar=false');
+    cy.get(`[data-testid=navigation-back-button]`).click();
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq('/resources/user/current');
+      expect(loc.search).to.eq('?navbar=false');
+    });
+  });
 });
