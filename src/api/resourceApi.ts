@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import {
   Contributor,
   Creator,
-  KalturaPresentation,
+  VMSResource,
   Resource,
   ResourceContents,
   ResourceCreationType,
@@ -449,9 +449,15 @@ export const getMyUserAuthorizationProfileForResource = async (
   };
 };
 
-export const getMyKalturaPresentations = (): Promise<AxiosResponse<KalturaPresentation[]>> => {
+export const getMyKalturaResources = (): Promise<AxiosResponse<VMSResource[]>> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations`),
+    method: 'GET',
+  });
+};
+export const getMyPanoptoResources = (): Promise<AxiosResponse<VMSResource[]>> => {
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendPanoptoPath}/panopto/presentations`),
     method: 'GET',
   });
 };
@@ -462,12 +468,23 @@ export const getResourceOwners = (resourceIdentifier: string): Promise<AxiosResp
     method: 'GET',
   });
 };
-export const postKalturaPresentationImport = (resource: Resource, kalturaPresentation: KalturaPresentation) => {
+export const postKalturaPresentationImport = (resource: Resource, kalturaResource: VMSResource) => {
   const data = encodeURI(
-    `identifier=${resource.identifier}&identifierContent=${resource.contents.masterContent.identifier}&kalturaPresentationId=${kalturaPresentation.id}&downloadUrl=${kalturaPresentation.downloadUrl}&title=${kalturaPresentation.title}`
+    `identifier=${resource.identifier}&identifierContent=${resource.contents.masterContent.identifier}&kalturaPresentationId=${kalturaResource.id}&downloadUrl=${kalturaResource.downloadUrl}&title=${kalturaResource.title}`
   );
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations/import`),
+    method: 'POST',
+    data: data,
+  });
+};
+
+export const postPanoptoPresentationImport = (resource: Resource, panoptoResource: VMSResource) => {
+  const data = encodeURI(
+    `identifier=${resource.identifier}&identifierContent=${resource.contents.masterContent.identifier}&panoptoPresentationId=${panoptoResource.id}&url=${panoptoResource.url}&title=${panoptoResource.title}`
+  );
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendPanoptoPath}/panopto/presentations/import`),
     method: 'POST',
     data: data,
   });

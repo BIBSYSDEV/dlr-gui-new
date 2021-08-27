@@ -42,5 +42,6 @@ export const API_PATHS = {
   guiBackendDefaultsPath: '/dlr-gui-backend-resources-defaults/v1',
   guiBackendMediasitePath: '/dlr-gui-backend-mediasite/v1',
   guiBackendKalturaPath: '/dlr-gui-backend-kaltura/v1',
+  guiBackendPanoptoPath: '/dlr-gui-backend-panopto/v1',
   depotApiPath: '/dlr-depot-api/v1',
 };

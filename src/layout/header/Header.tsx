@@ -74,7 +74,7 @@ const Header = () => {
   };
 
   return (
-    <StyledPageHeader role="navigation">
+    <StyledPageHeader data-testid="navigation-bar" role="navigation">
       <StyledBurgerMenu>
         <IconButton onClick={handleBurgerMenuClick}>
           <MenuIcon />

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { Button, Grid, Link, Typography } from '@material-ui/core';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
-import { KalturaPresentation } from '../../types/resource.types';
+import { VMSResource } from '../../types/resource.types';
 
 const StyledImageWrapper: any = styled.div`
   min-height: 5rem;
@@ -31,16 +31,16 @@ const StyledImage: any = styled.img`
   max-width: 7.85rem;
 `;
 
-interface KalturaListItemProps {
-  item: KalturaPresentation;
-  handleUseResource: (kalturaPresentation: KalturaPresentation) => void;
+interface VMSListItemProps {
+  item: VMSResource;
+  handleUseResource: (vmsPresentation: VMSResource) => void;
 }
 
-const KalturaListItem: FC<KalturaListItemProps> = ({ item, handleUseResource }) => {
+const VMSListItem: FC<VMSListItemProps> = ({ item, handleUseResource }) => {
   const { t } = useTranslation();
 
   return (
-    <StyledResultItem key={item.id} data-testid={`kaltura-item-${item.id}`}>
+    <StyledResultItem key={item.id} data-testid={`vms-item-${item.id}`}>
       <Grid container spacing={1}>
         <Grid item xs={12} sm={4}>
           <StyledImageWrapper>
@@ -54,11 +54,11 @@ const KalturaListItem: FC<KalturaListItemProps> = ({ item, handleUseResource }) 
         </Grid>
         <Grid item xs={12} sm={2}>
           {item.dlrContentIdentifier ? (
-            <Typography variant="caption">{t('kaltura.already_imported')}</Typography>
+            <Typography variant="caption">{t('vms.already_imported')}</Typography>
           ) : (
             <Button
               variant="outlined"
-              data-testid={`use-kaltura-link-button-${item.id}`}
+              data-testid={`use-vms-link-button-${item.id}`}
               onClick={() => handleUseResource(item)}>
               {t('common.use')}
             </Button>
@@ -69,4 +69,4 @@ const KalturaListItem: FC<KalturaListItemProps> = ({ item, handleUseResource }) 
   );
 };
 
-export default KalturaListItem;
+export default VMSListItem;

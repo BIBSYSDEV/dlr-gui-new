@@ -201,6 +201,11 @@ export enum LegacyResourceFeatureTypes {
   Workflow = 'workflow',
 }
 
+export enum VideoManagementSystems {
+  Kaltura = 'kaltura',
+  Panopto = 'panopto',
+}
+
 //Note! This is also the presentation order for the type-filter
 export const DefaultResourceTypes: ResourceFeatureTypes[] = [
   ResourceFeatureTypes.video,
@@ -322,7 +327,7 @@ export interface ResourceOwnerFeatures {
   dlr_owner_subject: string; //feide-id of the owner
   dlr_owner_timer_created: string; //time the subject got ownership of this resource
 }
-export interface KalturaPresentation {
+export interface VMSResource {
   id: string;
   title: string;
   timeRecorded: string;

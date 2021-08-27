@@ -61,6 +61,7 @@ export enum SupportedFileTypes {
   Soundcloud = 'soundcloud',
   TwentyThreeVideo = '23video',
   Kaltura = 'kaltura',
+  Panopto = 'panopto',
   Text = 'text',
   Audio = 'audio',
   LinkSchemeHttp = 'linkSchemeHttp',

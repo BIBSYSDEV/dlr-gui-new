@@ -97,6 +97,7 @@ export enum AppValue {
 export interface AppFeature {
   hasFeatureShareResourceWithCourseStudents: boolean;
   hasFeatureNewResourceFromKaltura: boolean;
+  hasFeatureNewResourceFromPanopto: boolean;
   hasFeatureNewResourceFromMediaSite: boolean;
 }
 
@@ -110,6 +111,7 @@ export interface AppFeatureResponse {
 export enum AppfeatureEnum {
   DLR_APP_FEATURE_SHARE_LEARNING_RESOURCE_WITH_COURSE_STUDENTS = 'dlr_app_feature_share_learning_resource_with_course_students',
   DLR_APP_FEATURE_NEW_LEARNING_RESOURCE_FROM_KALTURA = 'dlr_app_feature_new_learning_resource_from_kaltura',
+  DLR_APP_FEATURE_NEW_LEARNING_RESOURCE_FROM_PANOPTO = 'dlr_app_feature_new_learning_resource_from_panopto',
   DLR_APP_FEATURE_NEW_LEARNING_RESOURCE_FROM_MEDIASITE = 'dlr_app_feature_new_learning_resource_from_mediasite',
 }
 
@@ -120,6 +122,7 @@ interface AppProfileName {
 export const emptyAppFeature: AppFeature = {
   hasFeatureShareResourceWithCourseStudents: false,
   hasFeatureNewResourceFromKaltura: false,
+  hasFeatureNewResourceFromPanopto: false,
   hasFeatureNewResourceFromMediaSite: false,
 };
 
