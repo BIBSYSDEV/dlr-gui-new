@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect, useLocation } from 'react-router-dom';
-import { getTokenExpiry, getUserAuthorizationsInstitution, getUserData } from '../api/userApi';
+import {
+  getTokenExpiry,
+  getUserAppFeaturesApplication,
+  getUserAuthorizationsInstitution,
+  getUserData,
+} from '../api/userApi';
 import { setUser } from '../state/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import ErrorBanner from '../components/ErrorBanner';
@@ -26,11 +31,19 @@ const LoginRedirectPage = () => {
           const tokenExpiryResponsePromise = getTokenExpiry(token);
           const institutionAuthoritiesPromise = getUserAuthorizationsInstitution();
           const userDataPromise = getUserData();
+          const appFeaturePromise = getUserAppFeaturesApplication();
           const userDataResponse = await userDataPromise;
           const institutionAuthorities = await institutionAuthoritiesPromise;
           const tokenExpiryResponse = await tokenExpiryResponsePromise;
+          const appFeature = await appFeaturePromise;
           localStorage.setItem('tokenExpiry', tokenExpiryResponse.data.exp);
-          dispatch(setUser({ ...userDataResponse.data, institutionAuthorities: institutionAuthorities }));
+          dispatch(
+            setUser({
+              ...userDataResponse.data,
+              institutionAuthorities: institutionAuthorities,
+              appFeature: appFeature,
+            })
+          );
         }
       } catch (error) {
         setError(error);
