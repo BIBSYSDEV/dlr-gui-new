@@ -14,6 +14,8 @@ import ErrorBanner from '../../components/ErrorBanner';
 import { useHistory, useLocation } from 'react-router-dom';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 import { StyleWidths } from '../../themes/mainTheme';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import { AxiosError } from 'axios';
 
 const minimumTagLength = 1;
 
@@ -55,7 +57,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
   const [options, setOptions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [cancelSearch, setCancelSearch] = useState(false);
-  const [tagSearchError, setTagSearchError] = useState<Error>();
+  const [tagSearchError, setTagSearchError] = useState<Error | AxiosError>();
   const location = useLocation();
   const history = useHistory();
 
@@ -68,7 +70,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           const optionsResult = response.data.facet_counts.map((facetCount) => facetCount.value);
           setOptions(optionsResult);
         } catch (error) {
-          setTagSearchError(error);
+          setTagSearchError(handlePotentialAxiosError(error));
         } finally {
           setLoading(false);
           setCancelSearch(false);

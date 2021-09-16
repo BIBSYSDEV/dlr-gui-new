@@ -19,6 +19,8 @@ import {
   getWorkListWithResourceAttached,
   sortWorkListByDate,
 } from '../../utils/workList';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 const StyledWrapper = styled(Grid)`
   padding: 1rem 1rem 2rem 1rem;
@@ -43,7 +45,7 @@ const WorkListPage = () => {
   const [loadingErrorDOI, setLoadingErrorDOI] = useState<Error>();
   const [workListDOIs, setWorkListDOIs] = useState<WorklistRequest[]>([]);
   const [isLoadingReports, setIsLoadingReports] = useState(false);
-  const [loadingErrorReports, setLoadingErrorReports] = useState<Error>();
+  const [loadingErrorReports, setLoadingErrorReports] = useState<Error | AxiosError>();
   const [workListReports, setWorkListReports] = useState<WorklistRequest[]>([]);
   const [isLoadingOwnership, setIsLoadingOwnership] = useState(false);
   const [loadingOwnershipError, setLoadingOwnershipError] = useState<Error>();
@@ -72,7 +74,7 @@ const WorkListPage = () => {
         setWorkListDOIs(sortWorkListByDate(filterWorkListWithoutResources(workListTotal)));
       } catch (error) {
         if (!mountedRef.current) return null;
-        setLoadingErrorReports(error);
+        setLoadingErrorReports(handlePotentialAxiosError(error));
       } finally {
         if (mountedRef.current) {
           setIsLoadingDOI(false);
@@ -91,7 +93,7 @@ const WorkListPage = () => {
         setWorkListReports(sortWorkListByDate(workListTotal));
       } catch (error) {
         if (!mountedRef.current) return null;
-        setLoadingErrorReports(error);
+        setLoadingErrorReports(handlePotentialAxiosError(error));
       } finally {
         if (mountedRef.current) {
           setIsLoadingReports(false);
@@ -109,7 +111,7 @@ const WorkListPage = () => {
         setWorkListOwnership(sortWorkListByDate(filterWorkListWithoutResources(workListTotal)));
       } catch (error) {
         if (!mountedRef.current) return null;
-        setLoadingOwnershipError(error);
+        setLoadingOwnershipError(handlePotentialAxiosError(error));
       } finally {
         if (mountedRef.current) {
           setIsLoadingOwnership(false);

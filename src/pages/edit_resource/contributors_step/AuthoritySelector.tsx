@@ -24,6 +24,8 @@ import Typography from '@material-ui/core/Typography';
 import { DeviceWidths } from '../../../themes/mainTheme';
 import useDebounce from '../../../utils/useDebounce';
 import { useMediaQuery } from '@material-ui/core';
+import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
+import { AxiosError } from 'axios';
 
 const StyledDialog = styled(Dialog)`
   min-width: 80vw;
@@ -86,7 +88,7 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   const [open, setOpen] = useState(false);
   const [authoritySearchResponse, setAuthoritySearchResponse] = useState<AuthoritySearchResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<Error | AxiosError>();
   const [page, setPage] = useState(1);
   const { t } = useTranslation();
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
@@ -114,17 +116,15 @@ const AuthoritySelector: FC<AuthoritySelectorProps> = ({
   const searchForAuthorities = useCallback((offset: number, searchTerm) => {
     const search = async (offset: number, searchTerm: string) => {
       try {
-        setError(null);
+        setError(undefined);
         setIsLoading(true);
-        setError(null);
         setAuthoritySearchResponse(null);
         const response = await searchAuthorities(searchTerm, offset);
         if (!mountedRef.current) return null;
         setAuthoritySearchResponse(response.data);
       } catch (error) {
         if (!mountedRef.current) return null;
-        setError(error);
-        setIsLoading(false);
+        setError(handlePotentialAxiosError(error));
       } finally {
         if (mountedRef.current) {
           setIsLoading(false);

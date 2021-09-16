@@ -10,6 +10,8 @@ import ErrorBanner from '../../components/ErrorBanner';
 import institutions from '../../resources/assets/institutions.json';
 import { useHistory, useLocation } from 'react-router-dom';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import { AxiosError } from 'axios';
 
 const StyledFormControl: any = styled(FormControl)`
   margin-top: 2rem;
@@ -40,7 +42,7 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
   const [institutionCheckedList, setInstitutionCheckedList] = useState(
     initialInstitutionCheckedList(AllDLRInstitutionNames)
   );
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<Error | AxiosError>();
   const mountedRef = useRef(true);
   const location = useLocation();
   const history = useHistory();
@@ -68,7 +70,7 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
     const generateInstitutionListFromFacets = async () => {
       try {
         if (!mountedRef.current) return null;
-        setError(null);
+        setError(undefined);
         setIsLoading(true);
         const facetsResponse = await getAllFacets();
         if (!mountedRef.current) return null;
@@ -80,7 +82,7 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
         updateInstitutionCheckedList(list);
       } catch (error) {
         if (!mountedRef.current) return null;
-        setError(error);
+        setError(handlePotentialAxiosError(error));
       } finally {
         if (mountedRef.current) setIsLoading(false);
       }

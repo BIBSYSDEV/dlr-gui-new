@@ -11,6 +11,8 @@ import { useFormikContext } from 'formik';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { resourcePath } from '../../utils/constants';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 const PageWidthThresholdForButtons = '45rem';
 
@@ -73,7 +75,7 @@ interface ResourceFormActionProps {
 const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActiveStep, scrollToTop }) => {
   const { t } = useTranslation();
   const history = useHistory();
-  const [publishResourceError, setPublishResourceError] = useState<Error>();
+  const [publishResourceError, setPublishResourceError] = useState<Error | AxiosError>();
   const { values, isValid } = useFormikContext<Resource>();
 
   const handleNext = () => {
@@ -92,7 +94,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
       await publishResource(values.identifier);
       history.push(`${resourcePath}/${values.identifier}`);
     } catch (error) {
-      setPublishResourceError(error);
+      setPublishResourceError(handlePotentialAxiosError(error));
     }
   };
 

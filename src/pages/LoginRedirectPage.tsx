@@ -11,18 +11,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import ErrorBanner from '../components/ErrorBanner';
 import { RootState } from '../state/rootReducer';
 import { unpackFeideLogin } from '../utils/rewriteSearchParams';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../utils/AxiosErrorHandling';
 
 const LoginRedirectPage = () => {
   const user = useSelector((state: RootState) => state.user);
   const location = useLocation();
   const dispatch = useDispatch();
-  const [error, setError] = useState<Error | null>();
+  const [error, setError] = useState<Error | AxiosError>();
   const [doneLoading, setDoneLoading] = useState(false);
 
   useEffect(() => {
     const login = async () => {
       try {
-        setError(null);
+        setError(undefined);
         const query = new URLSearchParams(location.search);
         const token: string = query.get('token') + '';
         if (token) {
@@ -46,7 +48,7 @@ const LoginRedirectPage = () => {
           );
         }
       } catch (error) {
-        setError(error);
+        setError(handlePotentialAxiosError(error));
       } finally {
         setDoneLoading(true);
       }

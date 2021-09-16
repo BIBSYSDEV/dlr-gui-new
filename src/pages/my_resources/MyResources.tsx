@@ -13,6 +13,8 @@ import { PageHeader } from '../../components/PageHeader';
 import ResourceListItem from '../../components/ResourceListItem';
 import { Colors } from '../../themes/mainTheme';
 import PrivateRoute from '../../utils/routes/PrivateRoute';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 const StyledTabPanel = styled(TabPanel)`
   &.MuiTabPanel-root {
@@ -30,7 +32,7 @@ const MyResources = () => {
   const [isLoadingMyResources, setIsLoadingMyResources] = useState(false);
   const [resourcesUnpublished, setMyUnpublishedResources] = useState<Resource[]>([]);
   const [resourcesPublished, setMyPublishedResources] = useState<Resource[]>([]);
-  const [loadingError, setLoadingError] = useState<Error>();
+  const [loadingError, setLoadingError] = useState<Error | AxiosError>();
   const { institution } = useSelector((state: RootState) => state.user);
   const [tabValue, setTabValue] = React.useState(Tabs.Published);
 
@@ -43,7 +45,7 @@ const MyResources = () => {
         setMyUnpublishedResources(response.data.filter((resource) => !resource.features.dlr_status_published));
         setMyPublishedResources(response.data.filter((resource) => resource.features.dlr_status_published));
       } catch (error) {
-        setLoadingError(error);
+        setLoadingError(handlePotentialAxiosError(error));
       } finally {
         setIsLoadingMyResources(false);
       }

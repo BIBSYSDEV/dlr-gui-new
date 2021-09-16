@@ -19,6 +19,8 @@ import { RootState } from '../../state/rootReducer';
 import { StyledContentWrapperLarge, StyledProgressWrapper } from '../../components/styled/Wrappers';
 import { PageHeader } from '../../components/PageHeader';
 import CreatorSearch from './CreatorSearch';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 const StyledResourceActionBar = styled.div`
   display: flex;
@@ -40,7 +42,7 @@ const ResourcePage = () => {
   const { identifier } = useParams<resourcePageParamTypes>();
   const [resource, setResource] = useState(emptyResource);
   const [isLoadingResource, setIsLoadingResource] = useState(true);
-  const [resourceLoadingError, setResourceLoadingError] = useState<Error>();
+  const [resourceLoadingError, setResourceLoadingError] = useState<Error | AxiosError>();
   const { t } = useTranslation();
   const history = useHistory();
   const user = useSelector((state: RootState) => state.user);
@@ -62,7 +64,7 @@ const ResourcePage = () => {
         setResource(tempResource);
         tempResource.contents = await getResourceContents(identifier);
       } catch (error) {
-        setResourceLoadingError(error);
+        setResourceLoadingError(handlePotentialAxiosError(error));
       } finally {
         setIsLoadingResource(false);
       }

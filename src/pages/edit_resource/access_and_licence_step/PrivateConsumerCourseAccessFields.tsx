@@ -13,6 +13,8 @@ import { Resource } from '../../../types/resource.types';
 import { StyledCancelButton, StyledConfirmButton } from '../../../components/styled/StyledButtons';
 import { StyledFieldsWrapper } from '../../../components/styled/Wrappers';
 import { generateCourseSubjectTag, isDevelopInstance } from '../../../utils/course.utils';
+import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
+import { AxiosError } from 'axios';
 
 const StyledCourseAutocomplete: any = styled(Autocomplete)`
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
@@ -29,7 +31,7 @@ const StyledTypography = styled(Typography)`
 
 interface PrivateConsumerCourseAccessFieldsProps {
   setShowCourseAutocomplete: (showCourseAutocomplete: boolean) => void;
-  setSavePrivateAccessNetworkError: (savePrivateAccessNetworkError: Error | undefined) => void;
+  setSavePrivateAccessNetworkError: (savePrivateAccessNetworkError: Error | AxiosError | undefined) => void;
   setUpdatingPrivateAccessList: (updatingPrivateAccessList: boolean) => void;
   privateAccessList: ResourceReadAccess[];
   addPrivateAccess: (newPrivateAccess: ResourceReadAccess) => void;
@@ -63,7 +65,7 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
         setCourseAutocompleteValue(null);
         setCourseAutocompleteTypedValue('');
       } catch (error) {
-        setSavePrivateAccessNetworkError(error);
+        setSavePrivateAccessNetworkError(handlePotentialAxiosError(error));
       } finally {
         setUpdatingPrivateAccessList(false);
       }

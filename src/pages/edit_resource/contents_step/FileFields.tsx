@@ -21,6 +21,8 @@ import HelperTextPopover from '../../../components/HelperTextPopover';
 import { StylePopoverTypography } from '../../../components/styled/StyledTypographies';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/rootReducer';
+import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
+import { AxiosError } from 'axios';
 
 const StatusBarWrapper = styled.div`
   width: 100%;
@@ -73,7 +75,7 @@ const FileFields: FC<FileFieldsProps> = ({
 }) => {
   const { t } = useTranslation();
   const { values, handleBlur, resetForm, setTouched, touched } = useFormikContext<Resource>();
-  const [saveTitleError, setSaveTitleError] = useState<Error>();
+  const [saveTitleError, setSaveTitleError] = useState<Error | AxiosError>();
   const [shouldPollNewThumbnail, setShouldPollNewThumbnail] = useState(false);
   const { institution } = useSelector((state: RootState) => state.user);
   const mediumOrLargerScreen = useMediaQuery(`(min-width:${DeviceWidths.md}px)`);
@@ -90,7 +92,7 @@ const FileFields: FC<FileFieldsProps> = ({
         resetFormButKeepTouched(touched, resetForm, values, setTouched);
         values.features.dlr_status_published && updateSearchIndex(values.identifier);
       } catch (error) {
-        setSaveTitleError(error);
+        setSaveTitleError(handlePotentialAxiosError(error));
       }
     }
   };

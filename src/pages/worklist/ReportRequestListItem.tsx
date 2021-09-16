@@ -21,6 +21,8 @@ import { useTranslation } from 'react-i18next';
 import { deleteResource } from '../../api/resourceApi';
 import { refuseComplaintReport } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 interface Props {
   backgroundColor: string;
@@ -45,7 +47,7 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
   const [showDeleteRequestDialog, setShowDeleteRequestDialog] = useState(false);
   const [showDeleteResourceDialog, setShowDeleteResourceDialog] = useState(false);
   const [disableAllButtons, setDisableAllButtons] = useState(false);
-  const [error, setError] = useState<Error | undefined>();
+  const [error, setError] = useState<Error | AxiosError>();
   const [isDeletingResource, setIsDeletingResource] = useState(false);
   const [isDeletingRequest, setIsDeletingRequest] = useState(false);
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
@@ -61,7 +63,7 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
         prevState.filter((work) => work.identifier !== reportWorkListRequest.identifier)
       );
     } catch (error) {
-      setError(error);
+      setError(handlePotentialAxiosError(error));
     } finally {
       setIsDeletingRequest(false);
       setDisableAllButtons(false);
@@ -80,7 +82,7 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
       );
       await deleteRequestPromise;
     } catch (error) {
-      setError(error);
+      setError(handlePotentialAxiosError(error));
     } finally {
       setIsDeletingResource(false);
       setDisableAllButtons(false);

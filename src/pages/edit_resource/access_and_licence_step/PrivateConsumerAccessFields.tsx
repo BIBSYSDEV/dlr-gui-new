@@ -24,6 +24,8 @@ import PrivateConsumerCourseAccessFields from './PrivateConsumerCourseAccessFiel
 import PrivateConsumerPersonalAccessFields from './PrivateConsumerPersonalAccessFields';
 import { isDevelopInstance, parseCourse } from '../../../utils/course.utils';
 import HelperTextPopover from '../../../components/HelperTextPopover';
+import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
+import { AxiosError } from 'axios';
 
 const StyledPrivateAccessFields = styled.div`
   margin-top: 2.5rem;
@@ -72,7 +74,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
   const [showAddAccessPopover, setShowAddAccessPopover] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [showPersonAccessField, setShowPersonAccessField] = useState(false);
-  const [networkError, setNetworkError] = useState<Error>();
+  const [networkError, setNetworkError] = useState<Error | AxiosError>();
   const [courses, setCourses] = useState<Course[]>([]);
   const [waitingForCourses, setWaitingForCourses] = useState(false);
   const [busyFetchingPrivateAccess, setBusyFetchingPrivateAccess] = useState(false);
@@ -93,7 +95,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
         ]);
       }
     } catch (error) {
-      setNetworkError(error);
+      setNetworkError(handlePotentialAxiosError(error));
     }
   };
 
@@ -106,7 +108,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
         if (!mountedRef.current) return null;
         setPrivateAccessList(resourceReadAccessListResponse.data);
       } catch (error) {
-        setNetworkError(error);
+        setNetworkError(handlePotentialAxiosError(error));
       } finally {
         setBusyFetchingPrivateAccess(false);
       }
@@ -119,7 +121,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
           setCourses(courseResponse);
           setNetworkError(undefined);
         } catch (error) {
-          setNetworkError(error);
+          setNetworkError(handlePotentialAxiosError(error));
         } finally {
           setWaitingForCourses(false);
         }
@@ -161,7 +163,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
         }
         setPrivateAccessList(resourceReadAccessListResponse.data);
       } catch (error) {
-        setNetworkError(error);
+        setNetworkError(handlePotentialAxiosError(error));
       }
     } finally {
       setUpdatingPrivateAccessList(false);

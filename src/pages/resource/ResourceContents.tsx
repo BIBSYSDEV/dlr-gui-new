@@ -10,6 +10,8 @@ import styled from 'styled-components';
 import { Content } from '../../types/content.types';
 import { getContentPresentationData } from '../../api/resourceApi';
 import ErrorBanner from '../../components/ErrorBanner';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 const StyledMetadataWrapper = styled.div`
   display: flex;
@@ -28,7 +30,7 @@ interface ResourceContentsProps {
 const ResourceContents: FC<ResourceContentsProps> = ({ resource, userResourceAuthorization }) => {
   const { t } = useTranslation();
   const { institution } = useSelector((state: RootState) => state.user);
-  const [fetchingUrlError, setFetchingUrlError] = useState<Error>();
+  const [fetchingUrlError, setFetchingUrlError] = useState<Error | AxiosError>();
 
   const handleDownloadClick = async (contentIdentifier: string) => {
     try {
@@ -40,7 +42,7 @@ const ResourceContents: FC<ResourceContentsProps> = ({ resource, userResourceAut
         setFetchingUrlError(new Error('no url found'));
       }
     } catch (error) {
-      setFetchingUrlError(error);
+      setFetchingUrlError(handlePotentialAxiosError(error));
     }
   };
 

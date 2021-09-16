@@ -20,6 +20,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import BlockIcon from '@material-ui/icons/Block';
 import { getAuthoritiesForResourceCreatorOrContributor } from '../../api/authoritiesApi';
 import DeleteRequestDialog from './DeleteRequestDialog';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 interface Props {
   backgroundColor: string;
@@ -46,8 +48,8 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
   const [hasSearchedForAuthorities, setHasSearchedForAuthorities] = useState(false);
   const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
   const [showConfirmCreateDOIDialog, setShowConfirmCreateDOIDialog] = useState(false);
-  const [updateError, setUpdateError] = useState<Error>();
-  const [searchingForAuthoritiesError, setSearchingForAuthoritiesError] = useState<Error>();
+  const [updateError, setUpdateError] = useState<Error | AxiosError>();
+  const [searchingForAuthoritiesError, setSearchingForAuthoritiesError] = useState<Error | AxiosError>();
   const [canCreateDOI, setCanCreateDOI] = useState(false);
   const [isDeletingRequest, setIsDeletingRequest] = useState(false);
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
@@ -63,7 +65,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
         prevState.filter((work) => work.resourceIdentifier !== workListRequestDOI.resourceIdentifier)
       );
     } catch (error) {
-      setUpdateError(error);
+      setUpdateError(handlePotentialAxiosError(error));
     } finally {
       setIsDeletingRequest(false);
     }
@@ -76,7 +78,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
       await createDOI(ResourceIdentifier);
       setWorkListDoi((prevState) => prevState.filter((work) => work.resourceIdentifier !== ResourceIdentifier));
     } catch (error) {
-      setUpdateError(error);
+      setUpdateError(handlePotentialAxiosError(error));
       setIsCreatingDOi(false);
     }
   };
@@ -106,7 +108,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
           }
         } catch (error) {
           if (!mountedRef.current) return null;
-          setSearchingForAuthoritiesError(error);
+          setSearchingForAuthoritiesError(handlePotentialAxiosError(error));
         } finally {
           if (mountedRef.current) {
             setBusySearchingForAuthorities(false);

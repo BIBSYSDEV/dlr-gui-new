@@ -5,6 +5,7 @@ import { Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { RootState } from '../state/rootReducer';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import axios, { AxiosError } from 'axios';
 
 const StyledAlert = styled(Alert)`
   margin-top: 0.5rem;
@@ -13,11 +14,17 @@ const StyledAlert = styled(Alert)`
 
 interface ErrorBannerProps {
   userNeedsToBeLoggedIn?: boolean;
-  error?: Error;
+  error?: Error | AxiosError;
   customErrorMessage?: string;
+  showAxiosStatusCode?: boolean;
 }
 
-const ErrorBanner: FC<ErrorBannerProps> = ({ userNeedsToBeLoggedIn = false, error, customErrorMessage }) => {
+const ErrorBanner: FC<ErrorBannerProps> = ({
+  userNeedsToBeLoggedIn = false,
+  error,
+  customErrorMessage,
+  showAxiosStatusCode = false,
+}) => {
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.user);
 
@@ -34,7 +41,10 @@ const ErrorBanner: FC<ErrorBannerProps> = ({ userNeedsToBeLoggedIn = false, erro
       <AlertTitle>{customErrorMessage ?? getErrorMessage()}</AlertTitle>
       {error && (
         <Typography variant="caption">
-          ( {t('error.error_message')}: {error.message})
+          {axios.isAxiosError(error) && showAxiosStatusCode && error.response?.status && (
+            <>{`${t('error.error_status')}: ${error.response.status} `}</>
+          )}
+          {t('error.error_message')}: {error.message})
         </Typography>
       )}
     </StyledAlert>

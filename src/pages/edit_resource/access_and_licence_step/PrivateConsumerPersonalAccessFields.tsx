@@ -11,6 +11,8 @@ import { Resource } from '../../../types/resource.types';
 import { StyledCancelButton, StyledConfirmButton } from '../../../components/styled/StyledButtons';
 import { StyledFieldsWrapper } from '../../../components/styled/Wrappers';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
+import { AxiosError } from 'axios';
 
 const StyledFormControl = styled(FormControl)`
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
@@ -25,7 +27,7 @@ interface PrivateConsumerPersonalAccessFieldsProps {
   privateAccessList: ResourceReadAccess[];
   setShowPersonAccessField: (showPersonAccessField: boolean) => void;
   setUpdatingPrivateAccessList: (updatingPrivateAccessList: boolean) => void;
-  setSavePrivateAccessNetworkError: (savePrivateAccessNetworkError: Error | undefined) => void;
+  setSavePrivateAccessNetworkError: (savePrivateAccessNetworkError: Error | AxiosError | undefined) => void;
   addPrivateAccess: (newPrivateAccess: ResourceReadAccess) => void;
 }
 
@@ -76,7 +78,7 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
         } catch (error) {
           errorList += accessUsers[i] + ' ';
           setNetworkErrorOccured(true);
-          setSavePrivateAccessNetworkError(error);
+          setSavePrivateAccessNetworkError(handlePotentialAxiosError(error));
         }
       }
     }

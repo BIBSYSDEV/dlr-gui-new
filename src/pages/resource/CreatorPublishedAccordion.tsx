@@ -19,6 +19,8 @@ import styled from 'styled-components';
 import ErrorBanner from '../../components/ErrorBanner';
 import { DeviceWidths } from '../../themes/mainTheme';
 import { getLMSSearchParams } from '../../utils/lmsService';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 const StyledAccordion = styled(Accordion)`
   margin-top: 1rem;
@@ -85,7 +87,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ parentR
   const { t } = useTranslation();
   const [searchResult, setSearchResult] = useState<SearchResult | undefined>();
   const [isLoading, setIsLoading] = useState(true);
-  const [loadingError, setLoadingError] = useState<Error | undefined>();
+  const [loadingError, setLoadingError] = useState<Error | AxiosError>();
   const [resources, setResources] = useState<Resource[]>([]);
   const [creatorsNames] = useState<string[]>(nameOnSeveralFormats(creator.features.dlr_creator_name ?? ''));
   const LMSSearchParams = getLMSSearchParams();
@@ -117,7 +119,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ parentR
         setSearchResult(searchResultResponse);
         setResources(parseStringToJSONAndRemoveParentResource(searchResultResponse, parentResource.identifier));
       } catch (error) {
-        setLoadingError(error);
+        setLoadingError(handlePotentialAxiosError(error));
       } finally {
         setIsLoading(false);
       }
