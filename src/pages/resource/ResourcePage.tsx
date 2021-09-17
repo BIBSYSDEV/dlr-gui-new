@@ -14,8 +14,6 @@ import { Button, CircularProgress } from '@material-ui/core';
 import ErrorBanner from '../../components/ErrorBanner';
 import ResourcePresentation from './ResourcePresentation';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../state/rootReducer';
 import { StyledContentWrapperLarge, StyledProgressWrapper } from '../../components/styled/Wrappers';
 import { PageHeader } from '../../components/PageHeader';
 import CreatorSearch from './CreatorSearch';
@@ -43,7 +41,7 @@ const ResourcePage = () => {
   const [resourceLoadingError, setResourceLoadingError] = useState<Error>();
   const { t } = useTranslation();
   const history = useHistory();
-  const user = useSelector((state: RootState) => state.user);
+  const [canEditResource, setCanEditResource] = useState(false);
 
   const handleClickEditButton = () => {
     history.push(`/editresource/${resource?.identifier}`);
@@ -73,8 +71,6 @@ const ResourcePage = () => {
     }
   }, [identifier]);
 
-  const isAuthor = () => resource.features.dlr_submitter_email === user.id;
-
   return isLoadingResource ? (
     <StyledProgressWrapper>
       <CircularProgress />
@@ -84,7 +80,7 @@ const ResourcePage = () => {
   ) : (
     <StyledContentWrapperLargeWithBottomMargin>
       <PageHeader testId="resource-title">{resource.features.dlr_title}</PageHeader>
-      {isAuthor() && (
+      {canEditResource && (
         <StyledResourceActionBar>
           <Button
             size="large"
@@ -96,7 +92,7 @@ const ResourcePage = () => {
           </Button>
         </StyledResourceActionBar>
       )}
-      <ResourcePresentation resource={resource} isPreview={false} />
+      <ResourcePresentation setCanEditResource={setCanEditResource} resource={resource} isPreview={false} />
       <CreatorSearch resource={resource} />
     </StyledContentWrapperLargeWithBottomMargin>
   );
