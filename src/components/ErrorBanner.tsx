@@ -41,9 +41,10 @@ const ErrorBanner: FC<ErrorBannerProps> = ({
       <AlertTitle>{customErrorMessage ?? getErrorMessage()}</AlertTitle>
       {error && (
         <Typography variant="caption">
-          {axios.isAxiosError(error) && showAxiosStatusCode && error.response?.status && (
-            <>{`${t('error.error_status')}: ${error.response.status} `}</>
-          )}
+          {axios.isAxiosError(error) &&
+            showAxiosStatusCode &&
+            error.response?.status &&
+            `${t('error.error_status')}: ${error.response.status} `}
           {t('error.error_message')}: {error.message})
         </Typography>
       )}
