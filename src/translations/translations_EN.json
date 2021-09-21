@@ -164,6 +164,7 @@
     "404_page": "Got lost? (404-page)",
     "500_page": "Whoops, something went wrong. Try again later",
     "error_message": "Error message",
+    "error_status": "Status",
     "generic": "Whoops, something went wrong. Try again later",
     "login_for_more_functionality": "Login for access to more functionality"
   },

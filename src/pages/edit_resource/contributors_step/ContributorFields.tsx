@@ -25,6 +25,8 @@ import { RootState } from '../../../state/rootReducer';
 import AuthoritySelector from './AuthoritySelector';
 import AuthorityLink from '../../../components/AuthorityLink';
 import { Authority } from '../../../types/authority.types';
+import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
+import { AxiosError } from 'axios';
 
 const StyledTypography = styled(Typography)`
   margin-bottom: 0.5rem;
@@ -106,8 +108,8 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
   const { t } = useTranslation();
   const { values, handleBlur, resetForm, handleChange, setFieldTouched, setTouched, touched } =
     useFormikContext<Resource>();
-  const [addContributorError, setAddContributorError] = useState<Error>();
-  const [updateContributorError, setUpdateContributorError] = useState<Error>();
+  const [addContributorError, setAddContributorError] = useState<Error | AxiosError>();
+  const [updateContributorError, setUpdateContributorError] = useState<Error | AxiosError>();
   const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
   const [contributorTypesTranslated, setContributorTypesTranslated] = useState<contributorTypesTranslated[]>(
     generateContributorTypesTranslated(t)
@@ -134,7 +136,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
         },
       });
     } catch (error) {
-      setAddContributorError(error);
+      setAddContributorError(handlePotentialAxiosError(error));
     } finally {
       setAllChangesSaved(true);
       inputElements.current[values.contributors.length].focus();
@@ -163,7 +165,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
       }
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
     } catch (error) {
-      setUpdateContributorError(error);
+      setUpdateContributorError(handlePotentialAxiosError(error));
       setErrorIndex(contributorIndex);
     } finally {
       setAllChangesSaved(true);
@@ -183,7 +185,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
       setUpdateContributorError(undefined);
       setErrorIndex(ErrorIndex.NO_ERRORS);
     } catch (error) {
-      setUpdateContributorError(error);
+      setUpdateContributorError(handlePotentialAxiosError(error));
       setErrorIndex(contributorIndex);
     } finally {
       setAllChangesSaved(true);
@@ -209,7 +211,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
       values.features.dlr_status_published && updateSearchIndex(values.identifier);
     } catch (error) {
-      setUpdateContributorError(error);
+      setUpdateContributorError(handlePotentialAxiosError(error));
       setErrorIndex(index);
     } finally {
       setAllChangesSaved(true);

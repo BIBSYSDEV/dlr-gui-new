@@ -19,6 +19,8 @@ import ResourceLicense from './ResourceLicense';
 import ContentPreview from '../../components/ContentPreview';
 import ResourceActions from './ResourceActions';
 import { getMyUserAuthorizationProfileForResource } from '../../api/resourceApi';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 const PreviewComponentWrapper = styled.div`
   margin: 1rem 0;
@@ -51,7 +53,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
   const [userResourceAuthorization, setUserResourceAuthorization] = useState<UserAuthorizationProfileForResource>(
     emptyUserAuthorizationProfileForResource
   );
-  const [errorLoadingAuthorization, setErrorLoadingAuthorization] = useState<Error>();
+  const [errorLoadingAuthorization, setErrorLoadingAuthorization] = useState<Error | AxiosError>();
 
   useEffect(() => {
     const fetchUserResourceAuthorization = async () => {
@@ -60,8 +62,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
         const userResourceAuthorizationResponse = await getMyUserAuthorizationProfileForResource(resource.identifier);
         setUserResourceAuthorization(userResourceAuthorizationResponse);
       } catch (error) {
-        //ignore error
-        setErrorLoadingAuthorization(error);
+        setErrorLoadingAuthorization(handlePotentialAxiosError(error));
       }
     };
     fetchUserResourceAuthorization();

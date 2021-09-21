@@ -14,6 +14,8 @@ import { DeviceWidths } from '../../themes/mainTheme';
 import { useTranslation } from 'react-i18next';
 import { Resource } from '../../types/resource.types';
 import { requestOwnershipFromCurator } from '../../api/workListApi';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 const DialogTitleId = 'ownership-dialog-title';
 
@@ -26,7 +28,7 @@ const RequestOwnership: FC<RequestOwnershipProps> = ({ resource, setRequestSentS
   const { t } = useTranslation();
   const [showRequestOwnershipDialog, setShowRequestOwnershipDialog] = useState(false);
   const [ownershipComment, setOwnershipComment] = useState('');
-  const [ownershipRequestError, setOwnershipRequestError] = useState<Error>();
+  const [ownershipRequestError, setOwnershipRequestError] = useState<Error | AxiosError>();
   const useFullScreen = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
 
   const askForOwnership = async () => {
@@ -37,7 +39,7 @@ const RequestOwnership: FC<RequestOwnershipProps> = ({ resource, setRequestSentS
       setShowRequestOwnershipDialog(false);
       setRequestSentSuccess(true);
     } catch (error) {
-      setOwnershipRequestError(error);
+      setOwnershipRequestError(handlePotentialAxiosError(error));
     }
   };
 

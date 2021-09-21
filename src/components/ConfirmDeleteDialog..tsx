@@ -9,6 +9,8 @@ import ErrorBanner from './ErrorBanner';
 import { useTranslation } from 'react-i18next';
 import { deleteResource } from '../api/resourceApi';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { handlePotentialAxiosError } from '../utils/AxiosErrorHandling';
+import { AxiosError } from 'axios';
 
 interface ConfirmDeleteDialogProps {
   resourceIdentifier: string;
@@ -26,7 +28,7 @@ const ConfirmDeleteDialog: FC<ConfirmDeleteDialogProps> = ({
   resourceTitle,
 }) => {
   const { t } = useTranslation();
-  const [deleteErrorOccured, seDeleteErrorOccured] = useState<Error>();
+  const [deleteErrorOccured, seDeleteErrorOccured] = useState<Error | AxiosError>();
 
   const performDeletion = async () => {
     try {
@@ -34,7 +36,7 @@ const ConfirmDeleteDialog: FC<ConfirmDeleteDialogProps> = ({
       await deleteResource(resourceIdentifier);
       confirmedDelete();
     } catch (error) {
-      seDeleteErrorOccured(error);
+      seDeleteErrorOccured(handlePotentialAxiosError(error));
     }
   };
 

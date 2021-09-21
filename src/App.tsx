@@ -18,6 +18,8 @@ import AppContent from './AppContent';
 import { StyledFullPageProgressWrapper } from './components/styled/Wrappers';
 import useInterval from './utils/useInterval';
 import { LMSParametersName } from './types/LMSParameters';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from './utils/AxiosErrorHandling';
 
 const isLoggedInTokenExpired = () => {
   if (localStorage.tokenExpiry) {
@@ -40,7 +42,7 @@ const App = () => {
   const user = useSelector((state: RootState) => state.user);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
   const mainContentRef = useRef<HTMLDivElement>(null);
-  const [userError, setUserError] = useState<Error>();
+  const [userError, setUserError] = useState<Error | AxiosError>();
   const [tokenError, setTokenError] = useState<Error>();
   const [hasValidToken, setHasValidToken] = useState(false);
 
@@ -55,7 +57,7 @@ const App = () => {
         const appFeature = await appFeaturePromise;
         dispatch(setUser({ ...userData.data, institutionAuthorities: institutionAuthorities, appFeature: appFeature }));
       } catch (error) {
-        setUserError(error);
+        setUserError(handlePotentialAxiosError(error));
       } finally {
         setIsLoadingUser(false);
       }

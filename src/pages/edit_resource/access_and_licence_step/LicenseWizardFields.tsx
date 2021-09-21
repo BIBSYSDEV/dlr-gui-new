@@ -18,6 +18,8 @@ import AccordionRadioGroup from '../../../components/AccordionRadioGroup';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import styled from 'styled-components';
+import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
+import { AxiosError } from 'axios';
 
 const StyledFormControlLabel = styled.div`
   font-size: 1rem;
@@ -108,11 +110,11 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
   const { t } = useTranslation();
   const { institution } = useSelector((state: RootState) => state.user);
   const { values, resetForm, setTouched, touched } = useFormikContext<Resource>();
-  const [savingLicenseError, setSavingLicenseError] = useState<Error>();
-  const [savingResourceRestrictionError, setSavingResourceRestrictionError] = useState<Error>();
+  const [savingLicenseError, setSavingLicenseError] = useState<Error | AxiosError>();
+  const [savingResourceRestrictionError, setSavingResourceRestrictionError] = useState<Error | AxiosError>();
   const [savingOthersCanModifyAndBuildUponError, setSavingOthersCanModifyAndBuildUponError] = useState<Error>();
-  const [savingCanBeUsedCommerciallyError, setSavingCanBeUsedCommerciallyError] = useState<Error>();
-  const [savingAccessTypeError, setSavingAccessTypeError] = useState<Error>();
+  const [savingCanBeUsedCommerciallyError, setSavingCanBeUsedCommerciallyError] = useState<Error | AxiosError>();
+  const [savingAccessTypeError, setSavingAccessTypeError] = useState<Error | AxiosError>();
   const [expandModifyAndBuildOption, setExpandModifyAndBuildOption] = useState(
     !!values.features.dlr_licensehelper_others_can_modify_and_build_upon
   );
@@ -136,7 +138,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     try {
       await putAccessType(values.identifier, AccessTypes.private);
     } catch (error) {
-      setSavingAccessTypeError(error);
+      setSavingAccessTypeError(handlePotentialAxiosError(error));
     }
     values.features.dlr_access = AccessTypes.private;
   };
@@ -171,7 +173,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
         setSavingLicenseError(new Error('internal error'));
       }
     } catch (error) {
-      setSavingLicenseError(error);
+      setSavingLicenseError(handlePotentialAxiosError(error));
     } finally {
       setAllChangesSaved(true);
     }
@@ -215,7 +217,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
       await Promise.all(promiseArray);
       setAllChangesSaved(true);
     } catch (error) {
-      setSavingResourceRestrictionError(error);
+      setSavingResourceRestrictionError(handlePotentialAxiosError(error));
     }
     resetFormButKeepTouched(touched, resetForm, values, setTouched);
   };
@@ -240,7 +242,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
       setAllChangesSaved(true);
     } catch (error) {
-      setSavingCanBeUsedCommerciallyError(error);
+      setSavingCanBeUsedCommerciallyError(handlePotentialAxiosError(error));
     }
     setExpandModifyAndBuildOption(true);
   };
@@ -265,7 +267,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
       setAllChangesSaved(true);
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
     } catch (error) {
-      setSavingOthersCanModifyAndBuildUponError(error);
+      setSavingOthersCanModifyAndBuildUponError(handlePotentialAxiosError(error));
     }
   };
 

@@ -16,6 +16,8 @@ import { AutocompleteRenderInputParams } from '@material-ui/lab';
 import Typography from '@material-ui/core/Typography';
 import { StylePopoverTypography } from '../../../components/styled/StyledTypographies';
 import useDebounce from '../../../utils/useDebounce';
+import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
+import { AxiosError } from 'axios';
 
 const StyledChip = styled(Chip)`
   && {
@@ -41,8 +43,8 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
   const [options, setOptions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [cancelSearch, setCancelSearch] = useState(false);
-  const [saveError, setSaveError] = useState<Error>();
-  const [tagSearchError, setTagSearchError] = useState<Error>();
+  const [saveError, setSaveError] = useState<Error | AxiosError>();
+  const [tagSearchError, setTagSearchError] = useState<Error | AxiosError>();
 
   useEffect(() => {
     const searchForTags = async () => {
@@ -53,7 +55,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
           const optionsResult = response.data.facet_counts.map((facetCount) => facetCount.value);
           setOptions(optionsResult);
         } catch (error) {
-          setTagSearchError(error);
+          setTagSearchError(handlePotentialAxiosError(error));
         } finally {
           setLoading(false);
           setCancelSearch(false);
@@ -86,7 +88,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
       values.isFresh = false;
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
     } catch (error) {
-      setSaveError(error);
+      setSaveError(handlePotentialAxiosError(error));
     } finally {
       setAllChangesSaved(true);
       values.features.dlr_status_published && updateSearchIndex(values.identifier);

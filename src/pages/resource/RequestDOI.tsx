@@ -14,6 +14,8 @@ import { useTranslation } from 'react-i18next';
 import { requestDOIFromCurator } from '../../api/workListApi';
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 const DialogTitleId = 'doi-dialog-title';
 
@@ -27,7 +29,7 @@ const RequestDOI: FC<RequestDOIProps> = ({ resource, setRequestSentSuccess }) =>
   const [showRequestDOIDialog, setShowRequestDOIDialog] = useState(false);
   const [DOIComment, setDOIComment] = useState('');
   const useFullScreen = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
-  const [DOIRequestFailureError, setDOIRequestFailureError] = useState<Error | undefined>();
+  const [DOIRequestFailureError, setDOIRequestFailureError] = useState<Error | AxiosError>();
 
   const askForDoi = async () => {
     try {
@@ -37,7 +39,7 @@ const RequestDOI: FC<RequestDOIProps> = ({ resource, setRequestSentSuccess }) =>
       setRequestSentSuccess(true);
       setShowRequestDOIDialog(false);
     } catch (error) {
-      setDOIRequestFailureError(error);
+      setDOIRequestFailureError(handlePotentialAxiosError(error));
     }
   };
 

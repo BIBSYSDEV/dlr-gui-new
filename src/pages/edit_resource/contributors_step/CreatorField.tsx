@@ -30,6 +30,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/rootReducer';
 import AuthorityLink from '../../../components/AuthorityLink';
 import { Authority } from '../../../types/authority.types';
+import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
+import { AxiosError } from 'axios';
 
 const StyledTypography = styled(Typography)`
   margin-bottom: 0.5rem;
@@ -91,8 +93,8 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, handleBlur, resetForm, setTouched, touched } = useFormikContext<Resource>();
   const [errorIndex, setErrorIndex] = useState(ErrorIndex.NO_ERRORS);
-  const [updateCreatorError, setUpdateCreatorError] = useState<Error>();
-  const [addCreatorError, setAddCreatorError] = useState<Error>();
+  const [updateCreatorError, setUpdateCreatorError] = useState<Error | AxiosError>();
+  const [addCreatorError, setAddCreatorError] = useState<Error | AxiosError>();
   const [isDeleting, setIsDeleting] = useState(false);
   const inputElements = useRef<any>({});
   const user = useSelector((state: RootState) => state.user);
@@ -110,7 +112,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
         },
       });
     } catch (error) {
-      setAddCreatorError(error);
+      setAddCreatorError(handlePotentialAxiosError(error));
     } finally {
       setAllChangesSaved(true);
       inputElements.current[values.creators.length].focus();
@@ -143,7 +145,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
         resetFormButKeepTouched(touched, resetForm, values, setTouched);
       }
     } catch (error) {
-      setUpdateCreatorError(error);
+      setUpdateCreatorError(handlePotentialAxiosError(error));
       setErrorIndex(creatorIndex);
     } finally {
       setAllChangesSaved(true);
@@ -164,7 +166,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
       await deleteResourceCreator(values.identifier, creatorIdentifier);
       arrayHelpers.remove(creatorIndex);
     } catch (error) {
-      setUpdateCreatorError(error);
+      setUpdateCreatorError(handlePotentialAxiosError(error));
       setErrorIndex(creatorIndex);
     } finally {
       setAllChangesSaved(true);
@@ -194,7 +196,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
       }
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
     } catch (error) {
-      setUpdateCreatorError(error);
+      setUpdateCreatorError(handlePotentialAxiosError(error));
       setErrorIndex(index);
     } finally {
       setAllChangesSaved(true);

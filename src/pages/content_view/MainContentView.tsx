@@ -7,6 +7,8 @@ import { CircularProgress } from '@material-ui/core';
 import ContentPreview from '../../components/ContentPreview';
 import ErrorBanner from '../../components/ErrorBanner';
 import styled from 'styled-components';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 const ContentWrapper = styled.div<{ height: string }>`
   height: ${(props) => props.height};
@@ -26,7 +28,7 @@ const MainContentView = () => {
   const searchParams = new URLSearchParams(window.location.search);
   const height = searchParams.get('height') ?? '27rem';
   const [isLoadingResource, setIsLoadingResource] = useState(true);
-  const [resourceLoadingError, setResourceLoadingError] = useState<Error>();
+  const [resourceLoadingError, setResourceLoadingError] = useState<Error | AxiosError>();
 
   useEffect(() => {
     const fetchData = async (resourceIdentifier: string) => {
@@ -37,7 +39,7 @@ const MainContentView = () => {
         setResource(tempResource);
         tempResource.contents = await getResourceContents(resourceIdentifier);
       } catch (error) {
-        setResourceLoadingError(error);
+        setResourceLoadingError(handlePotentialAxiosError(error));
       } finally {
         setIsLoadingResource(false);
       }

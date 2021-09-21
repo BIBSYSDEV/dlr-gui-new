@@ -22,6 +22,8 @@ import ErrorBanner from '../../components/ErrorBanner';
 import * as Yup from 'yup';
 import { Formik, Form, Field, FieldProps } from 'formik';
 import DeleteRequestDialog from './DeleteRequestDialog';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 interface Props {
   backgroundColor: string;
@@ -50,7 +52,7 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
   const [isDeletingRequest, setIsDeletingRequest] = useState(false);
   const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
   const [showConfirmCGrantOwnershipDialog, setShowConfirmCGrantOwnershipDialog] = useState(false);
-  const [updateError, setUpdateError] = useState<Error>();
+  const [updateError, setUpdateError] = useState<Error | AxiosError>();
   const [isGrantingOwnership, setIsGrantingOwnership] = useState(false);
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
 
@@ -67,7 +69,7 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
         prevState.filter((work) => work.resourceIdentifier !== workListRequestOwnership.resourceIdentifier)
       );
     } catch (error) {
-      setUpdateError(error);
+      setUpdateError(handlePotentialAxiosError(error));
     } finally {
       setIsDeletingRequest(false);
     }
@@ -82,7 +84,7 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
         prevState.filter((work) => work.resourceIdentifier !== workListRequestOwnership.resourceIdentifier)
       );
     } catch (error) {
-      setUpdateError(error);
+      setUpdateError(handlePotentialAxiosError(error));
     } finally {
       setIsGrantingOwnership(false);
     }

@@ -17,6 +17,8 @@ import ErrorBanner from '../../../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import HelperTextPopover from '../../../components/HelperTextPopover';
 import { StylePopoverTypography } from '../../../components/styled/StyledTypographies';
+import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
+import { AxiosError } from 'axios';
 
 const StyledMenuItem = styled(MenuItem)`
   padding: 1rem;
@@ -50,7 +52,7 @@ interface ResourceTypeFieldProps {
 }
 
 const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) => {
-  const [savingResourceTypeError, setSavingResourceTypeError] = useState<Error>();
+  const [savingResourceTypeError, setSavingResourceTypeError] = useState<Error | AxiosError>();
   const { values, setFieldTouched, setFieldValue, handleChange, resetForm, setTouched, touched } =
     useFormikContext<Resource>();
   const { t } = useTranslation();
@@ -66,7 +68,7 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
         resetFormButKeepTouched(touched, resetForm, values, setTouched);
         values.features.dlr_status_published && updateSearchIndex(values.identifier);
       } catch (error) {
-        setSavingResourceTypeError(error);
+        setSavingResourceTypeError(handlePotentialAxiosError(error));
       } finally {
         setAllChangesSaved(true);
       }

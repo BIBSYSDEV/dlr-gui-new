@@ -13,6 +13,7 @@ import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import CClogoImage from '../../../components/CClogoImage';
 import styled from 'styled-components';
 import LicensePopoverExplanation from '../../../components/LicensePopoverExplanation';
+import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
 
 const StyledSchemaPartLessTopPadding = styled.div`
   background-color: ${Colors.LicenseAccessPageGradientColor3};
@@ -53,7 +54,7 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
           resetFormButKeepTouched(touched, resetForm, values, setTouched);
         }
       } catch (error) {
-        error?.response ? setSavingLicensesError(new Error(error.response.status)) : setSavingLicensesError(error);
+        setSavingLicensesError(handlePotentialAxiosError(error));
       } finally {
         setAllChangesSaved(true);
       }
@@ -111,7 +112,9 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
                       ))}
                     </TextField>
                     {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
-                    {savingLicenseError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingLicenseError} />}
+                    {savingLicenseError && (
+                      <ErrorBanner userNeedsToBeLoggedIn={true} error={savingLicenseError} showAxiosStatusCode={true} />
+                    )}
                   </>
                 )}
               </Field>
