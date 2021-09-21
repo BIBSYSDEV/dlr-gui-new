@@ -64,17 +64,12 @@ context('Resource', () => {
     });
   });
 
-  it('shows edit-button', () => {
+  it('shows edit-button if user is resource owner, admin, curator or editor', () => {
     const publishedTestPost = mockMyResources[0];
-    const unpublishedTestPost = mockMyResources[1];
     const newTitle = 'A new title';
 
-    cy.visit(`${resourcePath}/${unpublishedTestPost.identifier}]`);
-    cy.get('[data-testid=edit-resource-button').click();
-    cy.get('[data-testid=step-navigation-0]').click();
-    cy.get('[data-testid=dlr-title-input]').clear().type(newTitle);
-    cy.get('[data-testid=step-navigation-4]').click();
-    cy.get('[data-testid=resource-title]').contains(newTitle);
+    cy.visit(`${resourcePath}/${mockMyResources[1].identifier}]`);
+    cy.get('[data-testid=edit-resource-button').should('not.exist');
 
     cy.visit(`${resourcePath}/${publishedTestPost.identifier}]`);
     cy.get('[data-testid=edit-resource-button').click();

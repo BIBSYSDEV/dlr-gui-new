@@ -43,12 +43,14 @@ interface ResourcePresentationProps {
   resource: Resource;
   isPreview?: boolean;
   mainFileBeingUploaded?: boolean;
+  setCanEditResource?: (status: boolean) => void;
 }
 
 const ResourcePresentation: FC<ResourcePresentationProps> = ({
   resource,
   isPreview = false,
   mainFileBeingUploaded = false,
+  setCanEditResource,
 }) => {
   const [userResourceAuthorization, setUserResourceAuthorization] = useState<UserAuthorizationProfileForResource>(
     emptyUserAuthorizationProfileForResource
@@ -61,12 +63,20 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
         setErrorLoadingAuthorization(undefined);
         const userResourceAuthorizationResponse = await getMyUserAuthorizationProfileForResource(resource.identifier);
         setUserResourceAuthorization(userResourceAuthorizationResponse);
+        if (setCanEditResource) {
+          setCanEditResource(
+            userResourceAuthorizationResponse.isCurator ||
+              userResourceAuthorizationResponse.isEditor ||
+              userResourceAuthorizationResponse.isOwner ||
+              userResourceAuthorizationResponse.isAdmin
+          );
+        }
       } catch (error) {
         setErrorLoadingAuthorization(handlePotentialAxiosError(error));
       }
     };
     fetchUserResourceAuthorization();
-  }, [resource.identifier]);
+  }, [resource.identifier, setCanEditResource]);
 
   return (
     resource && (

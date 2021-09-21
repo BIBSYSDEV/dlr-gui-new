@@ -768,6 +768,16 @@ export const mockAuthorizationProfiles: ResourceAuthorization = {
   ],
 };
 
+export const mockRestrictiveAuthorizationProfiles: ResourceAuthorization = {
+  identifier: mockMyResources[1].identifier,
+  time: '2021-07-02T10:47:19.490Z',
+  user: mockUser.id,
+  profiles: [
+    { name: ResourceAuthorizationProfilesName.CONSUMER },
+    { name: ResourceAuthorizationProfilesName.CONSUMER_PUBLIC },
+  ],
+};
+
 export const mockWorkListOwnerRequest: WorklistRequest[] = [
   {
     identifier: '21341234',
