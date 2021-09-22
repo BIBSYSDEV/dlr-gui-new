@@ -10,6 +10,8 @@ import { Course } from '../../types/resourceReadAccess.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import { useTranslation } from 'react-i18next';
 import RolesDescriptionListItem from '../../components/RolesDescriptionListItem';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 const StyledHeaderTypography = styled(Typography)`
   margin-bottom: 1rem;
@@ -48,7 +50,7 @@ const UserInformation = () => {
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.user);
   const [courses, setCourses] = useState<Course[]>([]);
-  const [errorLoadingCourses, setErrorLoadingCourses] = useState<Error | undefined>();
+  const [errorLoadingCourses, setErrorLoadingCourses] = useState<Error | AxiosError>();
   const [loadingCourses, setLoadingCourses] = useState(false);
 
   useEffect(() => {
@@ -70,7 +72,7 @@ const UserInformation = () => {
           setCourses(coursesTemp);
         }
       } catch (error) {
-        setErrorLoadingCourses(error);
+        setErrorLoadingCourses(handlePotentialAxiosError(error));
       } finally {
         setLoadingCourses(false);
       }

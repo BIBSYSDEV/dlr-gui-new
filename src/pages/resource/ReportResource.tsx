@@ -10,6 +10,8 @@ import { DeviceWidths } from '../../themes/mainTheme';
 import { reportResource } from '../../api/workListApi';
 import styled from 'styled-components';
 import { Resource } from '../../types/resource.types';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 const StyledButton = styled(Button)`
   min-width: 10rem;
@@ -24,7 +26,7 @@ const ReportResource: FC<ReportResourceProps> = ({ resource, setRequestSentSucce
   const { t } = useTranslation();
   const [showReportDialog, setShowReportDialog] = useState(false);
   const [reportText, setReportText] = useState('');
-  const [sendReportError, setSendReportError] = useState<Error>();
+  const [sendReportError, setSendReportError] = useState<Error | AxiosError>();
   const useFullScreen = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
 
   const handleReport = async () => {
@@ -35,7 +37,7 @@ const ReportResource: FC<ReportResourceProps> = ({ resource, setRequestSentSucce
       setShowReportDialog(false);
       setRequestSentSuccess(true);
     } catch (error) {
-      setSendReportError(error);
+      setSendReportError(handlePotentialAxiosError(error));
     }
   };
 

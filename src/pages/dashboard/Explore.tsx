@@ -25,6 +25,8 @@ import { RootState } from '../../state/rootReducer';
 import LoginReminder from '../../components/LoginReminder';
 import AccessFiltering from './AccessFiltering';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import { AxiosError } from 'axios';
 
 const SearchResultWrapper = styled.div`
   display: flex;
@@ -110,7 +112,7 @@ const Explore = () => {
   const [searchResult, setSearchResult] = useState<SearchResult>();
   const [resources, setResources] = useState<Resource[]>([]);
   const { t } = useTranslation();
-  const [searchError, setSearchError] = useState<Error>();
+  const [searchError, setSearchError] = useState<Error | AxiosError>();
   const history = useHistory();
   const [hasPopStateListener, setHasPopStateListener] = useState(false);
 
@@ -138,7 +140,7 @@ const Explore = () => {
       setSearchResult(response.data);
       setResources(response.data.resourcesAsJson.map((resourceAsString: string) => JSON.parse(resourceAsString)));
     } catch (error) {
-      setSearchError(error);
+      setSearchError(handlePotentialAxiosError(error));
     } finally {
       setIsSearching(false);
     }

@@ -34,6 +34,8 @@ import {
 } from '../../../types/license.types';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import { FormControl, FormHelperText, useMediaQuery } from '@material-ui/core';
+import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
+import { AxiosError } from 'axios';
 
 const StyledOutLinedBox = styled.div`
   display: flex;
@@ -71,8 +73,8 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
   const { institution } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
   const { values, resetForm, setTouched, touched } = useFormikContext<Resource>();
-  const [savingUsageClearedWithOwnerError, setSavingUsageClearedWithOwnerError] = useState<Error>();
-  const [savingContainsOtherPeoplesWorkError, setSavingContainsOtherPeoplesWorkError] = useState<Error>();
+  const [savingUsageClearedWithOwnerError, setSavingUsageClearedWithOwnerError] = useState<Error | AxiosError>();
+  const [savingContainsOtherPeoplesWorkError, setSavingContainsOtherPeoplesWorkError] = useState<Error | AxiosError>();
   const mediumOrLargerScreen = useMediaQuery(`(min-width:${DeviceWidths.md}px)`);
 
   const LicenseAgreements: string[] = [
@@ -91,7 +93,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
       await postResourceFeature(values.identifier, ResourceFeatureNames.ContainsOtherPeoplesWorks, event.target.value);
       setAllChangesSaved(true);
     } catch (error) {
-      setSavingContainsOtherPeoplesWorkError(error);
+      setSavingContainsOtherPeoplesWorkError(handlePotentialAxiosError(error));
     }
     if (event.target.value === ContainsOtherPeoplesWorkOptions.No) {
       setHasSelectedCC(false);
@@ -144,7 +146,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
       }
       resetFormButKeepTouched(touched, resetForm, values, setTouched);
     } catch (error) {
-      setSavingUsageClearedWithOwnerError(error);
+      setSavingUsageClearedWithOwnerError(handlePotentialAxiosError(error));
     } finally {
       setAllChangesSaved(true);
     }

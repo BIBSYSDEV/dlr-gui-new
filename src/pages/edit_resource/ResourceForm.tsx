@@ -14,7 +14,6 @@ import ContributorFields from './contributors_step/ContributorFields';
 import CreatorField from './contributors_step/CreatorField';
 import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
 import PreviewPanel from './preview_step/PreviewPanel';
-import { StatusCode } from '../../utils/constants';
 import { ContainsOtherPeoplesWorkOptions, License } from '../../types/license.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import AccessAndLicenseStep from './access_and_licence_step/AccessAndLicenseStep';
@@ -31,6 +30,8 @@ import { Colors, StyleWidths } from '../../themes/mainTheme';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import SchemaPartTitle from './SchemaPartTitle';
 import { hasTouchedError } from '../../utils/formik-helpers';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -98,7 +99,7 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
   const [allChangesSaved, setAllChangesSaved] = useState(true);
   const [isLoadingLicenses, setIsLoadingLicenses] = useState(false);
   const [newContent, setNewContent] = useState<Content>();
-  const [loadingLicensesErrorStatus, setLoadingLicensesErrorStatus] = useState(StatusCode.ACCEPTED);
+  const [loadingError, setLoadingError] = useState<Error | AxiosError>();
   const [licenses, setLicenses] = useState<License[]>();
   const [activeStep, setActiveStep] = useState(ResourceFormStep.Description);
   const additionalFilesUppy = useUppy(additionalCreateFilesUppy(resource.identifier, setNewContent));
@@ -181,12 +182,12 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
   useEffect(() => {
     const getAllLicences = async () => {
       setIsLoadingLicenses(true);
-      setLoadingLicensesErrorStatus(StatusCode.ACCEPTED);
+      setLoadingError(undefined);
       try {
         const response = await getLicenses();
         setLicenses(response.data);
       } catch (error) {
-        error.response && setLoadingLicensesErrorStatus(error.response.status);
+        setLoadingError(handlePotentialAxiosError(error));
       } finally {
         setIsLoadingLicenses(false);
       }
@@ -271,8 +272,8 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
                     {activeStep === ResourceFormStep.AccessAndLicense && (
                       <>
                         {isLoadingLicenses && <CircularProgress />}
-                        {loadingLicensesErrorStatus !== StatusCode.ACCEPTED && (
-                          <ErrorBanner userNeedsToBeLoggedIn={true} />
+                        {loadingError && (
+                          <ErrorBanner error={loadingError} showAxiosStatusCode={true} userNeedsToBeLoggedIn={true} />
                         )}
                         <SchemaPartTitle
                           error={hasTouchedError(

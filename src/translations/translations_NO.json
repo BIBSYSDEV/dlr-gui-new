@@ -164,6 +164,7 @@
     "404_page": "Gått deg vill? (404-page)",
     "500_page": "Ups, noe gikk galt. Prøv igjen senere",
     "error_message": "Feilmelding",
+    "error_status": "Status",
     "generic": "Ups, noe gikk galt. Prøv igjen senere",
     "login_for_more_functionality": "Logg på for å få tilgang til mer funksjonalitet"
   },

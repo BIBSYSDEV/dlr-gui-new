@@ -13,6 +13,8 @@ import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { Uppy } from '@uppy/core';
 import { uppyLocale } from '../utils/uppy-config';
+import { handlePotentialAxiosError } from '../utils/AxiosErrorHandling';
+import { AxiosError } from 'axios';
 
 interface ChangeThumbnailButtonProps {
   thumbnailUppy: Uppy;
@@ -46,7 +48,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
   const [showThumbnailDashboardModal, setShowThumbnailDashboardModal] = useState(false);
   const [showPopover, setShowPopover] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-  const [thumbnailUpdateError, setThumbnailUpdateError] = useState<Error>();
+  const [thumbnailUpdateError, setThumbnailUpdateError] = useState<Error | AxiosError>();
   const mountedRef = useRef(true);
 
   useEffect(() => {
@@ -119,7 +121,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
         if (!mountedRef.current) return null;
         setThumbnailUpdateError(undefined);
       } catch (error) {
-        setThumbnailUpdateError(error);
+        setThumbnailUpdateError(handlePotentialAxiosError(error));
       } finally {
         newThumbnailIsReady();
         setFileInputIsBusy(false);
@@ -155,7 +157,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
       await new Promise((r) => setTimeout(r, 2000));
       setThumbnailUpdateError(undefined);
     } catch (error) {
-      setThumbnailUpdateError(error);
+      setThumbnailUpdateError(handlePotentialAxiosError(error));
     } finally {
       setFileInputIsBusy(false);
       pollNewThumbnail(false);

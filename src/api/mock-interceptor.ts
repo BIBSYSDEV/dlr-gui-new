@@ -41,6 +41,7 @@ import {
   mockResourceOwners,
   mockResourceReadAccess,
   mockResourceStatistics,
+  mockRestrictiveAuthorizationProfiles,
   mockTags,
   mockTagSuggestions,
   mockText,
@@ -154,6 +155,13 @@ export const interceptRequestsOnMock = () => {
   mock.onGet(new RegExp(`${API_PATHS.guiBackendLicensesPath}/licenses/users/authorized`)).reply(200, allLicenses);
 
   //MY RESOURCES
+  mock
+    .onGet(
+      new RegExp(
+        `${API_PATHS.guiBackendResourcesPath}/resources/${mockMyResources[1].identifier}/authorizations/users/authorized`
+      )
+    )
+    .reply(200, mockRestrictiveAuthorizationProfiles);
   mock
     .onGet(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/authorizations/users/authorized`))
     .reply(200, mockAuthorizationProfiles);

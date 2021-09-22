@@ -53,6 +53,8 @@ import { StyledContentWrapperLarge, StyledFullPageProgressWrapper } from '../../
 import { getAuthoritiesForResourceCreatorOrContributor } from '../../api/authoritiesApi';
 import VMSRegistration from './VMSRegistration';
 import institutions from '../../resources/assets/institutions.json';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -84,8 +86,8 @@ const EditResourcePage = () => {
   const [isLoadingResource, setIsLoadingResource] = useState(false);
   const [showForm, setShowForm] = useState(!!identifier);
   const [resourceType, setResourceType] = useState<ResourceCreationType>(ResourceCreationType.FILE);
-  const [resourceInitError, setResourceInitError] = useState<Error>();
-  const [fileUploadError, setFileUploadError] = useState<Error>();
+  const [resourceInitError, setResourceInitError] = useState<Error | AxiosError>();
+  const [fileUploadError, setFileUploadError] = useState<Error | AxiosError>();
   const [mainFileBeingUploaded, setMainFileBeingUploaded] = useState(false);
 
   const user = useSelector((state: RootState) => state.user);
@@ -107,7 +109,7 @@ const EditResourcePage = () => {
       const createResourceResponse = await createResource(ResourceCreationType.LINK, url);
       await getResourceInit(createResourceResponse, ResourceCreationType.LINK);
     } catch (error) {
-      setResourceInitError(error);
+      setResourceInitError(handlePotentialAxiosError(error));
       setIsLoadingResource(false);
     }
   };
@@ -119,7 +121,7 @@ const EditResourcePage = () => {
       const createResourceResponse = await createResource(ResourceCreationType.LINK, vmsResource.url);
       await getResourceInit(createResourceResponse, ResourceCreationType.LINK, vmsResource, vms);
     } catch (error) {
-      setResourceInitError(error);
+      setResourceInitError(handlePotentialAxiosError(error));
       setIsLoadingResource(false);
     }
   };
@@ -151,7 +153,7 @@ const EditResourcePage = () => {
       await postResourceFeature(resourceIdentifier, ResourceFeatureNames.Type, dlrType);
       tempResource.features.dlr_type = dlrType;
     } catch (error) {
-      setResourceInitError(error);
+      setResourceInitError(handlePotentialAxiosError(error));
     }
   };
 
@@ -295,7 +297,7 @@ const EditResourcePage = () => {
       setFormikInitResource(resource);
       setResourceInitError(undefined);
     } catch (error) {
-      setResourceInitError(error);
+      setResourceInitError(handlePotentialAxiosError(error));
     } finally {
       setResourceType(resourceCreationType);
       setIsLoadingResource(false);

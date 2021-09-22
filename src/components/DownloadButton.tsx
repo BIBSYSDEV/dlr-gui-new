@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { getContentPresentationData } from '../api/resourceApi';
 import { Content } from '../types/content.types';
 import ErrorBanner from './ErrorBanner';
+import { handlePotentialAxiosError } from '../utils/AxiosErrorHandling';
+import { AxiosError } from 'axios';
 
 interface DownloadButtonProps {
   content: Content;
@@ -12,7 +14,7 @@ interface DownloadButtonProps {
 
 const DownloadButton: FC<DownloadButtonProps> = ({ content }) => {
   const { t } = useTranslation();
-  const [fetchingUrlError, setFetchingUrlError] = useState<Error>();
+  const [fetchingUrlError, setFetchingUrlError] = useState<Error | AxiosError>();
 
   const handleDownloadClick = async () => {
     try {
@@ -24,7 +26,7 @@ const DownloadButton: FC<DownloadButtonProps> = ({ content }) => {
         setFetchingUrlError(new Error('no url found'));
       }
     } catch (error) {
-      setFetchingUrlError(error);
+      setFetchingUrlError(handlePotentialAxiosError(error));
     }
   };
 

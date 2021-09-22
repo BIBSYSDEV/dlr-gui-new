@@ -16,6 +16,8 @@ import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import { StatusCode } from '../../utils/constants';
+import axios, { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 const StyledSearchWrapper = styled.div`
   display: flex;
@@ -82,8 +84,8 @@ const RoleSetter = () => {
   const [isCurator, setIsCurator] = useState(false);
   const [isEditor, setIsEditor] = useState(false);
   const [isPublisher, setIsPublisher] = useState(false);
-  const [searchError, setSearchError] = useState<Error>();
-  const [roleChangeError, setRoleChangeError] = useState<Error>();
+  const [searchError, setSearchError] = useState<Error | AxiosError>();
+  const [roleChangeError, setRoleChangeError] = useState<Error | AxiosError>();
   const [changesSaved, setChangesSaved] = useState(false);
   const user = useSelector((state: RootState) => state.user);
   const [noAccessWarning, setNoAccessWarning] = useState(false);
@@ -122,8 +124,9 @@ const RoleSetter = () => {
         }
       });
     } catch (error) {
-      if (error.response.status === StatusCode.UNAUTHORIZED) setNoAccessWarning(true);
-      else setSearchError(error);
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === StatusCode.UNAUTHORIZED) setNoAccessWarning(true);
+      } else setSearchError(handlePotentialAxiosError(error));
     } finally {
       setIsSearching(false);
     }
@@ -139,7 +142,7 @@ const RoleSetter = () => {
       setIsAdministrator(!isAdministrator);
       setChangesSaved(true);
     } catch (error) {
-      setRoleChangeError(error);
+      setRoleChangeError(handlePotentialAxiosError(error));
     }
   };
 
@@ -153,7 +156,7 @@ const RoleSetter = () => {
       setIsCurator(!isCurator);
       setChangesSaved(true);
     } catch (error) {
-      setRoleChangeError(error);
+      setRoleChangeError(handlePotentialAxiosError(error));
     }
   };
   const handleChangeIsEditor = async () => {
@@ -166,7 +169,7 @@ const RoleSetter = () => {
       setIsEditor(!isEditor);
       setChangesSaved(true);
     } catch (error) {
-      setRoleChangeError(error);
+      setRoleChangeError(handlePotentialAxiosError(error));
     }
   };
   const handleChangeIsPublisher = async () => {
@@ -179,7 +182,7 @@ const RoleSetter = () => {
       setIsPublisher(!isPublisher);
       setChangesSaved(true);
     } catch (error) {
-      setRoleChangeError(error);
+      setRoleChangeError(handlePotentialAxiosError(error));
     }
   };
 

@@ -8,6 +8,8 @@ import { useTranslation } from 'react-i18next';
 import { Colors } from '../../themes/mainTheme';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 const StyledBoxWrapper = styled.div`
   display: box;
@@ -41,8 +43,10 @@ const emailNotificationLabel = 'email-notification-label';
 const EmailNotificationSetting = () => {
   const user = useSelector((state: RootState) => state.user);
   const [wantsToBeNotifiedByEmail, setWantsToBeNotifiedByEmail] = useState(false);
-  const [loadingEmailNotificationSettingError, setLoadingEmailNotificationSettingError] = useState<Error | undefined>();
-  const [savingEmailNotificationSettingError, setSavingEmailNotificationSettingError] = useState<Error | undefined>();
+  const [loadingEmailNotificationSettingError, setLoadingEmailNotificationSettingError] = useState<
+    Error | AxiosError
+  >();
+  const [savingEmailNotificationSettingError, setSavingEmailNotificationSettingError] = useState<Error | AxiosError>();
   const [loadingEmailNotificationSetting, setLoadingEmailNotificationSetting] = useState(false);
   const [savingEmailNotificationSetting, setSavingEmailNotificationSetting] = useState(false);
   const { t } = useTranslation();
@@ -55,7 +59,7 @@ const EmailNotificationSetting = () => {
         const status = await getEmailNotificationStatus();
         setWantsToBeNotifiedByEmail(status);
       } catch (error) {
-        setLoadingEmailNotificationSettingError(error);
+        setLoadingEmailNotificationSettingError(handlePotentialAxiosError(error));
       } finally {
         setLoadingEmailNotificationSetting(false);
       }
@@ -71,7 +75,7 @@ const EmailNotificationSetting = () => {
       await putEmailNotificationStatus(status);
       setWantsToBeNotifiedByEmail(status);
     } catch (error) {
-      setSavingEmailNotificationSettingError(error);
+      setSavingEmailNotificationSettingError(handlePotentialAxiosError(error));
     } finally {
       setSavingEmailNotificationSetting(false);
     }

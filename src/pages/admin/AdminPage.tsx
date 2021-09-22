@@ -10,6 +10,8 @@ import styled from 'styled-components';
 import { Colors } from '../../themes/mainTheme';
 import AdminRoute from '../../utils/routes/AdminRoute';
 import RoleSetter from './RoleSetter';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import { AxiosError } from 'axios';
 
 const StyledWrapper = styled(Grid)`
   background-color: ${Colors.UnitTurquoise_20percent};
@@ -26,7 +28,7 @@ const StyledWrapper2 = styled(Grid)`
 const AdminPage = () => {
   const { t } = useTranslation();
   const [isLoadingUsers, setIsLoadingUsers] = useState(false);
-  const [loadingError, setLoadingError] = useState<Error>();
+  const [loadingError, setLoadingError] = useState<Error | AxiosError>();
   const [administrators, setAdministrators] = useState<string[]>([]);
   const [curators, setCurators] = useState([]);
   const [editors, setEditors] = useState([]);
@@ -45,7 +47,7 @@ const AdminPage = () => {
         setCurators(results[1].data);
         setEditors(results[2].data);
       } catch (error) {
-        setLoadingError(error);
+        setLoadingError(handlePotentialAxiosError(error));
       } finally {
         setIsLoadingUsers(false);
       }

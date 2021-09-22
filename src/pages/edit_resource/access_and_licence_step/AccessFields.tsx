@@ -11,6 +11,8 @@ import { AccessTypes, LicenseAgreementsOptions } from '../../../types/license.ty
 import styled from 'styled-components';
 import { postCurrentUserInstitutionConsumerAccess } from '../../../api/sharingApi';
 import PrivateConsumerAccessFields from './PrivateConsumerAccessFields';
+import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
+import { AxiosError } from 'axios';
 
 const StyledFieldWrapper = styled.div`
   max-width: ${StyleWidths.width1};
@@ -31,7 +33,7 @@ interface AccessFieldsProps {
 const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, setFieldTouched, setFieldValue, handleChange, resetForm } = useFormikContext<Resource>();
-  const [savingAccessTypeError, setSavingAccessTypeError] = useState<Error>();
+  const [savingAccessTypeError, setSavingAccessTypeError] = useState<Error | AxiosError>();
   const [forceRefreshInPrivateConsumerAccessFields, setForceRefreshInPrivateConsumerAccessFields] = useState(false);
   const [disabledUserInput, setDisabledUserInput] = useState(false);
   const [busySavingResourceAccessType, setBusySavingResourceAccessType] = useState(false);
@@ -58,7 +60,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
           }
         }
       } catch (error) {
-        setSavingAccessTypeError(error);
+        setSavingAccessTypeError(handlePotentialAxiosError(error));
       } finally {
         setAllChangesSaved(true);
         setBusySavingResourceAccessType(false);
@@ -73,7 +75,7 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
         await putAccessType(values.identifier, AccessTypes.private);
         values.features.dlr_access = AccessTypes.private;
       } catch (error) {
-        setSavingAccessTypeError(error);
+        setSavingAccessTypeError(handlePotentialAxiosError(error));
       } finally {
         setAllChangesSaved(true);
       }
