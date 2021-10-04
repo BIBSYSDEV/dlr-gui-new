@@ -343,6 +343,28 @@ context('Registration', () => {
     cy.get('.uppy-StatusBar.is-complete').should('exist');
   });
 
+  it('can change file title of master content', () => {
+    let newTitle = 'new title blah blah';
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-file]').click();
+    cy.route({
+      method: 'PUT',
+      url: 'https://file-upload.com/files/', // Must match URL set in mock-interceptor, which cannot be imported into a test
+      response: '',
+      headers: { ETag: 'etag' },
+    });
+    cy.get('input[type=file]:first-of-type').uploadFile('testPicture.png');
+    cy.get('[data-testid=step-navigation-4').click();
+    cy.get(`[data-testid=file-content-${mockContents[0].identifier}-content]`).should(
+      'contain.text',
+      mockContents[0].features.dlr_content
+    );
+    cy.get('[data-testid=step-navigation-2').click();
+    cy.get('[data-testid=master-content-title').type(newTitle);
+    cy.get('[data-testid=step-navigation-4').click();
+    cy.get(`[data-testid=file-content-${mockContents[0].identifier}-content]`).should('contain.text', newTitle);
+  });
+
   it('register keyword tags', () => {
     const testLink = 'http://www.test.com';
     cy.get('[data-testid=new-registration-link]').click();
