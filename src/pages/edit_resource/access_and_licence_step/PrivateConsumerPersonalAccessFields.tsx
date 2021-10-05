@@ -13,6 +13,7 @@ import { StyledFieldsWrapper } from '../../../components/styled/Wrappers';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
+import ConfirmSoftenPrivateAccessAfterPublication from './ConfirmSoftenPrivateAccessAfterPublication';
 
 const StyledFormControl = styled(FormControl)`
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
@@ -45,6 +46,7 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
   const [hasDuplicateEmail, setHasDuplicateEmail] = useState(false);
   const [networkErrorOccured, setNetworkErrorOccured] = useState(false);
   const [containsInvalidEmail, setContainsInvalidEmail] = useState(false);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   const savePersonConsumerAccess = async () => {
     const emailRegex =
@@ -85,6 +87,14 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
     setUpdatingPrivateAccessList(false);
     errorList.length > 0 && setPersonAccessTextFieldValueError(new Error('internal error'));
     setPersonAccessFieldTextValue(errorList);
+  };
+
+  const handleConfirmButtonClick = () => {
+    if (values.features.dlr_status_published) {
+      setShowConfirmDialog(true);
+    } else {
+      savePersonConsumerAccess();
+    }
   };
 
   return (
@@ -162,10 +172,17 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
           disabled={personAccessTextFieldValue.length < 3}
           variant="contained"
           color="primary"
-          onClick={() => savePersonConsumerAccess()}>
+          onClick={handleConfirmButtonClick}>
           {t('access.grant_access')}
         </StyledConfirmButton>
       </StyledFieldsWrapper>
+      <ConfirmSoftenPrivateAccessAfterPublication
+        type={'person'}
+        open={showConfirmDialog}
+        setOpen={setShowConfirmDialog}
+        change={''}
+        confirmed={savePersonConsumerAccess}
+      />
     </>
   );
 };

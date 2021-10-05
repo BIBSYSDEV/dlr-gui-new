@@ -2,11 +2,10 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Course, ResourceReadAccess, ResourceReadAccessNames } from '../../../types/resourceReadAccess.types';
 import styled from 'styled-components';
-import { Chip, CircularProgress, List, ListItem, ListItemText, Typography } from '@material-ui/core';
+import { Chip, CircularProgress, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import ErrorBanner from '../../../components/ErrorBanner';
 import AddIcon from '@material-ui/icons/Add';
-import Popover from '@material-ui/core/Popover';
 import {
   deleteAdditionalUserConsumerAccess,
   deleteCourseConsumerAccess,
@@ -26,6 +25,8 @@ import { isDevelopInstance, parseCourse } from '../../../utils/course.utils';
 import HelperTextPopover from '../../../components/HelperTextPopover';
 import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
+import { LicenseAgreementsOptions } from '../../../types/license.types';
+import AddAccessPopover from './AddAccessPopover';
 
 const StyledPrivateAccessFields = styled.div`
   margin-top: 2.5rem;
@@ -242,7 +243,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
         {(updatingPrivateAccessList || busyFetchingPrivateAccess) && <CircularProgress />}
       </StyledChipWrapper>
       {networkError && <ErrorBanner userNeedsToBeLoggedIn={true} error={networkError} />}
-      {!values.features.dlr_status_published && (
+      {values.features.dlr_licensehelper_contains_other_peoples_work !== LicenseAgreementsOptions.NoClearance && (
         <StyledAccessButtonWrapper>
           <StyledAddAccessButton
             data-testid="add-private-consumer-access-button"
@@ -252,7 +253,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
             onClick={(event) => {
               handleAddAccessButtonClick(event);
             }}>
-            {t('access.add_access')}
+            {values.features.dlr_status_published ? 'åpne opp' : t('access.add_access')}
           </StyledAddAccessButton>
           <HelperTextPopover
             ariaButtonLabel={t('explanation_text.private_access_aria_label')}
@@ -266,56 +267,21 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
         </StyledAccessButtonWrapper>
       )}
 
-      <Popover
-        open={showAddAccessPopover}
+      <AddAccessPopover
+        showAddAccessPopover={showAddAccessPopover}
         anchorEl={anchorEl}
-        onClose={handlePopoverClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}>
-        <List aria-label={t('access.access_types')}>
-          <ListItem
-            data-testid="add-institution-consumer-access"
-            disabled={hasInstitutionPrivateAccess()}
-            onClick={() => {
-              setNetworkError(undefined);
-              setShowCourseAutocomplete(false);
-              setShowPersonAccessField(false);
-              addInstitutionPrivateConsumerAccess();
-              handlePopoverClose();
-            }}
-            button>
-            <ListItemText primary={`${t('access.everyone_at')} ${user.institution}`} />
-          </ListItem>
-          <ListItem
-            button
-            data-testid="add-course-consumer-access"
-            disabled={courses.length === 0 && !waitingForCourses}
-            onClick={() => {
-              setShowPersonAccessField(false);
-              setNetworkError(undefined);
-              handlePopoverCourseClick();
-            }}>
-            <ListItemText primary={t('access.course_code')} />
-          </ListItem>
-          <ListItem
-            button
-            data-testid="add-person-consumer-access"
-            onClick={() => {
-              setNetworkError(undefined);
-              setShowCourseAutocomplete(false);
-              setShowPersonAccessField(true);
-              handlePopoverClose();
-            }}>
-            <ListItemText primary={t('access.single_persons')} />
-          </ListItem>
-        </List>
-      </Popover>
+        handlePopoverClose={handlePopoverClose}
+        setNetworkError={setNetworkError}
+        setShowCourseAutocomplete={setShowCourseAutocomplete}
+        setShowPersonAccessField={setShowPersonAccessField}
+        addInstitutionPrivateConsumerAccess={addInstitutionPrivateConsumerAccess}
+        hasInstitutionPrivateAccess={hasInstitutionPrivateAccess}
+        courses={courses}
+        waitingForCourses={waitingForCourses}
+        handlePopoverCourseClick={handlePopoverCourseClick}
+        setUpdatingPrivateAccessList={setUpdatingPrivateAccessList}
+      />
+
       {showPersonAccessField && (
         <PrivateConsumerPersonalAccessFields
           privateAccessList={privateAccessList}

@@ -15,6 +15,7 @@ import { StyledFieldsWrapper } from '../../../components/styled/Wrappers';
 import { generateCourseSubjectTag, isDevelopInstance } from '../../../utils/course.utils';
 import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
+import ConfirmSoftenPrivateAccessAfterPublication from './ConfirmSoftenPrivateAccessAfterPublication';
 
 const StyledCourseAutocomplete: any = styled(Autocomplete)`
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
@@ -51,6 +52,7 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
   const { values } = useFormikContext<Resource>();
   const [courseAutocompleteValue, setCourseAutocompleteValue] = useState<Course | null>(null);
   const [courseAutocompleteTypedValue, setCourseAutocompleteTypedValue] = useState('');
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   const addCourseConsumerAccess = async (course: Course) => {
     if (course) {
@@ -82,6 +84,22 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
         return -1;
       }
     });
+  };
+
+  const handleGrantConfirmButtonClick = () => {
+    if (values.features.dlr_status_published) {
+      setShowConfirmDialog(true);
+    } else {
+      if (courseAutocompleteValue) {
+        addCourseConsumerAccess(courseAutocompleteValue);
+      }
+    }
+  };
+
+  const handleConfirmDialogConfirmation = () => {
+    if (courseAutocompleteValue) {
+      addCourseConsumerAccess(courseAutocompleteValue);
+    }
   };
 
   return (
@@ -136,11 +154,7 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
             variant="contained"
             color="primary"
             disabled={!courseAutocompleteValue}
-            onClick={() => {
-              if (courseAutocompleteValue) {
-                addCourseConsumerAccess(courseAutocompleteValue);
-              }
-            }}>
+            onClick={handleGrantConfirmButtonClick}>
             {t('access.grant_access')}
           </StyledConfirmButton>
         </StyledFieldsWrapper>
@@ -150,6 +164,13 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
           {t('access.no_courses_available')}
         </Typography>
       )}
+      <ConfirmSoftenPrivateAccessAfterPublication
+        type={'course'}
+        open={showConfirmDialog}
+        setOpen={setShowConfirmDialog}
+        change={''}
+        confirmed={handleConfirmDialogConfirmation}
+      />
     </>
   );
 };
