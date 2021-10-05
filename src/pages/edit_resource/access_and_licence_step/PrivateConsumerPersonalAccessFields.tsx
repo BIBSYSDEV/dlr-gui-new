@@ -13,7 +13,7 @@ import { StyledFieldsWrapper } from '../../../components/styled/Wrappers';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
-import ConfirmSoftenPrivateAccessAfterPublication from './ConfirmSoftenPrivateAccessAfterPublication';
+import SoftenPrivateAccessAfterPublicationDialog from './SoftenPrivateAccessAfterPublicationDialog';
 
 const StyledFormControl = styled(FormControl)`
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
@@ -176,12 +176,11 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
           {t('access.grant_access')}
         </StyledConfirmButton>
       </StyledFieldsWrapper>
-      <ConfirmSoftenPrivateAccessAfterPublication
+      <SoftenPrivateAccessAfterPublicationDialog
         type={'person'}
         open={showConfirmDialog}
         setOpen={setShowConfirmDialog}
-        change={''}
-        confirmed={savePersonConsumerAccess}
+        softenPrivateAccess={savePersonConsumerAccess}
       />
     </>
   );

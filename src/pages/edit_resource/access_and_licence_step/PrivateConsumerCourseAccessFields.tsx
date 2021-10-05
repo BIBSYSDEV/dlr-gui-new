@@ -15,7 +15,7 @@ import { StyledFieldsWrapper } from '../../../components/styled/Wrappers';
 import { generateCourseSubjectTag, isDevelopInstance } from '../../../utils/course.utils';
 import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
-import ConfirmSoftenPrivateAccessAfterPublication from './ConfirmSoftenPrivateAccessAfterPublication';
+import SoftenPrivateAccessAfterPublicationDialog from './SoftenPrivateAccessAfterPublicationDialog';
 
 const StyledCourseAutocomplete: any = styled(Autocomplete)`
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
@@ -96,7 +96,7 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
     }
   };
 
-  const handleConfirmDialogConfirmation = () => {
+  const handleSoftenDialogAddCourse = () => {
     if (courseAutocompleteValue) {
       addCourseConsumerAccess(courseAutocompleteValue);
     }
@@ -164,12 +164,11 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
           {t('access.no_courses_available')}
         </Typography>
       )}
-      <ConfirmSoftenPrivateAccessAfterPublication
+      <SoftenPrivateAccessAfterPublicationDialog
         type={'course'}
         open={showConfirmDialog}
         setOpen={setShowConfirmDialog}
-        change={''}
-        confirmed={handleConfirmDialogConfirmation}
+        softenPrivateAccess={handleSoftenDialogAddCourse}
       />
     </>
   );

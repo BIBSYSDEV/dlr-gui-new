@@ -8,7 +8,7 @@ import { Course } from '../../../types/resourceReadAccess.types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/rootReducer';
 import { AxiosError } from 'axios';
-import ConfirmSoftenPrivateAccessAfterPublication from './ConfirmSoftenPrivateAccessAfterPublication';
+import SoftenPrivateAccessAfterPublicationDialog from './SoftenPrivateAccessAfterPublicationDialog';
 import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
 import { putAccessType } from '../../../api/resourceApi';
 import { AccessTypes } from '../../../types/license.types';
@@ -74,7 +74,7 @@ const AddAccessPopover: FC<AddAccessPopoverProps> = ({
     handlePopoverClose();
   };
 
-  const confirmedInstitutionAccess = () => {
+  const dialogConfirmedInstitutionAccess = () => {
     addInstitutionPrivateConsumerAccess();
   };
 
@@ -140,19 +140,17 @@ const AddAccessPopover: FC<AddAccessPopoverProps> = ({
           </ListItem>
         </List>
       </Popover>
-      <ConfirmSoftenPrivateAccessAfterPublication
+      <SoftenPrivateAccessAfterPublicationDialog
         type={'public'}
         open={showConfirmPublicDialog}
         setOpen={setShowConfirmPublicDialog}
-        change={''}
-        confirmed={changeToPublicAccess}
+        softenPrivateAccess={changeToPublicAccess}
       />
-      <ConfirmSoftenPrivateAccessAfterPublication
+      <SoftenPrivateAccessAfterPublicationDialog
         type={'institution'}
         open={showConfirmInstitutionDialog}
         setOpen={setConfirmInstitutionDialog}
-        change={''}
-        confirmed={confirmedInstitutionAccess}
+        softenPrivateAccess={dialogConfirmedInstitutionAccess}
       />
     </>
   );

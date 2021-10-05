@@ -13,19 +13,17 @@ import { DeviceWidths } from '../../../themes/mainTheme';
 const ConfirmDialogTitleId = 'confirm-dialog-title';
 const ConfirmDialogDescriptionId = 'confirm-dialog-description';
 
-interface ConfirmSoftenPrivateAccessAfterPublicationProps {
+interface SoftenPrivateAccessAfterPublicationDialogProps {
   type: string;
   open: boolean;
   setOpen: (value: boolean) => void;
-  change: string;
-  confirmed: () => void;
+  softenPrivateAccess: () => void;
 }
 
-const ConfirmSoftenPrivateAccessAfterPublication: FC<ConfirmSoftenPrivateAccessAfterPublicationProps> = ({
+const SoftenPrivateAccessAfterPublicationDialog: FC<SoftenPrivateAccessAfterPublicationDialogProps> = ({
   type,
   open,
-  change,
-  confirmed,
+  softenPrivateAccess,
   setOpen,
 }) => {
   const fullscreen = useMediaQuery(`(max-width:${DeviceWidths.md}px)`);
@@ -44,14 +42,13 @@ const ConfirmSoftenPrivateAccessAfterPublication: FC<ConfirmSoftenPrivateAccessA
       <DialogTitle id={`${type}-${ConfirmDialogTitleId}`}>Confirm change in access</DialogTitle>
       <DialogContent id={`${type}-${ConfirmDialogDescriptionId}`}>
         <DialogContentText>Er du sikker på denne endringen? Dette kan ikke reverseres</DialogContentText>
-        <DialogContentText>{change}</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button
           autoFocus
           onClick={() => {
             onClose();
-            confirmed();
+            softenPrivateAccess();
           }}
           variant="contained"
           color="primary">
@@ -65,4 +62,4 @@ const ConfirmSoftenPrivateAccessAfterPublication: FC<ConfirmSoftenPrivateAccessA
   );
 };
 
-export default ConfirmSoftenPrivateAccessAfterPublication;
+export default SoftenPrivateAccessAfterPublicationDialog;
