@@ -89,7 +89,7 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
     setPersonAccessFieldTextValue(errorList);
   };
 
-  const handleConfirmButtonClick = () => {
+  const handleSubmit = () => {
     if (values.features.dlr_status_published) {
       setShowConfirmDialog(true);
     } else {
@@ -114,7 +114,7 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
             onChange={(event) => setPersonAccessFieldTextValue(event.target.value)}
             onKeyPress={(event) => {
               if (event.key === 'Enter') {
-                savePersonConsumerAccess();
+                handleSubmit();
               }
             }}
             endAdornment={
@@ -172,7 +172,7 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
           disabled={personAccessTextFieldValue.length < 3}
           variant="contained"
           color="primary"
-          onClick={handleConfirmButtonClick}>
+          onClick={handleSubmit}>
           {t('access.grant_access')}
         </StyledConfirmButton>
       </StyledFieldsWrapper>

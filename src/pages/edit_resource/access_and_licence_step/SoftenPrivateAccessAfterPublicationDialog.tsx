@@ -9,6 +9,7 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 import { DeviceWidths } from '../../../themes/mainTheme';
+import { useTranslation } from 'react-i18next';
 
 const ConfirmDialogTitleId = 'confirm-dialog-title';
 const ConfirmDialogDescriptionId = 'confirm-dialog-description';
@@ -27,6 +28,7 @@ const SoftenPrivateAccessAfterPublicationDialog: FC<SoftenPrivateAccessAfterPubl
   setOpen,
 }) => {
   const fullscreen = useMediaQuery(`(max-width:${DeviceWidths.md}px)`);
+  const { t } = useTranslation();
 
   const onClose = () => {
     setOpen(false);
@@ -39,12 +41,13 @@ const SoftenPrivateAccessAfterPublicationDialog: FC<SoftenPrivateAccessAfterPubl
       open={open}
       aria-labelledby={`${type}-${ConfirmDialogTitleId}`}
       aria-describedby={`${type}-${ConfirmDialogDescriptionId}`}>
-      <DialogTitle id={`${type}-${ConfirmDialogTitleId}`}>Confirm change in access</DialogTitle>
+      <DialogTitle id={`${type}-${ConfirmDialogTitleId}`}>{t('access.confirm_change')}</DialogTitle>
       <DialogContent id={`${type}-${ConfirmDialogDescriptionId}`}>
-        <DialogContentText>Er du sikker på denne endringen? Dette kan ikke reverseres</DialogContentText>
+        <DialogContentText>{t('access.are_your_sure_warning')}</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button
+          data-testid="confirm-dialog-button"
           autoFocus
           onClick={() => {
             onClose();
@@ -52,10 +55,10 @@ const SoftenPrivateAccessAfterPublicationDialog: FC<SoftenPrivateAccessAfterPubl
           }}
           variant="contained"
           color="primary">
-          Confirm
+          {t('common.confirm')}
         </Button>
         <Button onClick={onClose} variant="contained">
-          Cancel
+          {t('common.cancel')}
         </Button>
       </DialogActions>
     </Dialog>

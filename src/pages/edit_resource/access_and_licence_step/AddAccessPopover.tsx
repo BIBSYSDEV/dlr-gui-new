@@ -104,7 +104,7 @@ const AddAccessPopover: FC<AddAccessPopoverProps> = ({
                 handlePopoverClose();
               }}
               button>
-              <ListItemText primary="offentlig" />
+              <ListItemText primary={t('resource.access_types.open')} />
             </ListItem>
           )}
           <ListItem

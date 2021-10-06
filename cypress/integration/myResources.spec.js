@@ -69,7 +69,7 @@ context('My resources', () => {
     cy.get('[data-testid=resource-title]').contains(newTitle);
   });
 
-  it('can edit a published resource, but license and access is disabled', () => {
+  it('can edit a published resource, but license and default access is disabled', () => {
     const publishedTestPost = mockMyResources[0];
     const newTitle = 'New title';
     cy.get('[data-testid=my-resources-link]').click();
