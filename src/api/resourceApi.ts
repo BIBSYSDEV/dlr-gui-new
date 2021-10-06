@@ -39,6 +39,7 @@ export const searchResources = ({
   resourceTypes,
   licenses,
   tags,
+  tagFilterOperator,
   offset,
   order,
   orderBy,
@@ -68,6 +69,7 @@ export const searchResources = ({
   url += `&${APISearchParameters.Mine}=${mine}&${APISearchParameters.ShowInaccessible}=${showInaccessible}&${APISearchParameters.OrderBy}=${orderBy}&${APISearchParameters.Order}=${order}`;
   if (offset > 0) url += `&${SearchParameters.offset}=${offset}`;
   if (limit > 0) url += `&${SearchParameters.limit}=${limit}`;
+  url += `&${SearchParameters.tagFilterOperator}=${tagFilterOperator}`;
   return authenticatedApiRequest({
     url: encodeURI(url),
     method: 'GET',

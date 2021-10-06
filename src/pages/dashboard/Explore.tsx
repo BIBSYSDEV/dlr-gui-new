@@ -90,7 +90,7 @@ const createQueryFromUrl = (location: any): QueryObject => {
   const showInaccessible = showInaccessibleParameter ? showInaccessibleParameter.toLowerCase() === 'true' : false;
   const licenses = searchTerms.getAll(SearchParameters.license);
   const tagsQueryOperator =
-    searchTerms.get(SearchParameters.tagsQueryOperator) === SearchQueryBooleanOperator.AND
+    searchTerms.get(SearchParameters.tagFilterOperator) === SearchQueryBooleanOperator.AND
       ? SearchQueryBooleanOperator.AND
       : SearchQueryBooleanOperator.OR;
   return {
@@ -102,7 +102,7 @@ const createQueryFromUrl = (location: any): QueryObject => {
     institutions: institutions,
     licenses: licenses,
     tags: tags,
-    tagsQueryOperator: tagsQueryOperator,
+    tagFilterOperator: tagsQueryOperator,
     creators: creators,
     showInaccessible: showInaccessible,
   };

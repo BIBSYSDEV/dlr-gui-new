@@ -115,7 +115,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ parentR
           resourceTypes: [],
           licenses: [],
           tags: [],
-          tagsQueryOperator: SearchQueryBooleanOperator.OR,
+          tagFilterOperator: SearchQueryBooleanOperator.OR,
           showInaccessible: false,
           orderBy: 'created',
           order: Order.Desc,

@@ -135,10 +135,10 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
       : SearchQueryBooleanOperator.OR;
     setQueryObject((prevState) => ({
       ...prevState,
-      tagsQueryOperator: searchQueryTabBooleanOperator,
+      tagFilterOperator: searchQueryTabBooleanOperator,
       offset: 0,
     }));
-    rewriteSearchParams(SearchParameters.tagsQueryOperator, [searchQueryTabBooleanOperator], history, location, true);
+    rewriteSearchParams(SearchParameters.tagFilterOperator, [searchQueryTabBooleanOperator], history, location, true);
   };
 
   return (
@@ -204,7 +204,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           <FormControlLabel
             control={
               <StyledSwitch
-                checked={queryObject.tagsQueryOperator === SearchQueryBooleanOperator.AND}
+                checked={queryObject.tagFilterOperator === SearchQueryBooleanOperator.AND}
                 onChange={handleChangeInBooleanSearchQueryCheckBox}
               />
             }
