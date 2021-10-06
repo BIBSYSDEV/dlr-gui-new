@@ -142,7 +142,8 @@
     "institutions": "Institusjoner",
     "licenses": "Lisenser",
     "search_result_no_hits" : "Søket ga ingen treff",
-    "tags": "Emneord"
+    "tags": "Emneord",
+    "tags_boolean_operator_in_search" : "Få kun ressurser som inneholder absolutt alle valgte emneord"
   },
   "delivered_by": "Levert av",
   "embed": {
