@@ -202,6 +202,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
       {queryObject.tags.length > 1 && (
         <FormGroup>
           <FormControlLabel
+            data-testid="tag-filter-operator-switch"
             control={
               <StyledSwitch
                 checked={queryObject.tagFilterOperator === SearchQueryBooleanOperator.AND}

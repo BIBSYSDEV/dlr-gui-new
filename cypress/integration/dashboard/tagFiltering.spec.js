@@ -1,4 +1,4 @@
-import { SearchParameters } from '../../../src/types/search.types';
+import { SearchParameters, SearchQueryBooleanOperator } from '../../../src/types/search.types';
 
 context('Tag filtering', () => {
   const search = 'bananas';
@@ -82,5 +82,37 @@ context('Tag filtering', () => {
     cy.get(`[data-testid=filter-tags-input] input`).type(tag1);
     cy.get(`#filter-tags-input-popup li:first-of-type`).click();
     cy.get(`[data-testid=filter-tag-chip-0]`).should('exist');
+  });
+
+  it('supports AND / OR search for tags', () => {
+    const tagSearch = 'digi';
+    cy.get('[data-testid=expand-filtering-options]').click();
+    cy.get('[data-testid=tag-filter-operator-switch]').should('not.exist');
+    cy.get(`[data-testid=filter-tags-input] input`).type(tag1);
+    cy.get(`#filter-tags-input-option-0`).click(); //as results are hard coded
+    cy.get(`[data-testid=filter-tags-input] input`).type(tagSearch);
+    cy.get(`#filter-tags-input-option-1`).click(); //as results are hard coded
+    cy.get('[data-testid=tag-filter-operator-switch]').click();
+    cy.location().should((loc) => {
+      expect(loc.search).to.contain(`${SearchParameters.tagFilterOperator}=${SearchQueryBooleanOperator.AND}`);
+    });
+  });
+
+  it('can read AND / OR operator form URL and display it', () => {
+    const tag1 = 'tag1';
+    const tag2 = 'tag2';
+    const tag3_encoded = 'fjksf%20dlfsd';
+    cy.visit(
+      `/?${SearchParameters.query}=${search}&${SearchParameters.tag}=${tag1}&${SearchParameters.tag}=${tag2}&${SearchParameters.tag}=${tag3_encoded}&${SearchParameters.tagFilterOperator}=${SearchQueryBooleanOperator.AND}`
+    );
+    cy.get('[data-testid=tag-filter-operator-switch] input').should('be.checked');
+    cy.visit(
+      `/?${SearchParameters.query}=${search}&${SearchParameters.tag}=${tag1}&${SearchParameters.tag}=${tag2}&${SearchParameters.tag}=${tag3_encoded}&${SearchParameters.tagFilterOperator}=${SearchQueryBooleanOperator.OR}`
+    );
+    cy.get('[data-testid=tag-filter-operator-switch] input').should('not.be.checked');
+    cy.visit(
+      `/?${SearchParameters.query}=${search}&${SearchParameters.tag}=${tag1}&${SearchParameters.tag}=${tag2}&${SearchParameters.tag}=${tag3_encoded}`
+    );
+    cy.get('[data-testid=tag-filter-operator-switch] input').should('not.be.checked');
   });
 });
