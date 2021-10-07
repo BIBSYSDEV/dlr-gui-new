@@ -510,4 +510,33 @@ context('Registration', () => {
     cy.get('[data-testid=dlr-title-input]').should('have.value', mockPanoptoResources[0].title);
     cy.get('[data-testid=resource-type-input] input').should('have.value', ResourceFeatureTypes.video);
   });
+
+  it('can open access of a published resource', () => {
+    const email = 'epost@epost.no{enter}';
+    const publishedTestPost = mockMyResources[0];
+    cy.visit(`editresource/${publishedTestPost.identifier}`);
+    cy.get('[data-testid=resource-published-warning]').should('exist');
+
+    cy.get('[data-testid=step-navigation-3]').click();
+
+    cy.get('[data-testid=licence-field] .MuiInputBase-root.Mui-disabled').should('exist');
+    cy.get('[data-testid=access-dropdown-menu] .MuiInputBase-root.Mui-disabled').should('exist');
+    cy.get('[data-testid=add-private-consumer-access-button]').click();
+    cy.get('[data-testid=add-course-consumer-access]').click();
+    cy.get('[data-testid=course-input]').click().type('{downarrow}{enter}');
+    cy.get('[data-testid=confirm-adding-access]').click();
+    cy.get('[data-testid=confirm-dialog-button]').click();
+    cy.get('[data-testid=private-consumer-access-chip-2]').should('exist');
+
+    cy.get('[data-testid=add-private-consumer-access-button]').click();
+    cy.get('[data-testid=add-person-consumer-access]').click();
+    cy.get('[data-testid=feide-id-input]').type(email);
+    cy.get('[data-testid=confirm-dialog-button]').click();
+    cy.get('[data-testid=private-consumer-access-chip-3]').should('exist');
+
+    cy.get('[data-testid=add-private-consumer-access-button]').click();
+    cy.get('[data-testid=add-public-consumer-access]').click();
+    cy.get('[data-testid=confirm-dialog-button]').click();
+    cy.get('[data-testid=access-dropdown-menu]').contains('Offentlig');
+  });
 });

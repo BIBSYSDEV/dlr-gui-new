@@ -13,6 +13,7 @@ import { StyledFieldsWrapper } from '../../../components/styled/Wrappers';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
+import SoftenPrivateAccessAfterPublicationDialog from './SoftenPrivateAccessAfterPublicationDialog';
 
 const StyledFormControl = styled(FormControl)`
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {
@@ -45,6 +46,7 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
   const [hasDuplicateEmail, setHasDuplicateEmail] = useState(false);
   const [networkErrorOccured, setNetworkErrorOccured] = useState(false);
   const [containsInvalidEmail, setContainsInvalidEmail] = useState(false);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   const savePersonConsumerAccess = async () => {
     const emailRegex =
@@ -87,6 +89,14 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
     setPersonAccessFieldTextValue(errorList);
   };
 
+  const handleSubmit = () => {
+    if (values.features.dlr_status_published) {
+      setShowConfirmDialog(true);
+    } else {
+      savePersonConsumerAccess();
+    }
+  };
+
   return (
     <>
       <StyledFieldsWrapper>
@@ -104,7 +114,7 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
             onChange={(event) => setPersonAccessFieldTextValue(event.target.value)}
             onKeyPress={(event) => {
               if (event.key === 'Enter') {
-                savePersonConsumerAccess();
+                handleSubmit();
               }
             }}
             endAdornment={
@@ -162,10 +172,16 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
           disabled={personAccessTextFieldValue.length < 3}
           variant="contained"
           color="primary"
-          onClick={() => savePersonConsumerAccess()}>
+          onClick={handleSubmit}>
           {t('access.grant_access')}
         </StyledConfirmButton>
       </StyledFieldsWrapper>
+      <SoftenPrivateAccessAfterPublicationDialog
+        accessType={'person'}
+        open={showConfirmDialog}
+        setOpen={setShowConfirmDialog}
+        softenPrivateAccess={savePersonConsumerAccess}
+      />
     </>
   );
 };
