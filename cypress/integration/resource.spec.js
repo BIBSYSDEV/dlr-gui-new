@@ -48,7 +48,7 @@ context('Resource', () => {
     const additionalMockContent = mockContents[2];
     cy.get(`[data-testid=file-content-${additionalMockContent.identifier}-download-button]`).should('exist');
     cy.get(`[data-testid=file-content-${additionalMockContent.identifier}-content]`).contains(
-      additionalMockContent.features.dlr_content
+      additionalMockContent.features.dlr_content_title
     );
     cy.get(`[data-testid=file-content-${additionalMockContent.identifier}-size]`).contains(
       additionalMockContent.features.dlr_content_size

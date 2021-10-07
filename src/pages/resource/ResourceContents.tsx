@@ -56,7 +56,7 @@ const ResourceContents: FC<ResourceContentsProps> = ({ resource, userResourceAut
         <Thumbnail
           data-testid={`file-content-${content.identifier}-content`}
           institution={resource.features.dlr_storage_id ?? institution}
-          alt={content.features.dlr_content}
+          alt={content.features.dlr_content_title ?? content.features.dlr_content}
           resourceOrContentIdentifier={content.identifier}
           small={true}
         />
@@ -64,7 +64,7 @@ const ResourceContents: FC<ResourceContentsProps> = ({ resource, userResourceAut
       <Grid item xs={12} sm={5}>
         <StyledMetadataWrapper>
           <Typography variant="body1" gutterBottom data-testid={`file-content-${content.identifier}-content`}>
-            {content.features.dlr_content}
+            {content.features.dlr_content_title ?? content.features.dlr_content}
           </Typography>
           <Typography variant="overline" data-testid={`file-content-${content.identifier}-size`}>
             {content.features.dlr_content_size}
