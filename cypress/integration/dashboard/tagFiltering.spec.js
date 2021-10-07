@@ -98,7 +98,7 @@ context('Tag filtering', () => {
     });
   });
 
-  it('can read AND / OR operator form URL and display it', () => {
+  it('can read AND / OR operator from URL and display it', () => {
     const tag1 = 'tag1';
     const tag2 = 'tag2';
     const tag3_encoded = 'fjksf%20dlfsd';
