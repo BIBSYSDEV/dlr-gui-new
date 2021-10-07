@@ -24,6 +24,7 @@ export interface QueryObject {
   resourceTypes: string[];
   licenses: string[];
   tags: string[];
+  tagFilterOperator: SearchQueryBooleanOperator;
   showInaccessible: boolean;
   orderBy: string;
   order: Order;
@@ -36,6 +37,11 @@ export enum Order {
   Desc = 'desc',
 }
 
+export enum SearchQueryBooleanOperator {
+  OR = 'or',
+  AND = 'and',
+}
+
 export const firstResultPage = 1;
 
 export const emptyQueryObject: QueryObject = {
@@ -46,6 +52,7 @@ export const emptyQueryObject: QueryObject = {
   resourceTypes: [],
   licenses: [],
   tags: [],
+  tagFilterOperator: SearchQueryBooleanOperator.OR,
   showInaccessible: false,
   orderBy: 'created',
   order: Order.Desc,
@@ -56,6 +63,7 @@ export enum SearchParameters {
   creator = 'creator',
   institution = 'inst',
   tag = 'tag',
+  tagFilterOperator = 'tagFilterOperator',
   query = 'query',
   page = 'page',
   limit = 'limit',

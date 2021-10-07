@@ -1,5 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Order, QueryObject, SearchParameters, SearchResult } from '../../types/search.types';
+import {
+  Order,
+  QueryObject,
+  SearchParameters,
+  SearchQueryBooleanOperator,
+  SearchResult,
+} from '../../types/search.types';
 import { StringArrayToSetStringArray } from '../../utils/StringArray';
 import { searchResources } from '../../api/resourceApi';
 import { Creator, Resource } from '../../types/resource.types';
@@ -109,6 +115,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ parentR
           resourceTypes: [],
           licenses: [],
           tags: [],
+          tagFilterOperator: SearchQueryBooleanOperator.OR,
           showInaccessible: false,
           orderBy: 'created',
           order: Order.Desc,
