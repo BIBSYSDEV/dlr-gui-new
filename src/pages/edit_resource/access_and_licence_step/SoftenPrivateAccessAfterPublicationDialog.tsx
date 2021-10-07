@@ -15,14 +15,14 @@ const ConfirmDialogTitleId = 'confirm-dialog-title';
 const ConfirmDialogDescriptionId = 'confirm-dialog-description';
 
 interface SoftenPrivateAccessAfterPublicationDialogProps {
-  type: string;
+  accessType: string;
   open: boolean;
   setOpen: (value: boolean) => void;
   softenPrivateAccess: () => void;
 }
 
 const SoftenPrivateAccessAfterPublicationDialog: FC<SoftenPrivateAccessAfterPublicationDialogProps> = ({
-  type,
+  accessType,
   open,
   softenPrivateAccess,
   setOpen,
@@ -39,10 +39,10 @@ const SoftenPrivateAccessAfterPublicationDialog: FC<SoftenPrivateAccessAfterPubl
       fullScreen={fullscreen}
       onClose={onClose}
       open={open}
-      aria-labelledby={`${type}-${ConfirmDialogTitleId}`}
-      aria-describedby={`${type}-${ConfirmDialogDescriptionId}`}>
-      <DialogTitle id={`${type}-${ConfirmDialogTitleId}`}>{t('access.confirm_change')}</DialogTitle>
-      <DialogContent id={`${type}-${ConfirmDialogDescriptionId}`}>
+      aria-labelledby={`${accessType}-${ConfirmDialogTitleId}`}
+      aria-describedby={`${accessType}-${ConfirmDialogDescriptionId}`}>
+      <DialogTitle id={`${accessType}-${ConfirmDialogTitleId}`}>{t('access.confirm_change')}</DialogTitle>
+      <DialogContent id={`${accessType}-${ConfirmDialogDescriptionId}`}>
         <DialogContentText>{t('access.are_your_sure_warning')}</DialogContentText>
       </DialogContent>
       <DialogActions>

@@ -256,20 +256,16 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
             {values.features.dlr_status_published ? t('access.increase_access') : t('access.add_access')}
           </StyledAddAccessButton>
           {values.features.dlr_status_published ? (
-            <>
-              <HelperTextPopover
-                ariaButtonLabel={t('explanation_text.soften_helper_aria_label')}
-                popoverId={'soften-access-explainer'}>
-                <Typography gutterBottom>{t('explanation_text.soften_helper_text_1')}.</Typography>
-                <Typography gutterBottom>{t('explanation_text.soften_helper_text_2')}.</Typography>
-                <Typography gutterBottom variant="body2">
-                  {t('explanation_text.private_access_example')}.
-                </Typography>
-                <Typography variant="body2">
-                  {t('explanation_text.private_access_course_code_restrictions')}.
-                </Typography>
-              </HelperTextPopover>
-            </>
+            <HelperTextPopover
+              ariaButtonLabel={t('explanation_text.soften_helper_aria_label')}
+              popoverId={'soften-access-explainer'}>
+              <Typography gutterBottom>{t('explanation_text.soften_helper_text_1')}.</Typography>
+              <Typography gutterBottom>{t('explanation_text.soften_helper_text_2')}.</Typography>
+              <Typography gutterBottom variant="body2">
+                {t('explanation_text.private_access_example')}.
+              </Typography>
+              <Typography variant="body2">{t('explanation_text.private_access_course_code_restrictions')}.</Typography>
+            </HelperTextPopover>
           ) : (
             <HelperTextPopover
               ariaButtonLabel={t('explanation_text.private_access_aria_label')}

@@ -177,7 +177,7 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
         </StyledConfirmButton>
       </StyledFieldsWrapper>
       <SoftenPrivateAccessAfterPublicationDialog
-        type={'person'}
+        accessType={'person'}
         open={showConfirmDialog}
         setOpen={setShowConfirmDialog}
         softenPrivateAccess={savePersonConsumerAccess}

@@ -141,13 +141,13 @@ const AddAccessPopover: FC<AddAccessPopoverProps> = ({
         </List>
       </Popover>
       <SoftenPrivateAccessAfterPublicationDialog
-        type={'public'}
+        accessType={'public'}
         open={showConfirmPublicDialog}
         setOpen={setShowConfirmPublicDialog}
         softenPrivateAccess={changeToPublicAccess}
       />
       <SoftenPrivateAccessAfterPublicationDialog
-        type={'institution'}
+        accessType={'institution'}
         open={showConfirmInstitutionDialog}
         setOpen={setConfirmInstitutionDialog}
         softenPrivateAccess={dialogConfirmedInstitutionAccess}

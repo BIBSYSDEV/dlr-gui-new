@@ -165,7 +165,7 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
         </Typography>
       )}
       <SoftenPrivateAccessAfterPublicationDialog
-        type={'course'}
+        accessType={'course'}
         open={showConfirmDialog}
         setOpen={setShowConfirmDialog}
         softenPrivateAccess={handleSoftenDialogAddCourse}
