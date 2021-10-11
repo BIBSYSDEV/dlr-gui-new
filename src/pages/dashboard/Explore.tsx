@@ -9,6 +9,7 @@ import {
   NumberOfResultsPrPage,
   QueryObject,
   SearchParameters,
+  SearchQueryBooleanOperator,
   SearchResult,
 } from '../../types/search.types';
 import { Resource } from '../../types/resource.types';
@@ -88,6 +89,10 @@ const createQueryFromUrl = (location: any): QueryObject => {
   const offset = pageTerm && Number(pageTerm) !== firstPage ? (Number(pageTerm) - 1) * NumberOfResultsPrPage : 0;
   const showInaccessible = showInaccessibleParameter ? showInaccessibleParameter.toLowerCase() === 'true' : false;
   const licenses = searchTerms.getAll(SearchParameters.license);
+  const tagsQueryOperator =
+    searchTerms.get(SearchParameters.tagFilterOperator) === SearchQueryBooleanOperator.AND
+      ? SearchQueryBooleanOperator.AND
+      : SearchQueryBooleanOperator.OR;
   return {
     ...emptyQueryObject,
     query: searchTerms.get(SearchParameters.query) ?? '',
@@ -97,6 +102,7 @@ const createQueryFromUrl = (location: any): QueryObject => {
     institutions: institutions,
     licenses: licenses,
     tags: tags,
+    tagFilterOperator: tagsQueryOperator,
     creators: creators,
     showInaccessible: showInaccessible,
   };

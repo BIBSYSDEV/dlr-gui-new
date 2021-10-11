@@ -1,10 +1,10 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
-import { Chip, CircularProgress, FormControl, FormGroup, TextField } from '@material-ui/core';
+import { Chip, CircularProgress, FormControl, FormControlLabel, FormGroup, Switch, TextField } from '@material-ui/core';
 import FormLabel from '@material-ui/core/FormLabel';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { QueryObject, SearchParameters } from '../../types/search.types';
+import { QueryObject, SearchParameters, SearchQueryBooleanOperator } from '../../types/search.types';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import HelperTextPopover from '../../components/HelperTextPopover';
@@ -13,7 +13,7 @@ import useDebounce from '../../utils/useDebounce';
 import ErrorBanner from '../../components/ErrorBanner';
 import { useHistory, useLocation } from 'react-router-dom';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
-import { StyleWidths } from '../../themes/mainTheme';
+import { Colors, StyleWidths } from '../../themes/mainTheme';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
 
@@ -42,6 +42,18 @@ const StyledChipContainer = styled.div`
 const StyledFormLabel = styled(FormLabel)`
   display: flex;
   align-items: center;
+`;
+
+const StyledSwitch = styled(Switch)`
+  & .MuiSwitch-switchBase.Mui-checked {
+    color: ${Colors.ChipBackground};
+    &:hover {
+      background-color: ${Colors.DLRColdGreen1};
+    }
+  }
+  & .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
+    background-color: ${Colors.ChipBackground};
+  }
 `;
 
 interface TagsFilteringProps {
@@ -117,6 +129,18 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
     rewriteSearchParams(SearchParameters.tag, newTags, history, location, true);
   };
 
+  const handleChangeInBooleanSearchQueryCheckBox = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchQueryTabBooleanOperator = event.target.checked
+      ? SearchQueryBooleanOperator.AND
+      : SearchQueryBooleanOperator.OR;
+    setQueryObject((prevState) => ({
+      ...prevState,
+      tagFilterOperator: searchQueryTabBooleanOperator,
+      offset: 0,
+    }));
+    rewriteSearchParams(SearchParameters.tagFilterOperator, [searchQueryTabBooleanOperator], history, location, true);
+  };
+
   return (
     <StyledFormControl component="fieldset">
       <StyledFormLabel>
@@ -175,6 +199,20 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           ))}
         </StyledChipContainer>
       </FormGroup>
+      {queryObject.tags.length > 1 && (
+        <FormGroup>
+          <FormControlLabel
+            data-testid="tag-filter-operator-switch"
+            control={
+              <StyledSwitch
+                checked={queryObject.tagFilterOperator === SearchQueryBooleanOperator.AND}
+                onChange={handleChangeInBooleanSearchQueryCheckBox}
+              />
+            }
+            label={t('dashboard.tags_boolean_operator_in_search')}
+          />
+        </FormGroup>
+      )}
     </StyledFormControl>
   );
 };

@@ -60,7 +60,7 @@ export const mockMyResources: Resource[] = [
       dlr_content_type: 'link',
       dlr_submitter_email: 'test@test.com',
       dlr_content: 'some content',
-      dlr_access: 'open',
+      dlr_access: 'private',
     },
     identifier: '123',
   }),

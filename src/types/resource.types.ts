@@ -242,6 +242,7 @@ export enum ResourceFeatureNamesFullPath {
 
 export enum ContentFeatureNames {
   Title = 'dlr_content_title',
+  Content = 'dlr_content',
 }
 
 export enum ContributorFeatureNames {
