@@ -28,6 +28,7 @@ import AccessFiltering from './AccessFiltering';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
+import NoResult from './NoResult';
 
 const SearchResultWrapper = styled.div`
   display: flex;
@@ -190,17 +191,16 @@ const Explore = () => {
               <>
                 <StyledResultListHeaderWrapper ref={startOfList}>
                   <Typography variant="h2">{t('common.result')}</Typography>
-                  <Typography variant="body1">
-                    {resources && resources.length > 0 ? (
-                      <>
-                        {`${t('common.showing')} ${parseInt(searchResult.offset) + 1}-${
-                          parseInt(searchResult.offset) + resources.length
-                        } ${t('common.of').toLowerCase()} ${searchResult.numFound}`}
-                      </>
-                    ) : (
-                      <>{t('dashboard.search_result_no_hits')}</>
-                    )}
-                  </Typography>
+
+                  {resources && resources.length > 0 ? (
+                    <Typography variant="body1">
+                      {`${t('common.showing')} ${parseInt(searchResult.offset) + 1}-${
+                        parseInt(searchResult.offset) + resources.length
+                      } ${t('common.of').toLowerCase()} ${searchResult.numFound}`}
+                    </Typography>
+                  ) : (
+                    <NoResult searchResult={searchResult} />
+                  )}
                   {user.id && <AccessFiltering queryObject={queryObject} setQueryObject={setQueryObject} />}
                 </StyledResultListHeaderWrapper>
                 <StyledList>
