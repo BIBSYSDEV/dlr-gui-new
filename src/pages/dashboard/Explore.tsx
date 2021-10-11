@@ -192,17 +192,16 @@ const Explore = () => {
                 <StyledResultListHeaderWrapper ref={startOfList}>
                   <Typography variant="h2">{t('common.result')}</Typography>
 
-                  {resources && resources.length > 0 ? (
+                  {resources && resources.length > 0 && (
                     <Typography variant="body1">
                       {`${t('common.showing')} ${parseInt(searchResult.offset) + 1}-${
                         parseInt(searchResult.offset) + resources.length
                       } ${t('common.of').toLowerCase()} ${searchResult.numFound}`}
                     </Typography>
-                  ) : (
-                    <NoResult searchResult={searchResult} />
                   )}
                   {user.id && <AccessFiltering queryObject={queryObject} setQueryObject={setQueryObject} />}
                 </StyledResultListHeaderWrapper>
+                {resources.length === 0 && <NoResult searchResult={searchResult} />}
                 <StyledList>
                   {resources &&
                     resources.length > 0 &&

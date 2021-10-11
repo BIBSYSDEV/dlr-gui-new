@@ -13,18 +13,22 @@ const NoResult: FC<NoResultProps> = ({ searchResult }) => {
 
   return (
     <>
-      <Typography variant="body1">{t('dashboard.search_result_no_hits')} </Typography>
+      <Typography gutterBottom variant="body1">
+        {t('dashboard.search_result_no_hits')}{' '}
+      </Typography>
       {searchResult.spellcheck_suggestions.length > 0 && (
         <Typography variant="body1">
-          {'Mente du '}
+          {t('dashboard.did_you_mean')}{' '}
           {searchResult.spellcheck_suggestions.map((suggestion) => (
-            <Link
-              data-testid={'search-suggestions'}
-              href={`/?${SearchParameters.query}=${suggestion}${
-                getLMSSearchParams().toString().length > 0 ? `&${getLMSSearchParams()}` : ''
-              }`}>
-              {suggestion}
-            </Link>
+            <>
+              <Link
+                data-testid={'search-suggestions'}
+                href={`/?${SearchParameters.query}=${suggestion}${
+                  getLMSSearchParams().toString().length > 0 ? `&${getLMSSearchParams()}` : ''
+                }`}>
+                {suggestion}
+              </Link>{' '}
+            </>
           ))}
           ?
         </Typography>
