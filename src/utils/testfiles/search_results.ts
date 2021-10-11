@@ -16,3 +16,13 @@ export const mockSearchResults: any = {
   facet_counts: [],
   spellcheck_suggestions: [],
 };
+
+export const mockSearchResultsNoResult: any = {
+  offset: '0',
+  limit: '10',
+  numFound: 0,
+  queryTime: 17,
+  resourcesAsJson: [],
+  facet_counts: [],
+  spellcheck_suggestions: ['risk', 'risiko'],
+};

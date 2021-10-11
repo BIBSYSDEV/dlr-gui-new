@@ -212,4 +212,14 @@ context('Explore', () => {
     cy.get('[data-testid=show-all-tags]').click();
     cy.get('[data-testid=tag-chip-9]').should('exist');
   });
+
+  it('shows search suggestions', () => {
+    const missSpelled = 'risi';
+    const correctlySpelled = 'risk';
+    cy.visit(`/?${SearchParameters.query}=${missSpelled}`);
+    cy.get(`[data-testid=search-suggestion-${correctlySpelled}]`).click();
+    cy.location().should((loc) => {
+      expect(loc.search).to.contain(`${SearchParameters.query}=${correctlySpelled}`);
+    });
+  });
 });
