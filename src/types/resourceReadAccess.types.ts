@@ -38,6 +38,7 @@ interface CourseFeatures {
   version?: string;
   year: string;
   season_nr: string | CourseSeason;
+  institution?: string;
 }
 
 export enum CourseSeason {
