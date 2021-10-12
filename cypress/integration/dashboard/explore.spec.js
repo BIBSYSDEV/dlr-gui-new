@@ -214,9 +214,9 @@ context('Explore', () => {
   });
 
   it('shows search suggestions', () => {
-    const missSpelled = 'risi';
+    const misspelled = 'risi';
     const correctlySpelled = 'risk';
-    cy.visit(`/?${SearchParameters.query}=${missSpelled}`);
+    cy.visit(`/?${SearchParameters.query}=${misspelled}`);
     cy.get(`[data-testid=search-suggestion-${correctlySpelled}]`).click();
     cy.location().should((loc) => {
       expect(loc.search).to.contain(`${SearchParameters.query}=${correctlySpelled}`);
