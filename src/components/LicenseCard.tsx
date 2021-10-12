@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Link, Typography } from '@material-ui/core';
+import { Link, Typography } from '@mui/material';
 import { License } from '../types/license.types';
 import i18next from 'i18next';
 import styled from 'styled-components';

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import logo from '../resources/images/unit_logo.png';
 import { Link } from 'react-router-dom';
-import { Link as MuiLink } from '@material-ui/core';
+import { Link as MuiLink } from '@mui/material';
 import NormalText from '../components/NormalText';
 
 const StyledFooter = styled.footer`

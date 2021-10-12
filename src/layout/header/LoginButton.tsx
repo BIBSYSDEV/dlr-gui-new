@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import { getPackedUrlCurrentPathForFeideLogin } from '../../utils/rewriteSearchParams';
 
 interface LoginButtonProps {

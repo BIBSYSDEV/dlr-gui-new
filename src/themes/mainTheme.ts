@@ -1,8 +1,8 @@
-import { alpha, createTheme, emphasize } from '@material-ui/core';
+import { alpha, createTheme, emphasize, adaptV4Theme } from '@mui/material';
 import { barlowRegular, CrimsonTextRegular, LibreFranklinRegular } from './fonts';
 
 // Extend Palette type to allow custom colors
-declare module '@material-ui/core/styles/createPalette' {
+declare module '@mui/material/styles/createPalette' {
   interface Palette {
     separator: PaletteColor;
     box: PaletteColor;
@@ -85,232 +85,231 @@ export enum DeviceWidths {
   xl = 1920,
 }
 
-export default createTheme({
-  breakpoints: {
-    values: {
-      xs: DeviceWidths.xs,
-      sm: DeviceWidths.sm,
-      md: DeviceWidths.md,
-      lg: DeviceWidths.lg,
-      xl: DeviceWidths.xl,
-    },
-  },
-  palette: {
-    primary: {
-      main: Colors.Primary,
-    },
-    secondary: {
-      main: Colors.Secondary,
-    },
-    separator: { main: Colors.Separator },
-    box: {
-      main: Colors.Box,
-    },
-    danger: { main: Colors.Danger, light: Colors.DangerLight },
-    error: { main: Colors.Warning },
-    text: {
-      primary: Colors.PrimaryText,
-      secondary: Colors.SecondaryText,
-      disabled: Colors.Disabled,
-    },
-    background: {
-      default: Colors.Background,
-    },
-  },
-  typography: {
-    fontFamily: 'Barlow,  sans-serif',
-    h1: {
-      fontFamily: 'Crimson Text, serif',
-      fontSize: '3rem',
-      lineHeight: '4.125rem',
-      color: Colors.InitialText,
-    },
-    h2: {
-      fontFamily: 'Crimson Text, serif',
-      fontSize: '2.25rem',
-      lineHeight: '3rem',
-      letterSpacing: '0.0025em',
-      color: Colors.InitialText,
-    },
-    h3: {
-      fontFamily: 'Crimson Text, serif',
-      fontSize: '1.5rem',
-      lineHeight: '2.0625rem',
-      color: Colors.InitialText,
-    },
-    h4: {
-      fontFamily: 'Barlow, serif',
-      fontSize: '1.125rem',
-      fontWeight: 'bold',
-      lineHeight: '1.5rem',
-      letterSpacing: '0.0015em',
-      color: Colors.InitialText,
-    },
-    h5: {
-      color: Colors.InitialText,
-    },
-    h6: {
-      color: Colors.InitialText,
-    },
-    subtitle1: {
-      fontFamily: 'Barlow, serif',
-      fontSize: '1rem',
-      lineHeight: '1.1875rem',
-      letterSpacing: '0.0015em',
-      color: Colors.InitialText,
-    },
-    subtitle2: {
-      fontFamily: 'Barlow, serif',
-      fontSize: '0.875rem',
-      fontWeight: 'bold',
-      lineHeight: '1.0625rem',
-      color: Colors.InitialText,
-    },
-    body1: {
-      fontFamily: 'Barlow, serif',
-      fontSize: '1rem',
-      lineHeight: '1.5rem',
-      letterSpacing: '0.005em',
-      color: Colors.InitialText,
-    },
-    body2: {
-      fontFamily: 'Barlow, serif',
-      fontSize: '0.875rem',
-      lineHeight: '1.0625rem',
-      letterSpacing: '0.0025em',
-      color: Colors.InitialText,
-    },
-    button: {
-      fontFamily: 'Barlow, serif',
-      fontSize: '0.875rem',
-      lineHeight: '1.0625rem',
-      letterSpacing: '0.02em',
-      fontWeight: 500,
-      color: Colors.InitialText,
-    },
-    caption: {
-      fontFamily: 'Barlow, serif',
-      fontSize: '0.75rem',
-      lineHeight: '0.875rem',
-      letterSpacing: '0.004em',
-      color: Colors.InitialText,
-    },
-    overline: {
-      fontFamily: 'Barlow, serif',
-      fontSize: '0.75rem',
-      lineHeight: '0.875rem',
-      letterSpacing: '0.015em',
-      color: Colors.InitialText,
-      textTransform: 'none',
-    },
-  },
-  overrides: {
-    MuiAccordion: {
-      root: {
-        border: '3px solid #427F8C',
-        boxShadow: 'none',
+export default createTheme(
+  adaptV4Theme({
+    breakpoints: {
+      values: {
+        xs: DeviceWidths.xs,
+        sm: DeviceWidths.sm,
+        md: DeviceWidths.md,
+        lg: DeviceWidths.lg,
+        xl: DeviceWidths.xl,
       },
     },
-    MuiButton: {
-      root: {
-        textTransform: 'uppercase',
-        minHeight: '2.25rem',
+    palette: {
+      primary: {
+        main: Colors.Primary,
       },
-      label: {
-        height: '100%',
+      secondary: {
+        main: Colors.Secondary,
+      },
+      separator: { main: Colors.Separator },
+      box: {
+        main: Colors.Box,
+      },
+      danger: { main: Colors.Danger, light: Colors.DangerLight },
+      error: { main: Colors.Warning },
+      text: {
+        primary: Colors.PrimaryText,
+        secondary: Colors.SecondaryText,
+        disabled: Colors.Disabled,
+      },
+      background: {
+        default: Colors.Background,
       },
     },
-    MuiCard: {
-      root: {
-        backgroundColor: Colors.Box,
+    typography: {
+      fontFamily: 'Barlow,  sans-serif',
+      h1: {
+        fontFamily: 'Crimson Text, serif',
+        fontSize: '3rem',
+        lineHeight: '4.125rem',
+        color: Colors.InitialText,
       },
-    },
-    MuiChip: {
-      root: {
-        height: 'auto',
+      h2: {
+        fontFamily: 'Crimson Text, serif',
+        fontSize: '2.25rem',
+        lineHeight: '3rem',
+        letterSpacing: '0.0025em',
+        color: Colors.InitialText,
+      },
+      h3: {
+        fontFamily: 'Crimson Text, serif',
+        fontSize: '1.5rem',
+        lineHeight: '2.0625rem',
+        color: Colors.InitialText,
+      },
+      h4: {
+        fontFamily: 'Barlow, serif',
+        fontSize: '1.125rem',
+        fontWeight: 'bold',
+        lineHeight: '1.5rem',
+        letterSpacing: '0.0015em',
+        color: Colors.InitialText,
+      },
+      h5: {
+        color: Colors.InitialText,
+      },
+      h6: {
+        color: Colors.InitialText,
+      },
+      subtitle1: {
+        fontFamily: 'Barlow, serif',
         fontSize: '1rem',
+        lineHeight: '1.1875rem',
+        letterSpacing: '0.0015em',
+        color: Colors.InitialText,
       },
-      colorPrimary: {
-        backgroundColor: Colors.ChipBackground,
-        color: Colors.Background,
+      subtitle2: {
+        fontFamily: 'Barlow, serif',
+        fontSize: '0.875rem',
+        fontWeight: 'bold',
+        lineHeight: '1.0625rem',
+        color: Colors.InitialText,
       },
-      label: {
-        whiteSpace: 'normal',
-        color: 'inherit',
-        paddingTop: '0.2rem',
-        paddingBottom: '0.4rem',
+      body1: {
+        fontFamily: 'Barlow, serif',
+        fontSize: '1rem',
+        lineHeight: '1.5rem',
+        letterSpacing: '0.005em',
+        color: Colors.InitialText,
       },
-      clickableColorPrimary: {
-        '&:hover, &:focus': {
-          backgroundColor: emphasize(Colors.ChipBackground, 0.2),
+      body2: {
+        fontFamily: 'Barlow, serif',
+        fontSize: '0.875rem',
+        lineHeight: '1.0625rem',
+        letterSpacing: '0.0025em',
+        color: Colors.InitialText,
+      },
+      button: {
+        fontFamily: 'Barlow, serif',
+        fontSize: '0.875rem',
+        lineHeight: '1.0625rem',
+        letterSpacing: '0.02em',
+        fontWeight: 500,
+        color: Colors.InitialText,
+      },
+      caption: {
+        fontFamily: 'Barlow, serif',
+        fontSize: '0.75rem',
+        lineHeight: '0.875rem',
+        letterSpacing: '0.004em',
+        color: Colors.InitialText,
+      },
+      overline: {
+        fontFamily: 'Barlow, serif',
+        fontSize: '0.75rem',
+        lineHeight: '0.875rem',
+        letterSpacing: '0.015em',
+        color: Colors.InitialText,
+        textTransform: 'none',
+      },
+    },
+    overrides: {
+      MuiAccordion: {
+        root: {
+          border: '3px solid #427F8C',
+          boxShadow: 'none',
         },
       },
-      deletableColorPrimary: {
-        '&:focus': {
-          backgroundColor: emphasize(Colors.ChipBackground, 0.3),
+      MuiButton: {
+        root: {
+          textTransform: 'uppercase',
+          minHeight: '2.25rem',
         },
       },
-      deleteIconColorPrimary: {
-        color: alpha(Colors.Background, 0.7),
-        '&:hover, &:active': {
+      MuiCard: {
+        root: {
+          backgroundColor: Colors.Box,
+        },
+      },
+      MuiChip: {
+        root: {
+          height: 'auto',
+          fontSize: '1rem',
+        },
+        colorPrimary: {
+          backgroundColor: Colors.ChipBackground,
           color: Colors.Background,
         },
-      },
-    },
-    MuiCssBaseline: {
-      '@global': {
-        '@font-face': [barlowRegular, LibreFranklinRegular, CrimsonTextRegular],
-      },
-    },
-    MuiInputBase: {
-      root: {
-        background: Colors.Background,
-      },
-    },
-    MuiLink: {
-      root: {
-        color: Colors.Link,
-      },
-    },
-    MuiTab: {
-      textColorPrimary: {
-        '&$selected': {
-          fontWeight: 'bold',
+        label: {
+          whiteSpace: 'normal',
+          color: 'inherit',
+          paddingTop: '0.2rem',
+          paddingBottom: '0.4rem',
+        },
+        clickableColorPrimary: {
+          '&:hover, &:focus': {
+            backgroundColor: emphasize(Colors.ChipBackground, 0.2),
+          },
+        },
+        deletableColorPrimary: {
+          '&:focus': {
+            backgroundColor: emphasize(Colors.ChipBackground, 0.3),
+          },
+        },
+        deleteIconColorPrimary: {
+          color: alpha(Colors.Background, 0.7),
+          '&:hover, &:active': {
+            color: Colors.Background,
+          },
         },
       },
-    },
-    MuiTextField: {
-      root: {
-        marginTop: '1rem',
+      MuiCssBaseline: {
+        '@global': {
+          '@font-face': [barlowRegular, LibreFranklinRegular, CrimsonTextRegular],
+        },
       },
-    },
-    MuiFilledInput: {
-      root: {
-        backgroundColor: Colors.Background,
-        '&:hover': {
-          backgroundColor: Colors.HoverTextFieldFilled,
+      MuiInputBase: {
+        root: {
+          background: Colors.Background,
         },
-        '&$focused': {
-          backgroundColor: Colors.HoverTextFieldFilled,
+      },
+      MuiLink: {
+        root: {
+          color: Colors.Link,
         },
-        '&$disabled': {
+      },
+      MuiTab: {
+        textColorPrimary: {
+          '&$selected': {
+            fontWeight: 'bold',
+          },
+        },
+      },
+      MuiTextField: {
+        root: {
+          marginTop: '1rem',
+        },
+      },
+      MuiFilledInput: {
+        root: {
           backgroundColor: Colors.Background,
+          '&:hover': {
+            backgroundColor: Colors.HoverTextFieldFilled,
+          },
+          '&$focused': {
+            backgroundColor: Colors.HoverTextFieldFilled,
+          },
+          '&$disabled': {
+            backgroundColor: Colors.Background,
+          },
+        },
+      },
+      MuiStepLabel: {
+        label: {
+          width: 'fit-content',
+          fontSize: '1rem',
+          '@media (max-width:600px)': {
+            visibility: 'collapse',
+          },
+          '&$active': {
+            fontWeight: '600',
+            color: Colors.StepperSelected,
+            visibility: 'visible',
+          },
         },
       },
     },
-    MuiStepLabel: {
-      label: {
-        width: 'fit-content',
-        fontSize: '1rem',
-        '@media (max-width:600px)': {
-          visibility: 'collapse',
-        },
-        '&$active': {
-          fontWeight: '600',
-          color: Colors.StepperSelected,
-          visibility: 'visible',
-        },
-      },
-    },
-  },
-});
+  })
+);

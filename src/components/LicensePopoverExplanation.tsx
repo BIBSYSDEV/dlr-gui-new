@@ -6,11 +6,11 @@ import SA from '../resources/images/creative_commons_logos/sa.svg';
 import ND from '../resources/images/creative_commons_logos/nd.svg';
 import Zero from '../resources/images/creative_commons_logos/zero.svg';
 import BY from '../resources/images/creative_commons_logos/by.svg';
-import Typography from '@material-ui/core/Typography';
-import { IconButton, Popover } from '@material-ui/core';
-import HelpIcon from '@material-ui/icons/Help';
+import Typography from '@mui/material/Typography';
+import { IconButton, Popover } from '@mui/material';
+import HelpIcon from '@mui/icons-material/Help';
 import { useTranslation } from 'react-i18next';
-import Link from '@material-ui/core/Link';
+import Link from '@mui/material/Link';
 
 const StyledImage = styled.img`
   width: 1.2rem;
@@ -86,7 +86,7 @@ const LicensePopoverExplanation: FC<CCExplanationProps> = ({
   };
   return (
     <div>
-      <IconButton aria-label={t('dashboard.explain_license')} color="primary" onClick={handleClick}>
+      <IconButton aria-label={t('dashboard.explain_license')} color="primary" onClick={handleClick} size="large">
         <HelpIcon />
       </IconButton>
       <Popover

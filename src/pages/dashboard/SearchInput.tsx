@@ -1,15 +1,15 @@
 import React, { ChangeEvent, Dispatch, FC, FormEvent, SetStateAction, useEffect, useState } from 'react';
-import { Button, TextField } from '@material-ui/core';
+import { Button, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from '@mui/icons-material/Search';
 import { StyleWidths } from '../../themes/mainTheme';
 import { NumberOfResultsPrPage, QueryObject, SearchParameters } from '../../types/search.types';
 import { useHistory, useLocation } from 'react-router-dom';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 import HelperTextPopover from '../../components/HelperTextPopover';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
 
 const StyledForm = styled.form`
   margin-top: 2rem;

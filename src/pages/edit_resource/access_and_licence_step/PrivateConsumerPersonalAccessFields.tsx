@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
-import { FilledInput, FormControl, IconButton, InputAdornment, InputLabel } from '@material-ui/core';
-import ClearIcon from '@material-ui/icons/Clear';
+import { FilledInput, FormControl, IconButton, InputAdornment, InputLabel } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
 import styled from 'styled-components';
 import { StyleWidths } from '../../../themes/mainTheme';
 import { postAdditionalUserConsumerAccess } from '../../../api/sharingApi';
@@ -10,7 +10,7 @@ import { useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
 import { StyledCancelButton, StyledConfirmButton } from '../../../components/styled/StyledButtons';
 import { StyledFieldsWrapper } from '../../../components/styled/Wrappers';
-import FormHelperText from '@material-ui/core/FormHelperText';
+import FormHelperText from '@mui/material/FormHelperText';
 import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
 import SoftenPrivateAccessAfterPublicationDialog from './SoftenPrivateAccessAfterPublicationDialog';

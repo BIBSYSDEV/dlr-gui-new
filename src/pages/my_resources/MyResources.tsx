@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getMyResources } from '../../api/resourceApi';
-import { CircularProgress, List, Tab, Typography } from '@material-ui/core';
+import { CircularProgress, List, Tab, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Resource } from '../../types/resource.types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
-import { TabContext, TabList, TabPanel } from '@material-ui/lab';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { StyledContentWrapperLarge, StyledProgressWrapper } from '../../components/styled/Wrappers';
 import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';

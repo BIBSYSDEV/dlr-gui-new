@@ -1,9 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import { ThemeProvider } from 'styled-components';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { StylesProvider, ThemeProvider as MUIThemeProvider } from '@material-ui/styles';
+
+import { ThemeProvider as StyledComponentsThemeProvider } from 'styled-components';
+import { StyledEngineProvider, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+
+import CssBaseline from '@mui/material/CssBaseline';
+import { StylesProvider, ThemeProvider as MUIThemeProvider } from '@mui/styles';
 import mainTheme from './themes/mainTheme';
 import { Provider } from 'react-redux';
 import { store } from './state/store';
@@ -20,12 +23,14 @@ ReactDOM.render(
   // <React.StrictMode>
   <Provider store={store}>
     <StylesProvider injectFirst>
-      <ThemeProvider theme={mainTheme}>
-        <MUIThemeProvider theme={mainTheme}>
-          <CssBaseline />
-          <App />
-        </MUIThemeProvider>
-      </ThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <StyledComponentsThemeProvider theme={mainTheme}>
+          <MuiThemeProvider theme={mainTheme}>
+            <CssBaseline />
+            <App />
+          </MuiThemeProvider>
+        </StyledComponentsThemeProvider>
+      </StyledEngineProvider>
     </StylesProvider>
   </Provider>,
   //</React.StrictMode>,

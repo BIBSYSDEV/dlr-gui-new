@@ -1,10 +1,10 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
-import { Checkbox, FormControlLabel } from '@material-ui/core';
+import { Checkbox, FormControlLabel } from '@mui/material';
 import { QueryObject, SearchParameters } from '../../types/search.types';
 import { useHistory, useLocation } from 'react-router-dom';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 import HelperTextPopover from '../../components/HelperTextPopover';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 
 interface AccessFilteringProps {

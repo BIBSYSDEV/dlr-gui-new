@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import { StyledContentWrapperMedium, StyledSchemaPartColored } from '../../components/styled/Wrappers';
 import { Colors } from '../../themes/mainTheme';
-import WarningIcon from '@material-ui/icons/Warning';
+import WarningIcon from '@mui/icons-material/Warning';
 import { useFormikContext } from 'formik';
 import { Resource } from '../../types/resource.types';
 

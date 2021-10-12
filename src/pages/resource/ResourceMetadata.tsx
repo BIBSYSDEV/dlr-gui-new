@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Resource } from '../../types/resource.types';
 import { StyledContentWrapperMedium, StyledSchemaPartColored } from '../../components/styled/Wrappers';
 import { Colors } from '../../themes/mainTheme';
-import { Button, Chip, Grid, Typography } from '@material-ui/core';
+import { Button, Chip, Grid, Typography } from '@mui/material';
 import { format } from 'date-fns';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';

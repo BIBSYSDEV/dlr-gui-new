@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, CircularProgress, List, ListItem, Switch, TextField, Typography } from '@material-ui/core';
+import { Button, CircularProgress, List, ListItem, Switch, TextField, Typography } from '@mui/material';
 import styled from 'styled-components';
 import {
   getRolesForInstitutionUser,

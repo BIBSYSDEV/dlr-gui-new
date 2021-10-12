@@ -1,7 +1,7 @@
 import React, { Dispatch, FC, SetStateAction, useEffect, useRef, useState } from 'react';
-import { Checkbox, CircularProgress, FormControl, FormControlLabel, FormGroup } from '@material-ui/core';
-import FormLabel from '@material-ui/core/FormLabel';
-import Typography from '@material-ui/core/Typography';
+import { Checkbox, CircularProgress, FormControl, FormControlLabel, FormGroup } from '@mui/material';
+import FormLabel from '@mui/material/FormLabel';
+import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
 import { AllDLRInstitutionNames, FacetType, QueryObject, SearchParameters } from '../../types/search.types';
 import styled from 'styled-components';

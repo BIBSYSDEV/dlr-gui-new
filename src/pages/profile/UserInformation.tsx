@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Chip, CircularProgress, Grid, List, Typography } from '@material-ui/core';
+import { Chip, CircularProgress, Grid, List, Typography } from '@mui/material';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';

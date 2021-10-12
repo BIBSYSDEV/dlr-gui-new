@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { SearchParameters, SearchResult } from '../../types/search.types';
-import { Link, Typography } from '@material-ui/core';
+import { Link, Typography } from '@mui/material';
 import { getLMSSearchParams } from '../../utils/lmsService';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';

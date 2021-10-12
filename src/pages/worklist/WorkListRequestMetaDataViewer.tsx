@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Button, Grid, Link, Typography } from '@material-ui/core';
+import { Button, Grid, Link, Typography } from '@mui/material';
 import { WorklistRequest } from '../../types/Worklist.types';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';

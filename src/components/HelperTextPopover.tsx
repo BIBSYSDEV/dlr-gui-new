@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import HelpIcon from '@material-ui/icons/Help';
-import { IconButton, Popover } from '@material-ui/core';
+import HelpIcon from '@mui/icons-material/Help';
+import { IconButton, Popover } from '@mui/material';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { StyleWidths } from '../themes/mainTheme';
@@ -36,7 +36,7 @@ const HelperTextPopover: FC<HelperTextPopoverProps> = ({ ariaButtonLabel, popove
 
   return (
     <>
-      <IconButton aria-label={ariaButtonLabel} onClick={handleClick} color="primary">
+      <IconButton aria-label={ariaButtonLabel} onClick={handleClick} color="primary" size="large">
         <HelpIcon />
       </IconButton>
       <Popover

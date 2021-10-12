@@ -4,11 +4,11 @@ import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
 import { PageHeader } from '../../components/PageHeader';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Grid, Tab, Typography } from '@material-ui/core';
+import { Grid, Tab, Typography } from '@mui/material';
 import DOIRequestList from './DOIRequestList';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
-import { TabContext, TabList, TabPanel } from '@material-ui/lab';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 import ReportList from './ReportList';
 import OwnershipRequestList from './OwnershipRequestList';
 import { WorklistRequest } from '../../types/Worklist.types';
@@ -131,7 +131,7 @@ const WorkListPage = () => {
         <TabContext value={tabValue}>
           <TabList
             variant="scrollable"
-            scrollButtons="on"
+            scrollButtons={true}
             textColor="primary"
             indicatorColor="primary"
             onChange={handleTabChange}

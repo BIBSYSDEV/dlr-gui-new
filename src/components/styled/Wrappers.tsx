@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import NormalText from '../NormalText';
-import RadioGroup from '@material-ui/core/RadioGroup';
+import RadioGroup from '@mui/material/RadioGroup';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
 
 export const StyledProgressWrapper = styled.div`

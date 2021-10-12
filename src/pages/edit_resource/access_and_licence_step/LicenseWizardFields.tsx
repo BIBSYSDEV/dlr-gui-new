@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { CircularProgress, FormControlLabel, FormLabel, Radio, Typography } from '@material-ui/core';
+import { CircularProgress, FormControlLabel, FormLabel, Radio, Typography } from '@mui/material';
 import { StyledContentWrapper, StyledRadioGroup } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import { useTranslation } from 'react-i18next';

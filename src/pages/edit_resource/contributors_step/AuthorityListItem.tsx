@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Link from '@material-ui/core/Link';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Link from '@mui/material/Link';
+import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import { Authority } from '../../../types/authority.types';
 import { useTranslation } from 'react-i18next';
 import { BIBSYS_AUTHORITY_URL } from '../../../utils/constants';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import styled from 'styled-components';
-import { Divider } from '@material-ui/core';
+import { Divider } from '@mui/material';
 
 const StyledListItem: any = styled(ListItemText)`
   & .MuiListItemText-primary {

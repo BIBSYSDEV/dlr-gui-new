@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress } from '@mui/material';
 import { StyledProgressWrapper } from './styled/Wrappers';
 
 const DelayedFallback = () => {

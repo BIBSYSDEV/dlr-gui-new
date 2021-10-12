@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { StyledContentWrapper } from '../../components/styled/Wrappers';
-import { Link, List, ListItem } from '@material-ui/core';
+import { Link, List, ListItem } from '@mui/material';
 import { PageHeader } from '../../components/PageHeader';
 
 const PrivacyPolicy = () => {

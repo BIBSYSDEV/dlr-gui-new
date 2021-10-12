@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { CircularProgress, FormControlLabel, Switch, Typography } from '@material-ui/core';
+import { CircularProgress, FormControlLabel, Switch, Typography } from '@mui/material';
 import { getEmailNotificationStatus, putEmailNotificationStatus } from '../../api/userApi';
 import ErrorBanner from '../../components/ErrorBanner';
-import { Error } from '@material-ui/icons';
+import { Error } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { Colors } from '../../themes/mainTheme';
 import { useSelector } from 'react-redux';

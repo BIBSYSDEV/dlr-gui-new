@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Resource } from '../../types/resource.types';
-import { Link, Typography } from '@material-ui/core';
+import { Link, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { StyledFeatureWrapper } from '../../components/styled/Wrappers';
 import CClogoImage from '../../components/CClogoImage';

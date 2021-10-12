@@ -1,12 +1,12 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
-import { Chip, CircularProgress, FormControl, FormControlLabel, FormGroup, Switch, TextField } from '@material-ui/core';
-import FormLabel from '@material-ui/core/FormLabel';
-import Typography from '@material-ui/core/Typography';
+import { Chip, CircularProgress, FormControl, FormControlLabel, FormGroup, Switch, TextField } from '@mui/material';
+import FormLabel from '@mui/material/FormLabel';
+import Typography from '@mui/material/Typography';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { QueryObject, SearchParameters, SearchQueryBooleanOperator } from '../../types/search.types';
-import CancelIcon from '@material-ui/icons/Cancel';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import CancelIcon from '@mui/icons-material/Cancel';
+import Autocomplete from '@mui/material/Autocomplete';
 import HelperTextPopover from '../../components/HelperTextPopover';
 import { searchTags } from '../../api/resourceApi';
 import useDebounce from '../../utils/useDebounce';

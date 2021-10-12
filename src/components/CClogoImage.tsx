@@ -6,7 +6,7 @@ import ND from '../resources/images/creative_commons_logos/nd.svg';
 import Zero from '../resources/images/creative_commons_logos/zero.svg';
 import CCLogo from '../resources/images/creative_commons_logos/cc.svg';
 import BY from '../resources/images/creative_commons_logos/by.svg';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 
 const StyledLogoWrapper = styled.span`
   display: flex;

@@ -1,6 +1,6 @@
 import React, { FC, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextField, Typography, useMediaQuery } from '@material-ui/core';
+import { TextField, Typography, useMediaQuery } from '@mui/material';
 import {
   CompareCreators,
   Creator,
@@ -9,10 +9,10 @@ import {
   Resource,
 } from '../../../types/resource.types';
 import { ErrorMessage, Field, FieldArray, FieldArrayRenderProps, FieldProps, useFormikContext } from 'formik';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import styled from 'styled-components';
-import DeleteIcon from '@material-ui/icons/Delete';
-import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 import {
   deleteResourceCreator,
   postResourceCreator,

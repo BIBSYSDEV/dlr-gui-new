@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Button, Grid, Link, Typography } from '@material-ui/core';
+import { Button, Grid, Link, Typography } from '@mui/material';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
 import { VMSResource } from '../../types/resource.types';
 

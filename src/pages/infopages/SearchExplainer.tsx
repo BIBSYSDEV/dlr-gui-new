@@ -2,10 +2,10 @@ import React from 'react';
 import { StyledContentWrapperLarge, StyledContentWrapperMedium } from '../../components/styled/Wrappers';
 import { useTranslation } from 'react-i18next';
 import { PageHeader } from '../../components/PageHeader';
-import Typography from '@material-ui/core/Typography';
-import { List, ListItem, ListItemText } from '@material-ui/core';
+import Typography from '@mui/material/Typography';
+import { List, ListItem, ListItemText } from '@mui/material';
 import styled from 'styled-components';
-import Link from '@material-ui/core/Link';
+import Link from '@mui/material/Link';
 import { Colors } from '../../themes/mainTheme';
 import BrowsingResource from '../../resources/images/illustrations/browsing_resource.svg';
 

@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
-import Popover from '@material-ui/core/Popover';
-import { List, ListItem, ListItemText } from '@material-ui/core';
+import Popover from '@mui/material/Popover';
+import { List, ListItem, ListItemText } from '@mui/material';
 import { useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
 import { useTranslation } from 'react-i18next';
