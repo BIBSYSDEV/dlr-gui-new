@@ -26,6 +26,7 @@ const AvatarButton = () => {
   return (
     <>
       <Button
+        color="neutral"
         data-testid="avatar-button"
         onClick={handleClick}
         endIcon={open ? <ExpandLessIcon /> : <ExpandMoreIcon />}>

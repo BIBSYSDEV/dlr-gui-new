@@ -7,11 +7,20 @@ declare module '@mui/material/styles/createPalette' {
     separator: PaletteColor;
     box: PaletteColor;
     danger: PaletteColor;
+    neutral: Palette['primary'];
   }
   interface PaletteOptions {
     separator?: PaletteColorOptions;
     box?: PaletteColorOptions;
     danger?: PaletteColorOptions;
+    neutral?: PaletteOptions['primary'];
+  }
+}
+
+// Update the Button's color prop options
+declare module '@mui/material/Button' {
+  interface ButtonPropsColorOverrides {
+    neutral: true;
   }
 }
 
@@ -115,6 +124,10 @@ export default createTheme({
     },
     background: {
       default: Colors.Background,
+    },
+    neutral: {
+      main: Colors.PrimaryText,
+      contrastText: Colors.Background,
     },
   },
   typography: {

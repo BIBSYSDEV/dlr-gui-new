@@ -29,6 +29,7 @@ const ChangeLanguageButton: FC = () => {
   return (
     <>
       <Button
+        color="neutral"
         data-testid="language-button"
         aria-controls={languageMenuId}
         startIcon={<LanguageIcon />}

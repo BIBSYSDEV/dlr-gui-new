@@ -114,12 +114,18 @@ const Header = () => {
 
       <StyledSecondaryButtonBar>
         {user.id && (
-          <Button component={RouterLink} data-testid="new-registration-link" to="/registration" startIcon={<AddIcon />}>
+          <Button
+            color="neutral"
+            component={RouterLink}
+            data-testid="new-registration-link"
+            to="/registration"
+            startIcon={<AddIcon />}>
             <Typography variant="button">{t('resource.new_registration')}</Typography>
           </Button>
         )}
         {user.id && (
           <Button
+            color="neutral"
             startIcon={<DescriptionOutlinedIcon />}
             component={RouterLink}
             data-testid="my-resources-link"
