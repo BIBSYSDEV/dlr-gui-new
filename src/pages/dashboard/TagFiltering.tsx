@@ -158,13 +158,13 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           onChange={(event: ChangeEvent<unknown>, value: any) => {
             handleNewTags(value);
           }}
-          getOptionSelected={() => {
-            return true; //HACK: Because we want the chips to stay on the outside of the autocomplete component
+          filterOptions={(x: string) => x}
+          isOptionEqualToValue={() => {
+            return true;
           }}
           value={tagValue}
           inputValue={tagInputFieldValue}
           loading={loading}
-          renderOption={(option: any) => <span data-testid={'tag-option'}>{option}</span>}
           renderInput={(params: any) => (
             <TextField
               {...params}

@@ -127,9 +127,6 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                     onChange={(_: ChangeEvent<unknown>, valueArray: string[]) => {
                       saveTagsChanging(field.name, valueArray);
                     }}
-                    renderOption={(props: any, option: string, state: any) => (
-                      <span data-testid={'tag-option'}>{option}</span>
-                    )}
                     renderTags={(value: any, getTagProps: any) =>
                       value.map((option: any, index: number) => (
                         <StyledChip
