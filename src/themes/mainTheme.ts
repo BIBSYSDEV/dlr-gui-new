@@ -324,6 +324,11 @@ export default createTheme({
             color: Colors.StepperSelected,
             visibility: 'visible',
           },
+          '&.Mui-active.Mui-error': {
+            fontWeight: '600',
+            color: Colors.Warning,
+            visibility: 'visible',
+          },
         },
       },
     },
