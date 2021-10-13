@@ -71,7 +71,6 @@ const StyledGridItem = styled(Grid)`
 const StyledGridItemResourceTitle = styled(Grid)`
   &&.MuiGrid-item {
     padding-top: 0;
-    padding-bottom: 1rem;
   }
 `;
 
