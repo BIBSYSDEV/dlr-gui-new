@@ -81,6 +81,7 @@ const AddAccessPopover: FC<AddAccessPopoverProps> = ({
   return (
     <>
       <Popover
+        PaperProps={{ sx: { overflow: 'hidden' } }}
         open={showAddAccessPopover}
         anchorEl={anchorEl}
         onClose={handlePopoverClose}

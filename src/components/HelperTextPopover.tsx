@@ -15,6 +15,7 @@ const ScreenReaderOnlyP = styled.p`
 const PopoverContent = styled.div`
   padding: 1rem;
   max-width: ${StyleWidths.width1};
+  height: 100%;
 `;
 
 interface HelperTextPopoverProps {
@@ -43,6 +44,7 @@ const HelperTextPopover: FC<HelperTextPopoverProps> = ({ ariaButtonLabel, popove
         id={popoverId}
         open={open}
         anchorEl={anchorEl}
+        PaperProps={{ sx: { overflow: 'hidden' } }}
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',

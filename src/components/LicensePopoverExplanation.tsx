@@ -94,6 +94,7 @@ const LicensePopoverExplanation: FC<CCExplanationProps> = ({
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
+        PaperProps={{ sx: { overflow: 'hidden' } }}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center',
