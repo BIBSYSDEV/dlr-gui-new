@@ -4,6 +4,11 @@ import { WorklistRequest } from '../../types/Worklist.types';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { resourcePath } from '../../utils/constants';
+import styled from 'styled-components';
+
+const StyledShowMoreButton = styled(Button)`
+  height: fit-content;
+`;
 
 interface WorkListRequestMetaDataViewerProps {
   workListRequest: WorklistRequest;
@@ -59,12 +64,12 @@ const WorkListRequestMetaDataViewer: FC<WorkListRequestMetaDataViewerProps> = ({
             <Typography data-testid={`request-item-comment-short-${workListRequest.resourceIdentifier}`}>
               {workListRequest.description.slice(0, 150)}...
             </Typography>
-            <Button
+            <StyledShowMoreButton
               data-testid={`request-item-comment-read-more-button-${workListRequest.resourceIdentifier}`}
               color="primary"
               onClick={() => setShowLongText(true)}>
               {t('work_list.read_more')}
-            </Button>
+            </StyledShowMoreButton>
           </>
         )}
         {workListRequest.description.length >= 150 && showLongText && (
@@ -72,9 +77,12 @@ const WorkListRequestMetaDataViewer: FC<WorkListRequestMetaDataViewerProps> = ({
             <Typography data-testid={`request-item-comment-long-${workListRequest.resourceIdentifier}`}>
               {workListRequest.description}
             </Typography>
-            <Button aria-label={t('work_list.shorten_comments')} color="primary" onClick={() => setShowLongText(false)}>
+            <StyledShowMoreButton
+              aria-label={t('work_list.shorten_comments')}
+              color="primary"
+              onClick={() => setShowLongText(false)}>
               {t('work_list.hide')}
-            </Button>
+            </StyledShowMoreButton>
           </>
         )}
         {workListRequest.description.length < 150 && (
