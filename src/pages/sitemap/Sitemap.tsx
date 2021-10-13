@@ -67,7 +67,7 @@ const Sitemap = () => {
         <List>
           {links.map((link, index) => (
             <ListItem key={index}>
-              <Link href={link.href} onClick={link.onClickFunction}>
+              <Link underline="hover" href={link.href} onClick={link.onClickFunction}>
                 {link.description}
               </Link>
             </ListItem>

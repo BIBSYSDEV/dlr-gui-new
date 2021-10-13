@@ -44,6 +44,7 @@ const LinkFields = () => {
           <LinkMetadata>
             <Typography variant="overline">{t('resource.metadata.link')}</Typography>
             <Link
+              underline="hover"
               href={values.features.dlr_content}
               target="_blank"
               rel="noreferrer noopener"

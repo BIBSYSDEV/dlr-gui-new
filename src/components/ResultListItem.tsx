@@ -142,7 +142,10 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
         <div>
           <StyledHeader>
             <StyledMaxTwoLinesTypography variant="h4">
-              <Link data-testid={`link-to-resource-${resource.identifier}`} href={generateURL(resource)}>
+              <Link
+                underline="hover"
+                data-testid={`link-to-resource-${resource.identifier}`}
+                href={generateURL(resource)}>
                 {resource.features.dlr_title}
               </Link>
             </StyledMaxTwoLinesTypography>

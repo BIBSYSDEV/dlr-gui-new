@@ -47,6 +47,7 @@ const Footer = () => {
       </StyledLogoContainer>
       <StyledPrivacyPolicyContainer>
         <StyledMuiLink
+          underline="hover"
           aria-label={t('privacy_policy.heading')}
           color="primary"
           component={Link}
@@ -54,7 +55,12 @@ const Footer = () => {
           data-testid="privacy_policy_link">
           {t('privacy_policy.heading')}
         </StyledMuiLink>
-        <StyledMuiLink aria-label={t('sitemap.sitemap')} color="primary" component={Link} to="/sitemap">
+        <StyledMuiLink
+          underline="hover"
+          aria-label={t('sitemap.sitemap')}
+          color="primary"
+          component={Link}
+          to="/sitemap">
           {t('sitemap.sitemap')}
         </StyledMuiLink>
       </StyledPrivacyPolicyContainer>

@@ -42,7 +42,11 @@ const LicenseCard: FC<LicenseProps> = ({ license }) => {
           {!license.features?.dlr_license_description_no && (
             <Typography variant="caption">{license.features?.dlr_license_description}</Typography>
           )}
-          <StyledLink rel="noopener noreferrer" target="_blank" href={license.features?.dlr_license_url_no ?? ''}>
+          <StyledLink
+            underline="hover"
+            rel="noopener noreferrer"
+            target="_blank"
+            href={license.features?.dlr_license_url_no ?? ''}>
             {`${t('license.read_more')}: `}
             {license.features?.dlr_license_code?.replace(' 4.0', '').replace(' 1.0', '') && (
               <CClogoImage licenseCode={license.features.dlr_license_code} />
@@ -61,7 +65,11 @@ const LicenseCard: FC<LicenseProps> = ({ license }) => {
           {!license.features?.dlr_license_description_en && (
             <Typography variant="body1">{license.features?.dlr_license_description}</Typography>
           )}
-          <StyledLink target="_blank" rel="noopener noreferrer" href={license.features?.dlr_license_url_en ?? ''}>
+          <StyledLink
+            underline="hover"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={license.features?.dlr_license_url_en ?? ''}>
             {`${t('license.read_more')}: `}
             {license.features?.dlr_license_code?.replace(' 4.0', '').replace(' 1.0', '') && (
               <CClogoImage licenseCode={license.features.dlr_license_code} />

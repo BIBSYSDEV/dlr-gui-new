@@ -140,6 +140,7 @@ const LicensePopoverExplanation: FC<CCExplanationProps> = ({
           {licenseCode.toLowerCase().includes('ntnu') && <Typography>{t('license.part_description.ntnu')}</Typography>}
           {licenseCode.toLowerCase().includes('cc') && !licenseCode.toLowerCase().includes('1') && showLink && (
             <Link
+              underline="hover"
               href={`https://creativecommons.org/licenses/${licenseCode
                 .replace('CC', '')
                 .replace(' 4.0', '')
@@ -154,6 +155,7 @@ const LicensePopoverExplanation: FC<CCExplanationProps> = ({
           )}
           {licenseCode.toLowerCase().includes('1') && showLink && (
             <Link
+              underline="hover"
               href={`https://creativecommons.org/publicdomain/zero/1.0/deed.no`}
               target="_blank"
               rel="noopener noreferrer">

@@ -32,7 +32,11 @@ const AuthorityListItem: FC<AuthorityListItemProps> = ({ authority, handleSelect
         <StyledListItem
           primary={authority.name}
           secondary={
-            <Link target="_blank" rel="noopener noreferrer" href={`${BIBSYS_AUTHORITY_URL}/${authority.id}`}>
+            <Link
+              underline="hover"
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`${BIBSYS_AUTHORITY_URL}/${authority.id}`}>
               {`${t('license.read_more')} (${t('license.external_page').toLowerCase()})`}
             </Link>
           }

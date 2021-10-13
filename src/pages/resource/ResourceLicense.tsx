@@ -52,7 +52,12 @@ const ResourceLicense: FC<ResourceLicenseProps> = ({ resource }) => {
             {t('resource.metadata.license')}
           </Typography>
           <div lang={langCode}>
-            <StyledLink gutterBottom target="_blank" rel="noopener noreferrer" href={generateLicenseUrl()}>
+            <StyledLink
+              underline="hover"
+              gutterBottom
+              target="_blank"
+              rel="noopener noreferrer"
+              href={generateLicenseUrl()}>
               {license.features?.dlr_license_code && <CClogoImage licenseCode={license.features.dlr_license_code} />}
             </StyledLink>
             <Typography variant="overline">{generateLicenseDescription()}</Typography>

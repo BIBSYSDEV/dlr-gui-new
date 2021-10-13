@@ -59,7 +59,9 @@ const SearchExplainer = () => {
           <StyledImg src={BrowsingResource} alt={t('illustration_alts_tags.browsing_resource')} />
           <StyledTypography gutterBottom variant="body1">
             {`${t('search_tricks.find_tricks')} `}
-            <Link href="/">{t('search_tricks.search_for_resource').toLowerCase()}.</Link>
+            <Link underline="hover" href="/">
+              {t('search_tricks.search_for_resource').toLowerCase()}.
+            </Link>
           </StyledTypography>
         </StyledContentWrapperMedium>
       </ColoringWrapper>

@@ -169,7 +169,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ parentR
 
           {searchResult?.numFound && searchResult.numFound > 6 && (
             <StyledTypography>
-              <Link data-testid={`show-all-posts-${creator.identifier}`} href={link}>
+              <Link underline="hover" data-testid={`show-all-posts-${creator.identifier}`} href={link}>
                 {t('resource.browse_by_creator')}
               </Link>
             </StyledTypography>
@@ -201,7 +201,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ parentR
             </SearchResultWrapper>
             {searchResult?.numFound && searchResult.numFound > 6 && (
               <StyledTypography align="right">
-                <Link data-testid={`show-all-posts-${creator.identifier}`} href={link}>
+                <Link underline="hover" data-testid={`show-all-posts-${creator.identifier}`} href={link}>
                   {t('resource.browse_by_creator')}
                 </Link>
               </StyledTypography>

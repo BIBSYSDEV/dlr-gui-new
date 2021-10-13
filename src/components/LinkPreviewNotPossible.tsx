@@ -18,7 +18,11 @@ const LinkPreviewNotPossible: FC<LinkPreviewNotPossibleProps> = ({ resource, pre
   const { t } = useTranslation();
 
   const hrefLinkUrl = (
-    <Link target="_blank" rel="noopener noreferrer" href={resource.contents.masterContent.features.dlr_content}>
+    <Link
+      underline="hover"
+      target="_blank"
+      rel="noopener noreferrer"
+      href={resource.contents.masterContent.features.dlr_content}>
       {resource.contents.masterContent.features.dlr_content} ({t('resource.preview.open_in_new_tag')})
     </Link>
   );

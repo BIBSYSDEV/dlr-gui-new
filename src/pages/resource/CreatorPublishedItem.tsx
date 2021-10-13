@@ -76,7 +76,9 @@ const CreatorPublishedItem: FC<CreatorPublishedItemProps> = ({ resource, testId 
       </StyledThumbnailWrapper>
       <div>
         <StyledLinkTypography variant="subtitle2" gutterBottom>
-          <Link href={generateURL(resource)}>{resource.features.dlr_title}</Link>
+          <Link underline="hover" href={generateURL(resource)}>
+            {resource.features.dlr_title}
+          </Link>
         </StyledLinkTypography>
         <Typography gutterBottom variant="body2">
           {resource.creators.map((creator) => creator.features.dlr_creator_name).join(', ')}

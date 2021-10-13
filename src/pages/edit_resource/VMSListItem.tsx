@@ -48,7 +48,7 @@ const VMSListItem: FC<VMSListItemProps> = ({ item, handleUseResource }) => {
           </StyledImageWrapper>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Link href={item.url} target="_blank" rel="noopener noreferrer">
+          <Link underline="hover" href={item.url} target="_blank" rel="noopener noreferrer">
             <Typography>{item.title}</Typography>
           </Link>
         </Grid>

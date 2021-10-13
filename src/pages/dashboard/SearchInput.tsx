@@ -114,7 +114,9 @@ const SearchInput: FC<SearchInputProps> = ({ setQueryObject, queryObject }) => {
             popoverId={'search-input-explainer'}>
             <Typography>
               {`${t('explanation_text.search_input_helper_text')} `}
-              <Link href={'/search-helper'}>{t('search_tricks.page_title')}</Link>
+              <Link underline="hover" href={'/search-helper'}>
+                {t('search_tricks.page_title')}
+              </Link>
             </Typography>
           </HelperTextPopover>
         </ButtonWrapper>

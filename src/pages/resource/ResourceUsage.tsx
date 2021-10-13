@@ -184,7 +184,9 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, isPreview = false }) 
             {isPreview ? (
               generatePreferredURL(resource)
             ) : (
-              <Link href={generatePreferredURL(resource)}>{generatePreferredURL(resource)}</Link>
+              <Link underline="hover" href={generatePreferredURL(resource)}>
+                {generatePreferredURL(resource)}
+              </Link>
             )}
           </Typography>
         </Grid>

@@ -26,6 +26,7 @@ const NoResult: FC<NoResultProps> = ({ searchResult }) => {
           {t('dashboard.did_you_mean')}{' '}
           {searchResult.spellcheck_suggestions.map((suggestion, index) => (
             <StyledLink
+              underline="hover"
               key={`${index}-${suggestion}`}
               data-testid={`search-suggestion-${suggestion}`}
               href={`/?${SearchParameters.query}=${suggestion}${
