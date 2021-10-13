@@ -102,7 +102,6 @@ const ResourceFormNavigationHeader: FC<ResourceFormNavigationHeaderProps> = ({ a
                 }>
                 {shouldDisplayStepLabels ? (
                   <StepLabel error={hasTouchedError(errors, touched, values, index)}>
-                    testing ...
                     <StyledStepTypography id={`typography-step-${index}`}>{t(getStepLabel(step))}</StyledStepTypography>
                     {hasTouchedError(errors, touched, values, index) && (
                       <Typography color="error" variant="caption">
