@@ -296,7 +296,7 @@ export default createTheme({
     MuiTab: {
       styleOverrides: {
         textColorPrimary: {
-          '&$selected': {
+          '&.Mui-selected': {
             fontWeight: 'bold',
           },
         },
@@ -316,10 +316,10 @@ export default createTheme({
           '&:hover': {
             backgroundColor: Colors.HoverTextFieldFilled,
           },
-          '&$focused': {
+          '&.Mui-focused': {
             backgroundColor: Colors.HoverTextFieldFilled,
           },
-          '&$disabled': {
+          '&.Mui-disabled': {
             backgroundColor: Colors.Background,
           },
         },
