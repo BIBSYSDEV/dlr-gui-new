@@ -13,7 +13,7 @@ import useDebounce from '../../utils/useDebounce';
 import ErrorBanner from '../../components/ErrorBanner';
 import { useHistory, useLocation } from 'react-router-dom';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
-import { Colors, StyleWidths } from '../../themes/mainTheme';
+import { StyleWidths } from '../../themes/mainTheme';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
 
@@ -42,18 +42,6 @@ const StyledChipContainer = styled.div`
 const StyledFormLabel = styled(FormLabel)`
   display: flex;
   align-items: center;
-`;
-
-const StyledSwitch = styled(Switch)`
-  & .MuiSwitch-switchBase.Mui-checked {
-    color: ${Colors.ChipBackground};
-    &:hover {
-      background-color: ${Colors.DLRColdGreen1};
-    }
-  }
-  & .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
-    background-color: ${Colors.ChipBackground};
-  }
 `;
 
 interface TagsFilteringProps {
@@ -190,7 +178,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           {queryObject.tags.map((tag, index) => (
             <StyledChip
               key={index}
-              color="primary"
+              color="accent"
               deleteIcon={<CancelIcon data-testid={`tag-filter-delete-${tag}`} />}
               data-testid={`filter-tag-chip-${index}`}
               label={tag}
@@ -204,7 +192,8 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           <FormControlLabel
             data-testid="tag-filter-operator-switch"
             control={
-              <StyledSwitch
+              <Switch
+                color="accent"
                 checked={queryObject.tagFilterOperator === SearchQueryBooleanOperator.AND}
                 onChange={handleChangeInBooleanSearchQueryCheckBox}
               />

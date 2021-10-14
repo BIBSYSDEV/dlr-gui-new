@@ -147,7 +147,7 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource, isPreview = fal
                     component="a"
                     key={index}
                     size="medium"
-                    color="primary"
+                    color="accent"
                     label={tag}
                     data-testid={`tag-chip-${index}`}
                     clickable

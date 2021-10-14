@@ -1,4 +1,4 @@
-import { alpha, createTheme, emphasize } from '@mui/material';
+import { createTheme } from '@mui/material';
 import { PaletteColor, PaletteColorOptions } from '@mui/material/styles';
 
 // Extend Palette type to allow custom colors
@@ -8,12 +8,14 @@ declare module '@mui/material/styles/createPalette' {
     box: PaletteColor;
     danger: PaletteColor;
     neutral: Palette['primary'];
+    accent: Palette['primary'];
   }
   interface PaletteOptions {
     separator?: PaletteColorOptions;
     box?: PaletteColorOptions;
     danger?: PaletteColorOptions;
     neutral?: PaletteOptions['primary'];
+    accent?: PaletteOptions['primary'];
   }
 }
 
@@ -21,6 +23,18 @@ declare module '@mui/material/styles/createPalette' {
 declare module '@mui/material/Button' {
   interface ButtonPropsColorOverrides {
     neutral: true;
+  }
+}
+
+declare module '@mui/material/Chip' {
+  interface ChipPropsColorOverrides {
+    accent: true;
+  }
+}
+
+declare module '@mui/material/Switch' {
+  interface SwitchPropsColorOverrides {
+    accent: true;
   }
 }
 
@@ -65,13 +79,9 @@ export enum Colors {
   LicenseAccessPageGradientColor1 = 'rgba(68,242,193,0.10)',
   LicenseAccessPageGradientColor2 = 'rgba(68,242,193,0.25)',
   LicenseAccessPageGradientColor3 = 'rgba(68,242,193,0.50)',
-  ChipBackground = 'rgba(66, 127, 140, 1)',
-  ChipBackgroundFocus = 'hsl(191, 37%, 80%)',
-  ChipIconBackground = 'hsl(191, 37%, 60%)',
-  ChipAccessBackground = 'rgb(0, 54, 23)',
-  ChipAccessBackgroundFocus = 'rgb(0, 213, 166)',
-  ChipAccessIconBackground = 'rgb(0, 157, 114)',
-  ChipAccessIconHoverBackground = 'rgb(0, 185, 139)',
+  AccentMain = 'rgba(66, 127, 140, 1)',
+  AccentDark = 'rgba(38, 102, 114,1 )',
+  AccentLight = 'hsl(191, 37%, 80%)',
   AuthorityBadge = 'rgb(11, 55, 26)',
   UnitGrey2_10percent = 'rgb(151,151, 151,0.1)',
   UnitTurquoise_20percent = 'rgba(121,203,220,0.2)',
@@ -133,6 +143,12 @@ export default createTheme({
     neutral: {
       main: Colors.PrimaryText,
       contrastText: Colors.Background,
+    },
+    accent: {
+      main: Colors.AccentMain,
+      contrastText: Colors.Background,
+      dark: Colors.AccentDark,
+      light: Colors.AccentLight,
     },
   },
   typography: {
@@ -255,31 +271,11 @@ export default createTheme({
           height: 'auto',
           fontSize: '1rem',
         },
-        colorPrimary: {
-          backgroundColor: Colors.ChipBackground,
-          color: Colors.Background,
-        },
         label: {
           whiteSpace: 'normal',
           color: 'inherit',
           paddingTop: '0.2rem',
-          paddingBottom: '0.4rem',
-        },
-        clickableColorPrimary: {
-          '&:hover, &:focus': {
-            backgroundColor: emphasize(Colors.ChipBackground, 0.2),
-          },
-        },
-        deletableColorPrimary: {
-          '&:focus': {
-            backgroundColor: emphasize(Colors.ChipBackground, 0.3),
-          },
-        },
-        deleteIconColorPrimary: {
-          color: alpha(Colors.Background, 0.7),
-          '&:hover, &:active': {
-            color: Colors.Background,
-          },
+          paddingBottom: '0.2rem',
         },
       },
     },
