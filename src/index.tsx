@@ -4,9 +4,8 @@ import App from './App';
 
 import { ThemeProvider as StyledComponentsThemeProvider } from 'styled-components';
 import { StyledEngineProvider, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
-
 import CssBaseline from '@mui/material/CssBaseline';
-import { StylesProvider, ThemeProvider as MUIThemeProvider } from '@mui/styles';
+import { StylesProvider } from '@mui/styles';
 import mainTheme from './themes/mainTheme';
 import { Provider } from 'react-redux';
 import { store } from './state/store';
