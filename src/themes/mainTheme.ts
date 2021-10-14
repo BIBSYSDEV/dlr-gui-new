@@ -94,6 +94,11 @@ export enum DeviceWidths {
   xl = 1920,
 }
 
+enum Fonts {
+  Crimson = 'Crimson Text, serif',
+  Barlow = 'Barlow, sans-serif',
+}
+
 export default createTheme({
   breakpoints: {
     values: {
@@ -131,28 +136,28 @@ export default createTheme({
     },
   },
   typography: {
-    fontFamily: 'Barlow, sans-serif',
+    fontFamily: Fonts.Barlow,
     h1: {
-      fontFamily: 'Crimson Text, serif',
+      fontFamily: Fonts.Crimson,
       fontSize: '3rem',
       lineHeight: '4.125rem',
       color: Colors.InitialText,
     },
     h2: {
-      fontFamily: 'Crimson Text, serif',
+      fontFamily: Fonts.Crimson,
       fontSize: '2.25rem',
       lineHeight: '3rem',
       letterSpacing: '0.0025em',
       color: Colors.InitialText,
     },
     h3: {
-      fontFamily: 'Crimson Text, serif',
+      fontFamily: Fonts.Crimson,
       fontSize: '1.5rem',
       lineHeight: '2.0625rem',
       color: Colors.InitialText,
     },
     h4: {
-      fontFamily: 'Barlow, serif',
+      fontFamily: Fonts.Barlow,
       fontSize: '1.125rem',
       fontWeight: 'bold',
       lineHeight: '1.5rem',
@@ -166,35 +171,35 @@ export default createTheme({
       color: Colors.InitialText,
     },
     subtitle1: {
-      fontFamily: 'Barlow, serif',
+      fontFamily: Fonts.Barlow,
       fontSize: '1rem',
       lineHeight: '1.1875rem',
       letterSpacing: '0.0015em',
       color: Colors.InitialText,
     },
     subtitle2: {
-      fontFamily: 'Barlow, serif',
+      fontFamily: Fonts.Barlow,
       fontSize: '0.875rem',
       fontWeight: 'bold',
       lineHeight: '1.0625rem',
       color: Colors.InitialText,
     },
     body1: {
-      fontFamily: 'Barlow, serif',
+      fontFamily: Fonts.Barlow,
       fontSize: '1rem',
       lineHeight: '1.5rem',
       letterSpacing: '0.005em',
       color: Colors.InitialText,
     },
     body2: {
-      fontFamily: 'Barlow, serif',
+      fontFamily: Fonts.Barlow,
       fontSize: '0.875rem',
       lineHeight: '1.0625rem',
       letterSpacing: '0.0025em',
       color: Colors.InitialText,
     },
     button: {
-      fontFamily: 'Barlow, serif',
+      fontFamily: Fonts.Barlow,
       fontSize: '0.875rem',
       lineHeight: '1.0625rem',
       letterSpacing: '0.02em',
@@ -202,14 +207,14 @@ export default createTheme({
       color: Colors.InitialText,
     },
     caption: {
-      fontFamily: 'Barlow, serif',
+      fontFamily: Fonts.Barlow,
       fontSize: '0.75rem',
       lineHeight: '0.875rem',
       letterSpacing: '0.004em',
       color: Colors.InitialText,
     },
     overline: {
-      fontFamily: 'Barlow, serif',
+      fontFamily: Fonts.Barlow,
       fontSize: '0.75rem',
       lineHeight: '0.875rem',
       letterSpacing: '0.015em',
