@@ -137,6 +137,7 @@
     "access_filter": "Also show resources I do not have access to",
     "access_filter_limited": "Also show resources with limited access",
     "close_popover": "Press escape to close this box",
+    "did_you_mean": "Did you mean",
     "enabled": "enabled",
     "enter_tags": "Search and select tag for filtering",
     "explain_license": "Explain license",
