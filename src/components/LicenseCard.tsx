@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import CClogoImage from './CClogoImage';
 import { Colors } from '../themes/mainTheme';
+import { typographyClasses } from '@mui/material/Typography';
 
 const StyledWrapper = styled.div`
   padding-top: 1rem;
@@ -15,7 +16,7 @@ const StyledLink = styled(Link)`
   margin-top: 1rem;
   display: flex;
   align-items: flex-start;
-  & .MuiTypography-body1 {
+  & .${typographyClasses.body1} {
     color: ${Colors.Link};
   }
 `;

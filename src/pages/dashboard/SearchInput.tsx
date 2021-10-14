@@ -10,6 +10,7 @@ import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 import HelperTextPopover from '../../components/HelperTextPopover';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import { textFieldClasses, inputBaseClasses } from '@mui/material';
 
 const StyledForm = styled.form`
   margin-top: 2rem;
@@ -26,7 +27,7 @@ const StyledSearchWrapper = styled.div`
     flex-direction: column;
     align-items: flex-start;
   }
-  & .MuiTextField-root {
+  & .${textFieldClasses.root} {
     margin-top: 3px;
   }
 `;
@@ -40,7 +41,7 @@ const StyledTextField = styled(TextField)`
     width: ${StyleWidths.width3};
     margin-right: 1rem;
   }
-  & .MuiInputBase-root {
+  & .${inputBaseClasses.root} {
     height: 3rem;
   }
 `;

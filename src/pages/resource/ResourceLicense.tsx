@@ -7,9 +7,10 @@ import CClogoImage from '../../components/CClogoImage';
 import styled from 'styled-components';
 import { Colors } from '../../themes/mainTheme';
 import i18next from 'i18next';
+import { typographyClasses } from '@mui/material';
 
 const StyledLink = styled(Link)`
-  & .MuiTypography-body1 {
+  & .${typographyClasses.body1} {
     color: ${Colors.Link};
   }
   margin-left: -0.3rem;

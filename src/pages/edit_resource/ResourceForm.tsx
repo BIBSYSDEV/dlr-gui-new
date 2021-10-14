@@ -32,6 +32,7 @@ import SchemaPartTitle from './SchemaPartTitle';
 import { hasTouchedError } from '../../utils/formik-helpers';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import { gridClasses } from '@mui/material';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -62,14 +63,14 @@ const StyledPanel = styled.div`
 `;
 
 const StyledGridItem = styled(Grid)`
-  &&.MuiGrid-item {
+  &&.${gridClasses.item} {
     padding-top: 0;
     padding-bottom: 0;
   }
 `;
 
 const StyledGridItemResourceTitle = styled(Grid)`
-  &&.MuiGrid-item {
+  &&.${gridClasses.item} {
     padding-top: 0;
   }
 `;

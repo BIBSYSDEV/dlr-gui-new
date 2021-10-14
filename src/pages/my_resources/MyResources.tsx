@@ -15,9 +15,10 @@ import { Colors } from '../../themes/mainTheme';
 import PrivateRoute from '../../utils/routes/PrivateRoute';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import { tabPanelClasses } from '@mui/lab';
 
 const StyledTabPanel = styled(TabPanel)`
-  &.MuiTabPanel-root {
+  &.${tabPanelClasses.root} {
     padding: 0;
   }
 `;

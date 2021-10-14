@@ -1,5 +1,8 @@
 import { createTheme } from '@mui/material';
 import { PaletteColor, PaletteColorOptions } from '@mui/material/styles';
+import { filledInputClasses } from '@mui/material/FilledInput';
+import { stepLabelClasses } from '@mui/material/StepLabel';
+import { tabClasses } from '@mui/material/Tab';
 
 // Extend Palette type to allow custom colors
 declare module '@mui/material/styles/createPalette' {
@@ -173,7 +176,6 @@ export default createTheme({
       color: Colors.InitialText,
     },
     h4: {
-      fontFamily: Fonts.Barlow,
       fontSize: '1.125rem',
       fontWeight: 'bold',
       lineHeight: '1.5rem',
@@ -187,35 +189,30 @@ export default createTheme({
       color: Colors.InitialText,
     },
     subtitle1: {
-      fontFamily: Fonts.Barlow,
       fontSize: '1rem',
       lineHeight: '1.1875rem',
       letterSpacing: '0.0015em',
       color: Colors.InitialText,
     },
     subtitle2: {
-      fontFamily: Fonts.Barlow,
       fontSize: '0.875rem',
       fontWeight: 'bold',
       lineHeight: '1.0625rem',
       color: Colors.InitialText,
     },
     body1: {
-      fontFamily: Fonts.Barlow,
       fontSize: '1rem',
       lineHeight: '1.5rem',
       letterSpacing: '0.005em',
       color: Colors.InitialText,
     },
     body2: {
-      fontFamily: Fonts.Barlow,
       fontSize: '0.875rem',
       lineHeight: '1.0625rem',
       letterSpacing: '0.0025em',
       color: Colors.InitialText,
     },
     button: {
-      fontFamily: Fonts.Barlow,
       fontSize: '0.875rem',
       lineHeight: '1.0625rem',
       letterSpacing: '0.02em',
@@ -223,14 +220,12 @@ export default createTheme({
       color: Colors.InitialText,
     },
     caption: {
-      fontFamily: Fonts.Barlow,
       fontSize: '0.75rem',
       lineHeight: '0.875rem',
       letterSpacing: '0.004em',
       color: Colors.InitialText,
     },
     overline: {
-      fontFamily: Fonts.Barlow,
       fontSize: '0.75rem',
       lineHeight: '0.875rem',
       letterSpacing: '0.015em',
@@ -296,7 +291,7 @@ export default createTheme({
     MuiTab: {
       styleOverrides: {
         textColorPrimary: {
-          '&.Mui-selected': {
+          [`&.${tabClasses.selected}`]: {
             fontWeight: 'bold',
           },
         },
@@ -316,10 +311,10 @@ export default createTheme({
           '&:hover': {
             backgroundColor: Colors.HoverTextFieldFilled,
           },
-          '&.Mui-focused': {
+          [`&.${filledInputClasses.focused}`]: {
             backgroundColor: Colors.HoverTextFieldFilled,
           },
-          '&.Mui-disabled': {
+          [`&.${filledInputClasses.disabled}`]: {
             backgroundColor: Colors.Background,
           },
         },
@@ -333,12 +328,12 @@ export default createTheme({
           '@media (max-width:600px)': {
             visibility: 'collapse',
           },
-          '&.Mui-active': {
+          [`&.${stepLabelClasses.active}`]: {
             fontWeight: '600',
             color: Colors.StepperSelected,
             visibility: 'visible',
           },
-          '&.Mui-active.Mui-error': {
+          [`&.${stepLabelClasses.active}.${stepLabelClasses.error}`]: {
             fontWeight: '600',
             color: Colors.Warning,
             visibility: 'visible',

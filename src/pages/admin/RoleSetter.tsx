@@ -18,6 +18,7 @@ import { RootState } from '../../state/rootReducer';
 import { StatusCode } from '../../utils/constants';
 import axios, { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import { inputBaseClasses } from '@mui/material';
 
 const StyledSearchWrapper = styled.div`
   display: flex;
@@ -38,7 +39,7 @@ const StyledInputWrapper = styled.div`
 
 const StyledTextField = styled(TextField)`
   width: 100%;
-  & .MuiInputBase-root {
+  & .${inputBaseClasses.root} {
     height: 3rem;
   }
 `;

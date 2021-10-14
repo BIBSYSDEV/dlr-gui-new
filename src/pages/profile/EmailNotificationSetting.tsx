@@ -5,7 +5,6 @@ import { getEmailNotificationStatus, putEmailNotificationStatus } from '../../ap
 import ErrorBanner from '../../components/ErrorBanner';
 import { Error } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
-import { Colors } from '../../themes/mainTheme';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import { AxiosError } from 'axios';
@@ -25,12 +24,6 @@ const StyledFlexWrapper = styled.div`
 //with yellow background it's impossible to see the default focus styling for Material-ui Switch.
 const StyledSwitch: any = styled(Switch)`
   margin-left: 1.5rem;
-  .Mui-focusVisible {
-    background-color: ${Colors.BlackOpaque25};
-  }
-  .Mui-focusVisible.Mui-checked {
-    background-color: ${Colors.PrimaryOpaque20};
-  }
 `;
 
 const StyledFormControlLabel = styled(FormControlLabel)`

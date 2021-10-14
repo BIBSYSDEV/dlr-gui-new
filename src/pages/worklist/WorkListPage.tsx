@@ -21,6 +21,7 @@ import {
 } from '../../utils/workList';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import { tabPanelClasses } from '@mui/lab';
 
 const StyledWrapper = styled(Grid)`
   padding: 1rem 1rem 2rem 1rem;
@@ -28,7 +29,7 @@ const StyledWrapper = styled(Grid)`
 `;
 
 const StyledTabPanel = styled(TabPanel)`
-  &.MuiTabPanel-root {
+  &.${tabPanelClasses.root} {
     padding: 0;
   }
 `;

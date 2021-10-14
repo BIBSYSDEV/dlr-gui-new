@@ -13,13 +13,14 @@ import { postCurrentUserInstitutionConsumerAccess } from '../../../api/sharingAp
 import PrivateConsumerAccessFields from './PrivateConsumerAccessFields';
 import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
+import { typographyClasses, inputBaseClasses } from '@mui/material';
 
 const StyledFieldWrapper = styled.div`
   max-width: ${StyleWidths.width1};
 `;
 
 const StyledTextField = styled(TextField)`
-  & .Mui-disabled .MuiTypography-body1 {
+  & .${inputBaseClasses.disabled} .${typographyClasses.body1} {
     color: grey;
   }
 `;

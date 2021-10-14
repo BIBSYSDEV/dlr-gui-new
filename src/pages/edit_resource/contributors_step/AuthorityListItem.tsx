@@ -9,12 +9,13 @@ import { BIBSYS_AUTHORITY_URL } from '../../../utils/constants';
 import Button from '@mui/material/Button';
 import styled from 'styled-components';
 import { Divider } from '@mui/material';
+import { listItemTextClasses } from '@mui/material/ListItemText';
 
 const StyledListItem: any = styled(ListItemText)`
-  & .MuiListItemText-primary {
+  & .${listItemTextClasses.primary} {
     max-width: 80%;
   }
-  & .MuiListItemText-secondary {
+  & .${listItemTextClasses.secondary} {
     max-width: 80%;
   }
 `;

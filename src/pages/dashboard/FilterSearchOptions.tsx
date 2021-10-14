@@ -12,6 +12,7 @@ import { QueryObject } from '../../types/search.types';
 import ResourceTypeFiltering from './ResourceTypeFiltering';
 import LicenseFiltering from './LicenseFiltering';
 import TagFiltering from './TagFiltering';
+import { paperClasses } from '@mui/material/Paper';
 
 function useWindowWidth() {
   const [width, setWidth] = useState(0);
@@ -30,7 +31,7 @@ const StyledAccordion = styled(Accordion)`
   background-color: ${Colors.DLRYellow1};
   border: none;
   margin-left: -0.5rem;
-  & .MuiPaper-elevation1 {
+  & .${paperClasses.elevation1} {
     box-shadow: none;
   }
 `;

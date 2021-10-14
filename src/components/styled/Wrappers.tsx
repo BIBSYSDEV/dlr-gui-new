@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import NormalText from '../NormalText';
 import RadioGroup from '@mui/material/RadioGroup';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
+import { paginationItemClasses } from '@mui/material/PaginationItem';
 
 export const StyledProgressWrapper = styled.div`
   display: flex;
@@ -93,13 +94,13 @@ export const StyledPaginationWrapper = styled.div`
   flex-direction: row;
   align-items: center;
 
-  & .MuiPaginationItem-root {
+  & .${paginationItemClasses.root} {
     border-radius: 0;
     color: ${Colors.Primary};
     font-weight: 700;
   }
 
-  & .Mui-selected {
+  & .${paginationItemClasses.selected} {
     color: ${Colors.Background};
   }
 `;

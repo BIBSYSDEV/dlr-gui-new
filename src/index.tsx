@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-
 import { ThemeProvider as StyledComponentsThemeProvider } from 'styled-components';
 import { StyledEngineProvider, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
