@@ -130,7 +130,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                     renderTags={(value: any, getTagProps: any) =>
                       value.map((option: any, index: number) => (
                         <StyledChip
-                          color="primary"
+                          color="accent"
                           deleteIcon={<CancelIcon />}
                           data-testid={`tag-chip-${index}`}
                           label={option}

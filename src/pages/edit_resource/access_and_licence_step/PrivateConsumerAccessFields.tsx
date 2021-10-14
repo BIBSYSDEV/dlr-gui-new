@@ -234,7 +234,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
             disabled={values.features.dlr_status_published}
             deleteIcon={<CancelIcon data-testid={`delete-private-consumer-access-chip-${index}`} />}
             label={generateChipLabel(access)}
-            color="primary"
+            color="accent"
             onDelete={() => {
               deleteAccess(access);
             }}
