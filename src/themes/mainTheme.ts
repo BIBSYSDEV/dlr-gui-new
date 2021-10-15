@@ -344,6 +344,7 @@ export default createTheme({
     MuiStep: {
       styleOverrides: {
         root: {
+          marginTop: '2rem',
           marginBottom: '2rem',
         },
       },
