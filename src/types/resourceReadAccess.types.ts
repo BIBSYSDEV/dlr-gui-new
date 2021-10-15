@@ -47,3 +47,8 @@ export enum CourseSeason {
   Summer = '2',
   Autumn = '3',
 }
+
+export interface publicReadAccess {
+  name: ResourceReadAccessNames;
+  subject: string;
+}

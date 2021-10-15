@@ -21,7 +21,6 @@ import ResourceActions from './ResourceActions';
 import { getMyUserAuthorizationProfileForResource } from '../../api/resourceApi';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
-import ReadAccess from './ReadAccess';
 
 const PreviewComponentWrapper = styled.div`
   margin: 1rem 0;
@@ -89,9 +88,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
             </PreviewComponentWrapper>
           </StyledContentWrapperMedium>
         </StyledSchemaPart>
-
         <ResourceMetadata resource={resource} isPreview={isPreview} />
-
         <StyledSchemaPartColored color={Colors.DLRYellow2}>
           <StyledContentWrapperMedium>
             <Grid container spacing={6}>
@@ -112,18 +109,11 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
         {!isPreview && (
           <StyledSchemaPartColored color={Colors.DLRYellow4}>
             <StyledContentWrapperMedium>
-              <Grid container spacing={6}>
-                <Grid item xs={12} md={8}>
-                  <ReadAccess resource={resource} />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <ResourceActions
-                    userResourceAuthorization={userResourceAuthorization}
-                    errorLoadingAuthorization={errorLoadingAuthorization}
-                    resource={resource}
-                  />
-                </Grid>
-              </Grid>
+              <ResourceActions
+                userResourceAuthorization={userResourceAuthorization}
+                errorLoadingAuthorization={errorLoadingAuthorization}
+                resource={resource}
+              />
             </StyledContentWrapperMedium>
           </StyledSchemaPartColored>
         )}

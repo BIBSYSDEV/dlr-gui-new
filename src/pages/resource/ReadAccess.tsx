@@ -1,28 +1,21 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { Chip, CircularProgress, Typography } from '@material-ui/core';
+import { CircularProgress, Typography } from '@material-ui/core';
 import { Resource } from '../../types/resource.types';
 import { useTranslation } from 'react-i18next';
-import { ResourceReadAccess, ResourceReadAccessNames } from '../../types/resourceReadAccess.types';
+import { publicReadAccess, ResourceReadAccessNames } from '../../types/resourceReadAccess.types';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
-import { getResourceReaders } from '../../api/sharingApi';
+import { getPublicResourceReaders } from '../../api/sharingApi';
 import { parseCourse } from '../../utils/course.utils';
 import ErrorBanner from '../../components/ErrorBanner';
-import styled from 'styled-components';
-
-const StyledChip = styled(Chip)`
-  && {
-    margin-top: 1rem;
-    margin-right: 0.5rem;
-  }
-`;
+import { generateListWithOxfordComma } from '../../utils/StringArray';
 
 interface ReadAccessProps {
   resource: Resource;
 }
 
 const ReadAccess: FC<ReadAccessProps> = ({ resource }) => {
-  const [privateAccessList, setPrivateAccessList] = useState<ResourceReadAccess[]>([]);
+  const [privateAccessList, setPrivateAccessList] = useState<publicReadAccess[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorFetchingReadAccessList, setErrorFetchingReadAccessList] = useState<Error | AxiosError>();
   const { t } = useTranslation();
@@ -32,7 +25,7 @@ const ReadAccess: FC<ReadAccessProps> = ({ resource }) => {
     const getReadAccessList = async () => {
       setErrorFetchingReadAccessList(undefined);
       try {
-        const resourceReadAccessListResponse = await getResourceReaders(resource.identifier);
+        const resourceReadAccessListResponse = await getPublicResourceReaders(resource.identifier);
         if (!mountedRef.current) return null;
         setPrivateAccessList(resourceReadAccessListResponse.data);
       } catch (error) {
@@ -48,26 +41,61 @@ const ReadAccess: FC<ReadAccessProps> = ({ resource }) => {
     }
   }, [resource]);
 
-  const generatePrivateAccessString = (access: ResourceReadAccess): string => {
-    if (access.profiles[0].name === ResourceReadAccessNames.Institution) {
-      return `${t('access.everyone_at')} ${access.subject.toUpperCase()}`;
+  const generatePrivateAccessStringFromAccessResponse = (access: publicReadAccess): string => {
+    if (access.name === ResourceReadAccessNames.Institution) {
+      return `${t('access.everyone_at').toLowerCase()} ${access.subject.toUpperCase()}`;
+    } else if (access.name === ResourceReadAccessNames.Person) {
+      if (access.subject === '1') {
+        return t('access.email_anonymous_singular').toLowerCase();
+      } else {
+        return t('access.email_anonymous_plural', { email_count: access.subject }).toLowerCase();
+      }
     } else {
       const course = parseCourse(access.subject);
       if (course) {
-        return `${t(
-          'access.everyone_participating_in'
-        )} ${course.features.code?.toUpperCase()} - ${course.features.institution?.toUpperCase()} - ${
-          course.features.year
-        } - ${t(`access.season.${course.features.season_nr}`)}`;
+        return `${t('access.everyone_participating_in').toLowerCase()} ${course.features.code?.toUpperCase()} ${t(
+          `access.season.${course.features.season_nr}`
+        ).toLowerCase()} ${course.features.year}`;
       } else {
         return '';
       }
     }
   };
 
+  const isInstitutionAccessGranted = () => {
+    return privateAccessList.find((access) => access.name === ResourceReadAccessNames.Institution);
+  };
+
+  const generatePrivateAccessAllTypes = () => {
+    const institution = resource.features.dlr_storage_id ?? t('access.hosting_institution').toLowerCase();
+    const specifiedPrivateAccess = privateAccessList.map((access) =>
+      generatePrivateAccessStringFromAccessResponse(access)
+    );
+    if (!isInstitutionAccessGranted()) {
+      specifiedPrivateAccess.push(
+        t('access.role_at_institution', {
+          role: t('administrative.role_header.curators').toLowerCase(),
+          institution: institution,
+        }),
+        t('access.role_at_institution', {
+          role: t('administrative.role_header.editors').toLowerCase(),
+          institution: institution,
+        }),
+        t('access.role_at_institution', {
+          role: t('administrative.role_header.administrators').toLowerCase(),
+          institution: institution,
+        })
+      );
+    }
+
+    return generateListWithOxfordComma(specifiedPrivateAccess, t);
+  };
+
   return (
     <>
-      <Typography variant="h2">Lesetilgang</Typography>
+      <Typography gutterBottom variant="caption">
+        {t('access.read_access')}
+      </Typography>
       {isLoading ? (
         <CircularProgress />
       ) : (
@@ -75,14 +103,16 @@ const ReadAccess: FC<ReadAccessProps> = ({ resource }) => {
           {!errorFetchingReadAccessList ? (
             <>
               {resource.features.dlr_access === 'open' ? (
-                <StyledChip label={'Denne ressursen er åpent tilgjengelig'} />
+                <>
+                  <Typography>{t('access.public_available_read_access')}.</Typography>
+                </>
               ) : (
                 <>
-                  {privateAccessList.map((access, index) => (
-                    <StyledChip key={index} label={generatePrivateAccessString(access)} />
-                  ))}
-                  <StyledChip label={'redaktører, kuratorer og administratorer hos Unit'} />
-                  <StyledChip label={'5 personer med epost tilgang'} />
+                  <Typography>
+                    <b>{t('access.restrictive_read_access')}. </b>
+                    {t('access.following_have_read_access')}:
+                  </Typography>
+                  <Typography>{generatePrivateAccessAllTypes()}</Typography>
                 </>
               )}
             </>
