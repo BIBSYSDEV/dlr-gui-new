@@ -43,10 +43,6 @@ const StyledCombinedTextWrapper = styled.div`
   text-overflow: ellipsis;
 `;
 
-const StyledResourceExampleTypography = styled(Typography)`
-  margin-left: 0.5rem;
-`;
-
 interface ResourceTypeFieldProps {
   setAllChangesSaved: (value: boolean) => void;
 }
@@ -114,9 +110,9 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                       </StyledListItemIcon>
                       <StyledCombinedTextWrapper>
                         <Typography variant="inherit">{t('resource.type.image')}</Typography>
-                        <StyledResourceExampleTypography variant="caption">
+                        <Typography variant="caption">
                           ({t('explanation_text.resource_type_examples_image')})
-                        </StyledResourceExampleTypography>
+                        </Typography>
                       </StyledCombinedTextWrapper>
                     </StyledMenuItemContent>
                   </StyledMenuItem>
@@ -127,9 +123,9 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                       </StyledListItemIcon>
                       <StyledCombinedTextWrapper>
                         <Typography variant="inherit">{t('resource.type.document')}</Typography>
-                        <StyledResourceExampleTypography variant="caption">
+                        <Typography variant="caption">
                           ({t('explanation_text.resource_type_examples_document')})
-                        </StyledResourceExampleTypography>
+                        </Typography>
                       </StyledCombinedTextWrapper>
                     </StyledMenuItemContent>
                   </StyledMenuItem>
@@ -140,9 +136,9 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                       </StyledListItemIcon>
                       <StyledCombinedTextWrapper>
                         <Typography variant="inherit">{t('resource.type.presentation')}</Typography>
-                        <StyledResourceExampleTypography variant="caption">
+                        <Typography variant="caption">
                           ({t('explanation_text.resource_type_examples_presentation')})
-                        </StyledResourceExampleTypography>
+                        </Typography>
                       </StyledCombinedTextWrapper>
                     </StyledMenuItemContent>
                   </StyledMenuItem>
@@ -161,9 +157,9 @@ const ResourceTypeField: FC<ResourceTypeFieldProps> = ({ setAllChangesSaved }) =
                       </StyledListItemIcon>
                       <StyledCombinedTextWrapper>
                         <Typography variant="inherit">{t('resource.type.simulation')}</Typography>
-                        <StyledResourceExampleTypography variant="caption">
+                        <Typography variant="caption">
                           ({t('explanation_text.resource_type_examples_simulation')})
-                        </StyledResourceExampleTypography>
+                        </Typography>
                       </StyledCombinedTextWrapper>
                     </StyledMenuItemContent>
                   </StyledMenuItem>

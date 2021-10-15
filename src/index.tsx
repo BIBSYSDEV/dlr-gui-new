@@ -13,6 +13,13 @@ import { USE_MOCK_DATA } from './utils/constants';
 // import i18n (needs to be bundled ;))
 import './translations/i18n';
 
+// Fonts
+import '@fontsource/barlow/400.css';
+import '@fontsource/barlow/500.css';
+import '@fontsource/barlow/600.css';
+import '@fontsource/barlow/700.css';
+import '@fontsource/crimson-text/400.css';
+
 if (USE_MOCK_DATA) {
   interceptRequestsOnMock();
 }
