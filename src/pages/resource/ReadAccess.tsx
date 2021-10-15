@@ -108,7 +108,7 @@ const ReadAccess: FC<ReadAccessProps> = ({ resource }) => {
                 </>
               ) : (
                 <>
-                  <Typography>
+                  <Typography data-testid="restrictive-read-access">
                     <b>{t('access.restrictive_read_access')}. </b>
                     {t('access.following_have_read_access')}:
                   </Typography>

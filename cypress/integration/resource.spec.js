@@ -141,4 +141,8 @@ context('Resource', () => {
     cy.get('[data-testid=show-all-tags]').click();
     cy.get('[data-testid=tag-chip-9]').should('exist');
   });
+
+  it('lists read access', () => {
+    cy.get('[data-testid=restrictive-read-access]').should('exist');
+  });
 });

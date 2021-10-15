@@ -51,6 +51,7 @@ import {
   mockWorkListOwnerRequest,
   mockWorkListReportResource,
   mockWorkListRequestDOI,
+  readAccessListWithoutInstitution,
 } from './mockdata';
 
 // AXIOS INTERCEPTOR
@@ -228,6 +229,9 @@ export const interceptRequestsOnMock = () => {
   mock.onDelete(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*`)).reply(202);
 
   //RESOURCE SHARING
+  mock
+    .onGet(new RegExp(`${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*/info`))
+    .reply(200, readAccessListWithoutInstitution);
   mock
     .onGet(new RegExp(`${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/.*`))
     .reply(200, mockResourceReadAccess);
