@@ -134,4 +134,11 @@ context('Resource', () => {
     cy.get('[data-testid=show-all-tags]').click();
     cy.get('[data-testid=tag-chip-9]').should('exist');
   });
+
+  it("is not possible to request DOI for other people's resources", () => {
+    cy.visit(`${resourcePath}/${mockMyResources[1].identifier}`);
+    cy.get('[data-testid=request-doi-button').should('not.exist');
+    cy.visit(`${resourcePath}/${mockMyResources[0].identifier}`);
+    cy.get('[data-testid=request-doi-button').should('exist');
+  });
 });

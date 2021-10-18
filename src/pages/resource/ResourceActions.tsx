@@ -30,9 +30,9 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, userResourceAuthoriza
   const { t } = useTranslation();
   const [requestSentSuccess, setRequestSentSuccess] = useState(false);
   const user = useSelector((state: RootState) => state.user);
-  const isAuthor = () => resource.features.dlr_submitter_email === user.id;
   const canRequestChangeInOwnership =
     userResourceAuthorization.isConsumer && !!user.institutionAuthorities?.isPublisher;
+
   return (
     <>
       <Typography variant="h2">{t('common.actions')}</Typography>
@@ -41,7 +41,10 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, userResourceAuthoriza
           <Grid item>
             <ReportResource setRequestSentSuccess={setRequestSentSuccess} resource={resource} />
           </Grid>
-          {(isAuthor() || userResourceAuthorization.isOwner) && (
+          {(userResourceAuthorization.isOwner ||
+            userResourceAuthorization.isCurator ||
+            userResourceAuthorization.isEditor ||
+            userResourceAuthorization.isAdmin) && (
             <Grid item>
               <RequestDOI setRequestSentSuccess={setRequestSentSuccess} resource={resource} />
             </Grid>
