@@ -1,8 +1,8 @@
 import React, { FC, useState } from 'react';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import useInterval from '../utils/useInterval';
 import { Uppy } from '../types/file.types';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress } from '@mui/material';
 
 interface CircularFileUploadProgressProps {
   uppy: Uppy;

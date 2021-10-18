@@ -1,5 +1,5 @@
 import React, { FC, ReactNode } from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 
 interface NormalTextProps {
   children: ReactNode;

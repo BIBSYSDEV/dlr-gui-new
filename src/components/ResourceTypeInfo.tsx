@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { getStyledFileTypeIcon } from './FileTypeIcon';
 import { Resource, ResourceCreationType } from '../types/resource.types';
 import { useTranslation } from 'react-i18next';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 
 const StyledThumbnailMetadataWrapper = styled.div`
   display: flex;

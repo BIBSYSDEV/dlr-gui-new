@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, CircularProgress, List, ListItem, Switch, TextField, Typography } from '@material-ui/core';
+import { Button, CircularProgress, List, ListItem, Switch, TextField, Typography } from '@mui/material';
 import styled from 'styled-components';
 import {
   getRolesForInstitutionUser,
@@ -18,6 +18,7 @@ import { RootState } from '../../state/rootReducer';
 import { StatusCode } from '../../utils/constants';
 import axios, { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import { inputBaseClasses } from '@mui/material';
 
 const StyledSearchWrapper = styled.div`
   display: flex;
@@ -38,7 +39,7 @@ const StyledInputWrapper = styled.div`
 
 const StyledTextField = styled(TextField)`
   width: 100%;
-  & .MuiInputBase-root {
+  & .${inputBaseClasses.root} {
     height: 3rem;
   }
 `;

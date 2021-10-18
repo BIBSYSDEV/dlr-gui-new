@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Typography, CircularProgress, Paper } from '@material-ui/core';
+import { Typography, CircularProgress, Paper } from '@mui/material';
 import { Content, resourceType, SupportedFileTypes } from '../types/content.types';
 import styled from 'styled-components';
 import { determinePresentationMode } from '../utils/mime_type_utils';

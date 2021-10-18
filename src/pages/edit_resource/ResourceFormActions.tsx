@@ -1,15 +1,15 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import { publishResource, updateSearchIndex } from '../../api/resourceApi';
 import { getStepLabel, Resource, ResourceFormStep } from '../../types/resource.types';
 import { StyledContentWrapperMedium, StyledSchemaPart } from '../../components/styled/Wrappers';
 import ErrorBanner from '../../components/ErrorBanner';
 import { useHistory } from 'react-router-dom';
 import { useFormikContext } from 'formik';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { resourcePath } from '../../utils/constants';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';

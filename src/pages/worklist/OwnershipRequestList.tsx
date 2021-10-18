@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { CircularProgress, Typography } from '@material-ui/core';
+import { CircularProgress, Typography } from '@mui/material';
 import ErrorBanner from '../../components/ErrorBanner';
 import { WorklistRequest } from '../../types/Worklist.types';
 import styled from 'styled-components';

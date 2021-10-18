@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { FormikProps, FormikValues, useFormikContext } from 'formik';
 import ResourcePresentation from '../../resource/ResourcePresentation';
 import { Resource } from '../../../types/resource.types';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 

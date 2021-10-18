@@ -7,7 +7,7 @@ import ContainsOtherWorksFields from './ContainsOtherWorksFields';
 import { useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
 import RequiredFieldInformation from '../../../components/RequiredFieldInformation';
-import { Alert } from '@material-ui/lab';
+import { Alert } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 interface AccessAndLicenseStepProps {

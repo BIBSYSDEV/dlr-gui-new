@@ -1,8 +1,8 @@
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { CreativeCommonsLicenseCodes, Licenses } from '../../types/license.types';
-import FormLabel from '@material-ui/core/FormLabel';
-import Typography from '@material-ui/core/Typography';
-import { Checkbox, FormControl, FormControlLabel, FormGroup } from '@material-ui/core';
+import FormLabel from '@mui/material/FormLabel';
+import Typography from '@mui/material/Typography';
+import { Checkbox, FormControl, FormControlLabel, FormGroup } from '@mui/material';
 import { QueryObject, SearchParameters } from '../../types/search.types';
 import { useTranslation } from 'react-i18next';
 import CClogoImage from '../../components/CClogoImage';

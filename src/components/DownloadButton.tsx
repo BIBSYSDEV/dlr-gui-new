@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
-import { Button } from '@material-ui/core';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
+import { Button } from '@mui/material';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { useTranslation } from 'react-i18next';
 import { getContentPresentationData } from '../api/resourceApi';
 import { Content } from '../types/content.types';

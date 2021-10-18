@@ -2,10 +2,10 @@ import React, { FC, useState } from 'react';
 import { Resource, UserAuthorizationProfileForResource } from '../../types/resource.types';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@mui/material';
 import ReportResource from './ReportResource';
 import RequestDOI from './RequestDOI';
-import { Alert, AlertTitle } from '@material-ui/lab';
+import { Alert, AlertTitle } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import RequestOwnership from './RequestOwnership';
@@ -30,9 +30,9 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, userResourceAuthoriza
   const { t } = useTranslation();
   const [requestSentSuccess, setRequestSentSuccess] = useState(false);
   const user = useSelector((state: RootState) => state.user);
-  const isAuthor = () => resource.features.dlr_submitter_email === user.id;
   const canRequestChangeInOwnership =
     userResourceAuthorization.isConsumer && !!user.institutionAuthorities?.isPublisher;
+
   return (
     <>
       <Typography variant="h2">{t('common.actions')}</Typography>
@@ -41,7 +41,10 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, userResourceAuthoriza
           <Grid item>
             <ReportResource setRequestSentSuccess={setRequestSentSuccess} resource={resource} />
           </Grid>
-          {(isAuthor() || userResourceAuthorization.isOwner) && (
+          {(userResourceAuthorization.isOwner ||
+            userResourceAuthorization.isCurator ||
+            userResourceAuthorization.isEditor ||
+            userResourceAuthorization.isAdmin) && (
             <Grid item>
               <RequestDOI setRequestSentSuccess={setRequestSentSuccess} resource={resource} />
             </Grid>

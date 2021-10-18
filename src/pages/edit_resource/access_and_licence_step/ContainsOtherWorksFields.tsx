@@ -1,10 +1,10 @@
 import React, { FC, useState } from 'react';
-import Radio from '@material-ui/core/Radio';
+import Radio from '@mui/material/Radio';
 import { useTranslation } from 'react-i18next';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { Resource, ResourceFeatureNames, ResourceFeatureNamesFullPath } from '../../../types/resource.types';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormLabel from '@material-ui/core/FormLabel';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/rootReducer';
 import { Colors, DeviceWidths } from '../../../themes/mainTheme';
@@ -21,9 +21,9 @@ import {
   setResourceLicense,
 } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import styled from 'styled-components';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import {
   AccessTypes,
   ContainsOtherPeoplesWorkOptions,
@@ -33,7 +33,7 @@ import {
   Licenses,
 } from '../../../types/license.types';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
-import { FormControl, FormHelperText, useMediaQuery } from '@material-ui/core';
+import { FormControl, FormHelperText, useMediaQuery } from '@mui/material';
 import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
 

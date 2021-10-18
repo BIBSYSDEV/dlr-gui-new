@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
   useMediaQuery,
-} from '@material-ui/core';
+} from '@mui/material';
 import ErrorBanner from '../../components/ErrorBanner';
 import { DeviceWidths } from '../../themes/mainTheme';
 import { useTranslation } from 'react-i18next';

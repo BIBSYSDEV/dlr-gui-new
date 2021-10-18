@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CircularProgress, Typography } from '@material-ui/core';
+import { CircularProgress, Typography } from '@mui/material';
 import styled from 'styled-components';
 import ErrorBanner from '../../components/ErrorBanner';
 import ReportRequestListItem from './ReportRequestListItem';

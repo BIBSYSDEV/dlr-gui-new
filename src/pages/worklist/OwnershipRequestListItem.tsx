@@ -13,9 +13,9 @@ import {
   Grid,
   TextField,
   useMediaQuery,
-} from '@material-ui/core';
+} from '@mui/material';
 import WorkListRequestMetaDataViewer from './WorkListRequestMetaDataViewer';
-import BlockIcon from '@material-ui/icons/Block';
+import BlockIcon from '@mui/icons-material/Block';
 import { useTranslation } from 'react-i18next';
 import { approveOwnershipRequest, refuseOwnershipRequest } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';

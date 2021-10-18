@@ -6,11 +6,11 @@ import SA from '../resources/images/creative_commons_logos/sa.svg';
 import ND from '../resources/images/creative_commons_logos/nd.svg';
 import Zero from '../resources/images/creative_commons_logos/zero.svg';
 import BY from '../resources/images/creative_commons_logos/by.svg';
-import Typography from '@material-ui/core/Typography';
-import { IconButton, Popover } from '@material-ui/core';
-import HelpIcon from '@material-ui/icons/Help';
+import Typography from '@mui/material/Typography';
+import { IconButton, Popover } from '@mui/material';
+import HelpIcon from '@mui/icons-material/Help';
 import { useTranslation } from 'react-i18next';
-import Link from '@material-ui/core/Link';
+import Link from '@mui/material/Link';
 
 const StyledImage = styled.img`
   width: 1.2rem;
@@ -86,7 +86,7 @@ const LicensePopoverExplanation: FC<CCExplanationProps> = ({
   };
   return (
     <div>
-      <IconButton aria-label={t('dashboard.explain_license')} color="primary" onClick={handleClick}>
+      <IconButton aria-label={t('dashboard.explain_license')} color="primary" onClick={handleClick} size="large">
         <HelpIcon />
       </IconButton>
       <Popover
@@ -94,6 +94,7 @@ const LicensePopoverExplanation: FC<CCExplanationProps> = ({
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
+        PaperProps={{ sx: { overflow: 'hidden' } }}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center',
@@ -140,6 +141,7 @@ const LicensePopoverExplanation: FC<CCExplanationProps> = ({
           {licenseCode.toLowerCase().includes('ntnu') && <Typography>{t('license.part_description.ntnu')}</Typography>}
           {licenseCode.toLowerCase().includes('cc') && !licenseCode.toLowerCase().includes('1') && showLink && (
             <Link
+              underline="hover"
               href={`https://creativecommons.org/licenses/${licenseCode
                 .replace('CC', '')
                 .replace(' 4.0', '')
@@ -154,6 +156,7 @@ const LicensePopoverExplanation: FC<CCExplanationProps> = ({
           )}
           {licenseCode.toLowerCase().includes('1') && showLink && (
             <Link
+              underline="hover"
               href={`https://creativecommons.org/publicdomain/zero/1.0/deed.no`}
               target="_blank"
               rel="noopener noreferrer">

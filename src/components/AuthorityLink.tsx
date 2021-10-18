@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { BIBSYS_AUTHORITY_URL } from '../utils/constants';
 import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { Authority } from '../types/authority.types';
-import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import { Colors } from '../themes/mainTheme';
 import { useTranslation } from 'react-i18next';
 

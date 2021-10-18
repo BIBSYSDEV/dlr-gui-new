@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import LinkIcon from '@material-ui/icons/Link';
+import LinkIcon from '@mui/icons-material/Link';
 import LinkResourceForm, { LinkResourceFormValues } from './LinkResourceForm';
 import StartRegistrationMethodAccordion from './StartRegistrationMethodAccordion';
 import { urlValidationSchema } from '../../utils/validation/urlValidation';

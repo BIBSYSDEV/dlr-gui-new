@@ -17,8 +17,8 @@ import {
   Link,
   Typography,
   useMediaQuery,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useTranslation } from 'react-i18next';
 import CreatorPublishedItem from './CreatorPublishedItem';
 import styled from 'styled-components';
@@ -169,7 +169,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ parentR
 
           {searchResult?.numFound && searchResult.numFound > 6 && (
             <StyledTypography>
-              <Link data-testid={`show-all-posts-${creator.identifier}`} href={link}>
+              <Link underline="hover" data-testid={`show-all-posts-${creator.identifier}`} href={link}>
                 {t('resource.browse_by_creator')}
               </Link>
             </StyledTypography>
@@ -201,7 +201,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ parentR
             </SearchResultWrapper>
             {searchResult?.numFound && searchResult.numFound > 6 && (
               <StyledTypography align="right">
-                <Link data-testid={`show-all-posts-${creator.identifier}`} href={link}>
+                <Link underline="hover" data-testid={`show-all-posts-${creator.identifier}`} href={link}>
                   {t('resource.browse_by_creator')}
                 </Link>
               </StyledTypography>
