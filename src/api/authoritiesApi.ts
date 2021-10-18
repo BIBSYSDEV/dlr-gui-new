@@ -7,31 +7,32 @@ import {
   DefaultAuthoritySearchLength,
   DefaultAuthoritySearchOffset,
 } from '../types/authority.types';
-import { AxiosResponse } from 'axios';
+import { AxiosPromise, AxiosResponse } from 'axios';
 
 export const searchAuthorities = (
   query: string,
   offset = DefaultAuthoritySearchOffset,
   limit = DefaultAuthoritySearchLength
-): Promise<AxiosResponse<AuthoritySearchResponse>> => {
+): AxiosPromise<AuthoritySearchResponse> => {
   return authenticatedApiRequest({
     url: encodeURI(
       `${API_PATHS.guiBackendAuthoritiesPath}/authorities/search?q=${query}&offset=${offset}&limit=${limit}&searchField=textsearch`
     ),
     method: 'GET',
-  });
+  }) as AxiosPromise<AuthoritySearchResponse>;
 };
 
+//AuthorityResponse[]
 export const getAuthoritiesForResourceCreatorOrContributor = async (
   resourceId: string,
   creatorOrContributorId: string
 ): Promise<Authority[]> => {
-  const response: AxiosResponse<AuthorityResponse[]> = await authenticatedApiRequest({
+  const response = (await authenticatedApiRequest({
     url: encodeURI(
       `${API_PATHS.guiBackendResourcesPath}/resources/${resourceId}/creators/${creatorOrContributorId}/authorities`
     ),
     method: 'GET',
-  });
+  })) as AxiosResponse<AuthorityResponse[]>;
   return response.data.map((element: any) => {
     return {
       id: element.features.dlr_authority_id.replace('=', ''),
