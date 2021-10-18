@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
-import { Autocomplete, AutocompleteRenderInputParams } from '@material-ui/lab';
-import { TextField, Typography } from '@material-ui/core';
+import { Autocomplete, TextFieldProps } from '@mui/material';
+import { TextField, Typography } from '@mui/material';
 import { Course, ResourceReadAccess, ResourceReadAccessNames } from '../../../types/resourceReadAccess.types';
 import styled from 'styled-components';
 import { StyleWidths } from '../../../themes/mainTheme';
@@ -114,7 +114,7 @@ const PrivateConsumerCourseAccessFields: FC<PrivateConsumerCourseAccessFieldsPro
           <StyledCourseAutocomplete
             id="course-input"
             data-testid="course-input"
-            renderInput={(params: AutocompleteRenderInputParams) => (
+            renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => (
               <TextField {...params} label={t('access.course')} variant="filled" />
             )}
             options={sortCourses()}

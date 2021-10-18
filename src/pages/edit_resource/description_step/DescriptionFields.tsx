@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, TextField } from '@material-ui/core';
+import { Grid, TextField } from '@mui/material';
 import { ErrorMessage, Field, FieldProps, useFormikContext } from 'formik';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import TagsField from './TagsField';
@@ -12,7 +12,7 @@ import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import { Colors } from '../../../themes/mainTheme';
 import RequiredFieldInformation from '../../../components/RequiredFieldInformation';
 import HelperTextPopover from '../../../components/HelperTextPopover';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import { StylePopoverTypography } from '../../../components/styled/StyledTypographies';
 
 interface DescriptionFieldsProps {

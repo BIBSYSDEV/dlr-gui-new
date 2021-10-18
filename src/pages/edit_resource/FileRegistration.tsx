@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import PublishIcon from '@material-ui/icons/Publish';
+import PublishIcon from '@mui/icons-material/Publish';
 
 import { Uppy } from '../../types/file.types';
 import StartRegistrationMethodAccordion from './StartRegistrationMethodAccordion';

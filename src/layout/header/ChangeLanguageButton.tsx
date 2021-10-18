@@ -1,9 +1,9 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import LanguageIcon from '@material-ui/icons/Language';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import { Button, Menu, MenuItem } from '@material-ui/core';
+import LanguageIcon from '@mui/icons-material/Language';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import { Button, Menu, MenuItem } from '@mui/material';
 
 const languageMenuId = 'language-menu';
 
@@ -29,6 +29,7 @@ const ChangeLanguageButton: FC = () => {
   return (
     <>
       <Button
+        color="neutral"
         data-testid="language-button"
         aria-controls={languageMenuId}
         startIcon={<LanguageIcon />}

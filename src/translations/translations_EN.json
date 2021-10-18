@@ -148,7 +148,7 @@
     "licenses": "Licenses",
     "search_result_no_hits": "The search returned no hits",
     "tags": "Tags",
-    "tags_boolean_operator_in_search" : "Show only results matching all of the selected tags"
+    "tags_boolean_operator_in_search": "Show only results matching all of the selected tags"
   },
   "delivered_by": "Delivered by",
   "embed": {

@@ -2,10 +2,10 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Course, ResourceReadAccess, ResourceReadAccessNames } from '../../../types/resourceReadAccess.types';
 import styled from 'styled-components';
-import { Chip, CircularProgress, Typography } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
+import { Chip, CircularProgress, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
 import ErrorBanner from '../../../components/ErrorBanner';
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@mui/icons-material/Add';
 import {
   deleteAdditionalUserConsumerAccess,
   deleteCourseConsumerAccess,
@@ -18,7 +18,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/rootReducer';
 import { useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
-import CancelIcon from '@material-ui/icons/Cancel';
+import CancelIcon from '@mui/icons-material/Cancel';
 import PrivateConsumerCourseAccessFields from './PrivateConsumerCourseAccessFields';
 import PrivateConsumerPersonalAccessFields from './PrivateConsumerPersonalAccessFields';
 import { isDevelopInstance, parseCourse } from '../../../utils/course.utils';
@@ -234,7 +234,7 @@ const PrivateConsumerAccessFields: FC<PrivateConsumerAccessFieldsProps> = ({
             disabled={values.features.dlr_status_published}
             deleteIcon={<CancelIcon data-testid={`delete-private-consumer-access-chip-${index}`} />}
             label={generateChipLabel(access)}
-            color="primary"
+            color="accent"
             onDelete={() => {
               deleteAccess(access);
             }}

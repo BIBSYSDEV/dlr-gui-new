@@ -6,7 +6,7 @@ import ContentIframe from './ContentIframe';
 import { MICROSOFT_DOCUMENT_VIEWER } from '../utils/constants';
 import DownloadButton from './DownloadButton';
 import styled from 'styled-components';
-import { Alert } from '@material-ui/lab';
+import { Alert } from '@mui/material';
 
 const InformationAndDownloadWrapper = styled.div`
   display: block;

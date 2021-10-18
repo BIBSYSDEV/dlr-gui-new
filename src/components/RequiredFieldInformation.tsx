@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyledContentWrapper, StyledSchemaPart } from './styled/Wrappers';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 

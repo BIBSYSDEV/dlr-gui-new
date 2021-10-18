@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { Container, Typography } from '@material-ui/core';
+import { Container, Typography } from '@mui/material';
 import { Colors } from '../themes/mainTheme';
 import { useTranslation } from 'react-i18next';
 import LoginButton from '../layout/header/LoginButton';

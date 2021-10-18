@@ -2,7 +2,7 @@ import React from 'react';
 import '@uppy/core/dist/style.css';
 import '@uppy/status-bar/dist/style.css';
 import styled from 'styled-components';
-import { Link, Typography, useMediaQuery } from '@material-ui/core';
+import { Link, Typography, useMediaQuery } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useFormikContext } from 'formik';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
@@ -44,6 +44,7 @@ const LinkFields = () => {
           <LinkMetadata>
             <Typography variant="overline">{t('resource.metadata.link')}</Typography>
             <Link
+              underline="hover"
               href={values.features.dlr_content}
               target="_blank"
               rel="noreferrer noopener"

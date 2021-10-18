@@ -1,11 +1,12 @@
 import React, { FC } from 'react';
-import { Link, Typography } from '@material-ui/core';
+import { Link, Typography } from '@mui/material';
 import { License } from '../types/license.types';
 import i18next from 'i18next';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import CClogoImage from './CClogoImage';
 import { Colors } from '../themes/mainTheme';
+import { typographyClasses } from '@mui/material/Typography';
 
 const StyledWrapper = styled.div`
   padding-top: 1rem;
@@ -15,7 +16,7 @@ const StyledLink = styled(Link)`
   margin-top: 1rem;
   display: flex;
   align-items: flex-start;
-  & .MuiTypography-body1 {
+  & .${typographyClasses.body1} {
     color: ${Colors.Link};
   }
 `;
@@ -42,7 +43,11 @@ const LicenseCard: FC<LicenseProps> = ({ license }) => {
           {!license.features?.dlr_license_description_no && (
             <Typography variant="caption">{license.features?.dlr_license_description}</Typography>
           )}
-          <StyledLink rel="noopener noreferrer" target="_blank" href={license.features?.dlr_license_url_no ?? ''}>
+          <StyledLink
+            underline="hover"
+            rel="noopener noreferrer"
+            target="_blank"
+            href={license.features?.dlr_license_url_no ?? ''}>
             {`${t('license.read_more')}: `}
             {license.features?.dlr_license_code?.replace(' 4.0', '').replace(' 1.0', '') && (
               <CClogoImage licenseCode={license.features.dlr_license_code} />
@@ -61,7 +66,11 @@ const LicenseCard: FC<LicenseProps> = ({ license }) => {
           {!license.features?.dlr_license_description_en && (
             <Typography variant="body1">{license.features?.dlr_license_description}</Typography>
           )}
-          <StyledLink target="_blank" rel="noopener noreferrer" href={license.features?.dlr_license_url_en ?? ''}>
+          <StyledLink
+            underline="hover"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={license.features?.dlr_license_url_en ?? ''}>
             {`${t('license.read_more')}: `}
             {license.features?.dlr_license_code?.replace(' 4.0', '').replace(' 1.0', '') && (
               <CClogoImage licenseCode={license.features.dlr_license_code} />

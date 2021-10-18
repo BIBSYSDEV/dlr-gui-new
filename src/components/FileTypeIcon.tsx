@@ -1,17 +1,17 @@
 import React from 'react';
 import { LegacyResourceFeatureTypes, ResourceFeatureTypes } from '../types/resource.types';
-import SlideshowIcon from '@material-ui/icons/Slideshow';
-import PhotoOutlinedIcon from '@material-ui/icons/PhotoOutlined';
-import VolumeUpIcon from '@material-ui/icons/VolumeUp';
-import VideocamIcon from '@material-ui/icons/Videocam';
-import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
-import OndemandVideoIcon from '@material-ui/icons/OndemandVideo';
-import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
-import EventIcon from '@material-ui/icons/Event';
-import TouchAppIcon from '@material-ui/icons/TouchApp';
-import SquareFootIcon from '@material-ui/icons/SquareFoot';
-import CodeIcon from '@material-ui/icons/Code';
-import CallSplitIcon from '@material-ui/icons/CallSplit';
+import SlideshowIcon from '@mui/icons-material/Slideshow';
+import PhotoOutlinedIcon from '@mui/icons-material/PhotoOutlined';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import VideocamIcon from '@mui/icons-material/Videocam';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import EventIcon from '@mui/icons-material/Event';
+import TouchAppIcon from '@mui/icons-material/TouchApp';
+import SquareFootIcon from '@mui/icons-material/SquareFoot';
+import CodeIcon from '@mui/icons-material/Code';
+import CallSplitIcon from '@mui/icons-material/CallSplit';
 
 export const getStyledFileTypeIcon = (type: string) => {
   switch (type.toUpperCase()) {

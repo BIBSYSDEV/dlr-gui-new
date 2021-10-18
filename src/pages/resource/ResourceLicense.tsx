@@ -1,15 +1,16 @@
 import React, { FC } from 'react';
 import { Resource } from '../../types/resource.types';
-import { Link, Typography } from '@material-ui/core';
+import { Link, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { StyledFeatureWrapper } from '../../components/styled/Wrappers';
 import CClogoImage from '../../components/CClogoImage';
 import styled from 'styled-components';
 import { Colors } from '../../themes/mainTheme';
 import i18next from 'i18next';
+import { typographyClasses } from '@mui/material';
 
 const StyledLink = styled(Link)`
-  & .MuiTypography-body1 {
+  & .${typographyClasses.body1} {
     color: ${Colors.Link};
   }
   margin-left: -0.3rem;
@@ -52,7 +53,12 @@ const ResourceLicense: FC<ResourceLicenseProps> = ({ resource }) => {
             {t('resource.metadata.license')}
           </Typography>
           <div lang={langCode}>
-            <StyledLink gutterBottom target="_blank" rel="noopener noreferrer" href={generateLicenseUrl()}>
+            <StyledLink
+              underline="hover"
+              gutterBottom
+              target="_blank"
+              rel="noopener noreferrer"
+              href={generateLicenseUrl()}>
               {license.features?.dlr_license_code && <CClogoImage licenseCode={license.features.dlr_license_code} />}
             </StyledLink>
             <Typography variant="overline">{generateLicenseDescription()}</Typography>

@@ -4,7 +4,7 @@ import {
   Resource,
   UserAuthorizationProfileForResource,
 } from '../../types/resource.types';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import styled from 'styled-components';
 import { Colors } from '../../themes/mainTheme';
 import {

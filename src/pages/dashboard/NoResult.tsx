@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { SearchParameters, SearchResult } from '../../types/search.types';
-import { Link, Typography } from '@material-ui/core';
+import { Link, Typography } from '@mui/material';
 import { getLMSSearchParams } from '../../utils/lmsService';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
@@ -26,6 +26,7 @@ const NoResult: FC<NoResultProps> = ({ searchResult }) => {
           {t('dashboard.did_you_mean')}{' '}
           {searchResult.spellcheck_suggestions.map((suggestion, index) => (
             <StyledLink
+              underline="hover"
               key={`${index}-${suggestion}`}
               data-testid={`search-suggestion-${suggestion}`}
               href={`/?${SearchParameters.query}=${suggestion}${

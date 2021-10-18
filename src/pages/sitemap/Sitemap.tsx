@@ -1,12 +1,12 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
 import { StyledContentWrapper } from '../../components/styled/Wrappers';
 import { API_PATHS, API_URL, resourcePath } from '../../utils/constants';
-import { List, ListItem } from '@material-ui/core';
+import { List, ListItem } from '@mui/material';
 import { handleLogout } from '../../layout/header/Logout';
 
 const StyledTypography = styled(Typography)`
@@ -67,7 +67,7 @@ const Sitemap = () => {
         <List>
           {links.map((link, index) => (
             <ListItem key={index}>
-              <Link href={link.href} onClick={link.onClickFunction}>
+              <Link underline="hover" href={link.href} onClick={link.onClickFunction}>
                 {link.description}
               </Link>
             </ListItem>

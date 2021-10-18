@@ -16,10 +16,8 @@ context('Tag filtering', () => {
     cy.get('[data-testid=search-for-resource-submit]').click();
     cy.get('[data-testid=expand-filtering-options]').click();
     cy.get(`[data-testid=filter-tags-input] input`).type(singleCharacter);
-    cy.get(`#filter-tags-input-popup`).should('not.exist');
     cy.get(`[data-testid=filter-tags-input] input`).type(tag1);
-    cy.get(`#filter-tags-input-popup`).should('exist');
-    cy.get(`#filter-tags-input-popup li:first-of-type`).click();
+    cy.get(`#filter-tags-input-option-0`).click();
     cy.get(`[data-testid=filter-tag-chip-0]`).should('exist');
   });
 
@@ -73,14 +71,13 @@ context('Tag filtering', () => {
     const tag1 = 'digital';
     cy.get('[data-testid=expand-filtering-options]').click();
     cy.get(`[data-testid=filter-tags-input] input`).type(tag1);
-    cy.get(`#filter-tags-input-popup`).should('exist');
-    cy.get(`#filter-tags-input-popup li:first-of-type`).click();
+    cy.get(`#filter-tags-input-option-0`).click();
     cy.get(`[data-testid=filter-tag-chip-0]`).should('exist');
     cy.get(`[data-testid=tag-filter-delete-${tag1}]`).click();
     cy.get('[data-testid=expand-filtering-options]').click();
     cy.get(`[data-testid=filter-tag-chip-0]`).should('not.exist');
     cy.get(`[data-testid=filter-tags-input] input`).type(tag1);
-    cy.get(`#filter-tags-input-popup li:first-of-type`).click();
+    cy.get(`#filter-tags-input-option-0`).click();
     cy.get(`[data-testid=filter-tag-chip-0]`).should('exist');
   });
 

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Button, Grid, Typography } from '@material-ui/core';
+import { Button, Grid, Typography } from '@mui/material';
 import styled from 'styled-components';
 import { Resource } from '../../types/resource.types';
 import { LMSTypes } from '../../types/lms.types';

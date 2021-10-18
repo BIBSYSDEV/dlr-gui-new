@@ -6,19 +6,19 @@ import { useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { UppyFile } from '@uppy/core';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import LinearProgress from '@mui/material/LinearProgress';
 import { Colors, DeviceWidths, StyleWidths } from '../../../themes/mainTheme';
 import styled from 'styled-components';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
-import Button from '@material-ui/core/Button';
-import DeleteIcon from '@material-ui/icons/Delete';
+import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteResourceContent } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import Thumbnail from '../../../components/Thumbnail';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/rootReducer';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery } from '@mui/material';
 
 interface AdditionalFilesUploadProps {
   additionalFileUploadUppy: Uppy;
