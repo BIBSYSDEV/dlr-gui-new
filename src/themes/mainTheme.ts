@@ -177,7 +177,7 @@ export default createTheme({
     },
     h4: {
       fontSize: '1.125rem',
-      fontWeight: 'bold',
+      fontWeight: 600,
       lineHeight: '1.5rem',
       letterSpacing: '0.0015em',
       color: Colors.InitialText,
@@ -216,7 +216,7 @@ export default createTheme({
       fontSize: '0.875rem',
       lineHeight: '1.0625rem',
       letterSpacing: '0.02em',
-      fontWeight: 500,
+      fontWeight: 400,
       color: Colors.InitialText,
     },
     caption: {
