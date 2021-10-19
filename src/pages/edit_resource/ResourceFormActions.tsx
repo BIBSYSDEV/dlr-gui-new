@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { publishResource, updateSearchIndex } from '../../api/resourceApi';
 import { getStepLabel, Resource, ResourceFormStep } from '../../types/resource.types';
 import { StyledContentWrapperMedium, StyledSchemaPart } from '../../components/styled/Wrappers';
@@ -10,9 +10,11 @@ import { useHistory } from 'react-router-dom';
 import { useFormikContext } from 'formik';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { resourcePath } from '../../utils/constants';
+import { fileUploadPanelId, resourcePath } from '../../utils/constants';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import CircularFileUploadProgress from '../../components/CircularFileUploadProgress';
+import { Uppy } from '../../types/file.types';
 
 const PageWidthThresholdForButtons = '45rem';
 
@@ -70,9 +72,17 @@ interface ResourceFormActionProps {
   allChangesSaved: boolean;
   setActiveStep: (step: ResourceFormStep) => void;
   scrollToTop: () => void;
+  mainFileBeingUploaded: boolean;
+  uppy: Uppy;
 }
 
-const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActiveStep, scrollToTop }) => {
+const ResourceFormAction: FC<ResourceFormActionProps> = ({
+  activeStep,
+  mainFileBeingUploaded,
+  setActiveStep,
+  scrollToTop,
+  uppy,
+}) => {
   const { t } = useTranslation();
   const history = useHistory();
   const [publishResourceError, setPublishResourceError] = useState<Error | AxiosError>();
@@ -131,8 +141,23 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
               </UpperCaseButton>
             ) : (
               <>
+                {mainFileBeingUploaded && (
+                  <Typography>
+                    <CircularFileUploadProgress
+                      uppy={uppy}
+                      describedById={fileUploadPanelId}
+                      isUploadingNewFile={true}
+                      shouldDisplayCompleted={false}
+                    />
+                    Du kan ikke publisere eller lagre og fortsette senere mens filer lastes opp
+                  </Typography>
+                )}
                 <StyledSaveButtonWrapper>
-                  <UpperCaseButton data-testid="leave-form-button" variant="outlined" onClick={handleLeaveForm}>
+                  <UpperCaseButton
+                    disabled={mainFileBeingUploaded}
+                    data-testid="leave-form-button"
+                    variant="outlined"
+                    onClick={handleLeaveForm}>
                     {t('resource.leave_form')}
                   </UpperCaseButton>
                 </StyledSaveButtonWrapper>
@@ -142,7 +167,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({ activeStep, setActive
                     variant="contained"
                     color="primary"
                     onClick={handlePublishResource}
-                    disabled={!isValid}>
+                    disabled={!isValid || mainFileBeingUploaded}>
                     {t('common.publish')}
                   </UpperCaseButton>
                 ) : (

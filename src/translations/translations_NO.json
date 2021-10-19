@@ -441,7 +441,8 @@
         },
         "xTimeLeft": "%{time} gjenstår"
       },
-      "upload_files": "Last opp filer"
+      "upload_files": "Last opp filer",
+      "warning_leaving_form_premature": "Warning, your file is not done uploading yet. Are you sure you want to leave?"
     },
     "form_steps": {
       "description": "Beskrivelse",
