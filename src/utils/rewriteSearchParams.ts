@@ -30,7 +30,7 @@ export const getPackedUrlForFeideLogin = (path: string): string => {
   const searchParams = new URLSearchParams(window.location.search);
   const newParamsArray: string[] = [];
   searchParams.forEach((value, key) => newParamsArray.push(`${key}${ValuePairSplitter}${value}`));
-  const newParams = newParamsArray.length > 0 ? `?${newParamsArray.join(ParamsSplitter)}=t` : '';
+  const newParams = newParamsArray.length > 0 ? `?${newParamsArray.join(ParamsSplitter)}` : '';
   const originHref = window.location.origin + '/loginRedirect' + path + newParams;
   return `${API_URL}${API_PATHS.guiBackendLoginPath}/feideLogin?target=${originHref}`;
 };
