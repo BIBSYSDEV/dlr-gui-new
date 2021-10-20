@@ -14,6 +14,7 @@ export const parseCourse = (subject: string): Course | null => {
         code: courseString[0].trim(),
         year: courseString[2].trim(),
         season_nr: courseString[3].trim() as CourseSeason,
+        institution: courseString[1].trim(),
       },
     };
   } else {

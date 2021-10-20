@@ -1,7 +1,7 @@
 import { authenticatedApiRequest } from './api';
 import { API_PATHS, DEV_API_URL } from '../utils/constants';
 import { AxiosResponse } from 'axios';
-import { Course, ResourceReadAccess } from '../types/resourceReadAccess.types';
+import { Course, publicReadAccess, ResourceReadAccess } from '../types/resourceReadAccess.types';
 import moment from 'moment/moment';
 import coursesAtOsloMet from '../resources/assets/coursesAtOsloMet.json';
 
@@ -38,6 +38,13 @@ export const deleteAdditionalUserConsumerAccess = (resourceIdentifier: string, e
 export const getResourceReaders = (resourceIdentifier: string): Promise<AxiosResponse<ResourceReadAccess[]>> => {
   return authenticatedApiRequest({
     url: `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/${resourceIdentifier}`,
+    method: 'GET',
+  });
+};
+
+export const getPublicResourceReaders = (resourceIdentifier: string): Promise<AxiosResponse<publicReadAccess[]>> => {
+  return authenticatedApiRequest({
+    url: `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/${resourceIdentifier}/info`,
     method: 'GET',
   });
 };

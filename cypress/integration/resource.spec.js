@@ -135,6 +135,10 @@ context('Resource', () => {
     cy.get('[data-testid=tag-chip-9]').should('exist');
   });
 
+  it('lists read access', () => {
+    cy.get('[data-testid=restrictive-read-access]').should('exist');
+  });
+  
   it("is not possible to request DOI for other people's resources", () => {
     cy.visit(`${resourcePath}/${mockMyResources[1].identifier}`);
     cy.get('[data-testid=request-doi-button').should('not.exist');
