@@ -13,6 +13,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import SocialMediaSharing from '../../components/SocialMediaSharing';
 import { resourcePath } from '../../utils/constants';
 import { LMSParametersName } from '../../types/LMSParameters';
+import ReadAccess from './ReadAccess';
 
 const StyledGridContainer = styled(Grid)`
   margin-top: 1rem;
@@ -177,6 +178,11 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, isPreview = false }) 
   return (
     <>
       <Typography variant="h2">{t('common.usage')}</Typography>
+      <StyledGridContainer container spacing={3}>
+        <Grid item xs={12}>
+          <ReadAccess resource={resource} />
+        </Grid>
+      </StyledGridContainer>
       <StyledGridContainer container spacing={3}>
         <Grid item xs={12} sm={8}>
           <Typography variant="caption">{generateLinkSharingText()}</Typography>

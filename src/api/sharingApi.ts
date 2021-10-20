@@ -1,7 +1,7 @@
 import { authenticatedApiRequest } from './api';
 import { API_PATHS, DEV_API_URL } from '../utils/constants';
 import { AxiosPromise } from 'axios';
-import { Course, ResourceReadAccess } from '../types/resourceReadAccess.types';
+import { Course, publicReadAccess, ResourceReadAccess } from '../types/resourceReadAccess.types';
 import moment from 'moment/moment';
 import coursesAtOsloMet from '../resources/assets/coursesAtOsloMet.json';
 
@@ -40,6 +40,13 @@ export const getResourceReaders = (resourceIdentifier: string) => {
     url: `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/${resourceIdentifier}`,
     method: 'GET',
   }) as AxiosPromise<ResourceReadAccess[]>;
+};
+
+export const getPublicResourceReaders = (resourceIdentifier: string) => {
+  return authenticatedApiRequest({
+    url: `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/${resourceIdentifier}/info`,
+    method: 'GET',
+  }) as AxiosPromise<publicReadAccess[]>;
 };
 
 export const postCourseConsumerAccess = (resourceIdentifier: string, course: Course) => {

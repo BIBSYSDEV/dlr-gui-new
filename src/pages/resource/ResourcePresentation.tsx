@@ -88,9 +88,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
             </PreviewComponentWrapper>
           </StyledContentWrapperMedium>
         </StyledSchemaPart>
-
         <ResourceMetadata resource={resource} isPreview={isPreview} />
-
         <StyledSchemaPartColored color={Colors.DLRYellow2}>
           <StyledContentWrapperMedium>
             <Grid container spacing={6}>
