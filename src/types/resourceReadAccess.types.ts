@@ -48,6 +48,8 @@ export enum CourseSeason {
   Autumn = '3',
 }
 
+//name is name of the access, subject are those who has this access.
+//in the case of "dlr_shared_resource_consumer" it will contain the number of persons who has access
 export interface publicReadAccess {
   name: ResourceReadAccessNames;
   subject: string;
