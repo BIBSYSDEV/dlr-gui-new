@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { CircularProgress, Typography } from '@material-ui/core';
 import { Resource } from '../../types/resource.types';
 import { useTranslation } from 'react-i18next';
 import { publicReadAccess, ResourceReadAccessNames } from '../../types/resourceReadAccess.types';
@@ -9,6 +8,7 @@ import { getPublicResourceReaders } from '../../api/sharingApi';
 import { parseCourse } from '../../utils/course.utils';
 import ErrorBanner from '../../components/ErrorBanner';
 import { generateListWithOxfordComma } from '../../utils/StringArray';
+import { CircularProgress, Typography } from '@mui/material';
 
 interface ReadAccessProps {
   resource: Resource;
