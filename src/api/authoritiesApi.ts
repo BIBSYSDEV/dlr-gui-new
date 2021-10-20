@@ -22,7 +22,6 @@ export const searchAuthorities = (
   }) as AxiosPromise<AuthoritySearchResponse>;
 };
 
-//AuthorityResponse[]
 export const getAuthoritiesForResourceCreatorOrContributor = async (
   resourceId: string,
   creatorOrContributorId: string
