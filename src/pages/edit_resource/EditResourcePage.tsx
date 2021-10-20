@@ -382,18 +382,20 @@ const EditResourcePage = () => {
       const contentsPromise = getResourceContents(identifier);
       const tagsPromise = getResourceTags(identifier);
 
-      const contributors = (await contributorPromise).data;
-      const creators = (await creatorPromise).data;
+      resource.contributors = (await contributorPromise).data;
+      resource.creators = (await creatorPromise).data;
 
-      if (user.institutionAuthorities?.isCurator) {
-        const contributorWithAuthoritiesPromise = fetchAuthoritiesForCreatorOrContributor(
-          resource.identifier,
-          contributors
-        );
-        const creatorWithAuthoritiesPromise = fetchAuthoritiesForCreatorOrContributor(resource.identifier, creators);
-        resource.creators = (await creatorWithAuthoritiesPromise) as Creator[];
-        resource.contributors = (await contributorWithAuthoritiesPromise) as Contributor[];
-      }
+      const contributorWithAuthoritiesPromise = fetchAuthoritiesForCreatorOrContributor(
+        resource.identifier,
+        resource.contributors
+      );
+      const creatorWithAuthoritiesPromise = fetchAuthoritiesForCreatorOrContributor(
+        resource.identifier,
+        resource.creators
+      );
+      resource.creators = (await creatorWithAuthoritiesPromise) as Creator[];
+      resource.contributors = (await contributorWithAuthoritiesPromise) as Contributor[];
+
       resource.tags = (await tagsPromise).data.filter((tag) => tag.length <= TAGS_MAX_LENGTH);
       resource.contents = await contentsPromise;
       resource.licenses = (await licensesPromise).data;

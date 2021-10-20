@@ -230,6 +230,7 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
               ariaButtonLabel={t('explanation_text.contributor_helper_aria_label')}
               popoverId={'contributor-helper-popover'}>
               <StyledTypography variant="body1">{t('explanation_text.contributor_helper_text1')}.</StyledTypography>
+              <StyledTypography variant="body1">{t('explanation_text.authority_prevents_editing')}</StyledTypography>
               {user.institutionAuthorities?.isCurator && (
                 <Typography variant="body1">{t('explanation_text.contributor_helper_text2')}.</Typography>
               )}
@@ -311,21 +312,26 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                         </StyledTextFieldSizer>
                       )}
                     </Field>
+
                     <StyledButtonRowWrapper id="button-wrapper">
+                      {contributor.authorities && contributor.authorities.length > 0 && (
+                        <StyledButtonWrapper>
+                          <AuthorityLink authority={contributor.authorities[0]} />
+                        </StyledButtonWrapper>
+                      )}
                       {user.institutionAuthorities?.isCurator && (
                         <StyledButtonWrapper>
-                          {!contributor.authorities || contributor.authorities.length === 0 ? (
-                            <AuthoritySelector
-                              resourceIdentifier={values.identifier}
-                              creatorOrContributorId={contributor.identifier}
-                              initialNameValue={contributor.features.dlr_contributor_name ?? ''}
-                              onAuthoritySelected={(authorities) =>
-                                onAuthoritySelected(contributor, index, authorities)
-                              }
-                            />
-                          ) : (
-                            <AuthorityLink authority={contributor.authorities[0]} />
-                          )}
+                          {!contributor.authorities ||
+                            (contributor.authorities.length === 0 && (
+                              <AuthoritySelector
+                                resourceIdentifier={values.identifier}
+                                creatorOrContributorId={contributor.identifier}
+                                initialNameValue={contributor.features.dlr_contributor_name ?? ''}
+                                onAuthoritySelected={(authorities) =>
+                                  onAuthoritySelected(contributor, index, authorities)
+                                }
+                              />
+                            ))}
                         </StyledButtonWrapper>
                       )}
                       <StyledButtonWrapper>

@@ -216,6 +216,7 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
               ariaButtonLabel={t('explanation_text.creator_helper_aria_label')}
               popoverId={'creator-helper-popover'}>
               <StyledTypography variant="body1">{t('explanation_text.creator_helper_text1')}</StyledTypography>
+              <StyledTypography variant="body1">{t('explanation_text.authority_prevents_editing')}</StyledTypography>
               {user.institutionAuthorities?.isCurator && (
                 <StyledTypography variant="body1">{t('explanation_text.creator_helper_text2')}</StyledTypography>
               )}
@@ -254,18 +255,22 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                       )}
                     </Field>
                     <StyledButtonRowWrapper>
+                      {creator.authorities && creator.authorities?.length > 0 && (
+                        <StyledButtonWrapper>
+                          <AuthorityLink authority={creator.authorities[0]} />
+                        </StyledButtonWrapper>
+                      )}
                       {!isDeleting && user.institutionAuthorities?.isCurator && (
                         <StyledButtonWrapper>
-                          {!creator.authorities || creator.authorities.length === 0 ? (
-                            <AuthoritySelector
-                              resourceIdentifier={values.identifier}
-                              creatorOrContributorId={creator.identifier}
-                              initialNameValue={creator.features.dlr_creator_name ?? ''}
-                              onAuthoritySelected={(authorities) => onAuthoritySelected(authorities, index, creator)}
-                            />
-                          ) : (
-                            <AuthorityLink authority={creator.authorities[0]} />
-                          )}
+                          {!creator.authorities ||
+                            (creator.authorities.length === 0 && (
+                              <AuthoritySelector
+                                resourceIdentifier={values.identifier}
+                                creatorOrContributorId={creator.identifier}
+                                initialNameValue={creator.features.dlr_creator_name ?? ''}
+                                onAuthoritySelected={(authorities) => onAuthoritySelected(authorities, index, creator)}
+                              />
+                            ))}
                         </StyledButtonWrapper>
                       )}
                       {values.creators?.length > 1 && !isDeleting && (
