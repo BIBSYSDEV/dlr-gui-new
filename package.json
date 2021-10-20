@@ -33,7 +33,7 @@
     "react-router-dom": "^5.3.0",
     "react-scripts": "^4.0.3",
     "react-share": "^4.4.0",
-    "styled-components": "^5.3.1",
+    "styled-components": "^5.3.3",
     "uuid": "^8.3.2",
     "yup": "^0.32.11"
   },
