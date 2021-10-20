@@ -16,7 +16,7 @@ context('LMS params', () => {
     cy.get('[data-testid=search-for-resource-submit]').click();
     cy.get('[data-testid=expand-filtering-options]').click();
     cy.get(`[data-testid=filter-tags-input] input`).type(tag1UnComplete);
-    cy.get(`#filter-tags-input-popup li:first-of-type`).click();
+    cy.get(`#filter-tags-input-option-0`).click();
     cy.location().should((loc) => {
       expect(loc.search).to.eq(
         `?${LMSParametersName.BBShowEmbedButton}=true&${SearchParameters.query}=${search}&${SearchParameters.tag}=${tag1}`

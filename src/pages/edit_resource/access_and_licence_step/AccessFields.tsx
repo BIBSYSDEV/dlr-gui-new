@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Colors, DeviceWidths, StyleWidths } from '../../../themes/mainTheme';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
-import { MenuItem, TextField, Typography, useMediaQuery } from '@material-ui/core';
+import { MenuItem, TextField, Typography, useMediaQuery } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { Resource, ResourceFeatureNamesFullPath } from '../../../types/resource.types';
@@ -13,13 +13,14 @@ import { postCurrentUserInstitutionConsumerAccess } from '../../../api/sharingAp
 import PrivateConsumerAccessFields from './PrivateConsumerAccessFields';
 import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
+import { typographyClasses, inputBaseClasses } from '@mui/material';
 
 const StyledFieldWrapper = styled.div`
   max-width: ${StyleWidths.width1};
 `;
 
 const StyledTextField = styled(TextField)`
-  & .Mui-disabled .MuiTypography-body1 {
+  & .${inputBaseClasses.disabled} .${typographyClasses.body1} {
     color: grey;
   }
 `;

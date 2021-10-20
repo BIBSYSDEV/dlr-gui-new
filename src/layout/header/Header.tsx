@@ -2,20 +2,20 @@ import React from 'react';
 import LoginButton from './LoginButton';
 import Logo from './Logo';
 import styled from 'styled-components';
-import { Button, IconButton, Typography } from '@material-ui/core';
+import { Button, IconButton, Typography } from '@mui/material';
 import { Link, Link as RouterLink } from 'react-router-dom';
-import MenuIcon from '@material-ui/icons/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import Logout from './Logout';
 import { useTranslation } from 'react-i18next';
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@mui/icons-material/Add';
 import { Colors } from '../../themes/mainTheme';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import ChangeLanguageButton from './ChangeLanguageButton';
 import AvatarButton from './AvatarButton';
-import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import { resourcePath } from '../../utils/constants';
 
 const StyledPageHeader = styled.div`
@@ -76,7 +76,7 @@ const Header = () => {
   return (
     <StyledPageHeader data-testid="navigation-bar" role="navigation">
       <StyledBurgerMenu>
-        <IconButton onClick={handleBurgerMenuClick}>
+        <IconButton onClick={handleBurgerMenuClick} size="large">
           <MenuIcon />
         </IconButton>
       </StyledBurgerMenu>
@@ -114,12 +114,18 @@ const Header = () => {
 
       <StyledSecondaryButtonBar>
         {user.id && (
-          <Button component={RouterLink} data-testid="new-registration-link" to="/registration" startIcon={<AddIcon />}>
+          <Button
+            color="neutral"
+            component={RouterLink}
+            data-testid="new-registration-link"
+            to="/registration"
+            startIcon={<AddIcon />}>
             <Typography variant="button">{t('resource.new_registration')}</Typography>
           </Button>
         )}
         {user.id && (
           <Button
+            color="neutral"
             startIcon={<DescriptionOutlinedIcon />}
             component={RouterLink}
             data-testid="my-resources-link"

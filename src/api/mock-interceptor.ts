@@ -1,6 +1,6 @@
 import Axios, { AxiosRequestConfig } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { mockSearchResults } from '../utils/testfiles/search_results';
+import { mockSearchResults, mockSearchResultsNoResult } from '../utils/testfiles/search_results';
 import { licenses as allLicenses } from '../utils/testfiles/licenses';
 import { API_PATHS } from '../utils/constants';
 import { FileApiPaths } from './fileApi';
@@ -130,6 +130,11 @@ export const interceptRequestsOnMock = () => {
   mock.onPut(new RegExp(`${API_PATHS.guiBackendResourcesPath}/resources/.*/creators/.*/authorities`)).reply(201);
 
   // SEARCH
+  mockGetDelayedAndLogged(
+    `${API_PATHS.guiBackendResourcesSearchPath}/resources/search/advanced\\?query=risi&.*`,
+    200,
+    mockSearchResultsNoResult
+  );
   mockGetDelayedAndLogged(`${API_PATHS.guiBackendResourcesSearchPath}/resources/search.*`, 200, mockSearchResults);
 
   //TAG-SEARCH

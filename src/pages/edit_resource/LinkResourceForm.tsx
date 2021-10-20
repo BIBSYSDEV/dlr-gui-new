@@ -2,7 +2,7 @@ import { ErrorMessage, Field, FieldProps, Form, Formik } from 'formik';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Button, TextField } from '@material-ui/core';
+import { Button, TextField } from '@mui/material';
 import * as Yup from 'yup';
 
 const StyledInputBox = styled.div`

@@ -109,13 +109,6 @@ context('Resource', () => {
     cy.get('[data-testid=request-sent-info]').should('exist');
   });
 
-  it("is not possible to request DOI for other people's resources", () => {
-    const publishedTestPost = mockMyResources[0];
-    cy.get('[data-testid=request-doi-button').should('not.exist');
-    cy.visit(`${resourcePath}/${publishedTestPost.identifier}]`);
-    cy.get('[data-testid=request-doi-button').should('exist');
-  });
-
   it('renders creator search result list', () => {
     cy.get(`[data-testid=also-published-by-header-${mockCreators[0].identifier}`)
       .contains(mockCreators[0].features.dlr_creator_name)
@@ -144,5 +137,12 @@ context('Resource', () => {
 
   it('lists read access', () => {
     cy.get('[data-testid=restrictive-read-access]').should('exist');
+  });
+  
+  it("is not possible to request DOI for other people's resources", () => {
+    cy.visit(`${resourcePath}/${mockMyResources[1].identifier}`);
+    cy.get('[data-testid=request-doi-button').should('not.exist');
+    cy.visit(`${resourcePath}/${mockMyResources[0].identifier}`);
+    cy.get('[data-testid=request-doi-button').should('exist');
   });
 });

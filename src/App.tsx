@@ -9,7 +9,7 @@ import {
   getUserData,
 } from './api/userApi';
 import { RootState } from './state/rootReducer';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress } from '@mui/material';
 import { USE_MOCK_DATA } from './utils/constants';
 import i18next from 'i18next';
 import ErrorBanner from './components/ErrorBanner';

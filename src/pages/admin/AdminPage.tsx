@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
 import { StyledContentWrapperLarge, StyledProgressWrapper } from '../../components/styled/Wrappers';
-import { CircularProgress, Grid, List, ListItem, ListItemText, Typography } from '@material-ui/core';
+import { CircularProgress, Grid, List, ListItem, ListItemText, Typography } from '@mui/material';
 import { getInstitutionAuthorizations } from '../../api/institutionAuthorizationsApi';
 import { InstitutionProfilesNames } from '../../types/user.types';
 import styled from 'styled-components';

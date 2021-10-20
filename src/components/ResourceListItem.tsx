@@ -2,15 +2,15 @@ import React, { FC, useState } from 'react';
 import { Resource } from '../types/resource.types';
 import Thumbnail from './Thumbnail';
 import { useTranslation } from 'react-i18next';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import ConfirmDeleteDialog from './ConfirmDeleteDialog.';
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useHistory } from 'react-router-dom';
 import { Colors, StyleWidths } from '../themes/mainTheme';
 import { format } from 'date-fns';
-import { Link } from '@material-ui/core';
+import { Link } from '@mui/material';
 import ResourceTypeInfo from './ResourceTypeInfo';
 import { resourcePath } from '../utils/constants';
 
@@ -110,7 +110,9 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
         <StyledMetaDataColumn>
           <Typography gutterBottom variant="h4">
             {resource.features.dlr_status_published ? (
-              <Link href={`${resourcePath}/${resource.identifier}`}>{`${resource.features.dlr_title}`}</Link>
+              <Link
+                underline="hover"
+                href={`${resourcePath}/${resource.identifier}`}>{`${resource.features.dlr_title}`}</Link>
             ) : (
               resource.features.dlr_title
             )}

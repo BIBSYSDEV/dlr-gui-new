@@ -6,7 +6,7 @@ import { PageHeader } from '../../components/PageHeader';
 import ResourceForm from './ResourceForm';
 import LinkRegistration from './LinkRegistration';
 import FileRegistration from './FileRegistration';
-import { CircularProgress, Typography } from '@material-ui/core';
+import { CircularProgress, Typography } from '@mui/material';
 import PrivateRoute from '../../utils/routes/PrivateRoute';
 import {
   Contributor,

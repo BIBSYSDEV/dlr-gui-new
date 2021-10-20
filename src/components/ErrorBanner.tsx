@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState } from '../state/rootReducer';
-import { Alert, AlertTitle } from '@material-ui/lab';
+import { Alert, AlertTitle } from '@mui/material';
 import axios, { AxiosError } from 'axios';
 
 const StyledAlert = styled(Alert)`

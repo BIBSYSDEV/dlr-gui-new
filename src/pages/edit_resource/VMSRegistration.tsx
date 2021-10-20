@@ -13,15 +13,15 @@ import {
   TextField,
   Typography,
   useMediaQuery,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Colors, DeviceWidths } from '../../themes/mainTheme';
 import ErrorBanner from '../../components/ErrorBanner';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
 import { VMSResource, VideoManagementSystems } from '../../types/resource.types';
 import VMSListItem from './VMSListItem';
-import Pagination from '@material-ui/lab/Pagination';
+import Pagination from '@mui/material/Pagination';
 import { StyledFullWidthWrapper, StyledPaginationWrapper } from '../../components/styled/Wrappers';
 import StartRegistrationAccordionKaltura from './StartRegistrationAccordionKaltura';
 import StartRegistrationAccordionPanopto from './StartRegistrationAccordionPanopto';

@@ -147,6 +147,7 @@
     "access_filter": "Also show resources I do not have access to",
     "access_filter_limited": "Also show resources with limited access",
     "close_popover": "Press escape to close this box",
+    "did_you_mean": "Did you mean",
     "enabled": "enabled",
     "enter_tags": "Search and select tag for filtering",
     "explain_license": "Explain license",
@@ -157,7 +158,7 @@
     "licenses": "Licenses",
     "search_result_no_hits": "The search returned no hits",
     "tags": "Tags",
-    "tags_boolean_operator_in_search" : "Show only results matching all of the selected tags"
+    "tags_boolean_operator_in_search": "Show only results matching all of the selected tags"
   },
   "delivered_by": "Delivered by",
   "embed": {

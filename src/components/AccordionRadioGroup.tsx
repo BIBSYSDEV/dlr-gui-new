@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import Button from '@material-ui/core/Button';
-import { Typography } from '@material-ui/core';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import Button from '@mui/material/Button';
+import { Typography } from '@mui/material';
 
 const StyledRadioBoxWrapper = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {

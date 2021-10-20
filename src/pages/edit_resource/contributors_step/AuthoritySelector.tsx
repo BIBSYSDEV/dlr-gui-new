@@ -1,11 +1,11 @@
 import React, { createRef, FC, useCallback, useEffect, useRef, useState } from 'react';
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import TextField from '@material-ui/core/TextField';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import TextField from '@mui/material/TextField';
 import { postAuthorityForResourceCreatorOrContributor, searchAuthorities } from '../../../api/authoritiesApi';
 import {
   Authority,
@@ -13,17 +13,17 @@ import {
   DefaultAuthoritySearchLength,
   DefaultAuthoritySearchOffset,
 } from '../../../types/authority.types';
-import List from '@material-ui/core/List';
-import Pagination from '@material-ui/lab/Pagination';
+import List from '@mui/material/List';
+import Pagination from '@mui/material/Pagination';
 import ErrorBanner from '../../../components/ErrorBanner';
 import styled from 'styled-components';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogContentText from '@mui/material/DialogContentText';
 import AuthorityListItem from './AuthorityListItem';
 import { useTranslation } from 'react-i18next';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import { DeviceWidths } from '../../../themes/mainTheme';
 import useDebounce from '../../../utils/useDebounce';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery } from '@mui/material';
 import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
 

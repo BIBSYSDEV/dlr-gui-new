@@ -148,6 +148,7 @@
     "access_filter": "Vis også ressurser jeg ikke har tilgang til",
     "access_filter_limited": "Vis også ressurser med begrenset tilgang",
     "close_popover": "Trykk escape for å lukke denne boksen",
+    "did_you_mean": "Mente du",
     "enabled": "aktive",
     "enter_tags": "Søk og velg emneord fra listen for å filtrere",
     "explain_license": "Forklar lisens",
@@ -156,9 +157,9 @@
     "filter": "Filter",
     "institutions": "Institusjoner",
     "licenses": "Lisenser",
-    "search_result_no_hits" : "Søket ga ingen treff",
+    "search_result_no_hits": "Søket ga ingen treff",
     "tags": "Emneord",
-    "tags_boolean_operator_in_search" : "Vis kun ressurser som inneholder alle valgte emneord"
+    "tags_boolean_operator_in_search": "Vis kun ressurser som inneholder alle valgte emneord"
   },
   "delivered_by": "Levert av",
   "embed": {
@@ -500,7 +501,7 @@
       "external_page": "Ekstern side",
       "file_to_big": "Filen er for stor for forhåndsvisning",
       "link_to_content": "Lenke til innhold",
-      "no_preview_authorization_reasons" : "Du har ikke tilgang til forhåndsvisning for denne ressursen",
+      "no_preview_authorization_reasons": "Du har ikke tilgang til forhåndsvisning for denne ressursen",
       "no_preview_security_reasons": "Kan ikke forhåndsvise denne siden av sikkerhetsmessige årsaker",
       "no_preview_support_reasons": "Nettstedet gir ikke mulighet til å la seg forhåndsvises",
       "open_in_new_tag": "Åpne i ny fane",

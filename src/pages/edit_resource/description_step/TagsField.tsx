@@ -1,19 +1,18 @@
 import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Chip, CircularProgress, Grid, TextField } from '@material-ui/core';
+import { Chip, CircularProgress, Grid, TextField } from '@mui/material';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { Resource } from '../../../types/resource.types';
 import { StyledContentWrapper, StyledSchemaPartColored } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import Autocomplete from '@mui/material/Autocomplete';
 import { deleteTag, postTag, searchTags, updateSearchIndex } from '../../../api/resourceApi';
 import ErrorBanner from '../../../components/ErrorBanner';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
 import styled from 'styled-components';
-import CancelIcon from '@material-ui/icons/Cancel';
+import CancelIcon from '@mui/icons-material/Cancel';
 import HelperTextPopover from '../../../components/HelperTextPopover';
-import { AutocompleteRenderInputParams } from '@material-ui/lab';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import { StylePopoverTypography } from '../../../components/styled/StyledTypographies';
 import useDebounce from '../../../utils/useDebounce';
 import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
@@ -122,15 +121,16 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                     options={options}
                     loading={loading}
                     filterSelectedOptions
-                    getOptionSelected={(option: string, value: string) => option.toLowerCase() === value.toLowerCase()}
+                    isOptionEqualToValue={(option: string, value: string) =>
+                      option.toLowerCase() === value.toLowerCase()
+                    }
                     onChange={(_: ChangeEvent<unknown>, valueArray: string[]) => {
                       saveTagsChanging(field.name, valueArray);
                     }}
-                    renderOption={(option: string) => <span data-testid={'tag-option'}>{option}</span>}
                     renderTags={(value: any, getTagProps: any) =>
                       value.map((option: any, index: number) => (
                         <StyledChip
-                          color="primary"
+                          color="accent"
                           deleteIcon={<CancelIcon />}
                           data-testid={`tag-chip-${index}`}
                           label={option}
@@ -138,7 +138,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                         />
                       ))
                     }
-                    renderInput={(params: AutocompleteRenderInputParams) => (
+                    renderInput={(params) => (
                       <TextField
                         {...params}
                         id="resource-feature-tags"

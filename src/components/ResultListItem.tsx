@@ -2,13 +2,13 @@ import React, { FC, useState } from 'react';
 import { Resource } from '../types/resource.types';
 import Thumbnail from './Thumbnail';
 import { useTranslation } from 'react-i18next';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import styled from 'styled-components';
 import { Colors, StyleWidths } from '../themes/mainTheme';
 import { format } from 'date-fns';
-import { Button, Chip } from '@material-ui/core';
+import { Button, Chip } from '@mui/material';
 import CClogoImage from './CClogoImage';
-import Link from '@material-ui/core/Link';
+import Link from '@mui/material/Link';
 import { SearchParameters } from '../types/search.types';
 import ResourceTypeInfo from './ResourceTypeInfo';
 import { getLMSSearchParams } from '../utils/lmsService';
@@ -142,7 +142,10 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
         <div>
           <StyledHeader>
             <StyledMaxTwoLinesTypography variant="h4">
-              <Link data-testid={`link-to-resource-${resource.identifier}`} href={generateURL(resource)}>
+              <Link
+                underline="hover"
+                data-testid={`link-to-resource-${resource.identifier}`}
+                href={generateURL(resource)}>
                 {resource.features.dlr_title}
               </Link>
             </StyledMaxTwoLinesTypography>

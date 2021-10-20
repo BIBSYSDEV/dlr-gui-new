@@ -1,5 +1,5 @@
 import React, { createRef, useCallback, useEffect, useState } from 'react';
-import { CircularProgress, List, Typography } from '@material-ui/core';
+import { CircularProgress, List, Typography } from '@mui/material';
 import styled from 'styled-components';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
 import { searchResources } from '../../api/resourceApi';
@@ -18,7 +18,7 @@ import { PageHeader } from '../../components/PageHeader';
 import { StyledContentWrapperLarge, StyledPaginationWrapper } from '../../components/styled/Wrappers';
 import SearchInput from './SearchInput';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Pagination } from '@material-ui/lab';
+import { Pagination } from '@mui/material';
 import ResultListItem from '../../components/ResultListItem';
 import FilterSearchOptions from './FilterSearchOptions';
 import { useSelector } from 'react-redux';
@@ -28,6 +28,7 @@ import AccessFiltering from './AccessFiltering';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
+import NoResult from './NoResult';
 
 const SearchResultWrapper = styled.div`
   display: flex;
@@ -190,19 +191,17 @@ const Explore = () => {
               <>
                 <StyledResultListHeaderWrapper ref={startOfList}>
                   <Typography variant="h2">{t('common.result')}</Typography>
-                  <Typography variant="body1">
-                    {resources && resources.length > 0 ? (
-                      <>
-                        {`${t('common.showing')} ${parseInt(searchResult.offset) + 1}-${
-                          parseInt(searchResult.offset) + resources.length
-                        } ${t('common.of').toLowerCase()} ${searchResult.numFound}`}
-                      </>
-                    ) : (
-                      <>{t('dashboard.search_result_no_hits')}</>
-                    )}
-                  </Typography>
+
+                  {resources && resources.length > 0 && (
+                    <Typography variant="body1">
+                      {`${t('common.showing')} ${parseInt(searchResult.offset) + 1}-${
+                        parseInt(searchResult.offset) + resources.length
+                      } ${t('common.of').toLowerCase()} ${searchResult.numFound}`}
+                    </Typography>
+                  )}
                   {user.id && <AccessFiltering queryObject={queryObject} setQueryObject={setQueryObject} />}
                 </StyledResultListHeaderWrapper>
+                {resources.length === 0 && <NoResult searchResult={searchResult} />}
                 <StyledList>
                   {resources &&
                     resources.length > 0 &&
