@@ -262,15 +262,14 @@ const CreatorFields: FC<CreatorFieldsProps> = ({ setAllChangesSaved }) => {
                       )}
                       {!isDeleting && user.institutionAuthorities?.isCurator && (
                         <StyledButtonWrapper>
-                          {!creator.authorities ||
-                            (creator.authorities.length === 0 && (
-                              <AuthoritySelector
-                                resourceIdentifier={values.identifier}
-                                creatorOrContributorId={creator.identifier}
-                                initialNameValue={creator.features.dlr_creator_name ?? ''}
-                                onAuthoritySelected={(authorities) => onAuthoritySelected(authorities, index, creator)}
-                              />
-                            ))}
+                          {(!creator.authorities || creator.authorities.length === 0) && (
+                            <AuthoritySelector
+                              resourceIdentifier={values.identifier}
+                              creatorOrContributorId={creator.identifier}
+                              initialNameValue={creator.features.dlr_creator_name ?? ''}
+                              onAuthoritySelected={(authorities) => onAuthoritySelected(authorities, index, creator)}
+                            />
+                          )}
                         </StyledButtonWrapper>
                       )}
                       {values.creators?.length > 1 && !isDeleting && (

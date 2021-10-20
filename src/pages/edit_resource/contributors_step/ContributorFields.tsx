@@ -321,17 +321,16 @@ const ContributorFields: FC<ContributorFieldsProps> = ({ setAllChangesSaved }) =
                       )}
                       {user.institutionAuthorities?.isCurator && (
                         <StyledButtonWrapper>
-                          {!contributor.authorities ||
-                            (contributor.authorities.length === 0 && (
-                              <AuthoritySelector
-                                resourceIdentifier={values.identifier}
-                                creatorOrContributorId={contributor.identifier}
-                                initialNameValue={contributor.features.dlr_contributor_name ?? ''}
-                                onAuthoritySelected={(authorities) =>
-                                  onAuthoritySelected(contributor, index, authorities)
-                                }
-                              />
-                            ))}
+                          {(!contributor.authorities || contributor.authorities.length === 0) && (
+                            <AuthoritySelector
+                              resourceIdentifier={values.identifier}
+                              creatorOrContributorId={contributor.identifier}
+                              initialNameValue={contributor.features.dlr_contributor_name ?? ''}
+                              onAuthoritySelected={(authorities) =>
+                                onAuthoritySelected(contributor, index, authorities)
+                              }
+                            />
+                          )}
                         </StyledButtonWrapper>
                       )}
                       <StyledButtonWrapper>
