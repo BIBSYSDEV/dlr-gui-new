@@ -18,7 +18,7 @@ export const localeSort = (stringArray: string[]): string[] => {
 //Does not mutate input stringArray
 export const generateListWithOxfordComma = (stringArray: string[], t: TFunction<'translation'>): string => {
   if (stringArray.length > 2) {
-    return `${stringArray.slice(0, stringArray.length - 1).join(', ')}${t('common.oxford_comma').toLowerCase()} ${
+    return `${stringArray.slice(0, stringArray.length - 1).join(', ')}${t('common.oxford_comma')} ${
       stringArray[stringArray.length - 1]
     }`;
   } else {

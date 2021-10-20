@@ -98,28 +98,20 @@ const ReadAccess: FC<ReadAccessProps> = ({ resource }) => {
       </Typography>
       {isLoading ? (
         <CircularProgress />
+      ) : !errorFetchingReadAccessList ? (
+        resource.features.dlr_access === 'open' ? (
+          <Typography>{t('access.public_available_read_access')}.</Typography>
+        ) : (
+          <>
+            <Typography data-testid="restrictive-read-access">
+              <b>{t('access.restrictive_read_access')}. </b>
+              {t('access.following_have_read_access')}:
+            </Typography>
+            <Typography>{generatePrivateAccessAllTypes()}</Typography>
+          </>
+        )
       ) : (
-        <>
-          {!errorFetchingReadAccessList ? (
-            <>
-              {resource.features.dlr_access === 'open' ? (
-                <>
-                  <Typography>{t('access.public_available_read_access')}.</Typography>
-                </>
-              ) : (
-                <>
-                  <Typography data-testid="restrictive-read-access">
-                    <b>{t('access.restrictive_read_access')}. </b>
-                    {t('access.following_have_read_access')}:
-                  </Typography>
-                  <Typography>{generatePrivateAccessAllTypes()}</Typography>
-                </>
-              )}
-            </>
-          ) : (
-            <ErrorBanner error={errorFetchingReadAccessList} />
-          )}
-        </>
+        <ErrorBanner error={errorFetchingReadAccessList} />
       )}
     </>
   );
