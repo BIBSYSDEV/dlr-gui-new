@@ -132,8 +132,7 @@ context('LMS params', () => {
   it('retains lsmParams in sitemap links', () => {
     cy.visit(`/sitemap?${LMSParametersName.BBShowEmbedButton}=true`);
     cy.get('[data-testid=sitemap-list]')
-      .children('li')
-      .children('a')
+      .find('a')
       .each((element) => {
         cy.wrap(element).should('have.attr', 'href').and('include', `${LMSParametersName.BBShowEmbedButton}=true`);
       });
