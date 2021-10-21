@@ -8,6 +8,7 @@ import { StyledContentWrapper } from '../../components/styled/Wrappers';
 import { API_PATHS, API_URL, resourcePath } from '../../utils/constants';
 import { List, ListItem } from '@mui/material';
 import { handleLogout } from '../../layout/header/Logout';
+import { generateNewUrlAndRetainLMSParams } from '../../utils/lmsService';
 
 const StyledTypography = styled(Typography)`
   margin-top: 2rem;
@@ -27,33 +28,35 @@ const Sitemap = () => {
 
   const links: LinkAndDescription[] = [
     {
-      href: `${API_URL}${API_PATHS.guiBackendLoginPath}/feideLogin?target=${currentUrl}/loginRedirect`,
+      href: generateNewUrlAndRetainLMSParams(
+        `${API_URL}${API_PATHS.guiBackendLoginPath}/feideLogin?target=${currentUrl}/loginRedirect`
+      ),
       description: t('common.login'),
     },
-    { href: '#', description: t('common.logout'), onClickFunction: handleLogout },
+    { href: generateNewUrlAndRetainLMSParams('#'), description: t('common.logout'), onClickFunction: handleLogout },
     {
-      href: `${resourcePath}/user/current`,
+      href: generateNewUrlAndRetainLMSParams(`${resourcePath}/user/current`),
       description: `${t('resource.my_resources')} (${t('common.must_be_logged_in').toLowerCase()})`,
     },
-    { href: '/privacy-policy', description: t('privacy_policy.heading') },
+    { href: generateNewUrlAndRetainLMSParams('/privacy-policy'), description: t('privacy_policy.heading') },
     {
-      href: '/registration',
+      href: generateNewUrlAndRetainLMSParams('/registration'),
       description: `${t('resource.new_registration')} (${t('common.must_be_logged_in').toLowerCase()})`,
     },
     {
-      href: '/admin',
+      href: generateNewUrlAndRetainLMSParams('/admin'),
       description: `${t('administrative.page_heading')} (${t('common.must_be_logged_in').toLowerCase()})`,
     },
     {
-      href: '/search-helper',
+      href: generateNewUrlAndRetainLMSParams('/search-helper'),
       description: `${t('search_tricks.page_title')}`,
     },
     {
-      href: '/worklist',
+      href: generateNewUrlAndRetainLMSParams('/worklist'),
       description: `${t('work_list.page_title')} (${t('work_list.page_requirements')})`,
     },
     {
-      href: '/profile',
+      href: generateNewUrlAndRetainLMSParams('/profile'),
       description: `${t('profile.profile')} (${t('common.must_be_logged_in').toLowerCase()})`,
     },
   ].sort((a, b) => a.description.localeCompare(b.description));
