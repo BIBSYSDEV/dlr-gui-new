@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { resourcePath } from '../../utils/constants';
 import styled from 'styled-components';
+import { generateNewUrlAndRetainLMSParams } from '../../utils/lmsService';
 
 const StyledShowMoreButton = styled(Button)`
   height: fit-content;
@@ -24,7 +25,7 @@ const WorkListRequestMetaDataViewer: FC<WorkListRequestMetaDataViewerProps> = ({
         <Typography variant="h3">
           <Link
             underline="hover"
-            href={`${resourcePath}/${workListRequest.resourceIdentifier}`}
+            href={generateNewUrlAndRetainLMSParams(`${resourcePath}/${workListRequest.resourceIdentifier}`)}
             data-testid={`request-item-title-${workListRequest.resourceIdentifier}`}>
             {workListRequest.resource?.features.dlr_title ?? workListRequest.resourceIdentifier}
           </Link>

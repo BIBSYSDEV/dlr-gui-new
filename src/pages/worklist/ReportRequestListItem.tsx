@@ -23,6 +23,7 @@ import { refuseComplaintReport } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import { generateNewUrlAndRetainLMSParams } from '../../utils/lmsService';
 
 interface Props {
   backgroundColor: string;
@@ -102,7 +103,7 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
                 <Button
                   data-testid={`edit-resource-${reportWorkListRequest.resourceIdentifier}`}
                   disabled={disableAllButtons}
-                  href={`/editresource/${reportWorkListRequest.resourceIdentifier}`}
+                  href={generateNewUrlAndRetainLMSParams(`/editresource/${reportWorkListRequest.resourceIdentifier}`)}
                   startIcon={<EditIcon />}
                   variant="outlined"
                   color="primary">

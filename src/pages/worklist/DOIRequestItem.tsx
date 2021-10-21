@@ -22,6 +22,7 @@ import { getAuthoritiesForResourceCreatorOrContributor } from '../../api/authori
 import DeleteRequestDialog from './DeleteRequestDialog';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import { generateNewUrlAndRetainLMSParams } from '../../utils/lmsService';
 
 interface Props {
   backgroundColor: string;
@@ -136,7 +137,7 @@ const DOIRequestItem: FC<DOIRequestItemProps> = ({ workListRequestDOI, setWorkLi
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Button
-                href={`/editresource/${workListRequestDOI.resourceIdentifier}`}
+                href={generateNewUrlAndRetainLMSParams(`/editresource/${workListRequestDOI.resourceIdentifier}`)}
                 startIcon={<EditIcon />}
                 variant="outlined"
                 data-testid={`edit-resoirce-button-${workListRequestDOI.resourceIdentifier}`}
