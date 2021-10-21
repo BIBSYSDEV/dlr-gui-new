@@ -5,6 +5,7 @@ import logo from '../resources/images/unit_logo.png';
 import { Link } from 'react-router-dom';
 import { Link as MuiLink } from '@mui/material';
 import NormalText from '../components/NormalText';
+import { generateNewUrlAndRetainLMSParams } from '../utils/lmsService';
 
 const StyledFooter = styled.footer`
   display: grid;
@@ -51,7 +52,7 @@ const Footer = () => {
           aria-label={t('privacy_policy.heading')}
           color="primary"
           component={Link}
-          to="/privacy-policy"
+          to={generateNewUrlAndRetainLMSParams('/privacy-policy')}
           data-testid="privacy_policy_link">
           {t('privacy_policy.heading')}
         </StyledMuiLink>
@@ -60,7 +61,7 @@ const Footer = () => {
           aria-label={t('sitemap.sitemap')}
           color="primary"
           component={Link}
-          to="/sitemap">
+          to={generateNewUrlAndRetainLMSParams('/sitemap')}>
           {t('sitemap.sitemap')}
         </StyledMuiLink>
       </StyledPrivacyPolicyContainer>

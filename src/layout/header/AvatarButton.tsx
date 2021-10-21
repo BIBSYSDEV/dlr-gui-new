@@ -7,6 +7,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { generateNewUrlAndRetainLMSParams } from '../../utils/lmsService';
 
 const AvatarButton = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -33,16 +34,20 @@ const AvatarButton = () => {
         {user.name}
       </Button>
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={open} onClose={handleClose}>
-        <MenuItem onClick={handleClose} component={Link} to="/profile">
+        <MenuItem onClick={handleClose} component={Link} to={generateNewUrlAndRetainLMSParams('/profile')}>
           {t('profile.profile').toUpperCase()}
         </MenuItem>
         {user.institutionAuthorities?.isAdministrator && (
-          <MenuItem data-testid="admin-link" onClick={handleClose} component={Link} to="/admin">
+          <MenuItem
+            data-testid="admin-link"
+            onClick={handleClose}
+            component={Link}
+            to={generateNewUrlAndRetainLMSParams('/admin')}>
             {t('administrative.page_heading').toUpperCase()}
           </MenuItem>
         )}
         {(user.institutionAuthorities?.isCurator || user.institutionAuthorities?.isEditor) && (
-          <MenuItem onClick={handleClose} component={Link} to="/worklist">
+          <MenuItem onClick={handleClose} component={Link} to={generateNewUrlAndRetainLMSParams('/worklist')}>
             {t('work_list.page_title').toUpperCase()}
           </MenuItem>
         )}
