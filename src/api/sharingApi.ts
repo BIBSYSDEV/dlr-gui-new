@@ -1,6 +1,6 @@
 import { authenticatedApiRequest } from './api';
 import { API_PATHS, DEV_API_URL } from '../utils/constants';
-import { AxiosResponse } from 'axios';
+import { AxiosPromise } from 'axios';
 import { Course, publicReadAccess, ResourceReadAccess } from '../types/resourceReadAccess.types';
 import moment from 'moment/moment';
 import coursesAtOsloMet from '../resources/assets/coursesAtOsloMet.json';
@@ -35,18 +35,18 @@ export const deleteAdditionalUserConsumerAccess = (resourceIdentifier: string, e
   });
 };
 
-export const getResourceReaders = (resourceIdentifier: string): Promise<AxiosResponse<ResourceReadAccess[]>> => {
+export const getResourceReaders = (resourceIdentifier: string) => {
   return authenticatedApiRequest({
     url: `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/${resourceIdentifier}`,
     method: 'GET',
-  });
+  }) as AxiosPromise<ResourceReadAccess[]>;
 };
 
-export const getPublicResourceReaders = (resourceIdentifier: string): Promise<AxiosResponse<publicReadAccess[]>> => {
+export const getPublicResourceReaders = (resourceIdentifier: string) => {
   return authenticatedApiRequest({
     url: `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/${resourceIdentifier}/info`,
     method: 'GET',
-  });
+  }) as AxiosPromise<publicReadAccess[]>;
 };
 
 export const postCourseConsumerAccess = (resourceIdentifier: string, course: Course) => {
@@ -75,7 +75,7 @@ export const getCoursesForInstitution = async (institution: string): Promise<Cou
       ).format('YYYY-MM-DDTHH:mm:ss.SSSZ')}`,
       method: 'GET',
     });
-    return await response.data;
+    return await (response.data as Course[]);
   } catch (error) {
     if (process.env.REACT_APP_API_URL === DEV_API_URL) {
       return JSON.parse(JSON.stringify(coursesAtOsloMet));
