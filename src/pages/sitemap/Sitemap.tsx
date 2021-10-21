@@ -67,7 +67,7 @@ const Sitemap = () => {
       <Typography variant="body1">{t('sitemap.usage_tip')}</Typography>
       <StyledTypography variant="h2">{t('sitemap.contents')}</StyledTypography>
       <nav>
-        <List>
+        <List data-testid="sitemap-list">
           {links.map((link, index) => (
             <ListItem key={index}>
               <Link underline="hover" href={link.href} onClick={link.onClickFunction}>

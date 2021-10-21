@@ -96,4 +96,46 @@ context('LMS params', () => {
       expect(loc.search).to.eq('?navbar=false');
     });
   });
+
+  it('should retain lmsParams while navigating in the header and footer', () => {
+    cy.get('[data-testid=privacy_policy_link]').click();
+    cy.location().should((loc) => {
+      expect(loc.search).to.contains(`${LMSParametersName.BBShowEmbedButton}=true`);
+    });
+    cy.get('[aria-label="Nettstedskart"]').click();
+    cy.location().should((loc) => {
+      expect(loc.search).to.contains(`${LMSParametersName.BBShowEmbedButton}=true`);
+    });
+    cy.get('[data-testid=navigation-bar]')
+      .find('a')
+      .each((element) => {
+        cy.wrap(element).should('have.attr', 'href').and('include', `${LMSParametersName.BBShowEmbedButton}=true`);
+      });
+    cy.get('[data-testid=avatar-button]').click();
+    cy.get('[data-testid=avatar-menu]')
+      .find('a')
+      .each((element) => {
+        cy.wrap(element).should('have.attr', 'href').and('include', `${LMSParametersName.BBShowEmbedButton}=true`);
+      });
+  });
+
+  it('should retain lmsParams on small screens in the header', () => {
+    cy.viewport(550, 750);
+    cy.get('[data-testid=navbar-burger-menu-button]').click();
+    cy.get('[data-testid=navbar-burger-menu]')
+      .find('a')
+      .each((element) => {
+        cy.wrap(element).should('have.attr', 'href').and('include', `${LMSParametersName.BBShowEmbedButton}=true`);
+      });
+  });
+
+  it('retains lsmParams in sitemap links', () => {
+    cy.visit(`/sitemap?${LMSParametersName.BBShowEmbedButton}=true`);
+    cy.get('[data-testid=sitemap-list]')
+      .children('li')
+      .children('a')
+      .each((element) => {
+        cy.wrap(element).should('have.attr', 'href').and('include', `${LMSParametersName.BBShowEmbedButton}=true`);
+      });
+  });
 });

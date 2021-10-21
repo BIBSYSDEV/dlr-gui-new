@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import Button from '@mui/material/Button';
 import ConfirmDeleteDialog from './ConfirmDeleteDialog.';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useHistory } from 'react-router-dom';
 import { Colors, StyleWidths } from '../themes/mainTheme';
 import { format } from 'date-fns';
 import { Link } from '@mui/material';
@@ -86,7 +85,6 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
 }) => {
   const { t } = useTranslation();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const history = useHistory();
 
   return (
     <StyledListItemWrapper backgroundColor={backgroundColor}>

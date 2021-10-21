@@ -33,7 +33,13 @@ const AvatarButton = () => {
         endIcon={open ? <ExpandLessIcon /> : <ExpandMoreIcon />}>
         {user.name}
       </Button>
-      <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={open} onClose={handleClose}>
+      <Menu
+        data-testid="avatar-menu"
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={open}
+        onClose={handleClose}>
         <MenuItem onClick={handleClose} component={Link} to={generateNewUrlAndRetainLMSParams('/profile')}>
           {t('profile.profile').toUpperCase()}
         </MenuItem>

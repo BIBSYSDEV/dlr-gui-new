@@ -77,11 +77,16 @@ const Header = () => {
   return (
     <StyledPageHeader data-testid="navigation-bar" role="navigation">
       <StyledBurgerMenu>
-        <IconButton onClick={handleBurgerMenuClick} size="large">
+        <IconButton data-testid="navbar-burger-menu-button" onClick={handleBurgerMenuClick} size="large">
           <MenuIcon />
         </IconButton>
       </StyledBurgerMenu>
-      <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleBurgerMenuClose}>
+      <Menu
+        data-testid="navbar-burger-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleBurgerMenuClose}>
         {user.id && (
           <MenuItem
             onClick={handleBurgerMenuClose}
