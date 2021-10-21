@@ -2,6 +2,33 @@
   "name": "dlr-gui-react",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "build": "react-scripts build",
+    "build:development": "env-cmd -f ./.env.development npm run-script build",
+    "build:production": "env-cmd -f ./.env.production npm run-script build",
+    "start": "react-scripts -r @cypress/instrument-cra start",
+    "start:development": "env-cmd -f ./.env.development npm run-script start",
+    "start:production": "env-cmd -f ./.env.production npm run-script start",
+    "test": "cypress run",
+    "test:cypress": "REACT_APP_USE_MOCK=true start-server-and-test http://localhost:3000"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "browserslist": {
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ]
+  },
   "dependencies": {
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
@@ -31,7 +58,6 @@
     "react-redux": "^7.2.5",
     "react-router": "^5.2.1",
     "react-router-dom": "^5.3.0",
-    "react-scripts": "^4.0.3",
     "react-share": "^4.4.0",
     "styled-components": "^5.3.3",
     "uuid": "^8.3.2",
@@ -59,34 +85,8 @@
     "husky": "^7.0.3",
     "prettier": "^2.4.1",
     "pretty-quick": "^3.1.1",
+    "react-scripts": "^4.0.3",
     "start-server-and-test": "^1.14.0",
     "typescript": "^4.4.4"
-  },
-  "scripts": {
-    "start": "react-scripts -r @cypress/instrument-cra start",
-    "build": "react-scripts build",
-    "test:cypress": "REACT_APP_USE_MOCK=true start-server-and-test http://localhost:3000",
-    "test": "cypress run",
-    "start:development": "env-cmd -f ./.env.development npm run-script start",
-    "start:production": "env-cmd -f ./.env.production npm run-script start",
-    "build:development": "env-cmd -f ./.env.development npm run-script build",
-    "build:production": "env-cmd -f ./.env.production npm run-script build"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
   }
 }
