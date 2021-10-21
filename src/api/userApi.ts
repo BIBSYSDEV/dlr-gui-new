@@ -1,5 +1,5 @@
 import { API_PATHS } from '../utils/constants';
-import Axios, { AxiosResponse } from 'axios';
+import { AxiosPromise } from 'axios';
 import {
   EmailFeature,
   AppValue,
@@ -16,26 +16,27 @@ import {
 } from '../types/user.types';
 import { AuthTokenClaims } from '../types/auth.types';
 import { authenticatedApiRequest } from './api';
+import axios from 'axios';
 
-export const getAnonymousWebToken = (): Promise<AxiosResponse<string>> => {
-  return Axios({
+export const getAnonymousWebToken = () => {
+  return axios.request<string>({
     url: encodeURI(`${API_PATHS.guiBackendLoginPath}/anonymous`),
     method: 'GET',
   });
 };
 
-export const getUserData = (): Promise<AxiosResponse<User>> => {
+export const getUserData = () => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendUsersPath}/users/authorized`),
     method: 'GET',
-  });
+  }) as AxiosPromise<User>;
 };
 
-export const getTokenExpiry = (token: string): Promise<AxiosResponse<AuthTokenClaims>> => {
+export const getTokenExpiry = (token: string) => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendAuthPath}/tokens/jwts/${token}/claims`),
     method: 'GET',
-  });
+  }) as AxiosPromise<AuthTokenClaims>;
 };
 
 export const logout = () => {
@@ -46,12 +47,12 @@ export const logout = () => {
 };
 
 export const getUserAuthorizationsInstitution = async (): Promise<InstitutionAuthorities> => {
-  const apiResponse: AxiosResponse<UserRoleFromInstitution> = await authenticatedApiRequest({
+  const apiResponse = await (authenticatedApiRequest({
     url: encodeURI(
       `${API_PATHS.guiBackendUserAuthorizationsPath}/authorizations/users/authorized/institutions/current`
     ),
     method: 'GET',
-  });
+  }) as AxiosPromise<UserRoleFromInstitution>);
 
   const institutionAuthorities = { ...emptyInstitutionAuthorities };
   apiResponse.data.profiles.forEach((profile) => {
@@ -76,18 +77,18 @@ export const getUserAuthorizationsInstitution = async (): Promise<InstitutionAut
   return institutionAuthorities;
 };
 
-export const getUserAuthorizationCourses = (): Promise<AxiosResponse<string[]>> => {
+export const getUserAuthorizationCourses = () => {
   return authenticatedApiRequest({
     url: `${API_PATHS.guiBackendUserAuthorizationsPath}/authorizations/users/authorized/profiles/dlr_course_student`,
     method: 'GET',
-  });
+  }) as AxiosPromise<string[]>;
 };
 
 export const getEmailNotificationStatus = async () => {
-  const appSettingResponse: AxiosResponse<EmailNotificationStatus[]> = await authenticatedApiRequest({
+  const appSettingResponse = await (authenticatedApiRequest({
     url: `${API_PATHS.guiBackendUserSettingsPath}/settings/users/authorized/apps/dlr_learning`,
     method: 'GET',
-  });
+  }) as AxiosPromise<EmailNotificationStatus[]>);
   return appSettingResponse.data[0]
     ? appSettingResponse.data[0].feature === EmailFeature.Email && appSettingResponse.data[0].value === AppValue.True
     : false;
@@ -103,12 +104,12 @@ export const putEmailNotificationStatus = async (status: boolean) => {
 };
 
 export const getUserAppFeaturesApplication = async () => {
-  const apiResponse: AxiosResponse<AppFeatureResponse[]> = await authenticatedApiRequest({
+  const apiResponse = await (authenticatedApiRequest({
     url: encodeURI(
       `${API_PATHS.guiBackendUserAuthorizationsPath}/authorizations/users/authorized/profiles/dlr_app_feature_user`
     ),
     method: 'GET',
-  });
+  }) as AxiosPromise<AppFeatureResponse[]>);
 
   const appFeature: AppFeature = { ...emptyAppFeature };
   apiResponse.data.forEach((responseData) => {

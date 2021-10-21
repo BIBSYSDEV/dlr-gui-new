@@ -4,7 +4,7 @@ import {
   Resource,
   UserAuthorizationProfileForResource,
 } from '../../types/resource.types';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import styled from 'styled-components';
 import { Colors } from '../../themes/mainTheme';
 import {
@@ -88,9 +88,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
             </PreviewComponentWrapper>
           </StyledContentWrapperMedium>
         </StyledSchemaPart>
-
         <ResourceMetadata resource={resource} isPreview={isPreview} />
-
         <StyledSchemaPartColored color={Colors.DLRYellow2}>
           <StyledContentWrapperMedium>
             <Grid container spacing={6}>

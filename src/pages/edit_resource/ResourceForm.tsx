@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
-import { CircularProgress, Grid, Typography } from '@material-ui/core';
+import { CircularProgress, Grid, Typography } from '@mui/material';
 import { getLicenses } from '../../api/resourceApi';
 import { Resource, ResourceCreationType, ResourceFormStep } from '../../types/resource.types';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
@@ -27,11 +27,12 @@ import ResourceFormActions from './ResourceFormActions';
 import RequiredFieldInformation from '../../components/RequiredFieldInformation';
 import ScrollToContentButton from '../../components/ScrollToContentButton';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
-import { Alert, AlertTitle } from '@material-ui/lab';
+import { Alert, AlertTitle } from '@mui/material';
 import SchemaPartTitle from './SchemaPartTitle';
 import { hasTouchedError } from '../../utils/formik-helpers';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import { gridClasses } from '@mui/material';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -62,16 +63,15 @@ const StyledPanel = styled.div`
 `;
 
 const StyledGridItem = styled(Grid)`
-  &&.MuiGrid-item {
+  &&.${gridClasses.item} {
     padding-top: 0;
     padding-bottom: 0;
   }
 `;
 
 const StyledGridItemResourceTitle = styled(Grid)`
-  &&.MuiGrid-item {
+  &&.${gridClasses.item} {
     padding-top: 0;
-    padding-bottom: 1rem;
   }
 `;
 

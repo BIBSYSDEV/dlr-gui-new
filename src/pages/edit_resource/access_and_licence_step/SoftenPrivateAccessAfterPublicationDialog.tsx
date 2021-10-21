@@ -7,7 +7,7 @@ import {
   DialogContentText,
   DialogTitle,
   useMediaQuery,
-} from '@material-ui/core';
+} from '@mui/material';
 import { DeviceWidths } from '../../../themes/mainTheme';
 import { useTranslation } from 'react-i18next';
 

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ResourceInSpace from '../../resources/images/illustrations/resource_in_space.svg';
 import { StyledContentWrapperLarge, StyledContentWrapperMedium } from '../../components/styled/Wrappers';
 import { PageHeader } from '../../components/PageHeader';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 
 const StyledImg = styled.img`
   @media (min-width: ${({ theme }) => theme.breakpoints.values.sm + 'px'}) {

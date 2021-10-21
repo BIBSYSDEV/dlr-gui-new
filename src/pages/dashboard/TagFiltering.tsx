@@ -1,19 +1,19 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
-import { Chip, CircularProgress, FormControl, FormControlLabel, FormGroup, Switch, TextField } from '@material-ui/core';
-import FormLabel from '@material-ui/core/FormLabel';
-import Typography from '@material-ui/core/Typography';
+import { Chip, CircularProgress, FormControl, FormControlLabel, FormGroup, Switch, TextField } from '@mui/material';
+import FormLabel from '@mui/material/FormLabel';
+import Typography from '@mui/material/Typography';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { QueryObject, SearchParameters, SearchQueryBooleanOperator } from '../../types/search.types';
-import CancelIcon from '@material-ui/icons/Cancel';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import CancelIcon from '@mui/icons-material/Cancel';
+import Autocomplete from '@mui/material/Autocomplete';
 import HelperTextPopover from '../../components/HelperTextPopover';
 import { searchTags } from '../../api/resourceApi';
 import useDebounce from '../../utils/useDebounce';
 import ErrorBanner from '../../components/ErrorBanner';
 import { useHistory, useLocation } from 'react-router-dom';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
-import { Colors, StyleWidths } from '../../themes/mainTheme';
+import { StyleWidths } from '../../themes/mainTheme';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
 
@@ -42,18 +42,6 @@ const StyledChipContainer = styled.div`
 const StyledFormLabel = styled(FormLabel)`
   display: flex;
   align-items: center;
-`;
-
-const StyledSwitch = styled(Switch)`
-  & .MuiSwitch-switchBase.Mui-checked {
-    color: ${Colors.ChipBackground};
-    &:hover {
-      background-color: ${Colors.DLRColdGreen1};
-    }
-  }
-  & .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
-    background-color: ${Colors.ChipBackground};
-  }
 `;
 
 interface TagsFilteringProps {
@@ -158,13 +146,13 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           onChange={(event: ChangeEvent<unknown>, value: any) => {
             handleNewTags(value);
           }}
-          getOptionSelected={() => {
-            return true; //HACK: Because we want the chips to stay on the outside of the autocomplete component
+          filterOptions={(x: string) => x}
+          isOptionEqualToValue={() => {
+            return true;
           }}
           value={tagValue}
           inputValue={tagInputFieldValue}
           loading={loading}
-          renderOption={(option: any) => <span data-testid={'tag-option'}>{option}</span>}
           renderInput={(params: any) => (
             <TextField
               {...params}
@@ -190,7 +178,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           {queryObject.tags.map((tag, index) => (
             <StyledChip
               key={index}
-              color="primary"
+              color="accent"
               deleteIcon={<CancelIcon data-testid={`tag-filter-delete-${tag}`} />}
               data-testid={`filter-tag-chip-${index}`}
               label={tag}
@@ -204,7 +192,8 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           <FormControlLabel
             data-testid="tag-filter-operator-switch"
             control={
-              <StyledSwitch
+              <Switch
+                color="accent"
                 checked={queryObject.tagFilterOperator === SearchQueryBooleanOperator.AND}
                 onChange={handleChangeInBooleanSearchQueryCheckBox}
               />

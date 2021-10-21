@@ -1,5 +1,5 @@
 import React, { createRef, useCallback, useEffect, useState } from 'react';
-import { CircularProgress, List, Typography } from '@material-ui/core';
+import { CircularProgress, List, Typography } from '@mui/material';
 import styled from 'styled-components';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
 import { searchResources } from '../../api/resourceApi';
@@ -18,7 +18,7 @@ import { PageHeader } from '../../components/PageHeader';
 import { StyledContentWrapperLarge, StyledPaginationWrapper } from '../../components/styled/Wrappers';
 import SearchInput from './SearchInput';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Pagination } from '@material-ui/lab';
+import { Pagination } from '@mui/material';
 import ResultListItem from '../../components/ResultListItem';
 import FilterSearchOptions from './FilterSearchOptions';
 import { useSelector } from 'react-redux';

@@ -8,8 +8,8 @@ import {
   DialogTitle,
   TextField,
   useMediaQuery,
-} from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useTranslation } from 'react-i18next';
 import { DeviceWidths } from '../../themes/mainTheme';
 

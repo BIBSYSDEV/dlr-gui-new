@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Resource, UserAuthorizationProfileForResource } from '../../types/resource.types';
 import { StyledFeatureWrapper } from '../../components/styled/Wrappers';
-import { Button, Grid, Typography } from '@material-ui/core';
+import { Button, Grid, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import Thumbnail from '../../components/Thumbnail';
 import { useSelector } from 'react-redux';

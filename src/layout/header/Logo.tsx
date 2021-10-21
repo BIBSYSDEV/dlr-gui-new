@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Divider, Link, Typography } from '@material-ui/core';
+import { Divider, Link, Typography } from '@mui/material';
 
 const StyledLogo = styled.div`
   display: flex;

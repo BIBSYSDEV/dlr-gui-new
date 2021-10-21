@@ -1,18 +1,19 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { CompareCreators, Resource } from '../../types/resource.types';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import { format } from 'date-fns';
 import { TFunction, useTranslation } from 'react-i18next';
 import { getCitationFromCrossCite } from '../../api/resourceApi';
 import styled from 'styled-components';
-import { Grid, Link } from '@material-ui/core';
+import { Grid, Link } from '@mui/material';
 import EmbedButtons from './EmbedButtons';
-import { Alert, AlertTitle } from '@material-ui/lab';
-import ShareIcon from '@material-ui/icons/Share';
+import { Alert, AlertTitle } from '@mui/material';
+import ShareIcon from '@mui/icons-material/Share';
 import SocialMediaSharing from '../../components/SocialMediaSharing';
 import { resourcePath } from '../../utils/constants';
 import { LMSParametersName } from '../../types/LMSParameters';
+import ReadAccess from './ReadAccess';
 
 const StyledGridContainer = styled(Grid)`
   margin-top: 1rem;
@@ -178,13 +179,20 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, isPreview = false }) 
     <>
       <Typography variant="h2">{t('common.usage')}</Typography>
       <StyledGridContainer container spacing={3}>
+        <Grid item xs={12}>
+          <ReadAccess resource={resource} />
+        </Grid>
+      </StyledGridContainer>
+      <StyledGridContainer container spacing={3}>
         <Grid item xs={12} sm={8}>
           <Typography variant="caption">{generateLinkSharingText()}</Typography>
           <Typography>
             {isPreview ? (
               generatePreferredURL(resource)
             ) : (
-              <Link href={generatePreferredURL(resource)}>{generatePreferredURL(resource)}</Link>
+              <Link underline="hover" href={generatePreferredURL(resource)}>
+                {generatePreferredURL(resource)}
+              </Link>
             )}
           </Typography>
         </Grid>

@@ -12,11 +12,11 @@ import {
   Grid,
   Typography,
   useMediaQuery,
-} from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import WorkListRequestMetaDataViewer from './WorkListRequestMetaDataViewer';
-import BlockIcon from '@material-ui/icons/Block';
+import BlockIcon from '@mui/icons-material/Block';
 import { useTranslation } from 'react-i18next';
 import { deleteResource } from '../../api/resourceApi';
 import { refuseComplaintReport } from '../../api/workListApi';

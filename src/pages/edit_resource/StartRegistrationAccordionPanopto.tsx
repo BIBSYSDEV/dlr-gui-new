@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import StartRegistrationMethodAccordion from './StartRegistrationMethodAccordion';
 import panoptoLogo from '../../resources/images/Logo-Panopto-Icon-Black.png';
 import { useTranslation } from 'react-i18next';

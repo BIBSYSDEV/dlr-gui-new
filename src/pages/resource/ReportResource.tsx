@@ -1,9 +1,9 @@
 import React, { FC, useState } from 'react';
-import ReportProblemIcon from '@material-ui/icons/ReportProblem';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { DialogActions, DialogContent, TextField, useMediaQuery } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
+import ReportProblemIcon from '@mui/icons-material/ReportProblem';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import { DialogActions, DialogContent, TextField, useMediaQuery } from '@mui/material';
+import Button from '@mui/material/Button';
 import ErrorBanner from '../../components/ErrorBanner';
 import { useTranslation } from 'react-i18next';
 import { DeviceWidths } from '../../themes/mainTheme';

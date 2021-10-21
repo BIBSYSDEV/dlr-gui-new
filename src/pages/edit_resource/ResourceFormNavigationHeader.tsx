@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Step, StepButton, StepLabel, Stepper, useMediaQuery } from '@material-ui/core';
+import { Step, StepButton, StepLabel, Stepper, useMediaQuery } from '@mui/material';
 import { getStepLabel, Resource, ResourceFormStep, ResourceFormSteps } from '../../types/resource.types';
 import { useFormikContext } from 'formik';
 import { StyledContentWrapperMedium } from '../../components/styled/Wrappers';
@@ -15,7 +15,7 @@ import {
 } from '../../utils/formik-helpers';
 import CircularFileUploadProgress from '../../components/CircularFileUploadProgress';
 import { Uppy } from '../../types/file.types';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import styled from 'styled-components';
 import { DeviceWidths } from '../../themes/mainTheme';
 

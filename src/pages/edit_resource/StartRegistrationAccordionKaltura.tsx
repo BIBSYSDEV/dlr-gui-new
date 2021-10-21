@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import StartRegistrationMethodAccordion from './StartRegistrationMethodAccordion';
 import kalturaLogo from '../../resources/images/Kaltura_Sun_black_icon.png';
 import { useTranslation } from 'react-i18next';

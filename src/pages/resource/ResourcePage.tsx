@@ -10,7 +10,7 @@ import {
   getResourceLicenses,
   getResourceTags,
 } from '../../api/resourceApi';
-import { Button, CircularProgress } from '@material-ui/core';
+import { Button, CircularProgress } from '@mui/material';
 import ErrorBanner from '../../components/ErrorBanner';
 import ResourcePresentation from './ResourcePresentation';
 import { useTranslation } from 'react-i18next';

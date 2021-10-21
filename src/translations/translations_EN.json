@@ -3,6 +3,8 @@
     "access_types": "Access types",
     "add_access": "Add access",
     "are_your_sure_warning": "This action cannot be reversed. You cannot restrict access for resources that has already been published.",
+    "email_anonymous_plural": "{{email_count}} persons with email access",
+    "email_anonymous_singular": "One person with email access",
     "email_label": "Email(s) or Feide-id(s)",
     "email_helper_text": "It is possible to fill in several emails as a list",
     "confirm_change": "Confirm change in access",
@@ -11,13 +13,19 @@
     "develop_server_warning": "Notice! you are now using the developement version of DLR and the courses below are testcourses",
     "everyone_at": "Everyone at",
     "everyone_participating_in": "Everyone participating in",
+    "following_have_read_access": "The following people have access to the resource",
     "grant_access": "Grant access",
     "hide_list": "Hide list",
+    "hosting_institution": "The hosting institution",
     "increase_access": "Increase access",
     "no_courses_available": "No courses available",
     "no_one_has_read_access": "No one has read access",
     "no_clearance_no_public_access": "If you do not have clearance from the creator, the work cannot be made public available",
     "only_private_is_available": "Only private access is possible due to internal license",
+    "public_available_read_access": "This resource has public access",
+    "restrictive_read_access": "This resource have restricted read access",
+    "read_access": "Read access",
+    "role_at_institution": "{{role}} at {{institution}}",
     "save_personal_access_error": {
       "duplicate_email": "One or more emails already have access",
       "invalid_email": "One or more emails are incorrectly typed",
@@ -88,6 +96,7 @@
   "common": {
     "actions": "Actions",
     "all_changes_saved": "All changes saved",
+    "and": "and",
     "back": "Back",
     "cancel": "Cancel",
     "clear": "Clear",
@@ -113,6 +122,7 @@
     "none": "No",
     "of": "Of",
     "or": "Or",
+    "oxford_comma": ", and",
     "other_options": "Other licenses",
     "page": "Page",
     "possible_options": "Possible licenses",
@@ -148,7 +158,7 @@
     "licenses": "Licenses",
     "search_result_no_hits": "The search returned no hits",
     "tags": "Tags",
-    "tags_boolean_operator_in_search" : "Show only results matching all of the selected tags"
+    "tags_boolean_operator_in_search": "Show only results matching all of the selected tags"
   },
   "delivered_by": "Delivered by",
   "embed": {

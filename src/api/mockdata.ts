@@ -2,25 +2,31 @@ import {
   Contributor,
   Creator,
   emptyResource,
-  VMSResource,
   Resource,
   ResourceOwner,
   ResourceStatistic,
+  VMSResource,
 } from '../types/resource.types';
 import deepmerge from 'deepmerge';
 import {
-  EmailFeature,
+  AppfeatureEnum,
   AppType,
   AppValue,
+  EmailFeature,
   EmailNotificationStatus,
-  User,
-  AppfeatureEnum,
-  ResourceAuthorizationProfilesName,
   ResourceAuthorization,
+  ResourceAuthorizationProfilesName,
+  User,
 } from '../types/user.types';
 import { License } from '../types/license.types';
 import { v4 as uuidv4 } from 'uuid';
-import { Course, CourseSeason, ResourceReadAccess, ResourceReadAccessNames } from '../types/resourceReadAccess.types';
+import {
+  Course,
+  CourseSeason,
+  publicReadAccess,
+  ResourceReadAccess,
+  ResourceReadAccessNames,
+} from '../types/resourceReadAccess.types';
 import { Content } from '../types/content.types';
 import { AuthorityResponse, AuthoritySearchResponse } from '../types/authority.types';
 import { WorklistRequest, WorkListRequestType } from '../types/Worklist.types';
@@ -985,4 +991,9 @@ export const mockKalturaResources: VMSResource[] = [
     institution: 'unit',
     dlrContentIdentifier: '54689068054',
   },
+];
+
+export const readAccessListWithoutInstitution: publicReadAccess[] = [
+  { name: ResourceReadAccessNames.Person, subject: '2' },
+  { name: ResourceReadAccessNames.Course, subject: mockUserCourses[0] },
 ];

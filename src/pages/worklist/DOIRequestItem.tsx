@@ -11,13 +11,13 @@ import {
   Grid,
   Typography,
   useMediaQuery,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { createDOI, refuseDoiRequest } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';
 import WorkListRequestMetaDataViewer from './WorkListRequestMetaDataViewer';
-import EditIcon from '@material-ui/icons/Edit';
-import BlockIcon from '@material-ui/icons/Block';
+import EditIcon from '@mui/icons-material/Edit';
+import BlockIcon from '@mui/icons-material/Block';
 import { getAuthoritiesForResourceCreatorOrContributor } from '../../api/authoritiesApi';
 import DeleteRequestDialog from './DeleteRequestDialog';
 import { AxiosError } from 'axios';

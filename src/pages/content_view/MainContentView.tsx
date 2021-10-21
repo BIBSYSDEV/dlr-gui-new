@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { emptyResource } from '../../types/resource.types';
 import { getResource, getResourceContents } from '../../api/resourceApi';
 import { StyledProgressWrapper } from '../../components/styled/Wrappers';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress } from '@mui/material';
 import ContentPreview from '../../components/ContentPreview';
 import ErrorBanner from '../../components/ErrorBanner';
 import styled from 'styled-components';
