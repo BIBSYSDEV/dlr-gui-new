@@ -178,7 +178,7 @@
     "access_filtering_label": "Vis andre ressurser forklaring",
     "access_filtering": "Hvis valgt, vil resultatlista også inneholde ressurser du ikke har tilgang til å vise.",
     "access_filtering_limited": "Hvis valgt, vil resultatlista også inneholde ressurser med begrenset tilgang. Noen av disse ressursene vil du ikke ha tilgang til.",
-    "authority_prevents_editing": "Some fields may not be editable due to curators have verified them",
+    "authority_prevents_editing": "Det går ikke an å redigere felter som har blitt verifisert av en kurator",
     "contributor_helper_aria_label": "Vis bidragsyter forklaring",
     "contributor_helper_text1": "Andre som har bidratt med ressursen, men som ikke trenger å krediteres av de som tar i bruk ressursen",
     "contributor_helper_text2": "Som Kurator kan du verifisere bidragsytere. Det er ikke mulig å endre navnet på en verifisert bidragsyter. Om det er feil verfisert bidragsyter, må denne slettes og legges inn på ny",
