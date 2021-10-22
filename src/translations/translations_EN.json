@@ -188,6 +188,7 @@
     "access_filtering_label": "Show other results explanation",
     "access_filtering": "If selected, the result list will also contain content you do not have access to view",
     "access_filtering_limited": "If selected, the result list will also contain content with private access. Some which you may not have access to.",
+    "authority_prevents_editing": "It is not possible to edit fields that have been verified by a curator",
     "contributor_helper_aria_label": "Show contributor explanation",
     "contributor_helper_text1": "Others who have contributed to the resource but does not need to be credited in future usage of the resource",
     "contributor_helper_text2": "It is not possible to change the name of the contributor after it has been verified",
