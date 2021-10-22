@@ -137,4 +137,40 @@ context('LMS params', () => {
         cy.wrap(element).should('have.attr', 'href').and('include', `${LMSParametersName.BBShowEmbedButton}=true`);
       });
   });
+
+  it('retains lmsParams in myResource page', () => {
+    cy.visit(`/resources/user/current?${LMSParametersName.BBShowEmbedButton}=true`);
+    cy.get('[data-testid=list-item-resources-123]')
+      .find('a')
+      .each((element) => {
+        cy.wrap(element).should('have.attr', 'href').and('include', `${LMSParametersName.BBShowEmbedButton}=true`);
+      });
+    cy.get('[data-testid=unpublished-tab]').click();
+    cy.get('[data-testid=list-item-resources-456]')
+      .find('a')
+      .each((element) => {
+        cy.wrap(element).should('have.attr', 'href').and('include', `${LMSParametersName.BBShowEmbedButton}=true`);
+      });
+  });
+
+  it('retains lmsParams in worklist page', () => {
+    cy.visit(`/worklist?${LMSParametersName.BBShowEmbedButton}=true`);
+    cy.get('[data-testid=report-request-list-item-123]')
+      .find('a')
+      .each((element) => {
+        cy.wrap(element).should('have.attr', 'href').and('include', `${LMSParametersName.BBShowEmbedButton}=true`);
+      });
+    cy.get('[data-testid=doi-tab]').click();
+    cy.get('[data-testid=doi-request-list-item-123]')
+      .find('a')
+      .each((element) => {
+        cy.wrap(element).should('have.attr', 'href').and('include', `${LMSParametersName.BBShowEmbedButton}=true`);
+      });
+    cy.get('[data-testid=ownership-tab]').click();
+    cy.get('[data-testid=ownership-request-list-item-123]')
+      .find('a')
+      .each((element) => {
+        cy.wrap(element).should('have.attr', 'href').and('include', `${LMSParametersName.BBShowEmbedButton}=true`);
+      });
+  });
 });

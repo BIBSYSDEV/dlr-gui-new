@@ -92,7 +92,9 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
 
   return (
     <>
-      <StyledListItemWrapper backgroundColor={Colors.DLRColdGreen1}>
+      <StyledListItemWrapper
+        data-testid={`report-request-list-item-${reportWorkListRequest.resourceIdentifier}`}
+        backgroundColor={Colors.DLRColdGreen1}>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={8}>
             <WorkListRequestMetaDataViewer workListRequest={reportWorkListRequest} />
