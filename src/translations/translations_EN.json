@@ -555,6 +555,10 @@
     "unpublished_resources": "Started",
     "views": "views"
   },
+  "resource_not_found": {
+    "resource_not_found": "Resource not found",
+    "resource_may_have_been_deleted": "This resource may have been deleted"
+  },
   "search_tricks": {
     "asterisk1": "Asterisk (*) is used as wildcard to replace one or more characters in the search term. t*ck will match \"tick\", \"tock\", and \"trick\"",
     "asterisk2": "t*ck",

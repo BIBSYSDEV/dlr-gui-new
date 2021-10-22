@@ -62,7 +62,15 @@ const ResourcePage = () => {
         setResource(tempResource);
         tempResource.contents = await getResourceContents(identifier);
       } catch (error) {
-        setResourceLoadingError(handlePotentialAxiosError(error));
+        const potentialAxiosError = handlePotentialAxiosError(error);
+        if ((potentialAxiosError as AxiosError).response) {
+          const axiosError = potentialAxiosError as AxiosError;
+          if (axiosError.response && (axiosError.response.status === 404 || axiosError.response.status === 503)) {
+            history.push(`/resourcenotfound/${identifier}`);
+          }
+        } else {
+          setResourceLoadingError(potentialAxiosError);
+        }
       } finally {
         setIsLoadingResource(false);
       }
@@ -71,7 +79,7 @@ const ResourcePage = () => {
     if (identifier) {
       fetchData(identifier);
     }
-  }, [identifier]);
+  }, [history, identifier]);
 
   return isLoadingResource ? (
     <StyledProgressWrapper>
