@@ -155,19 +155,19 @@ context('LMS params', () => {
 
   it('retains lmsParams in worklist page', () => {
     cy.visit(`/worklist?${LMSParametersName.BBShowEmbedButton}=true`);
-    cy.get('[data-testid=report-request-list-item-123]')
+    cy.get('[data-testid=report-request-list-item-resource-123]')
       .find('a')
       .each((element) => {
         cy.wrap(element).should('have.attr', 'href').and('include', `${LMSParametersName.BBShowEmbedButton}=true`);
       });
     cy.get('[data-testid=doi-tab]').click();
-    cy.get('[data-testid=doi-request-list-item-123]')
+    cy.get('[data-testid=doi-request-list-item-resource-123]')
       .find('a')
       .each((element) => {
         cy.wrap(element).should('have.attr', 'href').and('include', `${LMSParametersName.BBShowEmbedButton}=true`);
       });
     cy.get('[data-testid=ownership-tab]').click();
-    cy.get('[data-testid=ownership-request-list-item-123]')
+    cy.get('[data-testid=ownership-request-list-item-resource-123]')
       .find('a')
       .each((element) => {
         cy.wrap(element).should('have.attr', 'href').and('include', `${LMSParametersName.BBShowEmbedButton}=true`);
