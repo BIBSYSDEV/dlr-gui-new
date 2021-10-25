@@ -149,7 +149,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({
                       isUploadingNewFile={true}
                       shouldDisplayCompleted={false}
                     />
-                    Du kan ikke publisere eller lagre og fortsette senere mens filer lastes opp
+                    {t('resource.busy_uploading_save_and_continue_later_is_disabled')}
                   </Typography>
                 )}
                 <StyledSaveButtonWrapper>

@@ -365,6 +365,7 @@
     "also_published_by_plural": "Har også publisert",
     "also_published_by_singular": "Har også publisert",
     "browse_by_creator": "Se flere ressurser",
+    "busy_uploading_save_and_continue_later_is_disabled" : " Det er ikke mulig å publisere eller lagre og fortsette senere mens hovedfila lastes opp",
     "contributor_type": {
       "ContactPerson": "Kontakt person",
       "DataCollector": "Datasamler",
@@ -442,7 +443,7 @@
         "xTimeLeft": "%{time} gjenstår"
       },
       "upload_files": "Last opp filer",
-      "warning_leaving_form_premature": "Warning, your file is not done uploading yet. Are you sure you want to leave?"
+      "warning_leaving_form_premature": "Advarsel, filen er ikke ferdig opplastet - hvis du lukker nå, avbrytes opplastningen. Er du sikker på at du ønsker å forlate?"
     },
     "form_steps": {
       "description": "Beskrivelse",

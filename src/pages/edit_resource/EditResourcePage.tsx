@@ -310,24 +310,24 @@ const EditResourcePage = () => {
 
   //triggers on uppy-events
   useEffect(() => {
-    const setupBeforeUnloadListener = () => {
-      window.addEventListener('beforeunload', (event) => {
-        event.preventDefault();
-        const uppyState = mainFileHandler.getState();
-        if (!(uppyState.totalProgress === 0 || uppyState.totalProgress === 100)) return (event.returnValue = ''); //The text displayed to the user is the browser's default text. (no need to add custom text)
-      });
+    const beforeUnloadListener = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      return (event.returnValue = '');
     };
-    setupBeforeUnloadListener();
+
     setFileUploadError(undefined);
     if (mainFileHandler) {
       mainFileHandler.on('upload', () => {
         setResourceType(ResourceCreationType.FILE);
         setMainFileBeingUploaded(true);
+        window.addEventListener('beforeunload', beforeUnloadListener, { capture: true });
       });
       mainFileHandler.on('upload-error', () => {
+        window.removeEventListener('beforeunload', beforeUnloadListener, { capture: true });
         setFileUploadError(new Error('File upload error'));
       });
       mainFileHandler.on('complete', () => {
+        window.removeEventListener('beforeunload', beforeUnloadListener, { capture: true });
         setMainFileBeingUploaded(false);
       });
     }
