@@ -556,6 +556,10 @@
     "unpublished_resources": "Påbegynt",
     "views": "visninger"
   },
+  "resource_not_found": {
+    "resource_not_found": "Ressurs ikke funnet",
+    "resource_may_have_been_deleted": "Denne ressursen kan ha blitt slettet"
+  },
   "search_tricks": {
     "asterisk1": "Asterisk (*) kan brukes for å erstatte en eller flere bokstaver",
     "asterisk2": "b*k",
