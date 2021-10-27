@@ -17,6 +17,7 @@ import ChangeLanguageButton from './ChangeLanguageButton';
 import AvatarButton from './AvatarButton';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import { resourcePath } from '../../utils/constants';
+import { generateNewUrlAndRetainLMSParams } from '../../utils/lmsService';
 
 const StyledPageHeader = styled.div`
   display: flex;
@@ -76,35 +77,46 @@ const Header = () => {
   return (
     <StyledPageHeader data-testid="navigation-bar" role="navigation">
       <StyledBurgerMenu>
-        <IconButton onClick={handleBurgerMenuClick} size="large">
+        <IconButton data-testid="navbar-burger-menu-button" onClick={handleBurgerMenuClick} size="large">
           <MenuIcon />
         </IconButton>
       </StyledBurgerMenu>
-      <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleBurgerMenuClose}>
+      <Menu
+        data-testid="navbar-burger-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleBurgerMenuClose}>
         {user.id && (
-          <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/registration">
+          <MenuItem
+            onClick={handleBurgerMenuClose}
+            component={Link}
+            to={generateNewUrlAndRetainLMSParams('/registration')}>
             <AddIcon />
             <Typography variant="button">{t('resource.new_registration')}</Typography>
           </MenuItem>
         )}
         {user.id && (
-          <MenuItem onClick={handleBurgerMenuClose} component={Link} to={`${resourcePath}/user/current`}>
+          <MenuItem
+            onClick={handleBurgerMenuClose}
+            component={Link}
+            to={generateNewUrlAndRetainLMSParams(`${resourcePath}/user/current`)}>
             <DescriptionOutlinedIcon />
             <Typography variant="button">{t('resource.my_resources')}</Typography>
           </MenuItem>
         )}
         {(user.institutionAuthorities?.isCurator || user.institutionAuthorities?.isEditor) && (
-          <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/worklist">
+          <MenuItem onClick={handleBurgerMenuClose} component={Link} to={generateNewUrlAndRetainLMSParams('/worklist')}>
             <Typography variant="button">{t('work_list.page_title')}</Typography>
           </MenuItem>
         )}
         {user.institutionAuthorities?.isAdministrator && (
-          <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/admin">
+          <MenuItem onClick={handleBurgerMenuClose} component={Link} to={generateNewUrlAndRetainLMSParams('/admin')}>
             <Typography variant="button">{t('administrative.page_heading')}</Typography>
           </MenuItem>
         )}
         {user.id && (
-          <MenuItem onClick={handleBurgerMenuClose} component={Link} to="/profile">
+          <MenuItem onClick={handleBurgerMenuClose} component={Link} to={generateNewUrlAndRetainLMSParams('/profile')}>
             <Typography variant="button">{t('profile.profile')}</Typography>
           </MenuItem>
         )}
@@ -118,7 +130,7 @@ const Header = () => {
             color="neutral"
             component={RouterLink}
             data-testid="new-registration-link"
-            to="/registration"
+            to={generateNewUrlAndRetainLMSParams('/registration')}
             startIcon={<AddIcon />}>
             <Typography variant="button">{t('resource.new_registration')}</Typography>
           </Button>
@@ -129,7 +141,7 @@ const Header = () => {
             startIcon={<DescriptionOutlinedIcon />}
             component={RouterLink}
             data-testid="my-resources-link"
-            to={`${resourcePath}/user/current`}>
+            to={generateNewUrlAndRetainLMSParams(`${resourcePath}/user/current`)}>
             <Typography variant="button">{t('resource.my_resources')}</Typography>
           </Button>
         )}

@@ -119,3 +119,16 @@ export const getLMSSearchParams = () => {
   });
   return newSearchParams;
 };
+
+export const generateNewUrlAndRetainLMSParams = (
+  newPath: string,
+  searchParamsThatNeedsToBeRetained?: URLSearchParams
+) => {
+  const newSearchParams = getLMSSearchParams();
+  if (searchParamsThatNeedsToBeRetained) {
+    searchParamsThatNeedsToBeRetained.forEach((value, key) => {
+      newSearchParams.append(key, value);
+    });
+  }
+  return `${newPath}${newSearchParams.toString().length > 0 ? `?${newSearchParams}` : ''}`;
+};
