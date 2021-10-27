@@ -376,6 +376,7 @@
     "also_published_by_plural": "Have also published",
     "also_published_by_singular": "Has also published",
     "browse_by_creator": "Browse more resources",
+    "busy_uploading_save_and_continue_later_is_disabled" : "It is not possible to save or publis a resource while the main file is being uploaded",
     "contributor_type": {
       "ContactPerson": "Contact person",
       "DataCollector": "Data collector",
@@ -452,7 +453,8 @@
         },
         "xTimeLeft": "%{time} left"
       },
-      "upload_files": "Upload Files"
+      "upload_files": "Upload Files",
+      "warning_leaving_form_premature": "Warning, your file is not done uploading yet. If you navigate now, the upload will be cancelled. Are you sure you want to leave?"
     },
     "form_steps": {
       "description": "Description",

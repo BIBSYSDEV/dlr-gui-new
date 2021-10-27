@@ -18,14 +18,13 @@ import { Uppy } from '../../types/file.types';
 import Typography from '@mui/material/Typography';
 import styled from 'styled-components';
 import { DeviceWidths } from '../../themes/mainTheme';
+import { fileUploadPanelId } from '../../utils/constants';
 
 const StyledStepTypography = styled(Typography)`
   font-size: inherit;
   font-weight: inherit;
   color: inherit;
 `;
-
-const fileUploadPanelId = 'file-upload-panel';
 
 interface ResourceFormNavigationHeaderProps {
   activeStep: ResourceFormStep;

@@ -33,6 +33,7 @@ import { hasTouchedError } from '../../utils/formik-helpers';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { gridClasses } from '@mui/material';
+import { fileUploadPanelId } from '../../utils/constants';
 
 const StyledForm = styled(Form)`
   display: flex;
@@ -85,8 +86,6 @@ interface ResourceFormProps {
   resourceType: ResourceCreationType;
   mainFileBeingUploaded: boolean;
 }
-
-const fileUploadPanelId = 'file-upload-panel';
 
 const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mainFileBeingUploaded }) => {
   const setNewContentAndThumbnail = (newContent: Content) => {
@@ -167,17 +166,6 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
       inline: 'center',
     });
   };
-
-  useEffect(() => {
-    const setupBeforeUnloadListener = () => {
-      window.addEventListener('beforeunload', (event) => {
-        event.preventDefault();
-        const uppyState = additionalFilesUppy.getState();
-        if (!(uppyState.totalProgress === 0 || uppyState.totalProgress === 100)) return (event.returnValue = ''); //The text displayed to the user is the browser's default text. (no need to add custom text)
-      });
-    };
-    setupBeforeUnloadListener();
-  }, [additionalFilesUppy]);
 
   useEffect(() => {
     const getAllLicences = async () => {
@@ -330,10 +318,12 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
                       </>
                     )}
                     <ResourceFormActions
+                      uppy={uppy}
                       activeStep={activeStep}
                       allChangesSaved={allChangesSaved}
                       setActiveStep={setActiveStep}
                       scrollToTop={scrollToTop}
+                      mainFileBeingUploaded={mainFileBeingUploaded}
                     />
                   </StyledPanel>
                 </StyledPanelWrapper>

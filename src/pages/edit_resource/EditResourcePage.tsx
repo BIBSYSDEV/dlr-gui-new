@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { Prompt, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
 import ResourceForm from './ResourceForm';
@@ -310,24 +310,24 @@ const EditResourcePage = () => {
 
   //triggers on uppy-events
   useEffect(() => {
-    const setupBeforeUnloadListener = () => {
-      window.addEventListener('beforeunload', (event) => {
-        event.preventDefault();
-        const uppyState = mainFileHandler.getState();
-        if (!(uppyState.totalProgress === 0 || uppyState.totalProgress === 100)) return (event.returnValue = ''); //The text displayed to the user is the browser's default text. (no need to add custom text)
-      });
+    const beforeUnloadListener = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      return (event.returnValue = '');
     };
-    setupBeforeUnloadListener();
+
     setFileUploadError(undefined);
     if (mainFileHandler) {
       mainFileHandler.on('upload', () => {
         setResourceType(ResourceCreationType.FILE);
         setMainFileBeingUploaded(true);
+        window.addEventListener('beforeunload', beforeUnloadListener, { capture: true });
       });
       mainFileHandler.on('upload-error', () => {
+        window.removeEventListener('beforeunload', beforeUnloadListener, { capture: true });
         setFileUploadError(new Error('File upload error'));
       });
       mainFileHandler.on('complete', () => {
+        window.removeEventListener('beforeunload', beforeUnloadListener, { capture: true });
         setMainFileBeingUploaded(false);
       });
     }
@@ -410,60 +410,65 @@ const EditResourcePage = () => {
     }
   }, [identifier, user.institutionAuthorities?.isCurator]);
 
-  return !showForm ? (
-    <StyledContentWrapperLarge>
-      <PageHeader>{t('resource.new_registration')}</PageHeader>
-      <StyledEditPublication>
-        <FileRegistration
-          expanded={expanded === 'load-panel'}
-          onChange={handleChange('load-panel')}
+  return (
+    <>
+      <Prompt when={mainFileBeingUploaded} message={t('resource.files_and_license.warning_leaving_form_premature')} />
+      {!showForm ? (
+        <StyledContentWrapperLarge>
+          <PageHeader>{t('resource.new_registration')}</PageHeader>
+          <StyledEditPublication>
+            <FileRegistration
+              expanded={expanded === 'load-panel'}
+              onChange={handleChange('load-panel')}
+              uppy={mainFileHandler}
+            />
+            {fileUploadError && <ErrorBanner userNeedsToBeLoggedIn={true} error={fileUploadError} />}
+            <StyledTypography>{t('common.or')}</StyledTypography>
+            <LinkRegistration
+              expanded={expanded === 'link-panel'}
+              onChange={handleChange('link-panel')}
+              onSubmit={onSubmitLink}
+            />
+            {user.appFeature?.hasFeatureNewResourceFromKaltura && (
+              <>
+                <StyledTypography>{t('common.or')}</StyledTypography>
+                <VMSRegistration
+                  expanded={expanded === 'kaltura-panel'}
+                  vms={VideoManagementSystems.Kaltura}
+                  onChange={handleChange('kaltura-panel')}
+                  onSubmit={onSubmitVMSResource}
+                />
+              </>
+            )}
+            {user.appFeature?.hasFeatureNewResourceFromPanopto && (
+              <>
+                <StyledTypography>{t('common.or')}</StyledTypography>
+                <VMSRegistration
+                  expanded={expanded === 'panopto-panel'}
+                  vms={VideoManagementSystems.Panopto}
+                  onChange={handleChange('panopto-panel')}
+                  onSubmit={onSubmitVMSResource}
+                />
+              </>
+            )}
+          </StyledEditPublication>
+        </StyledContentWrapperLarge>
+      ) : isLoadingResource ? (
+        <StyledFullPageProgressWrapper>
+          <CircularProgress />
+        </StyledFullPageProgressWrapper>
+      ) : resourceInitError ? (
+        <ErrorBanner userNeedsToBeLoggedIn={true} error={resourceInitError} />
+      ) : formikInitResource ? (
+        <ResourceForm
+          resource={formikInitResource}
           uppy={mainFileHandler}
+          resourceType={resourceType}
+          mainFileBeingUploaded={mainFileBeingUploaded}
         />
-        {fileUploadError && <ErrorBanner userNeedsToBeLoggedIn={true} error={fileUploadError} />}
-        <StyledTypography>{t('common.or')}</StyledTypography>
-        <LinkRegistration
-          expanded={expanded === 'link-panel'}
-          onChange={handleChange('link-panel')}
-          onSubmit={onSubmitLink}
-        />
-        {user.appFeature?.hasFeatureNewResourceFromKaltura && (
-          <>
-            <StyledTypography>{t('common.or')}</StyledTypography>
-            <VMSRegistration
-              expanded={expanded === 'kaltura-panel'}
-              vms={VideoManagementSystems.Kaltura}
-              onChange={handleChange('kaltura-panel')}
-              onSubmit={onSubmitVMSResource}
-            />
-          </>
-        )}
-        {user.appFeature?.hasFeatureNewResourceFromPanopto && (
-          <>
-            <StyledTypography>{t('common.or')}</StyledTypography>
-            <VMSRegistration
-              expanded={expanded === 'panopto-panel'}
-              vms={VideoManagementSystems.Panopto}
-              onChange={handleChange('panopto-panel')}
-              onSubmit={onSubmitVMSResource}
-            />
-          </>
-        )}
-      </StyledEditPublication>
-    </StyledContentWrapperLarge>
-  ) : isLoadingResource ? (
-    <StyledFullPageProgressWrapper>
-      <CircularProgress />
-    </StyledFullPageProgressWrapper>
-  ) : resourceInitError ? (
-    <ErrorBanner userNeedsToBeLoggedIn={true} error={resourceInitError} />
-  ) : formikInitResource ? (
-    <ResourceForm
-      resource={formikInitResource}
-      uppy={mainFileHandler}
-      resourceType={resourceType}
-      mainFileBeingUploaded={mainFileBeingUploaded}
-    />
-  ) : null;
+      ) : null}
+    </>
+  );
 };
 
 export default PrivateRoute(EditResourcePage);

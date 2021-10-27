@@ -8,6 +8,7 @@ interface CircularFileUploadProgressProps {
   uppy: Uppy;
   isUploadingNewFile: boolean;
   describedById: string;
+  shouldDisplayCompleted?: boolean;
 }
 
 const completedDelayMilliSeconds = 3000;
@@ -17,6 +18,7 @@ const CircularFileUploadProgress: FC<CircularFileUploadProgressProps> = ({
   uppy,
   isUploadingNewFile,
   describedById,
+  shouldDisplayCompleted = true,
 }) => {
   const [percentageFileUpload, setPercentageFileUpload] = useState(0);
   const [shouldShowCompleted, setShouldShowCompleted] = useState(false);
@@ -56,7 +58,9 @@ const CircularFileUploadProgress: FC<CircularFileUploadProgressProps> = ({
           value={percentageFileUpload}
         />
       )}
-      {shouldShowCompleted && <CheckCircleIcon color="primary" aria-describedby={describedById} />}
+      {shouldShowCompleted && shouldDisplayCompleted && (
+        <CheckCircleIcon color="primary" aria-describedby={describedById} />
+      )}
     </>
   );
 };
