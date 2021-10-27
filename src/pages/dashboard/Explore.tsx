@@ -1,4 +1,4 @@
-import React, { createRef, useCallback, useEffect, useState } from 'react';
+import React, { createRef, useCallback, useEffect, useRef, useState } from 'react';
 import { CircularProgress, List, Typography } from '@mui/material';
 import styled from 'styled-components';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
@@ -122,6 +122,7 @@ const Explore = () => {
   const [searchError, setSearchError] = useState<Error | AxiosError>();
   const history = useHistory();
   const [hasPopStateListener, setHasPopStateListener] = useState(false);
+  const resultListRef = useRef<HTMLDivElement>(null);
 
   const handlePaginationChange = useCallback(
     (event: React.ChangeEvent<unknown>, value: number) => {
@@ -180,48 +181,54 @@ const Explore = () => {
         </StyledProgressWrapper>
       )}
       {searchResult && (
-        <SearchResultWrapper>
-          <FilterSearchOptions queryObject={queryObject} setQueryObject={setQueryObject} />
-          <StyledResultListWrapper>
-            {isSearching ? (
-              <StyledProgressWrapper>
-                <CircularProgress />
-              </StyledProgressWrapper>
-            ) : (
-              <>
-                <StyledResultListHeaderWrapper ref={startOfList}>
-                  <Typography variant="h2">{t('common.result')}</Typography>
+        <>
+          <SearchResultWrapper>
+            <FilterSearchOptions
+              resultListRef={resultListRef}
+              queryObject={queryObject}
+              setQueryObject={setQueryObject}
+            />
+            <StyledResultListWrapper tabIndex={-1} ref={resultListRef}>
+              {isSearching ? (
+                <StyledProgressWrapper>
+                  <CircularProgress />
+                </StyledProgressWrapper>
+              ) : (
+                <>
+                  <StyledResultListHeaderWrapper ref={startOfList}>
+                    <Typography variant="h2">{t('common.result')}</Typography>
 
-                  {resources && resources.length > 0 && (
-                    <Typography variant="body1">
-                      {`${t('common.showing')} ${parseInt(searchResult.offset) + 1}-${
-                        parseInt(searchResult.offset) + resources.length
-                      } ${t('common.of').toLowerCase()} ${searchResult.numFound}`}
-                    </Typography>
+                    {resources && resources.length > 0 && (
+                      <Typography variant="body1">
+                        {`${t('common.showing')} ${parseInt(searchResult.offset) + 1}-${
+                          parseInt(searchResult.offset) + resources.length
+                        } ${t('common.of').toLowerCase()} ${searchResult.numFound}`}
+                      </Typography>
+                    )}
+                    {user.id && <AccessFiltering queryObject={queryObject} setQueryObject={setQueryObject} />}
+                  </StyledResultListHeaderWrapper>
+                  {resources.length === 0 && <NoResult searchResult={searchResult} />}
+                  <StyledList>
+                    {resources &&
+                      resources.length > 0 &&
+                      resources.map((resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
+                  </StyledList>
+                  {searchResult.numFound > NumberOfResultsPrPage && (
+                    <StyledPaginationWrapper>
+                      <Typography variant="subtitle2">{t('common.page')}</Typography>
+                      <Pagination
+                        count={Math.ceil(searchResult.numFound / NumberOfResultsPrPage)}
+                        page={page}
+                        color="primary"
+                        onChange={handlePaginationChange}
+                      />
+                    </StyledPaginationWrapper>
                   )}
-                  {user.id && <AccessFiltering queryObject={queryObject} setQueryObject={setQueryObject} />}
-                </StyledResultListHeaderWrapper>
-                {resources.length === 0 && <NoResult searchResult={searchResult} />}
-                <StyledList>
-                  {resources &&
-                    resources.length > 0 &&
-                    resources.map((resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
-                </StyledList>
-                {searchResult.numFound > NumberOfResultsPrPage && (
-                  <StyledPaginationWrapper>
-                    <Typography variant="subtitle2">{t('common.page')}</Typography>
-                    <Pagination
-                      count={Math.ceil(searchResult.numFound / NumberOfResultsPrPage)}
-                      page={page}
-                      color="primary"
-                      onChange={handlePaginationChange}
-                    />
-                  </StyledPaginationWrapper>
-                )}
-              </>
-            )}
-          </StyledResultListWrapper>
-        </SearchResultWrapper>
+                </>
+              )}
+            </StyledResultListWrapper>
+          </SearchResultWrapper>
+        </>
       )}
     </StyledContentWrapperLarge>
   );
