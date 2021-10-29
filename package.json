@@ -37,7 +37,7 @@
     "@mui/icons-material": "^5.0.5",
     "@mui/lab": "^5.0.0-alpha.53",
     "@mui/material": "^5.0.4",
-    "@mui/styled-engine-sc": "^5.0.3",
+    "@mui/styled-engine-sc": "^5.0.4",
     "@mui/styles": "^5.0.2",
     "@reduxjs/toolkit": "^1.6.2",
     "@uppy/aws-s3-multipart": "^1.8.18",
