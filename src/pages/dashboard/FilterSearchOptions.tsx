@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction, useEffect, useLayoutEffect, useState } from 'react';
+import React, { Dispatch, FC, RefObject, SetStateAction, useEffect, useLayoutEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Colors, DeviceWidths } from '../../themes/mainTheme';
 import Accordion from '@mui/material/Accordion';
@@ -13,6 +13,7 @@ import ResourceTypeFiltering from './ResourceTypeFiltering';
 import LicenseFiltering from './LicenseFiltering';
 import TagFiltering from './TagFiltering';
 import { paperClasses } from '@mui/material/Paper';
+import ScrollToContentButton from '../../components/ScrollToContentButton';
 
 function useWindowWidth() {
   const [width, setWidth] = useState(0);
@@ -68,9 +69,10 @@ const StyledAccordionFilterBoxesWrapper = styled.div`
 interface FilterSearchOptionsProps {
   queryObject: QueryObject;
   setQueryObject: Dispatch<SetStateAction<QueryObject>>;
+  resultListRef: RefObject<HTMLDivElement> | null;
 }
 
-const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQueryObject }) => {
+const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQueryObject, resultListRef }) => {
   const { t } = useTranslation();
   const width = useWindowWidth();
   const [numberOfFilters, setNumberOfFilters] = useState(0);
@@ -101,6 +103,7 @@ const FilterSearchOptions: FC<FilterSearchOptionsProps> = ({ queryObject, setQue
     <div>
       {width >= DeviceWidths.lg ? (
         <StyledSideBar>
+          <ScrollToContentButton contentRef={resultListRef} text={t('skip_to_result_list')} />
           {filterHeader()}
           <StyledTagFilteringWrapper>
             <TagFiltering queryObject={queryObject} setQueryObject={setQueryObject} />

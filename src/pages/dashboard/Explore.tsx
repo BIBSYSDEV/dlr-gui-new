@@ -1,4 +1,4 @@
-import React, { createRef, useCallback, useEffect, useState } from 'react';
+import React, { createRef, useCallback, useEffect, useRef, useState } from 'react';
 import { CircularProgress, List, Typography } from '@mui/material';
 import styled from 'styled-components';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
@@ -122,6 +122,7 @@ const Explore = () => {
   const [searchError, setSearchError] = useState<Error | AxiosError>();
   const history = useHistory();
   const [hasPopStateListener, setHasPopStateListener] = useState(false);
+  const resultListRef = useRef<HTMLDivElement>(null);
 
   const handlePaginationChange = useCallback(
     (event: React.ChangeEvent<unknown>, value: number) => {
@@ -181,8 +182,12 @@ const Explore = () => {
       )}
       {searchResult && (
         <SearchResultWrapper>
-          <FilterSearchOptions queryObject={queryObject} setQueryObject={setQueryObject} />
-          <StyledResultListWrapper>
+          <FilterSearchOptions
+            resultListRef={resultListRef}
+            queryObject={queryObject}
+            setQueryObject={setQueryObject}
+          />
+          <StyledResultListWrapper tabIndex={-1} ref={resultListRef}>
             {isSearching ? (
               <StyledProgressWrapper>
                 <CircularProgress />
