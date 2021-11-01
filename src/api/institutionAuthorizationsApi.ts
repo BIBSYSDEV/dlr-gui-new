@@ -9,7 +9,7 @@ export const getInstitutionAuthorizations = (accessProfile: InstitutionProfilesN
       `${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations/users/accessProfiles/${accessProfile}`
     ),
     method: 'GET',
-  }) as AxiosPromise<string[]>;
+  });
 };
 
 export const getRolesForInstitutionUser = (email: string): AxiosPromise<institutionUser> => {
@@ -18,7 +18,7 @@ export const getRolesForInstitutionUser = (email: string): AxiosPromise<institut
       `${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations/users/${email}`
     ),
     method: 'GET',
-  }) as AxiosPromise<institutionUser>;
+  });
 };
 export const setRoleForInstitutionUser = (email: string, accessProfile: string): AxiosPromise<institutionUser> => {
   const data = encodeURI(`user=${email}&accessProfile=${accessProfile}`);
@@ -26,7 +26,7 @@ export const setRoleForInstitutionUser = (email: string, accessProfile: string):
     url: encodeURI(`${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations`),
     method: 'POST',
     data,
-  }) as AxiosPromise<institutionUser>;
+  });
 };
 export const removeRoleForInstitutionUser = (email: string, accessProfile: string): AxiosPromise<institutionUser> => {
   return authenticatedApiRequest({
@@ -34,5 +34,5 @@ export const removeRoleForInstitutionUser = (email: string, accessProfile: strin
       `${API_PATHS.guiBackendInstitutionUserAutorizationsPath}/institutions/current/authorizations/users/${email}/accessProfiles/${accessProfile}`
     ),
     method: 'DELETE',
-  }) as AxiosPromise<institutionUser>;
+  });
 };
