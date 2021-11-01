@@ -90,11 +90,24 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
     <StyledListItemWrapper backgroundColor={backgroundColor}>
       <StyledListItem data-testid={`list-item-resources-${resource.identifier}`}>
         <StyledThumbnailWrapper>
-          <Thumbnail
-            institution={resource.features.dlr_storage_id ?? fallbackInstitution}
-            resourceOrContentIdentifier={resource.identifier}
-            alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
-          />
+          {resource.features.dlr_status_published ? (
+            <Link
+              data-testid={`thumbnail-link-to-resource-${resource.identifier}`}
+              href={generateNewUrlAndRetainLMSParams(`${resourcePath}/${resource.identifier}`)}>
+              <Thumbnail
+                institution={resource.features.dlr_storage_id ?? fallbackInstitution}
+                resourceOrContentIdentifier={resource.identifier}
+                alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
+              />
+            </Link>
+          ) : (
+            <Thumbnail
+              institution={resource.features.dlr_storage_id ?? fallbackInstitution}
+              resourceOrContentIdentifier={resource.identifier}
+              alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
+            />
+          )}
+
           <StyledResourceTypeInfoWrapper>
             <ResourceTypeInfo resource={resource} />
           </StyledResourceTypeInfoWrapper>
