@@ -15,6 +15,8 @@ export enum StatusCode {
   CONFLICT = 409,
 }
 
+export const fileUploadPanelId = 'file-upload-panel';
+
 export const API_PATHS = {
   guiBackendLoginPath: '/dlr-gui-backend-login/v1',
   guiBackendUserAuthorizationsPath: '/dlr-gui-backend-user-authorizations/v1',

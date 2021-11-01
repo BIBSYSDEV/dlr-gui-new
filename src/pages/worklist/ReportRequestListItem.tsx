@@ -23,6 +23,7 @@ import { refuseComplaintReport } from '../../api/workListApi';
 import ErrorBanner from '../../components/ErrorBanner';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import { generateNewUrlAndRetainLMSParams } from '../../utils/lmsService';
 
 interface Props {
   backgroundColor: string;
@@ -91,7 +92,9 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
 
   return (
     <>
-      <StyledListItemWrapper backgroundColor={Colors.DLRColdGreen1}>
+      <StyledListItemWrapper
+        data-testid={`report-request-list-item-${reportWorkListRequest.resourceIdentifier}`}
+        backgroundColor={Colors.DLRColdGreen1}>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={8}>
             <WorkListRequestMetaDataViewer workListRequest={reportWorkListRequest} />
@@ -102,7 +105,7 @@ const ReportRequestListItem: FC<ReportListItem> = ({ reportWorkListRequest, setW
                 <Button
                   data-testid={`edit-resource-${reportWorkListRequest.resourceIdentifier}`}
                   disabled={disableAllButtons}
-                  href={`/editresource/${reportWorkListRequest.resourceIdentifier}`}
+                  href={generateNewUrlAndRetainLMSParams(`/editresource/${reportWorkListRequest.resourceIdentifier}`)}
                   startIcon={<EditIcon />}
                   variant="outlined"
                   color="primary">

@@ -35,18 +35,18 @@ export const deleteAdditionalUserConsumerAccess = (resourceIdentifier: string, e
   });
 };
 
-export const getResourceReaders = (resourceIdentifier: string) => {
+export const getResourceReaders = (resourceIdentifier: string): AxiosPromise<ResourceReadAccess[]> => {
   return authenticatedApiRequest({
     url: `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/${resourceIdentifier}`,
     method: 'GET',
-  }) as AxiosPromise<ResourceReadAccess[]>;
+  });
 };
 
-export const getPublicResourceReaders = (resourceIdentifier: string) => {
+export const getPublicResourceReaders = (resourceIdentifier: string): AxiosPromise<publicReadAccess[]> => {
   return authenticatedApiRequest({
     url: `${API_PATHS.guiBackendResourcesSharingsPath}/sharings/resources/${resourceIdentifier}/info`,
     method: 'GET',
-  }) as AxiosPromise<publicReadAccess[]>;
+  });
 };
 
 export const postCourseConsumerAccess = (resourceIdentifier: string, course: Course) => {
@@ -75,7 +75,7 @@ export const getCoursesForInstitution = async (institution: string): Promise<Cou
       ).format('YYYY-MM-DDTHH:mm:ss.SSSZ')}`,
       method: 'GET',
     });
-    return await (response.data as Course[]);
+    return await response.data;
   } catch (error) {
     if (process.env.REACT_APP_API_URL === DEV_API_URL) {
       return JSON.parse(JSON.stringify(coursesAtOsloMet));

@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import Link from '@mui/material/Link';
 import { Colors } from '../../themes/mainTheme';
 import BrowsingResource from '../../resources/images/illustrations/browsing_resource.svg';
+import { generateNewUrlAndRetainLMSParams } from '../../utils/lmsService';
 
 interface Props {
   color: string;
@@ -59,7 +60,7 @@ const SearchExplainer = () => {
           <StyledImg src={BrowsingResource} alt={t('illustration_alts_tags.browsing_resource')} />
           <StyledTypography gutterBottom variant="body1">
             {`${t('search_tricks.find_tricks')} `}
-            <Link underline="hover" href="/">
+            <Link underline="hover" href={generateNewUrlAndRetainLMSParams('/')}>
               {t('search_tricks.search_for_resource').toLowerCase()}.
             </Link>
           </StyledTypography>

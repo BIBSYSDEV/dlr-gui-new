@@ -123,6 +123,16 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
   const mediumOrLargerScreen = useMediaQuery(`(min-width:${DeviceWidths.md}px)`);
 
   useEffect(() => {
+    const beforeUnloadListener = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      return (event.returnValue = '');
+    };
+    additionalFileUploadUppy.on('upload', () => {
+      window.addEventListener('beforeunload', beforeUnloadListener, { capture: true });
+    });
+    additionalFileUploadUppy.on('complete', () => {
+      window.removeEventListener('beforeunload', beforeUnloadListener, { capture: true });
+    });
     additionalFileUploadUppy.on('upload-progress', (file: UppyFile, progress) => {
       setUploadPercentageArray((prevState) => {
         const index = prevState.findIndex((element) => element.filename === file.meta.name);

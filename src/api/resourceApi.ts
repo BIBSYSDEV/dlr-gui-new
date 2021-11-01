@@ -73,16 +73,16 @@ export const searchResources = ({
   return authenticatedApiRequest({
     url: encodeURI(url),
     method: 'GET',
-  }) as AxiosPromise<SearchResult>;
+  });
 };
 
 export const createResource = async (type: string, content: string): Promise<Resource> => {
   const data = encodeURI(`type=${type}&app=learning&content=${content}`);
-  const apiResourceResponse = await (authenticatedApiRequest({
+  const apiResourceResponse = await authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources`),
     method: 'POST',
     data: data,
-  }) as AxiosPromise<any>);
+  });
   const resource = apiResourceResponse.data;
   const resourceContents: Content[] = resource.contents;
   resource.contents = { additionalContent: [] };
@@ -120,18 +120,18 @@ export const postResourceFeature = async (resourceIdentifier: string, feature: s
   });
 };
 
-export const getResource = (resourceIdentifier: string) => {
+export const getResource = (resourceIdentifier: string): AxiosPromise<Resource> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}`),
     method: 'GET',
-  }) as AxiosPromise<Resource>;
+  });
 };
 
-export const getResourceDefaults = (resourceIdentifier: string) => {
+export const getResourceDefaults = (resourceIdentifier: string): AxiosPromise<Resource> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendDefaultsPath}/resources/${resourceIdentifier}`),
     method: 'GET',
-  }) as AxiosPromise<Resource>;
+  });
 };
 
 export const updateSearchIndex = (resourceIdentifier: string) => {
@@ -141,11 +141,11 @@ export const updateSearchIndex = (resourceIdentifier: string) => {
   });
 };
 
-export const getResourceTags = (resourceIdentifier: string) => {
+export const getResourceTags = (resourceIdentifier: string): AxiosPromise<string[]> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/tags/types/tag`),
     method: 'GET',
-  }) as AxiosPromise<string[]>;
+  });
 };
 
 export const deleteTag = (resourceIdentifier: string, tag: string) => {
@@ -165,18 +165,18 @@ export const postTag = (resourceIdentifier: string, tag: string) => {
   });
 };
 
-export const getResourceContributors = (resourceIdentifier: string) => {
+export const getResourceContributors = (resourceIdentifier: string): AxiosPromise<Contributor[]> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contributors`),
     method: 'GET',
-  }) as AxiosPromise<Contributor[]>;
+  });
 };
 
-export const createContributor = (resourceIdentifier: string) => {
+export const createContributor = (resourceIdentifier: string): AxiosPromise<Contributor> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contributors`),
     method: 'POST',
-  }) as AxiosPromise<Contributor>;
+  });
 };
 
 export const deleteContributor = (
@@ -207,18 +207,18 @@ export const putContributorFeature = (
   });
 };
 
-export const getResourceCreators = (resourceIdentifier: string) => {
+export const getResourceCreators = (resourceIdentifier: string): AxiosPromise<Creator[]> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/creators`),
     method: 'GET',
-  }) as AxiosPromise<Creator[]>;
+  });
 };
 
-export const postResourceCreator = (resourceIdentifier: string) => {
+export const postResourceCreator = (resourceIdentifier: string): AxiosPromise<Creator> => {
   return authenticatedApiRequest({
     url: `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/creators`,
     method: 'POST',
-  }) as AxiosPromise<Creator>;
+  });
 };
 
 export const deleteResourceCreator = (resourceIdentifier: string, creatorIdentifier: string) => {
@@ -246,11 +246,11 @@ export const putResourceCreatorFeature = (
   });
 };
 
-export const getResourceLicenses = (resourceIdentifier: string) => {
+export const getResourceLicenses = (resourceIdentifier: string): AxiosPromise<License[]> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/licenses`),
     method: 'GET',
-  }) as AxiosPromise<License[]>;
+  });
 };
 
 export const deleteResourceContent = (resourceIdentifier: string, contentIdentifier: string) => {
@@ -263,10 +263,10 @@ export const deleteResourceContent = (resourceIdentifier: string, contentIdentif
 };
 
 export const getResourceContents = async (resourceIdentifier: string): Promise<ResourceContents> => {
-  const contentResponse = await (authenticatedApiRequest({
+  const contentResponse: AxiosResponse<Content[]> = await authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contents`),
     method: 'GET',
-  }) as AxiosPromise<Content[]>);
+  });
   const resourceContent: ResourceContents = emptyResourceContent;
   resourceContent.additionalContent = [];
   contentResponse.data.forEach((content: Content) => {
@@ -286,19 +286,23 @@ export const getResourceContents = async (resourceIdentifier: string): Promise<R
   return resourceContent;
 };
 
-export const postResourceContent = (resourceIdentifier: string, type: string, content: string) => {
+export const postResourceContent = (
+  resourceIdentifier: string,
+  type: string,
+  content: string
+): AxiosPromise<Content> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contents`),
     method: 'POST',
     data: encodeURI(`type=${type}&content=${content}`),
-  }) as AxiosPromise<Content>;
+  });
 };
 
-export const getLicenses = () => {
+export const getLicenses = (): AxiosPromise<License[]> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendLicensesPath}/licenses/users/authorized`),
     method: 'GET',
-  }) as AxiosPromise<License[]>;
+  });
 };
 
 export const setResourceLicense = async (resourceIdentifier: string, licenseIdentifier: string) => {
@@ -330,27 +334,27 @@ export const updateContentTitle = async (resourceIdentifier: string, contentIden
   });
 };
 
-export const getContentById = (resourceIdentifier: string, contentIdentifier: string) => {
+export const getContentById = (resourceIdentifier: string, contentIdentifier: string): AxiosPromise<Content> => {
   return authenticatedApiRequest({
     url: encodeURI(
       `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contents/${contentIdentifier}`
     ),
     method: 'GET',
-  }) as AxiosPromise<Content>;
+  });
 };
 
-export const getContentPresentationData = (contentIdentifier: string) => {
+export const getContentPresentationData = (contentIdentifier: string): AxiosPromise<Content> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesContentPath}/${contentIdentifier}`),
     method: 'GET',
-  }) as AxiosPromise<Content>;
+  });
 };
 
-export const getMyResources = () => {
+export const getMyResources = (): AxiosPromise<Resource[]> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/owners/users/current`),
     method: 'GET',
-  }) as AxiosPromise<Resource[]>;
+  });
 };
 
 export const getResourceThumbnailUrl = (identifier: string) => {
@@ -366,62 +370,62 @@ export const putAccessType = (resourceIdentifier: string, accessType: AccessType
   });
 };
 
-export const getResourceContentEvent = (contentIdentifier: string): Promise<AxiosResponse<ResourceEvent>> => {
+export const getResourceContentEvent = (contentIdentifier: string): AxiosPromise<ResourceEvent> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesEventsPath}/resources/${contentIdentifier}/events`),
     method: 'GET',
-  }) as AxiosPromise<ResourceEvent>;
+  });
 };
 
-export const getAllFacets = () => {
+export const getAllFacets = (): AxiosPromise<FacetResponse> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesSearchPath}/resources/facets`),
     method: 'GET',
-  }) as AxiosPromise<FacetResponse>;
+  });
 };
 
-export const getResourceDefaultContent = (resourceIdentifier: string) => {
+export const getResourceDefaultContent = (resourceIdentifier: string): AxiosPromise<Content> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourceDefaultContentPath}/${resourceIdentifier}/contents/default`),
     method: 'GET',
-  }) as AxiosPromise<Content>;
+  });
 };
 
-export const searchTags = (query: string) => {
+export const searchTags = (query: string): AxiosPromise<FacetResponse> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesSearchPath}/suggestions/tags?prefix=${query}`),
     method: 'GET',
-  }) as AxiosPromise<FacetResponse>;
+  });
 };
 
-export const getCitationFromCrossCite = (dlr_identifier_doi: string) => {
+export const getCitationFromCrossCite = (dlr_identifier_doi: string): AxiosPromise<string> => {
   return axios({
     headers: { Accept: 'text/x-bibliography; style=apa-6th-edition; locale=en-GB' },
     url: dlr_identifier_doi,
     method: 'GET',
-  }) as AxiosPromise<string>;
+  });
 };
 
 export const getTextFileContents = (url: string): Promise<AxiosResponse<string>> => {
   return axios.get(url);
 };
 
-export const getResourceViews = (resourceIdentifier: string) => {
+export const getResourceViews = (resourceIdentifier: string): AxiosPromise<ResourceStatistic> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesStatisticsPath}/statistics/resources/${resourceIdentifier}`),
     method: 'GET',
-  }) as AxiosPromise<ResourceStatistic>;
+  });
 };
 
 export const getMyUserAuthorizationProfileForResource = async (
   resourceIdentifier: string
 ): Promise<UserAuthorizationProfileForResource> => {
-  const authorizationProfiles = (
-    await (authenticatedApiRequest({
+  const authorizationProfiles: ResourceAuthorization = (
+    await authenticatedApiRequest({
       url: encodeURI(
         `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/authorizations/users/authorized`
       ),
-    }) as AxiosPromise<ResourceAuthorization>)
+    })
   ).data;
   return {
     isAdmin: authorizationProfiles.profiles.some((profile) => profile.name === ResourceAuthorizationProfilesName.ADMIN),
@@ -441,24 +445,24 @@ export const getMyUserAuthorizationProfileForResource = async (
   };
 };
 
-export const getMyKalturaResources = () => {
+export const getMyKalturaResources = (): AxiosPromise<VMSResource[]> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations`),
     method: 'GET',
-  }) as AxiosPromise<VMSResource[]>;
+  });
 };
-export const getMyPanoptoResources = () => {
+export const getMyPanoptoResources = (): AxiosPromise<VMSResource[]> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendPanoptoPath}/panopto/presentations`),
     method: 'GET',
-  }) as AxiosPromise<VMSResource[]>;
+  });
 };
 
-export const getResourceOwners = (resourceIdentifier: string) => {
+export const getResourceOwners = (resourceIdentifier: string): AxiosPromise<ResourceOwner[]> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/owners`),
     method: 'GET',
-  }) as AxiosPromise<ResourceOwner[]>;
+  });
 };
 export const postKalturaPresentationImport = (resource: Resource, kalturaResource: VMSResource) => {
   const data = encodeURI(

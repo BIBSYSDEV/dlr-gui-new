@@ -7,12 +7,12 @@ import styled from 'styled-components';
 import Button from '@mui/material/Button';
 import ConfirmDeleteDialog from './ConfirmDeleteDialog.';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useHistory } from 'react-router-dom';
 import { Colors, StyleWidths } from '../themes/mainTheme';
 import { format } from 'date-fns';
 import { Link } from '@mui/material';
 import ResourceTypeInfo from './ResourceTypeInfo';
 import { resourcePath } from '../utils/constants';
+import { generateNewUrlAndRetainLMSParams } from '../utils/lmsService';
 
 interface Props {
   backgroundColor: string;
@@ -63,9 +63,6 @@ const StyledActionButton = styled(Button)`
   height: 2.25rem;
   align-self: flex-start;
   margin-left: 1.5rem;
-  &:first-of-type {
-    margin-left: 0;
-  }
 `;
 
 const StyledResourceTypeInfoWrapper = styled.div`
@@ -88,11 +85,6 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
 }) => {
   const { t } = useTranslation();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const history = useHistory();
-
-  const handleClickEditButton = () => {
-    history.push(`/editresource/${resource.identifier}`);
-  };
 
   return (
     <StyledListItemWrapper backgroundColor={backgroundColor}>
@@ -112,7 +104,9 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
             {resource.features.dlr_status_published ? (
               <Link
                 underline="hover"
-                href={`${resourcePath}/${resource.identifier}`}>{`${resource.features.dlr_title}`}</Link>
+                href={generateNewUrlAndRetainLMSParams(
+                  `${resourcePath}/${resource.identifier}`
+                )}>{`${resource.features.dlr_title}`}</Link>
             ) : (
               resource.features.dlr_title
             )}
@@ -140,7 +134,7 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
             color="primary"
             size="large"
             variant="outlined"
-            onClick={handleClickEditButton}>
+            href={generateNewUrlAndRetainLMSParams(`/editresource/${resource.identifier}`)}>
             {t('common.edit')}
           </StyledActionButton>
           {handleDelete && (

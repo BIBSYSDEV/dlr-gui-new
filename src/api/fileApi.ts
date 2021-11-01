@@ -21,7 +21,7 @@ export const abortMultipartUpload = async (uploadId: string, key: string) => {
     method: 'POST',
     data: data,
   });
-  return response.data as any;
+  return response.data;
 };
 
 export const completeMultipartUpload = async (uploadId: string, key: string, parts: AwsS3Part[]) => {
@@ -31,7 +31,7 @@ export const completeMultipartUpload = async (uploadId: string, key: string, par
     method: 'POST',
     data: data,
   });
-  return response.data as any;
+  return response.data;
 };
 export const createMultipartUpload = async (file: UppyFile) => {
   const data = encodeURI(
@@ -44,7 +44,7 @@ export const createMultipartUpload = async (file: UppyFile) => {
     method: 'POST',
     data: data,
   });
-  return createMultipartUploadResponse.data as any;
+  return createMultipartUploadResponse.data;
 };
 
 export const createResourceAndMultipartUpload = async (
@@ -67,7 +67,7 @@ export const createResourceAndMultipartUpload = async (
     method: 'POST',
     data: data,
   });
-  return createMultipartUploadResponse.data as any;
+  return createMultipartUploadResponse.data;
 };
 
 export const listParts = async (uploadId: string, key: string) => {
@@ -77,7 +77,7 @@ export const listParts = async (uploadId: string, key: string) => {
     method: 'POST',
     data: data,
   });
-  return response.data as any;
+  return response.data;
 };
 
 export const prepareUploadPart = async (uploadId: string, key: string, body: Blob, number: number) => {
@@ -87,7 +87,7 @@ export const prepareUploadPart = async (uploadId: string, key: string, body: Blo
     method: 'POST',
     data: data,
   });
-  return response.data as any;
+  return response.data;
 };
 
 export const setContentAsDefaultThumbnail = (resourceIdentifier: string, contentIdentifier: string) => {
@@ -118,5 +118,5 @@ export const createAdditionalFileUpload = async (
     method: 'POST',
     data: data,
   });
-  return createMultipartUploadResponse.data as any;
+  return createMultipartUploadResponse.data;
 };

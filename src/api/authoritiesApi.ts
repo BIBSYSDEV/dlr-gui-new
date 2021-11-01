@@ -19,19 +19,19 @@ export const searchAuthorities = (
       `${API_PATHS.guiBackendAuthoritiesPath}/authorities/search?q=${query}&offset=${offset}&limit=${limit}&searchField=textsearch`
     ),
     method: 'GET',
-  }) as AxiosPromise<AuthoritySearchResponse>;
+  });
 };
 
 export const getAuthoritiesForResourceCreatorOrContributor = async (
   resourceId: string,
   creatorOrContributorId: string
 ): Promise<Authority[]> => {
-  const response = (await authenticatedApiRequest({
+  const response: AxiosResponse<AuthorityResponse[]> = await authenticatedApiRequest({
     url: encodeURI(
       `${API_PATHS.guiBackendResourcesPath}/resources/${resourceId}/creators/${creatorOrContributorId}/authorities`
     ),
     method: 'GET',
-  })) as AxiosResponse<AuthorityResponse[]>;
+  });
   return response.data.map((element: any) => {
     return {
       id: element.features.dlr_authority_id.replace('=', ''),

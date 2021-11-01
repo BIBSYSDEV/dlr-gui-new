@@ -91,7 +91,9 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
   };
 
   return (
-    <StyledListItemWrapper backgroundColor={Colors.LicenseAccessPageGradientColor1}>
+    <StyledListItemWrapper
+      data-testid={`ownership-request-list-item-${workListRequestOwnership.resourceIdentifier}`}
+      backgroundColor={Colors.LicenseAccessPageGradientColor1}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={8}>
           <WorkListRequestMetaDataViewer workListRequest={workListRequestOwnership} />
