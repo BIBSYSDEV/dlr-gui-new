@@ -16,7 +16,8 @@ const PrivacyPolicy = () => {
           <ListItem>
             <Link
               underline="hover"
-              href="https://www.unit.no/sites/default/files/media/filer/2021/06/Personvernerkl%C3%A6ring%20-%20DLR.pdf"
+              href="https://www.unit.no/dlr/personvernerklaering"
+              rel="noopener noreferrer"
               target="_blank">
               {t('privacy_policy.heading')} - {t('localization.norwegian_bokmaal')}
             </Link>
@@ -24,7 +25,8 @@ const PrivacyPolicy = () => {
           <ListItem>
             <Link
               underline="hover"
-              href="https://www.unit.no/sites/default/files/media/filer/2021/06/Personvernerkl%C3%A6ring%20-%20DLR_en.pdf"
+              rel="noopener noreferrer"
+              href="https://www.unit.no/dlr/personvernerklaering_eng"
               target="_blank">
               {t('privacy_policy.heading')} - {t('localization.english')}
             </Link>
