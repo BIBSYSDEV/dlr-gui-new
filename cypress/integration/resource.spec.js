@@ -122,6 +122,7 @@ context('Resource', () => {
       );
     });
   });
+
   it('is possible to request ownership change', () => {
     cy.get('[data-testid=request-ownership-button').click();
     cy.get('[data-testid=ownership-dialog-input]').type('some text');
@@ -138,7 +139,7 @@ context('Resource', () => {
   it('lists read access', () => {
     cy.get('[data-testid=restrictive-read-access]').should('exist');
   });
-  
+
   it("is not possible to request DOI for other people's resources", () => {
     cy.visit(`${resourcePath}/${mockMyResources[1].identifier}`);
     cy.get('[data-testid=request-doi-button').should('not.exist');

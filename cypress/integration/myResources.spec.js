@@ -91,4 +91,15 @@ context('My resources', () => {
     cy.get('[data-testid=resource-title]').contains(newTitle);
     cy.get('[data-testid=resource-publish-button]').should('not.exist');
   });
+
+  it('can click on thumbnail on published resource, but not on unpublished resource', () => {
+    cy.visit('/resources/user/current');
+    cy.get(`[data-testid=thumbnail-link-to-resource-${mockMyResources[0].identifier}]`).click();
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.contain(`/resources/${mockMyResources[0].identifier}`);
+    });
+    cy.visit('/resources/user/current');
+    cy.get(`[data-testid=unpublished-tab]`).click();
+    cy.get(`[data-testid=thumbnail-link-to-resource-${mockMyResources[0].identifier}]`).should('not.exist');
+  });
 });
