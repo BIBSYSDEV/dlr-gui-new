@@ -123,11 +123,13 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
     <StyledListItem data-testid={`list-item-resources-${resource.identifier}`}>
       <StyledFirstColumn>
         <StyledThumbnailWrapper>
-          <Thumbnail
-            institution={resource.features.dlr_storage_id}
-            resourceOrContentIdentifier={resource.identifier}
-            alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
-          />
+          <Link data-testid={`thumbnail-link-to-resource-${resource.identifier}`} href={generateURL(resource)}>
+            <Thumbnail
+              institution={resource.features.dlr_storage_id}
+              resourceOrContentIdentifier={resource.identifier}
+              alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
+            />
+          </Link>
           <ResourceTypeInfo resource={resource} />
         </StyledThumbnailWrapper>
 

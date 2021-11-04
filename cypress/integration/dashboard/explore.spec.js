@@ -222,4 +222,11 @@ context('Explore', () => {
       expect(loc.search).to.contain(`${SearchParameters.query}=${correctlySpelled}`);
     });
   });
+
+  it('is possible to use thumbnail image as link', () => {
+    cy.get('[data-testid=thumbnail-link-to-resource-2ee4177a-06ca-4883-8343-16670fad3e1a]').click();
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.contain(`/resources/2ee4177a-06ca-4883-8343-16670fad3e1a`);
+    });
+  });
 });
