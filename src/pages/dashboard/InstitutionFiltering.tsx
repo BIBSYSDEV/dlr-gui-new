@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { getAllFacets } from '../../api/resourceApi';
 import ErrorBanner from '../../components/ErrorBanner';
 import institutions from '../../resources/assets/institutions.json';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
@@ -45,7 +45,7 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
   const [error, setError] = useState<Error | AxiosError>();
   const mountedRef = useRef(true);
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     return () => {
@@ -105,7 +105,7 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
       );
     }
     setQueryObject(newQueryObject);
-    rewriteSearchParams(SearchParameters.institution, newQueryObject.institutions, history, location, true);
+    rewriteSearchParams(SearchParameters.institution, newQueryObject.institutions, navigate, location, true);
   };
 
   const generateInstitutionName = (institutionCode: string): string => {

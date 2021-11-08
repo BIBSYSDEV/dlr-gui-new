@@ -33,7 +33,7 @@ const StyledFormControlLabelDetail = styled.div`
 
 const StyledSchemaPartNoBottomPadding = styled.div`
   background-color: ${Colors.LicenseAccessPageGradientColor3};
-  padding: 2rem 1rem 0rem 1rem;
+  padding: 2rem 1rem 0 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -1,7 +1,7 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { QueryObject, SearchParameters } from '../../types/search.types';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 import HelperTextPopover from '../../components/HelperTextPopover';
 import Typography from '@mui/material/Typography';
@@ -14,7 +14,7 @@ interface AccessFilteringProps {
 
 const AccessFiltering: FC<AccessFilteringProps> = ({ queryObject, setQueryObject }) => {
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const changeSelected = (event: any) => {
@@ -26,7 +26,7 @@ const AccessFiltering: FC<AccessFilteringProps> = ({ queryObject, setQueryObject
     rewriteSearchParams(
       SearchParameters.showInaccessible,
       [event.target.checked ? 'true' : 'false'],
-      history,
+      navigate,
       location,
       true
     );

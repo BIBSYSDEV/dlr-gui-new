@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import PrivacyPolicy from './pages/infopages/PrivacyPolicy';
 import { useSelector } from 'react-redux';
 import ResourcePage from './pages/resource/ResourcePage';
@@ -27,40 +27,32 @@ const AppRoutes = () => {
 
   return (
     <Suspense fallback={<DelayedFallback />}>
-      <Switch>
-        <Route exact path="/" component={Explore} />
-        <Route exact path="/handlenotfound" component={HandleNotFound} />
-        <Route path="/resourcenotfound" component={ResourceNotFound} />
-        <Redirect exact path="/resource/:identifier" to={`${resourcePath}/:identifier`} />
-        <Redirect
-          exact
+      <Routes>
+        <Route path="/" element={<Explore />} />
+        <Route path="/handlenotfound" element={<HandleNotFound />} />
+        <Route path="/resourcenotfound" element={<ResourceNotFound />} />
+        <Route path="/resource/:identifier" render={() => <Redirect to={`${resourcePath}/:identifier`} />} />
+        <Route
           path="/resource/:resourceIdentifier/content/main"
-          to={`${resourcePath}/:resourceIdentifier/content/main`}
+          render={() => <Redirect to={`${resourcePath}/:resourceIdentifier/content/main`} />}
         />
-        <Route exact path={`${resourcePath}/:identifier`} component={ResourcePage} />
-        <Route exact path={`${resourcePath}/:resourceIdentifier/content/main`} component={MainContentView} />
+        <Route path={`${resourcePath}/:identifier`} element={<ResourcePage />} />
+        <Route path={`${resourcePath}/:resourceIdentifier/content/main`} element={<MainContentView />} />
+        <Route path={`${resourcePath}/user/current`} render={(props) => <MyResources id={user.id} {...props} />} />
         <Route
-          exact
-          path={`${resourcePath}/user/current`}
-          render={(props) => <MyResources id={user.id} {...props} />}
-        />
-        <Route
-          exact
           path="/admin"
           render={(props) => <AdminPage isAdmin={user.institutionAuthorities?.isAdministrator} {...props} />}
         />
-        <Route exact path="/profile" render={(props) => <ProfilePage id={user.id} {...props} />} />
-        <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+        <Route path="/profile" render={(props) => <ProfilePage id={user.id} {...props} />} />
+        <Route path="/privacy-policy" element={PrivacyPolicy} />
         {/* CreatorRoutes */}
-        <Route exact path="/registration" render={(props) => <EditResourcePage id={user.id} {...props} />} />
+        <Route path="/registration" render={(props) => <EditResourcePage id={user.id} {...props} />} />
         {/*hack: uuidv4-key is forcing page refresh*/}
         <Route
-          exact
           path="/editresource/:identifier"
           render={(props) => <EditResourcePage id={user.id} {...props} key={uuidv4()} />}
         />
         <Route
-          exact
           path="/worklist"
           render={(props) => (
             <WorkListPage
@@ -70,11 +62,11 @@ const AppRoutes = () => {
             />
           )}
         />
-        <Route exact path="/forbidden" component={Forbidden} />
-        <Route exact path="/search-helper" component={SearchExplainer} />
-        <Route exact path="/sitemap" component={Sitemap} />
-        <Route path="*" component={NotFound} />
-      </Switch>
+        <Route path="/forbidden" element={<Forbidden />} />
+        <Route path="/search-helper" element={<SearchExplainer />} />
+        <Route path="/sitemap" element={<Sitemap />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </Suspense>
   );
 };

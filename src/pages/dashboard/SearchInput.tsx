@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
 import { StyleWidths } from '../../themes/mainTheme';
 import { NumberOfResultsPrPage, QueryObject, SearchParameters } from '../../types/search.types';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 import HelperTextPopover from '../../components/HelperTextPopover';
 import Typography from '@mui/material/Typography';
@@ -65,7 +65,7 @@ interface SearchInputProps {
 const SearchInput: FC<SearchInputProps> = ({ setQueryObject, queryObject }) => {
   const [searchTerm, setSearchTerm] = useState(queryObject.query);
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -77,7 +77,7 @@ const SearchInput: FC<SearchInputProps> = ({ setQueryObject, queryObject }) => {
       offset: 0,
       queryFromURL: false,
     }));
-    rewriteSearchParams(SearchParameters.query, [searchTerm], history, location, true);
+    rewriteSearchParams(SearchParameters.query, [searchTerm], navigate, location, true);
   };
 
   useEffect(() => {

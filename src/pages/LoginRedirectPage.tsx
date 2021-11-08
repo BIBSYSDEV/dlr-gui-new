@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Redirect, useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import {
   getTokenExpiry,
   getUserAppFeaturesApplication,
@@ -58,7 +58,7 @@ const LoginRedirectPage = () => {
 
   return (
     <>
-      {user.id && !error && doneLoading && <Redirect to={unpackFeideLogin()} from={location.toString()} />}
+      {user.id && !error && doneLoading && <Navigate to={unpackFeideLogin()} from={location.toString()} />}
       <div>{error && <ErrorBanner error={error} />}</div>
     </>
   );

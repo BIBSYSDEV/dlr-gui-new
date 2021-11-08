@@ -11,7 +11,7 @@ import HelperTextPopover from '../../components/HelperTextPopover';
 import { searchTags } from '../../api/resourceApi';
 import useDebounce from '../../utils/useDebounce';
 import ErrorBanner from '../../components/ErrorBanner';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 import { StyleWidths } from '../../themes/mainTheme';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
@@ -59,7 +59,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
   const [cancelSearch, setCancelSearch] = useState(false);
   const [tagSearchError, setTagSearchError] = useState<Error | AxiosError>();
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const searchForTags = async () => {
@@ -94,7 +94,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
           tags: newTags,
           offset: 0,
         }));
-        rewriteSearchParams(SearchParameters.tag, newTags, history, location, true);
+        rewriteSearchParams(SearchParameters.tag, newTags, navigate, location, true);
       }
       setTagInputFieldValue('');
       setCancelSearch(false);
@@ -114,7 +114,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
       offset: 0,
     }));
     setTagValue('');
-    rewriteSearchParams(SearchParameters.tag, newTags, history, location, true);
+    rewriteSearchParams(SearchParameters.tag, newTags, navigate, location, true);
   };
 
   const handleChangeInBooleanSearchQueryCheckBox = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,7 +126,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
       tagFilterOperator: searchQueryTabBooleanOperator,
       offset: 0,
     }));
-    rewriteSearchParams(SearchParameters.tagFilterOperator, [searchQueryTabBooleanOperator], history, location, true);
+    rewriteSearchParams(SearchParameters.tagFilterOperator, [searchQueryTabBooleanOperator], navigate, location, true);
   };
 
   return (
