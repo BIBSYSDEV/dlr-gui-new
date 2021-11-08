@@ -7,7 +7,6 @@ import ResourceForm from './ResourceForm';
 import LinkRegistration from './LinkRegistration';
 import FileRegistration from './FileRegistration';
 import { CircularProgress, Typography } from '@mui/material';
-import PrivateRoute from '../../utils/routes/PrivateRoute';
 import {
   Contributor,
   ContributorFeatureNames,
@@ -473,4 +472,4 @@ const EditResourcePage = () => {
   );
 };
 
-export default PrivateRoute(EditResourcePage);
+export default EditResourcePage;

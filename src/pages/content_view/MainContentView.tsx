@@ -18,12 +18,8 @@ const ContentWrapper = styled.div<{ height: string }>`
   justify-content: center;
 `;
 
-interface ContentViewParams {
-  resourceIdentifier: string;
-}
-
 const MainContentView = () => {
-  const { resourceIdentifier } = useParams<ContentViewParams>();
+  const { resourceIdentifier } = useParams();
   const [resource, setResource] = useState(emptyResource);
   const searchParams = new URLSearchParams(window.location.search);
   const height = searchParams.get('height') ?? '27rem';
@@ -46,7 +42,7 @@ const MainContentView = () => {
     };
 
     if (resourceIdentifier) {
-      fetchData(resourceIdentifier);
+      fetchData(resourceIdentifier).then();
     }
   }, [resourceIdentifier]);
   return isLoadingResource ? (

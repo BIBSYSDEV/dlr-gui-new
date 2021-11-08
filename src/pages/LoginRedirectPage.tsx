@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import {
   getTokenExpiry,
   getUserAppFeaturesApplication,
@@ -10,12 +10,12 @@ import { setUser } from '../state/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import ErrorBanner from '../components/ErrorBanner';
 import { RootState } from '../state/rootReducer';
-import { unpackFeideLogin } from '../utils/rewriteSearchParams';
+//import { unpackFeideLogin } from '../utils/rewriteSearchParams';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../utils/AxiosErrorHandling';
 
 const LoginRedirectPage = () => {
-  const user = useSelector((state: RootState) => state.user);
+  //const user = useSelector((state: RootState) => state.user);
   const location = useLocation();
   const dispatch = useDispatch();
   const [error, setError] = useState<Error | AxiosError>();
@@ -58,7 +58,7 @@ const LoginRedirectPage = () => {
 
   return (
     <>
-      {user.id && !error && doneLoading && <Navigate to={unpackFeideLogin()} from={location.toString()} />}
+      {/*{user.id && !error && doneLoading && <Navigate to={unpackFeideLogin()} from={location.toString()} />}*/}
       <div>{error && <ErrorBanner error={error} />}</div>
     </>
   );

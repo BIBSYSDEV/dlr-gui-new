@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import CuratorOrEditorPrivateRoute from '../../utils/routes/CuratorOrEditorPrivateRoute';
 import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
 import { PageHeader } from '../../components/PageHeader';
 import { useTranslation } from 'react-i18next';
@@ -206,4 +205,4 @@ const WorkListPage = () => {
   );
 };
 
-export default CuratorOrEditorPrivateRoute(WorkListPage);
+export default WorkListPage;

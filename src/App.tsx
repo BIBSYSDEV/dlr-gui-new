@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from './state/userSlice';
 import {
@@ -13,7 +13,6 @@ import { CircularProgress } from '@mui/material';
 import { USE_MOCK_DATA } from './utils/constants';
 import i18next from 'i18next';
 import ErrorBanner from './components/ErrorBanner';
-import LoginRedirectPage from './pages/LoginRedirectPage';
 import AppContent from './AppContent';
 import { StyledFullPageProgressWrapper } from './components/styled/Wrappers';
 import useInterval from './utils/useInterval';
@@ -125,19 +124,14 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <Switch>
-        <Route path="/loginRedirect" component={LoginRedirectPage} />
-        <Route path="*">
-          {tokenError && <ErrorBanner error={tokenError} />}
-          {!isLoadingUser && hasValidToken ? (
-            <AppContent mainContentRef={mainContentRef} userError={userError} />
-          ) : (
-            <StyledFullPageProgressWrapper>
-              <CircularProgress />
-            </StyledFullPageProgressWrapper>
-          )}
-        </Route>
-      </Switch>
+      {tokenError && <ErrorBanner error={tokenError} />}
+      {!isLoadingUser && hasValidToken ? (
+        <AppContent mainContentRef={mainContentRef} userError={userError} />
+      ) : (
+        <StyledFullPageProgressWrapper>
+          <CircularProgress />
+        </StyledFullPageProgressWrapper>
+      )}
     </BrowserRouter>
   );
 };
