@@ -202,7 +202,7 @@ const VMSRegistration: FC<VMSRegistrationProps> = ({ expanded, vms, onChange, on
                           name="hide_already_imported"
                         />
                       }
-                      label={t('vms.hide_already_imported')}
+                      label={<Typography>{t('vms.hide_already_imported')}</Typography>}
                       onChange={() => setHideImported(!hideImported)}
                     />
                   </StyledCheckBoxWrapper>

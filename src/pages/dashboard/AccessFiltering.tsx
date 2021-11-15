@@ -44,7 +44,7 @@ const AccessFiltering: FC<AccessFilteringProps> = ({ queryObject, setQueryObject
             name={'access'}
           />
         }
-        label={t('dashboard.access_filter')}
+        label={<Typography>{t('dashboard.access_filter')}</Typography>}
         onChange={(event) => {
           changeSelected(event);
         }}
