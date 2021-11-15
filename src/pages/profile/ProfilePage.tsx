@@ -1,5 +1,4 @@
 import React from 'react';
-import PrivateRoute from '../../utils/routes/PrivateRoute';
 import { StyledContentWrapperLarge } from '../../components/styled/Wrappers';
 import { PageHeader } from '../../components/PageHeader';
 import { useTranslation } from 'react-i18next';
@@ -40,4 +39,4 @@ const ProfilePage = () => {
   );
 };
 
-export default PrivateRoute(ProfilePage);
+export default ProfilePage;

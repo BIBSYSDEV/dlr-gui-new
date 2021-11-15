@@ -17,7 +17,7 @@ import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
 import { StyledContentWrapperLarge, StyledPaginationWrapper } from '../../components/styled/Wrappers';
 import SearchInput from './SearchInput';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Pagination } from '@mui/material';
 import ResultListItem from '../../components/ResultListItem';
 import FilterSearchOptions from './FilterSearchOptions';
@@ -120,7 +120,7 @@ const Explore = () => {
   const [resources, setResources] = useState<Resource[]>([]);
   const { t } = useTranslation();
   const [searchError, setSearchError] = useState<Error | AxiosError>();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [hasPopStateListener, setHasPopStateListener] = useState(false);
   const resultListRef = useRef<HTMLDivElement>(null);
 
@@ -131,13 +131,13 @@ const Explore = () => {
         ...prevState,
         offset: (Number(value) - 1) * NumberOfResultsPrPage,
       }));
-      rewriteSearchParams(SearchParameters.page, ['' + value], history, location);
+      rewriteSearchParams(SearchParameters.page, ['' + value], navigate, location);
 
       if (startOfList && startOfList.current) {
         startOfList.current.scrollIntoView();
       }
     },
-    [history, location, startOfList]
+    [navigate, location, startOfList]
   );
 
   const triggerSearch = async (queryObject: QueryObject) => {

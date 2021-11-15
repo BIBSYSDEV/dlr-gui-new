@@ -6,7 +6,7 @@ import { Checkbox, FormControl, FormControlLabel, FormGroup } from '@mui/materia
 import FormLabel from '@mui/material/FormLabel';
 import Typography from '@mui/material/Typography';
 import styled from 'styled-components';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 
 const StyledFormControl: any = styled(FormControl)`
@@ -33,7 +33,7 @@ interface ResourceTypeFilteringProps {
 const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({ queryObject, setQueryObject }) => {
   const { t } = useTranslation();
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [resourceTypeCheckList, setResourceCheckList] = useState(initialResourceTypeCheckList(t));
 
@@ -57,7 +57,7 @@ const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({ queryObject, se
           (resourceType) => resourceType !== resourceTypeCheckList[index].name
         ));
     setQueryObject(newQueryObject);
-    rewriteSearchParams(SearchParameters.resourceType, newQueryObject.resourceTypes, history, location, true);
+    rewriteSearchParams(SearchParameters.resourceType, newQueryObject.resourceTypes, navigate, location, true);
   };
 
   return (

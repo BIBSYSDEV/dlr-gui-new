@@ -12,7 +12,6 @@ import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
 import ResourceListItem from '../../components/ResourceListItem';
 import { Colors } from '../../themes/mainTheme';
-import PrivateRoute from '../../utils/routes/PrivateRoute';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { tabPanelClasses } from '@mui/lab';
@@ -51,7 +50,7 @@ const MyResources = () => {
         setIsLoadingMyResources(false);
       }
     };
-    fetchData();
+    fetchData().then();
   }, []);
 
   const handleDeleteResource = (resourceIdentifier: string, isPublished: boolean) => {
@@ -137,4 +136,4 @@ const MyResources = () => {
   );
 };
 
-export default PrivateRoute(MyResources);
+export default MyResources;

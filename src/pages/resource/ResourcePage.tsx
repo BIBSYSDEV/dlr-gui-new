@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { emptyResource } from '../../types/resource.types';
 import {
   getResource,
@@ -25,28 +25,23 @@ const StyledResourceActionBar = styled.div`
   width: 100%;
   flex-direction: row;
   justify-content: flex-end;
-  align-items: flex;
 `;
 
 const StyledContentWrapperLargeWithBottomMargin = styled(StyledContentWrapperLarge)`
   margin-bottom: 2rem;
 `;
 
-interface resourcePageParamTypes {
-  identifier: string;
-}
-
 const ResourcePage = () => {
-  const { identifier } = useParams<resourcePageParamTypes>();
+  const { identifier } = useParams();
   const [resource, setResource] = useState(emptyResource);
   const [isLoadingResource, setIsLoadingResource] = useState(true);
   const [resourceLoadingError, setResourceLoadingError] = useState<Error | AxiosError>();
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [canEditResource, setCanEditResource] = useState(false);
 
   const handleClickEditButton = () => {
-    history.push(`/editresource/${resource?.identifier}`);
+    navigate(`/editresource/${resource?.identifier}`);
   };
 
   useEffect(() => {
@@ -66,7 +61,7 @@ const ResourcePage = () => {
         if ((potentialAxiosError as AxiosError).response) {
           const axiosError = potentialAxiosError as AxiosError;
           if (axiosError.response && (axiosError.response.status === 404 || axiosError.response.status === 503)) {
-            history.push(`/resourcenotfound/${identifier}`);
+            navigate(`/resourcenotfound/${identifier}`);
           }
         } else {
           setResourceLoadingError(potentialAxiosError);
@@ -77,9 +72,9 @@ const ResourcePage = () => {
     };
 
     if (identifier) {
-      fetchData(identifier);
+      fetchData(identifier).then();
     }
-  }, [history, identifier]);
+  }, [navigate, identifier]);
 
   return isLoadingResource ? (
     <StyledProgressWrapper>

@@ -18,7 +18,6 @@ import institutions from '../resources/assets/institutions.json';
 
 const StyledListItem: any = styled.li`
   width: 100%;
-  max-width: ${StyleWidths.width4};
   background-color: ${Colors.Background};
   margin-bottom: 0.5rem;
   padding: 1rem;

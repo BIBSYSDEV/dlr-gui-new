@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Prompt, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
 import ResourceForm from './ResourceForm';
 import LinkRegistration from './LinkRegistration';
 import FileRegistration from './FileRegistration';
 import { CircularProgress, Typography } from '@mui/material';
-import PrivateRoute from '../../utils/routes/PrivateRoute';
 import {
   Contributor,
   ContributorFeatureNames,
@@ -70,17 +69,14 @@ const StyledTypography = styled(Typography)`
   margin-bottom: 1.5rem;
 `;
 
-interface EditResourcePageParamTypes {
-  identifier: string;
-}
-
 // StartingContributorType must match one of the elements in resources/assets/contributorTypeList.json.
 // This to prevent error: "Material-UI: You have provided an out-of-range value..."
 const StartingContributorType = 'HostingInstitution';
 
 const EditResourcePage = () => {
   const { t } = useTranslation();
-  const { identifier } = useParams<EditResourcePageParamTypes>();
+  let { identifier } = useParams();
+  identifier = identifier || '';
   const [formikInitResource, setFormikInitResource] = useState<Resource>();
   const [expanded, setExpanded] = useState('');
   const [isLoadingResource, setIsLoadingResource] = useState(false);
@@ -366,53 +362,58 @@ const EditResourcePage = () => {
 
   useEffect(() => {
     const loadResource = async () => {
-      setIsLoadingResource(true);
-      const resource = deepmerge(emptyResource, (await getResource(identifier)).data);
-      setResourceType(
-        resource.features.dlr_content_type === ResourceCreationType.LINK
-          ? ResourceCreationType.LINK
-          : ResourceCreationType.FILE
-      );
-      /*creating all promises first, and afterwards waiting
-      for their results reduces loading time from 2.4 seconds to 0.9 seconds.
-       */
-      const contributorPromise = getResourceContributors(identifier);
-      const creatorPromise = getResourceCreators(identifier);
-      const licensesPromise = getResourceLicenses(identifier);
-      const contentsPromise = getResourceContents(identifier);
-      const tagsPromise = getResourceTags(identifier);
+      if (identifier) {
+        setIsLoadingResource(true);
+        const resource = deepmerge(emptyResource, (await getResource(identifier)).data);
+        setResourceType(
+          resource.features.dlr_content_type === ResourceCreationType.LINK
+            ? ResourceCreationType.LINK
+            : ResourceCreationType.FILE
+        );
+        /*creating all promises first, and afterwards waiting
+        for their results reduces loading time from 2.4 seconds to 0.9 seconds.
+         */
+        const contributorPromise = getResourceContributors(identifier);
+        const creatorPromise = getResourceCreators(identifier);
+        const licensesPromise = getResourceLicenses(identifier);
+        const contentsPromise = getResourceContents(identifier);
+        const tagsPromise = getResourceTags(identifier);
 
-      resource.contributors = (await contributorPromise).data;
-      resource.creators = (await creatorPromise).data;
+        resource.contributors = (await contributorPromise).data;
+        resource.creators = (await creatorPromise).data;
 
-      const contributorWithAuthoritiesPromise = fetchAuthoritiesForCreatorOrContributor(
-        resource.identifier,
-        resource.contributors
-      );
-      const creatorWithAuthoritiesPromise = fetchAuthoritiesForCreatorOrContributor(
-        resource.identifier,
-        resource.creators
-      );
-      resource.creators = (await creatorWithAuthoritiesPromise) as Creator[];
-      resource.contributors = (await contributorWithAuthoritiesPromise) as Contributor[];
+        const contributorWithAuthoritiesPromise = fetchAuthoritiesForCreatorOrContributor(
+          resource.identifier,
+          resource.contributors
+        );
+        const creatorWithAuthoritiesPromise = fetchAuthoritiesForCreatorOrContributor(
+          resource.identifier,
+          resource.creators
+        );
+        resource.creators = (await creatorWithAuthoritiesPromise) as Creator[];
+        resource.contributors = (await contributorWithAuthoritiesPromise) as Contributor[];
 
-      resource.tags = (await tagsPromise).data.filter((tag) => tag.length <= TAGS_MAX_LENGTH);
-      resource.contents = await contentsPromise;
-      resource.licenses = (await licensesPromise).data;
-      if (!resource.features.dlr_type) resource.features.dlr_type = '';
-      if (!resource.licenses[0]) resource.licenses = [emptyLicense];
-      setFormikInitResource(resource);
-      setIsLoadingResource(false);
+        resource.tags = (await tagsPromise).data.filter((tag) => tag.length <= TAGS_MAX_LENGTH);
+        resource.contents = await contentsPromise;
+        resource.licenses = (await licensesPromise).data;
+        if (!resource.features.dlr_type) resource.features.dlr_type = '';
+        if (!resource.licenses[0]) resource.licenses = [emptyLicense];
+        setFormikInitResource(resource);
+        setIsLoadingResource(false);
+      }
     };
     if (identifier) {
       setShowForm(true);
-      loadResource();
+      loadResource().then();
     }
   }, [identifier, user.institutionAuthorities?.isCurator]);
 
+  //TODO ?
+  // usePrompt(t('resource.files_and_license.warning_leaving_form_premature'), mainFileBeingUploaded);
+
   return (
     <>
-      <Prompt when={mainFileBeingUploaded} message={t('resource.files_and_license.warning_leaving_form_premature')} />
+      {/*TODO<Prompt when={mainFileBeingUploaded} message={t('resource.files_and_license.warning_leaving_form_premature')} />*/}
       {!showForm ? (
         <StyledContentWrapperLarge>
           <PageHeader>{t('resource.new_registration')}</PageHeader>
@@ -471,4 +472,4 @@ const EditResourcePage = () => {
   );
 };
 
-export default PrivateRoute(EditResourcePage);
+export default EditResourcePage;

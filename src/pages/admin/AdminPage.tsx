@@ -8,7 +8,6 @@ import { getInstitutionAuthorizations } from '../../api/institutionAuthorization
 import { InstitutionProfilesNames } from '../../types/user.types';
 import styled from 'styled-components';
 import { Colors } from '../../themes/mainTheme';
-import AdminRoute from '../../utils/routes/AdminRoute';
 import RoleSetter from './RoleSetter';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
@@ -96,4 +95,4 @@ const AdminPage = () => {
   );
 };
 
-export default AdminRoute(AdminPage);
+export default AdminPage;

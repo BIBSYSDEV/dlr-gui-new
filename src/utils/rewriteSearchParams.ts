@@ -4,7 +4,7 @@ import { API_PATHS, API_URL } from './constants';
 export const rewriteSearchParams = (
   parameterName: SearchParameters,
   listOfNewParams: string[],
-  history: any,
+  navigate: any,
   location: any,
   removePage = false
 ) => {
@@ -14,7 +14,7 @@ export const rewriteSearchParams = (
   listOfNewParams.forEach((parameter) => {
     urlSearchTerms.append(parameterName, parameter);
   });
-  history.push('?' + urlSearchTerms.toString());
+  navigate('?' + urlSearchTerms.toString());
 };
 
 const ParamsSplitter = 'ZZZZ';

@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import { User, UserInstitution } from '../../types/user.types';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 
 const StyledCheckboxLabelWrapper = styled.div`
@@ -65,7 +65,7 @@ const LicenseFiltering: FC<LicenseFilteringProps> = ({ queryObject, setQueryObje
   const [licensesCheckList, setLicensesCheckList] = useState<LicenseListItem[]>(initLicenseList(user));
   const { t } = useTranslation();
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (queryObject.licenses.length > 0) {
@@ -87,7 +87,7 @@ const LicenseFiltering: FC<LicenseFilteringProps> = ({ queryObject, setQueryObje
           (licenseCode) => licenseCode !== licensesCheckList[index].licenseCode
         ));
     setQueryObject(newQueryObject);
-    rewriteSearchParams(SearchParameters.license, newQueryObject.licenses, history, location, true);
+    rewriteSearchParams(SearchParameters.license, newQueryObject.licenses, navigate, location, true);
   };
 
   return (

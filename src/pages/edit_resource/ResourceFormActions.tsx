@@ -6,7 +6,7 @@ import { publishResource, updateSearchIndex } from '../../api/resourceApi';
 import { getStepLabel, Resource, ResourceFormStep } from '../../types/resource.types';
 import { StyledContentWrapperMedium, StyledSchemaPart } from '../../components/styled/Wrappers';
 import ErrorBanner from '../../components/ErrorBanner';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useFormikContext } from 'formik';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -84,7 +84,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({
   uppy,
 }) => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [publishResourceError, setPublishResourceError] = useState<Error | AxiosError>();
   const { values, isValid } = useFormikContext<Resource>();
 
@@ -102,7 +102,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({
     setPublishResourceError(undefined);
     try {
       await publishResource(values.identifier);
-      history.push(`${resourcePath}/${values.identifier}`);
+      navigate(`${resourcePath}/${values.identifier}`);
     } catch (error) {
       setPublishResourceError(handlePotentialAxiosError(error));
     }
@@ -110,7 +110,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({
 
   const handleLeaveForm = async () => {
     values.features.dlr_status_published && updateSearchIndex(values.identifier);
-    history.push(`${resourcePath}/user/current`);
+    navigate(`${resourcePath}/user/current`);
   };
 
   return (
