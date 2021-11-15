@@ -186,14 +186,14 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
                   data-testid="contains-other-peoples-work-option-no"
                   disabled={values.features.dlr_status_published}
                   control={<Radio required={true} color="primary" />}
-                  label={t('common.no')}
+                  label={<Typography>{t('common.no')}</Typography>}
                 />
                 <FormControlLabel
                   value={ContainsOtherPeoplesWorkOptions.Yes}
                   data-testid="contains-other-peoples-work-option-yes"
                   disabled={values.features.dlr_status_published}
                   control={<Radio color="primary" />}
-                  label={t('common.yes')}
+                  label={<Typography>{t('common.yes')}</Typography>}
                 />
               </StyledRadioGroup>
               {error && touched && <FormHelperText error>{t('feedback.required_field')}</FormHelperText>}
@@ -225,7 +225,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
                         key={index}
                         disabled={values.features.dlr_status_published}
                         data-testid={`usage-cleared-with-owner-option-${element}`}
-                        label={t(`license.limitation.${element}.title`)}
+                        label={<Typography>{t(`license.limitation.${element}.title`)}</Typography>}
                         control={<Radio required={true} color="primary" />}
                       />
                     ))}

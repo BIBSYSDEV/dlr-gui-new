@@ -78,7 +78,7 @@ const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({ queryObject, se
                 name={resourceType.name}
               />
             }
-            label={t(`resource.type.${resourceType.name.toLowerCase()}`)}
+            label={<Typography>{t(`resource.type.${resourceType.name.toLowerCase()}`)}</Typography>}
             onChange={(event) => {
               changeSelected(index, event);
             }}

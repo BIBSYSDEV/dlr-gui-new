@@ -198,7 +198,7 @@ const TagsFiltering: FC<TagsFilteringProps> = ({ queryObject, setQueryObject }) 
                 onChange={handleChangeInBooleanSearchQueryCheckBox}
               />
             }
-            label={t('dashboard.tags_boolean_operator_in_search')}
+            label={<Typography>{t('dashboard.tags_boolean_operator_in_search')}</Typography>}
           />
         </FormGroup>
       )}

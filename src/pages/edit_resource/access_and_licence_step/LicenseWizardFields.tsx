@@ -33,7 +33,7 @@ const StyledFormControlLabelDetail = styled.div`
 
 const StyledSchemaPartNoBottomPadding = styled.div`
   background-color: ${Colors.LicenseAccessPageGradientColor3};
-  padding: 2rem 1rem 0rem 1rem;
+  padding: 2rem 1rem 0 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -301,7 +301,9 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                     value={element}
                     disabled={values.features.dlr_status_published}
                     control={<Radio color="primary" />}
-                    label={t(`license.restriction_options.${element.replace(/[.\s]/g, '_')}`)}
+                    label={
+                      <Typography>{t(`license.restriction_options.${element.replace(/[.\s]/g, '_')}`)}</Typography>
+                    }
                   />
                 ))}
                 {containsOtherWorksFieldsSelectedCC && (
@@ -311,14 +313,14 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                       data-testid={`resource-restriction-option-${Licenses.CC_BY_SA}`}
                       control={<Radio color="primary" />}
                       disabled={values.features.dlr_status_published}
-                      label={t(`license.restriction_options.CC_BY-SA_4_0`)}
+                      label={<Typography>{t(`license.restriction_options.CC_BY-SA_4_0`)}</Typography>}
                     />
                     <FormControlLabel
                       value={Licenses.CC_BY_NC_SA}
                       disabled={values.features.dlr_status_published}
                       data-testid={`resource-restriction-option-${Licenses.CC_BY_NC_SA}`}
                       control={<Radio color="primary" />}
-                      label={t(`license.restriction_options.CC_BY-NC-SA_4_0`)}
+                      label={<Typography>{t(`license.restriction_options.CC_BY-NC-SA_4_0`)}</Typography>}
                     />
                   </>
                 )}
@@ -354,7 +356,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                         disabled={values.features.dlr_status_published}
                         data-testid={`commercial-use-option-${element}`}
                         control={<Radio color="primary" />}
-                        label={t(`license.commercial_options.${element}`)}
+                        label={<Typography>{t(`license.commercial_options.${element}`)}</Typography>}
                       />
                     ))}
                   </StyledRadioGroup>
@@ -388,7 +390,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                       data-testid={`modify-and-build-option-${ModifyAndBuildOptions.primaryYes}`}
                       disabled={values.features.dlr_status_published}
                       control={<Radio color="primary" />}
-                      label={t(`license.modify_and_build_options.yes`)}
+                      label={<Typography>{t(`license.modify_and_build_options.yes`)}</Typography>}
                     />
                     <FormControlLabel
                       value={ModifyAndBuildOptions.SA}
@@ -411,7 +413,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                       disabled={values.features.dlr_status_published}
                       data-testid={`modify-and-build-option-${ModifyAndBuildOptions.ND}`}
                       control={<Radio color="primary" />}
-                      label={t(`license.modify_and_build_options.non_destructive`)}
+                      label={<Typography>{t(`license.modify_and_build_options.non_destructive`)}</Typography>}
                     />
                   </StyledRadioGroup>
                 </>
