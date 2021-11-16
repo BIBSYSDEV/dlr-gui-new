@@ -11,7 +11,10 @@ const documentTypeFromMime = (content: Content): string => {
     case SupportedFileTypes.MediaSite:
     case SupportedFileTypes.Youtube:
     case SupportedFileTypes.Vimeo:
+    case SupportedFileTypes.Transistor:
       return content.features.dlr_content_mime_type;
+    case 'audio-service/x-transistor':
+      return SupportedFileTypes.Transistor;
     case 'audio-service/x-spotify':
       return SupportedFileTypes.Spotify;
     case 'audio-service/x-soundcloud':
