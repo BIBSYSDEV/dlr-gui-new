@@ -117,6 +117,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
       presentationMode === SupportedFileTypes.MediaSite ||
       presentationMode === SupportedFileTypes.Spotify ||
       presentationMode === SupportedFileTypes.Soundcloud ||
+      presentationMode === SupportedFileTypes.Transistor ||
       presentationMode === SupportedFileTypes.TwentyThreeVideo
     );
   };
