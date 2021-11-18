@@ -18,7 +18,7 @@ import { authenticatedApiRequest } from './api';
 import { FacetResponse, QueryObject, SearchParameters, SearchResult } from '../types/search.types';
 import { ResourceAuthorization, ResourceAuthorizationProfilesName } from '../types/user.types';
 
-export enum APISearchParameters {
+export enum ApiSearchParameters {
   FacetInstitution = 'facet_institution::',
   FacetFileType = 'facet_filetype::',
   FacetTag = 'facet_tag::',
