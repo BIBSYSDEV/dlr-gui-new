@@ -152,7 +152,6 @@
     "enter_tags": "Search and select tag for filtering",
     "explain_license": "Explain license",
     "explore": "Explore",
-    "feeds": "Feeds",
     "login_reminder": "Log in to have access to more resources from your institution.",
     "filter": "Filter",
     "institutions": "Institutions",
@@ -252,8 +251,7 @@
     }
   },
   "feeds": {
-    "rss": "Subscribe RSS",
-    "atom": "Subscribe Atom"
+    "rss": "RSS feed for this search"
   },
   "handle_not_found": {
     "handle_not_found": "Handle not found",

@@ -1,5 +1,5 @@
 import React, { createRef, useCallback, useEffect, useRef, useState } from 'react';
-import { CircularProgress, List, Typography } from '@mui/material';
+import { Button, CircularProgress, List, Typography } from '@mui/material';
 import styled from 'styled-components';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
 import { searchResources } from '../../api/resourceApi';
@@ -15,12 +15,16 @@ import {
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
-import { StyledContentWrapperLarge, StyledPaginationWrapper } from '../../components/styled/Wrappers';
+import {
+  StyledContentWrapperLarge,
+  StyledPaginationWrapper,
+  StyledFeedWrapper,
+} from '../../components/styled/Wrappers';
 import SearchInput from './SearchInput';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Pagination } from '@mui/material';
 import ResultListItem from '../../components/ResultListItem';
-import FilterSearchOptions from './FilterSearchOptions';
+import FilterSearchOptions, { generateFeedUrl } from './FilterSearchOptions';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import LoginReminder from '../../components/LoginReminder';
@@ -29,6 +33,7 @@ import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
 import NoResult from './NoResult';
+import RssFeedIcon from '@mui/icons-material/RssFeed';
 
 const SearchResultWrapper = styled.div`
   display: flex;
@@ -213,15 +218,27 @@ const Explore = () => {
                     resources.map((resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
                 </StyledList>
                 {searchResult.numFound > NumberOfResultsPrPage && (
-                  <StyledPaginationWrapper>
-                    <Typography variant="subtitle2">{t('common.page')}</Typography>
-                    <Pagination
-                      count={Math.ceil(searchResult.numFound / NumberOfResultsPrPage)}
-                      page={page}
-                      color="primary"
-                      onChange={handlePaginationChange}
-                    />
-                  </StyledPaginationWrapper>
+                  <>
+                    <StyledPaginationWrapper>
+                      <Typography variant="subtitle2">{t('common.page')}</Typography>
+                      <Pagination
+                        count={Math.ceil(searchResult.numFound / NumberOfResultsPrPage)}
+                        page={page}
+                        color="primary"
+                        onChange={handlePaginationChange}
+                      />
+                    </StyledPaginationWrapper>
+                    <StyledFeedWrapper>
+                      <Button
+                        color="primary"
+                        variant="outlined"
+                        data-testid="feed-button"
+                        onClick={() => generateFeedUrl(queryObject, 'rss_2.0')}
+                        startIcon={<RssFeedIcon />}>
+                        <Typography variant="button">{t('feeds.rss')}</Typography>
+                      </Button>
+                    </StyledFeedWrapper>
+                  </>
                 )}
               </>
             )}

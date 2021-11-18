@@ -153,7 +153,6 @@
     "enter_tags": "Søk og velg emneord fra listen for å filtrere",
     "explain_license": "Forklar lisens",
     "explore": "Utforsk",
-    "feeds": "Feeds",
     "login_reminder": "Logg inn for å få tilgang til flere ressurser ved din institusjon",
     "filter": "Filter",
     "institutions": "Institusjoner",
@@ -253,8 +252,7 @@
     }
   },
   "feeds": {
-    "rss": "Abonnér RSS",
-    "atom": "Abonnér Atom"
+    "rss": "Lenke til RSS feed for dette søket"
   },
   "handle_not_found": {
     "handle_not_found": "Handle ikke funnet",

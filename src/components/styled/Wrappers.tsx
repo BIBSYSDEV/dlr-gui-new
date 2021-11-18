@@ -104,3 +104,10 @@ export const StyledPaginationWrapper = styled.div`
     color: ${Colors.Background};
   }
 `;
+
+export const StyledFeedWrapper = styled.div`
+  margin: 1rem 0 1rem 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
