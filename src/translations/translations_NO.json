@@ -153,6 +153,7 @@
     "enter_tags": "Søk og velg emneord fra listen for å filtrere",
     "explain_license": "Forklar lisens",
     "explore": "Utforsk",
+    "feeds": "Feeds",
     "login_reminder": "Logg inn for å få tilgang til flere ressurser ved din institusjon",
     "filter": "Filter",
     "institutions": "Institusjoner",
@@ -250,6 +251,10 @@
       "resource_title": "Ressurstittel er obligatorisk og må fylles ut",
       "type": "Ressurstype er obligatorisk og må fylles ut"
     }
+  },
+  "feeds": {
+    "rss": "Abonnér RSS",
+    "atom": "Abonnér Atom"
   },
   "handle_not_found": {
     "handle_not_found": "Handle ikke funnet",
@@ -377,7 +382,7 @@
     "also_published_by_plural": "Har også publisert",
     "also_published_by_singular": "Har også publisert",
     "browse_by_creator": "Se flere ressurser",
-    "busy_uploading_save_and_continue_later_is_disabled" : " Det er ikke mulig å publisere eller lagre og fortsette senere mens hovedfila lastes opp",
+    "busy_uploading_save_and_continue_later_is_disabled": " Det er ikke mulig å publisere eller lagre og fortsette senere mens hovedfila lastes opp",
     "contributor_type": {
       "ContactPerson": "Kontakt person",
       "DataCollector": "Datasamler",

@@ -152,6 +152,7 @@
     "enter_tags": "Search and select tag for filtering",
     "explain_license": "Explain license",
     "explore": "Explore",
+    "feeds": "Feeds",
     "login_reminder": "Log in to have access to more resources from your institution.",
     "filter": "Filter",
     "institutions": "Institutions",
@@ -249,6 +250,10 @@
       "resource_title": "Resource title is required and must be filled out",
       "type": "Resource type is required and must be filled out"
     }
+  },
+  "feeds": {
+    "rss": "Subscribe RSS",
+    "atom": "Subscribe Atom"
   },
   "handle_not_found": {
     "handle_not_found": "Handle not found",
@@ -376,7 +381,7 @@
     "also_published_by_plural": "Have also published",
     "also_published_by_singular": "Has also published",
     "browse_by_creator": "Browse more resources",
-    "busy_uploading_save_and_continue_later_is_disabled" : "It is not possible to save or publis a resource while the main file is being uploaded",
+    "busy_uploading_save_and_continue_later_is_disabled": "It is not possible to save or publis a resource while the main file is being uploaded",
     "contributor_type": {
       "ContactPerson": "Contact person",
       "DataCollector": "Data collector",
