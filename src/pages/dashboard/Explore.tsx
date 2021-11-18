@@ -2,7 +2,7 @@ import React, { createRef, useCallback, useEffect, useRef, useState } from 'reac
 import { Button, CircularProgress, List, Typography } from '@mui/material';
 import styled from 'styled-components';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
-import { searchResources } from '../../api/resourceApi';
+import { APISearchParameters, searchResources } from '../../api/resourceApi';
 import { useTranslation } from 'react-i18next';
 import {
   emptyQueryObject,
@@ -24,7 +24,7 @@ import SearchInput from './SearchInput';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Pagination } from '@mui/material';
 import ResultListItem from '../../components/ResultListItem';
-import FilterSearchOptions, { generateFeedUrl } from './FilterSearchOptions';
+import FilterSearchOptions from './FilterSearchOptions';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import LoginReminder from '../../components/LoginReminder';
@@ -34,6 +34,7 @@ import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
 import NoResult from './NoResult';
 import RssFeedIcon from '@mui/icons-material/RssFeed';
+import { API_PATHS, DEV_API_URL } from '../../utils/constants';
 
 const SearchResultWrapper = styled.div`
   display: flex;
@@ -157,6 +158,30 @@ const Explore = () => {
     } finally {
       setIsSearching(false);
     }
+  };
+
+  const generateFeedUrl = (queryObject: QueryObject, feedType: string) => {
+    let url = `${DEV_API_URL}${API_PATHS.guiBackendResourcesSearchPath}/resources/feed?type=${feedType}`;
+    if (queryObject.query.length > 0) {
+      url += `&query=${queryObject.query}`;
+    }
+    if (
+      queryObject.institutions.length > 0 ||
+      queryObject.resourceTypes.length > 0 ||
+      queryObject.licenses.length > 0 ||
+      queryObject.tags.length > 0
+    ) {
+      url += `&${APISearchParameters.Filter}=`;
+      const filters: string[] = [];
+      queryObject.institutions.map((institution) => filters.push(APISearchParameters.FacetInstitution + institution));
+      queryObject.resourceTypes.map((resourceType) => filters.push(APISearchParameters.FacetFileType + resourceType));
+      queryObject.licenses.map((license) => filters.push(APISearchParameters.FacetLicense + license));
+      queryObject.tags.map((tag) => filters.push(APISearchParameters.FacetTag + tag));
+      if (filters.length > 0) {
+        url += filters.join(APISearchParameters.FilterSeparator);
+      }
+    }
+    window.open(url);
   };
 
   useEffect(() => {
