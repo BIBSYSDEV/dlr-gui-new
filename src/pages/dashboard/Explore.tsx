@@ -1,8 +1,8 @@
 import React, { createRef, useCallback, useEffect, useRef, useState } from 'react';
-import { CircularProgress, List, Typography } from '@mui/material';
+import { Button, CircularProgress, List, Typography } from '@mui/material';
 import styled from 'styled-components';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
-import { searchResources } from '../../api/resourceApi';
+import { ApiSearchParameters, searchResources } from '../../api/resourceApi';
 import { useTranslation } from 'react-i18next';
 import {
   emptyQueryObject,
@@ -15,7 +15,11 @@ import {
 import { Resource } from '../../types/resource.types';
 import ErrorBanner from '../../components/ErrorBanner';
 import { PageHeader } from '../../components/PageHeader';
-import { StyledContentWrapperLarge, StyledPaginationWrapper } from '../../components/styled/Wrappers';
+import {
+  StyledContentWrapperLarge,
+  StyledPaginationWrapper,
+  StyledFeedWrapper,
+} from '../../components/styled/Wrappers';
 import SearchInput from './SearchInput';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Pagination } from '@mui/material';
@@ -29,6 +33,8 @@ import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
 import NoResult from './NoResult';
+import RssFeedIcon from '@mui/icons-material/RssFeed';
+import { API_PATHS, DEV_API_URL } from '../../utils/constants';
 
 const SearchResultWrapper = styled.div`
   display: flex;
@@ -154,6 +160,30 @@ const Explore = () => {
     }
   };
 
+  const generateFeedUrl = (queryObject: QueryObject, feedType: string) => {
+    let url = `${DEV_API_URL}${API_PATHS.guiBackendResourcesSearchPath}/resources/feed?type=${feedType}`;
+    if (queryObject.query.length > 0) {
+      url += `&query=${queryObject.query}`;
+    }
+    if (
+      queryObject.institutions.length > 0 ||
+      queryObject.resourceTypes.length > 0 ||
+      queryObject.licenses.length > 0 ||
+      queryObject.tags.length > 0
+    ) {
+      url += `&${ApiSearchParameters.Filter}=`;
+      const filters: string[] = [];
+      queryObject.institutions.map((institution) => filters.push(ApiSearchParameters.FacetInstitution + institution));
+      queryObject.resourceTypes.map((resourceType) => filters.push(ApiSearchParameters.FacetFileType + resourceType));
+      queryObject.licenses.map((license) => filters.push(ApiSearchParameters.FacetLicense + license));
+      queryObject.tags.map((tag) => filters.push(ApiSearchParameters.FacetTag + tag));
+      if (filters.length > 0) {
+        url += filters.join(ApiSearchParameters.FilterSeparator);
+      }
+    }
+    window.open(url);
+  };
+
   useEffect(() => {
     triggerSearch(queryObject);
   }, [queryObject]);
@@ -213,15 +243,27 @@ const Explore = () => {
                     resources.map((resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
                 </StyledList>
                 {searchResult.numFound > NumberOfResultsPrPage && (
-                  <StyledPaginationWrapper>
-                    <Typography variant="subtitle2">{t('common.page')}</Typography>
-                    <Pagination
-                      count={Math.ceil(searchResult.numFound / NumberOfResultsPrPage)}
-                      page={page}
-                      color="primary"
-                      onChange={handlePaginationChange}
-                    />
-                  </StyledPaginationWrapper>
+                  <>
+                    <StyledPaginationWrapper>
+                      <Typography variant="subtitle2">{t('common.page')}</Typography>
+                      <Pagination
+                        count={Math.ceil(searchResult.numFound / NumberOfResultsPrPage)}
+                        page={page}
+                        color="primary"
+                        onChange={handlePaginationChange}
+                      />
+                    </StyledPaginationWrapper>
+                    <StyledFeedWrapper>
+                      <Button
+                        color="primary"
+                        variant="outlined"
+                        data-testid="feed-button"
+                        onClick={() => generateFeedUrl(queryObject, 'rss_2.0')}
+                        startIcon={<RssFeedIcon />}>
+                        <Typography variant="button">{t('feeds.rss')}</Typography>
+                      </Button>
+                    </StyledFeedWrapper>
+                  </>
                 )}
               </>
             )}

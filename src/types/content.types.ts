@@ -57,6 +57,7 @@ export enum SupportedFileTypes {
   MediaSite = 'mediasite',
   Youtube = 'youtube',
   Vimeo = 'vimeo',
+  Transistor = 'transistor',
   Spotify = 'spotify',
   Soundcloud = 'soundcloud',
   TwentyThreeVideo = '23video',

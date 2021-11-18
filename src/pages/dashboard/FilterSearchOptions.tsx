@@ -21,6 +21,7 @@ function useWindowWidth() {
     function updateWidth() {
       setWidth(window.innerWidth);
     }
+
     window.addEventListener('resize', updateWidth);
     updateWidth();
     return () => window.removeEventListener('resize', updateWidth);
