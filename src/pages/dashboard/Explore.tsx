@@ -2,7 +2,7 @@ import React, { createRef, useCallback, useEffect, useRef, useState } from 'reac
 import { Button, CircularProgress, List, Typography } from '@mui/material';
 import styled from 'styled-components';
 import { Colors, StyleWidths } from '../../themes/mainTheme';
-import { APISearchParameters, searchResources } from '../../api/resourceApi';
+import { ApiSearchParameters, searchResources } from '../../api/resourceApi';
 import { useTranslation } from 'react-i18next';
 import {
   emptyQueryObject,
@@ -171,14 +171,14 @@ const Explore = () => {
       queryObject.licenses.length > 0 ||
       queryObject.tags.length > 0
     ) {
-      url += `&${APISearchParameters.Filter}=`;
+      url += `&${ApiSearchParameters.Filter}=`;
       const filters: string[] = [];
-      queryObject.institutions.map((institution) => filters.push(APISearchParameters.FacetInstitution + institution));
-      queryObject.resourceTypes.map((resourceType) => filters.push(APISearchParameters.FacetFileType + resourceType));
-      queryObject.licenses.map((license) => filters.push(APISearchParameters.FacetLicense + license));
-      queryObject.tags.map((tag) => filters.push(APISearchParameters.FacetTag + tag));
+      queryObject.institutions.map((institution) => filters.push(ApiSearchParameters.FacetInstitution + institution));
+      queryObject.resourceTypes.map((resourceType) => filters.push(ApiSearchParameters.FacetFileType + resourceType));
+      queryObject.licenses.map((license) => filters.push(ApiSearchParameters.FacetLicense + license));
+      queryObject.tags.map((tag) => filters.push(ApiSearchParameters.FacetTag + tag));
       if (filters.length > 0) {
-        url += filters.join(APISearchParameters.FilterSeparator);
+        url += filters.join(ApiSearchParameters.FilterSeparator);
       }
     }
     window.open(url);

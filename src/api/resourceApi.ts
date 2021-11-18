@@ -55,18 +55,18 @@ export const searchResources = ({
     tags.length > 0 ||
     (creators && creators.length > 0)
   ) {
-    url += `&${APISearchParameters.Filter}=`;
+    url += `&${ApiSearchParameters.Filter}=`;
     const filters: string[] = [];
-    institutions.map((institution) => filters.push(APISearchParameters.FacetInstitution + institution));
-    resourceTypes.map((resourceType) => filters.push(APISearchParameters.FacetFileType + resourceType));
-    licenses.map((license) => filters.push(APISearchParameters.FacetLicense + license));
-    tags.map((tag) => filters.push(APISearchParameters.FacetTag + tag));
-    creators?.map((creator) => filters.push(APISearchParameters.FacetCreator + creator));
+    institutions.map((institution) => filters.push(ApiSearchParameters.FacetInstitution + institution));
+    resourceTypes.map((resourceType) => filters.push(ApiSearchParameters.FacetFileType + resourceType));
+    licenses.map((license) => filters.push(ApiSearchParameters.FacetLicense + license));
+    tags.map((tag) => filters.push(ApiSearchParameters.FacetTag + tag));
+    creators?.map((creator) => filters.push(ApiSearchParameters.FacetCreator + creator));
     if (filters.length > 0) {
-      url += filters.join(APISearchParameters.FilterSeparator);
+      url += filters.join(ApiSearchParameters.FilterSeparator);
     }
   }
-  url += `&${APISearchParameters.Mine}=${mine}&${APISearchParameters.ShowInaccessible}=${showInaccessible}&${APISearchParameters.OrderBy}=${orderBy}&${APISearchParameters.Order}=${order}`;
+  url += `&${ApiSearchParameters.Mine}=${mine}&${ApiSearchParameters.ShowInaccessible}=${showInaccessible}&${ApiSearchParameters.OrderBy}=${orderBy}&${ApiSearchParameters.Order}=${order}`;
   if (offset > 0) url += `&${SearchParameters.offset}=${offset}`;
   if (limit > 0) url += `&${SearchParameters.limit}=${limit}`;
   url += `&${SearchParameters.tagFilterOperator}=${tagFilterOperator}`;
