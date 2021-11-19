@@ -229,4 +229,8 @@ context('Explore', () => {
       expect(loc.pathname).to.contain(`/resources/2ee4177a-06ca-4883-8343-16670fad3e1a`);
     });
   });
+
+  it('rss feed button is present', () => {
+    cy.get('[data-testid=feed-button]').should('exist');
+  });
 });
