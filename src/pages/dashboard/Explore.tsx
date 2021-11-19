@@ -34,7 +34,7 @@ import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
 import NoResult from './NoResult';
 import RssFeedIcon from '@mui/icons-material/RssFeed';
-import { API_PATHS, DEV_API_URL } from '../../utils/constants';
+import { API_PATHS, API_URL } from '../../utils/constants';
 
 const SearchResultWrapper = styled.div`
   display: flex;
@@ -161,7 +161,7 @@ const Explore = () => {
   };
 
   const generateFeedUrl = (queryObject: QueryObject, feedType: string) => {
-    let url = `${DEV_API_URL}${API_PATHS.guiBackendResourcesSearchPath}/resources/feed?type=${feedType}`;
+    let url = `${API_URL}${API_PATHS.guiBackendResourcesSearchPath}/resources/feed?type=${feedType}`;
     if (queryObject.query.length > 0) {
       url += `&query=${queryObject.query}`;
     }
