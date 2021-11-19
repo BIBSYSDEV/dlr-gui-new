@@ -34,7 +34,7 @@ import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
 import NoResult from './NoResult';
 import RssFeedIcon from '@mui/icons-material/RssFeed';
-import { API_PATHS, DEV_API_URL } from '../../utils/constants';
+import { API_PATHS, API_URL } from '../../utils/constants';
 
 const SearchResultWrapper = styled.div`
   display: flex;
@@ -161,7 +161,7 @@ const Explore = () => {
   };
 
   const generateFeedUrl = (queryObject: QueryObject, feedType: string) => {
-    let url = `${DEV_API_URL}${API_PATHS.guiBackendResourcesSearchPath}/resources/feed?type=${feedType}`;
+    let url = `${API_URL}${API_PATHS.guiBackendResourcesSearchPath}/resources/feed?type=${feedType}`;
     if (queryObject.query.length > 0) {
       url += `&query=${queryObject.query}`;
     }
@@ -243,28 +243,26 @@ const Explore = () => {
                     resources.map((resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
                 </StyledList>
                 {searchResult.numFound > NumberOfResultsPrPage && (
-                  <>
-                    <StyledPaginationWrapper>
-                      <Typography variant="subtitle2">{t('common.page')}</Typography>
-                      <Pagination
-                        count={Math.ceil(searchResult.numFound / NumberOfResultsPrPage)}
-                        page={page}
-                        color="primary"
-                        onChange={handlePaginationChange}
-                      />
-                    </StyledPaginationWrapper>
-                    <StyledFeedWrapper>
-                      <Button
-                        color="primary"
-                        variant="outlined"
-                        data-testid="feed-button"
-                        onClick={() => generateFeedUrl(queryObject, 'rss_2.0')}
-                        startIcon={<RssFeedIcon />}>
-                        <Typography variant="button">{t('feeds.rss')}</Typography>
-                      </Button>
-                    </StyledFeedWrapper>
-                  </>
+                  <StyledPaginationWrapper>
+                    <Typography variant="subtitle2">{t('common.page')}</Typography>
+                    <Pagination
+                      count={Math.ceil(searchResult.numFound / NumberOfResultsPrPage)}
+                      page={page}
+                      color="primary"
+                      onChange={handlePaginationChange}
+                    />
+                  </StyledPaginationWrapper>
                 )}
+                <StyledFeedWrapper>
+                  <Button
+                    color="primary"
+                    variant="outlined"
+                    data-testid="feed-button"
+                    onClick={() => generateFeedUrl(queryObject, 'rss_2.0')}
+                    startIcon={<RssFeedIcon />}>
+                    <Typography variant="button">{t('feeds.rss')}</Typography>
+                  </Button>
+                </StyledFeedWrapper>
               </>
             )}
           </StyledResultListWrapper>
