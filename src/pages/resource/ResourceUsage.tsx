@@ -14,6 +14,7 @@ import SocialMediaSharing from '../../components/SocialMediaSharing';
 import { resourcePath } from '../../utils/constants';
 import { LMSParametersName } from '../../types/LMSParameters';
 import ReadAccess from './ReadAccess';
+import { SupportedFileTypes } from '../../types/content.types';
 
 const StyledGridContainer = styled(Grid)`
   margin-top: 1rem;
@@ -64,14 +65,14 @@ const generatePreferredURL = (resource: Resource): string => {
   }
 };
 
-const generateIframeText = (resource: Resource) => {
+const generateIframeText = (resource: Resource, presentationMode: string) => {
   return `<iframe title="${resource.features.dlr_title.replaceAll('"', '')}" src="${
     window.location.origin
   }${resourcePath}/${resource.identifier}/content/main?${LMSParametersName.Navbar}=false&${
     LMSParametersName.Footer
-  }=false&${
-    LMSParametersName.PollForLogin
-  }=true" width="640px" height="360px" style="border: none;" allowfullscreen="true"></iframe>`;
+  }=false&${LMSParametersName.PollForLogin}=true" width="640px" height="${
+    presentationMode === SupportedFileTypes.Transistor ? '182px' : '360px'
+  }" style="border: none;" allowfullscreen="true"></iframe>`;
 };
 
 const userAgentIsNotOperaForDesktop = () => {
@@ -82,9 +83,10 @@ const userAgentIsNotOperaForDesktop = () => {
 interface ResourceUsageProps {
   resource: Resource;
   isPreview?: boolean;
+  presentationMode: string;
 }
 
-const ResourceUsage: FC<ResourceUsageProps> = ({ resource, isPreview = false }) => {
+const ResourceUsage: FC<ResourceUsageProps> = ({ resource, isPreview = false, presentationMode }) => {
   const { t } = useTranslation();
   const [citationPreTitle, setCitationPreTitle] = useState('');
   const [citationTitle, setCitationTitle] = useState('');
@@ -234,14 +236,14 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, isPreview = false }) 
         <Grid item xs={12} sm={8}>
           <Typography variant="caption">{t('embed.embed_code')}</Typography>
 
-          <StyledTypography variant="body1">{generateIframeText(resource)}</StyledTypography>
+          <StyledTypography variant="body1">{generateIframeText(resource, presentationMode)}</StyledTypography>
         </Grid>
         <Grid item xs={12} sm={4}>
           {!isPreview && (
             <StyledButton
               color="primary"
               variant="outlined"
-              onClick={() => handleCopyButtonClick(generateIframeText(resource))}>
+              onClick={() => handleCopyButtonClick(generateIframeText(resource, presentationMode))}>
               {t('embed.copy_embed_code')}
             </StyledButton>
           )}

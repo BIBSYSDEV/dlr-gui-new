@@ -18,14 +18,27 @@ import ResourceContents from './ResourceContents';
 import ResourceLicense from './ResourceLicense';
 import ContentPreview from '../../components/ContentPreview';
 import ResourceActions from './ResourceActions';
-import { getMyUserAuthorizationProfileForResource } from '../../api/resourceApi';
+import { getMyUserAuthorizationProfileForResource, getResourceDefaultContent } from '../../api/resourceApi';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import { Content, SupportedFileTypes } from '../../types/content.types';
+import { determinePresentationMode } from '../../utils/mime_type_utils';
 
-const PreviewComponentWrapper = styled.div`
+const DefaultPreviewComponentWrapper = styled.div`
   margin: 1rem 0;
   height: 26rem;
   max-height: 26rem;
+  max-width: 100%;
+  border: 1px solid ${Colors.DescriptionPageGradientColor1};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const TransistorPreviewComponentWrapper = styled.div`
+  margin: 1rem 0;
+  height: 182px;
+  max-height: 182px;
   max-width: 100%;
   border: 1px solid ${Colors.DescriptionPageGradientColor1};
   display: flex;
@@ -52,6 +65,11 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
   mainFileBeingUploaded = false,
   setCanEditResource,
 }) => {
+  const [defaultContent, setDefaultContent] = useState<Content | null>(null);
+  const [contentUnavailable, setContentUnavailable] = useState(false);
+  const [presentationMode, setPresentationMode] = useState<string>(
+    determinePresentationMode(resource.contents.masterContent)
+  );
   const [userResourceAuthorization, setUserResourceAuthorization] = useState<UserAuthorizationProfileForResource>(
     emptyUserAuthorizationProfileForResource
   );
@@ -76,16 +94,46 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
       }
     };
     fetchUserResourceAuthorization();
-  }, [resource.identifier, setCanEditResource]);
+
+    const fetchDefaultContent = async () => {
+      let defaultContent: Content | undefined = undefined;
+      try {
+        defaultContent = (await getResourceDefaultContent(resource.identifier)).data;
+        setDefaultContent(defaultContent);
+        setPresentationMode(determinePresentationMode(defaultContent));
+      } catch (error) {
+        setContentUnavailable(true);
+      }
+    };
+    fetchDefaultContent();
+  }, [resource.identifier, setCanEditResource, setDefaultContent, setPresentationMode]);
 
   return (
     resource && (
       <StyledPresentationWrapper>
         <StyledSchemaPart>
           <StyledContentWrapperMedium>
-            <PreviewComponentWrapper data-testid="resource-preview">
-              <ContentPreview resource={resource} isPreview={isPreview} mainFileBeingUploaded={mainFileBeingUploaded} />
-            </PreviewComponentWrapper>
+            {presentationMode === SupportedFileTypes.Transistor ? (
+              <>
+                <TransistorPreviewComponentWrapper data-testid="resource-preview">
+                  <ContentPreview
+                    resource={resource}
+                    isPreview={isPreview}
+                    mainFileBeingUploaded={mainFileBeingUploaded}
+                  />
+                </TransistorPreviewComponentWrapper>
+              </>
+            ) : (
+              <>
+                <DefaultPreviewComponentWrapper data-testid="resource-preview">
+                  <ContentPreview
+                    resource={resource}
+                    isPreview={isPreview}
+                    mainFileBeingUploaded={mainFileBeingUploaded}
+                  />
+                </DefaultPreviewComponentWrapper>
+              </>
+            )}
           </StyledContentWrapperMedium>
         </StyledSchemaPart>
         <ResourceMetadata resource={resource} isPreview={isPreview} />
@@ -103,7 +151,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
         </StyledSchemaPartColored>
         <StyledSchemaPartColored color={Colors.DLRYellow3}>
           <StyledContentWrapperMedium>
-            <ResourceUsage resource={resource} isPreview={isPreview} />
+            <ResourceUsage resource={resource} isPreview={isPreview} presentationMode={presentationMode} />
           </StyledContentWrapperMedium>
         </StyledSchemaPartColored>
         {!isPreview && (
