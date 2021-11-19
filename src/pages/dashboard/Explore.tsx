@@ -243,17 +243,15 @@ const Explore = () => {
                     resources.map((resource) => <ResultListItem resource={resource} key={resource.identifier} />)}
                 </StyledList>
                 {searchResult.numFound > NumberOfResultsPrPage && (
-                  <>
-                    <StyledPaginationWrapper>
-                      <Typography variant="subtitle2">{t('common.page')}</Typography>
-                      <Pagination
-                        count={Math.ceil(searchResult.numFound / NumberOfResultsPrPage)}
-                        page={page}
-                        color="primary"
-                        onChange={handlePaginationChange}
-                      />
-                    </StyledPaginationWrapper>
-                  </>
+                  <StyledPaginationWrapper>
+                    <Typography variant="subtitle2">{t('common.page')}</Typography>
+                    <Pagination
+                      count={Math.ceil(searchResult.numFound / NumberOfResultsPrPage)}
+                      page={page}
+                      color="primary"
+                      onChange={handlePaginationChange}
+                    />
+                  </StyledPaginationWrapper>
                 )}
                 <StyledFeedWrapper>
                   <Button
