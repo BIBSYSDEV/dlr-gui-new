@@ -253,18 +253,18 @@ const Explore = () => {
                         onChange={handlePaginationChange}
                       />
                     </StyledPaginationWrapper>
-                    <StyledFeedWrapper>
-                      <Button
-                        color="primary"
-                        variant="outlined"
-                        data-testid="feed-button"
-                        onClick={() => generateFeedUrl(queryObject, 'rss_2.0')}
-                        startIcon={<RssFeedIcon />}>
-                        <Typography variant="button">{t('feeds.rss')}</Typography>
-                      </Button>
-                    </StyledFeedWrapper>
                   </>
                 )}
+                <StyledFeedWrapper>
+                  <Button
+                    color="primary"
+                    variant="outlined"
+                    data-testid="feed-button"
+                    onClick={() => generateFeedUrl(queryObject, 'rss_2.0')}
+                    startIcon={<RssFeedIcon />}>
+                    <Typography variant="button">{t('feeds.rss')}</Typography>
+                  </Button>
+                </StyledFeedWrapper>
               </>
             )}
           </StyledResultListWrapper>
