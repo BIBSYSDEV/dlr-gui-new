@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { emptyResource } from '../../types/resource.types';
-import { getResource, getResourceContents } from '../../api/resourceApi';
+import { getResource, getResourceContents, getResourceDefaultContent } from '../../api/resourceApi';
 import { StyledProgressWrapper } from '../../components/styled/Wrappers';
 import { CircularProgress } from '@mui/material';
 import ContentPreview from '../../components/ContentPreview';
@@ -9,6 +9,8 @@ import ErrorBanner from '../../components/ErrorBanner';
 import styled from 'styled-components';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import { Content } from '../../types/content.types';
+import { determinePresentationMode } from '../../utils/mime_type_utils';
 
 const ContentWrapper = styled.div<{ height: string }>`
   height: ${(props) => props.height};
@@ -29,6 +31,9 @@ const MainContentView = () => {
   const height = searchParams.get('height') ?? '27rem';
   const [isLoadingResource, setIsLoadingResource] = useState(true);
   const [resourceLoadingError, setResourceLoadingError] = useState<Error | AxiosError>();
+  const [defaultContent, setDefaultContent] = useState<Content | null>(null);
+  const [presentationMode, setPresentationMode] = useState<string>('');
+  const [contentUnavailable, setContentUnavailable] = useState(false);
 
   useEffect(() => {
     const fetchData = async (resourceIdentifier: string) => {
@@ -38,7 +43,12 @@ const MainContentView = () => {
         const tempResource = (await getResource(resourceIdentifier)).data;
         setResource(tempResource);
         tempResource.contents = await getResourceContents(resourceIdentifier);
+        let defaultContent: Content | undefined = undefined;
+        defaultContent = (await getResourceDefaultContent(resourceIdentifier)).data;
+        setDefaultContent(defaultContent);
+        setPresentationMode(determinePresentationMode(defaultContent));
       } catch (error) {
+        setContentUnavailable(true);
         setResourceLoadingError(handlePotentialAxiosError(error));
       } finally {
         setIsLoadingResource(false);
@@ -48,7 +58,7 @@ const MainContentView = () => {
     if (resourceIdentifier) {
       fetchData(resourceIdentifier);
     }
-  }, [resourceIdentifier]);
+  }, [resourceIdentifier, setDefaultContent, setPresentationMode, setContentUnavailable]);
   return isLoadingResource ? (
     <StyledProgressWrapper>
       <CircularProgress />
@@ -57,7 +67,14 @@ const MainContentView = () => {
     <ErrorBanner error={resourceLoadingError} />
   ) : (
     <ContentWrapper height={height}>
-      <ContentPreview resource={resource} isPreview={false} mainFileBeingUploaded={false} />
+      <ContentPreview
+        resource={resource}
+        isPreview={false}
+        mainFileBeingUploaded={false}
+        defaultContent={defaultContent}
+        presentationMode={presentationMode}
+        contentUnavailable={contentUnavailable}
+      />
     </ContentWrapper>
   );
 };

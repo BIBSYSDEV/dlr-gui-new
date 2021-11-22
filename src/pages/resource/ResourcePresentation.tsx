@@ -66,15 +66,12 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
   setCanEditResource,
 }) => {
   const [defaultContent, setDefaultContent] = useState<Content | null>(null);
-  const [contentUnavailable, setContentUnavailable] = useState(false);
-  const [presentationMode, setPresentationMode] = useState<string>(
-    determinePresentationMode(resource.contents.masterContent)
-  );
+  const [presentationMode, setPresentationMode] = useState<string>('');
   const [userResourceAuthorization, setUserResourceAuthorization] = useState<UserAuthorizationProfileForResource>(
     emptyUserAuthorizationProfileForResource
   );
   const [errorLoadingAuthorization, setErrorLoadingAuthorization] = useState<Error | AxiosError>();
-
+  const [contentUnavailable, setContentUnavailable] = useState(false);
   useEffect(() => {
     const fetchUserResourceAuthorization = async () => {
       try {
@@ -96,8 +93,8 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
     fetchUserResourceAuthorization();
 
     const fetchDefaultContent = async () => {
-      let defaultContent: Content | undefined = undefined;
       try {
+        let defaultContent: Content | undefined = undefined;
         defaultContent = (await getResourceDefaultContent(resource.identifier)).data;
         setDefaultContent(defaultContent);
         setPresentationMode(determinePresentationMode(defaultContent));
@@ -106,7 +103,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
       }
     };
     fetchDefaultContent();
-  }, [resource.identifier, setCanEditResource, setDefaultContent, setPresentationMode]);
+  }, [resource.identifier, setCanEditResource, setDefaultContent, setPresentationMode, setContentUnavailable]);
 
   return (
     resource && (
@@ -120,6 +117,9 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
                     resource={resource}
                     isPreview={isPreview}
                     mainFileBeingUploaded={mainFileBeingUploaded}
+                    defaultContent={defaultContent}
+                    presentationMode={presentationMode}
+                    contentUnavailable={contentUnavailable}
                   />
                 </TransistorPreviewComponentWrapper>
               </>
@@ -130,6 +130,9 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
                     resource={resource}
                     isPreview={isPreview}
                     mainFileBeingUploaded={mainFileBeingUploaded}
+                    defaultContent={defaultContent}
+                    presentationMode={presentationMode}
+                    contentUnavailable={contentUnavailable}
                   />
                 </DefaultPreviewComponentWrapper>
               </>

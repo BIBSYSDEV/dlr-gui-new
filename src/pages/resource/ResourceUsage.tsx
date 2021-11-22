@@ -70,7 +70,9 @@ const generateIframeText = (resource: Resource, presentationMode: string) => {
     window.location.origin
   }${resourcePath}/${resource.identifier}/content/main?${LMSParametersName.Navbar}=false&${
     LMSParametersName.Footer
-  }=false&${LMSParametersName.PollForLogin}=true" width="640px" height="${
+  }=false&${LMSParametersName.PollForLogin}=true${
+    presentationMode === SupportedFileTypes.Transistor ? '&height=182px' : ''
+  }" width="640px" height="${
     presentationMode === SupportedFileTypes.Transistor ? '182px' : '360px'
   }" style="border: none;" allowfullscreen="true"></iframe>`;
 };

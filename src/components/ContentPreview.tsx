@@ -3,9 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Typography, CircularProgress, Paper } from '@mui/material';
 import { Content, resourceType, SupportedFileTypes } from '../types/content.types';
 import styled from 'styled-components';
-import { determinePresentationMode } from '../utils/mime_type_utils';
 import DownloadButton from './DownloadButton';
-import { getResourceDefaultContent, getTextFileContents } from '../api/resourceApi';
+import { getTextFileContents } from '../api/resourceApi';
 import { Resource } from '../types/resource.types';
 import { getSourceFromIframeString } from '../utils/iframe_utils';
 import ContentIframe from './ContentIframe';
@@ -42,70 +41,59 @@ interface ContentPreviewProps {
   resource: Resource;
   isPreview?: boolean;
   mainFileBeingUploaded?: boolean;
+  defaultContent: Content | null;
+  presentationMode: string;
+  contentUnavailable: boolean;
 }
 
-const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, mainFileBeingUploaded = false }) => {
+const ContentPreview: FC<ContentPreviewProps> = ({
+  resource,
+  isPreview = false,
+  mainFileBeingUploaded = false,
+  defaultContent,
+  presentationMode,
+  contentUnavailable,
+}) => {
   const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.user);
-  const [defaultContent, setDefaultContent] = useState<Content | null>(null);
-  const [presentationMode, setPresentationMode] = useState<string>(
-    determinePresentationMode(resource.contents.masterContent)
-  );
   const [isLoading, setLoading] = useState(false);
   const [contentText, setContentText] = useState('');
   const [usageURL, setUsageURL] = useState('');
-  const [contentUnavailable, setContentUnavailable] = useState(false);
+  const [contentPresentationError, setContentPresentationError] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);
-      let newDefaultContent: Content | undefined = undefined;
-      try {
-        newDefaultContent = (await getResourceDefaultContent(resource.identifier)).data;
-      } catch (error) {
-        setContentUnavailable(true);
-      }
-      if (newDefaultContent) {
+      if (defaultContent) {
         try {
-          const newPresentationMode = determinePresentationMode(newDefaultContent);
-
-          if (
-            newPresentationMode === SupportedFileTypes.TwentyThreeVideo &&
-            newDefaultContent.features.dlr_content_url
-          ) {
+          if (presentationMode === SupportedFileTypes.TwentyThreeVideo && defaultContent.features.dlr_content_url) {
             const twentyThreeVideoResponse = await getTwentyThreeVideoInformation(
-              newDefaultContent.features.dlr_content_url
+              defaultContent.features.dlr_content_url
             );
-            newDefaultContent.features.dlr_content_url = getSourceFromIframeString(twentyThreeVideoResponse.data.html);
+            defaultContent.features.dlr_content_url = getSourceFromIframeString(twentyThreeVideoResponse.data.html);
           }
-          if (newPresentationMode === SupportedFileTypes.Soundcloud && newDefaultContent.features.dlr_content_url) {
-            const contentResponse = await getSoundCloudInformation(newDefaultContent.features.dlr_content_url);
-            newDefaultContent.features.dlr_content_url = getSourceFromIframeString(contentResponse.data.html);
+          if (presentationMode === SupportedFileTypes.Soundcloud && defaultContent.features.dlr_content_url) {
+            const contentResponse = await getSoundCloudInformation(defaultContent.features.dlr_content_url);
+            defaultContent.features.dlr_content_url = getSourceFromIframeString(contentResponse.data.html);
           }
-          if (newPresentationMode === SupportedFileTypes.Text && newDefaultContent.features.dlr_content_url) {
-            const contentFileResponse = await getTextFileContents(newDefaultContent.features.dlr_content_url);
+          if (presentationMode === SupportedFileTypes.Text && defaultContent.features.dlr_content_url) {
+            const contentFileResponse = await getTextFileContents(defaultContent.features.dlr_content_url);
             setContentText(contentFileResponse.data);
           }
-          if (newDefaultContent.features.dlr_content_url) {
-            setUsageURL(newDefaultContent.features.dlr_content_url);
+          if (defaultContent.features.dlr_content_url) {
+            setUsageURL(defaultContent.features.dlr_content_url);
           }
-          setDefaultContent(newDefaultContent);
-          setPresentationMode(newPresentationMode);
         } catch (error) {
-          setDefaultContent(null);
-          setPresentationMode(determinePresentationMode(resource.contents.masterContent));
+          setContentPresentationError(true);
         }
-      } else {
-        setContentUnavailable(true);
       }
-
       setLoading(false);
     };
 
     if (!isPreview || !mainFileBeingUploaded) {
       fetch();
     }
-  }, [isPreview, mainFileBeingUploaded, resource, resource.contents.masterContent, resource.identifier]);
+  }, [isPreview, mainFileBeingUploaded, resource, defaultContent, presentationMode, contentPresentationError]);
 
   const previewIsRegularIframe = () => {
     return (
@@ -117,6 +105,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
       presentationMode === SupportedFileTypes.MediaSite ||
       presentationMode === SupportedFileTypes.Spotify ||
       presentationMode === SupportedFileTypes.Soundcloud ||
+      presentationMode === SupportedFileTypes.Transistor ||
       presentationMode === SupportedFileTypes.TwentyThreeVideo
     );
   };
@@ -125,19 +114,13 @@ const ContentPreview: FC<ContentPreviewProps> = ({ resource, isPreview = false, 
     <>
       {!isLoading && !mainFileBeingUploaded ? (
         <>
-          {!contentUnavailable ? (
+          {!contentUnavailable && !contentPresentationError ? (
             <>
               {presentationMode === resourceType.IMAGE && <StyledImage src={usageURL} alt="Preview of resource" />}
               {presentationMode === resourceType.VIDEO && <StyledVideo src={usageURL} controls />}
               {presentationMode === SupportedFileTypes.Audio && (
                 <audio controls>
-                  <source
-                    src={usageURL}
-                    type={
-                      defaultContent?.features.dlr_content_mime_type ??
-                      resource.contents.masterContent.features.dlr_content_mime_type
-                    }
-                  />
+                  <source src={usageURL} type={defaultContent?.features.dlr_content_mime_type} />
                 </audio>
               )}
               {presentationMode === SupportedFileTypes.Document && (
