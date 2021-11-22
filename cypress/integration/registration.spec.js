@@ -442,7 +442,7 @@ context('Registration', () => {
     cy.get(`[data-testid=revert-thumbnail-button]`).click();
   });
 
-  it('lets the uesr know if their license matches the licenseWizard recommendation or not', () => {
+  it('lets the user know if their license matches the licenseWizard recommendation or not', () => {
     const testLink = 'http://www.test.com';
     cy.get('[data-testid=new-registration-link]').click();
     cy.get('[data-testid=new-resource-link]').click();

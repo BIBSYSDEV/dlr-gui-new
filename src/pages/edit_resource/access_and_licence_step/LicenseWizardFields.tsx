@@ -87,7 +87,7 @@ const calculatePreferredLicense = (
       licenseCode += '-SA';
     }
     licenseCode += ' 4.0';
-    if (commercialValue === '' && modifyAndBuildValue === '') {
+    if (commercialValue === CommercialOptions.undefined && modifyAndBuildValue === ModifyAndBuildOptions.undefined) {
       licenseCode = Licenses.CC_BY_NC_ND;
     }
     return licenseCode;
