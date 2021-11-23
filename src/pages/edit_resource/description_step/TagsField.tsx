@@ -131,7 +131,8 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                     loading={loading}
                     filterSelectedOptions
                     isOptionEqualToValue={(option: string, value: string) =>
-                      option.toLowerCase() === value.toLowerCase()
+                      option.toLowerCase() === value.toLowerCase() ||
+                      option.replace('#', '').toLowerCase() === value.toLowerCase()
                     }
                     onChange={(_: ChangeEvent<unknown>, valueArray: string[]) => {
                       saveTagsChanging(field.name, valueArray);
