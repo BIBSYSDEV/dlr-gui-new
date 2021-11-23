@@ -50,7 +50,8 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
       if (!cancelSearch) {
         setLoading(true);
         try {
-          const response = await searchTags(debouncedTagInputValue);
+          const tag = debouncedTagInputValue.replaceAll('#', '');
+          const response = await searchTags(tag);
           const optionsResult = response.data.facet_counts.map((facetCount) => facetCount.value);
           setOptions(optionsResult);
         } catch (error) {
@@ -71,6 +72,11 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
     setAllChangesSaved(false);
     try {
       const promiseArray: Promise<any>[] = [];
+      const cleanTagArray: string[] = [];
+      tagArray.forEach((tag) => {
+        cleanTagArray.push(tag.replaceAll('#', ''));
+      });
+      tagArray = cleanTagArray;
       const newTags = tagArray.filter((tag) => !values.tags?.includes(tag));
       newTags.forEach((tag) => {
         promiseArray.push(postTag(values.identifier, tag));
