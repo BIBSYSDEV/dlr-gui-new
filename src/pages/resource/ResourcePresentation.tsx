@@ -83,8 +83,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
 
     const fetchDefaultContent = async () => {
       try {
-        let defaultContent: Content | undefined = undefined;
-        defaultContent = (await getResourceDefaultContent(resource.identifier)).data;
+        const defaultContent = (await getResourceDefaultContent(resource.identifier)).data;
         setDefaultContent(defaultContent);
         setPresentationMode(determinePresentationMode(defaultContent));
       } catch (error) {

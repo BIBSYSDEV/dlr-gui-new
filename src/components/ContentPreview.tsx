@@ -64,7 +64,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);
-      if (defaultContent) {
+      if (defaultContent && !contentUnavailable) {
         try {
           if (presentationMode === SupportedFileTypes.TwentyThreeVideo && defaultContent.features.dlr_content_url) {
             const twentyThreeVideoResponse = await getTwentyThreeVideoInformation(
