@@ -65,15 +65,16 @@ const generatePreferredURL = (resource: Resource): string => {
   }
 };
 
-const generateIframeText = (resource: Resource, presentationMode: string) => {
+const generateIframeText = (resource: Resource, presentationMode: SupportedFileTypes | undefined) => {
+  const isTransistorPresentation = presentationMode === SupportedFileTypes.Transistor;
   return `<iframe title="${resource.features.dlr_title.replaceAll('"', '')}" src="${
     window.location.origin
   }${resourcePath}/${resource.identifier}/content/main?${LMSParametersName.Navbar}=false&${
     LMSParametersName.Footer
   }=false&${LMSParametersName.PollForLogin}=true${
-    presentationMode === SupportedFileTypes.Transistor ? '&height=182px' : ''
+    isTransistorPresentation ? '&height=182px' : ''
   }" width="640px" height="${
-    presentationMode === SupportedFileTypes.Transistor ? '182px' : '360px'
+    isTransistorPresentation ? '182px' : '360px'
   }" style="border: none;" allowfullscreen="true"></iframe>`;
 };
 
@@ -85,7 +86,7 @@ const userAgentIsNotOperaForDesktop = () => {
 interface ResourceUsageProps {
   resource: Resource;
   isPreview?: boolean;
-  presentationMode: string;
+  presentationMode: SupportedFileTypes | undefined;
 }
 
 const ResourceUsage: FC<ResourceUsageProps> = ({ resource, isPreview = false, presentationMode }) => {

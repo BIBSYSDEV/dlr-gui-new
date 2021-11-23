@@ -9,7 +9,7 @@ import ErrorBanner from '../../components/ErrorBanner';
 import styled from 'styled-components';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
-import { Content } from '../../types/content.types';
+import { Content, SupportedFileTypes } from '../../types/content.types';
 import { determinePresentationMode } from '../../utils/mime_type_utils';
 
 const ContentWrapper = styled.div<{ height: string }>`
@@ -32,7 +32,7 @@ const MainContentView = () => {
   const [isLoadingResource, setIsLoadingResource] = useState(true);
   const [resourceLoadingError, setResourceLoadingError] = useState<Error | AxiosError>();
   const [defaultContent, setDefaultContent] = useState<Content | null>(null);
-  const [presentationMode, setPresentationMode] = useState<string>('');
+  const [presentationMode, setPresentationMode] = useState<SupportedFileTypes>();
   const [contentUnavailable, setContentUnavailable] = useState(false);
 
   useEffect(() => {
@@ -43,8 +43,7 @@ const MainContentView = () => {
         const tempResource = (await getResource(resourceIdentifier)).data;
         setResource(tempResource);
         tempResource.contents = await getResourceContents(resourceIdentifier);
-        let defaultContent: Content | undefined = undefined;
-        defaultContent = (await getResourceDefaultContent(resourceIdentifier)).data;
+        const defaultContent = (await getResourceDefaultContent(resourceIdentifier)).data;
         setDefaultContent(defaultContent);
         setPresentationMode(determinePresentationMode(defaultContent));
       } catch (error) {

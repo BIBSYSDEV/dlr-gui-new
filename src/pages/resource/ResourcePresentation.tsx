@@ -24,21 +24,10 @@ import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { Content, SupportedFileTypes } from '../../types/content.types';
 import { determinePresentationMode } from '../../utils/mime_type_utils';
 
-const DefaultPreviewComponentWrapper = styled.div`
+const PreviewComponentWrapper = styled.div<{ height: string }>`
   margin: 1rem 0;
-  height: 26rem;
-  max-height: 26rem;
-  max-width: 100%;
-  border: 1px solid ${Colors.DescriptionPageGradientColor1};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const TransistorPreviewComponentWrapper = styled.div`
-  margin: 1rem 0;
-  height: 182px;
-  max-height: 182px;
+  height: ${(props) => props.height};
+  max-height: ${(props) => props.height};
   max-width: 100%;
   border: 1px solid ${Colors.DescriptionPageGradientColor1};
   display: flex;
@@ -66,7 +55,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
   setCanEditResource,
 }) => {
   const [defaultContent, setDefaultContent] = useState<Content | null>(null);
-  const [presentationMode, setPresentationMode] = useState<string>('');
+  const [presentationMode, setPresentationMode] = useState<SupportedFileTypes>();
   const [userResourceAuthorization, setUserResourceAuthorization] = useState<UserAuthorizationProfileForResource>(
     emptyUserAuthorizationProfileForResource
   );
@@ -110,33 +99,18 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
       <StyledPresentationWrapper>
         <StyledSchemaPart>
           <StyledContentWrapperMedium>
-            {presentationMode === SupportedFileTypes.Transistor ? (
-              <>
-                <TransistorPreviewComponentWrapper data-testid="resource-preview">
-                  <ContentPreview
-                    resource={resource}
-                    isPreview={isPreview}
-                    mainFileBeingUploaded={mainFileBeingUploaded}
-                    defaultContent={defaultContent}
-                    presentationMode={presentationMode}
-                    contentUnavailable={contentUnavailable}
-                  />
-                </TransistorPreviewComponentWrapper>
-              </>
-            ) : (
-              <>
-                <DefaultPreviewComponentWrapper data-testid="resource-preview">
-                  <ContentPreview
-                    resource={resource}
-                    isPreview={isPreview}
-                    mainFileBeingUploaded={mainFileBeingUploaded}
-                    defaultContent={defaultContent}
-                    presentationMode={presentationMode}
-                    contentUnavailable={contentUnavailable}
-                  />
-                </DefaultPreviewComponentWrapper>
-              </>
-            )}
+            <PreviewComponentWrapper
+              data-testid="resource-preview"
+              height={presentationMode === SupportedFileTypes.Transistor ? '12rem' : '26rem'}>
+              <ContentPreview
+                resource={resource}
+                isPreview={isPreview}
+                mainFileBeingUploaded={mainFileBeingUploaded}
+                defaultContent={defaultContent}
+                presentationMode={presentationMode}
+                contentUnavailable={contentUnavailable}
+              />
+            </PreviewComponentWrapper>
           </StyledContentWrapperMedium>
         </StyledSchemaPart>
         <ResourceMetadata resource={resource} isPreview={isPreview} />

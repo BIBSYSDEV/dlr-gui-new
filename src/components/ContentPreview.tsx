@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Typography, CircularProgress, Paper } from '@mui/material';
-import { Content, resourceType, SupportedFileTypes } from '../types/content.types';
+import { Content, SupportedFileTypes } from '../types/content.types';
 import styled from 'styled-components';
 import DownloadButton from './DownloadButton';
 import { getTextFileContents } from '../api/resourceApi';
@@ -42,7 +42,7 @@ interface ContentPreviewProps {
   isPreview?: boolean;
   mainFileBeingUploaded?: boolean;
   defaultContent: Content | null;
-  presentationMode: string;
+  presentationMode: SupportedFileTypes | undefined;
   contentUnavailable: boolean;
 }
 
@@ -116,8 +116,10 @@ const ContentPreview: FC<ContentPreviewProps> = ({
         <>
           {!contentUnavailable && !contentPresentationError ? (
             <>
-              {presentationMode === resourceType.IMAGE && <StyledImage src={usageURL} alt="Preview of resource" />}
-              {presentationMode === resourceType.VIDEO && <StyledVideo src={usageURL} controls />}
+              {presentationMode === SupportedFileTypes.Image && (
+                <StyledImage src={usageURL} alt="Preview of resource" />
+              )}
+              {presentationMode === SupportedFileTypes.Video && <StyledVideo src={usageURL} controls />}
               {presentationMode === SupportedFileTypes.Audio && (
                 <audio controls>
                   <source src={usageURL} type={defaultContent?.features.dlr_content_mime_type} />
