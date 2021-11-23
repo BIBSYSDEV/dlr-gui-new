@@ -224,7 +224,7 @@
     "soften_helper_text_1": "You can make the resource public, or add more private access types",
     "soften_helper_text_2": "You can not remove reading access for those already granted access after publication",
     "tags_helper_aria_label": "Show tags explanation",
-    "tags_helper_text": "Tags describes the contents of a resource. A single tag may consist of one or multiple words, for example \"optical illusion\"",
+    "tags_helper_text": "Tags describes the contents of a resource. A single tag may consist of one or multiple words, for example \"optical illusion\". Please note that '#' in tags will automatically be removed.",
     "tags_helper_text_edit_resource1": "Write your first tag and then press enter and then type your next tag. It is possible to add or remove tags after publication of your resource",
     "tags_helper_text_edit_resource2": "Quality tags increases the chance that others will find and use your resource",
     "tags_helper_text_example": "Example: A resource with title \"The Sympathetic Nervous System\" can have \"syk130\", \"nursery\", \"healthcare subject\", \"nervous system\", and \"health\" as tags",
