@@ -74,7 +74,10 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
       const promiseArray: Promise<any>[] = [];
       const cleanTagArray: string[] = [];
       tagArray.forEach((tag) => {
-        cleanTagArray.push(tag.replaceAll('#', ''));
+        tag = tag.replaceAll('#', '');
+        if (cleanTagArray.indexOf(tag) === -1) {
+          cleanTagArray.push(tag);
+        }
       });
       tagArray = cleanTagArray;
       const newTags = tagArray.filter((tag) => !values.tags?.includes(tag));
