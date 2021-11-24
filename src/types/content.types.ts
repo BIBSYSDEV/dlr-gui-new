@@ -40,11 +40,6 @@ export const emptyResourceContent: ResourceContents = {
   additionalContent: [],
 };
 
-export enum resourceType {
-  IMAGE = 'image',
-  VIDEO = 'video',
-}
-
 export const LinkMetadataFilename = 'metadata_external.json';
 
 export enum SupportedFileTypes {

@@ -1,6 +1,6 @@
 import { Content, SupportedFileTypes } from '../types/content.types';
 
-const documentTypeFromMime = (content: Content): string => {
+const documentTypeFromMime = (content: Content): SupportedFileTypes => {
   switch (content.features.dlr_content_mime_type) {
     case SupportedFileTypes.Document:
     case SupportedFileTypes.Image:
@@ -63,13 +63,14 @@ const documentTypeFromMime = (content: Content): string => {
       return SupportedFileTypes.Video;
     case 'audio/mpeg':
     case 'audio/ogg':
+    case 'audio/mp4':
       return SupportedFileTypes.Audio;
     default:
       return SupportedFileTypes.Download;
   }
 };
 
-export const determinePresentationMode = (content: Content): string => {
+export const determinePresentationMode = (content: Content): SupportedFileTypes => {
   if (content.features.dlr_content_type_link_scheme_http === 'true') {
     return SupportedFileTypes.LinkSchemeHttp;
   } else if (
