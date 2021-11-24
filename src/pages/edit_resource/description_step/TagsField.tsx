@@ -32,9 +32,10 @@ const StyledAutoCompleteWrapper = styled.div`
 
 interface TagsFieldProps {
   setAllChangesSaved: (status: boolean) => void;
+  setHastagsRemoved: boolean;
 }
 
-const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
+const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved, setHastagsRemoved }) => {
   const { t } = useTranslation();
   const { values, setFieldValue, resetForm, setTouched, touched } = useFormikContext<Resource>();
   const [tagInputFieldValue, setTagInputFieldValue] = useState('');
@@ -70,11 +71,16 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
 
   const saveTagsChanging = async (name: string, tagArray: string[]) => {
     setAllChangesSaved(false);
+    setHastagsRemoved = false;
     try {
       const promiseArray: Promise<any>[] = [];
       const cleanTagArray: string[] = [];
       tagArray.forEach((tag) => {
-        tag = tag.replaceAll('#', '');
+        const cleanTag = tag.replaceAll('#', '');
+        if (tag.indexOf('#') >= -1) {
+          tag = cleanTag;
+          setHastagsRemoved = true;
+        }
         if (cleanTagArray.indexOf(tag) === -1) {
           cleanTagArray.push(tag);
         }
@@ -154,6 +160,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                         id="resource-feature-tags"
                         label={t('resource.metadata.tags')}
                         helperText={t('resource.add_tags')}
+                        aria-errormessage={t('resource.add_tags_cleaned_warning')}
                         variant="filled"
                         onChange={handleChange}
                         fullWidth

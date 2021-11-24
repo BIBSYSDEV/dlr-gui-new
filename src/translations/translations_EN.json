@@ -376,6 +376,7 @@
     "add_contributor": "Add contributor",
     "add_creator": "Add creator",
     "add_tags": "Add 4-6 tags. Press enter for adding more tags.",
+    "add_tags_cleaned_warning": "Note! 'hashtags' have been removed from tags",
     "also_published_by_plural": "Have also published",
     "also_published_by_singular": "Has also published",
     "browse_by_creator": "Browse more resources",

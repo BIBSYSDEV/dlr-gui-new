@@ -377,6 +377,7 @@
     "add_contributor": "Legg til bidragsyter",
     "add_creator": "Legg til opphaver",
     "add_tags": "Legg inn 4-6 emneord. Trykk enter for å legge inn flere",
+    "add_tags_cleaned_warning": "NB 'hashtags' har blitt fjernet fra emneordene",
     "also_published_by_plural": "Har også publisert",
     "also_published_by_singular": "Har også publisert",
     "browse_by_creator": "Se flere ressurser",
