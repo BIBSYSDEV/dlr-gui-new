@@ -163,7 +163,7 @@ const Explore = () => {
   const generateFeedUrl = (queryObject: QueryObject, feedType: string) => {
     let url = `${API_URL}${API_PATHS.guiBackendResourcesSearchPath}/resources/feed?type=${feedType}`;
     if (queryObject.query.length > 0) {
-      url += `&query=${queryObject.query}`;
+      url += `&query=${encodeURIComponent(queryObject.query)}`;
     }
     if (
       queryObject.institutions.length > 0 ||
