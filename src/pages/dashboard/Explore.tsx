@@ -163,7 +163,7 @@ const Explore = () => {
   const generateFeedUrl = (queryObject: QueryObject, feedType: string) => {
     let url = `${API_URL}${API_PATHS.guiBackendResourcesSearchPath}/resources/feed?type=${feedType}`;
     if (queryObject.query.length > 0) {
-      url += `&query=${encodeURIComponent(queryObject.query)}`;
+      url += `&query=${queryObject.query}`;
     }
     if (
       queryObject.institutions.length > 0 ||
@@ -178,10 +178,10 @@ const Explore = () => {
       queryObject.licenses.map((license) => filters.push(ApiSearchParameters.FacetLicense + license));
       queryObject.tags.map((tag) => filters.push(ApiSearchParameters.FacetTag + tag));
       if (filters.length > 0) {
-        url += encodeURIComponent(filters.join(ApiSearchParameters.FilterSeparator));
+        url += filters.join(ApiSearchParameters.FilterSeparator);
       }
     }
-    window.open(url);
+    window.open(encodeURI(url));
   };
 
   useEffect(() => {
