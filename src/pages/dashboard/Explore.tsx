@@ -181,7 +181,7 @@ const Explore = () => {
         url += filters.join(ApiSearchParameters.FilterSeparator);
       }
     }
-    window.open(url);
+    window.open(encodeURI(url));
   };
 
   useEffect(() => {
