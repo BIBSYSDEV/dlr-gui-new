@@ -178,7 +178,7 @@ const Explore = () => {
       queryObject.licenses.map((license) => filters.push(ApiSearchParameters.FacetLicense + license));
       queryObject.tags.map((tag) => filters.push(ApiSearchParameters.FacetTag + tag));
       if (filters.length > 0) {
-        url += filters.join(ApiSearchParameters.FilterSeparator);
+        url += filters.join(encodeURI(ApiSearchParameters.FilterSeparator));
       }
     }
     window.open(url);
