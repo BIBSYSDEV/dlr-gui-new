@@ -30,6 +30,17 @@ const StyledAutoCompleteWrapper = styled.div`
   flex-grow: 4;
 `;
 
+const StyledAriaHiddenTypography = styled(Typography)`
+  color: ${Colors.Warning};
+  margin-left: 1rem;
+`;
+
+const StyledInvisibleTypography = styled(Typography)`
+  width: 1px;
+  height: 1px;
+  overflow: hidden !important;
+`;
+
 interface TagsFieldProps {
   setAllChangesSaved: (status: boolean) => void;
 }
@@ -44,13 +55,15 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
   const [cancelSearch, setCancelSearch] = useState(false);
   const [saveError, setSaveError] = useState<Error | AxiosError>();
   const [tagSearchError, setTagSearchError] = useState<Error | AxiosError>();
+  const [hashtagRemoved, setHashtagRemoved] = useState(false);
 
   useEffect(() => {
     const searchForTags = async () => {
       if (!cancelSearch) {
         setLoading(true);
         try {
-          const response = await searchTags(debouncedTagInputValue);
+          const tag = debouncedTagInputValue.replaceAll('#', '');
+          const response = await searchTags(tag);
           const optionsResult = response.data.facet_counts.map((facetCount) => facetCount.value);
           setOptions(optionsResult);
         } catch (error) {
@@ -71,6 +84,14 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
     setAllChangesSaved(false);
     try {
       const promiseArray: Promise<any>[] = [];
+      const cleanTagArray = tagArray.map((tag) => {
+        if (tag.includes('#')) {
+          setHashtagRemoved(true);
+        }
+        return tag.replaceAll('#', '');
+      });
+
+      tagArray = cleanTagArray;
       const newTags = tagArray.filter((tag) => !values.tags?.includes(tag));
       newTags.forEach((tag) => {
         promiseArray.push(postTag(values.identifier, tag));
@@ -122,7 +143,8 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                     loading={loading}
                     filterSelectedOptions
                     isOptionEqualToValue={(option: string, value: string) =>
-                      option.toLowerCase() === value.toLowerCase()
+                      option.toLowerCase() === value.toLowerCase() ||
+                      option.replace('#', '').toLowerCase() === value.toLowerCase()
                     }
                     onChange={(_: ChangeEvent<unknown>, valueArray: string[]) => {
                       saveTagsChanging(field.name, valueArray);
@@ -144,6 +166,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                         id="resource-feature-tags"
                         label={t('resource.metadata.tags')}
                         helperText={t('resource.add_tags')}
+                        aria-errormessage={t('resource.add_tags_cleaned_warning')}
                         variant="filled"
                         onChange={handleChange}
                         fullWidth
@@ -160,6 +183,16 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                       />
                     )}
                   />
+                  {hashtagRemoved && (
+                    <>
+                      <StyledAriaHiddenTypography aria-hidden={true} data-testid="resource-tags-removed-warning">
+                        {t('resource.add_tags_removed_warning')}{' '}
+                      </StyledAriaHiddenTypography>
+                      <StyledInvisibleTypography>
+                        {t('resource.add_tags_removed_warning_invisible')}{' '}
+                      </StyledInvisibleTypography>
+                    </>
+                  )}
                 </StyledAutoCompleteWrapper>
               </Grid>
               <Grid item xs={2}>
