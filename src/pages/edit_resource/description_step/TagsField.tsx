@@ -30,12 +30,22 @@ const StyledAutoCompleteWrapper = styled.div`
   flex-grow: 4;
 `;
 
+const StyledAriaHiddenTypography = styled(Typography)`
+  color: ${Colors.Warning};
+  margin-left: 1rem;
+`;
+
+const StyledInvisibleTypography = styled(Typography)`
+  width: 1px;
+  height: 1px;
+  overflow: hidden !important;
+`;
+
 interface TagsFieldProps {
   setAllChangesSaved: (status: boolean) => void;
-  setHastagsRemoved: boolean;
 }
 
-const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved, setHastagsRemoved }) => {
+const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
   const { t } = useTranslation();
   const { values, setFieldValue, resetForm, setTouched, touched } = useFormikContext<Resource>();
   const [tagInputFieldValue, setTagInputFieldValue] = useState('');
@@ -45,6 +55,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved, setHastagsRemoved }
   const [cancelSearch, setCancelSearch] = useState(false);
   const [saveError, setSaveError] = useState<Error | AxiosError>();
   const [tagSearchError, setTagSearchError] = useState<Error | AxiosError>();
+  const [hashtagRemoved, setHashtagRemoved] = useState(false);
 
   useEffect(() => {
     const searchForTags = async () => {
@@ -71,20 +82,15 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved, setHastagsRemoved }
 
   const saveTagsChanging = async (name: string, tagArray: string[]) => {
     setAllChangesSaved(false);
-    setHastagsRemoved = false;
     try {
       const promiseArray: Promise<any>[] = [];
-      const cleanTagArray: string[] = [];
-      tagArray.forEach((tag) => {
-        const cleanTag = tag.replaceAll('#', '');
-        if (tag.indexOf('#') >= -1) {
-          tag = cleanTag;
-          setHastagsRemoved = true;
+      const cleanTagArray = tagArray.map((tag) => {
+        if (tag.includes('#')) {
+          setHashtagRemoved(true);
         }
-        if (cleanTagArray.indexOf(tag) === -1) {
-          cleanTagArray.push(tag);
-        }
+        return tag.replaceAll('#', '');
       });
+
       tagArray = cleanTagArray;
       const newTags = tagArray.filter((tag) => !values.tags?.includes(tag));
       newTags.forEach((tag) => {
@@ -177,6 +183,16 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved, setHastagsRemoved }
                       />
                     )}
                   />
+                  {hashtagRemoved && (
+                    <>
+                      <StyledAriaHiddenTypography aria-hidden={true}>
+                        {t('resource.add_tags_removed_warning')}{' '}
+                      </StyledAriaHiddenTypography>
+                      <StyledInvisibleTypography>
+                        {t('resource.add_tags_removed_warning_invisible')}{' '}
+                      </StyledInvisibleTypography>
+                    </>
+                  )}
                 </StyledAutoCompleteWrapper>
               </Grid>
               <Grid item xs={2}>

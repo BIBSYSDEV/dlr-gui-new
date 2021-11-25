@@ -149,7 +149,7 @@ const DescriptionFields: FC<DescriptionFieldsProps> = ({ setAllChangesSaved, set
         )}
       </StyledSchemaPartColored>
       <ResourceTypeField setAllChangesSaved={setAllChangesSaved} />
-      <TagsField setAllChangesSaved={setAllChangesSaved} setHastagsRemoved={false} />
+      <TagsField setAllChangesSaved={setAllChangesSaved} />
       <RequiredFieldInformation />
     </>
   );
