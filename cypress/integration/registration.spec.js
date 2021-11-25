@@ -376,6 +376,8 @@ context('Registration', () => {
     const testTag3 = 'tag3';
     const testTag4SearchTerm = 'digital';
     const testTag4 = 'digital læring';
+    const testTag5Hashtag = '#tag5';
+    const testTag5 = 'tag5';
     cy.get('[data-testid=resource-tags-input]').type(`${testTag1}{enter}`);
     cy.get('[data-testid=resource-tags-input]').type(`${testTag2}{enter}`);
     cy.get('[data-testid=resource-tags-input]').type(`${testTag3}{enter}`);
@@ -387,6 +389,19 @@ context('Registration', () => {
     cy.get(`[data-testid=resource-tags-input] input`).type(testTag4SearchTerm);
     cy.get(`#register-tags-input-option-1`).click(); //as results are hard coded
     cy.get(`[data-testid=tag-chip-3]`).contains(testTag4);
+
+    //test hashtag behavior
+    cy.get('[data-testid=resource-tags-removed-warning]').should('not.exist');
+    cy.get('[data-testid=resource-tags-input]').type(`${testTag5Hashtag}{enter}`);
+    cy.get('[data-testid=tag-chip-4]').contains(testTag5);
+    cy.get('[data-testid=resource-tags-removed-warning]').should('exist');
+    cy.get('[data-testid=resource-tags-input]').type(`${testTag5}{enter}`);
+    cy.get('[data-testid=tag-chip-4]').contains(testTag5);
+    cy.get('[data-testid=tag-chip-5]').should('not.exist');
+    cy.get('[data-testid=resource-tags-input]').type('{selectall}{backspace}');
+    cy.get('[data-testid=resource-tags-input]').type(`${testTag5Hashtag}{enter}`);
+    cy.get('[data-testid=tag-chip-4]').contains(testTag5);
+    cy.get('[data-testid=tag-chip-5]').should('not.exist');
 
     //tag exist on preview
     cy.get('[data-testid=step-navigation-4]').click();
@@ -442,7 +457,7 @@ context('Registration', () => {
     cy.get(`[data-testid=revert-thumbnail-button]`).click();
   });
 
-  it('lets the uesr know if their license matches the licenseWizard recommendation or not', () => {
+  it('lets the user know if their license matches the licenseWizard recommendation or not', () => {
     const testLink = 'http://www.test.com';
     cy.get('[data-testid=new-registration-link]').click();
     cy.get('[data-testid=new-resource-link]').click();

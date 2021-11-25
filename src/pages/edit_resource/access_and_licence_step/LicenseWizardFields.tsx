@@ -59,12 +59,14 @@ enum LicenseRestrictionOptions {
 enum CommercialOptions {
   NC = 'NC',
   yes = 'yes',
+  undefined = 'undefined',
 }
 
 enum ModifyAndBuildOptions {
   primaryYes = 'primary_yes',
   ND = 'ND',
   SA = 'share_alike',
+  undefined = 'undefined',
 }
 
 const commercialPurposes = [CommercialOptions.yes, CommercialOptions.NC];
@@ -85,7 +87,7 @@ const calculatePreferredLicense = (
       licenseCode += '-SA';
     }
     licenseCode += ' 4.0';
-    if (commercialValue === '' && modifyAndBuildValue === '') {
+    if (commercialValue === CommercialOptions.undefined && modifyAndBuildValue === ModifyAndBuildOptions.undefined) {
       licenseCode = Licenses.CC_BY_NC_ND;
     }
     return licenseCode;
@@ -190,8 +192,8 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
       );
       if (event.target.value !== LicenseRestrictionOptions.yes) {
         setExpandModifyAndBuildOption(true);
-        values.features.dlr_licensehelper_can_be_used_commercially = '';
-        values.features.dlr_licensehelper_others_can_modify_and_build_upon = '';
+        values.features.dlr_licensehelper_can_be_used_commercially = CommercialOptions.undefined;
+        values.features.dlr_licensehelper_others_can_modify_and_build_upon = ModifyAndBuildOptions.undefined;
         promiseArray.push(
           postResourceFeature(
             values.identifier,

@@ -18,14 +18,16 @@ import ResourceContents from './ResourceContents';
 import ResourceLicense from './ResourceLicense';
 import ContentPreview from '../../components/ContentPreview';
 import ResourceActions from './ResourceActions';
-import { getMyUserAuthorizationProfileForResource } from '../../api/resourceApi';
+import { getMyUserAuthorizationProfileForResource, getResourceDefaultContent } from '../../api/resourceApi';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import { Content, SupportedFileTypes } from '../../types/content.types';
+import { determinePresentationMode } from '../../utils/mime_type_utils';
 
-const PreviewComponentWrapper = styled.div`
+const PreviewComponentWrapper = styled.div<{ height: string }>`
   margin: 1rem 0;
-  height: 26rem;
-  max-height: 26rem;
+  height: ${(props) => props.height};
+  max-height: ${(props) => props.height};
   max-width: 100%;
   border: 1px solid ${Colors.DescriptionPageGradientColor1};
   display: flex;
@@ -52,11 +54,13 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
   mainFileBeingUploaded = false,
   setCanEditResource,
 }) => {
+  const [defaultContent, setDefaultContent] = useState<Content | null>(null);
+  const [presentationMode, setPresentationMode] = useState<SupportedFileTypes>();
   const [userResourceAuthorization, setUserResourceAuthorization] = useState<UserAuthorizationProfileForResource>(
     emptyUserAuthorizationProfileForResource
   );
   const [errorLoadingAuthorization, setErrorLoadingAuthorization] = useState<Error | AxiosError>();
-
+  const [contentUnavailable, setContentUnavailable] = useState(false);
   useEffect(() => {
     const fetchUserResourceAuthorization = async () => {
       try {
@@ -76,15 +80,35 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
       }
     };
     fetchUserResourceAuthorization();
-  }, [resource.identifier, setCanEditResource]);
+
+    const fetchDefaultContent = async () => {
+      try {
+        const defaultContent = (await getResourceDefaultContent(resource.identifier)).data;
+        setDefaultContent(defaultContent);
+        setPresentationMode(determinePresentationMode(defaultContent));
+      } catch (error) {
+        setContentUnavailable(true);
+      }
+    };
+    fetchDefaultContent();
+  }, [resource.identifier, setCanEditResource, setDefaultContent, setPresentationMode, setContentUnavailable]);
 
   return (
     resource && (
       <StyledPresentationWrapper>
         <StyledSchemaPart>
           <StyledContentWrapperMedium>
-            <PreviewComponentWrapper data-testid="resource-preview">
-              <ContentPreview resource={resource} isPreview={isPreview} mainFileBeingUploaded={mainFileBeingUploaded} />
+            <PreviewComponentWrapper
+              data-testid="resource-preview"
+              height={presentationMode === SupportedFileTypes.Transistor ? '12rem' : '26rem'}>
+              <ContentPreview
+                resource={resource}
+                isPreview={isPreview}
+                mainFileBeingUploaded={mainFileBeingUploaded}
+                defaultContent={defaultContent}
+                presentationMode={presentationMode}
+                contentUnavailable={contentUnavailable}
+              />
             </PreviewComponentWrapper>
           </StyledContentWrapperMedium>
         </StyledSchemaPart>
@@ -103,7 +127,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
         </StyledSchemaPartColored>
         <StyledSchemaPartColored color={Colors.DLRYellow3}>
           <StyledContentWrapperMedium>
-            <ResourceUsage resource={resource} isPreview={isPreview} />
+            <ResourceUsage resource={resource} isPreview={isPreview} presentationMode={presentationMode} />
           </StyledContentWrapperMedium>
         </StyledSchemaPartColored>
         {!isPreview && (
