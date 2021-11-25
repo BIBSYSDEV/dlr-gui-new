@@ -391,8 +391,10 @@ context('Registration', () => {
     cy.get(`[data-testid=tag-chip-3]`).contains(testTag4);
 
     //test hashtag behavior
+    cy.get('[data-testid=resource-tags-removed-warning]').should('not.exist');
     cy.get('[data-testid=resource-tags-input]').type(`${testTag5Hashtag}{enter}`);
     cy.get('[data-testid=tag-chip-4]').contains(testTag5);
+    cy.get('[data-testid=resource-tags-removed-warning]').should('exist');
     cy.get('[data-testid=resource-tags-input]').type(`${testTag5}{enter}`);
     cy.get('[data-testid=tag-chip-4]').contains(testTag5);
     cy.get('[data-testid=tag-chip-5]').should('not.exist');

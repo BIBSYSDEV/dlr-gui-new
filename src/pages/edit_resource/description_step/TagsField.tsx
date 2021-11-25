@@ -185,7 +185,7 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                   />
                   {hashtagRemoved && (
                     <>
-                      <StyledAriaHiddenTypography aria-hidden={true}>
+                      <StyledAriaHiddenTypography aria-hidden={true} data-testid="resource-tags-removed-warning">
                         {t('resource.add_tags_removed_warning')}{' '}
                       </StyledAriaHiddenTypography>
                       <StyledInvisibleTypography>
