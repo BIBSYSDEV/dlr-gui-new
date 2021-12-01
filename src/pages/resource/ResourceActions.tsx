@@ -63,7 +63,9 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, userResourceAuthoriza
         )}
         {requestDoiSentSuccess && (
           <StyledAlert severity="info">
-            <AlertTitle data-testid="request-sent-info">{t('resource.reporting.doi_request_sent_feedback')}</AlertTitle>
+            <AlertTitle data-testid="request-doi-sent-info">
+              {t('resource.reporting.doi_request_sent_feedback')}
+            </AlertTitle>
           </StyledAlert>
         )}
       </StyledActionContentWrapper>
