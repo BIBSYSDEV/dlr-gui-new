@@ -521,9 +521,9 @@
     },
     "published_resources": "Publisert",
     "reporting": {
+      "doi_request_sent_feedback": "Forespørsel om DOI er sendt",
       "report_resource": "Rapportér ressurs",
       "report_sent_feedback": "Rapportèring sendt inn",
-      "doi_request_sent_feedback": "Forespørsel om DOI er sendt",
       "report_text_label": "Beskriv årsak for rapportéring"
     },
     "search_for_resources": "Søk etter ressurser",
