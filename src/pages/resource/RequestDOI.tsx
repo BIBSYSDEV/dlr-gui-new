@@ -21,10 +21,10 @@ const DialogTitleId = 'doi-dialog-title';
 
 interface RequestDOIProps {
   resource: Resource;
-  setRequestSentSuccess: (success: boolean) => void;
+  setDoiRequestSentSuccess: (success: boolean) => void;
 }
 
-const RequestDOI: FC<RequestDOIProps> = ({ resource, setRequestSentSuccess }) => {
+const RequestDOI: FC<RequestDOIProps> = ({ resource, setDoiRequestSentSuccess }) => {
   const { t } = useTranslation();
   const [showRequestDOIDialog, setShowRequestDOIDialog] = useState(false);
   const [DOIComment, setDOIComment] = useState('');
@@ -33,10 +33,10 @@ const RequestDOI: FC<RequestDOIProps> = ({ resource, setRequestSentSuccess }) =>
 
   const askForDoi = async () => {
     try {
-      setRequestSentSuccess(false);
+      setDoiRequestSentSuccess(false);
       setDOIRequestFailureError(undefined);
       await requestDOIFromCurator(resource.identifier, DOIComment);
-      setRequestSentSuccess(true);
+      setDoiRequestSentSuccess(true);
       setShowRequestDOIDialog(false);
     } catch (error) {
       setDOIRequestFailureError(handlePotentialAxiosError(error));

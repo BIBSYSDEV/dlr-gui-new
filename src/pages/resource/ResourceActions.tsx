@@ -29,6 +29,7 @@ interface ResourceUsageProps {
 const ResourceUsage: FC<ResourceUsageProps> = ({ resource, userResourceAuthorization, errorLoadingAuthorization }) => {
   const { t } = useTranslation();
   const [requestSentSuccess, setRequestSentSuccess] = useState(false);
+  const [requestDoiSentSuccess, setDoiRequestSentSuccess] = useState(false);
   const user = useSelector((state: RootState) => state.user);
   const canRequestChangeInOwnership =
     userResourceAuthorization.isConsumer && !!user.institutionAuthorities?.isPublisher;
@@ -46,7 +47,7 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, userResourceAuthoriza
             userResourceAuthorization.isEditor ||
             userResourceAuthorization.isAdmin) && (
             <Grid item>
-              <RequestDOI setRequestSentSuccess={setRequestSentSuccess} resource={resource} />
+              <RequestDOI setDoiRequestSentSuccess={setDoiRequestSentSuccess} resource={resource} />
             </Grid>
           )}
           {canRequestChangeInOwnership && (
@@ -58,6 +59,13 @@ const ResourceUsage: FC<ResourceUsageProps> = ({ resource, userResourceAuthoriza
         {requestSentSuccess && (
           <StyledAlert severity="info">
             <AlertTitle data-testid="request-sent-info">{t('resource.reporting.report_sent_feedback')}</AlertTitle>
+          </StyledAlert>
+        )}
+        {requestDoiSentSuccess && (
+          <StyledAlert severity="info">
+            <AlertTitle data-testid="request-doi-sent-info">
+              {t('resource.reporting.doi_request_sent_feedback')}
+            </AlertTitle>
           </StyledAlert>
         )}
       </StyledActionContentWrapper>
