@@ -106,7 +106,7 @@ context('Resource', () => {
     cy.get('[data-testid=doi-dialog-input]').type('some text');
     cy.get(`[data-testid=doi-dialog-submit-button]`).click();
     cy.get('[data-testid=doi-dialog]').should('not.exist');
-    cy.get('[data-testid=request-sent-info]').should('exist');
+    cy.get('[data-testid=request-doi-sent-info]').should('exist');
   });
 
   it('renders creator search result list', () => {
