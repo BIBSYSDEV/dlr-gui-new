@@ -124,8 +124,8 @@ export const mockUserAdmin: User = {
 
 export const mockInstitutionAuthorities = {
   time: '2021-05-11T08:13:35.538Z',
-  user: 'test@unit.no',
-  object: 'unit',
+  user: 'test@sikt.no',
+  object: 'sikt',
   profiles: [
     { name: 'dlr_institution_administrator' },
     { name: 'dlr_institution_curator' },
@@ -138,7 +138,7 @@ export const mockInstitutionAuthorities = {
 
 export const mockInstitutionUser = {
   time: '2021-05-17T08:13:35.538Z',
-  user: 'instuser@unit.no',
+  user: 'instuser@sikt.no',
   institution: 'myInst',
   profiles: [
     { name: 'dlr_institution_editor' },
@@ -151,7 +151,7 @@ export const mockInstitutionUser = {
 export const mockInstitutionUserYourself = {
   time: '2021-05-17T08:13:35.538Z',
   user: 'test@test.com',
-  institution: 'unit',
+  institution: 'sikt',
   profiles: [
     { name: 'dlr_institution_administrator' },
     { name: 'dlr_institution_editor' },
@@ -209,7 +209,7 @@ export const mockContributors: Contributor[] = [
     identifier: '07047aa4-ad55-4fb3-9747-f8d64ee69e12',
     features: {
       dlr_contributor_identifier: '07047aa4-ad55-4fb3-9747-f8d64ee69e12',
-      dlr_contributor_name: 'UNIT',
+      dlr_contributor_name: 'SIKT',
       dlr_contributor_time_created: '2020-11-05T12:47:18.635Z',
       dlr_contributor_type: 'HostingInstitution',
     },
@@ -479,7 +479,7 @@ export const mockFacets = {
     {
       count: '20',
       type: 'dlr_institution_id',
-      value: 'unit',
+      value: 'sikt',
     },
     {
       count: '20',
@@ -559,7 +559,7 @@ export const mockFacets = {
     {
       count: '1',
       type: 'dlr_tag',
-      value: 'Unit',
+      value: 'Sikt',
     },
     {
       count: '1',
@@ -639,7 +639,7 @@ export const mockWorkListRequestDOI: WorklistRequest[] = [
     identifier: '123',
     resourceIdentifier: mockResource.identifier,
     submitter: 'epost@epost.no',
-    institution: 'unit',
+    institution: 'sikt',
     submittedDate: '2021-04-28T11:23:34.250Z',
     type: WorkListRequestType.DOIRequest,
     description:
@@ -651,7 +651,7 @@ export const mockWorkListRequestDOI: WorklistRequest[] = [
     identifier: '234',
     resourceIdentifier: '456',
     submitter: 'epost@epost.no',
-    institution: 'unit',
+    institution: 'sikt',
     submittedDate: '2021-04-28T11:23:34.250Z',
     type: WorkListRequestType.DOIRequest,
     description: 'short',
@@ -662,7 +662,7 @@ export const mockWorkListRequestDOI: WorklistRequest[] = [
     identifier: '567',
     resourceIdentifier: '123',
     submitter: 'somebody@email.com',
-    institution: 'unit',
+    institution: 'sikt',
     submittedDate: '2021-04-28T11:23:34.250Z',
     type: WorkListRequestType.DOIRequest,
     description:
@@ -684,7 +684,7 @@ export const mockWorkListReportResource: WorklistRequest[] = [
     identifier: '21341234',
     resourceIdentifier: mockResource.identifier,
     submitter: 'epost@epost.no',
-    institution: 'unit',
+    institution: 'sikt',
     submittedDate: '2021-04-28T11:23:34.250Z',
     type: WorkListRequestType.ReportComplaint,
     description:
@@ -696,7 +696,7 @@ export const mockWorkListReportResource: WorklistRequest[] = [
     identifier: '524352435',
     resourceIdentifier: '34789257',
     submitter: 'epost@epost.no',
-    institution: 'unit',
+    institution: 'sikt',
     submittedDate: '2021-04-28T11:23:34.250Z',
     type: WorkListRequestType.ReportComplaint,
     description: 'short',
@@ -707,7 +707,7 @@ export const mockWorkListReportResource: WorklistRequest[] = [
     identifier: '435246687',
     resourceIdentifier: '74876547',
     submitter: 'somebody@email.com',
-    institution: 'unit',
+    institution: 'sikt',
     submittedDate: '2021-04-28T11:23:34.250Z',
     type: WorkListRequestType.ReportComplaint,
     description:
@@ -789,7 +789,7 @@ export const mockWorkListOwnerRequest: WorklistRequest[] = [
     identifier: '21341234',
     resourceIdentifier: mockResource.identifier,
     submitter: 'epost@epost.no',
-    institution: 'unit',
+    institution: 'sikt',
     submittedDate: '2021-04-28T11:23:34.250Z',
     type: WorkListRequestType.OWNERSHIP_REQUEST,
     description:
@@ -801,7 +801,7 @@ export const mockWorkListOwnerRequest: WorklistRequest[] = [
     identifier: '524352435',
     resourceIdentifier: '34789257',
     submitter: 'epost@epost.no',
-    institution: 'unit',
+    institution: 'sikt',
     submittedDate: '2021-04-28T11:23:34.250Z',
     type: WorkListRequestType.OWNERSHIP_REQUEST,
     description: 'short',
@@ -812,7 +812,7 @@ export const mockWorkListOwnerRequest: WorklistRequest[] = [
     identifier: '435246687',
     resourceIdentifier: '74876547',
     submitter: 'somebody@email.com',
-    institution: 'unit',
+    institution: 'sikt',
     submittedDate: '2021-04-28T11:23:34.250Z',
     type: WorkListRequestType.OWNERSHIP_REQUEST,
     description:
@@ -842,7 +842,7 @@ export const mockPanoptoResources: VMSResource[] = [
       'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/534534545/format/download/protocol/https/flavorParamIds/0',
     url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/534534545/format/url/protocol/https',
     thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/534534545/version/100002',
-    institution: 'unit',
+    institution: 'sikt',
     dlrContentIdentifier: '',
   },
   {
@@ -853,7 +853,7 @@ export const mockPanoptoResources: VMSResource[] = [
       'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
     url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
     thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
-    institution: 'unit',
+    institution: 'sikt',
     dlrContentIdentifier: '54689068054',
   },
 ];
@@ -867,7 +867,7 @@ export const mockKalturaResources: VMSResource[] = [
       'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/534534545/format/download/protocol/https/flavorParamIds/0',
     url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/534534545/format/url/protocol/https',
     thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/534534545/version/100002',
-    institution: 'unit',
+    institution: 'sikt',
     dlrContentIdentifier: '',
   },
   {
@@ -878,7 +878,7 @@ export const mockKalturaResources: VMSResource[] = [
       'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
     url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
     thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
-    institution: 'unit',
+    institution: 'sikt',
     dlrContentIdentifier: '54689068054',
   },
   {
@@ -889,7 +889,7 @@ export const mockKalturaResources: VMSResource[] = [
       'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
     url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
     thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
-    institution: 'unit',
+    institution: 'sikt',
     dlrContentIdentifier: '54689068054',
   },
   {
@@ -900,7 +900,7 @@ export const mockKalturaResources: VMSResource[] = [
       'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
     url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
     thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
-    institution: 'unit',
+    institution: 'sikt',
     dlrContentIdentifier: '54689068054',
   },
   {
@@ -911,7 +911,7 @@ export const mockKalturaResources: VMSResource[] = [
       'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
     url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
     thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
-    institution: 'unit',
+    institution: 'sikt',
     dlrContentIdentifier: '54689068054',
   },
   {
@@ -922,7 +922,7 @@ export const mockKalturaResources: VMSResource[] = [
       'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
     url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
     thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
-    institution: 'unit',
+    institution: 'sikt',
     dlrContentIdentifier: '54689068054',
   },
   {
@@ -933,7 +933,7 @@ export const mockKalturaResources: VMSResource[] = [
       'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
     url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
     thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
-    institution: 'unit',
+    institution: 'sikt',
     dlrContentIdentifier: '54689068054',
   },
   {
@@ -944,7 +944,7 @@ export const mockKalturaResources: VMSResource[] = [
       'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
     url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
     thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
-    institution: 'unit',
+    institution: 'sikt',
     dlrContentIdentifier: '54689068054',
   },
   {
@@ -955,7 +955,7 @@ export const mockKalturaResources: VMSResource[] = [
       'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
     url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
     thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
-    institution: 'unit',
+    institution: 'sikt',
     dlrContentIdentifier: '54689068054',
   },
   {
@@ -966,7 +966,7 @@ export const mockKalturaResources: VMSResource[] = [
       'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
     url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
     thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
-    institution: 'unit',
+    institution: 'sikt',
     dlrContentIdentifier: '54689068054',
   },
   {
@@ -977,7 +977,7 @@ export const mockKalturaResources: VMSResource[] = [
       'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
     url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
     thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
-    institution: 'unit',
+    institution: 'sikt',
     dlrContentIdentifier: '54689068054',
   },
   {
@@ -988,7 +988,7 @@ export const mockKalturaResources: VMSResource[] = [
       'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
     url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
     thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
-    institution: 'unit',
+    institution: 'sikt',
     dlrContentIdentifier: '54689068054',
   },
 ];
