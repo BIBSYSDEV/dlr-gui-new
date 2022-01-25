@@ -7,6 +7,7 @@ import OsloMetImage from '../resources/images/institution_logos/oslomet.png';
 import UiBImage from '../resources/images/institution_logos/uib.png';
 import HVLImage from '../resources/images/institution_logos/hvl.png';
 import UnitImage from '../resources/images/institution_logos/unit.png';
+import SiktImage from '../resources/images/institution_logos/sikt.png';
 import UiTImage from '../resources/images/institution_logos/uit.png';
 import USNImage from '../resources/images/institution_logos/usn.png';
 import { API_PATHS, API_URL } from '../utils/constants';
@@ -86,6 +87,9 @@ const Thumbnail: FC<thumbnailProps> = ({
       case UserInstitution.Unit.toLowerCase():
         event.target.src = UnitImage;
         setBackgroundColor(UnitBanner);
+        break;
+      case UserInstitution.Sikt.toLowerCase():
+        event.target.src = SiktImage;
         break;
       case UserInstitution.UiT.toLowerCase():
         event.target.src = UiTImage;
