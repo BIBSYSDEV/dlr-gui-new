@@ -119,7 +119,7 @@ const Explore = () => {
   const startOfList = createRef<HTMLDivElement>();
   const location = useLocation();
   const [queryObject, setQueryObject] = useState<QueryObject>(createQueryFromUrl(location));
-  const [page, setPage] = useState(queryObject.offset / 10 + 1);
+  const [page, setPage] = useState(queryObject.offset / NumberOfResultsPrPage + 1);
   const user = useSelector((state: RootState) => state.user);
   const [isSearching, setIsSearching] = useState(false);
   const [searchResult, setSearchResult] = useState<SearchResult>();
@@ -194,7 +194,7 @@ const Explore = () => {
       window.addEventListener('popstate', () => {
         const newQueryObject = createQueryFromUrl(window.location);
         setQueryObject(newQueryObject);
-        setPage(newQueryObject.offset / 10 + 1);
+        setPage(newQueryObject.offset / NumberOfResultsPrPage + 1);
       });
     }
   }, [queryObject, hasPopStateListener]);

@@ -93,7 +93,15 @@ const ContentPreview: FC<ContentPreviewProps> = ({
     if (!isPreview || !mainFileBeingUploaded) {
       fetch();
     }
-  }, [isPreview, mainFileBeingUploaded, resource, defaultContent, presentationMode, contentPresentationError]);
+  }, [
+    isPreview,
+    mainFileBeingUploaded,
+    resource,
+    defaultContent,
+    presentationMode,
+    contentPresentationError,
+    contentUnavailable,
+  ]);
 
   const previewIsRegularIframe = () => {
     return (
