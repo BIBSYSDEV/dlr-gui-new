@@ -1,7 +1,7 @@
 import React, { createRef, FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { getMyKalturaResources, getMyPanoptoResources } from '../../api/resourceApi';
+import { getMyPanoptoResources } from '../../api/resourceApi';
 import {
   Button,
   Checkbox,
@@ -19,14 +19,13 @@ import ErrorBanner from '../../components/ErrorBanner';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
-import { VMSResource, VideoManagementSystems } from '../../types/resource.types';
+import { VideoManagementSystems, VMSResource } from '../../types/resource.types';
 import VMSListItem from './VMSListItem';
 import Pagination from '@mui/material/Pagination';
 import { StyledFullWidthWrapper, StyledPaginationWrapper } from '../../components/styled/Wrappers';
-import StartRegistrationAccordionKaltura from './StartRegistrationAccordionKaltura';
 import StartRegistrationAccordionPanopto from './StartRegistrationAccordionPanopto';
 
-const FormDialogTitleId = 'vms-dialog-title';
+const FormDialogTitleId = 'panopto-dialog-title';
 
 const StyledDialogContent = styled(DialogContent)`
   height: 70vh;
@@ -74,16 +73,15 @@ const StyledList = styled(List)`
   width: 100%;
 `;
 
-interface VMSRegistrationProps {
+interface PanoptoRegistrationProps {
   expanded: boolean;
-  vms: VideoManagementSystems;
   onChange: (event: React.ChangeEvent<any>, isExpanded: boolean) => void;
   onSubmit: (vmsResource: VMSResource, vms: VideoManagementSystems) => void;
 }
 
 const itemsPrPage = 10;
 
-const VMSRegistration: FC<VMSRegistrationProps> = ({ expanded, vms, onChange, onSubmit }) => {
+const PanoptoRegistration: FC<PanoptoRegistrationProps> = ({ expanded, onChange, onSubmit }) => {
   const { t } = useTranslation();
   const [resources, setResources] = useState<VMSResource[]>();
   const [filteredResources, setFilteredResources] = useState<VMSResource[]>();
@@ -98,7 +96,7 @@ const VMSRegistration: FC<VMSRegistrationProps> = ({ expanded, vms, onChange, on
   const [filterValue, setFilterValue] = useState('');
   const [hideImported, setHideImported] = useState(false);
 
-  const handlePageChange = (pageValue: number) => {
+  const handlePageChange = async (pageValue: number) => {
     setPage(pageValue);
     setFirstItemOnPage((pageValue - 1) * itemsPrPage);
     filteredResources &&
@@ -116,12 +114,7 @@ const VMSRegistration: FC<VMSRegistrationProps> = ({ expanded, vms, onChange, on
     setBusyGettingResources(true);
     setGetResourcesError(undefined);
     try {
-      if (vms === VideoManagementSystems.Kaltura) {
-        setResources((await getMyKalturaResources()).data);
-      }
-      if (vms === VideoManagementSystems.Panopto) {
-        setResources((await getMyPanoptoResources()).data);
-      }
+      setResources((await getMyPanoptoResources()).data);
     } catch (error) {
       setGetResourcesError(undefined);
     } finally {
@@ -135,7 +128,7 @@ const VMSRegistration: FC<VMSRegistrationProps> = ({ expanded, vms, onChange, on
 
   const handleUseResource = (vmsResource: VMSResource) => {
     setOpen(false);
-    onSubmit(vmsResource, vms);
+    onSubmit(vmsResource, VideoManagementSystems.Panopto);
   };
 
   useEffect(() => {
@@ -157,12 +150,7 @@ const VMSRegistration: FC<VMSRegistrationProps> = ({ expanded, vms, onChange, on
 
   return (
     <>
-      {vms === VideoManagementSystems.Kaltura && (
-        <StartRegistrationAccordionKaltura expanded={expanded} onChange={onChange} handleClickOpen={handleClickOpen} />
-      )}
-      {vms === VideoManagementSystems.Panopto && (
-        <StartRegistrationAccordionPanopto expanded={expanded} onChange={onChange} handleClickOpen={handleClickOpen} />
-      )}
+      <StartRegistrationAccordionPanopto expanded={expanded} onChange={onChange} handleClickOpen={handleClickOpen} />
       <Dialog
         maxWidth={'md'}
         fullWidth
@@ -170,7 +158,7 @@ const VMSRegistration: FC<VMSRegistrationProps> = ({ expanded, vms, onChange, on
         open={open}
         onClose={handleClose}
         aria-labelledby={FormDialogTitleId}>
-        <DialogTitle id={FormDialogTitleId}>{t(`vms.${vms}.my_resources`)}</DialogTitle>
+        <DialogTitle id={FormDialogTitleId}>{t(`vms.panopto.my_resources`)}</DialogTitle>
         <StyledDialogContent>
           <StyledResultList ref={startOfList}>
             {filteredResources && resources && !busyGettingResources && (
@@ -267,4 +255,4 @@ const VMSRegistration: FC<VMSRegistrationProps> = ({ expanded, vms, onChange, on
   );
 };
 
-export default VMSRegistration;
+export default PanoptoRegistration;

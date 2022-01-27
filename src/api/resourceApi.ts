@@ -445,12 +445,18 @@ export const getMyUserAuthorizationProfileForResource = async (
   };
 };
 
-export const getMyKalturaResources = (): AxiosPromise<VMSResource[]> => {
+const defaultKalturaLimit = 20;
+const defaultKalturaOffset = 0;
+export const getMyKalturaResources = (
+  offset = defaultKalturaOffset,
+  limit = defaultKalturaLimit
+): AxiosPromise<VMSResource[]> => {
   return authenticatedApiRequest({
-    url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations`),
+    url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations?offset=${offset}&limit=${limit}`),
     method: 'GET',
   });
 };
+
 export const getMyPanoptoResources = (): AxiosPromise<VMSResource[]> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendPanoptoPath}/panopto/presentations`),

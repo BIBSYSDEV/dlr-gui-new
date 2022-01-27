@@ -51,10 +51,11 @@ import { createUppy } from '../../utils/uppy-config';
 import { useUppy } from '@uppy/react';
 import { StyledContentWrapperLarge, StyledFullPageProgressWrapper } from '../../components/styled/Wrappers';
 import { getAuthoritiesForResourceCreatorOrContributor } from '../../api/authoritiesApi';
-import VMSRegistration from './VMSRegistration';
+import PanoptoRegistration from './PanoptoRegistration';
 import institutions from '../../resources/assets/institutions.json';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import KalturaRegistration from './KalturaRegistration';
 
 const StyledEditPublication = styled.div`
   margin-top: 2rem;
@@ -432,9 +433,8 @@ const EditResourcePage = () => {
             {user.appFeature?.hasFeatureNewResourceFromKaltura && (
               <>
                 <StyledTypography>{t('common.or')}</StyledTypography>
-                <VMSRegistration
+                <KalturaRegistration
                   expanded={expanded === 'kaltura-panel'}
-                  vms={VideoManagementSystems.Kaltura}
                   onChange={handleChange('kaltura-panel')}
                   onSubmit={onSubmitVMSResource}
                 />
@@ -443,9 +443,8 @@ const EditResourcePage = () => {
             {user.appFeature?.hasFeatureNewResourceFromPanopto && (
               <>
                 <StyledTypography>{t('common.or')}</StyledTypography>
-                <VMSRegistration
+                <PanoptoRegistration
                   expanded={expanded === 'panopto-panel'}
-                  vms={VideoManagementSystems.Panopto}
                   onChange={handleChange('panopto-panel')}
                   onSubmit={onSubmitVMSResource}
                 />
