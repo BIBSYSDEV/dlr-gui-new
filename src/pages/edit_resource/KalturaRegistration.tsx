@@ -87,7 +87,8 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
     setGetResourcesError(undefined);
     try {
       setResources((await getMyKalturaResources(0, itemsPrPage)).data);
-      setTotalResults(7);
+      setTotalResults(7); //TODO: hentes fra header ?
+      //TODO: resultatene med offset er litt offsatt
     } catch (error) {
       setGetResourcesError(undefined);
     } finally {
