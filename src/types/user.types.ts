@@ -68,6 +68,7 @@ export enum UserInstitution {
   UiB = 'Uib',
   BI = 'BI',
   Unit = 'unit',
+  Sikt = 'Sikt',
   UiT = 'UiT',
   USN = 'USN',
 }

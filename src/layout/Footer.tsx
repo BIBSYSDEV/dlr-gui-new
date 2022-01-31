@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import logo from '../resources/images/unit_logo.png';
+import siktLogo from '../resources/images/sikt_logo.png';
 import { Link } from 'react-router-dom';
 import { Link as MuiLink } from '@mui/material';
 import NormalText from '../components/NormalText';
@@ -24,7 +24,10 @@ const StyledFooter = styled.footer`
 
 const StyledLogoContainer = styled.div`
   grid-area: logo;
-  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 0.5rem;
 `;
 
 const StyledPrivacyPolicyContainer = styled.div`
@@ -44,7 +47,7 @@ const Footer = () => {
     <StyledFooter>
       <StyledLogoContainer>
         <NormalText>{t('delivered_by')}</NormalText>
-        <img src={logo} alt="UNIT logo" />
+        <img src={siktLogo} alt="Sikt logo" />
       </StyledLogoContainer>
       <StyledPrivacyPolicyContainer>
         <StyledMuiLink
