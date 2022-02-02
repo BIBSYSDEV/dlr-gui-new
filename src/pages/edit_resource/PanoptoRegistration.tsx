@@ -24,6 +24,8 @@ import VMSListItem from './VMSListItem';
 import Pagination from '@mui/material/Pagination';
 import { StyledFullWidthWrapper, StyledPaginationWrapper } from '../../components/styled/Wrappers';
 import StartRegistrationAccordionPanopto from './StartRegistrationAccordionPanopto';
+import { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 const FormDialogTitleId = 'panopto-dialog-title';
 
@@ -85,7 +87,7 @@ const PanoptoRegistration: FC<PanoptoRegistrationProps> = ({ expanded, onChange,
   const { t } = useTranslation();
   const [resources, setResources] = useState<VMSResource[]>();
   const [filteredResources, setFilteredResources] = useState<VMSResource[]>();
-  const [getResourcesError, setGetResourcesError] = useState<Error>();
+  const [getResourcesError, setGetResourcesError] = useState<Error | AxiosError>();
   const [busyGettingResources, setBusyGettingResources] = useState(false);
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.md - 1}px)`);
   const [open, setOpen] = useState(false);
@@ -116,7 +118,7 @@ const PanoptoRegistration: FC<PanoptoRegistrationProps> = ({ expanded, onChange,
     try {
       setResources((await getMyPanoptoResources()).data);
     } catch (error) {
-      setGetResourcesError(undefined);
+      setGetResourcesError(handlePotentialAxiosError(error));
     } finally {
       setBusyGettingResources(false);
     }

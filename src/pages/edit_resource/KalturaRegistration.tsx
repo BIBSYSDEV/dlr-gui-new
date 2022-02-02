@@ -13,6 +13,7 @@ import VMSListItem from './VMSListItem';
 import Pagination from '@mui/material/Pagination';
 import { StyledFullWidthWrapper, StyledPaginationWrapper } from '../../components/styled/Wrappers';
 import StartRegistrationAccordionKaltura from './StartRegistrationAccordionKaltura';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
 const FormDialogTitleId = 'panopto-dialog-title';
 
@@ -86,11 +87,12 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
     setBusyGettingResources(true);
     setGetResourcesError(undefined);
     try {
-      setResources((await getMyKalturaResources(0, itemsPrPage)).data);
-      setTotalResults(7); //TODO: hentes fra header ?
-      //TODO: resultatene med offset er litt offsatt
+      const response = await getMyKalturaResources(0, itemsPrPage);
+      setResources(response.data);
+      //setTotalResults(7); //NB! Repurposed variable name
+      setTotalResults(parseInt(response.headers['content-range'])); //NB! Repurposed variable name
     } catch (error) {
-      setGetResourcesError(undefined);
+      setGetResourcesError(handlePotentialAxiosError(error));
     } finally {
       setBusyGettingResources(false);
     }
@@ -125,11 +127,13 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
             {resources && resources.length > 0 && !busyGettingResources && (
               <StyledFullWidthWrapper>
                 <StyledListInfo>
-                  <Typography variant="h3" component="p" display="inline">
-                    {`${t('common.showing')} ${getOffset(page) + 1}${
-                      totalResults > 1 && `-${getOffset(page) + itemsPrPage}`
-                    } ${t('common.of').toLowerCase()} ${totalResults} `}
-                  </Typography>
+                  {!isNaN(totalResults) && (
+                    <Typography variant="h3" component="p" display="inline">
+                      {`${t('common.showing')} ${getOffset(page) + 1}`}
+                      {totalResults > 1 && `-${getOffset(page) + itemsPrPage} `}
+                      {t('common.of').toLowerCase()} {totalResults}
+                    </Typography>
+                  )}
                 </StyledListInfo>
               </StyledFullWidthWrapper>
             )}
