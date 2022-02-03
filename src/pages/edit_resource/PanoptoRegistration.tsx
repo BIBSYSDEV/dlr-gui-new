@@ -229,7 +229,7 @@ const PanoptoRegistration: FC<PanoptoRegistrationProps> = ({ expanded, onChange,
                     <Typography variant="subtitle2">{t('common.page')}</Typography>
                     <Pagination
                       color="primary"
-                      data-testid={`vms-pagination`}
+                      data-testid={`panopto-pagination`}
                       count={Math.ceil(filteredResources.length / itemsPrPage)}
                       page={page}
                       onChange={(_event, value) => {

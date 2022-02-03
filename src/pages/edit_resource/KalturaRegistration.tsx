@@ -15,7 +15,7 @@ import { StyledFullWidthWrapper, StyledPaginationWrapper } from '../../component
 import StartRegistrationAccordionKaltura from './StartRegistrationAccordionKaltura';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
-const FormDialogTitleId = 'panopto-dialog-title';
+const FormDialogTitleId = 'kaltura-dialog-title';
 
 const StyledDialogContent = styled(DialogContent)`
   height: 70vh;
@@ -118,6 +118,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
         fullWidth
         fullScreen={fullScreenDialog}
         open={open}
+        data-testid="kaltura-dialog"
         onClose={handleClose}
         aria-labelledby={FormDialogTitleId}>
         <DialogTitle id={FormDialogTitleId}>{t(`vms.kaltura.my_resources`)}</DialogTitle>
@@ -150,7 +151,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                     <Typography variant="subtitle2">{t('common.page')}</Typography>
                     <Pagination
                       color="primary"
-                      data-testid={`vms-pagination`}
+                      data-testid={`kaltura-pagination`}
                       count={Math.ceil(totalResults / itemsPrPage)}
                       page={page}
                       onChange={(_event, value) => {

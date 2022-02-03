@@ -489,15 +489,14 @@ context('Registration', () => {
     cy.get('[data-testid=resource-type-input] input').should('have.value', ResourceFeatureTypes.video);
   });
 
-  it('can use pagination on Kaltura-list', () => {
+  it('can view pagination on Kaltura-list', () => {
     cy.get('[data-testid=new-registration-link]').click();
     cy.get('[data-testid=new-resource-kaltura]').click();
     cy.get('[data-testid=open-kaltura-dialog-button]').click();
-    cy.get(`[data-testid=vms-item-${mockKalturaResources[0].id}]`).should('exist');
-    cy.get(`[data-testid=vms-item-${mockKalturaResources[10].id}]`).should('not.exist');
-    cy.get(`[data-testid=vms-pagination] li:last-of-type button`).click(); //next page
-    cy.get(`[data-testid=vms-item-${mockKalturaResources[10].id}]`).should('exist');
+    cy.get(`[data-testid=kaltura-pagination] li:last-of-type button`).click(); //next page
+    cy.get(`[data-testid=kaltura-dialog] `).contains('Viser 11-20 av 12'); //mock returns same data for both pages
   });
+
   it('starts a registration with a Panopto video', () => {
     cy.get('[data-testid=new-registration-link]').click();
     cy.get('[data-testid=new-resource-panopto]').click();
@@ -513,7 +512,7 @@ context('Registration', () => {
     cy.get('[data-testid=open-panopto-dialog-button]').click();
     cy.get(`[data-testid=vms-item-${mockPanoptoResources[0].id}]`).should('exist');
     cy.get(`[data-testid=vms-item-${mockPanoptoResources[10].id}]`).should('not.exist');
-    cy.get(`[data-testid=vms-pagination] li:last-of-type button`).click(); //next page
+    cy.get(`[data-testid=panopto-pagination] li:last-of-type button`).click(); //next page
     cy.get(`[data-testid=vms-item-${mockPanoptoResources[10].id}]`).should('exist');
   });
 
