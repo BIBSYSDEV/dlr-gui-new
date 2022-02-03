@@ -489,7 +489,7 @@ context('Registration', () => {
     cy.get('[data-testid=resource-type-input] input').should('have.value', ResourceFeatureTypes.video);
   });
 
-  it('can use pagination on Kaltura-list (covers all VMS)', () => {
+  it('can use pagination on Kaltura-list', () => {
     cy.get('[data-testid=new-registration-link]').click();
     cy.get('[data-testid=new-resource-kaltura]').click();
     cy.get('[data-testid=open-kaltura-dialog-button]').click();
@@ -498,25 +498,6 @@ context('Registration', () => {
     cy.get(`[data-testid=vms-pagination] li:last-of-type button`).click(); //next page
     cy.get(`[data-testid=vms-item-${mockKalturaResources[10].id}]`).should('exist');
   });
-
-  it('can use filter on Kaltura-list (covers all VMS)', () => {
-    cy.get('[data-testid=new-registration-link]').click();
-    cy.get('[data-testid=new-resource-kaltura]').click();
-    cy.get('[data-testid=open-kaltura-dialog-button]').click();
-    cy.get(`[data-testid=vms-item-${mockKalturaResources[0].id}]`).should('exist');
-    cy.get(`[data-testid=vms-item-${mockKalturaResources[1].id}]`).should('exist');
-    cy.get(`[data-testid=vms-item-${mockKalturaResources[8].id}]`).should('exist');
-    cy.get(`[data-testid=filter-text-box]`).type('1');
-    cy.get(`[data-testid=vms-item-${mockKalturaResources[8].id}]`).should('not.exist');
-    cy.get(`[data-testid=vms-item-${mockKalturaResources[10].id}]`).should('exist');
-    cy.get(`[data-testid=filter-text-box]`).type('{backspace}');
-    cy.get(`[data-testid=vms-item-${mockKalturaResources[8].id}]`).should('exist');
-    cy.get(`[data-testid=hide-already-imported-checkbox]`).click();
-    cy.get(`[data-testid=vms-item-${mockKalturaResources[0].id}]`).should('exist');
-    cy.get(`[data-testid=vms-item-${mockKalturaResources[1].id}]`).should('not.exist');
-    cy.get(`[data-testid=vms-item-${mockKalturaResources[8].id}]`).should('not.exist');
-  });
-
   it('starts a registration with a Panopto video', () => {
     cy.get('[data-testid=new-registration-link]').click();
     cy.get('[data-testid=new-resource-panopto]').click();
@@ -524,6 +505,34 @@ context('Registration', () => {
     cy.get(`[data-testid=use-vms-link-button-${mockPanoptoResources[0].id}]`).click();
     cy.get('[data-testid=dlr-title-input]').should('have.value', mockPanoptoResources[0].title);
     cy.get('[data-testid=resource-type-input] input').should('have.value', ResourceFeatureTypes.video);
+  });
+
+  it('can use pagination on Panopto-list', () => {
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-panopto]').click();
+    cy.get('[data-testid=open-panopto-dialog-button]').click();
+    cy.get(`[data-testid=vms-item-${mockPanoptoResources[0].id}]`).should('exist');
+    cy.get(`[data-testid=vms-item-${mockPanoptoResources[10].id}]`).should('not.exist');
+    cy.get(`[data-testid=vms-pagination] li:last-of-type button`).click(); //next page
+    cy.get(`[data-testid=vms-item-${mockPanoptoResources[10].id}]`).should('exist');
+  });
+
+  it('can use filter on panopto-list', () => {
+    cy.get('[data-testid=new-registration-link]').click();
+    cy.get('[data-testid=new-resource-panopto]').click();
+    cy.get('[data-testid=open-panopto-dialog-button]').click();
+    cy.get(`[data-testid=vms-item-${mockPanoptoResources[0].id}]`).should('exist');
+    cy.get(`[data-testid=vms-item-${mockPanoptoResources[1].id}]`).should('exist');
+    cy.get(`[data-testid=vms-item-${mockPanoptoResources[3].id}]`).should('exist');
+    cy.get(`[data-testid=filter-text-box]`).type('1');
+    cy.get(`[data-testid=vms-item-${mockPanoptoResources[1].id}]`).should('not.exist');
+    cy.get(`[data-testid=vms-item-${mockPanoptoResources[3].id}]`).should('exist');
+    cy.get(`[data-testid=filter-text-box]`).type('{backspace}');
+    cy.get(`[data-testid=vms-item-${mockPanoptoResources[1].id}]`).should('exist');
+    cy.get(`[data-testid=hide-already-imported-checkbox]`).click();
+    cy.get(`[data-testid=vms-item-${mockPanoptoResources[0].id}]`).should('exist');
+    cy.get(`[data-testid=vms-item-${mockPanoptoResources[1].id}]`).should('not.exist');
+    cy.get(`[data-testid=vms-item-${mockPanoptoResources[2].id}]`).should('not.exist');
   });
 
   it('can open access of a published resource', () => {

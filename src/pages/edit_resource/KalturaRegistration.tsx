@@ -52,7 +52,7 @@ interface KalturaRegistrationProps {
   onSubmit: (vmsResource: VMSResource, vms: VideoManagementSystems) => void;
 }
 
-const itemsPrPage = 3;
+const itemsPrPage = 10;
 
 const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange, onSubmit }) => {
   const { t } = useTranslation();
