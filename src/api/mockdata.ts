@@ -856,6 +856,127 @@ export const mockPanoptoResources: VMSResource[] = [
     institution: 'sikt',
     dlrContentIdentifier: '54689068054',
   },
+  {
+    id: '42365465412',
+    title: 'Sample Panopto Title 3',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'sikt',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '423654654431',
+    title: 'Sample Panopto Title 11',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'sikt',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '42365465345431',
+    title: 'Sample Panopto Title 12',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'sikt',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '42365465664431',
+    title: 'Sample Panopto Title 15',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'sikt',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '4236544365431',
+    title: 'Sample Panopto Title 116',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'sikt',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '4233365465431',
+    title: 'Sample Panopto Title 117',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'sikt',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '4211365465431',
+    title: 'Sample Panopto Title 1122',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'sikt',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '4236546542231',
+    title: 'Sample Panopto Title 11111',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'sikt',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '4236543365431',
+    title: 'Sample Panopto Title 111111',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'sikt',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '4235565465431',
+    title: 'Sample Panopto Title 111111',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'sikt',
+    dlrContentIdentifier: '54689068054',
+  },
+  {
+    id: '4236546543551',
+    title: 'Sample Panopto Title 13331',
+    timeRecorded: '6421',
+    downloadUrl:
+      'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/download/protocol/https/flavorParamIds/0',
+    url: 'https://dchsou11xk84p.cloudfront.net/p/285/sp/28500/playManifest/entryId/7547/format/url/protocol/https',
+    thumbnailUrl: 'https://d38ynedpfya4s8.cloudfront.net/p/285/sp/28500/thumbnail/entry_id/7547/version/100002',
+    institution: 'sikt',
+    dlrContentIdentifier: '54689068054',
+  },
 ];
 
 export const mockKalturaResources: VMSResource[] = [
