@@ -137,7 +137,7 @@ const ResourceFormAction: FC<ResourceFormActionProps> = ({
                 variant="contained"
                 color="primary"
                 onClick={handleLeaveForm}>
-                {t('common.close')}
+                {t('common.save_and_close')}
               </UpperCaseButton>
             ) : (
               <>
