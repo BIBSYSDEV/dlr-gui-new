@@ -15,8 +15,6 @@ import { StyledFullWidthWrapper, StyledPaginationWrapper } from '../../component
 import StartRegistrationAccordionKaltura from './StartRegistrationAccordionKaltura';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 
-const FormDialogTitleId = 'kaltura-dialog-title';
-
 const StyledDialogContent = styled(DialogContent)`
   height: 70vh;
 `;
@@ -46,13 +44,14 @@ const StyledList = styled(List)`
   width: 100%;
 `;
 
+const FormDialogTitleId = 'kaltura-dialog-title';
+const itemsPrPage = 10;
+
 interface KalturaRegistrationProps {
   expanded: boolean;
   onChange: (event: React.ChangeEvent<any>, isExpanded: boolean) => void;
   onSubmit: (vmsResource: VMSResource, vms: VideoManagementSystems) => void;
 }
-
-const itemsPrPage = 10;
 
 const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange, onSubmit }) => {
   const { t } = useTranslation();
@@ -70,7 +69,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
     setBusyGettingResources(true);
     setGetResourcesError(undefined);
     try {
-      setResources((await getMyKalturaResources(getOffset(pageValue), itemsPrPage)).data);
+      setResources((await getMyKalturaResources(pageValue, itemsPrPage)).data);
     } catch (error) {
       setGetResourcesError(undefined);
     } finally {
@@ -82,12 +81,13 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
   };
 
   const handleClickOpen = async () => {
-    setPage(1);
+    const startPage = 1;
+    setPage(startPage);
     setOpen(true);
     setBusyGettingResources(true);
     setGetResourcesError(undefined);
     try {
-      const response = await getMyKalturaResources(0, itemsPrPage);
+      const response = await getMyKalturaResources(startPage, itemsPrPage);
       setResources(response.data);
       setTotalResults(parseInt(response.headers['content-range'])); //NB! Repurposed variable name
     } catch (error) {
@@ -130,7 +130,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                   {!isNaN(totalResults) && (
                     <Typography variant="h3" component="p" display="inline">
                       {`${t('common.showing')} ${getOffset(page) + 1}`}
-                      {totalResults > 1 && `-${getOffset(page) + itemsPrPage} `}
+                      {totalResults > 1 && resources.length > 1 && `-${getOffset(page) + resources.length}`}{' '}
                       {t('common.of').toLowerCase()} {totalResults}
                     </Typography>
                   )}
@@ -155,7 +155,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                       count={Math.ceil(totalResults / itemsPrPage)}
                       page={page}
                       onChange={(_event, value) => {
-                        handlePageChange(value);
+                        handlePageChange(value).then();
                       }}
                     />
                   </StyledPaginationWrapper>
