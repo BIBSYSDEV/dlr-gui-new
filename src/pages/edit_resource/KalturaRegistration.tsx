@@ -89,7 +89,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
     try {
       const response = await getMyKalturaResources(startPage, itemsPrPage);
       setResources(response.data);
-      setTotalResults(parseInt(response.headers['content-range'])); //NB! Repurposed variable name
+      setTotalResults(parseInt(response.headers['contentf-range'])); //NB! Repurposed variable name
     } catch (error) {
       setGetResourcesError(handlePotentialAxiosError(error));
     } finally {
@@ -106,8 +106,15 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
     onSubmit(vmsResource, VideoManagementSystems.Kaltura);
   };
 
-  const getOffset = (pageValue: number) => {
-    return (pageValue - 1) * itemsPrPage;
+  const generateItemCount = () => {
+    let itemCountString = `${t('common.showing')} ${(page - 1) * itemsPrPage + 1}`;
+    if (resources && resources.length > 1) {
+      itemCountString += `-${(page - 1) * itemsPrPage + resources.length}`;
+    }
+    if (!isNaN(totalResults)) {
+      itemCountString += ` ${t('common.of').toLowerCase()} ${totalResults}`;
+    }
+    return itemCountString;
   };
 
   return (
@@ -127,13 +134,9 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
             {resources && resources.length > 0 && !busyGettingResources && (
               <StyledFullWidthWrapper>
                 <StyledListInfo>
-                  {!isNaN(totalResults) && (
-                    <Typography variant="h3" component="p" display="inline">
-                      {`${t('common.showing')} ${getOffset(page) + 1}`}
-                      {totalResults > 1 && resources.length > 1 && `-${getOffset(page) + resources.length}`}{' '}
-                      {t('common.of').toLowerCase()} {totalResults}
-                    </Typography>
-                  )}
+                  <Typography variant="h3" component="p" display="inline">
+                    {generateItemCount()}
+                  </Typography>
                 </StyledListInfo>
               </StyledFullWidthWrapper>
             )}
