@@ -157,9 +157,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
                       data-testid={`kaltura-pagination`}
                       count={Math.ceil(totalResults / itemsPrPage)}
                       page={page}
-                      onChange={(_event, value) => {
-                        handlePageChange(value).then();
-                      }}
+                      onChange={(_event, value) => handlePageChange(value)}
                     />
                   </StyledPaginationWrapper>
                 )}
