@@ -494,7 +494,7 @@ context('Registration', () => {
     cy.get('[data-testid=new-resource-kaltura]').click();
     cy.get('[data-testid=open-kaltura-dialog-button]').click();
     cy.get(`[data-testid=kaltura-pagination] li:last-of-type button`).click(); //next page
-    cy.get(`[data-testid=kaltura-dialog] `).contains('Viser 11-20 av 12'); //mock returns same data for both pages
+    cy.get(`[data-testid=kaltura-dialog] `).contains(' av 12'); //mock returns same data for both pages
   });
 
   it('starts a registration with a Panopto video', () => {

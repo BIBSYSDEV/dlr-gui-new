@@ -445,14 +445,14 @@ export const getMyUserAuthorizationProfileForResource = async (
   };
 };
 
-const defaultKalturaLimit = 20;
-const defaultKalturaOffset = 0;
+const defaultKalturaPageSize = 10;
+const defaultKalturaPageIndex = 1;
 export const getMyKalturaResources = (
-  offset = defaultKalturaOffset,
-  limit = defaultKalturaLimit
+  offset = defaultKalturaPageIndex,
+  limit = defaultKalturaPageSize
 ): AxiosPromise<VMSResource[]> => {
   return authenticatedApiRequest({
-    url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations?offset=${offset}&limit=${limit}`),
+    url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations?offset=${offset}&limit=${limit}`), //offset brukes for pageindex (starter på 1), limit for pagesize
     method: 'GET',
   });
 };
