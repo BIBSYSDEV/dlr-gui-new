@@ -363,7 +363,9 @@ export const interceptRequestsOnMock = () => {
   mock.onPost(new RegExp(`${API_PATHS.guiBackendResourcesFeedbacksPath}/feedbacks/resources/.*`)).reply(202);
 
   //KALTURA
-  mock.onGet(new RegExp(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations`)).reply(200, mockKalturaResources);
+  mock.onGet(new RegExp(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations`)).reply(200, mockKalturaResources, {
+    'content-range': 12,
+  });
   mock.onPost(new RegExp(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations/import`)).reply(202);
 
   //PANOPTO

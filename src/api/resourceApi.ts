@@ -445,12 +445,18 @@ export const getMyUserAuthorizationProfileForResource = async (
   };
 };
 
-export const getMyKalturaResources = (): AxiosPromise<VMSResource[]> => {
+const defaultKalturaPageSize = 10;
+const defaultKalturaPageIndex = 1;
+export const getMyKalturaResources = (
+  offset = defaultKalturaPageIndex,
+  limit = defaultKalturaPageSize
+): AxiosPromise<VMSResource[]> => {
   return authenticatedApiRequest({
-    url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations`),
+    url: encodeURI(`${API_PATHS.guiBackendKalturaPath}/kaltura/presentations?offset=${offset}&limit=${limit}`), //offset brukes for pageindex (starter på 1), limit for pagesize
     method: 'GET',
   });
 };
+
 export const getMyPanoptoResources = (): AxiosPromise<VMSResource[]> => {
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendPanoptoPath}/panopto/presentations`),

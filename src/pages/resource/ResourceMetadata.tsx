@@ -26,6 +26,10 @@ const StyledCaption = styled(Typography)`
   display: block;
 `;
 
+const StyledTypographyWithWhiteSpace = styled(Typography)`
+  white-space: pre-line;
+`;
+
 const StyledBoldTypography = styled(Typography)`
   font-weight: 700;
 `;
@@ -128,7 +132,9 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource, isPreview = fal
             {resource.features.dlr_description && (
               <StyledFeatureWrapper data-testid="resource-description">
                 <StyledCaption variant="caption">{t('resource.metadata.description')}</StyledCaption>
-                <Typography variant="body1">{resource.features.dlr_description}</Typography>
+                <StyledTypographyWithWhiteSpace variant="body1">
+                  {resource.features.dlr_description}
+                </StyledTypographyWithWhiteSpace>
               </StyledFeatureWrapper>
             )}
           </Grid>
