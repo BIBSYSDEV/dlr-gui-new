@@ -68,22 +68,19 @@ const MainContentView = () => {
     <StyledProgressWrapper>
       <CircularProgress />
     </StyledProgressWrapper>
+  ) : hasErrorAndErrorIsNot401 ? (
+    <ErrorBanner error={resourceLoadingError} />
   ) : (
-    <>
-      {hasErrorAndErrorIsNot401 && <ErrorBanner error={resourceLoadingError} />}
-      {!hasErrorAndErrorIsNot401 && (
-        <ContentWrapper height={height}>
-          <ContentPreview
-            resource={resource}
-            isPreview={false}
-            mainFileBeingUploaded={false}
-            defaultContent={defaultContent}
-            presentationMode={presentationMode}
-            contentUnavailable={contentUnavailable}
-          />
-        </ContentWrapper>
-      )}
-    </>
+    <ContentWrapper height={height}>
+      <ContentPreview
+        resource={resource}
+        isPreview={false}
+        mainFileBeingUploaded={false}
+        defaultContent={defaultContent}
+        presentationMode={presentationMode}
+        contentUnavailable={contentUnavailable}
+      />
+    </ContentWrapper>
   );
 };
 
