@@ -5,9 +5,13 @@ import { getResource, getResourceContents, getResourceDefaultContent } from '../
 import { StyledProgressWrapper } from '../../components/styled/Wrappers';
 import { CircularProgress } from '@mui/material';
 import ContentPreview from '../../components/ContentPreview';
+import ErrorBanner from '../../components/ErrorBanner';
 import styled from 'styled-components';
+import axios, { AxiosError } from 'axios';
+import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { Content, SupportedFileTypes } from '../../types/content.types';
 import { determinePresentationMode } from '../../utils/mime_type_utils';
+import { StatusCode } from '../../utils/constants';
 
 const ContentWrapper = styled.div<{ height: string }>`
   height: ${(props) => props.height};
@@ -27,14 +31,18 @@ const MainContentView = () => {
   const searchParams = new URLSearchParams(window.location.search);
   const height = searchParams.get('height') ?? '27rem';
   const [isLoadingResource, setIsLoadingResource] = useState(true);
+  const [resourceLoadingError, setResourceLoadingError] = useState<Error | AxiosError>();
   const [defaultContent, setDefaultContent] = useState<Content | null>(null);
   const [presentationMode, setPresentationMode] = useState<SupportedFileTypes>();
   const [contentUnavailable, setContentUnavailable] = useState(false);
+  const [hasErrorAndErrorIsNot401, sethasErrorAndErrorIsNot401] = useState(false);
 
   useEffect(() => {
     const fetchData = async (resourceIdentifier: string) => {
       try {
         setIsLoadingResource(true);
+        setResourceLoadingError(undefined);
+        sethasErrorAndErrorIsNot401(false);
         const tempResource = (await getResource(resourceIdentifier)).data;
         setResource(tempResource);
         tempResource.contents = await getResourceContents(resourceIdentifier);
@@ -43,6 +51,10 @@ const MainContentView = () => {
         setPresentationMode(determinePresentationMode(defaultContent));
       } catch (error) {
         setContentUnavailable(true);
+        setResourceLoadingError(handlePotentialAxiosError(error));
+        if (axios.isAxiosError(error) && error.response?.status !== StatusCode.UNAUTHORIZED) {
+          sethasErrorAndErrorIsNot401(true);
+        }
       } finally {
         setIsLoadingResource(false);
       }
@@ -57,16 +69,21 @@ const MainContentView = () => {
       <CircularProgress />
     </StyledProgressWrapper>
   ) : (
-    <ContentWrapper height={height}>
-      <ContentPreview
-        resource={resource}
-        isPreview={false}
-        mainFileBeingUploaded={false}
-        defaultContent={defaultContent}
-        presentationMode={presentationMode}
-        contentUnavailable={contentUnavailable}
-      />
-    </ContentWrapper>
+    <>
+      {hasErrorAndErrorIsNot401 && <ErrorBanner error={resourceLoadingError} />}
+      {!hasErrorAndErrorIsNot401 && (
+        <ContentWrapper height={height}>
+          <ContentPreview
+            resource={resource}
+            isPreview={false}
+            mainFileBeingUploaded={false}
+            defaultContent={defaultContent}
+            presentationMode={presentationMode}
+            contentUnavailable={contentUnavailable}
+          />
+        </ContentWrapper>
+      )}
+    </>
   );
 };
 
