@@ -5,10 +5,7 @@ import { getResource, getResourceContents, getResourceDefaultContent } from '../
 import { StyledProgressWrapper } from '../../components/styled/Wrappers';
 import { CircularProgress } from '@mui/material';
 import ContentPreview from '../../components/ContentPreview';
-import ErrorBanner from '../../components/ErrorBanner';
 import styled from 'styled-components';
-import { AxiosError } from 'axios';
-import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { Content, SupportedFileTypes } from '../../types/content.types';
 import { determinePresentationMode } from '../../utils/mime_type_utils';
 
@@ -30,7 +27,6 @@ const MainContentView = () => {
   const searchParams = new URLSearchParams(window.location.search);
   const height = searchParams.get('height') ?? '27rem';
   const [isLoadingResource, setIsLoadingResource] = useState(true);
-  const [resourceLoadingError, setResourceLoadingError] = useState<Error | AxiosError>();
   const [defaultContent, setDefaultContent] = useState<Content | null>(null);
   const [presentationMode, setPresentationMode] = useState<SupportedFileTypes>();
   const [contentUnavailable, setContentUnavailable] = useState(false);
@@ -39,7 +35,6 @@ const MainContentView = () => {
     const fetchData = async (resourceIdentifier: string) => {
       try {
         setIsLoadingResource(true);
-        setResourceLoadingError(undefined);
         const tempResource = (await getResource(resourceIdentifier)).data;
         setResource(tempResource);
         tempResource.contents = await getResourceContents(resourceIdentifier);
@@ -48,7 +43,6 @@ const MainContentView = () => {
         setPresentationMode(determinePresentationMode(defaultContent));
       } catch (error) {
         setContentUnavailable(true);
-        setResourceLoadingError(handlePotentialAxiosError(error));
       } finally {
         setIsLoadingResource(false);
       }
@@ -62,8 +56,6 @@ const MainContentView = () => {
     <StyledProgressWrapper>
       <CircularProgress />
     </StyledProgressWrapper>
-  ) : resourceLoadingError ? (
-    <ErrorBanner error={resourceLoadingError} />
   ) : (
     <ContentWrapper height={height}>
       <ContentPreview
