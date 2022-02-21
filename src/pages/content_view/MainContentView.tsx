@@ -7,10 +7,11 @@ import { CircularProgress } from '@mui/material';
 import ContentPreview from '../../components/ContentPreview';
 import ErrorBanner from '../../components/ErrorBanner';
 import styled from 'styled-components';
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { Content, SupportedFileTypes } from '../../types/content.types';
 import { determinePresentationMode } from '../../utils/mime_type_utils';
+import { StatusCode } from '../../utils/constants';
 
 const ContentWrapper = styled.div<{ height: string }>`
   height: ${(props) => props.height};
@@ -34,12 +35,14 @@ const MainContentView = () => {
   const [defaultContent, setDefaultContent] = useState<Content | null>(null);
   const [presentationMode, setPresentationMode] = useState<SupportedFileTypes>();
   const [contentUnavailable, setContentUnavailable] = useState(false);
+  const [hasErrorAndErrorIsNot401, sethasErrorAndErrorIsNot401] = useState(false);
 
   useEffect(() => {
     const fetchData = async (resourceIdentifier: string) => {
       try {
         setIsLoadingResource(true);
         setResourceLoadingError(undefined);
+        sethasErrorAndErrorIsNot401(false);
         const tempResource = (await getResource(resourceIdentifier)).data;
         setResource(tempResource);
         tempResource.contents = await getResourceContents(resourceIdentifier);
@@ -49,6 +52,9 @@ const MainContentView = () => {
       } catch (error) {
         setContentUnavailable(true);
         setResourceLoadingError(handlePotentialAxiosError(error));
+        if (axios.isAxiosError(error) && error.response?.status !== StatusCode.UNAUTHORIZED) {
+          sethasErrorAndErrorIsNot401(true);
+        }
       } finally {
         setIsLoadingResource(false);
       }
@@ -62,7 +68,7 @@ const MainContentView = () => {
     <StyledProgressWrapper>
       <CircularProgress />
     </StyledProgressWrapper>
-  ) : resourceLoadingError ? (
+  ) : hasErrorAndErrorIsNot401 ? (
     <ErrorBanner error={resourceLoadingError} />
   ) : (
     <ContentWrapper height={height}>
