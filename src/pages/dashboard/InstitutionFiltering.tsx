@@ -119,7 +119,7 @@ const InstitutionFiltering: FC<InstitutionFilteringProps> = ({ queryObject, setQ
 
   return (
     <StyledFormControl component="fieldset">
-      <FormLabel>
+      <FormLabel component="legend">
         <Typography variant="h3">{t('dashboard.institutions')}</Typography>{' '}
       </FormLabel>
       {isLoading ? (
