@@ -34,10 +34,14 @@ const LicenseCard: FC<LicenseProps> = ({ license }) => {
       {language.includes('nb') || language.includes('nob') ? (
         <>
           {license.features?.dlr_license_code && (
-            <Typography variant="subtitle1"> {license.features?.dlr_license_name_no} </Typography>
+            <Typography component="h4" variant="subtitle1">
+              {license.features?.dlr_license_name_no}
+            </Typography>
           )}
           {!license.features?.dlr_license_name_no && (
-            <Typography variant="subtitle1">{license.features?.dlr_license_name}</Typography>
+            <Typography component="h4" variant="subtitle1">
+              {license.features?.dlr_license_name}
+            </Typography>
           )}
           <Typography variant="caption">{license.features?.dlr_license_description_no}</Typography>
           {!license.features?.dlr_license_description_no && (
