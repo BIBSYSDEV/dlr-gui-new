@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { CircularProgress, FormControlLabel, FormLabel, Radio, Typography } from '@mui/material';
+import { CircularProgress, FormControl, FormControlLabel, FormLabel, Radio, Typography } from '@mui/material';
 import { StyledContentWrapper, StyledRadioGroup } from '../../../components/styled/Wrappers';
 import { Colors } from '../../../themes/mainTheme';
 import { useTranslation } from 'react-i18next';
@@ -285,89 +285,93 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
           ariaDescription={extraRestrictionRadio}
           title={t('license.extra_restrictions')}
           expanded={true}>
-          <FormLabel component="legend" id={`${extraRestrictionRadio}-label`}>
-            <Typography variant="overline">{t('license.questions.special_needs')}</Typography>
-          </FormLabel>
-          <Field name={ResourceFeatureNamesFullPath.ResourceRestriction}>
-            {({ field }: FieldProps) => (
-              <StyledRadioGroup
-                {...field}
-                data-testid="extra_restriction_radio_group"
-                aria-label={t('license.questions.special_needs')}
-                value={field.value}
-                onChange={(event) => handleChangeInExtraRestriction(event)}>
-                {licenseRestrictions.map((element) => (
-                  <FormControlLabel
-                    key={element}
-                    data-testid={`resource-restriction-option-${element.replace(/[.\s]/g, '_')}`}
-                    value={element}
-                    disabled={values.features.dlr_status_published}
-                    control={<Radio color="primary" />}
-                    label={
-                      <Typography>{t(`license.restriction_options.${element.replace(/[.\s]/g, '_')}`)}</Typography>
-                    }
-                  />
-                ))}
-                {containsOtherWorksFieldsSelectedCC && (
-                  <>
+          <FormControl component="fieldset">
+            <FormLabel component="legend" id={`${extraRestrictionRadio}-label`}>
+              <Typography variant="overline">{t('license.questions.special_needs')}</Typography>
+            </FormLabel>
+            <Field name={ResourceFeatureNamesFullPath.ResourceRestriction}>
+              {({ field }: FieldProps) => (
+                <StyledRadioGroup
+                  {...field}
+                  data-testid="extra_restriction_radio_group"
+                  aria-label={t('license.questions.special_needs')}
+                  value={field.value}
+                  onChange={(event) => handleChangeInExtraRestriction(event)}>
+                  {licenseRestrictions.map((element) => (
                     <FormControlLabel
-                      value={Licenses.CC_BY_SA}
-                      data-testid={`resource-restriction-option-${Licenses.CC_BY_SA}`}
-                      control={<Radio color="primary" />}
+                      key={element}
+                      data-testid={`resource-restriction-option-${element.replace(/[.\s]/g, '_')}`}
+                      value={element}
                       disabled={values.features.dlr_status_published}
-                      label={<Typography>{t(`license.restriction_options.CC_BY-SA_4_0`)}</Typography>}
-                    />
-                    <FormControlLabel
-                      value={Licenses.CC_BY_NC_SA}
-                      disabled={values.features.dlr_status_published}
-                      data-testid={`resource-restriction-option-${Licenses.CC_BY_NC_SA}`}
                       control={<Radio color="primary" />}
-                      label={<Typography>{t(`license.restriction_options.CC_BY-NC-SA_4_0`)}</Typography>}
+                      label={
+                        <Typography>{t(`license.restriction_options.${element.replace(/[.\s]/g, '_')}`)}</Typography>
+                      }
                     />
-                  </>
-                )}
-              </StyledRadioGroup>
-            )}
-          </Field>
-          {savingResourceRestrictionError && (
-            <ErrorBanner userNeedsToBeLoggedIn={true} error={savingResourceRestrictionError} />
-          )}{' '}
-          {savingAccessTypeError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingAccessTypeError} />}
+                  ))}
+                  {containsOtherWorksFieldsSelectedCC && (
+                    <>
+                      <FormControlLabel
+                        value={Licenses.CC_BY_SA}
+                        data-testid={`resource-restriction-option-${Licenses.CC_BY_SA}`}
+                        control={<Radio color="primary" />}
+                        disabled={values.features.dlr_status_published}
+                        label={<Typography>{t(`license.restriction_options.CC_BY-SA_4_0`)}</Typography>}
+                      />
+                      <FormControlLabel
+                        value={Licenses.CC_BY_NC_SA}
+                        disabled={values.features.dlr_status_published}
+                        data-testid={`resource-restriction-option-${Licenses.CC_BY_NC_SA}`}
+                        control={<Radio color="primary" />}
+                        label={<Typography>{t(`license.restriction_options.CC_BY-NC-SA_4_0`)}</Typography>}
+                      />
+                    </>
+                  )}
+                </StyledRadioGroup>
+              )}
+            </Field>
+            {savingResourceRestrictionError && (
+              <ErrorBanner userNeedsToBeLoggedIn={true} error={savingResourceRestrictionError} />
+            )}{' '}
+            {savingAccessTypeError && <ErrorBanner userNeedsToBeLoggedIn={true} error={savingAccessTypeError} />}
+          </FormControl>
         </AccordionRadioGroup>
         {values.features.dlr_licensehelper_resource_restriction === LicenseRestrictionOptions.yes && (
           <AccordionRadioGroup
             ariaDescription={commercialRadio}
             title={t('license.commercial_purposes')}
             expanded={true}>
-            <FormLabel component="legend" id={`${commercialRadio}-label`}>
-              <Typography variant="overline">{t('license.questions.commercial')}</Typography>
-            </FormLabel>
-            <Field name={ResourceFeatureNamesFullPath.CanBeUsedCommercially}>
-              {({ field }: FieldProps) => (
-                <>
-                  <StyledRadioGroup
-                    {...field}
-                    data-testid="commercial-use-radio-group"
-                    aria-label={t('license.questions.commercial')}
-                    value={field.value}
-                    onChange={(event) => handleChangeInCommercialOption(event)}>
-                    {commercialPurposes.map((element, index) => (
-                      <FormControlLabel
-                        key={index}
-                        value={element}
-                        disabled={values.features.dlr_status_published}
-                        data-testid={`commercial-use-option-${element}`}
-                        control={<Radio color="primary" />}
-                        label={<Typography>{t(`license.commercial_options.${element}`)}</Typography>}
-                      />
-                    ))}
-                  </StyledRadioGroup>
-                </>
+            <FormControl component="fieldset">
+              <FormLabel component="legend" id={`${commercialRadio}-label`}>
+                <Typography variant="overline">{t('license.questions.commercial')}</Typography>
+              </FormLabel>
+              <Field name={ResourceFeatureNamesFullPath.CanBeUsedCommercially}>
+                {({ field }: FieldProps) => (
+                  <>
+                    <StyledRadioGroup
+                      {...field}
+                      data-testid="commercial-use-radio-group"
+                      aria-label={t('license.questions.commercial')}
+                      value={field.value}
+                      onChange={(event) => handleChangeInCommercialOption(event)}>
+                      {commercialPurposes.map((element, index) => (
+                        <FormControlLabel
+                          key={index}
+                          value={element}
+                          disabled={values.features.dlr_status_published}
+                          data-testid={`commercial-use-option-${element}`}
+                          control={<Radio color="primary" />}
+                          label={<Typography>{t(`license.commercial_options.${element}`)}</Typography>}
+                        />
+                      ))}
+                    </StyledRadioGroup>
+                  </>
+                )}
+              </Field>
+              {savingCanBeUsedCommerciallyError && (
+                <ErrorBanner userNeedsToBeLoggedIn={true} error={savingCanBeUsedCommerciallyError} />
               )}
-            </Field>
-            {savingCanBeUsedCommerciallyError && (
-              <ErrorBanner userNeedsToBeLoggedIn={true} error={savingCanBeUsedCommerciallyError} />
-            )}
+            </FormControl>
           </AccordionRadioGroup>
         )}
         {values.features.dlr_licensehelper_resource_restriction === LicenseRestrictionOptions.yes && (
@@ -375,55 +379,57 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
             ariaDescription={modifyAndBuildRadio}
             title={t('license.modify_and_build')}
             expanded={expandModifyAndBuildOption}>
-            <FormLabel component="legend" id={`${modifyAndBuildRadio}-label`}>
-              <Typography variant="overline">{t('license.questions.modify_and_build')}</Typography>
-            </FormLabel>
-            <Field name={ResourceFeatureNamesFullPath.OthersCanModifyAndBuildUpon}>
-              {({ field }: FieldProps) => (
-                <>
-                  <StyledRadioGroup
-                    {...field}
-                    data-testid="modify-and-build-radio-group"
-                    value={field.value}
-                    aria-label={t('license.questions.modify_and_build')}
-                    onChange={(event) => handleChangeInModifyAndBuildOption(event)}>
-                    <FormControlLabel
-                      value={ModifyAndBuildOptions.primaryYes}
-                      data-testid={`modify-and-build-option-${ModifyAndBuildOptions.primaryYes}`}
-                      disabled={values.features.dlr_status_published}
-                      control={<Radio color="primary" />}
-                      label={<Typography>{t(`license.modify_and_build_options.yes`)}</Typography>}
-                    />
-                    <FormControlLabel
-                      value={ModifyAndBuildOptions.SA}
-                      data-testid={`modify-and-build-option-${ModifyAndBuildOptions.SA}`}
-                      disabled={values.features.dlr_status_published}
-                      control={<Radio color="primary" />}
-                      label={
-                        <>
-                          <StyledFormControlLabel>
-                            {t(`license.modify_and_build_options.share_alike`)}
-                          </StyledFormControlLabel>
-                          <StyledFormControlLabelDetail>
-                            {t(`license.modify_and_build_options.share_alike_warning`)}
-                          </StyledFormControlLabelDetail>
-                        </>
-                      }
-                    />
-                    <FormControlLabel
-                      value={ModifyAndBuildOptions.ND}
-                      disabled={values.features.dlr_status_published}
-                      data-testid={`modify-and-build-option-${ModifyAndBuildOptions.ND}`}
-                      control={<Radio color="primary" />}
-                      label={<Typography>{t(`license.modify_and_build_options.non_destructive`)}</Typography>}
-                    />
-                  </StyledRadioGroup>
-                </>
+            <FormControl component="fieldset">
+              <FormLabel component="legend" id={`${modifyAndBuildRadio}-label`}>
+                <Typography variant="overline">{t('license.questions.modify_and_build')}</Typography>
+              </FormLabel>
+              <Field name={ResourceFeatureNamesFullPath.OthersCanModifyAndBuildUpon}>
+                {({ field }: FieldProps) => (
+                  <>
+                    <StyledRadioGroup
+                      {...field}
+                      data-testid="modify-and-build-radio-group"
+                      value={field.value}
+                      aria-label={t('license.questions.modify_and_build')}
+                      onChange={(event) => handleChangeInModifyAndBuildOption(event)}>
+                      <FormControlLabel
+                        value={ModifyAndBuildOptions.primaryYes}
+                        data-testid={`modify-and-build-option-${ModifyAndBuildOptions.primaryYes}`}
+                        disabled={values.features.dlr_status_published}
+                        control={<Radio color="primary" />}
+                        label={<Typography>{t(`license.modify_and_build_options.yes`)}</Typography>}
+                      />
+                      <FormControlLabel
+                        value={ModifyAndBuildOptions.SA}
+                        data-testid={`modify-and-build-option-${ModifyAndBuildOptions.SA}`}
+                        disabled={values.features.dlr_status_published}
+                        control={<Radio color="primary" />}
+                        label={
+                          <>
+                            <StyledFormControlLabel>
+                              {t(`license.modify_and_build_options.share_alike`)}
+                            </StyledFormControlLabel>
+                            <StyledFormControlLabelDetail>
+                              {t(`license.modify_and_build_options.share_alike_warning`)}
+                            </StyledFormControlLabelDetail>
+                          </>
+                        }
+                      />
+                      <FormControlLabel
+                        value={ModifyAndBuildOptions.ND}
+                        disabled={values.features.dlr_status_published}
+                        data-testid={`modify-and-build-option-${ModifyAndBuildOptions.ND}`}
+                        control={<Radio color="primary" />}
+                        label={<Typography>{t(`license.modify_and_build_options.non_destructive`)}</Typography>}
+                      />
+                    </StyledRadioGroup>
+                  </>
+                )}
+              </Field>
+              {savingOthersCanModifyAndBuildUponError && (
+                <ErrorBanner userNeedsToBeLoggedIn={true} error={savingOthersCanModifyAndBuildUponError} />
               )}
-            </Field>
-            {savingOthersCanModifyAndBuildUponError && (
-              <ErrorBanner userNeedsToBeLoggedIn={true} error={savingOthersCanModifyAndBuildUponError} />
-            )}
+            </FormControl>
           </AccordionRadioGroup>
         )}
         {values.licenses[0].features?.dlr_license_code && values.features.dlr_licensehelper_resource_restriction && (
