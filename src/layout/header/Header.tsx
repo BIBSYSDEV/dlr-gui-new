@@ -54,7 +54,7 @@ const Header = () => {
   const user = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const mediumOrSmallerScreen = useMediaQuery(`(max-width:${DeviceWidths.md}px)`);
+  const isMediumOrSmallerScreen = useMediaQuery(`(max-width:${DeviceWidths.md}px)`);
 
   const handleBurgerMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -65,7 +65,7 @@ const Header = () => {
 
   return (
     <StyledPageHeader data-testid="navigation-bar" role="navigation">
-      {mediumOrSmallerScreen && (
+      {isMediumOrSmallerScreen && (
         <>
           <StyledBurgerMenu>
             <IconButton
@@ -131,7 +131,7 @@ const Header = () => {
 
       <Logo />
 
-      {!mediumOrSmallerScreen && user.id && (
+      {!isMediumOrSmallerScreen && user.id && (
         <>
           <Button
             color="neutral"
@@ -163,17 +163,14 @@ const Header = () => {
         </StyledLanguageButtonUserIsNotLoggedInVariant>
       )}
 
-      {!mediumOrSmallerScreen && (
-        <>
-          {user.id ? (
-            <Typography variant="body1">
-              <AvatarButton />
-            </Typography>
-          ) : (
-            <LoginButton variant="outlined" />
-          )}
-        </>
-      )}
+      {!isMediumOrSmallerScreen &&
+        (user.id ? (
+          <Typography variant="body1">
+            <AvatarButton />
+          </Typography>
+        ) : (
+          <LoginButton variant="outlined" />
+        ))}
     </StyledPageHeader>
   );
 };
