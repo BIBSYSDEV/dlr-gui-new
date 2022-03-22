@@ -259,6 +259,9 @@
     "handle_not_found": "Handle ikke funnet",
     "this_resource_has_been_deleted": "Desverre har denne ressursen blitt slettet"
   },
+  "header": {
+    "show_navigation_menu" : "Vis navigasjonsmeny"
+  },
   "illustration_alts_tags": {
     "browsing_resource": "En dame søker etter en ressurs",
     "resource_in_space": "Tegning av en dame med forstørrelses glass som leter etter et dokument som har havnet i verdensrommet",

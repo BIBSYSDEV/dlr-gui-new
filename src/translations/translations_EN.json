@@ -258,6 +258,9 @@
     "handle_not_found": "Handle not found",
     "this_resource_has_been_deleted": "Unfortunately this resource has been deleted"
   },
+  "header": {
+    "show_navigation_menu" : "Show navigation menu"
+  },
   "illustration_alts_tags": {
     "browsing_resource": "A woman is browsing for resources",
     "resource_in_space": "Drawing of a woman with magnifying glass searching for a document lost in outer space",
