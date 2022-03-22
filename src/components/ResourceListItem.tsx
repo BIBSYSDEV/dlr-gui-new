@@ -92,12 +92,13 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
         <StyledThumbnailWrapper>
           {resource.features.dlr_status_published ? (
             <Link
+              aria-hidden={true}
               data-testid={`thumbnail-link-to-resource-${resource.identifier}`}
               href={generateNewUrlAndRetainLMSParams(`${resourcePath}/${resource.identifier}`)}>
               <Thumbnail
                 institution={resource.features.dlr_storage_id ?? fallbackInstitution}
                 resourceOrContentIdentifier={resource.identifier}
-                alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
+                alt={''}
               />
             </Link>
           ) : (
