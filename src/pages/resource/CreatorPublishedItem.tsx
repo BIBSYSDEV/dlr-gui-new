@@ -5,7 +5,6 @@ import Thumbnail from '../../components/Thumbnail';
 import ResourceTypeInfo from '../../components/ResourceTypeInfo';
 import styled from 'styled-components';
 import { Colors } from '../../themes/mainTheme';
-import { useTranslation } from 'react-i18next';
 import { getLMSSearchParams } from '../../utils/lmsService';
 import { resourcePath } from '../../utils/constants';
 
@@ -62,16 +61,10 @@ interface CreatorPublishedItemProps {
 }
 
 const CreatorPublishedItem: FC<CreatorPublishedItemProps> = ({ resource, testId }) => {
-  const { t } = useTranslation();
-
   return (
     <StyledGridContainer data-testid={testId}>
       <StyledThumbnailWrapper>
-        <Thumbnail
-          institution={resource.features.dlr_storage_id}
-          resourceOrContentIdentifier={resource.identifier}
-          alt=""
-        />
+        <Thumbnail institution={resource.features.dlr_storage_id} resourceOrContentIdentifier={resource.identifier} />
         <ResourceTypeInfo resource={resource} />
       </StyledThumbnailWrapper>
       <div>

@@ -99,14 +99,12 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
               <Thumbnail
                 institution={resource.features.dlr_storage_id ?? fallbackInstitution}
                 resourceOrContentIdentifier={resource.identifier}
-                alt=""
               />
             </Link>
           ) : (
             <Thumbnail
               institution={resource.features.dlr_storage_id ?? fallbackInstitution}
               resourceOrContentIdentifier={resource.identifier}
-              alt=""
             />
           )}
 

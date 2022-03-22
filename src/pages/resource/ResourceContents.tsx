@@ -56,7 +56,6 @@ const ResourceContents: FC<ResourceContentsProps> = ({ resource, userResourceAut
         <Thumbnail
           data-testid={`file-content-${content.identifier}-content`}
           institution={resource.features.dlr_storage_id ?? institution}
-          alt={content.features.dlr_content_title ?? content.features.dlr_content}
           resourceOrContentIdentifier={content.identifier}
           small={true}
         />

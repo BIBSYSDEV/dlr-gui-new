@@ -131,7 +131,6 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
             <Thumbnail
               institution={resource.features.dlr_storage_id}
               resourceOrContentIdentifier={resource.identifier}
-              alt={''}
             />
           </Link>
           <ResourceTypeInfo resource={resource} />
