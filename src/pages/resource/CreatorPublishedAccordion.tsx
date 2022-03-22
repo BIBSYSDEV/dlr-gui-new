@@ -27,6 +27,7 @@ import { DeviceWidths } from '../../themes/mainTheme';
 import { getLMSSearchParams } from '../../utils/lmsService';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import { AdditionalTextForScreenReaders } from '../../components/styled/StyledTypographies';
 
 const StyledAccordion = styled(Accordion)`
   margin-top: 1rem;
@@ -46,7 +47,7 @@ const StyledDetails = styled(AccordionDetails)`
   flex-direction: column;
 `;
 
-const StyledTypography = styled(Typography)`
+const StyledTypography: any = styled(Typography)`
   margin-left: 1rem;
   margin-bottom: 1rem;
 `;
@@ -150,7 +151,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ parentR
             <CircularProgress />
           ) : (
             <>
-              <StyledTypography variant="subtitle2" gutterBottom>
+              <StyledTypography component="span" variant="subtitle2" gutterBottom>
                 {t('resource.number_of_resources_found')}: {searchResult?.numFound ? searchResult.numFound - 1 : 0}
               </StyledTypography>
               <SearchResultWrapper>
@@ -171,6 +172,10 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ parentR
             <StyledTypography>
               <Link underline="hover" data-testid={`show-all-posts-${creator.identifier}`} href={link}>
                 {t('resource.browse_by_creator')}
+                <AdditionalTextForScreenReaders>
+                  {creator.features.dlr_creator_name}
+                  {t('resource.browse_by_creator_screen_reader_only')}
+                </AdditionalTextForScreenReaders>
               </Link>
             </StyledTypography>
           )}
@@ -187,7 +192,7 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ parentR
           <CircularProgress />
         ) : (
           <StyledDetails>
-            <StyledTypography variant="subtitle2" gutterBottom>
+            <StyledTypography component="span" variant="subtitle2" gutterBottom>
               {t('resource.number_of_resources_found')}: {searchResult?.numFound ? searchResult.numFound - 1 : 0}
             </StyledTypography>
             <SearchResultWrapper>
@@ -203,6 +208,10 @@ const CreatorPublishedAccordion: FC<CreatorPublishedAccordionProps> = ({ parentR
               <StyledTypography align="right">
                 <Link underline="hover" data-testid={`show-all-posts-${creator.identifier}`} href={link}>
                   {t('resource.browse_by_creator')}
+                  <AdditionalTextForScreenReaders>
+                    {creator.features.dlr_creator_name}
+                    {t('resource.browse_by_creator_screen_reader_only')}
+                  </AdditionalTextForScreenReaders>
                 </Link>
               </StyledTypography>
             )}

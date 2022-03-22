@@ -47,7 +47,7 @@ const StyledTimeCreatedTypography = styled(Typography)`
   min-width: 6rem;
 `;
 
-const StyledMaxTwoLinesTypography = styled(Typography)`
+const StyledMaxTwoLinesTypography: any = styled(Typography)`
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -124,6 +124,7 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
       <StyledFirstColumn>
         <StyledThumbnailWrapper>
           <Link
+            tabIndex={-1}
             aria-hidden={true}
             data-testid={`thumbnail-link-to-resource-${resource.identifier}`}
             href={generateURL(resource)}>
@@ -146,7 +147,7 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
       <StyledSecondColumn>
         <div>
           <StyledHeader>
-            <StyledMaxTwoLinesTypography variant="h4">
+            <StyledMaxTwoLinesTypography component={'h3'} variant="h4">
               <Link
                 underline="hover"
                 data-testid={`link-to-resource-${resource.identifier}`}

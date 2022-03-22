@@ -47,7 +47,7 @@ const StyledGridContainer = styled.div`
   height: auto;
 `;
 
-const StyledLinkTypography = styled(Typography)`
+const StyledLinkTypography: any = styled(Typography)`
   hyphens: auto;
 `;
 
@@ -70,12 +70,12 @@ const CreatorPublishedItem: FC<CreatorPublishedItemProps> = ({ resource, testId 
         <Thumbnail
           institution={resource.features.dlr_storage_id}
           resourceOrContentIdentifier={resource.identifier}
-          alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
+          alt=""
         />
         <ResourceTypeInfo resource={resource} />
       </StyledThumbnailWrapper>
       <div>
-        <StyledLinkTypography variant="subtitle2" gutterBottom>
+        <StyledLinkTypography component="h3" variant="subtitle2" gutterBottom>
           <Link underline="hover" href={generateURL(resource)}>
             {resource.features.dlr_title}
           </Link>
