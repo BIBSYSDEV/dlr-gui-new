@@ -92,7 +92,7 @@ const LicenseFiltering: FC<LicenseFilteringProps> = ({ queryObject, setQueryObje
 
   return (
     <StyledFormControl component="fieldset">
-      <FormLabel>
+      <FormLabel component="legend">
         <Typography variant="h3">{t('dashboard.licenses')}</Typography>
       </FormLabel>
       <FormGroup>

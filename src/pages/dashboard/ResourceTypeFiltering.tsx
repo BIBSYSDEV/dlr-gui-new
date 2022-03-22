@@ -62,7 +62,7 @@ const ResourceTypeFiltering: FC<ResourceTypeFilteringProps> = ({ queryObject, se
 
   return (
     <StyledFormControl component="fieldset">
-      <FormLabel>
+      <FormLabel component="legend">
         <Typography variant="h3">{t('resource.metadata.type')}</Typography>
       </FormLabel>
       <FormGroup>
