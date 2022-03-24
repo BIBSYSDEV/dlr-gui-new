@@ -47,7 +47,7 @@ const StyledTimeCreatedTypography = styled(Typography)`
   min-width: 6rem;
 `;
 
-const StyledMaxTwoLinesTypography = styled(Typography)`
+const StyledMaxTwoLinesTypography: any = styled(Typography)`
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -123,11 +123,14 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
     <StyledListItem data-testid={`list-item-resources-${resource.identifier}`}>
       <StyledFirstColumn>
         <StyledThumbnailWrapper>
-          <Link data-testid={`thumbnail-link-to-resource-${resource.identifier}`} href={generateURL(resource)}>
+          <Link
+            tabIndex={-1}
+            aria-hidden={true}
+            data-testid={`thumbnail-link-to-resource-${resource.identifier}`}
+            href={generateURL(resource)}>
             <Thumbnail
               institution={resource.features.dlr_storage_id}
               resourceOrContentIdentifier={resource.identifier}
-              alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
             />
           </Link>
           <ResourceTypeInfo resource={resource} />
@@ -143,7 +146,7 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
       <StyledSecondColumn>
         <div>
           <StyledHeader>
-            <StyledMaxTwoLinesTypography variant="h4">
+            <StyledMaxTwoLinesTypography component={'h3'} variant="h4">
               <Link
                 underline="hover"
                 data-testid={`link-to-resource-${resource.identifier}`}

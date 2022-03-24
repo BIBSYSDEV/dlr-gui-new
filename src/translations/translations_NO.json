@@ -259,6 +259,9 @@
     "handle_not_found": "Handle ikke funnet",
     "this_resource_has_been_deleted": "Desverre har denne ressursen blitt slettet"
   },
+  "header": {
+    "show_navigation_menu" : "Vis navigasjonsmeny"
+  },
   "illustration_alts_tags": {
     "browsing_resource": "En dame søker etter en ressurs",
     "resource_in_space": "Tegning av en dame med forstørrelses glass som leter etter et dokument som har havnet i verdensrommet",
@@ -383,6 +386,7 @@
     "also_published_by_plural": "Har også publisert",
     "also_published_by_singular": "Har også publisert",
     "browse_by_creator": "Se flere ressurser",
+    "browse_by_creator_screen_reader_only": "har publisert",
     "busy_uploading_save_and_continue_later_is_disabled": "Det er ikke mulig å publisere eller lagre og fortsette senere mens hovedfila lastes opp",
     "contributor_type": {
       "ContactPerson": "Kontakt person",

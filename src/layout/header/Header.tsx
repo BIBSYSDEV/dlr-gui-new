@@ -2,7 +2,7 @@ import React from 'react';
 import LoginButton from './LoginButton';
 import Logo from './Logo';
 import styled from 'styled-components';
-import { Button, IconButton, Typography } from '@mui/material';
+import { Button, IconButton, Typography, useMediaQuery } from '@mui/material';
 import { Link, Link as RouterLink } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useSelector } from 'react-redux';
@@ -10,7 +10,7 @@ import { RootState } from '../../state/rootReducer';
 import Logout from './Logout';
 import { useTranslation } from 'react-i18next';
 import AddIcon from '@mui/icons-material/Add';
-import { Colors } from '../../themes/mainTheme';
+import { Colors, DeviceWidths } from '../../themes/mainTheme';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ChangeLanguageButton from './ChangeLanguageButton';
@@ -34,18 +34,6 @@ const StyledPageHeader = styled.div`
 
 const StyledBurgerMenu = styled.div`
   justify-self: left;
-  @media (min-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
-    display: none;
-  }
-`;
-
-const StyledSecondaryButtonBar = styled.div`
-  @media (max-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
-    display: none;
-  }
-  @media (min-width: ${({ theme }) => theme.breakpoints.values.md + 'px'}) {
-    display: contents;
-  }
 `;
 
 const StyledLanguageButtonWrapper = styled.div`
@@ -66,6 +54,7 @@ const Header = () => {
   const user = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const isMediumOrSmallerScreen = useMediaQuery(`(max-width:${DeviceWidths.md}px)`);
 
   const handleBurgerMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -76,56 +65,74 @@ const Header = () => {
 
   return (
     <StyledPageHeader data-testid="navigation-bar" role="navigation">
-      <StyledBurgerMenu>
-        <IconButton data-testid="navbar-burger-menu-button" onClick={handleBurgerMenuClick} size="large">
-          <MenuIcon />
-        </IconButton>
-      </StyledBurgerMenu>
-      <Menu
-        data-testid="navbar-burger-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleBurgerMenuClose}>
-        {user.id && (
-          <MenuItem
-            onClick={handleBurgerMenuClose}
-            component={Link}
-            to={generateNewUrlAndRetainLMSParams('/registration')}>
-            <AddIcon />
-            <Typography variant="button">{t('resource.new_registration')}</Typography>
-          </MenuItem>
-        )}
-        {user.id && (
-          <MenuItem
-            onClick={handleBurgerMenuClose}
-            component={Link}
-            to={generateNewUrlAndRetainLMSParams(`${resourcePath}/user/current`)}>
-            <DescriptionOutlinedIcon />
-            <Typography variant="button">{t('resource.my_resources')}</Typography>
-          </MenuItem>
-        )}
-        {(user.institutionAuthorities?.isCurator || user.institutionAuthorities?.isEditor) && (
-          <MenuItem onClick={handleBurgerMenuClose} component={Link} to={generateNewUrlAndRetainLMSParams('/worklist')}>
-            <Typography variant="button">{t('work_list.page_title')}</Typography>
-          </MenuItem>
-        )}
-        {user.institutionAuthorities?.isAdministrator && (
-          <MenuItem onClick={handleBurgerMenuClose} component={Link} to={generateNewUrlAndRetainLMSParams('/admin')}>
-            <Typography variant="button">{t('administrative.page_heading')}</Typography>
-          </MenuItem>
-        )}
-        {user.id && (
-          <MenuItem onClick={handleBurgerMenuClose} component={Link} to={generateNewUrlAndRetainLMSParams('/profile')}>
-            <Typography variant="button">{t('profile.profile')}</Typography>
-          </MenuItem>
-        )}
-        <MenuItem onClick={handleBurgerMenuClose}>{user.id ? <Logout /> : <LoginButton />}</MenuItem>
-      </Menu>
+      {isMediumOrSmallerScreen && (
+        <>
+          <StyledBurgerMenu>
+            <IconButton
+              aria-label={t('header.show_navigation_menu')}
+              data-testid="navbar-burger-menu-button"
+              onClick={handleBurgerMenuClick}
+              size="large">
+              <MenuIcon />
+            </IconButton>
+          </StyledBurgerMenu>
+          <Menu
+            data-testid="navbar-burger-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleBurgerMenuClose}>
+            {user.id && (
+              <MenuItem
+                onClick={handleBurgerMenuClose}
+                component={Link}
+                to={generateNewUrlAndRetainLMSParams('/registration')}>
+                <AddIcon />
+                <Typography variant="button">{t('resource.new_registration')}</Typography>
+              </MenuItem>
+            )}
+            {user.id && (
+              <MenuItem
+                onClick={handleBurgerMenuClose}
+                component={Link}
+                to={generateNewUrlAndRetainLMSParams(`${resourcePath}/user/current`)}>
+                <DescriptionOutlinedIcon />
+                <Typography variant="button">{t('resource.my_resources')}</Typography>
+              </MenuItem>
+            )}
+            {(user.institutionAuthorities?.isCurator || user.institutionAuthorities?.isEditor) && (
+              <MenuItem
+                onClick={handleBurgerMenuClose}
+                component={Link}
+                to={generateNewUrlAndRetainLMSParams('/worklist')}>
+                <Typography variant="button">{t('work_list.page_title')}</Typography>
+              </MenuItem>
+            )}
+            {user.institutionAuthorities?.isAdministrator && (
+              <MenuItem
+                onClick={handleBurgerMenuClose}
+                component={Link}
+                to={generateNewUrlAndRetainLMSParams('/admin')}>
+                <Typography variant="button">{t('administrative.page_heading')}</Typography>
+              </MenuItem>
+            )}
+            {user.id && (
+              <MenuItem
+                onClick={handleBurgerMenuClose}
+                component={Link}
+                to={generateNewUrlAndRetainLMSParams('/profile')}>
+                <Typography variant="button">{t('profile.profile')}</Typography>
+              </MenuItem>
+            )}
+            <MenuItem onClick={handleBurgerMenuClose}>{user.id ? <Logout /> : <LoginButton />}</MenuItem>
+          </Menu>
+        </>
+      )}
+
       <Logo />
 
-      <StyledSecondaryButtonBar>
-        {user.id && (
+      {!isMediumOrSmallerScreen && user.id && (
+        <>
           <Button
             color="neutral"
             component={RouterLink}
@@ -134,8 +141,7 @@ const Header = () => {
             startIcon={<AddIcon />}>
             <Typography variant="button">{t('resource.new_registration')}</Typography>
           </Button>
-        )}
-        {user.id && (
+
           <Button
             color="neutral"
             startIcon={<DescriptionOutlinedIcon />}
@@ -144,8 +150,9 @@ const Header = () => {
             to={generateNewUrlAndRetainLMSParams(`${resourcePath}/user/current`)}>
             <Typography variant="button">{t('resource.my_resources')}</Typography>
           </Button>
-        )}
-      </StyledSecondaryButtonBar>
+        </>
+      )}
+
       {user.id ? (
         <StyledLanguageButtonWrapper>
           <ChangeLanguageButton />
@@ -156,15 +163,14 @@ const Header = () => {
         </StyledLanguageButtonUserIsNotLoggedInVariant>
       )}
 
-      <StyledSecondaryButtonBar>
-        {user.id ? (
+      {!isMediumOrSmallerScreen &&
+        (user.id ? (
           <Typography variant="body1">
             <AvatarButton />
           </Typography>
         ) : (
           <LoginButton variant="outlined" />
-        )}
-      </StyledSecondaryButtonBar>
+        ))}
     </StyledPageHeader>
   );
 };

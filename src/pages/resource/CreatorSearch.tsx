@@ -13,13 +13,13 @@ interface CreatorSearchProps {
 
 const CreatorSearch: FC<CreatorSearchProps> = ({ resource }) => {
   return (
-    <>
+    <aside>
       {resource.creators
         .filter((creator) => !!creator.features.dlr_creator_name)
         .map((creator) => (
           <StyledCreatorPublishedAccordion key={creator.identifier} creator={creator} parentResource={resource} />
         ))}
-    </>
+    </aside>
   );
 };
 

@@ -244,7 +244,9 @@ const Explore = () => {
                 </StyledList>
                 {searchResult.numFound > NumberOfResultsPrPage && (
                   <StyledPaginationWrapper>
-                    <Typography variant="subtitle2">{t('common.page')}</Typography>
+                    <Typography component={'span'} variant="subtitle2">
+                      {t('common.page')}
+                    </Typography>
                     <Pagination
                       count={Math.ceil(searchResult.numFound / NumberOfResultsPrPage)}
                       page={page}

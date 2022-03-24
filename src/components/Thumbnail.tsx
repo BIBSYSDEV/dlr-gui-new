@@ -50,7 +50,6 @@ const urlGenerator = (resourceOrContentIdentifier: string) => {
 
 interface thumbnailProps {
   resourceOrContentIdentifier: string;
-  alt: string;
   needsToStartToPoll?: boolean;
   institution?: string;
   small?: boolean;
@@ -58,7 +57,6 @@ interface thumbnailProps {
 
 const Thumbnail: FC<thumbnailProps> = ({
   resourceOrContentIdentifier,
-  alt,
   needsToStartToPoll = false,
   institution = '',
   small = false,
@@ -125,7 +123,7 @@ const Thumbnail: FC<thumbnailProps> = ({
         onError={(event: any) => addDefaultImage(event)}
         src={url}
         small={small}
-        alt={alt}
+        alt={''}
         aria-hidden="true"
         data-testid={`thumbnail-${resourceOrContentIdentifier}`}
       />
