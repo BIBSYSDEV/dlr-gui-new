@@ -109,7 +109,6 @@ const FileFields: FC<FileFieldsProps> = ({
               institution={values.features.dlr_storage_id ?? institution}
               needsToStartToPoll={shouldPollNewThumbnail}
               resourceOrContentIdentifier={values.identifier}
-              alt={t('resource.metadata.resource')}
             />
           </MainFileImageWrapper>
 

@@ -5,7 +5,6 @@ import Thumbnail from '../../components/Thumbnail';
 import ResourceTypeInfo from '../../components/ResourceTypeInfo';
 import styled from 'styled-components';
 import { Colors } from '../../themes/mainTheme';
-import { useTranslation } from 'react-i18next';
 import { getLMSSearchParams } from '../../utils/lmsService';
 import { resourcePath } from '../../utils/constants';
 
@@ -47,7 +46,7 @@ const StyledGridContainer = styled.div`
   height: auto;
 `;
 
-const StyledLinkTypography = styled(Typography)`
+const StyledLinkTypography: any = styled(Typography)`
   hyphens: auto;
 `;
 
@@ -62,20 +61,14 @@ interface CreatorPublishedItemProps {
 }
 
 const CreatorPublishedItem: FC<CreatorPublishedItemProps> = ({ resource, testId }) => {
-  const { t } = useTranslation();
-
   return (
     <StyledGridContainer data-testid={testId}>
       <StyledThumbnailWrapper>
-        <Thumbnail
-          institution={resource.features.dlr_storage_id}
-          resourceOrContentIdentifier={resource.identifier}
-          alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
-        />
+        <Thumbnail institution={resource.features.dlr_storage_id} resourceOrContentIdentifier={resource.identifier} />
         <ResourceTypeInfo resource={resource} />
       </StyledThumbnailWrapper>
       <div>
-        <StyledLinkTypography variant="subtitle2" gutterBottom>
+        <StyledLinkTypography component="h3" variant="subtitle2" gutterBottom>
           <Link underline="hover" href={generateURL(resource)}>
             {resource.features.dlr_title}
           </Link>

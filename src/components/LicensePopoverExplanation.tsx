@@ -35,7 +35,7 @@ const ScreenReaderOnlyP = styled.p`
   overflow: hidden !important;
 `;
 
-const StyledTypography = styled(Typography)`
+const StyledTypography: any = styled(Typography)`
   margin-bottom: 0.5rem;
 `;
 const StyledLastTypography = styled(Typography)`
@@ -55,7 +55,9 @@ const Explanation: FC<ExplanationProps> = ({ icon, explanation, fontVariant }) =
   return (
     <ExplanationWrapper>
       <StyledImage src={icon} alt="" />
-      <Typography variant={fontVariant ?? 'body2'}>{explanation}</Typography>
+      <Typography component={fontVariant ? 'h5' : 'p'} variant={fontVariant ?? 'body2'}>
+        {explanation}
+      </Typography>
     </ExplanationWrapper>
   );
 };
@@ -106,7 +108,7 @@ const LicensePopoverExplanation: FC<CCExplanationProps> = ({
         <PopoverContent>
           {showIntroduction && (
             <>
-              <StyledTypography variant="subtitle2">
+              <StyledTypography component="h4" variant="subtitle2">
                 {t('license.part_description.need_to_select_license')}
               </StyledTypography>
               <StyledTypography variant="body2">

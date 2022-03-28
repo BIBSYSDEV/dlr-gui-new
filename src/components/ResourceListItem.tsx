@@ -92,19 +92,19 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
         <StyledThumbnailWrapper>
           {resource.features.dlr_status_published ? (
             <Link
+              tabIndex={-1}
+              aria-hidden={true}
               data-testid={`thumbnail-link-to-resource-${resource.identifier}`}
               href={generateNewUrlAndRetainLMSParams(`${resourcePath}/${resource.identifier}`)}>
               <Thumbnail
                 institution={resource.features.dlr_storage_id ?? fallbackInstitution}
                 resourceOrContentIdentifier={resource.identifier}
-                alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
               />
             </Link>
           ) : (
             <Thumbnail
               institution={resource.features.dlr_storage_id ?? fallbackInstitution}
               resourceOrContentIdentifier={resource.identifier}
-              alt={resource.features.dlr_title ?? t('resource.metadata.resource')}
             />
           )}
 
@@ -113,7 +113,7 @@ const ResourceListItem: FC<ResourceListItemProps> = ({
           </StyledResourceTypeInfoWrapper>
         </StyledThumbnailWrapper>
         <StyledMetaDataColumn>
-          <Typography gutterBottom variant="h4">
+          <Typography gutterBottom component="h2" variant="h4">
             {resource.features.dlr_status_published ? (
               <Link
                 underline="hover"

@@ -217,7 +217,6 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
             <UploadImageProgressCard>
               <Thumbnail
                 institution={values.features.dlr_storage_id ?? institution}
-                alt={content.features.dlr_content}
                 resourceOrContentIdentifier={content.identifier}
               />
               {displayContent(content.features.dlr_content)?.percentage !== 0 && (
