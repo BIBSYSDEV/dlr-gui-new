@@ -10,7 +10,8 @@ import UnitImage from '../resources/images/institution_logos/unit.png';
 import SiktImage from '../resources/images/institution_logos/sikt.png';
 import UiTImage from '../resources/images/institution_logos/uit.png';
 import USNImage from '../resources/images/institution_logos/usn.png';
-import { API_PATHS, API_URL } from '../utils/constants';
+import mockThumbnail from '../resources/images/mockThumbnail.png';
+import { API_PATHS, API_URL, USE_MOCK_DATA } from '../utils/constants';
 import useInterval from '../utils/useInterval';
 import { Colors } from '../themes/mainTheme';
 import { UserInstitution } from '../types/user.types';
@@ -43,9 +44,11 @@ const UiBBanner = '#cf3c3a';
 const pollingDelayMilliseconds = 500;
 
 const urlGenerator = (resourceOrContentIdentifier: string) => {
-  return `${API_URL}${
-    API_PATHS.guiBackendResourcesContentPath
-  }/${resourceOrContentIdentifier}/thumbnails/default?t=${new Date().getTime().toString()}`;
+  return USE_MOCK_DATA
+    ? mockThumbnail
+    : `${API_URL}${
+        API_PATHS.guiBackendResourcesContentPath
+      }/${resourceOrContentIdentifier}/thumbnails/default?t=${new Date().getTime().toString()}`;
 };
 
 interface thumbnailProps {
