@@ -78,6 +78,17 @@ export const interceptRequestsOnMock = () => {
   //Get text content file:
   mock.onGet(new RegExp('textfilepath')).reply(200, mockText);
 
+  //Thumbnails:
+
+  mockGetDelayedAndLogged(`.*/thumbnails/.*`, 400, undefined);
+
+  mock
+    .onGet(
+      new RegExp(`${API_PATHS.guiBackendResourcesContentPath}.*/thumbnails/.*
+`)
+    )
+    .reply(504);
+
   //statistics
   mock
     .onGet(new RegExp(`${API_PATHS.guiBackendResourcesStatisticsPath}/statistics/resources/*.`))
