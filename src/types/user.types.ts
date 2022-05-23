@@ -71,6 +71,7 @@ export enum UserInstitution {
   Sikt = 'Sikt',
   UiT = 'UiT',
   USN = 'USN',
+  VID = 'VID',
 }
 
 export interface EmailNotificationStatus {
