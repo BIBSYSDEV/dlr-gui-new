@@ -10,6 +10,7 @@ import UnitImage from '../resources/images/institution_logos/unit.png';
 import SiktImage from '../resources/images/institution_logos/sikt.png';
 import UiTImage from '../resources/images/institution_logos/uit.png';
 import USNImage from '../resources/images/institution_logos/usn.png';
+import vidImage from '../resources/images/institution_logos/vid.png';
 import mockThumbnail from '../resources/images/mockThumbnail.png';
 import { API_PATHS, API_URL, USE_MOCK_DATA } from '../utils/constants';
 import useInterval from '../utils/useInterval';
@@ -77,6 +78,9 @@ const Thumbnail: FC<thumbnailProps> = ({
         break;
       case UserInstitution.OsloMet.toLowerCase():
         event.target.src = OsloMetImage;
+        break;
+      case UserInstitution.VID.toLowerCase():
+        event.target.src = vidImage;
         break;
       case UserInstitution.UiB.toLowerCase():
         setBackgroundColor(UiBBanner);
