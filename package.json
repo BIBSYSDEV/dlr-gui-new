@@ -33,7 +33,7 @@
     "@fontsource/barlow": "^4.5.7",
     "@fontsource/crimson-text": "^4.5.3",
     "@mui/icons-material": "^5.8.0",
-    "@mui/lab": "^5.0.0-alpha.82",
+    "@mui/lab": "^5.0.0-alpha.83",
     "@mui/material": "^5.8.1",
     "@mui/styled-engine-sc": "^5.8.0",
     "@reduxjs/toolkit": "^1.8.2",
