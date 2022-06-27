@@ -6,15 +6,15 @@ import { format } from 'date-fns';
 import { TFunction, useTranslation } from 'react-i18next';
 import { getCitationFromCrossCite } from '../../api/resourceApi';
 import styled from 'styled-components';
-import { Grid, Link } from '@mui/material';
+import { Alert, AlertTitle, Grid, Link } from '@mui/material';
 import EmbedButtons from './EmbedButtons';
-import { Alert, AlertTitle } from '@mui/material';
 import ShareIcon from '@mui/icons-material/Share';
 import SocialMediaSharing from '../../components/SocialMediaSharing';
 import { resourcePath } from '../../utils/constants';
 import { LMSParametersName } from '../../types/LMSParameters';
 import ReadAccess from './ReadAccess';
 import { SupportedFileTypes } from '../../types/content.types';
+import { calculatePreferredWidAndHeigFromPresentationMode } from '../../utils/Preview.utils';
 
 const StyledGridContainer = styled(Grid)`
   margin-top: 1rem;
@@ -66,16 +66,15 @@ const generatePreferredURL = (resource: Resource): string => {
 };
 
 const generateIframeText = (resource: Resource, presentationMode: SupportedFileTypes | undefined) => {
+  const widthAndHeight = calculatePreferredWidAndHeigFromPresentationMode(presentationMode).medium;
   const isTransistorPresentation = presentationMode === SupportedFileTypes.Transistor;
   return `<iframe title="${resource.features.dlr_title.replaceAll('"', '')}" src="${
     window.location.origin
   }${resourcePath}/${resource.identifier}/content/main?${LMSParametersName.Navbar}=false&${
     LMSParametersName.Footer
-  }=false&${LMSParametersName.PollForLogin}=true${
-    isTransistorPresentation ? '&height=182px' : ''
-  }" width="640px" height="${
-    isTransistorPresentation ? '182px' : '360px'
-  }" style="border: none;" allowfullscreen="true"></iframe>`;
+  }=false&${LMSParametersName.PollForLogin}=true${isTransistorPresentation ? '&height=182px' : ''}" width="${
+    widthAndHeight.width
+  }" height="${widthAndHeight.height}" style="border: none;" allowfullscreen="true"></iframe>`;
 };
 
 const userAgentIsNotOperaForDesktop = () => {

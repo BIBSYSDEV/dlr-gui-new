@@ -3,7 +3,7 @@ import { LMSTypes } from '../types/lms.types';
 import { LMSParametersName } from '../types/LMSParameters';
 import { resourcePath } from './constants';
 
-const createEmbedUrlParam = (resource: Resource, width: number | string, height: number) => {
+const createEmbedUrlParam = (resource: Resource, width: number | string, height: number | string) => {
   return encodeURIComponent(
     `${window.location.origin}${resourcePath}/${resource.identifier}/content/main?${LMSParametersName.Navbar}=false&${LMSParametersName.Footer}=false&width=${width}&height=${height}&${LMSParametersName.PollForLogin}=true`
   );
@@ -20,7 +20,7 @@ const embedToBlackBoard = (resource: Resource, mode: string) => {
   window.parent.postMessage(data, '*');
 };
 
-const embedToCanvas = (resource: Resource, mode: string, height: number, width: number) => {
+const embedToCanvas = (resource: Resource, mode: string, height: string, width: string) => {
   const searchParams = new URLSearchParams(window.location.search);
   const canvasReturnUrl = searchParams.get(LMSParametersName.CanvasLaunchPresentationReturnUrl);
   if (mode === 'link') {
@@ -37,7 +37,7 @@ const embedToCanvas = (resource: Resource, mode: string, height: number, width: 
     )}&url=${urlParam}`;
   } else {
     const urlParam = createEmbedUrlParam(resource, width, height);
-    window.location.href = `${canvasReturnUrl}?return_type=iframe&allowfullscreen=true&width=${width}px&height=${height}px&url=${urlParam}`;
+    window.location.href = `${canvasReturnUrl}?return_type=iframe&allowfullscreen=true&width=${width}&height=${height}&url=${urlParam}`;
   }
 };
 
@@ -55,7 +55,7 @@ const postToItsLearning = (itsLearningReturnUrl: string, html: string) => {
   form.submit();
 };
 
-const embedToItsLearning = async (resource: Resource, mode: string, width: number, height: number) => {
+const embedToItsLearning = async (resource: Resource, mode: string, width: string, height: string) => {
   const searchParams = new URLSearchParams(window.location.search);
   const itsLearningReturnUrl = searchParams.get(LMSParametersName.ItsLearningReturnUrl);
 
@@ -90,7 +90,7 @@ const embedToEdx = (resource: Resource, mode: string) => {
   window.parent.postMessage(data, '*');
 };
 
-export const embed = async (resource: Resource, mode: string, lmsPlatform: LMSTypes, width = 0, height = 0) => {
+export const embed = async (resource: Resource, mode: string, lmsPlatform: LMSTypes, width = '', height = '') => {
   switch (lmsPlatform) {
     case LMSTypes.BlackBoard:
       embedToBlackBoard(resource, mode);

@@ -64,6 +64,17 @@ export enum SupportedFileTypes {
   LinkXFrameOptionsPresent = 'linkXFrameOptionsPresent',
 }
 
+export interface EmbeddigSizes {
+  small: WidthAndHeight;
+  medium: WidthAndHeight;
+  large: WidthAndHeight;
+}
+
+export interface WidthAndHeight {
+  width: string;
+  height: string;
+}
+
 export interface SoundCloudResponse {
   html: string;
   author_name?: string;
