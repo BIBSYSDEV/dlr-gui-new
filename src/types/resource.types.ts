@@ -9,21 +9,21 @@ export interface Resource {
   features: ResourceFeatures;
   subjects?: string[];
   courses?: Course[];
-  tags?: string[];
-  types?: ResourceType[];
+  tags?: string[]; // Søk på tags med AND / OR funksjonalitet må støttes.
+  types?: ResourceType[]; // Leses aldri ut av frontend.
   projects?: Project[];
   publisher?: Publisher[];
   funders?: Funder[];
-  geographicalCoverages?: any[];
-  observationalUnits?: any[];
-  processMethods?: any[];
+  geographicalCoverages?: any[]; // Brukes ikke av frontend
+  observationalUnits?: any[]; // Brukes ikke av frontend.
+  processMethods?: any[]; // Brukes ikke av frontend.
   creators: Creator[];
   contributors: Contributor[];
   accessRead?: string[];
   accessWrite?: string[];
   contents: ResourceContents;
-  licenses: License[];
-  isFresh?: boolean; //indicates that the resource has been just generated without the user leaving the form and the tags are untouched
+  licenses: License[]; // creative commons, NTNU and BI- licenses
+  isFresh?: boolean; //indicates that the resource has been just generated without the user leaving the form and the tags are untouched. not stored by the backend.
 }
 
 export const emptyResource: Resource = {
@@ -56,8 +56,8 @@ export const emptyResource: Resource = {
 };
 
 enum ResourceType {
-  RESEARCH = 'research',
-  LEARNING = 'learning',
+  RESEARCH = 'research', // reasearch er kun for bird.
+  LEARNING = 'learning', //I dlr har vi kun learning.
 }
 
 export enum ResourceCreationType {
@@ -66,30 +66,30 @@ export enum ResourceCreationType {
 }
 
 interface ResourceFeatures {
-  dlr_access?: string;
-  dlr_app?: string;
+  dlr_access?: string; // Skulle vært en enum, kan være Private eller Open.
+  dlr_app?: string; // Brukes ikke av frontend.
   dlr_content: string;
-  dlr_content_type: string;
+  dlr_content_type: string; // lenke eller fil.
   dlr_description?: string;
   dlr_identifier?: string;
-  dlr_identifier_handle?: string;
+  dlr_identifier_handle?: string; // som String URI
   dlr_identifier_doi?: string;
-  dlr_readme?: string;
-  dlr_resource?: boolean;
-  dlr_resource_research?: boolean;
-  dlr_resource_learning?: boolean;
-  dlr_rights_license_name?: string;
+  dlr_readme?: string; // Brukes ikke av frontend.
+  dlr_resource?: boolean; // Brukes ikke av frontend.
+  dlr_resource_research?: boolean; // Brukes ikke av frontend.
+  dlr_resource_learning?: boolean; // Brukes ikke av frontend.
+  dlr_rights_license_name?: string; //creative commons kode eller ntnu-lisens kode etc.
   dlr_status_published?: boolean;
-  dlr_storage_id?: string;
-  dlr_subject_nsi_id?: string;
-  dlr_subject_nsi_name?: string;
+  dlr_storage_id?: string; // institusjonsnavn
+  dlr_subject_nsi_id?: string; // brukes ikke av frontend.
+  dlr_subject_nsi_name?: string; // brukes ikke av frontend.
   dlr_submitter_email?: string;
   dlr_time_created: string;
   dlr_time_published?: string;
   dlr_title: string;
-  dlr_title_alternative?: string;
+  dlr_title_alternative?: string; // Brukes ikke av frontend.
   dlr_type?: string;
-  dlr_thumbnail_url?: string;
+  dlr_thumbnail_url?: string; // Denne må være tilgjengelig selv om man ikke har tilgang til ressursen.
   dlr_licensehelper_contains_other_peoples_work: string;
   dlr_licensehelper_usage_cleared_with_owner: string;
   dlr_licensehelper_resource_restriction: string;
@@ -98,8 +98,8 @@ interface ResourceFeatures {
 }
 
 export interface ResourceContents {
-  masterContent: Content;
-  additionalContent: Content[];
+  masterContent: Content; // Hovedfil
+  additionalContent: Content[]; // Støttefiler. F.eks thumbnail, metadata filer. Brukeren kan også laste opp flere filer.
 }
 
 interface Course {
@@ -131,22 +131,22 @@ interface PublisherFeatures {
 }
 
 export interface Creator {
-  identifier: string;
+  identifier: string; // Samme som creatorFeatures identifier.
   features: CreatorFeatures;
-  authorities?: Authority[] | undefined;
+  authorities?: Authority[] | undefined; // I praksis kan creator bare ha en authority.
 }
 
 interface CreatorFeatures {
-  dlr_creator_identifier?: string;
-  dlr_creator_name?: string;
-  dlr_creator_order?: number;
-  dlr_creator_time_created?: string;
+  dlr_creator_identifier?: string; // et nummer med bindestrek
+  dlr_creator_name?: string; //benyttes, Søk på navn må støttes.
+  dlr_creator_order?: number; //benyttes ikke pr tidsenhet
+  dlr_creator_time_created?: string; //benyttes ikke av frontend.
 }
 
 export interface Contributor {
   identifier: string;
   features: ContributorFeatures;
-  authorities?: Authority[];
+  authorities?: Authority[]; // I praksis kan creator kun ha maks en authority.
 }
 
 export const emptyContributor: Contributor = {
@@ -184,6 +184,7 @@ export enum ResourceFeatureTypes {
   video = 'Video',
 }
 
+// Disse typene kan man ikke velge når man lager en ny ressurs, men noen gamle ressurser har disse.
 export enum LegacyResourceFeatureTypes {
   AudioVisual = 'audioVisual',
   Collection = 'collection',
