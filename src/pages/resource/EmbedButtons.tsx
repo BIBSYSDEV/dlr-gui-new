@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Button, Grid, Typography } from '@mui/material';
 import styled from 'styled-components';
 import { Resource } from '../../types/resource.types';
@@ -7,26 +7,14 @@ import { useTranslation } from 'react-i18next';
 import { embed } from '../../utils/lmsService';
 import { LMSParametersName } from '../../types/LMSParameters';
 import { useLocation } from 'react-router-dom';
+import { calculatePreferredWidAndHeigFromPresentationMode, DefaultContentSize } from '../../utils/Preview.utils';
+import { getResourceDefaultContent } from '../../api/resourceApi';
+import { determinePresentationMode } from '../../utils/mime_type_utils';
 
 const StyledButtons = styled(Button)`
   margin-right: 1rem;
   margin-top: 1rem;
 `;
-
-const small = {
-  horizontal: 560,
-  vertical: 315,
-};
-
-const medium = {
-  horizontal: 640,
-  vertical: 360,
-};
-
-const large = {
-  horizontal: 853,
-  vertical: 480,
-};
 
 interface EmbedButtonsProps {
   resource: Resource;
@@ -41,6 +29,7 @@ const EmbedButtons: FC<EmbedButtonsProps> = ({ resource }) => {
   const showItsLearningEmbed = searchParams.get(LMSParametersName.ItsLearningShowEmbedButton) === 'true';
   const showCanvasLinkEmbed = searchParams.get(LMSParametersName.CanvasShowEmbedLinkButton) === 'true';
   const showEdxEmbed = searchParams.get(LMSParametersName.EdxShowEmbedButton);
+  const [embeddingSizes, setEmbeddingSizes] = useState(DefaultContentSize);
   const getLmsPlatform = (): LMSTypes => {
     if (bbShowEmbedButton) return LMSTypes.BlackBoard;
     if (showCanvasEmbed) return LMSTypes.Canvas;
@@ -56,6 +45,19 @@ const EmbedButtons: FC<EmbedButtonsProps> = ({ resource }) => {
     if (showEdxEmbed) return t('embed.embed_in_edx');
     return '';
   };
+
+  useEffect(() => {
+    const fetchDefaultContent = async () => {
+      try {
+        const defaultContent = (await getResourceDefaultContent(resource.identifier)).data;
+        const presentationMode = determinePresentationMode(defaultContent);
+        setEmbeddingSizes(calculatePreferredWidAndHeigFromPresentationMode(presentationMode));
+      } catch (error) {
+        setEmbeddingSizes(DefaultContentSize);
+      }
+    };
+    fetchDefaultContent().then();
+  }, [resource.identifier]);
 
   return (
     <>
@@ -82,10 +84,10 @@ const EmbedButtons: FC<EmbedButtonsProps> = ({ resource }) => {
                 onClick={() =>
                   embed(
                     resource,
-                    `${small.horizontal}x${small.vertical}`,
+                    `${embeddingSizes.small.width}x${embeddingSizes.small.height}`,
                     lmsPlatform,
-                    small.horizontal,
-                    small.vertical
+                    embeddingSizes.small.width,
+                    embeddingSizes.small.height
                   )
                 }>
                 {t('embed.small')}
@@ -97,10 +99,10 @@ const EmbedButtons: FC<EmbedButtonsProps> = ({ resource }) => {
                 onClick={() =>
                   embed(
                     resource,
-                    `${medium.horizontal}x${medium.vertical}`,
+                    `${embeddingSizes.medium.width}x${embeddingSizes.medium.height}`,
                     lmsPlatform,
-                    medium.horizontal,
-                    medium.vertical
+                    embeddingSizes.medium.width,
+                    embeddingSizes.medium.height
                   )
                 }>
                 {t('embed.medium')}
@@ -112,10 +114,10 @@ const EmbedButtons: FC<EmbedButtonsProps> = ({ resource }) => {
                 onClick={() =>
                   embed(
                     resource,
-                    `${large.horizontal}x${large.vertical}`,
+                    `${embeddingSizes.large.width}x${embeddingSizes.large.height}`,
                     lmsPlatform,
-                    large.horizontal,
-                    large.vertical
+                    embeddingSizes.large.width,
+                    embeddingSizes.large.height
                   )
                 }>
                 {t('embed.large')}
