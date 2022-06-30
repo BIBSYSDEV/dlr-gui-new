@@ -114,10 +114,10 @@ const EmbedButtons: FC<EmbedButtonsProps> = ({ resource }) => {
                 onClick={() =>
                   embed(
                     resource,
-                    `${embeddingSizes.medium.width}x${embeddingSizes.medium.height}`,
+                    `${embeddingSizes.large.width}x${embeddingSizes.large.height}`,
                     lmsPlatform,
-                    embeddingSizes.medium.width,
-                    embeddingSizes.medium.height
+                    embeddingSizes.large.width,
+                    embeddingSizes.large.height
                   )
                 }>
                 {t('embed.large')}
