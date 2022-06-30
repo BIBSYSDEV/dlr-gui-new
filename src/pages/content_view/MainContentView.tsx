@@ -12,6 +12,7 @@ import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { Content, SupportedFileTypes } from '../../types/content.types';
 import { determinePresentationMode } from '../../utils/mime_type_utils';
 import { StatusCode } from '../../utils/constants';
+import { calculatePreferredWidAndHeigFromPresentationMode, DefaultContentSize } from '../../utils/Preview.utils';
 
 const ContentWrapper = styled.div<{ height: string }>`
   height: ${(props) => props.height};
@@ -28,8 +29,7 @@ interface ContentViewParams {
 const MainContentView = () => {
   const { resourceIdentifier } = useParams<ContentViewParams>();
   const [resource, setResource] = useState(emptyResource);
-  const searchParams = new URLSearchParams(window.location.search);
-  const height = searchParams.get('height') ?? '27rem';
+  const [height, setHeight] = useState(DefaultContentSize.medium.height);
   const [isLoadingResource, setIsLoadingResource] = useState(true);
   const [resourceLoadingError, setResourceLoadingError] = useState<Error | AxiosError>();
   const [defaultContent, setDefaultContent] = useState<Content | null>(null);
@@ -48,7 +48,12 @@ const MainContentView = () => {
         tempResource.contents = await getResourceContents(resourceIdentifier);
         const defaultContent = (await getResourceDefaultContent(resourceIdentifier)).data;
         setDefaultContent(defaultContent);
-        setPresentationMode(determinePresentationMode(defaultContent));
+        const presentationMode = determinePresentationMode(defaultContent);
+        setPresentationMode(presentationMode);
+        const searchParams = new URLSearchParams(window.location.search);
+        setHeight(
+          searchParams.get('height') ?? calculatePreferredWidAndHeigFromPresentationMode(presentationMode).medium.height
+        );
       } catch (error) {
         setContentUnavailable(true);
         setResourceLoadingError(handlePotentialAxiosError(error));
@@ -64,6 +69,7 @@ const MainContentView = () => {
       fetchData(resourceIdentifier);
     }
   }, [resourceIdentifier, setDefaultContent, setPresentationMode, setContentUnavailable]);
+
   return isLoadingResource ? (
     <StyledProgressWrapper>
       <CircularProgress />

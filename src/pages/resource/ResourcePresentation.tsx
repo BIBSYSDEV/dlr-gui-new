@@ -21,11 +21,13 @@ import ResourceActions from './ResourceActions';
 import { getMyUserAuthorizationProfileForResource, getResourceDefaultContent } from '../../api/resourceApi';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
-import { Content, SupportedFileTypes } from '../../types/content.types';
+import { Content, SupportedFileTypes, WidthAndHeight } from '../../types/content.types';
 import { determinePresentationMode } from '../../utils/mime_type_utils';
+import { calculatePreferredWidAndHeigFromPresentationMode, SixteenNineAspectRatio } from '../../utils/Preview.utils';
 
-const PreviewComponentWrapper = styled.div<{ height: string }>`
+const PreviewComponentWrapper = styled.div<{ height: string; width: string }>`
   margin: 1rem 0;
+  width: ${(props) => props.width};
   height: ${(props) => props.height};
   max-height: ${(props) => props.height};
   max-width: 100%;
@@ -61,6 +63,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
   );
   const [errorLoadingAuthorization, setErrorLoadingAuthorization] = useState<Error | AxiosError>();
   const [contentUnavailable, setContentUnavailable] = useState(false);
+  const [contentPreviewSize, setContentPreviewSize] = useState<WidthAndHeight>(SixteenNineAspectRatio.medium);
   useEffect(() => {
     const fetchUserResourceAuthorization = async () => {
       try {
@@ -85,7 +88,9 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
       try {
         const defaultContent = (await getResourceDefaultContent(resource.identifier)).data;
         setDefaultContent(defaultContent);
-        setPresentationMode(determinePresentationMode(defaultContent));
+        const presentationMode = determinePresentationMode(defaultContent);
+        setPresentationMode(presentationMode);
+        setContentPreviewSize(calculatePreferredWidAndHeigFromPresentationMode(presentationMode).medium);
       } catch (error) {
         setContentUnavailable(true);
       }
@@ -100,7 +105,8 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
           <StyledContentWrapperMedium>
             <PreviewComponentWrapper
               data-testid="resource-preview"
-              height={presentationMode === SupportedFileTypes.Transistor ? '12rem' : '26rem'}>
+              width={contentPreviewSize.width}
+              height={contentPreviewSize.height}>
               <ContentPreview
                 resource={resource}
                 isPreview={isPreview}
