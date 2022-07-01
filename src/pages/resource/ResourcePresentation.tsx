@@ -25,9 +25,9 @@ import { Content, SupportedFileTypes, WidthAndHeight } from '../../types/content
 import { determinePresentationMode } from '../../utils/mime_type_utils';
 import { calculatePreferredWidAndHeigFromPresentationMode, SixteenNineAspectRatio } from '../../utils/Preview.utils';
 
-const PreviewComponentWrapper = styled.div<{ height: string; width: string }>`
+const PreviewComponentWrapper = styled.div<{ height: string }>`
   margin: 1rem 0;
-  width: ${(props) => props.width};
+  width: 100%;
   height: ${(props) => props.height};
   max-height: ${(props) => props.height};
   max-width: 100%;
@@ -103,10 +103,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
       <StyledPresentationWrapper>
         <StyledSchemaPart>
           <StyledContentWrapperMedium>
-            <PreviewComponentWrapper
-              data-testid="resource-preview"
-              width={contentPreviewSize.width}
-              height={contentPreviewSize.height}>
+            <PreviewComponentWrapper data-testid="resource-preview" height={contentPreviewSize.height}>
               <ContentPreview
                 resource={resource}
                 isPreview={isPreview}
