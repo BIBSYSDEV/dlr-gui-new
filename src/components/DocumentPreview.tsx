@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Content } from '../types/content.types';
+import { Content, SupportedFileTypes } from '../types/content.types';
 import { Resource } from '../types/resource.types';
 import { useTranslation } from 'react-i18next';
 import ContentIframe from './ContentIframe';
@@ -34,7 +34,10 @@ const DocumentPreview: FC<DocumentPreviewProps> = ({ defaultContent, resource, u
         defaultContent?.features.dlr_content_size_bytes ??
           '' + resource.contents.masterContent.features.dlr_content_size_bytes
       ) < windowsMaxRenderSize ? (
-        <ContentIframe src={`${MICROSOFT_DOCUMENT_VIEWER}?src=${usageURL}`} />
+        <ContentIframe
+          src={`${MICROSOFT_DOCUMENT_VIEWER}?src=${usageURL}`}
+          presentationMode={SupportedFileTypes.Document}
+        />
       ) : (
         <InformationAndDownloadWrapper>
           <StyledAlert severity="info">{t('resource.preview.file_to_big')}</StyledAlert>
