@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Typography, CircularProgress, Paper } from '@mui/material';
+import { CircularProgress, Paper, Typography } from '@mui/material';
 import { Content, SupportedFileTypes } from '../types/content.types';
 import styled from 'styled-components';
 import DownloadButton from './DownloadButton';
@@ -138,7 +138,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({
               )}
               {presentationMode === SupportedFileTypes.PDF && (
                 <object data={usageURL} type="application/pdf" height={'100%'} width={'100%'}>
-                  <ContentIframe src={usageURL} />
+                  <ContentIframe src={usageURL} presentationMode={presentationMode} />
                   <Typography>{t('resource.preview.browser_does_not_support_pdf_viewing')}</Typography>
                   <DownloadButton content={resource.contents.masterContent} />
                 </object>
@@ -146,7 +146,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({
               {presentationMode === SupportedFileTypes.Download && (
                 <DownloadButton content={resource.contents.masterContent} />
               )}
-              {previewIsRegularIframe() && <ContentIframe src={usageURL} />}
+              {previewIsRegularIframe() && <ContentIframe src={usageURL} presentationMode={presentationMode} />}
               {(presentationMode === SupportedFileTypes.LinkSchemeHttp ||
                 presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent) && (
                 <LinkPreviewNotPossible resource={resource} presentationMode={presentationMode} />
