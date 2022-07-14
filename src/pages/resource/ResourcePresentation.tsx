@@ -1,3 +1,4 @@
+/*eslint prefer-const: */
 import React, { FC, useEffect, useState } from 'react';
 import {
   emptyUserAuthorizationProfileForResource,
@@ -18,12 +19,21 @@ import ResourceContents from './ResourceContents';
 import ResourceLicense from './ResourceLicense';
 import ContentPreview from '../../components/ContentPreview';
 import ResourceActions from './ResourceActions';
-import { getMyUserAuthorizationProfileForResource, getResourceDefaultContent } from '../../api/resourceApi';
-import { AxiosError } from 'axios';
+import {
+  getContentPresentationData,
+  getMyUserAuthorizationProfileForResource,
+  getResourceDefaultContent,
+} from '../../api/resourceApi';
+import axios, { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { Content, SupportedFileTypes, WidthAndHeight } from '../../types/content.types';
 import { determinePresentationMode } from '../../utils/mime_type_utils';
 import { calculatePreferredWidAndHeigFromPresentationMode, SixteenNineAspectRatio } from '../../utils/Preview.utils';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { H5P } from 'h5p-standalone';
+import { unzip } from 'unzipit';
+import fs from 'bro-fs';
 
 const PreviewComponentWrapper = styled.div<{ height: string }>`
   margin: 1rem 0;
@@ -64,6 +74,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
   const [errorLoadingAuthorization, setErrorLoadingAuthorization] = useState<Error | AxiosError>();
   const [contentUnavailable, setContentUnavailable] = useState(false);
   const [contentPreviewSize, setContentPreviewSize] = useState<WidthAndHeight>(SixteenNineAspectRatio.medium);
+
   useEffect(() => {
     const fetchUserResourceAuthorization = async () => {
       try {
@@ -96,11 +107,82 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
       }
     };
     fetchDefaultContent();
+
+    function some(file: any) {
+      const indexedDB = window.indexedDB;
+      let db: any;
+      const request = indexedDB.open('database', 3);
+      request.onerror = function () {
+        console.error('Unable to open database.');
+      };
+      request.onsuccess = function (e: any) {
+        db = e.target.result;
+        console.log('db opened');
+      };
+      request.onupgradeneeded = function (e: any) {
+        db = e.target.result;
+        db.createObjectStore('h5pFiles');
+        const transaction = db.transaction(['h5pFiles'], 'readwrite');
+        const objectStore = transaction.objectStore('h5p');
+        objectStore.put(file);
+        console.log('store created');
+      };
+    }
+
+    const extractH5p = async () => {
+      try {
+        // const linkToFile = (await getContentPresentationData(resource.contents.masterContent.identifier)).data.features
+        //   .dlr_content_url;
+        const fileResponse: any = await axios.get(
+          'https://dlrnewqa.s3.eu-west-1.amazonaws.com/h5pSample/MEDLINE_Avansert_Clinical%2BQueries_Course%2BPresentation.zip',
+          {
+            headers: {
+              'Content-Type': 'application/octet-stream',
+            },
+            responseType: 'blob',
+          }
+        );
+        const url = URL.createObjectURL(fileResponse.data);
+
+        const file = await unzip(url);
+        some(file);
+
+        const { entries } = await unzip(url);
+
+        await fs.init({ type: (window as any).TEMPORARY, bytes: 5 * 1024 * 1024 });
+        await fs.mkdir('content');
+
+        for (const [name, entry] of Object.entries(entries)) {
+          const blob = await entry.blob();
+          await fs.writeFile('content/' + entry.name, blob);
+        }
+
+        const outputUrl = await fs.getUrl('content');
+
+        console.log(outputUrl);
+        const el = document.getElementById('h5p-container');
+        const options = {
+          // h5pJsonPath: 'https://dlrnewqa.s3.eu-west-1.amazonaws.com/h5pSample/h5pV2',
+          frameJs: 'https://dlrnewqa.s3.eu-west-1.amazonaws.com/h5pSample/h5passets/frame.bundle.js',
+          frameCss: 'https://dlrnewqa.s3.eu-west-1.amazonaws.com/h5pSample/h5passets/h5p.css',
+          h5pJsonPath: './../temporary/content/',
+        };
+        await new H5P(el, options);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    extractH5p();
   }, [resource.identifier, setCanEditResource, setDefaultContent, setPresentationMode, setContentUnavailable]);
 
   return (
     resource && (
       <StyledPresentationWrapper>
+        <div>
+          <h1>H5P</h1>
+          <div id="h5p-container"></div>
+        </div>
+
         <StyledSchemaPart>
           <StyledContentWrapperMedium>
             <PreviewComponentWrapper data-testid="resource-preview" height={contentPreviewSize.height}>
