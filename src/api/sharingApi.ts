@@ -72,7 +72,7 @@ export const getCoursesForInstitution = async (institution: string): Promise<Cou
     const response = await authenticatedApiRequest({
       url: `${API_PATHS.guiBackendTeachingPath}/teachings/institutions/${institution.toLowerCase()}?after=${moment(
         new Date()
-      ).format('YYYY-MM-DDTHH:mm:ss.SSSZ')}`,
+      ).toISOString()}`,
       method: 'GET',
     });
     return await response.data;
