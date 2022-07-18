@@ -33,7 +33,6 @@ import { calculatePreferredWidAndHeigFromPresentationMode, SixteenNineAspectRati
 // @ts-ignore
 import { H5P } from 'h5p-standalone';
 import { unzip } from 'unzipit';
-import fs from 'bro-fs';
 
 const PreviewComponentWrapper = styled.div<{ height: string }>`
   margin: 1rem 0;
@@ -74,7 +73,6 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
   const [errorLoadingAuthorization, setErrorLoadingAuthorization] = useState<Error | AxiosError>();
   const [contentUnavailable, setContentUnavailable] = useState(false);
   const [contentPreviewSize, setContentPreviewSize] = useState<WidthAndHeight>(SixteenNineAspectRatio.medium);
-
   useEffect(() => {
     const fetchUserResourceAuthorization = async () => {
       try {
@@ -108,31 +106,74 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
     };
     fetchDefaultContent();
 
-    function some(file: any) {
-      const indexedDB = window.indexedDB;
-      let db: any;
-      const request = indexedDB.open('database', 3);
-      request.onerror = function () {
-        console.error('Unable to open database.');
+    function putFileInDB(data: any) {
+      indexedDB.deleteDatabase('files');
+      const request = indexedDB.open('files', 2);
+      request.onupgradeneeded = (event: any) => {
+        const db = event.target.result;
+        const objectStore = db.createObjectStore('h5pFile', { keyPath: 'ssn' });
+        objectStore.transaction.oncomplete = (event: any) => {
+          const fileObjectStore = db.transaction('h5pFile', 'readwrite').objectStore('h5pFile');
+          data.forEach(function (file: any) {
+            fileObjectStore.add(file);
+          });
+        };
       };
-      request.onsuccess = function (e: any) {
-        db = e.target.result;
-        console.log('db opened');
+    }
+
+    function createBlob(file: any) {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', file, true);
+      xhr.responseType = 'blob';
+      xhr.addEventListener(
+        'load',
+        function () {
+          if (xhr.status === 200) {
+            const blob = xhr.response;
+            putFileInDB([{ ssn: '1', file: blob }]);
+          }
+        },
+        false
+      );
+      xhr.send();
+    }
+
+    function getFileFromDB() {
+      return new Promise((resolve, reject) => {
+        const request = window.indexedDB.open('files', 2);
+        request.onsuccess = (event: any) => {
+          const db = event.target.result;
+          db.transaction('h5pFile').objectStore('h5pFile').get('1').onsuccess = (event: any) => {
+            resolve(event.target.result.file);
+            return event.target.result.file;
+          };
+        };
+      });
+    }
+
+    function createUriFromBlob(blob: any) {
+      const blobUrl = URL.createObjectURL(blob);
+      const xhr = new XMLHttpRequest();
+      let data;
+      xhr.responseType = 'blob';
+      xhr.onload = function () {
+        const recoveredBlob = xhr.response;
+        const reader = new FileReader();
+        reader.onload = function () {
+          const blobAsDataUrl = reader.result;
+          data = blobAsDataUrl;
+        };
+        reader.readAsDataURL(recoveredBlob);
       };
-      request.onupgradeneeded = function (e: any) {
-        db = e.target.result;
-        db.createObjectStore('h5pFiles');
-        const transaction = db.transaction(['h5pFiles'], 'readwrite');
-        const objectStore = transaction.objectStore('h5p');
-        objectStore.put(file);
-        console.log('store created');
-      };
+      xhr.open('GET', blobUrl);
+      xhr.send();
+      return data;
     }
 
     const extractH5p = async () => {
       try {
-        // const linkToFile = (await getContentPresentationData(resource.contents.masterContent.identifier)).data.features
-        //   .dlr_content_url;
+        const linkToFile = (await getContentPresentationData(resource.contents.masterContent.identifier)).data.features
+          .dlr_content_url;
         const fileResponse: any = await axios.get(
           'https://dlrnewqa.s3.eu-west-1.amazonaws.com/h5pSample/MEDLINE_Avansert_Clinical%2BQueries_Course%2BPresentation.zip',
           {
@@ -143,29 +184,32 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
           }
         );
         const url = URL.createObjectURL(fileResponse.data);
-
         const file = await unzip(url);
-        some(file);
 
         const { entries } = await unzip(url);
-
-        await fs.init({ type: (window as any).TEMPORARY, bytes: 5 * 1024 * 1024 });
-        await fs.mkdir('content');
-
+        // await fs.init({ type: (window as any).TEMPORARY, bytes: 5 * 1024 * 1024 });
+        // await fs.mkdir('content');
+        const items = [];
         for (const [name, entry] of Object.entries(entries)) {
           const blob = await entry.blob();
-          await fs.writeFile('content/' + entry.name, blob);
+          items.push(blob);
         }
+        const data = [{ ssn: '1', file: file.entries }];
+        putFileInDB(data);
 
-        const outputUrl = await fs.getUrl('content');
+        // const outputUrl = await fs.getUrl('content');
 
-        console.log(outputUrl);
+        // const files = [file.entries.blob()];
+
+        const fileFromDB: any = await getFileFromDB();
+        // const img: any = document.getElementById('img');
+        // img.setAttribute('src', blob);
         const el = document.getElementById('h5p-container');
         const options = {
           // h5pJsonPath: 'https://dlrnewqa.s3.eu-west-1.amazonaws.com/h5pSample/h5pV2',
           frameJs: 'https://dlrnewqa.s3.eu-west-1.amazonaws.com/h5pSample/h5passets/frame.bundle.js',
           frameCss: 'https://dlrnewqa.s3.eu-west-1.amazonaws.com/h5pSample/h5passets/h5p.css',
-          h5pJsonPath: './../temporary/content/',
+          h5pJsonPath: fileFromDB,
         };
         await new H5P(el, options);
       } catch (error) {
@@ -179,7 +223,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
     resource && (
       <StyledPresentationWrapper>
         <div>
-          <h1>H5P</h1>
+          <h1 id="file">H5P</h1>
           <div id="h5p-container"></div>
         </div>
 
