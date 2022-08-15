@@ -46,7 +46,7 @@
     "deepmerge": "^4.2.2",
     "env-cmd": "^10.1.0",
     "formik": "^2.2.9",
-    "i18next": "^21.8.14",
+    "i18next": "^21.9.0",
     "i18next-browser-languagedetector": "^6.1.5",
     "moment": "^2.29.4",
     "react": "^17.0.1",
