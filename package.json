@@ -32,7 +32,7 @@
   "dependencies": {
     "@fontsource/barlow": "^4.5.8",
     "@fontsource/crimson-text": "^4.5.4",
-    "@mui/icons-material": "^5.10.2",
+    "@mui/icons-material": "^5.10.3",
     "@mui/lab": "^5.0.0-alpha.82",
     "@mui/material": "^5.10.2",
     "@mui/styled-engine-sc": "^5.10.3",
@@ -46,7 +46,7 @@
     "deepmerge": "^4.2.2",
     "env-cmd": "^10.1.0",
     "formik": "^2.2.9",
-    "i18next": "^21.9.1",
+    "i18next": "^21.9.2",
     "i18next-browser-languagedetector": "^6.1.5",
     "moment": "^2.29.4",
     "react": "^17.0.1",
