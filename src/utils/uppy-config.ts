@@ -85,6 +85,22 @@ export const createThumbnailFileUppy =
         await prepareUploadPart(uploadId, key, body, number),
     });
 
+export const createMainFileChangerUppy =
+  (resourceIdentifier: string, onCreateContent: (newConent: Content) => void) => () =>
+    Uppy<Uppy.StrictTypes>({ autoProceed: true, allowMultipleUploads: false }).use(AwsS3Multipart, {
+      abortMultipartUpload: async (_: UppyFile, { uploadId, key }: UppyArgs) =>
+        await abortMultipartUpload(uploadId, key),
+      completeMultipartUpload: async (_: UppyFile, { uploadId, key, parts }: UppyCompleteArgs) =>
+        await completeMultipartUpload(uploadId, key, parts),
+      createMultipartUpload: async (file: UppyFile) => {
+        if (resourceIdentifier.length > 1)
+          return await createAdditionalFileUpload(resourceIdentifier, file, onCreateContent);
+      },
+      listParts: async (_: UppyFile, { uploadId, key }: UppyArgs) => await listParts(uploadId, key),
+      prepareUploadPart: async (_: UppyFile, { uploadId, key, body, number }: UppyPrepareArgs) =>
+        await prepareUploadPart(uploadId, key, body, number),
+    });
+
 export const uppyLocale = (t: TFunction<'translation'>) => {
   return {
     strings: {

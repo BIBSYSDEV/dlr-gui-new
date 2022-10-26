@@ -219,6 +219,7 @@ export const DefaultResourceTypes: ResourceFeatureTypes[] = [
 export enum ResourceFeatureNames {
   Type = 'dlr_type',
   Title = 'dlr_title',
+  ResourceType = 'dlr_content_type',
   Description = 'dlr_description',
   Access = 'dlr_access',
   ContainsOtherPeoplesWorks = 'dlr_licensehelper_contains_other_peoples_work',
