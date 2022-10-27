@@ -76,14 +76,19 @@ const ChangeMainContent = () => {
         data-testid="change-main-file-button"
         variant="outlined"
         onClick={() => handleChangeMainFileButtonClick()}>
-        Bytt ut hovedinnhold
+        {t('resource.change_main_file.change_main_file')}
       </Button>
       {showDoiMessage && (
         <ErrorBanner
-          customErrorMessage={t('Denne resource har fått utdelt en DOI og det er derfor ikke mulig å endre hovedfil.')}
+          customErrorMessage={t('resource.change_main_file.cannot_change_main_file_because_the_resource_has_DOI')}
         />
       )}
-      {uploadError && <ErrorBanner customErrorMessage={t('Kunne ikke endre hovedfil')} />}
+      {uploadError && (
+        <ErrorBanner
+          error={uploadError}
+          customErrorMessage={t('resource.change_main_file.could_not_change_main_file_error_message')}
+        />
+      )}
       <DashboardModal
         hideRetryButton
         hidePauseResumeButton
