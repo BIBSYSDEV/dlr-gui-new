@@ -22,7 +22,6 @@
     "no_one_has_read_access": "Ingen har lesetilgang",
     "no_clearance_no_public_access": "Hvis arbeidet ikke er rettighetsklarert, kan ikke arbeidet være offentlig tilgjengelig",
     "only_private_is_available": "Med internlisens må tilgangen være begrenset",
-    "oxford_comma": "Og",
     "public_available_read_access": "Denne ressursen er åpent tilgjengelig",
     "read_access": "Lesetilgang",
     "restrictive_read_access": "Denne ressursen har begrenset tilgang",
@@ -388,6 +387,11 @@
     "browse_by_creator": "Se flere ressurser",
     "browse_by_creator_screen_reader_only": "har publisert",
     "busy_uploading_save_and_continue_later_is_disabled": "Det er ikke mulig å publisere eller lagre og fortsette senere mens hovedfila lastes opp",
+    "change_main_file": {
+      "cannot_change_main_file_because_the_resource_has_DOI": "Kan ikke bytte ut hovedfil fordi denne ressursen har fått tildelt DOI",
+      "change_main_file": "Bytt ut hovedfil",
+      "could_not_change_main_file_error_message": "Kunne ikke endre hovedfil"
+    },
     "contributor_type": {
       "ContactPerson": "Kontakt person",
       "DataCollector": "Datasamler",

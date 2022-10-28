@@ -387,6 +387,11 @@
     "browse_by_creator": "Browse more resources",
     "browse_by_creator_screen_reader_only": "has published",
     "busy_uploading_save_and_continue_later_is_disabled": "It is not possible to save or publish a resource while the main file is being uploaded",
+    "change_main_file": {
+      "cannot_change_main_file_because_the_resource_has_DOI": "Cannot change main file because the resource has been granted a DOI",
+      "change_main_file": "Change main file",
+      "could_not_change_main_file_error_message": "Could not change main file"
+    },
     "contributor_type": {
       "ContactPerson": "Contact person",
       "DataCollector": "Data collector",

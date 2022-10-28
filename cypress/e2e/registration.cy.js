@@ -562,4 +562,34 @@ context('Registration', () => {
     cy.get('[data-testid=confirm-dialog-button]').click();
     cy.get('[data-testid=access-dropdown-menu]').contains('Offentlig');
   });
+
+  it('is possible to change main file', () => {
+    cy.get('[data-testid="new-registration-link"]').click();
+    cy.get('[data-testid="new-resource-file"]').click();
+    cy.route({
+      method: 'PUT',
+      url: 'https://file-upload.com/files/', // Must match URL set in mock-interceptor, which cannot be imported into a test
+      response: '',
+      headers: { ETag: 'etag' },
+    });
+    cy.get('input[type=file]:first-of-type').uploadFile('testPicture.png');
+
+    cy.get('[data-testid="step-navigation-2"]').click();
+    cy.get('[data-testid="master-content-title"]').should('contain.value', 'mockMasterContent');
+    cy.get('[data-testid="additional-file-534534534534534534-delete-button"]').should('not.exist');
+    cy.get('[data-testid="change-main-file-button"]').click();
+    cy.route({
+      method: 'PUT',
+      url: 'https://file-upload.com/files/', // Must match URL set in mock-interceptor, which cannot be imported into a test
+      response: '',
+      headers: { ETag: 'etag' },
+    });
+    cy.get('[data-testid=main-file-change-uppy-dashboard] input[type=file]:first-of-type').uploadFile(
+      'testPicture.png'
+    );
+    //check that the new master content is set as master-content-title
+    cy.get('[data-testid="master-content-title"]').should('contain.value', 'mockimage.jpg');
+    //check that the old master content is now listed as additional file:
+    cy.get('[data-testid="additional-file-534534534534534534-delete-button"]').should('exist');
+  });
 });

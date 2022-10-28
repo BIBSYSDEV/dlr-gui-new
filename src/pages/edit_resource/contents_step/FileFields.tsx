@@ -23,6 +23,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/rootReducer';
 import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
+import ChangeMainContent from './ChangeMainContent';
 
 const StatusBarWrapper = styled.div`
   width: 100%;
@@ -173,6 +174,7 @@ const FileFields: FC<FileFieldsProps> = ({
           newThumbnailIsReady={newThumbnailIsReady}
           pollNewThumbnail={(status) => setShouldPollNewThumbnail(status)}
         />
+        <ChangeMainContent />
       </StyledContentWrapper>
     </StyledSchemaPartColored>
   );
