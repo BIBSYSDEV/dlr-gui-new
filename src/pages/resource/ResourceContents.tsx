@@ -12,6 +12,7 @@ import { getContentPresentationData } from '../../api/resourceApi';
 import ErrorBanner from '../../components/ErrorBanner';
 import { AxiosError } from 'axios';
 import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import { resourcePath } from '../../utils/constants';
 
 const StyledMetadataWrapper = styled.div`
   display: flex;
@@ -71,6 +72,12 @@ const ResourceContents: FC<ResourceContentsProps> = ({ resource, userResourceAut
         </StyledMetadataWrapper>
       </Grid>
       <Grid item>
+        <Button
+          href={`${resourcePath}/${resource.identifier}/content/${content.identifier}`}
+          variant="outlined"
+          color="primary">
+          {t('resource.preview.link_to_content')}
+        </Button>
         <Button
           onClick={() => handleDownloadClick(content.identifier)}
           data-testid={`file-content-${content.identifier}-download-button`}

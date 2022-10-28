@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { emptyResource } from '../../types/resource.types';
-import { getResource, getResourceContents, getResourceDefaultContent } from '../../api/resourceApi';
+import { getContentById, getContentPresentationData, getResource, getResourceContents } from '../../api/resourceApi';
 import { StyledProgressWrapper } from '../../components/styled/Wrappers';
 import { CircularProgress } from '@mui/material';
 import ContentPreview from '../../components/ContentPreview';
@@ -24,10 +24,11 @@ const ContentWrapper = styled.div<{ height: string }>`
 
 interface ContentViewParams {
   resourceIdentifier: string;
+  contentIdentifier: string;
 }
 
-const MainContentView = () => {
-  const { resourceIdentifier } = useParams<ContentViewParams>();
+const ContentView = () => {
+  const { resourceIdentifier, contentIdentifier } = useParams<ContentViewParams>();
   const [resource, setResource] = useState(emptyResource);
   const [height, setHeight] = useState(DefaultContentSize.medium.height);
   const [isLoadingResource, setIsLoadingResource] = useState(true);
@@ -46,9 +47,11 @@ const MainContentView = () => {
         const tempResource = (await getResource(resourceIdentifier)).data;
         setResource(tempResource);
         tempResource.contents = await getResourceContents(resourceIdentifier);
-        const defaultContent = (await getResourceDefaultContent(resourceIdentifier)).data;
-        setContent(defaultContent);
-        const presentationMode = determinePresentationMode(defaultContent);
+        const content = (await getContentById(resourceIdentifier, contentIdentifier)).data;
+        const contentPresentation = (await getContentPresentationData(contentIdentifier)).data;
+        content.features.dlr_content_url = contentPresentation.features.dlr_content_url;
+        setContent(content);
+        const presentationMode = determinePresentationMode(content);
         setPresentationMode(presentationMode);
         const searchParams = new URLSearchParams(window.location.search);
         setHeight(
@@ -68,7 +71,7 @@ const MainContentView = () => {
     if (resourceIdentifier) {
       fetchData(resourceIdentifier);
     }
-  }, [resourceIdentifier, setContent, setPresentationMode, setContentUnavailable]);
+  }, [contentIdentifier, resourceIdentifier, setContent, setPresentationMode, setContentUnavailable]);
 
   return isLoadingResource ? (
     <StyledProgressWrapper>
@@ -90,4 +93,4 @@ const MainContentView = () => {
   );
 };
 
-export default MainContentView;
+export default ContentView;
