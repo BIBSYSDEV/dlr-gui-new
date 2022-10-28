@@ -118,15 +118,6 @@ export const setContentAsMasterContent = (resourceIdentifier: string, contentIde
   });
 };
 
-export const deleteContentAsMasterContent = (resourceIdentifier: string, contentIdentifier: string) => {
-  return authenticatedApiRequest({
-    url: encodeURI(
-      `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contents/${contentIdentifier}/master`
-    ),
-    method: 'DELETE',
-  });
-};
-
 export const createAdditionalFileUpload = async (
   resourceIdentifier: string,
   file: UppyFile,

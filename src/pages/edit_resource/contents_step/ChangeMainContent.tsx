@@ -9,7 +9,6 @@ import {
   setContentAsDefaultThumbnail,
   setContentAsDefaultContent,
   setContentAsMasterContent,
-  deleteContentAsMasterContent,
 } from '../../../api/fileApi';
 import { useFormikContext } from 'formik';
 import { resetFormButKeepTouched } from '../../../utils/formik-helpers';
@@ -52,7 +51,6 @@ const ChangeMainContent = () => {
             values.contents.additionalContent = [...values.contents.additionalContent, oldMasterContent];
             values.contents.masterContent = newContent;
             resetFormButKeepTouched(touched, resetForm, values, setTouched);
-            await deleteContentAsMasterContent(values.identifier, oldMasterContent.identifier);
           } catch (e) {
             setUploadError(handlePotentialAxiosError(e));
           }
