@@ -391,7 +391,6 @@
       "cannot_change_main_file_because_the_resource_has_DOI": "Cannot change main file because the resource has been granted a DOI",
       "change_main_file": "Change main file",
       "could_not_change_main_file_error_message": "Could not change main file"
-
     },
     "contributor_type": {
       "ContactPerson": "Contact person",

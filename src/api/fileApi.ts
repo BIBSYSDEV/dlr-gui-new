@@ -25,7 +25,7 @@ export const abortMultipartUpload = async (uploadId: string, key: string) => {
 };
 
 export const completeMultipartUpload = async (uploadId: string, key: string, parts: AwsS3Part[]) => {
-  const data = encodeURI(`uploadId=${uploadId}&key=${key}&parts=${JSON.stringify(parts)}`);
+  const data = encodeURIComponent(`uploadId=${uploadId}&key=${key}&parts=${JSON.stringify(parts)}`);
   const response = await authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesContentPath}${FileApiPaths.COMPLETE}`),
     method: 'POST',
@@ -34,7 +34,7 @@ export const completeMultipartUpload = async (uploadId: string, key: string, par
   return response.data;
 };
 export const createMultipartUpload = async (file: UppyFile) => {
-  const data = encodeURI(
+  const data = encodeURIComponent(
     `filename=${file.name}&size=${file.data.size}&lastmodified=${(file.data as File).lastModified}&mimetype=${
       file.data.type
     }`
@@ -57,7 +57,7 @@ export const createResourceAndMultipartUpload = async (
   const contentId = newResource.contents.masterContent.identifier;
   onCreateFile(newResource);
 
-  const data = encodeURI(
+  const data = encodeURIComponent(
     `filename=${file.name}&size=${file.data.size}&lastmodified=${(file.data as File).lastModified}&mimetype=${
       file.data.type
     }`
@@ -71,7 +71,7 @@ export const createResourceAndMultipartUpload = async (
 };
 
 export const listParts = async (uploadId: string, key: string) => {
-  const data = encodeURI(`uploadId=${uploadId}&key=${key}`);
+  const data = encodeURIComponent(`uploadId=${uploadId}&key=${key}`);
   const response = await authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesContentPath}${FileApiPaths.LIST_PARTS}`),
     method: 'POST',
@@ -81,7 +81,7 @@ export const listParts = async (uploadId: string, key: string) => {
 };
 
 export const prepareUploadPart = async (uploadId: string, key: string, body: Blob, number: number) => {
-  const data = encodeURI(`uploadId=${uploadId}&key=${key}&body=${JSON.stringify(body)}&number=${number}`);
+  const data = encodeURIComponent(`uploadId=${uploadId}&key=${key}&body=${JSON.stringify(body)}&number=${number}`);
   const response = await authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesContentPath}${FileApiPaths.PREPARE}`),
     method: 'POST',
@@ -91,7 +91,7 @@ export const prepareUploadPart = async (uploadId: string, key: string, body: Blo
 };
 
 export const setContentAsDefaultThumbnail = (resourceIdentifier: string, contentIdentifier: string) => {
-  const data = encodeURI(`identifierContent=${contentIdentifier}`);
+  const data = encodeURIComponent(`identifierContent=${contentIdentifier}`);
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contents/defaults/thumbnail`),
     method: 'POST',
@@ -100,7 +100,7 @@ export const setContentAsDefaultThumbnail = (resourceIdentifier: string, content
 };
 
 export const setContentAsDefaultContent = (resourceIdentifier: string, contentIdentifier: string) => {
-  const data = encodeURI(`identifierContent=${contentIdentifier}`);
+  const data = encodeURIComponent(`identifierContent=${contentIdentifier}`);
   return authenticatedApiRequest({
     url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contents/defaults/default`),
     method: 'POST',

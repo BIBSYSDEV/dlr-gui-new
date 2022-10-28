@@ -24,9 +24,9 @@ const ChangeMainContent = () => {
   const [showMainFileUppyModal, setShowMainFileUppyModal] = useState(false);
   const { t } = useTranslation();
   const { values, resetForm, touched, setTouched } = useFormikContext<Resource>();
-  const [newContent, setNewContent] = useState<Content | undefined>();
+  const [newContent, setNewContent] = useState<Content>();
   const mainFileChangeUppy = useUppy(createMainFileChangerUppy(values.identifier, setNewContent));
-  const [uploadError, setUploadError] = useState<Error | undefined>();
+  const [uploadError, setUploadError] = useState<Error>();
   const [showDoiMessage, setShowDoiMessage] = useState(false);
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const ChangeMainContent = () => {
           }
         }
       };
-      changeDefaultContent().then();
+      changeDefaultContent();
     });
   }, [newContent, mainFileChangeUppy, resetForm, setTouched, touched, values]);
 
@@ -70,10 +70,7 @@ const ChangeMainContent = () => {
 
   return (
     <ChangeMainFileWrapper data-testid={`main-file-change-uppy-dashboard`}>
-      <Button
-        data-testid="change-main-file-button"
-        variant="outlined"
-        onClick={() => handleChangeMainFileButtonClick()}>
+      <Button data-testid="change-main-file-button" variant="outlined" onClick={handleChangeMainFileButtonClick}>
         {t('resource.change_main_file.change_main_file')}
       </Button>
       {showDoiMessage && (
