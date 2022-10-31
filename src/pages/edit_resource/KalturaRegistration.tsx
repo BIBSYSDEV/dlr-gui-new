@@ -89,7 +89,7 @@ const KalturaRegistration: FC<KalturaRegistrationProps> = ({ expanded, onChange,
     try {
       const response = await getMyKalturaResources(startPage, itemsPrPage);
       setResources(response.data);
-      setTotalResults(parseInt(response.headers['content-range'])); //NB! Repurposed variable name
+      setTotalResults(parseInt(response.headers['content-range'] ?? '0')); //NB! Repurposed variable name
     } catch (error) {
       setGetResourcesError(handlePotentialAxiosError(error));
     } finally {
