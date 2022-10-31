@@ -172,6 +172,10 @@ const AdditionalFilesUpload: FC<AdditionalFilesUploadProps> = ({ additionalFileU
     }
   }, [newContent, values, additionalFileUploadUppy]);
 
+  useEffect(() => {
+    setContents([...filterAdditionalFiles(values.contents.additionalContent)]);
+  }, [values.contents.additionalContent]);
+
   const deleteContent = async (contentToBeDeleted: Content, index: number) => {
     try {
       await deleteResourceContent(values.identifier, contentToBeDeleted.identifier);
