@@ -23,6 +23,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/rootReducer';
 import { handlePotentialAxiosError } from '../../../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
+import ChangeMainContent from './ChangeMainContent';
 
 const StatusBarWrapper = styled.div`
   width: 100%;
@@ -79,6 +80,7 @@ const FileFields: FC<FileFieldsProps> = ({
   const [shouldPollNewThumbnail, setShouldPollNewThumbnail] = useState(false);
   const { institution } = useSelector((state: RootState) => state.user);
   const mediumOrLargerScreen = useMediaQuery(`(min-width:${DeviceWidths.md}px)`);
+  const [newFileBeingUploaded, setNewFileBeingUploaded] = useState(false);
 
   const saveMainContentsFileName = async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setAllChangesSaved(false);
@@ -156,13 +158,15 @@ const FileFields: FC<FileFieldsProps> = ({
             {saveTitleError && <ErrorBanner userNeedsToBeLoggedIn={true} error={saveTitleError} />}
             <Paper>
               <StatusBarWrapper>
-                <StatusBarComponent
-                  hideCancelButton
-                  hidePauseResumeButton
-                  locale={uppyLocale(t)}
-                  uppy={uppy}
-                  hideAfterFinish={false}
-                />
+                {!newFileBeingUploaded && (
+                  <StatusBarComponent
+                    hideCancelButton
+                    hidePauseResumeButton
+                    locale={uppyLocale(t)}
+                    uppy={uppy}
+                    hideAfterFinish={false}
+                  />
+                )}
               </StatusBarWrapper>
             </Paper>
           </MainFileMetadata>
@@ -172,6 +176,10 @@ const FileFields: FC<FileFieldsProps> = ({
           newThumbnailContent={newThumbnailContent}
           newThumbnailIsReady={newThumbnailIsReady}
           pollNewThumbnail={(status) => setShouldPollNewThumbnail(status)}
+        />
+        <ChangeMainContent
+          shouldHaveNewThumbnail={setShouldPollNewThumbnail}
+          isUploadingNewFile={setNewFileBeingUploaded}
         />
       </StyledContentWrapper>
     </StyledSchemaPartColored>

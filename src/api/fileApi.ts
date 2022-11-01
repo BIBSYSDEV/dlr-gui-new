@@ -99,6 +99,25 @@ export const setContentAsDefaultThumbnail = (resourceIdentifier: string, content
   });
 };
 
+export const setContentAsDefaultContent = (resourceIdentifier: string, contentIdentifier: string) => {
+  const data = encodeURI(`identifierContent=${contentIdentifier}`);
+  return authenticatedApiRequest({
+    url: encodeURI(`${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contents/defaults/default`),
+    method: 'POST',
+    data,
+  });
+};
+
+export const setContentAsMasterContent = (resourceIdentifier: string, contentIdentifier: string) => {
+  return authenticatedApiRequest({
+    url: encodeURI(
+      `${API_PATHS.guiBackendResourcesPath}/resources/${resourceIdentifier}/contents/${contentIdentifier}/master`
+    ),
+    method: 'POST',
+    data: '',
+  });
+};
+
 export const createAdditionalFileUpload = async (
   resourceIdentifier: string,
   file: UppyFile,
