@@ -54,6 +54,7 @@ const ResourceContents: FC<ResourceContentsProps> = ({ resource, userResourceAut
       </Grid>
       <Grid item>
         <Button
+          data-testid={`file-content-${content.identifier}-download-button`}
           href={`${resourcePath}/${resource.identifier}/content/${content.identifier}`}
           disabled={!userResourceAuthorization.isConsumer}
           variant="outlined"
