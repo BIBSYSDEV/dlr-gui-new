@@ -208,9 +208,9 @@ context('Explore', () => {
   });
 
   it('does not list endless list of tags on each resultItem unless specified by the user', () => {
-    cy.get('[data-testid=tag-chip-9]').should('not.exist');
+    cy.get('[data-testid=tag-chip-11]').should('not.exist');
     cy.get('[data-testid=show-all-tags]').click();
-    cy.get('[data-testid=tag-chip-9]').should('exist');
+    cy.get('[data-testid=tag-chip-11]').should('exist');
   });
 
   it('shows search suggestions', () => {
