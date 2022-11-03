@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 import styled from 'styled-components';
 import { Content } from '../../../types/content.types';
@@ -20,7 +20,12 @@ const ChangeMainFileWrapper = styled.div`
   margin-top: 1rem;
 `;
 
-const ChangeMainContent = () => {
+interface ChangeMainContentProps {
+  shouldHaveNewThumbnail: (status: boolean) => void;
+  isUploadingNewFile: (status: boolean) => void;
+}
+
+const ChangeMainContent: FC<ChangeMainContentProps> = ({ shouldHaveNewThumbnail, isUploadingNewFile }) => {
   const [showMainFileUppyModal, setShowMainFileUppyModal] = useState(false);
   const { t } = useTranslation();
   const { values, resetForm, touched, setTouched } = useFormikContext<Resource>();
@@ -30,6 +35,9 @@ const ChangeMainContent = () => {
   const [showDoiMessage, setShowDoiMessage] = useState(false);
 
   useEffect(() => {
+    mainFileChangeUppy.on('file-added', () => {
+      isUploadingNewFile(true);
+    });
     mainFileChangeUppy.on('complete', () => {
       const changeDefaultContent = async () => {
         if (newContent) {
@@ -47,6 +55,7 @@ const ChangeMainContent = () => {
               await setContentAsDefaultThumbnail(values.identifier, newContent.identifier);
               oldMasterContent.features.dlr_thumbnail_default = 'false';
               newContent.features.dlr_thumbnail_default = 'true';
+              shouldHaveNewThumbnail(true);
             }
             values.contents.additionalContent = [...values.contents.additionalContent, oldMasterContent];
             values.contents.masterContent = newContent;
@@ -58,7 +67,16 @@ const ChangeMainContent = () => {
       };
       changeDefaultContent();
     });
-  }, [newContent, mainFileChangeUppy, resetForm, setTouched, touched, values]);
+  }, [
+    newContent,
+    mainFileChangeUppy,
+    resetForm,
+    setTouched,
+    touched,
+    values,
+    isUploadingNewFile,
+    shouldHaveNewThumbnail,
+  ]);
 
   const handleChangeMainFileButtonClick = () => {
     if (values.features.dlr_identifier_doi) {

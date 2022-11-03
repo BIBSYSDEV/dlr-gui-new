@@ -17,6 +17,7 @@ import ProfilePage from './pages/profile/ProfilePage';
 import { resourcePath } from './utils/constants';
 import HandleNotFound from './pages/errorpages/HandleNotFound';
 import ResourceNotFound from './pages/errorpages/ResourceNotFound';
+import ContentView from './pages/content_view/ContentView';
 
 const Explore = lazy(() => import('./pages/dashboard/Explore'));
 const EditResourcePage = lazy(() => import('./pages/edit_resource/EditResourcePage'));
@@ -39,6 +40,7 @@ const AppRoutes = () => {
         />
         <Route exact path={`${resourcePath}/:identifier`} component={ResourcePage} />
         <Route exact path={`${resourcePath}/:resourceIdentifier/content/main`} component={MainContentView} />
+        <Route exact path={`${resourcePath}/:resourceIdentifier/content/:contentIdentifier`} component={ContentView} />
         <Route
           exact
           path={`${resourcePath}/user/current`}

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { Resource, UserAuthorizationProfileForResource } from '../../types/resource.types';
 import { StyledFeatureWrapper } from '../../components/styled/Wrappers';
 import { Button, Grid, Typography } from '@mui/material';
@@ -8,10 +8,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../state/rootReducer';
 import styled from 'styled-components';
 import { Content } from '../../types/content.types';
-import { getContentPresentationData } from '../../api/resourceApi';
-import ErrorBanner from '../../components/ErrorBanner';
-import { AxiosError } from 'axios';
-import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
+import { resourcePath } from '../../utils/constants';
 
 const StyledMetadataWrapper = styled.div`
   display: flex;
@@ -30,21 +27,6 @@ interface ResourceContentsProps {
 const ResourceContents: FC<ResourceContentsProps> = ({ resource, userResourceAuthorization }) => {
   const { t } = useTranslation();
   const { institution } = useSelector((state: RootState) => state.user);
-  const [fetchingUrlError, setFetchingUrlError] = useState<Error | AxiosError>();
-
-  const handleDownloadClick = async (contentIdentifier: string) => {
-    try {
-      setFetchingUrlError(undefined);
-      const contentResponse = await getContentPresentationData(contentIdentifier); //aquire 10 seconds valid JWT token for downlaod
-      if (contentResponse.data.features.dlr_content_url) {
-        window.open(contentResponse.data.features.dlr_content_url);
-      } else {
-        setFetchingUrlError(new Error('no url found'));
-      }
-    } catch (error) {
-      setFetchingUrlError(handlePotentialAxiosError(error));
-    }
-  };
 
   const contentItem = (content: Content) => (
     <StyledGridContainer
@@ -72,11 +54,11 @@ const ResourceContents: FC<ResourceContentsProps> = ({ resource, userResourceAut
       </Grid>
       <Grid item>
         <Button
-          onClick={() => handleDownloadClick(content.identifier)}
           data-testid={`file-content-${content.identifier}-download-button`}
+          href={`${resourcePath}/${resource.identifier}/content/${content.identifier}`}
+          disabled={!userResourceAuthorization.isConsumer}
           variant="outlined"
-          color="primary"
-          disabled={!userResourceAuthorization.isConsumer}>
+          color="primary">
           {t('resource.preview.link_to_content')}
         </Button>
       </Grid>
@@ -90,7 +72,6 @@ const ResourceContents: FC<ResourceContentsProps> = ({ resource, userResourceAut
       </Typography>
       {contentItem(resource.contents.masterContent)}
       {resource.contents.additionalContent.map((content) => contentItem(content))}
-      {fetchingUrlError && <ErrorBanner />}
     </StyledFeatureWrapper>
   );
 };
