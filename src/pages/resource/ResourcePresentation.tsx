@@ -99,7 +99,8 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
   }, [resource.identifier, setCanEditResource, setDefaultContent, setPresentationMode, setContentUnavailable]);
 
   return (
-    resource && (
+    resource &&
+    defaultContent && (
       <StyledPresentationWrapper>
         <StyledSchemaPart>
           <StyledContentWrapperMedium>

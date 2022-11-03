@@ -9,7 +9,7 @@ import { handlePotentialAxiosError } from '../utils/AxiosErrorHandling';
 import { AxiosError } from 'axios';
 
 interface DownloadButtonProps {
-  content: Content;
+  content: Content | null;
 }
 
 const DownloadButton: FC<DownloadButtonProps> = ({ content }) => {
@@ -18,19 +18,21 @@ const DownloadButton: FC<DownloadButtonProps> = ({ content }) => {
 
   const handleDownloadClick = async () => {
     try {
-      setFetchingUrlError(undefined);
-      const contentResponse = await getContentPresentationData(content.identifier); //acquire 10 seconds valid JWT token for download
-      if (contentResponse.data.features.dlr_content_url) {
-        window.open(contentResponse.data.features.dlr_content_url);
-      } else {
-        setFetchingUrlError(new Error('no url found'));
+      if (content) {
+        setFetchingUrlError(undefined);
+        const contentResponse = await getContentPresentationData(content.identifier); //acquire 10 seconds valid JWT token for download
+        if (contentResponse.data.features.dlr_content_url) {
+          window.open(contentResponse.data.features.dlr_content_url);
+        } else {
+          setFetchingUrlError(new Error('no url found'));
+        }
       }
     } catch (error) {
       setFetchingUrlError(handlePotentialAxiosError(error));
     }
   };
 
-  return (
+  return content ? (
     <>
       <Button
         onClick={handleDownloadClick}
@@ -38,11 +40,15 @@ const DownloadButton: FC<DownloadButtonProps> = ({ content }) => {
         startIcon={<CloudDownloadIcon />}
         variant="contained"
         color="primary">
-        {t('resource.preview.link_to_content')}{' '}
+        {t('resource.preview.link_to_content')}
         {content.features.dlr_content_size && ` (${content.features.dlr_content_size})`}
       </Button>
       {fetchingUrlError && <ErrorBanner error={fetchingUrlError} />}
     </>
+  ) : (
+    <Button size="large" startIcon={<CloudDownloadIcon />} disabled={true} variant="contained" color="primary">
+      {t('resource.preview.link_to_content')}
+    </Button>
   );
 };
 

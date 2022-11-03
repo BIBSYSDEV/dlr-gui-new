@@ -74,9 +74,7 @@ const MainContentView = () => {
     <StyledProgressWrapper>
       <CircularProgress />
     </StyledProgressWrapper>
-  ) : hasErrorAndErrorIsNot401 ? (
-    <ErrorBanner error={resourceLoadingError} />
-  ) : (
+  ) : !hasErrorAndErrorIsNot401 && content ? (
     <ContentWrapper height={height}>
       <ContentPreview
         resource={resource}
@@ -87,6 +85,8 @@ const MainContentView = () => {
         contentUnavailable={contentUnavailable}
       />
     </ContentWrapper>
+  ) : (
+    <ErrorBanner error={resourceLoadingError} />
   );
 };
 
