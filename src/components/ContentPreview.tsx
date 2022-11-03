@@ -138,12 +138,10 @@ const ContentPreview: FC<ContentPreviewProps> = ({
                 <object data={usageURL} type="application/pdf" height={'100%'} width={'100%'}>
                   <ContentIframe src={usageURL} presentationMode={presentationMode} />
                   <Typography>{t('resource.preview.browser_does_not_support_pdf_viewing')}</Typography>
-                  <DownloadButton content={resource.contents.masterContent} />
+                  <DownloadButton content={content} />
                 </object>
               )}
-              {presentationMode === SupportedFileTypes.Download && (
-                <DownloadButton content={resource.contents.masterContent} />
-              )}
+              {presentationMode === SupportedFileTypes.Download && <DownloadButton content={content} />}
               {previewIsRegularIframe() && <ContentIframe src={usageURL} presentationMode={presentationMode} />}
               {(presentationMode === SupportedFileTypes.LinkSchemeHttp ||
                 presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent) && (
