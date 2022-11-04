@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { emptyResource } from '../../types/resource.types';
-import { getResource, getResourceContents, getResourceDefaultContent } from '../../api/resourceApi';
+import { getContentPresentationData, getResource, getResourceContents } from '../../api/resourceApi';
 import { StyledProgressWrapper } from '../../components/styled/Wrappers';
 import { CircularProgress } from '@mui/material';
 import ContentPreview from '../../components/ContentPreview';
@@ -12,24 +12,24 @@ import { handlePotentialAxiosError } from '../../utils/AxiosErrorHandling';
 import { Content, SupportedFileTypes } from '../../types/content.types';
 import { determinePresentationMode } from '../../utils/mime_type_utils';
 import { StatusCode } from '../../utils/constants';
-import { calculatePreferredWidAndHeigFromPresentationMode, DefaultContentSize } from '../../utils/Preview.utils';
 
-const ContentWrapper = styled.div<{ height: string }>`
-  height: ${(props) => props.height};
+const ContentWrapper = styled.div`
+  height: auto;
   display: flex;
+  width: auto;
+  min-width: 50%;
   align-items: center;
-  width: 100%;
   justify-content: center;
 `;
 
 interface ContentViewParams {
   resourceIdentifier: string;
+  contentIdentifier: string;
 }
 
-const MainContentView = () => {
-  const { resourceIdentifier } = useParams<ContentViewParams>();
+const ContentView = () => {
+  const { resourceIdentifier, contentIdentifier } = useParams<ContentViewParams>();
   const [resource, setResource] = useState(emptyResource);
-  const [height, setHeight] = useState(DefaultContentSize.medium.height);
   const [isLoadingResource, setIsLoadingResource] = useState(true);
   const [resourceLoadingError, setResourceLoadingError] = useState<Error | AxiosError>();
   const [content, setContent] = useState<Content | null>(null);
@@ -46,14 +46,10 @@ const MainContentView = () => {
         const tempResource = (await getResource(resourceIdentifier)).data;
         setResource(tempResource);
         tempResource.contents = await getResourceContents(resourceIdentifier);
-        const defaultContent = (await getResourceDefaultContent(resourceIdentifier)).data;
-        setContent(defaultContent);
-        const presentationMode = determinePresentationMode(defaultContent);
+        const contentPresentation = (await getContentPresentationData(contentIdentifier)).data;
+        setContent(contentPresentation);
+        const presentationMode = determinePresentationMode(contentPresentation);
         setPresentationMode(presentationMode);
-        const searchParams = new URLSearchParams(window.location.search);
-        setHeight(
-          searchParams.get('height') ?? calculatePreferredWidAndHeigFromPresentationMode(presentationMode).medium.height
-        );
       } catch (error) {
         setContentUnavailable(true);
         setResourceLoadingError(handlePotentialAxiosError(error));
@@ -65,17 +61,17 @@ const MainContentView = () => {
       }
     };
 
-    if (resourceIdentifier) {
+    if (resourceIdentifier && contentIdentifier) {
       fetchData(resourceIdentifier);
     }
-  }, [resourceIdentifier, setContent, setPresentationMode, setContentUnavailable]);
+  }, [contentIdentifier, resourceIdentifier, setContent, setPresentationMode, setContentUnavailable]);
 
   return isLoadingResource ? (
     <StyledProgressWrapper>
       <CircularProgress />
     </StyledProgressWrapper>
   ) : !hasErrorAndErrorIsNot401 && content ? (
-    <ContentWrapper height={height}>
+    <ContentWrapper>
       <ContentPreview
         resource={resource}
         isPreview={false}
@@ -90,4 +86,4 @@ const MainContentView = () => {
   );
 };
 
-export default MainContentView;
+export default ContentView;

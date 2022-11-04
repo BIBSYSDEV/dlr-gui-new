@@ -108,7 +108,7 @@ const ResourcePresentation: FC<ResourcePresentationProps> = ({
                 resource={resource}
                 isPreview={isPreview}
                 mainFileBeingUploaded={mainFileBeingUploaded}
-                defaultContent={defaultContent}
+                content={defaultContent}
                 presentationMode={presentationMode}
                 contentUnavailable={contentUnavailable}
               />

@@ -41,7 +41,7 @@ interface ContentPreviewProps {
   resource: Resource;
   isPreview?: boolean;
   mainFileBeingUploaded?: boolean;
-  defaultContent: Content | null;
+  content: Content | null;
   presentationMode: SupportedFileTypes | undefined;
   contentUnavailable: boolean;
 }
@@ -50,7 +50,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({
   resource,
   isPreview = false,
   mainFileBeingUploaded = false,
-  defaultContent,
+  content,
   presentationMode,
   contentUnavailable,
 }) => {
@@ -64,24 +64,22 @@ const ContentPreview: FC<ContentPreviewProps> = ({
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);
-      if (defaultContent && !contentUnavailable) {
+      if (content && !contentUnavailable) {
         try {
-          if (presentationMode === SupportedFileTypes.TwentyThreeVideo && defaultContent.features.dlr_content_url) {
-            const twentyThreeVideoResponse = await getTwentyThreeVideoInformation(
-              defaultContent.features.dlr_content_url
-            );
-            defaultContent.features.dlr_content_url = getSourceFromIframeString(twentyThreeVideoResponse.data.html);
+          if (presentationMode === SupportedFileTypes.TwentyThreeVideo && content.features.dlr_content_url) {
+            const twentyThreeVideoResponse = await getTwentyThreeVideoInformation(content.features.dlr_content_url);
+            content.features.dlr_content_url = getSourceFromIframeString(twentyThreeVideoResponse.data.html);
           }
-          if (presentationMode === SupportedFileTypes.Soundcloud && defaultContent.features.dlr_content_url) {
-            const contentResponse = await getSoundCloudInformation(defaultContent.features.dlr_content_url);
-            defaultContent.features.dlr_content_url = getSourceFromIframeString(contentResponse.data.html);
+          if (presentationMode === SupportedFileTypes.Soundcloud && content.features.dlr_content_url) {
+            const contentResponse = await getSoundCloudInformation(content.features.dlr_content_url);
+            content.features.dlr_content_url = getSourceFromIframeString(contentResponse.data.html);
           }
-          if (presentationMode === SupportedFileTypes.Text && defaultContent.features.dlr_content_url) {
-            const contentFileResponse = await getTextFileContents(defaultContent.features.dlr_content_url);
+          if (presentationMode === SupportedFileTypes.Text && content.features.dlr_content_url) {
+            const contentFileResponse = await getTextFileContents(content.features.dlr_content_url);
             setContentText(contentFileResponse.data);
           }
-          if (defaultContent.features.dlr_content_url) {
-            setUsageURL(defaultContent.features.dlr_content_url);
+          if (content.features.dlr_content_url) {
+            setUsageURL(content.features.dlr_content_url);
           }
         } catch (error) {
           setContentPresentationError(true);
@@ -97,7 +95,7 @@ const ContentPreview: FC<ContentPreviewProps> = ({
     isPreview,
     mainFileBeingUploaded,
     resource,
-    defaultContent,
+    content,
     presentationMode,
     contentPresentationError,
     contentUnavailable,
@@ -130,22 +128,20 @@ const ContentPreview: FC<ContentPreviewProps> = ({
               {presentationMode === SupportedFileTypes.Video && <StyledVideo src={usageURL} controls />}
               {presentationMode === SupportedFileTypes.Audio && (
                 <audio controls>
-                  <source src={usageURL} type={defaultContent?.features.dlr_content_mime_type} />
+                  <source src={usageURL} type={content?.features.dlr_content_mime_type} />
                 </audio>
               )}
               {presentationMode === SupportedFileTypes.Document && (
-                <DocumentPreview defaultContent={defaultContent} resource={resource} usageURL={usageURL} />
+                <DocumentPreview defaultContent={content} resource={resource} usageURL={usageURL} />
               )}
               {presentationMode === SupportedFileTypes.PDF && (
                 <object data={usageURL} type="application/pdf" height={'100%'} width={'100%'}>
                   <ContentIframe src={usageURL} presentationMode={presentationMode} />
                   <Typography>{t('resource.preview.browser_does_not_support_pdf_viewing')}</Typography>
-                  <DownloadButton content={resource.contents.masterContent} />
+                  <DownloadButton content={content} />
                 </object>
               )}
-              {presentationMode === SupportedFileTypes.Download && (
-                <DownloadButton content={resource.contents.masterContent} />
-              )}
+              {presentationMode === SupportedFileTypes.Download && <DownloadButton content={content} />}
               {previewIsRegularIframe() && <ContentIframe src={usageURL} presentationMode={presentationMode} />}
               {(presentationMode === SupportedFileTypes.LinkSchemeHttp ||
                 presentationMode === SupportedFileTypes.LinkXFrameOptionsPresent) && (
