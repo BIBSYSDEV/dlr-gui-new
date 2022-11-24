@@ -67,7 +67,7 @@ export const searchResources = ({
     tags.map((tag) => filters.push(ApiSearchParameters.FacetTag + encodeURIComponent(tag)));
     creators?.map((creator) => filters.push(ApiSearchParameters.FacetCreator + encodeURIComponent(creator)));
     if (filters.length > 0) {
-      url += filters.join(ApiSearchParameters.FilterSeparator);
+      url += filters.join(encodeURI(ApiSearchParameters.FilterSeparator));
     }
   }
   url += `&${ApiSearchParameters.Mine}=${encodeURIComponent(mine)}&${
