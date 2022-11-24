@@ -133,6 +133,9 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
     LicenseRestrictionOptions.yes,
     ...(institution.toLowerCase() === InstitutionLicenseProviders.NTNU ? [Licenses.NTNU] : []),
     ...(institution.toLowerCase() === InstitutionLicenseProviders.BI ? [Licenses.BI] : []),
+    ...(institution.toLowerCase() === InstitutionLicenseProviders.VID
+      ? [Licenses.VID_INTERN, Licenses.VID_OPPHAVER]
+      : []),
   ];
 
   const setAccessTypePrivate = async () => {

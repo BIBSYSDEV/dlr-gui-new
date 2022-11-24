@@ -44,15 +44,31 @@ const initLicenseList = (user: User): LicenseListItem[] => {
       });
       break;
     case UserInstitution.BI.toLowerCase():
-      licenses.push({
-        licenseCode: Licenses.BI,
-        isSelected: false,
-      });
+      licenses.push({ licenseCode: Licenses.BI, isSelected: false });
+      break;
+    case UserInstitution.VID.toLowerCase():
+      licenses.push({ licenseCode: Licenses.VID_INTERN, isSelected: false });
+      licenses.push({ licenseCode: Licenses.VID_OPPHAVER, isSelected: false });
       break;
     default:
       break;
   }
   return licenses;
+};
+
+const userLicenseCodes = (userInstitution: string): string[] => {
+  const licenseCodes: string[] = [...CreativeCommonsLicenseCodes];
+  if (userInstitution === UserInstitution.VID.toLowerCase()) {
+    licenseCodes.push(Licenses.VID_INTERN);
+    licenseCodes.push(Licenses.VID_OPPHAVER);
+  }
+  if (userInstitution === UserInstitution.BI.toLowerCase()) {
+    licenseCodes.push(Licenses.BI);
+  }
+  if (userInstitution === UserInstitution.NTNU.toLowerCase()) {
+    licenseCodes.push(Licenses.NTNU);
+  }
+  return licenseCodes;
 };
 
 interface LicenseFilteringProps {
@@ -63,13 +79,14 @@ interface LicenseFilteringProps {
 const LicenseFiltering: FC<LicenseFilteringProps> = ({ queryObject, setQueryObject }) => {
   const user = useSelector((state: RootState) => state.user);
   const [licensesCheckList, setLicensesCheckList] = useState<LicenseListItem[]>(initLicenseList(user));
+  const [licenseCodes] = useState<string[]>(userLicenseCodes(user.institution.toLowerCase()));
   const { t } = useTranslation();
   const location = useLocation();
   const history = useHistory();
 
   useEffect(() => {
     if (queryObject.licenses.length > 0) {
-      const nextState = CreativeCommonsLicenseCodes.map((licenseCode) => ({
+      const nextState = licenseCodes.map((licenseCode) => ({
         licenseCode: licenseCode,
         isSelected: !!queryObject.licenses.find((queryLicenseCode) => queryLicenseCode === licenseCode),
       }));
@@ -77,7 +94,7 @@ const LicenseFiltering: FC<LicenseFilteringProps> = ({ queryObject, setQueryObje
     } else {
       setLicensesCheckList(initLicenseList(user));
     }
-  }, [queryObject, user]);
+  }, [queryObject, user, licenseCodes]);
 
   const changeSelected = (index: number, event: any) => {
     const newQueryObject = { ...queryObject, offset: 0 };

@@ -304,6 +304,8 @@
       "ntnu": "for internal uses at NTNU only",
       "only_for_internal_usage": "Can only be used at your institution",
       "sa": "SA - Share adaptations under the same terms",
+      "vid":"For internal uses at VID only",
+      "vid_opphaver": "For internal uses at VID with clearance of the creator",
       "zero": "Zero - This work has been marked as dedicated to the public domain"
     },
     "published_with": "Published with",
@@ -345,6 +347,8 @@
       "CC_BY-NC-SA_4_0": "Yes, it contains material with license CC BY-NC-SA",
       "CC_BY-SA_4_0": "Yes, it contains material with license CC BY-SA",
       "ntnu-internt": "Yes, it can only be used internally at NTNU",
+      "vid-intern": "Yes, it can only be used internally at VID",
+      "vid-opphaver": "Yes, it can only be used internally at VID and usage needs to be cleared with the creator",
       "yes": "Yes, I want to apply restrictions on the use of the resource"
     },
     "selected_license": "Selected license"
