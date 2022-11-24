@@ -66,7 +66,8 @@ const LicenseFields: FC<LicenseAndAccessFieldsProps> = ({ setAllChangesSaved, li
       licenses.findIndex(
         (license) =>
           license.features?.dlr_license_code?.toLowerCase().includes(InstitutionLicenseProviders.BI) ||
-          license.features?.dlr_license_code?.toLowerCase().includes(InstitutionLicenseProviders.NTNU)
+          license.features?.dlr_license_code?.toLowerCase().includes(InstitutionLicenseProviders.NTNU) ||
+          license.features?.dlr_license_code?.toLowerCase().includes(InstitutionLicenseProviders.VID)
       ) > -1
     );
   };

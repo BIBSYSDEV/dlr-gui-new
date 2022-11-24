@@ -141,6 +141,12 @@ const LicensePopoverExplanation: FC<CCExplanationProps> = ({
           )}
           {licenseCode.toLowerCase().includes('bi') && <Typography>{t('license.part_description.bi')}</Typography>}
           {licenseCode.toLowerCase().includes('ntnu') && <Typography>{t('license.part_description.ntnu')}</Typography>}
+          {licenseCode.toLowerCase().includes('vid-intern') && (
+            <Typography>{t('license.part_description.vid')}</Typography>
+          )}
+          {licenseCode.toLowerCase().includes('vid-opphaver') && (
+            <Typography>{t('license.part_description.vid_opphaver')}</Typography>
+          )}
           {licenseCode.toLowerCase().includes('cc') && !licenseCode.toLowerCase().includes('1') && showLink && (
             <Link
               underline="hover"
