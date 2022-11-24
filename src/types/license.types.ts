@@ -35,6 +35,8 @@ export enum Licenses {
   CC = 'creative_commons',
   BI = 'bi-opphaver-bi',
   NTNU = 'ntnu-internt',
+  VID_INTERN = 'vid-intern',
+  VID_OPPHAVER = 'vid-opphaver',
   CC_BY = 'CC BY 4.0',
   CC_BY_ND = 'CC BY-ND 4.0',
   CC_BY_SA = 'CC BY-SA 4.0',
@@ -57,6 +59,7 @@ export const CreativeCommonsLicenseCodes: string[] = [
 export enum InstitutionLicenseProviders {
   NTNU = 'ntnu',
   BI = 'bi',
+  VID = 'vid',
 }
 
 export enum ContainsOtherPeoplesWorkOptions {

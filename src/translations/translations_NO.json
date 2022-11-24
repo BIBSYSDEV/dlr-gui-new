@@ -304,6 +304,8 @@
       "ntnu": "Kun for intern bruk hos NTNU",
       "only_for_internal_usage": "Kan kun brukes internt hos din institusjon",
       "sa": "SA - Bearbeidelser må deles på samme vilkår",
+      "vid":"Kun for intern bruk hos VID",
+      "vid_opphaver": "Kun for intern bruk hos VID med tillatelse fra opphaver",
       "zero": "Zero - Dette verket er markert som dedikert til public domain (offentlig eie)"
     },
     "published_with": "Publisert med",
@@ -345,6 +347,8 @@
       "CC_BY-NC-SA_4_0": "Ja, den inneholder materiale med lisens CC BY-NC-SA",
       "CC_BY-SA_4_0": "Ja, den inneholder materiale med lisens CC BY-SA",
       "ntnu-internt": "Ja, den kan kun brukes internt på NTNU",
+      "vid-intern": "Ja, den kan kun brukes internt på VID",
+      "vid-opphaver": "Ja, den kan kun brukes internt på VID og bruken må avklares med opphaver",
       "yes": "Ja, jeg vil legge restriksjoner på bruken av ressursen"
     },
     "selected_license": "Valgt lisens"
