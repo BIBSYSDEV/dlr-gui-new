@@ -191,7 +191,7 @@ const ResultListItem: FC<ResultListItemProps> = ({ resource }) => {
               {displayTags.map((tag, index) => (
                 <StyledChip
                   component="a"
-                  href={`/?${SearchParameters.tag}=${tag}`}
+                  href={`/?${SearchParameters.tag}=${encodeURIComponent(tag)}`}
                   key={index}
                   data-testid={`tag-chip-${index}`}
                   clickable
