@@ -147,7 +147,7 @@ const ResourceMetadata: FC<ResourceMetadataProps> = ({ resource, isPreview = fal
                 </Typography>
                 {displayTags.map((tag, index) => (
                   <StyledChip
-                    href={`/?${SearchParameters.tag}=${tag}${
+                    href={`/?${SearchParameters.tag}=${encodeURIComponent(tag)}${
                       getLMSSearchParams().toString().length > 0 ? `&${getLMSSearchParams()}` : ''
                     }`}
                     component="a"
