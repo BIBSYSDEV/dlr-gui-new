@@ -11,7 +11,7 @@ import {
 } from '../api/fileApi';
 import { Resource } from '../types/resource.types';
 import { Content } from '../types/content.types';
-import { TFunction } from "i18next";
+import { TFunction } from 'i18next';
 
 interface UppyArgs {
   uploadId: string;

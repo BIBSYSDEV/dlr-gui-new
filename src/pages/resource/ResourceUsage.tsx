@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
-import { TFunction } from "i18next";
+import { TFunction } from 'i18next';
 import { getCitationFromCrossCite } from '../../api/resourceApi';
 import styled from 'styled-components';
 import { Alert, AlertTitle, Grid, Link } from '@mui/material';

@@ -48,7 +48,9 @@ const ContentIframe: FC<ContentIframeProps> = ({ src, presentationMode }) => {
         />
       );
     default:
-      return <DefaultIframeStyling title={t('resource.preview.preview_of_master_content') ?? ''} src={src} allowFullScreen />;
+      return (
+        <DefaultIframeStyling title={t('resource.preview.preview_of_master_content') ?? ''} src={src} allowFullScreen />
+      );
   }
 };
 
