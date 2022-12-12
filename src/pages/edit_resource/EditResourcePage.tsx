@@ -413,7 +413,10 @@ const EditResourcePage = () => {
 
   return (
     <>
-      <Prompt when={mainFileBeingUploaded} message={t('resource.files_and_license.warning_leaving_form_premature')} />
+      <Prompt
+        when={mainFileBeingUploaded}
+        message={t('resource.files_and_license.warning_leaving_form_premature') ?? ''}
+      />
       {!showForm ? (
         <StyledContentWrapperLarge>
           <PageHeader>{t('resource.new_registration')}</PageHeader>

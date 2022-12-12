@@ -164,9 +164,9 @@ const TagsField: FC<TagsFieldProps> = ({ setAllChangesSaved }) => {
                       <TextField
                         {...params}
                         id="resource-feature-tags"
-                        label={t('resource.metadata.tags')}
-                        helperText={t('resource.add_tags')}
-                        aria-errormessage={t('resource.add_tags_cleaned_warning')}
+                        label={t('resource.metadata.tags') ?? ''}
+                        helperText={t('resource.add_tags') ?? ''}
+                        aria-errormessage={t('resource.add_tags_cleaned_warning') ?? ''}
                         variant="filled"
                         onChange={handleChange}
                         fullWidth

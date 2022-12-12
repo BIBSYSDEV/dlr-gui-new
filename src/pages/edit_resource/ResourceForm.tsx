@@ -110,12 +110,14 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
 
   const resourceValidationSchema = Yup.object().shape({
     features: Yup.object().shape({
-      dlr_title: Yup.string().required(t('feedback.required_field')),
-      dlr_type: Yup.string().required(t('feedback.required_field')).min(1, t('feedback.required_field')),
+      dlr_title: Yup.string().required(t('feedback.required_field') ?? ''),
+      dlr_type: Yup.string()
+        .required(t('feedback.required_field') ?? '')
+        .min(1, t('feedback.required_field') ?? ''),
       dlr_licensehelper_contains_other_peoples_work: Yup.string().when(
         'dlr_status_published',
         (isPublished: boolean, schema: BaseSchema) => {
-          return isPublished ? schema : schema.required(t('feedback.required_field')).min(1);
+          return isPublished ? schema : schema.required(t('feedback.required_field') ?? '').min(1);
         }
       ),
       dlr_licensehelper_usage_cleared_with_owner: Yup.string()
@@ -123,36 +125,36 @@ const ResourceForm: FC<ResourceFormProps> = ({ uppy, resource, resourceType, mai
         .when('dlr_licensehelper_contains_other_peoples_work', {
           is: ContainsOtherPeoplesWorkOptions.Yes,
           then: Yup.string().when('dlr_status_published', (isPublished: boolean, schema: BaseSchema) => {
-            return isPublished ? schema : schema.required(t('feedback.required_field')).min(1);
+            return isPublished ? schema : schema.required(t('feedback.required_field') ?? '').min(1);
           }),
         }),
     }),
     creators: Yup.array().of(
       Yup.object().shape({
         features: Yup.object().shape({
-          dlr_creator_name: Yup.string().required(t('feedback.required_field')),
+          dlr_creator_name: Yup.string().required(t('feedback.required_field') ?? ''),
         }),
       })
     ),
     contents: Yup.object().shape({
       masterContent: Yup.object().shape({
         features: Yup.object().shape({
-          dlr_content_title: Yup.string().required(t('feedback.required_field')),
+          dlr_content_title: Yup.string().required(t('feedback.required_field') ?? ''),
         }),
       }),
     }),
     contributors: Yup.array().of(
       Yup.object().shape({
         features: Yup.object().shape({
-          dlr_contributor_name: Yup.string().required(t('feedback.required_field')),
-          dlr_contributor_type: Yup.string().required(t('feedback.required_field')),
+          dlr_contributor_name: Yup.string().required(t('feedback.required_field') ?? ''),
+          dlr_contributor_type: Yup.string().required(t('feedback.required_field') ?? ''),
         }),
       })
     ),
     licenses: Yup.array().of(
       Yup.object().shape({
         identifier: Yup.string().when('dlr_status_published', (isPublished: boolean, schema: BaseSchema) => {
-          return isPublished ? schema : schema.required(t('feedback.required_field')).min(1);
+          return isPublished ? schema : schema.required(t('feedback.required_field') ?? '').min(1);
         }),
       })
     ),

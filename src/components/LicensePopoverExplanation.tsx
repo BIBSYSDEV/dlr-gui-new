@@ -88,7 +88,7 @@ const LicensePopoverExplanation: FC<CCExplanationProps> = ({
   };
   return (
     <div>
-      <IconButton aria-label={t('dashboard.explain_license')} color="primary" onClick={handleClick} size="large">
+      <IconButton aria-label={t('dashboard.explain_license') ?? ''} color="primary" onClick={handleClick} size="large">
         <HelpIcon />
       </IconButton>
       <Popover

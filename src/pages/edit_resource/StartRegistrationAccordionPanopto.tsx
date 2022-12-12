@@ -21,7 +21,7 @@ const StartRegistrationAccordionPanopto: FC<StartRegistrationAccordionPanoptoPro
   return (
     <StartRegistrationMethodAccordion
       headerLabel={t('vms.panopto.start_with_panopto_resource')}
-      icon={<img height="24px" src={panoptoLogo} alt={t('vms.panopto.logo_alt')} />}
+      icon={<img height="24px" src={panoptoLogo} alt={t('vms.panopto.logo_alt') ?? ''} />}
       expanded={expanded}
       onChange={onChange}
       ariaControls="resource-method-panopto"

@@ -19,7 +19,7 @@ const NotFound = () => {
     <StyledContentWrapperLarge>
       <PageHeader testId="404">{t('error.404_page')}</PageHeader>
       <StyledContentWrapperMedium>
-        <StyledImg src={ResourceInSpace} alt={t('illustration_alts_tags.resource_in_space')} />
+        <StyledImg src={ResourceInSpace} alt={t('illustration_alts_tags.resource_in_space') ?? ''} />
       </StyledContentWrapperMedium>
     </StyledContentWrapperLarge>
   );

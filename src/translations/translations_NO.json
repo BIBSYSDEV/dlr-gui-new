@@ -225,7 +225,7 @@
     "soften_helper_text_1": "Du kan gjøre ressursen offentlig tilgjengelig eller du kan legge til flere typer privat lesetilgang.",
     "soften_helper_text_2": "Du kan ikke fjerne lesetilgang for de som allerede har tilgang til en publisert ressurs.",
     "tags_helper_aria_label": "Vis emneord forklaring",
-    "tags_helper_text": "Emneord benyttes for å beskrive innholdet i en ressurs. Et emneord kan bestå av ett eller flere ord, f.eks \"optisk illusjon\". NB! '#' i emneord fjernes automatisk" ,
+    "tags_helper_text": "Emneord benyttes for å beskrive innholdet i en ressurs. Et emneord kan bestå av ett eller flere ord, f.eks \"optisk illusjon\". NB! '#' i emneord fjernes automatisk",
     "tags_helper_text_edit_resource1": "Skriv inn emneordet etterfulgt av enter så kan du skrive inn neste emneord. Man kan legge til og slette emneord etter at en ressurs er publisert",
     "tags_helper_text_edit_resource2": "Gode valg av emneord sørger for at det er lettere for andre å finne ressursen din ",
     "tags_helper_text_example": "Eksempel: En ressurs med tittel \"Det sympatiske nervesystemet\" kan ha emneord: \"syk130\", \"sykepleie\", \"helsefag\", \"nervesystemet\" og \"helse\"",
@@ -259,7 +259,7 @@
     "this_resource_has_been_deleted": "Desverre har denne ressursen blitt slettet"
   },
   "header": {
-    "show_navigation_menu" : "Vis navigasjonsmeny"
+    "show_navigation_menu": "Vis navigasjonsmeny"
   },
   "illustration_alts_tags": {
     "browsing_resource": "En dame søker etter en ressurs",
@@ -304,7 +304,7 @@
       "ntnu": "Kun for intern bruk hos NTNU",
       "only_for_internal_usage": "Kan kun brukes internt hos din institusjon",
       "sa": "SA - Bearbeidelser må deles på samme vilkår",
-      "vid":"Kun for intern bruk hos VID",
+      "vid": "Kun for intern bruk hos VID",
       "vid_opphaver": "Kun for intern bruk hos VID med tillatelse fra opphaver",
       "zero": "Zero - Dette verket er markert som dedikert til public domain (offentlig eie)"
     },

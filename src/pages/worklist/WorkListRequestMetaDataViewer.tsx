@@ -79,7 +79,7 @@ const WorkListRequestMetaDataViewer: FC<WorkListRequestMetaDataViewerProps> = ({
               {workListRequest.description}
             </Typography>
             <StyledShowMoreButton
-              aria-label={t('work_list.shorten_comments')}
+              aria-label={t('work_list.shorten_comments') ?? ''}
               color="primary"
               onClick={() => setShowLongText(false)}>
               {t('work_list.hide')}
