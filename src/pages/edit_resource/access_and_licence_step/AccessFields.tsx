@@ -94,9 +94,9 @@ const AccessFields: FC<AccessFieldsProps> = ({ setAllChangesSaved }) => {
         values.features.dlr_licensehelper_usage_cleared_with_owner &&
         values.features.dlr_licensehelper_usage_cleared_with_owner === LicenseAgreementsOptions.NoClearance
       ) {
-        setDisabledHelperText(t('access.no_clearance_no_public_access'));
+        setDisabledHelperText(t('access.no_clearance_no_public_access') ?? '');
       } else {
-        setDisabledHelperText(t('access.only_private_is_available'));
+        setDisabledHelperText(t('access.only_private_is_available') ?? '');
       }
       setDisabledUserInput(true);
     } else {

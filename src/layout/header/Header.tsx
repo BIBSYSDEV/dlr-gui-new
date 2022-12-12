@@ -69,7 +69,7 @@ const Header = () => {
         <>
           <StyledBurgerMenu>
             <IconButton
-              aria-label={t('header.show_navigation_menu')}
+              aria-label={t('header.show_navigation_menu') ?? ''}
               data-testid="navbar-burger-menu-button"
               onClick={handleBurgerMenuClick}
               size="large">

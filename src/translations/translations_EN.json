@@ -259,7 +259,7 @@
     "this_resource_has_been_deleted": "Unfortunately this resource has been deleted"
   },
   "header": {
-    "show_navigation_menu" : "Show navigation menu"
+    "show_navigation_menu": "Show navigation menu"
   },
   "illustration_alts_tags": {
     "browsing_resource": "A woman is browsing for resources",
@@ -304,7 +304,7 @@
       "ntnu": "for internal uses at NTNU only",
       "only_for_internal_usage": "Can only be used at your institution",
       "sa": "SA - Share adaptations under the same terms",
-      "vid":"For internal uses at VID only",
+      "vid": "For internal uses at VID only",
       "vid_opphaver": "For internal uses at VID with clearance of the creator",
       "zero": "Zero - This work has been marked as dedicated to the public domain"
     },

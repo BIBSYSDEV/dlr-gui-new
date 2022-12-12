@@ -80,7 +80,7 @@ const MyResources = () => {
             textColor="primary"
             indicatorColor="primary"
             onChange={handleTabChange}
-            aria-label={t('resource.my_publication_tabs')}>
+            aria-label={t('resource.my_publication_tabs') ?? ''}>
             <Tab label={t('resource.published_resources')} value={Tabs.Published} data-testid={'published-tab'} />
             <Tab label={t('resource.unpublished_resources')} value={Tabs.UnPublished} data-testid={'unpublished-tab'} />
           </TabList>

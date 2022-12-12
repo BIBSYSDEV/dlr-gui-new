@@ -21,7 +21,7 @@ const StartRegistrationAccordionKaltura: FC<StartRegistrationAccordionKalturaPro
   return (
     <StartRegistrationMethodAccordion
       headerLabel={t('vms.kaltura.start_with_kaltura_resource')}
-      icon={<img height="24px" src={kalturaLogo} alt={t('vms.kaltura.logo_alt')} />}
+      icon={<img height="24px" src={kalturaLogo} alt={t('vms.kaltura.logo_alt') ?? ''} />}
       expanded={expanded}
       onChange={onChange}
       ariaControls="resource-method-kaltura"

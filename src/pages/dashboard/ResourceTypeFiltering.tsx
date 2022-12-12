@@ -1,13 +1,14 @@
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { QueryObject, SearchParameters } from '../../types/search.types';
 import { DefaultResourceTypes } from '../../types/resource.types';
-import { TFunction, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { Checkbox, FormControl, FormControlLabel, FormGroup } from '@mui/material';
 import FormLabel from '@mui/material/FormLabel';
 import Typography from '@mui/material/Typography';
 import styled from 'styled-components';
 import { useHistory, useLocation } from 'react-router-dom';
 import { rewriteSearchParams } from '../../utils/rewriteSearchParams';
+import { TFunction } from 'i18next';
 
 const StyledFormControl: any = styled(FormControl)`
   margin-top: 2rem;

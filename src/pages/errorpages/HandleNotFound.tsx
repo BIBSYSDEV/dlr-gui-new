@@ -24,7 +24,7 @@ const HandleNotFound = () => {
     <StyledContentWrapperLarge>
       <PageHeader testId="404">{`404 ${t('handle_not_found.handle_not_found')}`}</PageHeader>
       <StyledContentWrapperMedium>
-        <StyledImg src={ResourceInSpace} alt={t('illustration_alts_tags.resource_in_space')} />
+        <StyledImg src={ResourceInSpace} alt={t('illustration_alts_tags.resource_in_space') ?? ''} />
         <StyledTypography>{t('handle_not_found.this_resource_has_been_deleted')}</StyledTypography>
       </StyledContentWrapperMedium>
     </StyledContentWrapperLarge>

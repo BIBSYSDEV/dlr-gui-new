@@ -24,7 +24,7 @@ const ResourceNotFound = () => {
     <StyledContentWrapperLarge>
       <PageHeader testId="404">{`404 ${t('resource_not_found.resource_not_found')}`}</PageHeader>
       <StyledContentWrapperMedium>
-        <StyledImg src={ResourceInSpace} alt={t('illustration_alts_tags.resource_in_space')} />
+        <StyledImg src={ResourceInSpace} alt={t('illustration_alts_tags.resource_in_space') ?? ''} />
         <StyledTypography>{t('resource_not_found.resource_may_have_been_deleted')}</StyledTypography>
       </StyledContentWrapperMedium>
     </StyledContentWrapperLarge>

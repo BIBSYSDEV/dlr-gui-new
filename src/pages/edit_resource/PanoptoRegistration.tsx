@@ -174,7 +174,7 @@ const PanoptoRegistration: FC<PanoptoRegistrationProps> = ({ expanded, onChange,
                       <StyledTextFieldWithMargin
                         onChange={(event) => setFilterValue(event.target.value)}
                         value={filterValue}
-                        placeholder={t('dashboard.filter')}
+                        placeholder={t('dashboard.filter') ?? ''}
                         variant="outlined"
                         data-testid="filter-text-box"
                         id="filter-text-box"
