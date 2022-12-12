@@ -23,9 +23,9 @@ const Forbidden = () => {
     <StyledContentWrapperLarge>
       <PageHeader testId="401">{user.id ? t('error.401_page') : t('error.403_page')}</PageHeader>
       <StyledContentWrapperMedium>
-        <StyledImg src={SecureFiles} alt={t('illustration_alts_tags.secure_files')} />
+        <StyledImg src={SecureFiles} alt={t('illustration_alts_tags.secure_files') ?? ''} />
       </StyledContentWrapperMedium>
-      {!user.id && <LoginReminder customMessage={t('error.login_for_more_functionality')} />}
+      {!user.id && <LoginReminder customMessage={t('error.login_for_more_functionality') ?? ''} />}
     </StyledContentWrapperLarge>
   );
 };

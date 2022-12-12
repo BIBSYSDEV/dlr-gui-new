@@ -34,7 +34,7 @@ const ContentIframe: FC<ContentIframeProps> = ({ src, presentationMode }) => {
     case SupportedFileTypes.Panopto:
       return (
         <StyledSixteenNineAspectRatioIframe
-          title={t('resource.preview.preview_of_master_content')}
+          title={t('resource.preview.preview_of_master_content') ?? ''}
           src={src}
           allowFullScreen
         />
@@ -42,13 +42,13 @@ const ContentIframe: FC<ContentIframeProps> = ({ src, presentationMode }) => {
     case SupportedFileTypes.Transistor:
       return (
         <TransistorIframeFixedHeight
-          title={t('resource.preview.preview_of_master_content')}
+          title={t('resource.preview.preview_of_master_content') ?? ''}
           src={src}
           allowFullScreen
         />
       );
     default:
-      return <DefaultIframeStyling title={t('resource.preview.preview_of_master_content')} src={src} allowFullScreen />;
+      return <DefaultIframeStyling title={t('resource.preview.preview_of_master_content') ?? ''} src={src} allowFullScreen />;
   }
 };
 

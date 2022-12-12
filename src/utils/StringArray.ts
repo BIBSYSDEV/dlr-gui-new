@@ -1,6 +1,6 @@
 //Does not mutate input stringArray
 
-import { TFunction } from 'react-i18next';
+import { TFunction } from "i18next";
 
 export const StringArrayToSetStringArray = (stringArray: string[]): string[] => {
   const seen = new Set();

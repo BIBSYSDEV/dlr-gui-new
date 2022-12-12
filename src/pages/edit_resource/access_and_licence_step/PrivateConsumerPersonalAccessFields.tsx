@@ -122,8 +122,8 @@ const PrivateConsumerPersonalAccessFields: FC<PrivateConsumerPersonalAccessField
                 <InputAdornment position="end">
                   <IconButton
                     size="small"
-                    aria-label={t('common.clear')}
-                    title={t('common.cancel')}
+                    aria-label={t('common.clear') ?? ''}
+                    title={t('common.cancel') ?? ''}
                     onClick={() => {
                       setPersonAccessTextFieldValueError(undefined);
                       setHasDuplicateEmail(false);

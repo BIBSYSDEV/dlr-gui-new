@@ -229,7 +229,7 @@ const RoleSetter = () => {
   );
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email(t('feedback.valid_email')).required(t('feedback.required_field')),
+    email: Yup.string().email(t('feedback.valid_email') ?? '').required(t('feedback.required_field') ?? ''),
   });
 
   return (

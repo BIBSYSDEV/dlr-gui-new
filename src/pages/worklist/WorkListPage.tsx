@@ -136,10 +136,10 @@ const WorkListPage = () => {
             textColor="primary"
             indicatorColor="primary"
             onChange={handleTabChange}
-            aria-label={t('work_list.aria_label_tabs')}>
-            <Tab label={t('work_list.reports')} value={ReportsTab} data-testid={'reports-tab'} />
-            <Tab label={t('work_list.doi_request_list')} value={DOIRequestTab} data-testid={'doi-tab'} />
-            <Tab label={t('work_list.ownership_requests')} value={OwnershipRequestTab} data-testid={'ownership-tab'} />
+            aria-label={t('work_list.aria_label_tabs') ?? ''}>
+            <Tab label={t('work_list.reports') ?? ''} value={ReportsTab} data-testid={'reports-tab'} />
+            <Tab label={t('work_list.doi_request_list') ?? ''} value={DOIRequestTab} data-testid={'doi-tab'} />
+            <Tab label={t('work_list.ownership_requests') ?? ''} value={OwnershipRequestTab} data-testid={'ownership-tab'} />
           </TabList>
 
           <StyledTabPanel value={DOIRequestTab}>

@@ -57,7 +57,7 @@ const OwnershipRequestListItem: FC<OwnershipRequestListItemProps> = ({
   const fullScreenDialog = useMediaQuery(`(max-width:${DeviceWidths.sm}px)`);
 
   const EmailSchema = Yup.object().shape({
-    email: Yup.string().email(t('work_list.invalid_email')).required(t('feedback.required_field')),
+    email: Yup.string().email(t('work_list.invalid_email') ?? '').required(t('feedback.required_field') ?? ''),
   });
 
   const handleDeleteOwnershipRequest = async (comment: string) => {

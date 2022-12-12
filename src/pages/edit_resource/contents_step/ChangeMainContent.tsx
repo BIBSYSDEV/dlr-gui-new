@@ -93,13 +93,13 @@ const ChangeMainContent: FC<ChangeMainContentProps> = ({ shouldHaveNewThumbnail,
       </Button>
       {showDoiMessage && (
         <ErrorBanner
-          customErrorMessage={t('resource.change_main_file.cannot_change_main_file_because_the_resource_has_DOI')}
+          customErrorMessage={t('resource.change_main_file.cannot_change_main_file_because_the_resource_has_DOI') ?? ''}
         />
       )}
       {uploadError && (
         <ErrorBanner
           error={uploadError}
-          customErrorMessage={t('resource.change_main_file.could_not_change_main_file_error_message')}
+          customErrorMessage={t('resource.change_main_file.could_not_change_main_file_error_message') ?? ''}
         />
       )}
       <DashboardModal

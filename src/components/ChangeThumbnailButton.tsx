@@ -187,7 +187,7 @@ const ChangeThumbnailButton: FC<ChangeThumbnailButtonProps> = ({
         }}>
         {t('thumbnail.change_thumbnail')}
       </Button>
-      {fileInputIsBusy && <StyledCircularProgress size="1rem" aria-label={t('thumbnail.busy_changing')} />}
+      {fileInputIsBusy && <StyledCircularProgress size="1rem" aria-label={t('thumbnail.busy_changing') ?? ''} />}
       <Popover
         PaperProps={{ sx: { overflow: 'hidden' } }}
         open={showPopover}

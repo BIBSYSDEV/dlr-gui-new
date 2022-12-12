@@ -57,7 +57,7 @@ const SearchExplainer = () => {
       <PageHeader>{t('search_tricks.page_title')}</PageHeader>
       <ColoringWrapper color={'inherit'}>
         <StyledContentWrapperMedium>
-          <StyledImg src={BrowsingResource} alt={t('illustration_alts_tags.browsing_resource')} />
+          <StyledImg src={BrowsingResource} alt={t('illustration_alts_tags.browsing_resource') ?? ''} />
           <StyledTypography gutterBottom variant="body1">
             {`${t('search_tricks.find_tricks')} `}
             <Link underline="hover" href={generateNewUrlAndRetainLMSParams('/')}>

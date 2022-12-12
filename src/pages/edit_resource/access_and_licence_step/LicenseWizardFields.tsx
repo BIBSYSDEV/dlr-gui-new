@@ -297,7 +297,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                 <StyledRadioGroup
                   {...field}
                   data-testid="extra_restriction_radio_group"
-                  aria-label={t('license.questions.special_needs')}
+                  aria-label={t('license.questions.special_needs') ?? ''}
                   value={field.value}
                   onChange={(event) => handleChangeInExtraRestriction(event)}>
                   {licenseRestrictions.map((element) => (
@@ -354,7 +354,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                     <StyledRadioGroup
                       {...field}
                       data-testid="commercial-use-radio-group"
-                      aria-label={t('license.questions.commercial')}
+                      aria-label={t('license.questions.commercial') ?? ''}
                       value={field.value}
                       onChange={(event) => handleChangeInCommercialOption(event)}>
                       {commercialPurposes.map((element, index) => (
@@ -393,7 +393,7 @@ const LicenseWizardFields: FC<LicenseWizardFieldsProps> = ({
                       {...field}
                       data-testid="modify-and-build-radio-group"
                       value={field.value}
-                      aria-label={t('license.questions.modify_and_build')}
+                      aria-label={t('license.questions.modify_and_build') ?? ''}
                       onChange={(event) => handleChangeInModifyAndBuildOption(event)}>
                       <FormControlLabel
                         value={ModifyAndBuildOptions.primaryYes}

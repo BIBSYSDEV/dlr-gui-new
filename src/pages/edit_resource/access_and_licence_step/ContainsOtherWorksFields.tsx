@@ -177,7 +177,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
               <FormHelperText error={false}>{t('license.questions.examples')}</FormHelperText>
               <StyledRadioGroup
                 {...field}
-                aria-label={t('license.questions.contains_other_peoples_work')}
+                aria-label={t('license.questions.contains_other_peoples_work') ?? ''}
                 value={field.value}
                 data-testid="contains-other-peoples-work-radio-group"
                 onChange={(event) => handleChangeInContainsOtherPeoplesWork(event)}>
@@ -215,7 +215,7 @@ const ContainsOtherWorksFields: FC<ContainsOtherWorksFieldsProps> = ({
                   </StyledFormLabel>
                   <StyledRadioGroup
                     {...field}
-                    aria-label={t('license.questions.usage_cleared_with_owner')}
+                    aria-label={t('license.questions.usage_cleared_with_owner') ?? ''}
                     value={field.value}
                     data-testid="usage-cleared-with-owner-radio-group"
                     onChange={(event) => handleUsageClearedWithOwnerChange(event)}>
