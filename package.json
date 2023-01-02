@@ -71,7 +71,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/react-truncate": "^2.3.4",
     "@types/styled-components": "^5.1.26",
-    "@types/uuid": "^8.3.4",
+    "@types/uuid": "^9.0.0",
     "@types/yup": "^0.32.0",
     "axios-mock-adapter": "^1.21.2",
     "cypress": "^11.2.0",
