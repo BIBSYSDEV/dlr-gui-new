@@ -41,6 +41,7 @@
     "show_list": "Vis liste",
     "who_got_access": "Hvem har tilgang"
   },
+  "accessibility_statement": "Tilgjengelighetserklæring",
   "administrative": {
     "cannot_change_own_roles": "Det er ikke tilgang til å endre egne roller",
     "no_access_to_view_user": "Du har ikke tilgang til å se roller for ",

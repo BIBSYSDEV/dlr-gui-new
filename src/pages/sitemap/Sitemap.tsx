@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { PageHeader } from '../../components/PageHeader';
 import { StyledContentWrapper } from '../../components/styled/Wrappers';
-import { API_PATHS, API_URL, resourcePath } from '../../utils/constants';
+import { ACCESSIBILITY_STATEMENT_LINK, API_PATHS, API_URL, resourcePath } from '../../utils/constants';
 import { List, ListItem } from '@mui/material';
 import { handleLogout } from '../../layout/header/Logout';
 import { generateNewUrlAndRetainLMSParams } from '../../utils/lmsService';
@@ -54,6 +54,10 @@ const Sitemap = () => {
     {
       href: generateNewUrlAndRetainLMSParams('/worklist'),
       description: `${t('work_list.page_title')} (${t('work_list.page_requirements')})`,
+    },
+    {
+      href: ACCESSIBILITY_STATEMENT_LINK,
+      description: t('accessibility_statement'),
     },
     {
       href: generateNewUrlAndRetainLMSParams('/profile'),
