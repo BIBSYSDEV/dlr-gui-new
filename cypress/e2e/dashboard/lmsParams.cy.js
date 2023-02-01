@@ -1,6 +1,7 @@
 import { LMSParametersName } from '../../../src/types/LMSParameters';
 import { SearchParameters } from '../../../src/types/search.types';
 import { mockCreators } from '../../../src/api/mockdata';
+import { ACCESSIBILITY_STATEMENT_LINK } from '../../../src/utils/constants';
 
 context('LMS params', () => {
   const search = 'bananas';
@@ -133,6 +134,11 @@ context('LMS params', () => {
     cy.visit(`/sitemap?${LMSParametersName.BBShowEmbedButton}=true`);
     cy.get('[data-testid=sitemap-list]')
       .find('a')
+      .filter((k, el) => {
+        // the accessibility statement link has href to external site, we don't need to preserve LMS search params
+        const href = el.attributes.getNamedItem('href').value;
+        return !href.includes(ACCESSIBILITY_STATEMENT_LINK);
+      })
       .each((element) => {
         cy.wrap(element).should('have.attr', 'href').and('include', `${LMSParametersName.BBShowEmbedButton}=true`);
       });
