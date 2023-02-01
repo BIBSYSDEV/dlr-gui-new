@@ -41,6 +41,7 @@
     "show_list": "Show list",
     "who_got_access": "Who got access"
   },
+  "accessibility_statement": "Accessibility statement",
   "administrative": {
     "cannot_change_own_roles": "You cannot change your own roles",
     "no_access_to_view_user": "You do not have access to view roles for ",
