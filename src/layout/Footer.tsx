@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Link as MuiLink } from '@mui/material';
 import NormalText from '../components/NormalText';
 import { generateNewUrlAndRetainLMSParams } from '../utils/lmsService';
+import { ACCESSIBILITY_STATEMENT_LINK } from '../utils/constants';
 
 const StyledFooter = styled.footer`
   display: grid;
@@ -66,6 +67,14 @@ const Footer = () => {
           component={Link}
           to={generateNewUrlAndRetainLMSParams('/sitemap')}>
           {t('sitemap.sitemap')}
+        </StyledMuiLink>
+        <StyledMuiLink
+          rel="noopener noreferrer"
+          target="_blank"
+          underline="hover"
+          color="primary"
+          href={ACCESSIBILITY_STATEMENT_LINK}>
+          {t('accessibility_statement')}
         </StyledMuiLink>
       </StyledPrivacyPolicyContainer>
     </StyledFooter>

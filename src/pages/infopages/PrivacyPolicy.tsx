@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { StyledContentWrapper } from '../../components/styled/Wrappers';
 import { Link, List, ListItem } from '@mui/material';
 import { PageHeader } from '../../components/PageHeader';
+import { PRIVACY_POLICY_LINK_NORWEGIAN } from '../../utils/constants';
 
 const PrivacyPolicy = () => {
   const { t } = useTranslation();
@@ -14,11 +15,7 @@ const PrivacyPolicy = () => {
       <nav>
         <List>
           <ListItem>
-            <Link
-              underline="hover"
-              href="https://www.unit.no/dlr/personvernerklaering"
-              rel="noopener noreferrer"
-              target="_blank">
+            <Link underline="hover" href={PRIVACY_POLICY_LINK_NORWEGIAN} rel="noopener noreferrer" target="_blank">
               {t('privacy_policy.heading')} - {t('localization.norwegian_bokmaal')}
             </Link>
           </ListItem>
