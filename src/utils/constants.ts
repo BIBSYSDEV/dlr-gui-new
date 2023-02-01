@@ -9,6 +9,8 @@ export const resourcePath = '/resources';
 export const ACCESSIBILITY_STATEMENT_LINK =
   'https://uustatus.no/nb/erklaringer/publisert/e1d59089-e0c3-4053-a9e4-a339d601276c';
 
+export const PRIVACY_POLICY_LINK_NORWEGIAN = 'https://sikt.no/personvernerklaering-dlr-norsk';
+
 export enum StatusCode {
   OK = 200,
   CREATED = 201,
