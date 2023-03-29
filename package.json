@@ -76,7 +76,7 @@
     "axios-mock-adapter": "^1.21.2",
     "cypress": "^11.2.0",
     "cypress-file-upload": "^5.0.8",
-    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.3",
