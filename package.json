@@ -73,7 +73,7 @@
     "@types/styled-components": "^5.1.26",
     "@types/uuid": "^9.0.1",
     "@types/yup": "^0.32.0",
-    "axios-mock-adapter": "^1.21.2",
+    "axios-mock-adapter": "^1.21.4",
     "cypress": "^11.2.0",
     "cypress-file-upload": "^5.0.8",
     "eslint-config-prettier": "^8.8.0",
