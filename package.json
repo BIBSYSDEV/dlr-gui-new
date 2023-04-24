@@ -32,7 +32,7 @@
   "dependencies": {
     "@fontsource/barlow": "^4.5.9",
     "@fontsource/crimson-text": "^4.5.5",
-    "@mui/icons-material": "^5.11.0",
+    "@mui/icons-material": "^5.11.16",
     "@mui/lab": "^5.0.0-alpha.82",
     "@mui/material": "^5.11.8",
     "@mui/styled-engine-sc": "^5.12.0",
