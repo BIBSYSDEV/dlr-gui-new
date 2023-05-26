@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@fontsource/barlow": "^5.0.1",
-    "@fontsource/crimson-text": "^4.5.5",
+    "@fontsource/crimson-text": "^5.0.1",
     "@mui/icons-material": "^5.11.16",
     "@mui/lab": "^5.0.0-alpha.82",
     "@mui/material": "^5.13.2",
