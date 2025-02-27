@@ -54,7 +54,7 @@ const AppContent: FC<LMSServiceProps> = ({ mainContentRef, userError }) => {
       {userError && <ErrorBanner error={userError} />}
       <StyledContent tabIndex={-1} ref={mainContentRef} role="main" id="content">
         <br />
-        <Alert severity="info">DLR er stengt for opplastning av nytt innhold da tjenesten skal legges ned.</Alert>
+        <Alert severity="info">{t('explanation_text.disabled_create_resource_button')}</Alert>
         <AppRoutes />
       </StyledContent>
       {footer && <Footer />}
