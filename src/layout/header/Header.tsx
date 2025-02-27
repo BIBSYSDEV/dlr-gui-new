@@ -2,7 +2,7 @@ import React from 'react';
 import LoginButton from './LoginButton';
 import Logo from './Logo';
 import styled from 'styled-components';
-import { Button, IconButton, Typography, useMediaQuery } from '@mui/material';
+import { Button, IconButton, Tooltip, Typography, useMediaQuery } from '@mui/material';
 import { Link, Link as RouterLink } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useSelector } from 'react-redux';
@@ -50,6 +50,11 @@ const StyledLanguageButtonUserIsNotLoggedInVariant = styled.div`
   justify-content: flex-end;
 `;
 
+const StyledDisabledButton = styled.div`
+  cursor: not-allowed;
+  opacity: 0.5;
+`;
+
 const Header = () => {
   const user = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
@@ -83,13 +88,18 @@ const Header = () => {
             open={Boolean(anchorEl)}
             onClose={handleBurgerMenuClose}>
             {user.id && (
-              <MenuItem
-                onClick={handleBurgerMenuClose}
-                component={Link}
-                to={generateNewUrlAndRetainLMSParams('/registration')}>
-                <AddIcon />
-                <Typography variant="button">{t('resource.new_registration')}</Typography>
-              </MenuItem>
+              <Tooltip title={t('explanation_text.disabled_create_resource_button')} placement="right">
+                <StyledDisabledButton>
+                  <MenuItem
+                    onClick={handleBurgerMenuClose}
+                    component={Link}
+                    to={generateNewUrlAndRetainLMSParams('/registration')}
+                    disabled>
+                    <AddIcon />
+                    <Typography variant="button">{t('resource.new_registration')}</Typography>
+                  </MenuItem>
+                </StyledDisabledButton>
+              </Tooltip>
             )}
             {user.id && (
               <MenuItem
@@ -133,14 +143,19 @@ const Header = () => {
 
       {!isMediumOrSmallerScreen && user.id && (
         <>
-          <Button
-            color="neutral"
-            component={RouterLink}
-            data-testid="new-registration-link"
-            to={generateNewUrlAndRetainLMSParams('/registration')}
-            startIcon={<AddIcon />}>
-            <Typography variant="button">{t('resource.new_registration')}</Typography>
-          </Button>
+          <Tooltip title={t('explanation_text.disabled_create_resource_button')}>
+            <StyledDisabledButton>
+              <Button
+                color="neutral"
+                component={RouterLink}
+                data-testid="new-registration-link"
+                to={generateNewUrlAndRetainLMSParams('/registration')}
+                startIcon={<AddIcon />}
+                disabled>
+                <Typography variant="button">{t('resource.new_registration')}</Typography>
+              </Button>
+            </StyledDisabledButton>
+          </Tooltip>
 
           <Button
             color="neutral"

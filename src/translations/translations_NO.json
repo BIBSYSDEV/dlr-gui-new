@@ -204,6 +204,7 @@
     "description_helper_example3": "Illustrasjonstegning av kroppens indre organer. Ilustrasjonen viser posisjonen til organene i forhold til hverandre",
     "description_helper_text1": "Gi en kort beskrivelse av hva ressursen inneholder",
     "description_helper_text2": "Eksempler på beskrivelser",
+    "disabled_create_resource_button": "DLR er stengt for opplastning av nytt innhold da tjenesten skal legges ned.",
     "file_title_helper_aria_label": "Vis filtittel forklaring",
     "file_title_helper_example1": "\"Appelsinblomster på tre\" som filtittel er bedre enn \"img_23434.jpg\"",
     "file_title_helper_example2": "Filnavnet \"thesis.pdf\" kan godt også brukes som filtittel",

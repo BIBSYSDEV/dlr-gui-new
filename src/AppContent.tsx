@@ -11,6 +11,7 @@ import { RootState } from './state/rootReducer';
 import { LMSParametersName } from './types/LMSParameters';
 import { getPackedUrlCurrentPathForFeideLogin } from './utils/rewriteSearchParams';
 import BackButton from './components/BackButton';
+import { Alert } from '@mui/material';
 
 const StyledApp = styled.div`
   min-height: 100vh;
@@ -52,6 +53,8 @@ const AppContent: FC<LMSServiceProps> = ({ mainContentRef, userError }) => {
       {navbar ? <Header /> : <BackButton />}
       {userError && <ErrorBanner error={userError} />}
       <StyledContent tabIndex={-1} ref={mainContentRef} role="main" id="content">
+        <br />
+        <Alert severity="info">{t('explanation_text.disabled_create_resource_button')}</Alert>
         <AppRoutes />
       </StyledContent>
       {footer && <Footer />}
