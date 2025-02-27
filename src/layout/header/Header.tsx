@@ -55,8 +55,6 @@ const StyledDisabledButton = styled.div`
   opacity: 0.5;
 `;
 
-const TooltipDisabledButtonText = 'DLR er stengt for opplastning av nytt innhold da tjenesten skal legges ned.';
-
 const Header = () => {
   const user = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
@@ -90,7 +88,7 @@ const Header = () => {
             open={Boolean(anchorEl)}
             onClose={handleBurgerMenuClose}>
             {user.id && (
-              <Tooltip title={TooltipDisabledButtonText} placement="right">
+              <Tooltip title={t('explanation_text.disabled_create_resource_button')} placement="right">
                 <StyledDisabledButton>
                   <MenuItem
                     onClick={handleBurgerMenuClose}
@@ -145,7 +143,7 @@ const Header = () => {
 
       {!isMediumOrSmallerScreen && user.id && (
         <>
-          <Tooltip title={TooltipDisabledButtonText}>
+          <Tooltip title={t('explanation_text.disabled_create_resource_button')}>
             <StyledDisabledButton>
               <Button
                 color="neutral"
